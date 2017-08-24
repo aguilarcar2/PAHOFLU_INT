@@ -1,0 +1,31 @@
+﻿@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", new { area = "" }, FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+    @Html.AntiForgeryToken()
+
+    <ul class="nav navbar-nav navbar-right">
+        @if (User.IsInRole("Admin"))
+        {
+        <li>@Html.ActionLink("UsersAdmin", "", "UsersAdmin", routeValues: new { area = "" }, htmlAttributes: new { id = "usersadminLink" })</li>
+        }
+        <li>
+            @Html.ActionLink("Hola " + User.Identity.GetUserName() + "!", "Manage", "Account", routeValues: new { area = "" }, htmlAttributes: new { title = "Manage" })
+        </li>
+        <li>
+            <a href="javascript:sessionStorage.removeItem('accessToken');$('#logoutForm').submit();">Log off</a>
+            <input type="hidden" value="@ViewBag.UserInstitutionType" id="ITy" name="ITy"/>
+            <input type="hidden" value="@ViewBag.UsrInstID" id="IIDL" name="IIDL" />
+            <input type="hidden" value="@ViewBag.DateofServer" id="DSrv" name="DSrv" />
+            <input type="hidden" value="1" id="o_S" name="o_S" />
+        </li>
+    </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">    
+        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: new { area = "" }, htmlAttributes: new { id = "loginLink" })</li>
+    </ul>
+}

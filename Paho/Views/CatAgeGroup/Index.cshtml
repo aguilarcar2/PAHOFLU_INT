@@ -1,0 +1,74 @@
+﻿@model PagedList.IPagedList<Paho.Models.CatAgeGroup>
+
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Catalogo - Grupos de Edad";
+}
+
+<h4>Catalogo - Grupos de Edad</h4>
+
+<p>
+    @Html.ActionLink("Crear Nuevo", "Create")
+</p>
+@using (Html.BeginForm("Index", "CatAgeGroup", FormMethod.Get))
+{
+    <p>
+        Criterio de busqueda: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Buscar" />
+    </p>
+}
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink("ID", "Index", new { sortOrder = ViewBag.IDSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            @Html.ActionLink("Descripcion", "Index", new { sortOrder = ViewBag.DescripcionSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            @Html.ActionLink("Mes Inicia", "Index", new { sortOrder = ViewBag.MesIniSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            @Html.ActionLink("Mes Finaliza", "Index", new { sortOrder = ViewBag.MesFinSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            FLUID
+        </th>
+        <th></th>
+    </tr>
+
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.id_conf_country)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AgeGroup)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.month_begin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.month_end)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.label_fluid)
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id = item.id }) |
+                @Html.ActionLink("Borrar", "Delete", new { id = item.id })
+            </td>
+        </tr>
+    }
+
+</table>
+<br />
+Pagina @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+

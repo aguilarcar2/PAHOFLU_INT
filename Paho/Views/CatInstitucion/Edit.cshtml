@@ -1,0 +1,165 @@
+﻿@model Paho.Models.Institution
+
+@using (Html.BeginForm(new { @class = "con" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal " data-bind="with: app.Views.CatalogInstitution">
+        <h4>Catalogo - Institucion</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ID)
+
+            <div class="form-group vertical-align">
+                <label class="col-md-1_5 text-right " for="AreaID">Area:</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("AreaID", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.AreaID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+        <div class="form-group vertical-align">
+
+            @Html.LabelFor(model => model.FullName, htmlAttributes: new { @class = "col-md-1_5 text-right" })
+
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group vertical-align">
+
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "col-md-1_5 text-right" })
+
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group vertical-align">
+            <label class="col-md-1_5 text-right" for="AccessLevel">Nivel de Acceso:</label>
+            <div class="col-md-10">
+                @Html.DropDownList("AccessLevel", null, htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group vertical-align">
+            <label class="col-md-1_5 text-right" for="InstitutionType">Tipo:</label>
+            <div class="col-md-10">
+                @Html.DropDownList("InstitutionType", null, htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group vertical-align">
+
+            @Html.LabelFor(model => model.InstID, htmlAttributes: new { @class = "col-md-1_5 text-right" })
+
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.InstID, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.InstID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group vertical-align" id="div-father">
+
+            @Html.LabelFor(model => model.Father_ID, htmlAttributes: new { @class = "col-md-1_5 text-right" })
+
+            <div class="col-md-10">
+                @Html.DropDownList("Father_ID", null, htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group vertical-align">
+
+            @Html.LabelFor(model => model.SARI, htmlAttributes: new { @class = "col-md-1_5 text-right" })
+
+            <div class="col-md-1">
+                @Html.EditorFor(model => model.SARI, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group vertical-align">
+            @Html.LabelFor(model => model.ILI, htmlAttributes: new { @class = "col-md-1_5 text-right" })
+            <div class="col-md-1">
+                @Html.EditorFor(model => model.ILI, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group vertical-align">
+
+            @Html.LabelFor(model => model.PCR, htmlAttributes: new { @class = "col-md-1_5 text-right" })
+
+            <div class="col-md-1">
+                @Html.EditorFor(model => model.PCR, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group vertical-align">
+
+            @Html.LabelFor(model => model.IFI, htmlAttributes: new { @class = "col-md-1_5 text-right" })
+
+            <div class="col-md-1">
+                @Html.EditorFor(model => model.IFI, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group vertical-align">
+            @Html.LabelFor(model => model.Active, htmlAttributes: new { @class = "col-md-1_5 text-right" })
+            <div class="col-md-1">
+                @Html.EditorFor(model => model.Active, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group vertical-align">
+            @Html.LabelFor(model => model.orig_country, htmlAttributes: new { @class = "col-md-1_5 text-right" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.orig_country, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.orig_country, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group vertical-align" id="RegionInstitucionalGroup">
+            @Html.LabelFor(model => model.cod_region_institucional, htmlAttributes: new { @class = "col-md-1_5 text-right" })
+            <div class="col-md-10">
+                @Html.DropDownList("cod_region_institucional", null, htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group vertical-align" id="RegionSaludGroup">
+            @Html.LabelFor(model => model.cod_region_salud, htmlAttributes: new { @class = "col-md-1_5 text-right" })
+            <div class="col-md-10">
+                @Html.DropDownList("cod_region_salud", null, htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group vertical-align" id="RegionPaisGroup">
+            @Html.LabelFor(model => model.cod_region_pais, htmlAttributes: new { @class = "col-md-1_5 text-right" })
+            <div class="col-md-10">
+                @Html.DropDownList("cod_region_pais", null, htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div>
+            @Html.HiddenFor(model => model.InstType, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+
+        <div class="form-group vertical-align">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Guardar" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Regresar a Listado", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/knockout")
+    @Scripts.Render("~/bundles/catalog-institution")
+}

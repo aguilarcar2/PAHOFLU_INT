@@ -1,0 +1,61 @@
+﻿@model Paho.Models.CatAgeGroup
+
+<h2>Borrar</h2>
+<p class="error">@ViewBag.ErrorMessage</p>
+<h3>Esta seguro que desea borrar el registro?</h3>
+<div>
+    <h4>Catalogo - Grupos de Edad</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.id_conf_country)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.id_conf_country)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AgeGroup)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AgeGroup)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.month_begin)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.month_begin)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.month_end)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.month_end)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.label_fluid)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.label_fluid)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Borrar" class="btn btn-default" /> |
+            @Html.ActionLink("Regresar a Listado", "Index")
+        </div>
+    }
+</div>

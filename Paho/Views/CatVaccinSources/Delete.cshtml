@@ -1,0 +1,36 @@
+﻿@model Paho.Models.CatVaccinSource
+
+
+    <h3> Desea borrar el registro?</h3>
+    <div>
+        <h4>Borrar opción de vacunación</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                Descripción:
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.description)
+            </dd>
+    
+            <dt>
+                Orden:
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.orden)
+            </dd>
+    
+        </dl>
+    
+        @using (Html.BeginForm()) {
+            @Html.AntiForgeryToken()
+    
+            <div class="form-actions no-color">
+                <input type="submit" value="Borrar" class="btn btn-default" />
+                
+            </div>
+            @Html.ActionLink("Regreso a la lista de opciones", "Index")
+        }
+    </div>

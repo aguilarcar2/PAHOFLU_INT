@@ -1,0 +1,95 @@
+﻿@model Paho.Models.FluidViewModel
+<!-- ko with: app.Views.Fluid -->
+@if (Model.DisplayCountries)
+{
+    <div class="row" style="margin-bottom: 15px; margin-top: 1em;">
+        <div class="col-md-3">
+            <div class='input-group'>
+                <span class="input-group-addon">
+                    Country:
+                </span>
+                <select id="Pais" class="form-control" data-bind="options: activecountries,
+                           optionsText: 'Name',
+                           optionsValue: 'Id',
+                           value: selectedCountryId,
+                           optionsCaption: 'Select...',
+                           event:{ change: ReloadInstitutions}"></select>
+            </div>
+        </div>
+    </div>
+}
+@if (Model.DisplayHospitals)
+{
+    <div class="row" style="margin-bottom: 15px; margin-top: 1em;">
+        <div class="col-md-3">
+            <div class='input-group'>
+                <span class="input-group-addon">
+                    Establecimiento:
+                </span>
+                <select id="Hospitals" class="form-control" data-bind="options: institutions,
+                       optionsText: 'Name',
+                       optionsValue: 'Id',
+                       value: selectedInstitutionId,
+                       optionsCaption: 'Select...'"></select>
+            </div>
+        </div>
+    </div>
+}
+
+    <div class="row" style="margin-bottom: 15px; margin-top: 1em;">
+        <div class="col-md-3">
+            <div class='input-group'>
+                <span class="input-group-addon">
+                    Año:
+                </span>
+                <input id="año" type='text' class="form-control" data-bind="value: Year"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-bottom: 15px; margin-top: 1em;">
+        <div class="col-md-3">
+            <div class='input-group'>
+                <span class="input-group-addon">
+                    Semana inicio:
+                </span>
+                <input id="weekFrom" type='text' class="form-control" data-bind="value: WeekFrom"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-bottom:15px; margin-top:1em;">
+        <div class="col-md-3">
+            <div class='input-group'>
+                <span class="input-group-addon">
+                    Semana fin:
+                </span>
+                <input id="weekTo" type='text' class="form-control" data-bind="value: WeekTo" />
+            </div>
+        </div>
+    </div>
+
+<div class="row" style="margin-bottom:15px; margin-top:1em;">
+    <div class="col-md-3">
+        <div class='btn-group input-group'>
+            @*<a href="#" title="Generate" class="btn btn-primary" data-bind="attr: { href: url}">Generate</a>*@
+            <button id="GenerarReporte" type="button" class="btn btn-primary" data-bind="click: exportar">Generar</button>
+        </div>
+    </div>
+</div>
+
+
+    <div class="row" style="margin-bottom: 15px; margin-top: 1em;">
+        <div class="col-md-3">
+            <div>
+                @Html.Raw(ViewBag.Message)
+            </div>
+        </div>
+    </div>
+
+<script type="text/javascript">
+    var countries = @Html.Raw(Json.Encode(Model.Countries));
+    var institutions = @Html.Raw(Json.Encode(Model.Institutions));
+    var CountryID = @Html.Raw(Model.CountryID);
+</script>
+<!-- /ko -->

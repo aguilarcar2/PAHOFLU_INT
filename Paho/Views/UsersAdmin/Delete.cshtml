@@ -1,0 +1,33 @@
+﻿@model Paho.Models.ApplicationUser
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Borrar usuario.</h2>
+
+<h3>Esta seguro que desea borrar el siguiente usuario?</h3>
+<div>
+    <h4>User.</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Id de usuario:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Borrar" class="btn btn-default" /> 
+        </div>
+        <br />
+
+            @Html.ActionLink("Regresar a la lista de usuarios", "Index")
+    }
+</div>

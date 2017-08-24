@@ -1,0 +1,61 @@
+﻿@model PagedList.IPagedList<Paho.Models.CatVirusSubType>
+
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Catálogo - Subtipo de virus";
+}
+
+
+<p>
+    @Html.ActionLink("Crear Nuevo", "Create")
+</p>
+@using (Html.BeginForm("Index", "CatVirusType", FormMethod.Get))
+{
+    <p>
+        Criterio de búsqueda: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Buscar" />
+    </p>
+}
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.ActionLink("SPA", "Index", new { sortOrder = ViewBag.SpaSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("ENG", "Index", new { sortOrder = ViewBag.EngSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Orden", "Index", new { sortOrder = ViewBag.OrdenSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+
+            </th>
+            <th></th>
+        </tr>
+    
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SPA)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ENG)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.orden)
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id=item.ID }) |
+                @Html.ActionLink("Borrar", "Delete", new { id=item.ID })
+            </td>
+        </tr>
+    }
+    
+    </table>
+Pagina @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))

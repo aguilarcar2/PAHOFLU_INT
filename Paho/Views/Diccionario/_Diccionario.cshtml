@@ -1,0 +1,13 @@
+﻿<div class="row" style="margin-bottom:15px; margin-top:1em;">
+
+    <div class='input-group'>
+        <span class="input-group-addon">
+            <b>Diccionario de datos</b>
+        </span>
+    </div>
+
+</div>
+
+<p>Haga click en el siguiente link para descargar el diccionario de datos en un archivo de Excel.</p>
+
+@Html.ActionLink("Descargar diccionario de datos", "GetDataDictionaryExcel", "exportar", new { area = "" }, null)

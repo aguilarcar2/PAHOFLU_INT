@@ -1,0 +1,138 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - PAHO Flu</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    <!-- link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" -->
+    <link rel="stylesheet" href="~/Content/themes/base/jquery-ui.css">
+    <link href="~/Content/jquery.jqGrid/ui.jqgrid.css" rel="stylesheet" />
+    <link href="~/Content/jquery.jqGrid/ui.jqgrid.bootstrap.css" rel="stylesheet" />
+    <script src="~/Scripts/i18n/grid.locale-en.js"></script>
+    <script src="~/Scripts/jquery.jqGrid.src.js"></script>
+</head>
+<body>
+    <div class="masthead row">
+        <table>
+            <tr>
+                <td width="41%">
+                    <div class="row" style="margin-top: 3px;">
+
+                        <div class="col-md-9" style="padding-left:35px;padding-right:0px; ">
+                            <img src="~/Content/themes/base/images/logo_pahowho_blue-en.png" />
+                        </div>
+                        @if (ViewBag.UsrCtry == 7)
+                        {<div class="col-md-1" dstyle="padding-right:0px;">
+                              <img src="~/Content/themes/base/images/Logo_MINSAL.png" style="padding-left:17px;" />
+                          </div>
+                        }
+                    </div>
+
+                </td>
+                <td>
+                    <div class="text-center h4">
+                        <div class="row" style="margin-top: 3px;">
+                            Sistema en línea para
+                        </div>
+                        <div class="row">
+                            Vigilancia centinela
+                        </div>
+                        <div class="row">
+                            de infección respiratoria aguda grave (IRAG)
+                        </div>
+                        <div class="row">
+                           y enfermedad tipo influenza (ETI)
+                        </div>
+                    </div>
+                </td>
+                <td width="13%">
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="menus" class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Análisis situación", "Index", "Principal", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("Ingreso", "Index", "Home", new { area = "" }, null)</li>
+                    @if (ViewBag.UserInstitutionType != 2 && ViewBag.UsrCtry != 7)
+                    {
+                        <li>@Html.ActionLink("Denominadores", "Index", "Summary", new { area = "" }, null)</li>
+                    }
+                    else
+                    {
+                        if (ViewBag.UserInstitutionType != 2)
+                        {
+                            <li> @Html.ActionLink("Dato agregado", "Index", "Summary", new { area = "" }, null) </li>
+                        }
+
+                    }
+
+                    @if(ViewBag.UserInstitutionType == 2 && ViewBag.UsrCtry == 9)
+                    {
+                        <li> @Html.ActionLink("Import Lab", "Index", "ImportLab", new { area = "" }, null) </li>
+                    }
+
+                    @if (User.IsInRole("Admin") || User.IsInRole("Report"))
+                    {
+                        <li>@Html.ActionLink("Reportes", "Index", "Exportar", new { area = "" }, null)</li>
+                    }
+
+                    @if(User.IsInRole("Admin") || User.IsInRole("Report")) {
+                        <li dstyle = "display:none;"> @Html.ActionLink("FLUID", "Index", "Fluid", new { area = "" }, null) </li>
+                    }
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="dropdown">  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Mantenimiento <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Diccionario de datos", "Index", "Diccionario", new { area = "" }, null) </li>
+                                <li>@Html.ActionLink("Catálogo institución", "Index", "CatInstitucion", new { area = "" }, null)</li>
+                                <li>@Html.ActionLink("Catálogo flujo", "Index", "CatInstitucionConf", new { area = "" }, null)</li>
+                                <li>@Html.ActionLink("Catálogo virus", "Index", "CatVirusType", new { area = "" }, null)</li>
+                                <li>@Html.ActionLink("Catálogo subtipo", "Index", "CatVirusSubTypes", new { area = "" }, null)</li>
+                                <li>@Html.ActionLink("Catálogo grupos de edad", "Index", "CatAgeGroup", new { area = "" }, null)</li>
+                                <li>@Html.ActionLink("Catálogo de fuente de vacuna", "Index", "CatVaccinSources", new { area = "" }, null)</li>
+
+                            </ul>
+                        </li>
+                    }
+                    @if (ViewBag.UsrCtry == 9) {
+
+                                <li dstyle="display:none;"> @Html.ActionLink("Lista no importados", "Index", "NotImported", new { area = "" }, null) </li>
+
+                    }
+                    @*<li>@Html.ActionLink("Searches", "Index", "Report", new { area = "" }, null)</li>*@
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid body-content">
+        <div class="row" style="margin-bottom:15px; margin-top:3px;">
+            <div class="col-md-12">
+                @RenderBody()
+                @RenderSection("SPAViews", required: false)
+            </div>
+        </div>
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Pan American Health Organization - World Health Organization. All rights reserved</p>
+        </footer>
+    </div>
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

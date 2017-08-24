@@ -1,0 +1,307 @@
+﻿using Paho.Models;
+using System;
+//using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using System.Globalization;
+
+namespace Paho.Controllers
+{
+    [Authorize]
+    public class HomeController : ControllerBase
+    {
+        public ActionResult Index()
+        {
+            var CaseViewModel = new CaseViewModel();
+            IQueryable<Institution> institutions = null;
+            IQueryable<Region> regions = null;
+            
+            IQueryable<CatTestType> CTT = null;
+            IQueryable<CatTestResult> CTR = null;
+            IQueryable<CatVirusType> CVT = null;
+            IQueryable<CatVirusSubType> CVST = null;
+            IQueryable<CatVirusSubType> CVST_Test = null;
+            IQueryable<CatVirusLinaje> CVL = null;
+
+            IQueryable<CatNativePeople> CNP = null;
+            IQueryable<CatVaccinSource> CVS = null;
+
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            var DoS = DateTime.Now.ToString("d", CultureInfo.CreateSpecificCulture("es-GT"));
+            var date_format = "dd/mm/yy";
+
+            //CaseViewModel.UsrCtry = user.Institution.CountryID;
+            CaseViewModel.DatePickerConfig = DoS;
+            CaseViewModel.DateFormatDP = date_format;
+            var institutionsConfiguration = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>()
+                    .Where(i => i.InstitutionToID == user.Institution.ID);
+
+            if (user.Institution.AccessLevel == AccessLevel.All)
+            {   
+                CaseViewModel.DisplayCountries = true;
+                CaseViewModel.DisplayRegionals = true;
+                CaseViewModel.DisplayHospitals = true;
+            }
+            else if (user.Institution is Hospital || user.Institution is AdminInstitution)
+            {
+                CaseViewModel.DisplayHospitals = true;
+
+                if (user.Institution.AccessLevel == AccessLevel.Country)
+                {
+                    institutions = db.Institutions.OfType<Hospital>()
+                                  .Where(i => i.CountryID == user.Institution.CountryID);
+
+                    if (user.type_region == null)
+                    {     // Regiones
+                        regions = db.Regions.Where(c => c.CountryID == user.Institution.CountryID && c.tipo_region == 1).OrderBy(i=> i.Name);
+                    }
+                    else
+                    {
+                        // Regiones
+                        regions = db.Regions.Where(c => c.CountryID == user.Institution.CountryID && c.tipo_region == user.type_region).OrderBy(i => i.Name);
+                    }
+
+
+                }
+                else if (user.Institution.AccessLevel == AccessLevel.Area)
+                {
+                    institutions = db.Institutions.OfType<Hospital>()
+                                   .Where(i => i.AreaID == user.Institution.AreaID);
+                }
+                else if (user.Institution.AccessLevel == AccessLevel.Regional)
+                {
+
+                    if (user.type_region == 1 || user.type_region == null)
+                    {
+                        institutions = db.Institutions.OfType<Hospital>()
+                                  .Where(i => i.CountryID == user.Institution.CountryID && i.cod_region_institucional == user.Institution.cod_region_institucional).OrderBy(j => j.FullName);
+                    }
+                    else if (user.type_region == 2)
+                    {
+                        institutions = db.Institutions.OfType<Hospital>()
+                                  .Where(i => i.CountryID == user.Institution.CountryID && i.cod_region_salud == user.Institution.cod_region_salud).OrderBy(j => j.FullName);
+                    }
+                    else if (user.type_region == 3)
+                    {
+                        institutions = db.Institutions.OfType<Hospital>()
+                                  .Where(i => i.CountryID == user.Institution.CountryID && i.cod_region_pais == user.Institution.cod_region_pais).OrderBy(j => j.FullName);
+                    }
+                }
+                else
+                {
+                    institutions = db.Institutions.OfType<Hospital>()
+                                   .Where(i => i.ID == user.Institution.ID).OrderBy(j => j.FullName);
+                }
+            }
+            else
+            {
+                CaseViewModel.DisplayLabs = true;
+
+                
+                institutions = institutionsConfiguration.Select(i => i.InstitutionParent).OrderBy(j => j.FullName);
+
+                if (!institutions.Any())
+                {
+                    if (user.Institution.AccessLevel == AccessLevel.Country)
+                    {
+                        institutions = db.Institutions.OfType<Lab>()
+                                       .Where(i => i.CountryID == user.Institution.CountryID).OrderBy(j => j.FullName);
+                    }
+                    else if (user.Institution.AccessLevel == AccessLevel.Area)
+                    {
+                        institutions = db.Institutions.OfType<Lab>()
+                                       .Where(i => i.AreaID == user.Institution.AreaID).OrderBy(j => j.FullName);
+                    }
+                    else
+                    {
+                        institutions = db.Institutions.OfType<Lab>()
+                                       .Where(i => i.ID == user.Institution.ID).OrderBy(j => j.FullName);
+                    }
+                }
+            }            
+
+            // Paises
+            CaseViewModel.Countries = db.Countries
+                    .Select(c => new CountryView()
+                    {
+                        Id = c.ID.ToString(),
+                        Name = c.Name,
+                        Active = c.Active
+                    })
+                    .OrderBy(d => d.Name) 
+                    .ToArray();
+
+
+            if ( regions != null )
+            {
+                var regionsDisplay = regions.Select(i => new LookupView<Region>()
+                {
+                    Id = i.orig_country.ToString(),
+                    Name = i.Name
+                }).ToList();
+
+                if (regionsDisplay.Count() > 1)
+                {
+                    var all = new LookupView<Region> { Id = "0", Name = "-- Todo(a)s --" };
+                    regionsDisplay.Insert(0, all);
+                    CaseViewModel.DisplayRegionals = true;
+                }
+
+                CaseViewModel.Regions = regionsDisplay;
+                //CaseViewModel.Regions = regions;
+            }
+
+            // Hospitales
+            if (institutions != null) {
+                var institutionsDisplay = institutions.Select(i => new LookupView<Institution>() {
+                    Id = i.ID.ToString(),
+                    Name = i.Name
+                }).ToList();
+
+                if (institutionsDisplay.Count() > 1) {
+                    var all = new LookupView<Institution> { Id = "0", Name = "-- Todo(a)s --" };
+                    institutionsDisplay.Insert(0, all);
+                    
+                }
+
+                CaseViewModel.Institutions = institutionsDisplay;
+            }
+
+            // Catalogos del laboratorio
+
+            CTT = db.CatTestType.OrderBy(i => i.orden);
+            var CTTDisplay = CTT.Select(i => new LookupView<CatTestType>()
+            {
+                Id = i.ID.ToString(),
+                Name = i.description,
+                orden = i.orden.ToString()
+            }).ToList();
+
+            CTR = db.CatTestResult.OrderBy(i => i.orden);
+            var CTRDisplay = CTR.Select(j => new LookupView<CatTestResult>()
+            {
+                Id = j.value.ToString().Trim(),
+                Name = j.description.ToString().Trim(),
+                orden = j.orden.ToString()
+            }).ToList();
+
+            CVT = db.CatVirusType.OrderBy(i => i.orden);
+            var CVTDisplay = CVT.Select(i => new LookupView<CatVirusType>()
+            {
+                Id = i.ID.ToString(),
+                Name = i.SPA,
+                orden = i.orden.ToString()
+            }).ToList();
+
+            CVST = db.CatVirusSubType.OrderBy(i => i.orden);
+            var CVSTDisplay = CVST.Select(i => new LookupView<CatVirusSubType>()
+            {
+                Id = i.ID.ToString(),
+                Name = i.SPA,
+                orden = i.orden.ToString()
+            }).ToList();
+
+
+            var CatVirusSubtypeConfiguration = db.CatVirusSubTypeConfByLab.OfType<CatVirusSubTypeConfByLab>().Where(i => i.id_Institution == user.InstitutionID);
+
+            if (!CatVirusSubtypeConfiguration.Any())
+            {
+                CVST_Test = db.CatVirusSubType.OrderBy(i => i.orden);
+            }
+            else
+            {
+                var ListVaccines = CatVirusSubtypeConfiguration.Select(i => i.id_CatSubType).ToList();
+                CVST_Test = db.CatVirusSubType.Where(k => ListVaccines.Contains(k.ID));
+            }
+
+            var CVST_TestDisplay = CVST_Test.Select(i => new LookupView<CatVirusSubType>()
+            {
+                Id = i.ID.ToString(),
+                Name = i.SPA,
+                orden = i.orden.ToString()
+            }).ToList();
+
+
+            CVL = db.CatVirusLinaje.OrderBy(i => i.orden);
+            var CVLDisplay = CVL.Select(i => new LookupView<CatVirusLinaje>()
+            {
+                Id = i.ID.ToString(),
+                Name = i.SPA,
+                orden = i.orden.ToString()
+            }).ToList();
+
+            CNP = db.CatNativePeople.OrderBy(i => i.description);
+            var CNPDisplay = CNP.Select(i => new LookupView<CatNativePeople>()
+            {
+                Id = i.ID.ToString(),
+                Name = i.description,
+            }).ToList();
+
+            var VaccineSourceConfiguration = db.CatVaccinSourceConf.OfType<CatVaccinSourceConf>()
+                    .Where(i => i.id_country == user.Institution.CountryID);
+
+
+            if (!VaccineSourceConfiguration.Any())
+            {
+                CVS = db.CatVaccinSource.Where(j => j.id_country == null).OrderBy(i => i.description);
+            } else
+            {
+                var ListVaccines = VaccineSourceConfiguration.Select(i => i.id_catvaccinsource).ToList();
+                CVS = db.CatVaccinSource.Where(k => ListVaccines.Contains(k.ID));
+            }
+
+            var CVSDisplay = CVS.Select(i => new LookupView<CatVaccinSource>()
+            {
+                Id = i.ID.ToString(),
+                Name = i.description,
+            }).ToList();
+
+            CaseViewModel.CTT = CTTDisplay;
+            CaseViewModel.CTR = CTRDisplay;
+            CaseViewModel.CVT = CVTDisplay;
+            CaseViewModel.CVST = CVSTDisplay;
+            CaseViewModel.CVST_Test = CVST_TestDisplay;
+            CaseViewModel.CVL = CVLDisplay;
+
+            CaseViewModel.CNP = CNPDisplay;
+            CaseViewModel.CVS = CVSDisplay;
+
+            // Laboratorios de la ficha
+            // *** DELETE ***
+            CaseViewModel.Labs = (from institution in db.Institutions.OfType<Lab>().Where(i => i.CountryID == user.Institution.CountryID)
+                                  select new LookupView<Lab>()
+                                  {
+                                      Id = institution.ID.ToString(),
+                                      Name = institution.Name
+                                  }).ToArray();
+
+            // Modificacion de Labs lo agrego AM 25 abril 2016
+
+            var institutionsConfigurationLabs = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>()
+                    .Where(i => i.InstitutionFromID == user.InstitutionID && i.Priority == 1).OrderBy(j => j.InstitutionParent.FullName);
+
+
+            var institutionLabs = institutionsConfigurationLabs.Select(i => i.InstitutionTo);
+            
+            if (!institutionLabs.Any())
+            {
+                CaseViewModel.LabsHospital_cmb = (from institution in db.Institutions.OfType<Lab>().Where(i => i.CountryID == user.Institution.CountryID)
+                                      select new LookupView<Lab>()
+                                      {
+                                          Id = institution.ID.ToString(),
+                                          Name = institution.Name
+                                      }).ToArray();
+            } else
+            {
+                CaseViewModel.LabsHospital_cmb = institutionLabs.ToArray();
+            }
+
+            // *** DELETE ***
+
+
+
+            return View(CaseViewModel);
+        }
+    }
+}

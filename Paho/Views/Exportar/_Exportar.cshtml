@@ -1,0 +1,197 @@
+﻿@model Paho.Models.ExportarViewModel
+<!-- ko with: app.Views.Exportar -->
+<div class="row" style="margin-bottom:15px; margin-top:1em;">
+
+        <div class='input-group'>
+            <span class="input-group-addon">
+                <b>Generación de reportes</b>
+            </span>
+        </div>
+
+</div>
+<!--div class="row" style="margin-bottom: 15px; margin-top: 1em;">
+    <div class="col-md-5">
+        <div class='input-group'>
+            <span class="input-group-addon">
+                Reporte:
+            </span>
+            <select id="Report" class="form-control" data-bind="value:Report">
+                <option value="Cases">Exportación de registros</option>
+                <option value="R1">Número de casos y % hospitalizaciones por IRAG</option>
+                <option value="R2">Total fallecidos por IRAG</option>
+                @*<option value="R3">Casos por IRAG y Hospitalizaciones totales</option>*@
+                <option value="R4">Virus detectados</option>
+                @*<option value="Example">Example</option>*@
+            </select>
+        </div>
+    </div>
+</div-->
+
+<div class="row" style="margin-bottom: 15px; margin-top: 1em;">
+    <div class="col-md-5">
+        <div class='input-group'>
+            <span class="input-group-addon">
+                Reportes:
+            </span>
+            <select id="Reports" class="form-control" data-bind="options: reportsCountries,
+                       optionsText: 'Name',
+                       optionsValue: 'Id',
+                       value: selectedReportCountryId,
+                       optionsCaption: 'Select...',
+                       valueUpdate:'change'"></select>
+        </div>
+    </div>
+</div>
+@if (Model.DisplayCountries)
+{
+    <div class="row" style="margin-bottom: 15px; margin-top: 1em;">
+        <div class="col-md-5">
+            <div class='input-group'>
+                <span class="input-group-addon">
+                       País:
+                   </span>
+                <select id="Pais" class="form-control" data-bind="options: activecountries,
+                           optionsText: 'Name',
+                           optionsValue: 'Id',
+                           value: selectedCountryId,
+                           optionsCaption: 'Select...',
+                           event:{ change: ReloadInstitutions},"></select>
+            </div>
+        </div>
+    </div>
+}
+@if (Model.DisplayRegionals)
+            {
+    <!--div id="RegionalsGroup" class='input-group col-md-7' style="margin-top: 7px; display: block; float: left" data-bind="visible: displayFilters">
+        <span class="input-group-addon">
+            Región:
+        </span>
+        <select id="Regionals" class="form-control" data-bind="options: regions,
+                       optionsText: 'Name',
+                       optionsValue: 'Id',
+                       value: selectedRegionId,
+                       valueUpdate:'change'"></select>
+    </div-->
+    <div class="row" style="margin-bottom: 15px; margin-top: 1em;">
+        <div class="col-md-5">
+            <div class='input-group'>
+                <span class="input-group-addon">
+                    Región:
+                </span>
+                <select id="Regions" class="form-control" data-bind="options: regions,
+                       optionsText: 'Name',
+                       optionsValue: 'Id',
+                       value: selectedRegionId,
+                       optionsCaption: 'Select...',
+                       valueUpdate:'change',
+                       event:{ change: ReloadInstitutions}"></select>
+
+                @*optionsCaption: 'Select...',*@
+            </div>
+        </div>
+    </div>
+}
+@if (Model.DisplayHospitals)
+{
+    <div class="row" style="margin-bottom: 15px; margin-top: 1em;">
+        <div class="col-md-5">
+            <div class='input-group'>
+                <span class="input-group-addon">
+                    Establecimiento:
+            </span>
+                <select id="Hospitals" class="form-control" data-bind="options: institutions,
+                       optionsText: 'Name',
+                       optionsValue: 'Id',
+                       value: selectedInstitutionId,
+                       optionsCaption: 'Select...',
+                       valueUpdate:'change'"></select>
+
+                @*optionsCaption: 'Select...',*@
+            </div>
+        </div>
+    </div>
+}
+<div class="row" style="margin-bottom:15px; margin-top:1em;">
+    <div class="col-md-3">
+        <div class='input-group'>
+            <span class="input-group-addon">
+                Año:
+            </span>
+            <input id="año" type='text' class="form-control" data-bind="value: Year" />
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class='input-group'>
+            <span class="input-group-addon">
+                Mes:
+            </span>
+            <input id="Mes" type='text' class="form-control" data-bind="value: Month" />
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class='input-group'>
+            <span class="input-group-addon">
+                S.E.:
+            </span>
+            <input id="SE" type='text' class="form-control" data-bind="value: SE" />
+        </div>
+    </div>
+</div>
+
+<div class="row" style="margin-bottom:15px; margin-top:1em;">
+    <div class="col-md-3">
+        <div class='input-group'>
+            <span class="input-group-addon">
+                Año desde:
+            </span>
+            <input id="yearfrom" type='text' class="form-control" data-bind="value: YearFrom" />
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class='input-group'>
+            <span class="input-group-addon">
+                Año hasta:
+            </span>
+            <input id="yearto" type='text' class="form-control" data-bind="value: YearTo" />
+        </div>
+    </div>
+</div>
+
+<div class="row" style="margin-bottom:15px; margin-top:1em;">
+
+    <div class="col-md-3">
+        <div class='input-group'>
+            <span class="input-group-addon">
+                Fecha inicio:
+            </span>
+            <input id="StartDate" type='text' class="form-control" data-bind="datepicker: StartDate" />
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class='input-group'>
+            <span class="input-group-addon">
+               Fecha fin:
+            </span>
+            <input id="EndDate" type='text' class="form-control" data-bind="datepicker: EndDate" />
+        </div>
+    </div>
+</div>
+<div class="row" style="margin-bottom:15px; margin-top:1em;">
+    <div class="col-md-3">
+        <div class='btn-group input-group'>
+            @*<a href="#" target="_blank" title="Generar reporte" class="btn btn-primary" data-bind="attr: { href: url}">Generar</a>*@
+            <button id="GenerarReporte" type="button" class="btn btn-primary" data-bind="click: exportar">Generar</button>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var countries = @Html.Raw(Json.Encode(Model.Countries));
+    var regions= @Html.Raw(Json.Encode(Model.Regions));
+    var institutions = @Html.Raw(Json.Encode(Model.Institutions));
+    var reportsCountries = @Html.Raw(Json.Encode(Model.ReportsCountries));
+    var CountryID = @Html.Raw(Model.CountryID);
+</script>
+<!-- /ko -->
+
+
