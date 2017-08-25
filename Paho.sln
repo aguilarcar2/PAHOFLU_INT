@@ -16,8 +16,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configurations", "Configura
 		PublishScripts\Configurations\Paho-WAWS-dev.json = PublishScripts\Configurations\Paho-WAWS-dev.json
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResourceBuilder", "..\..\..\Desktop\aspnet-mvc-internationalization-store-strings-in-database-or-xml\ResourceBuilder\ResourceBuilder.csproj", "{ED69B8C6-88C2-4A77-8233-BC0153DCF609}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,10 +26,6 @@ Global
 		{280A6BFC-B6A9-4F1E-8366-C87D6761911C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{280A6BFC-B6A9-4F1E-8366-C87D6761911C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{280A6BFC-B6A9-4F1E-8366-C87D6761911C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ED69B8C6-88C2-4A77-8233-BC0153DCF609}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ED69B8C6-88C2-4A77-8233-BC0153DCF609}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ED69B8C6-88C2-4A77-8233-BC0153DCF609}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ED69B8C6-88C2-4A77-8233-BC0153DCF609}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
