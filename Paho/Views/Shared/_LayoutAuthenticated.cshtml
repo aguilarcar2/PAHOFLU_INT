@@ -65,52 +65,52 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Análisis situación", "Index", "Principal", new { area = "" }, null)</li>
-                    <li>@Html.ActionLink("Ingreso", "Index", "Home", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink((((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelSituationAnalysis")), "Index", "Principal", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink((((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelDataEntry")), "Index", "Home", new { area = "" }, null)</li>
                     @if (ViewBag.UserInstitutionType != 2 && ViewBag.UsrCtry != 7)
                     {
-                        <li>@Html.ActionLink("Denominadores", "Index", "Summary", new { area = "" }, null)</li>
+                        <li>@Html.ActionLink((((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelDenominators")), "Index", "Summary", new { area = "" }, null)</li>
                     }
                     else
                     {
                         if (ViewBag.UserInstitutionType != 2)
                         {
-                            <li> @Html.ActionLink("Dato agregado", "Index", "Summary", new { area = "" }, null) </li>
+                            <li> @Html.ActionLink((((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelAgregatedData")), "Index", "Summary", new { area = "" }, null) </li>
                         }
 
                     }
 
                     @if(ViewBag.UserInstitutionType == 2 && ViewBag.UsrCtry == 9)
                     {
-                        <li> @Html.ActionLink("Import Lab", "Index", "ImportLab", new { area = "" }, null) </li>
+                        <li> @Html.ActionLink((((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelImportLab")), "Index", "ImportLab", new { area = "" }, null) </li>
                     }
 
                     @if (User.IsInRole("Admin") || User.IsInRole("Report"))
                     {
-                        <li>@Html.ActionLink("Reportes", "Index", "Exportar", new { area = "" }, null)</li>
+                        <li>@Html.ActionLink((((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelReports")), "Index", "Exportar", new { area = "" }, null)</li>
                     }
 
                     @if(User.IsInRole("Admin") || User.IsInRole("Report")) {
-                        <li dstyle = "display:none;"> @Html.ActionLink("FLUID", "Index", "Fluid", new { area = "" }, null) </li>
+                        <li dstyle = "display:none;"> @Html.ActionLink((((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelFLUID")), "Index", "Fluid", new { area = "" }, null) </li>
                     }
                     @if (User.IsInRole("Admin"))
                     {
-                        <li class="dropdown">  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Mantenimiento <b class="caret"></b></a>
+                        <li class="dropdown">  <a href="#" class="dropdown-toggle" data-toggle="dropdown">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelMaintenance")) <b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li>@Html.ActionLink("Diccionario de datos", "Index", "Diccionario", new { area = "" }, null) </li>
-                                <li>@Html.ActionLink("Catálogo institución", "Index", "CatInstitucion", new { area = "" }, null)</li>
-                                <li>@Html.ActionLink("Catálogo flujo", "Index", "CatInstitucionConf", new { area = "" }, null)</li>
-                                <li>@Html.ActionLink("Catálogo virus", "Index", "CatVirusType", new { area = "" }, null)</li>
-                                <li>@Html.ActionLink("Catálogo subtipo", "Index", "CatVirusSubTypes", new { area = "" }, null)</li>
-                                <li>@Html.ActionLink("Catálogo grupos de edad", "Index", "CatAgeGroup", new { area = "" }, null)</li>
-                                <li>@Html.ActionLink("Catálogo de fuente de vacuna", "Index", "CatVaccinSources", new { area = "" }, null)</li>
+                                <li>@Html.ActionLink((((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelDataDictionary")), "Index", "Diccionario", new { area = "" }, null) </li>
+                                <li>@Html.ActionLink((((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelInstitutionCatalog")), "Index", "CatInstitucion", new { area = "" }, null)</li>
+                                <li>@Html.ActionLink((((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelFlowCatalog")), "Index", "CatInstitucionConf", new { area = "" }, null)</li>
+                                <li>@Html.ActionLink((((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelVirusCatalog")), "Index", "CatVirusType", new { area = "" }, null)</li>
+                                <li>@Html.ActionLink((((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelSubTypeVirusCatalog")), "Index", "CatVirusSubTypes", new { area = "" }, null)</li>
+                                <li>@Html.ActionLink((((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelAgeGroupsCatalog")), "Index", "CatAgeGroup", new { area = "" }, null)</li>
+                                <li>@Html.ActionLink((((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelVaccineSourceCatalog")), "Index", "CatVaccinSources", new { area = "" }, null)</li>
 
                             </ul>
                         </li>
                     }
                     @if (ViewBag.UsrCtry == 9) {
 
-                                <li dstyle="display:none;"> @Html.ActionLink("Lista no importados", "Index", "NotImported", new { area = "" }, null) </li>
+                                <li dstyle="display:none;"> @Html.ActionLink((((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelNotImportedList")), "Index", "NotImported", new { area = "" }, null) </li>
 
                     }
                     @*<li>@Html.ActionLink("Searches", "Index", "Report", new { area = "" }, null)</li>*@

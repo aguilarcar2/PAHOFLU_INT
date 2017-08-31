@@ -48,7 +48,15 @@ namespace Resources.Abstract
             }
 
             if (Cache) {
-                return resources[string.Format("{0}.{1}", culture, name)].Value;
+                ResourceEntry objResource;
+                string value = "";
+                objResource = resources.TryGetValue(string.Format("{0}.{1}", culture, name), out objResource) ? objResource : null;
+                if (objResource != null)
+                {
+                    value = objResource.Value.ToString();
+                }
+                //return resources[string.Format("{0}.{1}", culture, name)].Value;
+                return value;
             }
 
             return ReadResource(name, culture).Value;

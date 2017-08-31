@@ -283,9 +283,9 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-    <Compile Include="Concrete\ResourcesM.cs" />
-    <Compile Include="Concrete\DbResourceProvider.cs" />
-    <Compile Include="Concrete\XmlResourceProvider.cs" />
+    <Compile Include="Controllers\ResourcesM.cs" />
+    <Compile Include="Controllers\DbResourceProvider.cs" />
+    <Compile Include="Controllers\XmlResourceProvider.cs" />
     <Compile Include="Controllers\DiccionarioController.cs" />
     <Compile Include="Controllers\CasesController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -953,6 +953,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Concrete\" />
     <Folder Include="Views\ExportGraphics\" />
     <Folder Include="Views\ExportLab\" />
     <Folder Include="Views\GetImportLab\" />
