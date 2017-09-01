@@ -435,7 +435,7 @@
                                 <input type="radio" name="options" id="Sex" value="Female" data-bind="checked: Gender">  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelSexFemale"))
                             </label>
                             <label class="btn btn-default">
-                                <input type="radio" name="options" id="Sex" value="Unknown" data-bind="checked: Gender"> @(ViewBag.UsrCtry != 7 ? Paho.Controllers.ResourcesM.msgCaselistVigTabContactLabelSexUndefined :  (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelSexUndetermined")))
+                                <input type="radio" name="options" id="Sex" value="Unknown" data-bind="checked: Gender"> @(ViewBag.UsrCtry != 7 ? (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelSexUndefined")) :  (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelSexUndetermined")))
                             </label>
                         </div>
                     </div>
