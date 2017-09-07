@@ -177,10 +177,10 @@
 
             <div class="col-md-4">
             	<div class='input-group'>
-            		<button id = "search" type="button" class="btn btn-primary" data-bind="click: SearchFlucases"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_btnSearch"))
-  </button>
+            		<button id = "search" type="button" class="btn btn-primary" data-bind="click: SearchFlucases"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_btnSearch"))</button>
             	</div>
          	</div>
+			}
         </div>
 	</div>
 </div>
@@ -384,8 +384,8 @@
                     <div class="col-md-6">
                         <div class='input-group'>
                             <span class="input-group-addon">
-                                 @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelFirstLastName")) :<font color="#FF0000">*</font><br /><br />
-                                 @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelLastLastName")) :<font color='#FF0000' data-bind="visible:VisLName2Mand">*</font>
+                                 @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelFirstLastName")) <font color="#FF0000">*</font><br /><br />
+                                 @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelLastLastName")) <font color='#FF0000' data-bind="visible:VisLName2Mand">*</font>
                             </span>
                             <input id="Apellidos1" type='text' class="form-control case_letter" data-bind='value: LName1' /><br />
                             <input id="Apellidos2" type='text' class="form-control case_letter" data-bind="value: LName2" />
@@ -394,7 +394,7 @@
                     <div class="col-md-6">
                         <div class='input-group'>
                             <span class="input-group-addon">
-                                 @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelFirstFirstName")) :<font color="#FF0000">*</font><br /><br /> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelMiddleName")) :
+                                 @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelFirstFirstName"))<font color="#FF0000">*</font><br /><br /> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelMiddleName"))
                             </span>
                             <input id="Nombres1" type='text' class="form-control case_letter" data-bind='value: FName1' /><br />
                             <input id="Nombres2" type='text' class="form-control case_letter" data-bind="value: FName2" />
