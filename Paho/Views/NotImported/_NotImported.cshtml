@@ -38,10 +38,10 @@
     <table id="LabelImportList" class="table table-hover table-responsive" style="width:550px; display:none;">
         <thead>
             <tr data-bind="attr:{'cursor':'pointer'},click: GetImportFileList">
-                <th class="col-md-1">Fecha</th>
-                <th class="col-md-1">Usuario</th>
+                <th class="col-md-1">@(((Paho.Controllers.NotImportedController)this.ViewContext.Controller).getMsg("viewNotImported_msgDateHeader"))</th>
+                <th class="col-md-1">@(((Paho.Controllers.NotImportedController)this.ViewContext.Controller).getMsg("viewNotImported_msgUserHeader"))</th>
                 <!--th class="col-md-1">@((ViewBag.UsrCtry == 7) ? "UPC" : "UCI") Tot</th-->
-                <th class="col-md-1" style="text-align:center;">Archivo</th>
+                <th class="col-md-1" style="text-align:center;">@(((Paho.Controllers.NotImportedController)this.ViewContext.Controller).getMsg("viewNotImported_msgFileHeader"))</th>
             </tr>
         </thead>
         <tbody></tbody>

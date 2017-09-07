@@ -3,10 +3,10 @@
         <div class="col-md-12">
             <div class='input-group'>
                 <span class="input-group-addon">
-                    Archivo (Excel):
+                   @(((Paho.Controllers.ImportLabController)this.ViewContext.Controller).getMsg("viewImportLab_msgExcelFile"))
                 </span>
-                <input type="file" accept=".xlsx,.xls" required="required" class="btn btn-primary" name="file" title="Seleccionar Archivo"/>
-                <input type="submit" class="btn btn-primary" name="Upload" value="Subir archivo"/>
+                <input type="file" accept=".xlsx,.xls" required="required" class="btn btn-primary" name="file" title="@(((Paho.Controllers.ImportLabController)this.ViewContext.Controller).getMsg("viewImportLab_msgTitleSelectFile"))"/>
+                <input type="submit" class="btn btn-primary" name="Upload" value="@(((Paho.Controllers.ImportLabController)this.ViewContext.Controller).getMsg("viewImportLab_msgBtnUploadFile"))"/>
 
             </div>            
         </div>
@@ -61,10 +61,10 @@
         <table id="LabelImportList" class="table table-hover table-responsive" style="width:550px; display:none;" >
             <thead>
                 <tr data-bind="attr:{'cursor':'pointer'},click: GetImportFileList">
-                    <th class="col-md-1">Fecha</th>
-                    <th class="col-md-1">Usuario</th>
+                    <th class="col-md-1">@(((Paho.Controllers.ImportLabController)this.ViewContext.Controller).getMsg("viewImportLab_msgDateHeader"))</th>
+                    <th class="col-md-1">@(((Paho.Controllers.ImportLabController)this.ViewContext.Controller).getMsg("viewImportLab_msgUserHeader"))</th>
                     <!--th class="col-md-1">@((ViewBag.UsrCtry == 7) ? "UPC" : "UCI") Tot</th-->
-                    <th class="col-md-1" style="text-align:center;">Archivo</th>
+                    <th class="col-md-1" style="text-align:center;">@(((Paho.Controllers.ImportLabController)this.ViewContext.Controller).getMsg("viewImportLab_msgFileHeader"))</th>
                 </tr>
             </thead>
             <tbody>                

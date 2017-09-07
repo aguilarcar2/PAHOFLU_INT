@@ -256,6 +256,18 @@ namespace Paho.Controllers {
             // Apply only if it has a Total row at the end and hast SUM in range, i.e. SUM(A1:A4)
             //excelWorksheet.DeleteRow(row, 2);
         }
+        public string getMsg(string msgView)
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            string searchedMsg = msgView;
+            int? countryID = user.Institution.CountryID;
+            string countryLang = user.Institution.Country.Language;
+
+            ResourcesM myR = new ResourcesM();
+            searchedMsg = myR.getMessage(searchedMsg, countryID, countryLang);
+            //searchedMsg = myR.getMessage(searchedMsg, 0, "ENG");
+            return searchedMsg;
+        }
 
     }
 }

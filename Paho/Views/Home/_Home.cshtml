@@ -7,7 +7,7 @@
             {
                 <div class='input-group col-md-7' style="margin-top: 3px; display: none; float: left" data-bind="visible: displayFilters">
                     <span class="input-group-addon">
-                        País:
+                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgCountry"))
                     </span>
                     <select id="Pais" class="form-control" data-bind="options: activecountries,
                            optionsText: 'Name',
@@ -63,7 +63,7 @@
             <div class="col-md-4">
                 <div class='input-group'>
                     <span class="input-group-addon">
-                       @((ViewBag.UsrCtry == 7) ? "RUN" : "No. identificación") :
+                       @*@((ViewBag.UsrCtry == 7) ? "RUN" : "No. identificación") :*@
                         @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgSCasenumber"))
                     </span>
                     <input id = "SCasenumber" type='text' class="form-control" data-bind="value:SCasenumber" />
@@ -84,10 +84,10 @@
                     </span>
                     <select id = "SCaseStatus" class="form-control">
                         <option value = ""></option>
-                        <option value="A">Dado de alta</option>
-                        <option value = "D"> Fallecido </option>
-                        <option value="R">Referido a otro Centro</option>
-                        <option value = "O"> Otro </option>
+                        <option value="A">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgSCaseStatusEgressMedicalDischarged"))</option>
+                        <option value = "D">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgSCaseStatusEgressMedicalDeceased"))</option>
+                        <option value="R">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgSCaseStatusEgressMedicalReferred"))</option>
+                        <option value = "O">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgSCaseStatusEgressMedicalOther"))</option>
 
 
                      </select>
@@ -121,6 +121,27 @@
                 </div>
             </div>
         </div>
+		
+		@if(ViewBag.UsrCtry != 7 && ViewBag.UsrCtry != 9 && ViewBag.UsrCtry != 3){
+		<div class="row" style="margin-bottom:7px; margin-top:7px;" data-bind="visible: shouldcaselist">
+            <div class="col-md-4">
+                <div class='input-group'>
+                    <span class="input-group-addon">
+                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgSOnsetFever"))
+                    </span>
+                    <input id="SOnsetFever" type='text' class="form-control" data-bind="datepicker: SOnsetFever" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class='input-group'>
+                    <span class="input-group-addon">
+                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgSDOB"))
+                    </span>
+                    <input id="SDOB" type='text' class="form-control" data-bind="datepicker: SDOB" />
+                </div>
+            </div>
+        </div>
+		}
         @if(ViewBag.UsrCtry != 7)
                     {
         <div class="row" style="margin-bottom:7px; margin-top:7px;" data-bind="visible: shouldcaselist">
@@ -144,7 +165,8 @@
         </div>
         }
         <div class="row" style="margin-bottom:7px; margin-top:7px;" data-bind="visible: shouldcaselist">
-            <div class="col-md-4">
+            @if(ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 3  ){
+			<div class="col-md-4">
                 <div class='input-group'>
                     <span class="input-group-addon">
                          @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgSRecordId"))
@@ -154,14 +176,13 @@
             </div>
 
             <div class="col-md-4">
-                <div class='input-group'>
-                    <button id = "search" type="button" class="btn btn-primary" data-bind="click: SearchFlucases"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_btnSearch"))
+            	<div class='input-group'>
+            		<button id = "search" type="button" class="btn btn-primary" data-bind="click: SearchFlucases"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_btnSearch"))
   </button>
-                </div>
-            </div>
+            	</div>
+         	</div>
         </div>
-
-        </div>
+	</div>
 </div>
 
 @if(ViewBag.UserInstitutionType != 2)
@@ -196,8 +217,7 @@
             <ul>
 
                 <li><a href = "#tab-contact">  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContact")) </a></li>
-                <li><a href="#tab-GEO"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeo"))</a></li>
-                @*<!--NOTA: Arreglar para <li><a href="#tab-risk">@((ViewBag.UsrCtry == 3) ? "Antecedentes" : "Hist. médico") </a></li>-->*@
+                <li><a href="#tab-GEO"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeo"))</a></li>                
                 <li><a href="#tab-risk"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRisk"))</a></li>
                 <li><a href="#tab-hospital"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospital"))</a></li>
                 <li><a href="#tab-lab"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLab"))</a></li>
@@ -211,7 +231,7 @@
                 <div class="row rowform">
                     <div class="col-md-6">
                         <span>
-                             @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelSurv")): <font color="#FF0000">*</font>
+                             @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelSurv"))<font color="#FF0000">*</font>
                         </span>
                         @if (ViewBag.SARI == true)
                         {
@@ -235,6 +255,20 @@
                         }
 
                     </div>
+					@if (ViewBag.UsrCtry != 7 && ViewBag.UsrCtry != 9 && ViewBag.UsrCtry != 3 ){
+					<div class="col-md-6">
+                        <div id="ServicesGroup" class='input-group' data-bind="visible: displayService">
+                            <span class="input-group-addon">
+                                Service:
+                            </span>
+                            <select id="cmbServices" class="form-control" data-bind="options: app.Views.Home.institutions,
+                       optionsText: 'Name',
+                       optionsValue: 'Id',
+                       value: selectedServiceId "></select>
+                        </div>
+                    </div>
+					}
+					@if (ViewBag.UsrCtry == 7 && ViewBag.UsrCtry == 9 && ViewBag.UsrCtry == 3 ){
                     <div class="col-md-6" data-bind="visible:VisHopName">
                         <div class='input-group'>
                             <span class="input-group-addon">
@@ -244,6 +278,7 @@
                         </div>
 
                     </div>
+					}
                 </div>
                 @if (ViewBag.UsrCtry == 9)
                 {
@@ -273,24 +308,11 @@
                 <div class="row rowform">
                         <div class="col-md-6">
                             <div class='input-group'>
-                                <span class="input-group-addon" data-bind="visible:SurvSARI">
-                                  @if (ViewBag.SARI == true) {
-                                      @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelDateOfCollect"))
-                                  }
-                                  else if((ViewBag.UsrCtry == 3)){
-                                      @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelDateOfNotification"))
-                                  }
-                                  else{
-                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelDateOfCollect"))
-                                    }: <font color="#FF0000">*</font>
+                                <span class="input-group-addon" data-bind="visible:SurvSARI">                                  
+									@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelDateOfCollect"))<font color="#FF0000">*</font>
                                 </span>
                                 <span class="input-group-addon" data-bind="visible:SurvILI">
-                                    @if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) {
-                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelDateOfCollect"))
-                                    }
-                                    else {
-                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelDateOfDetection"))
-                                    }: <font color="#FF0000">*</font>
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelDateOfDetection"))<font color="#FF0000">*</font>
                                 </span>
                                 <input id="HospitalDate" type="text" class="form-control " data-bind='datepicker: HospitalDate, datepickerOptions: { maxDate:@Model.DatePickerConfig,  dateFormat:"@Model.DateFormatDP", autoHide:false}' />
                                 <label class="date_format">dd/mm/yyyy</label>
@@ -318,7 +340,7 @@
                                 {
                                     <option value=""></option>
                                     <option value="1"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelDocumentName"))</option>
-                                        
+                                    <option value="2"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelDocumentInsurancePassport"))</option>
                                     <option value="3"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelInternalDocument"))</option>
                                     <option value="7" data-bind="visible:app.Views.Contact.ActiveBOL"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelClinicalHistory"))</option>
                                     <option value="8" data-bind="visible:app.Views.Contact.ActiveBOL"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelAnotherRecord"))</option>
@@ -434,8 +456,8 @@
                             <label class="btn btn-default">
                                 <input type="radio" name="options" id="Sex" value="Female" data-bind="checked: Gender">  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelSexFemale"))
                             </label>
-                            <label class="btn btn-default">
-                                <input type="radio" name="options" id="Sex" value="Unknown" data-bind="checked: Gender"> @(ViewBag.UsrCtry != 7 ? (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelSexUndefined")) :  (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelSexUndetermined")))
+                            <label class="btn btn-default">                                
+								<input type="radio" name="options" id="Sex" value="Unknown" data-bind="checked: Gender"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelSexUndefined"))
                             </label>
                         </div>
                     </div>
@@ -527,7 +549,8 @@
                     </div>
                     <div class="col-md-6">
                         <div class='input-group'>
-                                <span class="input-group-addon"> @(ViewBag.UsrCtry != 7 ?  ViewBag.UsrCtry == 3 ?  (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceDepartamento")) :  (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceProvince")) :  (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceRegion")))   <font color = "#FF0000" id = "mandatory_prov"> *</font></span>
+                                @*<span class="input-group-addon"> @(ViewBag.UsrCtry != 7 ?  ViewBag.UsrCtry == 3 ?  (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceDepartamento")) :  (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceProvince")) :  (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceRegion")))   <font color = "#FF0000" id = "mandatory_prov"> *</font></span>*@
+								<span class="input-group-addon"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceArea"))<font color = "#FF0000" id = "mandatory_prov"> *</font></span>
                             <select id="Area" class="form-control" data-bind="options: Areas,
                       optionsText: 'Name',
                       optionsValue: 'Id',
@@ -541,7 +564,8 @@
                 <div class="row rowform">
                     <div class="col-md-6">
                         <div class='input-group'>
-                                <span class="input-group-addon"> @(ViewBag.UsrCtry != 7 ? ViewBag.UsrCtry == 3 ?  (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceMunicipio")) :  (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceCanton")) :  (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceProvince"))) <font color="#FF0000" id="mandatory_canton">*</font></span>
+                                @*<span class="input-group-addon"> @(ViewBag.UsrCtry != 7 ? ViewBag.UsrCtry == 3 ?  (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceMunicipio")) :  (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceCanton")) :  (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceProvince"))) <font color="#FF0000" id="mandatory_canton">*</font></span>*@
+								<span class="input-group-addon">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceState"))<font color="#FF0000" id="mandatory_canton">*</font></span>
                             <select id="provincia" class="form-control" data-bind="options: States,
                       optionsText: 'Name',
                       optionsValue: 'Id',
@@ -564,15 +588,15 @@
                     </div>
                     <div class="col-md-6" ssdata-bind="visible:EnableCHI">
                         <div class='input-group'>
-                            @if (@ViewBag.UsrCtry != 7)
+                            @*@if (@ViewBag.UsrCtry != 7)
                             {
                                 <span class="input-group-addon"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceDistrict")) @(ViewBag.UsrCtry == 3 ? ( (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceComunity"))) : ""): </span>
                             }
                             else
                             {
                                 <span class="input-group-addon"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceComune")) <font color="#FF0000" id="mandatory_prov">*</font></span>
-                            }
-
+                            }*@
+							@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceNeighborhood"))
                             <select id="Neighborhoods" class="form-control" data-bind="options: Neighborhoods,
                       optionsText: 'Name',
                       optionsValue: 'Id',
@@ -604,6 +628,7 @@
                                 <textarea class="form-control case_letter" cols="8" rows="4" style="max-width: 360px;" id="dirección" data-bind="value: Address"></textarea>
                             </div>
                         </div>
+						@if (@ViewBag.UsrCtry == 7 || @ViewBag.UsrCtry == 9 || @ViewBag.UsrCtry == 3 ){
                         <div class="col-md-6">
                             <div class='input-group'>
                                 <span class="input-group-addon">
@@ -614,8 +639,9 @@
 
 
                         </div>
-
+						}
                     </div>
+					@if (@ViewBag.UsrCtry == 7 || @ViewBag.UsrCtry == 9 || @ViewBag.UsrCtry == 3 ){
                     <div class="row rowform">
                         <div class="col-md-6">
                             <div class='input-group'>
@@ -651,7 +677,8 @@
                             </label>
                         </div>
                     </div>
-
+					}
+				@if (@ViewBag.UsrCtry == 7 || @ViewBag.UsrCtry == 9 || @ViewBag.UsrCtry == 3 ){
                 <div class="row rowform" data-bind="visible:app.Views.Contact.ActiveBOL">
                      @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelWhere2WeeksAgo"))
                 </div>
@@ -671,7 +698,8 @@
                     </div>
                     <div class="col-md-6" data-bind="visible:ActiveBOLCountry2weeks">
                         <div class='input-group'>
-                            <span class="input-group-addon"> @(ViewBag.UsrCtry != 7 ? ViewBag.UsrCtry == 3 ?  (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelWhereDepartamento")) :  (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelWhereProvince")) :  (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelWhereRegion")))  </span>
+                            @*<span class="input-group-addon"> @(ViewBag.UsrCtry != 7 ? ViewBag.UsrCtry == 3 ?  (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelWhereDepartamento")) :  (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelWhereProvince")) :  (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelWhereRegion")))  </span>*@
+							<span class="input-group-addon"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelWhereArea"))</span>
                             <select id="Area2weeks" class="form-control" data-bind="options: Areas2weeks,
                       optionsText: 'Name',
                       optionsValue: 'Id',
@@ -685,7 +713,8 @@
                 <div class="row rowform" data-bind="visible:ActiveBOLCountry2weeks">
                     <div class="col-md-6">
                         <div class='input-group'>
-                            <span class="input-group-addon"> @(ViewBag.UsrCtry != 7 ? ViewBag.UsrCtry == 3 ?  (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelWhereMunicipio")) :  (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelWhereCanton")) :  (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelWhereProvince"))) </span>
+                            @*<span class="input-group-addon"> @(ViewBag.UsrCtry != 7 ? ViewBag.UsrCtry == 3 ?  (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelWhereMunicipio")) :  (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelWhereCanton")) :  (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelWhereProvince"))) </span>*@
+							<span class="input-group-addon"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelWhereState"))</span>			
                             <select id="provincia2weeks" class="form-control" data-bind="options: States2weeks,
                       optionsText: 'Name',
                       optionsValue: 'Id',
@@ -696,15 +725,15 @@
                     </div>
                     <div class="col-md-6" ssdata-bind="visible:EnableCHI">
                         <div class='input-group'>
-                            @if (@ViewBag.UsrCtry != 7)
+                            @*@if (@ViewBag.UsrCtry != 7)
                             {
                                 <span class="input-group-addon"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelWhereDistrictComunity")) </span>
                             }
                             else
                             {
                                 <span class="input-group-addon"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelWhereComune")) <font color="#FF0000" id="mandatory_prov">*</font></span>
-                            }
-
+                            }*@
+							<span class="input-group-addon"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelWhereNeighborhood")) <font color="#FF0000" id="mandatory_prov">*</font></span>
                             <select id="Neighborhoods2weeks" class="form-control" data-bind="options: Neighborhoods2weeks,
                       optionsText: 'Name',
                       optionsValue: 'Id',
@@ -713,6 +742,7 @@
                         </div>
                     </div>
                 </div>
+				}
 
                     <div class="row rowform">
                         <div class="col-md-12">
@@ -780,7 +810,8 @@
                             </div>
                             <div class='input-group col-md-7'>
                                 <span class="input-group-addon">
-                                     @(ViewBag.UsrCtry == 3 ? " @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg('msgCaselistVigTabRiskLabelPregnancyTrimesterV1'))" : " @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg('msgCaselistVigTabRiskLabelPregnancyTrimesterV2'))") :
+                                    @*@(ViewBag.UsrCtry == 3 ? " @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg('msgCaselistVigTabRiskLabelPregnancyTrimesterV1'))" : " @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg('msgCaselistVigTabRiskLabelPregnancyTrimesterV2'))") :*@
+									@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelPregnancyTrimester"))
                                 </span>
                                 <label class="btn btn-default">
                                     <input type="radio" name="PTrime" id="Primero" value="1" data-bind="checked: Trimester">  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelPregnancyTrimesterFirst"))
@@ -808,6 +839,7 @@
                             <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
                         </button>
                         <div id="vacunacion" class="collapse in">
+							@if (@ViewBag.UsrCtry == 7 || @ViewBag.UsrCtry == 9 || @ViewBag.UsrCtry == 3 ){
                             <div class="row rowform">
                                 <div class='input-group col-md-12'>
                                     <span class="input-group-addon">
@@ -844,6 +876,7 @@
                                             value: VaccinFuente"></select>
                                 </div>
                             </div>
+							}
                             <div class="row rowform">
                                 <div class='col-md-12'>
                                     <table class="table-hover table-bordered">
@@ -1120,10 +1153,14 @@
                                     <option value=""> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel"))</option>
                                     <option value="1">Oseltamivir</option>
                                     <option value="2">Zanamivir</option>
+									@if (ViewBag.UsrCtry != 7 && ViewBag.UsrCtry != 9 && ViewBag.UsrCtry != 3){
+									<option value="3">Amantadine</option>
+                                    <option value="4">Rimantadine</option>
+									}
                                     <option value="5"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentTypeNoInfo"))</option>
                                 </select>
                             </div>
-                            @if (ViewBag.UsrCtry != 7)
+                            @if (ViewBag.UsrCtry != 7 && ViewBag.UsrCtry != 25)
                             {
                             <div class='input-group col-md-5' id="DoseOseltamivir">
                                 <span class="input-group-addon">
@@ -1149,14 +1186,7 @@
                 <div class="row rowform">
                     <div class="col-md-12">
                         <button id="btnriesgo" type="button" class="btn btn-group-justified" data-toggle="collapse" data-target="#riesgo">
-                             @if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3)
-                             {
-                                 @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsLabelV1"))
-                             }
-                             else
-                             {
-                                 @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsLabelV2"))
-                             }
+                             @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsLabel"))
                             <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
                         </button>
                         <div id="riesgo" class="collapse in">
@@ -1265,6 +1295,7 @@
                                     </label>
                                 </div>
                             </div>
+							@if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 3){
                             <div class="row rowform">
                                 <div class="col-md-4" data-bind="visible:EnableCHI() && app.Views.Contact.NoActiveBOL()">
                                     <label class="btn btn-default">
@@ -1285,6 +1316,7 @@
                                     </label>
                                 </div>
                             </div>
+							}
                             @*@if (ViewBag.UsrCtry != 7)
                             {
                             <div class="row rowform">
@@ -1312,7 +1344,7 @@
                                                 <option value="5"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelObesityUnknown"))</option>
                                                 <option value="6"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelObesityIMC3040"))</option>
                                                 <option value="7"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelObesityIMC40"))</option>
-                                                <option value="8"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelObesityNoData")) IMC de obesidad sin datos</option>
+                                                <option value="8"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelObesityNoData"))</option>
                                             }
                                             else
                                             {
@@ -1381,6 +1413,7 @@
                             <hr style="margin-top:3px; margin-bottom:0px; border-width:1px  0  0; "/>
                         </div>
                         <div id="exposicion" class="collapse in">
+							@if (ViewBag.UsrCtry != 7 && ViewBag.UsrCtry !=3 && ViewBag.UsrCtry !=25){
                             <div class="row rowform">
                                 <div class="col-md-3">
                                     <label class="btn btn-default">
@@ -1408,7 +1441,7 @@
                                     </div>
                                
                             </div>
-
+							}
                         </div>
                     </div>
                 </div>
@@ -1589,6 +1622,7 @@
                     <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
                 </button>
                 <div id="Fechas" class="collapse in">
+					@if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry ==9 || ViewBag.UsrCtry ==3){
                     <div class="row rowform">
                         <div class="col-md-4">
                             <div class='input-group'>
@@ -1608,8 +1642,7 @@
                                 <input id="DiagPrinAdmVal" type='hidden' class="form-control" data-bind="value: DiagPrinAdmVal, valueUpdate:'change'" />
                             </div>
                         </div>
-
-                    </div>
+                    </div>					
                     <div class="row rowform" data-bind="visible:EnableCHI()">
                         <div class="col-md-7">
                             <div class='input-group'>
@@ -1620,6 +1653,7 @@
                             </div>
                         </div>
                     </div>
+					}
                         <div class="row rowform" data-bind="visible:app.Views.Contact.NoActiveBOL">
                             <div class="col-md-12">
                                 <div class='input-group'>
@@ -1631,7 +1665,6 @@
                                 </div>
                             </div>
                         </div>
-
 
                     <div class="row rowform">
                         <div class="col-md-2">
@@ -1758,7 +1791,7 @@
                             </div>
                         </div>
                     }
-
+					@if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 3 ){
                     <div class="row rowform">
                         <div class="col-md-3" data-bind="visible:EnableCHI() && app.Views.Contact.NoActiveBOL()">
                             <label class="btn btn-default">
@@ -1799,7 +1832,7 @@
                                 </div>
                         }
                     </div>
-
+					}
                 </div>
             </div>
         </div>
@@ -1817,12 +1850,14 @@
 
         </div>
         <div class="row rowform">
+			@if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 3 ){
             <div class="col-md-12">
                 <button type="button" class="btn btn-group-justified" data-toggle="collapse" data-target="#Toma">
                     Muestra @( ViewBag.UsrCtry == 7 ? "(s)" : "")
                     <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
                 </button>
             </div>
+			}
             <div class="col-md-5">
                 <span>
                     @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSampleTaking")) <font color="#FF0000">*</font>
@@ -2107,12 +2142,17 @@
                                             <option value="2" data-bind="visible: app.Views.Hospital.CaseIsSample">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabCaseLabelDiscarded"))</option>
                                             <option value="3" data-bind="visible: app.Views.Hospital.CaseIsSample">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabCaseLabelConfirmed"))</option>
                                         }
-                                        else
+                                        else if (ViewBag.UsrCtry == 7)
                                         {
                                             <option value="1">>@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabCaseLabelUnderStudy"))</option>
                                             @*<option value="2">Descartado</option>*@
                                             <option value="3">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabCaseLabelClosed"))</option>
                                         }
+										else{
+											<option value="1">>@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabCaseLabelUnderStudy"))</option>
+                                            <option value="2" data-bind="visible: app.Views.Hospital.CaseIsSample">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabCaseLabelDiscarded"))</option>
+                                            <option value="3">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabCaseLabelClosed"))</option>
+										}
                                     </select>
                                 </div>
                             </div>
