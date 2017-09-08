@@ -330,6 +330,8 @@
                     </div>
 
                     <div class="row rowform">
+                        @if (ViewBag.UsrCtry != 25)
+                        {
                         <div class="col-md-6">
                             <div class='input-group'>
                                 <span class="input-group-addon">
@@ -356,6 +358,7 @@
                                 </select>
                             </div>
                         </div>
+                        }
                         <div class="col-md-6">
                             <div class='input-group'>
                                 @if (ViewBag.UsrCtry != 7)
@@ -371,7 +374,8 @@
                                 @*<button id="DatosPaciente" type="button" class="btn btn-primary btn-next " data-bind="click: GetPatient, visible:EnableCR">Datos paciente</button>*@
                             </div>
                         </div>
-                        <div class="col-md-6" style="display:none;">
+						@if (ViewBag.UsrCtry == 25){
+                        <div class="col-md-6">
                             <div class='input-group'>
                                 <span class="input-group-addon">
                                      @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelHospitalRegNumber"))
@@ -379,6 +383,7 @@
                                 <input id="Documento" type='text' class="form-control case_letter" data-bind="value: NationalId" />
                             </div>
                         </div>
+						}
                     </div>
                 <div class="row rowform">
                     <div class="col-md-6">
@@ -605,6 +610,8 @@
                         </div>
                     </div>
                 </div>
+                @if (@ViewBag.UsrCtry != 25)
+                {
                 <div class="row rowform" data-bind="visible:EnableCHI">
                     <div class="col-md-6">
                         <div class='input-group'>
@@ -618,6 +625,7 @@
                         </div>
                     </div>
                 </div>
+                }
                     <div class="row rowform">
 
                         <div class="col-md-6">

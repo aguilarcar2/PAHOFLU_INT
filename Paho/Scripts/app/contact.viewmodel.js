@@ -519,7 +519,7 @@
             msg += "\n" + "Tipo de vigilancia es requerido";
 
         
-        if (!self.DocumentType())
+        if (!self.DocumentType() && self.UsrCountry() != 25)//agregado el 25 para que esta validación ignore SURINAME
             msg += "\n" + "Tipo de documento de identificación es requerido";
 
         if (!self.NoExpediente()) {
@@ -583,7 +583,7 @@
 
     self.GetPatient = function () {
 
-        if (self.DocumentType() == "" || self.NoExpediente() == "")
+        if ((self.DocumentType() == "" && self.UsrCountry() != 25) || self.NoExpediente() == "")
         {
             alert("Necesita ingresar el Tipo de documento y No. de identificación para traer la información del paciente");
         } else {

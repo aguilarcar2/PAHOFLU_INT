@@ -400,7 +400,7 @@
                 msg += "\n" + "Variable trimestre de embarazo es requerida";
         }
 
-        if (!self.VaccinFuente() || self.VaccinFuente() == "0")
+        if ((!self.VaccinFuente() || self.VaccinFuente() == "0") && self.UsrCountry() != 25)
             msg += "\n" + "Fuente de la información de la vacuna es requerida";
 
 
