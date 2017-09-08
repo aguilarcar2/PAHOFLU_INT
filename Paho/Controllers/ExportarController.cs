@@ -20,6 +20,7 @@ using System.Drawing;
 using System.Net;
 using System.Data.Entity;
 using System.Globalization;
+using System.Collections;
 
 namespace Paho.Controllers
 {
@@ -243,8 +244,6 @@ namespace Paho.Controllers
             return new CsvActionResult<FluCaseExportViewModel> (result, "FluCases.csv");
         }
 
-
-
         private IQueryable<FluCase> GetQuery(int CountryID, int? HospitalID, int? Year, int? Month, int? SE, DateTime? StartDate, DateTime? EndDate)
         {
             IQueryable<FluCase> query = db.Set<FluCase>();
@@ -286,7 +285,6 @@ namespace Paho.Controllers
         //    return cal.GetWeekOfYear(date, dfi.CalendarWeekRule,
         //                                   dfi.FirstDayOfWeek);
         //}
-
 
         public CsvActionResult<Example> GetExcelExample(int CountryID, int HospitalID, int? Year, int? Month, int? SE, DateTime? StartDate, DateTime? EndDate) {
             var query = new Example();
@@ -1041,87 +1039,6 @@ namespace Paho.Controllers
             //excelWorksheet.DeleteRow(row, 2);
         }
 
-        private static void AppendDataToExcel_IndDes(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string reportTemplate, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo)
-        {
-            var excelWorksheet = excelWorkBook.Worksheets[sheet];
-            var row = startRow;
-            var column = startColumn;
-
-            var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
-            decimal[] nDato1 = new decimal[] { 0 };
-            decimal[] nDato2 = new decimal[] { 0 };
-            string[,] aDato3 = new string[6, 2];       // 6 Filas, 2 Columnas
-            decimal[] nDato4 = new decimal[] { 0 };
-            decimal[] nDato5 = new decimal[] { 0 };
-            decimal[] nDato6 = new decimal[] { 0 };
-            string[,] aDato7 = new string[6, 2];
-            decimal[] nDato8 = new decimal[] { 0 };
-
-            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, 1, 1, nDato1);
-            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, 1, 2, nDato2);
-            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, 1, 3, nDato1, aDato3);
-            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, 1, 4, nDato4);
-            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, 1, 5, nDato5);
-            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, 1, 6, nDato6);
-            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, 1, 7, nDato1, aDato7);
-            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, 1, 8, nDato8);
-            //****
-            var excelWorksheet2 = excelWorkBook.Worksheets[1];
-
-            string titulo = "";
-            if (year != 0)
-                titulo = year.ToString();
-
-            string nombPais = "";
-            if (countryId == 9)
-                nombPais = "Costa Rica";
-            else if (countryId == 7)
-                nombPais = "Chile";
-            else if (countryId == 3)
-                nombPais = "Bolivia";
-
-            excelWorksheet2.Cells[row - 4, column - 1].Value = nombPais;
-            excelWorksheet2.Cells[row - 3, column - 1].Value = titulo;
-
-            if (nDato2[0] != 0)
-                excelWorksheet2.Cells[row, column].Value = Convert.ToDecimal(nDato1[0] / nDato2[0], new CultureInfo("en-US"));
-            if (nDato1[0] != 0)
-                excelWorksheet2.Cells[row + 7, column].Value = Convert.ToDecimal(nDato4[0] / nDato1[0], new CultureInfo("en-US"));
-            if (nDato8[0] != 0)
-                excelWorksheet2.Cells[row + 8, column].Value = nDato5[0] / nDato8[0];
-            if (nDato1[0] != 0)
-                excelWorksheet2.Cells[row + 9, column].Value = nDato6[0] / nDato1[0];
-            /*
-            decimal nTemp = 0;
-            int nY = row;
-            int nX = column;
-            for (int nI = 0; nI <= 5; ++nI)
-            {
-                excelWorksheet2.Cells[nY + 1, nX + nI].Value = aDato3[nI, 0];
-
-                nTemp = Convert.ToDecimal(aDato3[nI, 1], new CultureInfo("en-US"));
-                if (nTemp != 0)
-                    excelWorksheet2.Cells[nY + 2, nX + nI].Value = Convert.ToDecimal(aDato7[nI, 1], new CultureInfo("en-US")) / nTemp;
-            }
-            */
-            decimal nTemp = 0;
-            int nY = row;
-            int nX = column;
-            for (int nI = 0; nI <= 5; ++nI)
-            {
-                excelWorksheet2.Cells[nY + 1 + nI, nX - 1].Value = aDato3[nI, 0];
-
-                nTemp = Convert.ToDecimal(aDato3[nI, 1], new CultureInfo("en-US"));
-                if (nTemp != 0)
-                {
-                    excelWorksheet2.Cells[nY + 1 + nI, nX].Value = Convert.ToDecimal(aDato7[nI, 1], new CultureInfo("en-US")) / nTemp;
-                }
-            }
-            //****
-            InsertarImagenLogo(consString, reportTemplate, ReportCountry, excelWorksheet2);
-        }
-
         public ActionResult GetSummaryDetailsExcel(int hospitalId, string hospitalDate, int EpiWeek, int EpiYear)
         {
             var HospitalDate = DateTime.Parse(hospitalDate);
@@ -1353,11 +1270,141 @@ namespace Paho.Controllers
             return Json(reportsPerCountry, JsonRequestBehavior.AllowGet);
         }*/
 
+        private static void AppendDataToExcel_IndDes(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string reportTemplate, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo)
+        {
+            ExcelWorksheet excelWorksheet1 = excelWorkBook.Worksheets["DatosPie"];
+            //var excelWorksheet = excelWorkBook.Worksheets[sheet];
+            var row = startRow;
+            var column = startColumn;
+
+            var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+            decimal[] nDato1 = new decimal[] { 0 };
+            decimal[] nDato2 = new decimal[] { 0 };
+            string[,] aDato3 = new string[6, 2];       // 6 Filas, 2 Columnas
+            decimal[] nDato4 = new decimal[] { 0 };
+            decimal[] nDato5 = new decimal[] { 0 };
+            decimal[] nDato6 = new decimal[] { 0 };
+            string[,] aDato7 = new string[6, 2];
+            decimal[] nDato8 = new decimal[] { 0 };
+            decimal[] nDato9 = new decimal[] { 0 };
+            decimal[] nDato10 = new decimal[] { 0 };
+            decimal[] nDato11 = new decimal[] { 0 };
+
+            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, 1, 1, nDato1);
+            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, 1, 2, nDato2);
+            //recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, 1, 3, nDato1, aDato3);
+            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, 1, 4, nDato4);
+            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, 1, 5, nDato5);
+            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, 1, 6, nDato6);
+            //recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, 1, 7, nDato1, aDato7);
+            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, 1, 8, nDato8);
+
+            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, 1, 9, nDato9);
+            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, 1, 10, nDato10);
+            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, 1, 11, nDato11);
+            //****
+            var excelWorksheet2 = excelWorkBook.Worksheets[1];
+
+            string titulo = "";
+            if (year != 0)
+                titulo = year.ToString();
+
+            string nombPais = "";
+            if (countryId == 9)
+                nombPais = "Costa Rica";
+            else if (countryId == 7)
+                nombPais = "Chile";
+            else if (countryId == 25)
+                nombPais = "Surinam";
+            else if (countryId == 3)
+                nombPais = "Bolivia";
+            //**** Titulo
+            excelWorksheet2.Cells[row - 4, column - 1].Value = nombPais;
+            excelWorksheet2.Cells[row - 3, column - 1].Value = titulo;
+            //**** Metas
+            ArrayList aMetas = new ArrayList();
+            ID_recuperarMetas(aMetas, countryId);
+
+            double[] xx = (double[])aMetas[0];                      // Metas
+            String[] yy = (String[])aMetas[1];                      // Unidades de la meta
+
+            for (int nI = 0; nI < xx.Length; ++nI)
+                excelWorksheet2.Cells[row + nI, column].Value = ID_formatearMeta(xx[nI], yy[nI]);
+            //**** resultados
+            double nTemp = 0;
+            row = startRow;
+
+            if (nDato1[0] != 0)
+            {
+                nTemp = (double)(nDato4[0] / nDato1[0] * 100);
+                excelWorksheet2.Cells[row, column + 1].Value = ID_formatearMeta(nTemp, yy[0]);
+                ID_setResultados(excelWorksheet1, nTemp, xx[0], 2, yy[0]);
+            }
+
+            if (nDato8[0] != 0)
+            {
+                nTemp = (double)(nDato5[0] / nDato8[0] * 100);
+                excelWorksheet2.Cells[row + 1, column + 1].Value = ID_formatearMeta(nTemp, yy[1]);
+                ID_setResultados(excelWorksheet1, nTemp, xx[1], 3, yy[1]);
+            }
+
+
+            if (nDato1[0] != 0)
+            {
+                nTemp = (double)(nDato6[0] / nDato1[0] * 100);
+                excelWorksheet2.Cells[row + 2, column + 1].Value = ID_formatearMeta(nTemp, yy[2]);
+                ID_setResultados(excelWorksheet1, nTemp, xx[2], 4, yy[2]);
+            }
+
+            nTemp = (double)nDato9[0];
+            excelWorksheet2.Cells[row + 3, column + 1].Value = ID_formatearMeta(nTemp, yy[3]);
+            ID_setResultados(excelWorksheet1, nTemp, xx[3], 5, yy[3]);
+
+            nTemp = (double)nDato10[0];
+            excelWorksheet2.Cells[row + 4, column + 1].Value = ID_formatearMeta(nTemp, yy[4]);
+            ID_setResultados(excelWorksheet1, nTemp, xx[4], 6, yy[4]);
+
+            nTemp = (double)nDato11[0];
+            excelWorksheet2.Cells[row + 5, column + 1].Value = ID_formatearMeta(nTemp, yy[5]);
+            ID_setResultados(excelWorksheet1, nTemp, xx[5], 7, yy[5]);
+            /*
+            decimal nTemp = 0;
+            int nY = row;
+            int nX = column;
+            for (int nI = 0; nI <= 5; ++nI)
+            {
+                excelWorksheet2.Cells[nY + 1, nX + nI].Value = aDato3[nI, 0];
+
+                nTemp = Convert.ToDecimal(aDato3[nI, 1], new CultureInfo("en-US"));
+                if (nTemp != 0)
+                    excelWorksheet2.Cells[nY + 2, nX + nI].Value = Convert.ToDecimal(aDato7[nI, 1], new CultureInfo("en-US")) / nTemp;
+            }
+            */
+            /*
+            decimal nTemp = 0;
+            int nY = row;
+            int nX = column;
+            for (int nI = 0; nI <= 5; ++nI)
+            {
+                excelWorksheet2.Cells[nY + 1 + nI, nX - 1].Value = aDato3[nI, 0];
+
+                nTemp = Convert.ToDecimal(aDato3[nI, 1], new CultureInfo("en-US"));
+                if (nTemp != 0)
+                {
+                    excelWorksheet2.Cells[nY + 1 + nI, nX].Value = Convert.ToDecimal(aDato7[nI, 1], new CultureInfo("en-US")) / nTemp;
+                }
+            }
+            */
+            //****
+            InsertarImagenLogo(consString, reportTemplate, ReportCountry, excelWorksheet2);
+        }
+
         private static void recuperarDatosIndDes(string consString, string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, int? YearFrom, int? YearTo, int IRAG, int opcion, decimal[] nResuOut, string[,] aResuOut = null)
         {
             using (var con = new SqlConnection(consString))
             {
-                using (var command = new SqlCommand("IndicDesemp", con) { CommandType = CommandType.StoredProcedure })
+                using (var command = new SqlCommand("IndicDesemp", con) { CommandType = CommandType.StoredProcedure, CommandTimeout = 600 })
                 {
                     command.Parameters.Clear();
                     command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
@@ -1387,7 +1434,16 @@ namespace Paho.Controllers
                                 ++nFila;
                             }
                             else
-                                nResuOut[0] = Convert.ToDecimal(reader.GetValue(0));
+                            {
+                                if (reader.GetValue(0).ToString() == "")
+                                {
+                                    nResuOut[0] = Convert.ToDecimal(0);
+                                }
+                                else
+                                {
+                                    nResuOut[0] = Convert.ToDecimal(reader.GetValue(0));
+                                }
+                            }
                         }
                     }
 
@@ -1396,7 +1452,7 @@ namespace Paho.Controllers
                 }
             }
         }
-        
+
         private static void InsertarImagenLogo(string consString, string reportTemplate, int? reportCountry, ExcelWorksheet excelWorksheet)
         {
             using (var con = new SqlConnection(consString))
@@ -1444,6 +1500,86 @@ namespace Paho.Controllers
                     con.Close();
                 }
             }
+        }
+
+        private static void ID_recuperarMetas(ArrayList _aMetas, int _countryId)
+        {
+            double[] arr1 = new double[6];
+            string[] arr2 = new string[6];
+
+            string cMetas = ConfigurationManager.AppSettings["IndicadoresDesempenioMetas_" + _countryId.ToString()];
+            if (cMetas == null)
+                cMetas = "0:0:0:0:0:0";
+
+            string[] aMetas = cMetas.Split(':');
+            for (int nI = 0; nI < aMetas.Length; ++nI)
+            {
+                string cMeta = aMetas[nI].Substring(0, aMetas[nI].Length - 1);
+                double nMeta = double.Parse(cMeta);
+                string cUnid = aMetas[nI].Substring(aMetas[nI].Length - 1, 1);
+
+                arr1[nI] = nMeta;
+                arr2[nI] = cUnid;
+            }
+
+            _aMetas.Add(arr1);
+            _aMetas.Add(arr2);
+        }
+
+        private static string ID_formatearMeta(double _Meta, string _Unid)
+        {
+            string cForma = "";
+            string cMeta = _Meta.ToString("###.#", CultureInfo.InvariantCulture);
+
+            if (_Unid == "%")
+                cForma = cMeta + _Unid;
+            if (_Unid == "D")
+                cForma = (_Meta == 1) ? cMeta + " Día" : cMeta + " Días";
+
+            return cForma;
+        }
+
+        private static void ID_setResultados(ExcelWorksheet excelWorksheet, double nResu, double nMeta, int nRow, string tipo)
+        {
+            if (tipo == "%")
+            {
+                if (nResu < nMeta)
+                {
+                    excelWorksheet.Cells[nRow, 1].Value = 1;                // Rojo
+                    excelWorksheet.Cells[nRow, 2].Value = 0;
+                }
+                else
+                {
+                    excelWorksheet.Cells[nRow, 1].Value = 0;
+                    excelWorksheet.Cells[nRow, 2].Value = 1;                // Verde
+                }
+            }
+            else
+            {
+                if (nResu <= nMeta)
+                {
+                    excelWorksheet.Cells[nRow, 1].Value = 0;                // Verde
+                    excelWorksheet.Cells[nRow, 2].Value = 1;
+                }
+                else
+                {
+                    excelWorksheet.Cells[nRow, 1].Value = 1;
+                    excelWorksheet.Cells[nRow, 2].Value = 0;                // Rojo
+                }
+            }
+        }
+
+        public string getMsg(string msgView)
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            string searchedMsg = msgView;
+            int? countryID = user.Institution.CountryID;
+            string countryLang = user.Institution.Country.Language;
+
+            ResourcesM myR = new ResourcesM();
+            //searchedMsg = myR.getMessage(searchedMsg,countryID,countryLang);
+            searchedMsg = myR.getMessage(searchedMsg, 0, "ENG");
+            return searchedMsg;
         }
 
     }

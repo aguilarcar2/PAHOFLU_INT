@@ -1,9 +1,10 @@
 ﻿@model Paho.Models.PrincipalViewModel
 <!-- ko with: app.Views.Principal -->
 
+<!-- #### CAFQ
 <div>Div de control</div>
-<div>@ResourcesM.ResourcesM.testMessage</div>
-
+<div>ResourcesM.ResourcesM.testMessage</div>
+-->
 
 @if (ViewBag.UsrCtry > 0)
 {
@@ -42,10 +43,11 @@
 
             <script src="~/Scripts/amcharts/amcharts.js"></script>
             <script src="~/Scripts/amcharts/serial.js"></script>
+            <script src="~/Scripts/amcharts/pie.js"></script>
             <script src="~/Scripts/amcharts/themes/light.js"></script>
             <script src="~/Scripts/amcharts/plugins/export/export.min.js"></script>
             <link rel="stylesheet" href="~/Scripts/amcharts/plugins/export/export.css" type="text/css" media="all" />
-
+        
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGráfica 7 - Lineas Basalesxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <script>
             var jsonX;
@@ -222,41 +224,38 @@
             #divGraph7 {
                 display: none;
                 width: 100%;
-                height: 600px;
+                height: 620px;
             }
 
             #containerGraph7 {
-                /*border: solid black 1px;*/
                 border: solid #e4e4e4 1px;
                 width: 48%;
                 float: left;
                 margin: 5px;
-                height: 620px;
             }
 
             #LBPais {
                 display: block;
                 /*background: rgba( 236, 236, 236, 1);*/
-                width: 140px;
+                /*width: 140px;*/
                 font-weight: bold;
                 margin: 5px;
             }
         </style>
 
         <div id="containerGraph7">
+            <!--
             <div class="col-md-6">
                 <span id="LBPais">
                     País: @((ViewBag.UsrCtry == 7) ? "CHILE" : (ViewBag.UsrCtry == 9) ? "COSTA RICA" : "BOLIVIA")
                 </span>
-            </div>
-
+            </div>-->
             <div id="loaderGraph7" class="loaderGraph"></div>
             <div id="divGraph7"></div>
         </div>
-
         <!--<script>GetGraphData7();</script>-->
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxFIN Gráfica 7 - Lineas Basales xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
-
+        
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGráfica 8 - Indicadores de Desempeño xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <script>
             var jsonX;
@@ -266,10 +265,10 @@
                 var dataHospital = 0;
                 var dataIrag = 1;
                 var dataEti = 0;
-
-                $("#divGraph8").hide();
+                //****
+                /*$("#divGraph8").hide();
                 $("#divTable8").hide();
-                $("#loaderGraph8").show();
+                $("#loaderGraph8").show();*/
                 //****
                 var allVals = [];
                 var yrs = (new Date).getFullYear();
@@ -282,77 +281,165 @@
                         contentType: "application/json",
                         dataType: 'json',
                         success: function (data){
-                            $("#divGraph8").show();
+                            /*$("#divGraph8").show();
                             $("#divTable8").show();
-                            $("#loaderGraph8").hide();
+                            $("#loaderGraph8").hide();*/
                             //****
                             var json_obj = JSON.parse(data);
 
                             $("#IDTitulo1").text('Indicadores de Desempeño');
                             $("#IDTitulo2").text(json_obj[0]);
-                            $("#IDDato1").text(json_obj[1]);
-                            $("#IDDato3").text(json_obj[3]);
-                            $("#IDDato4").text(json_obj[4]);
-                            $("#IDDato5").text(json_obj[5]);
-                            $("#IDDato2a").text(json_obj[6]);
-                            $("#IDDato2b").text(json_obj[7]);
-                            $("#IDDato2c").text(json_obj[8]);
-                            $("#IDDato2d").text(json_obj[9]);
-                            $("#IDDato2e").text(json_obj[10]);
-                            $("#IDDato2f").text(json_obj[11]);
+
+                            var t = FormatearMeta(json_obj[9]);
+                            $("#IDMeta3").text(t[1]);
+                            var nMeta3 = t[0];
+                            var cUnid3 = t[2];
+
+                            var t = FormatearMeta(json_obj[10]);
+                            $("#IDMeta4").text(t[1]);
+                            var nMeta4 = t[0];
+                            var cUnid4 = t[2];
+
+                            var t = FormatearMeta(json_obj[11]);
+                            $("#IDMeta5").text(t[1]);
+                            var nMeta5 = t[0];
+                            var cUnid5 = t[2];
+
+                            var t = FormatearMeta(json_obj[12]);
+                            $("#IDMeta6").text(t[1]);
+                            var nMeta6 = t[0];
+                            var cUnid6 = t[2];
+
+                            var t = FormatearMeta(json_obj[13]);
+                            $("#IDMeta7").text(t[1]);
+                            var nMeta7 = t[0];
+                            var cUnid7 = t[2];
+
+                            var t = FormatearMeta(json_obj[14]);
+                            $("#IDMeta8").text(t[1]);
+                            var nMeta8 = t[0];
+                            var cUnid8 = t[2];
+                            //****
+                            var rojo = "#FF0000"
+                            var verde = "#548235"
+
+                            var color3 = rojo;
+                            var color4 = rojo;
+                            var color5 = rojo;
+                            var color6 = rojo;
+                            var color7 = rojo;
+                            var color8 = rojo;
+
+                            if (parseFloat(json_obj[3]) >= nMeta3)
+                                color3 = verde;
+                            if (parseFloat(json_obj[4]) >= nMeta4)
+                                color4 = verde;
+                            if (parseFloat(json_obj[5]) >= nMeta5)
+                                color5 = verde;
+                            if (parseFloat(json_obj[6]) <= nMeta6)
+                                color6 = verde;
+                            if (parseFloat(json_obj[7]) <= nMeta7)
+                                color7 = verde;
+                            if (parseFloat(json_obj[8]) <= nMeta8)
+                                color8 = verde;
+                            //****
+                            ConstruirPie("divGraph8_3", color3, String(json_obj[3]), cUnid3)
+                            ConstruirPie("divGraph8_4", color4, String(json_obj[4]), cUnid4)
+                            ConstruirPie("divGraph8_5", color5, String(json_obj[5]), cUnid5)
+                            ConstruirPie("divGraph8_6", color6, String(json_obj[6]), cUnid6)
+                            ConstruirPie("divGraph8_7", color7, String(json_obj[7]), cUnid7)
+                            ConstruirPie("divGraph8_8", color8, String(json_obj[8]), cUnid8)
                         }
                     });
                 })
             }
+
+            function FormatearMeta(_Meta){
+                var cMeta = _Meta.substring(0, _Meta.length-1);
+                var nMeta = parseFloat(cMeta);
+                var cUnid = "";
+
+                if(_Meta.slice(-1)=="%"){
+                    cUnid = "%";
+                    cMeta = cMeta + "%";
+                }else if(_Meta.slice(-1)=="D"){
+                    cUnid = " D.";
+                    if (nMeta==1)
+                        cMeta = cMeta + " Día";
+                    else
+                        cMeta = cMeta + " Días";
+                }
+                return [nMeta, cMeta, cUnid]
+            }
+
+            function ConstruirPie(_nombDiv, _color, _labeltext, _Unid){
+                var labeltext = _labeltext.replace(".0", "") + _Unid
+
+                var chart = AmCharts.makeChart(_nombDiv, {
+                    "type": "pie",
+                    "hideCredits": true,
+                    "showBalloon": false,
+                    "fontSize": 14,
+                    "outlineAlpha": 1,
+                    "outlineColor": _color,
+                    "outlineThickness": 2,
+                    "labelRadius":-33,
+                    "labelText": labeltext,
+                    "colorField": _color,
+                    "labelsEnabled": true,
+                    "autoMargins": false,           // Ocupar todo el contenedor
+                    "marginTop": 1,
+                    "marginBottom": 1,
+                    "marginLeft": 1,
+                    "marginRight": 1,
+                    "pullOutRadius": 1,
+                    "dataProvider": [{
+                        "country": "Lithuania",
+                        "litres": 0,
+                        "color": _color,
+                        "labelColor": "#FFFFFF",
+                    },
+                    {
+                        "country": "",
+                        "litres": 100,
+                        "color": _color,
+                        "labelColor": "#FFFFFF",
+                    }],
+                    "valueField": "litres",
+                    "titleField": "country",
+                    "colorField": "color",
+                    "labelColorField": "labelColor",
+                    "balloon":{
+                        "fixedPosition":true
+                    },
+                    "export": {
+                        "enabled": false
+                    }
+                } );
+            }
         </script>
 
         <style>
-            .loaderGraph {
-                display: block;
-                position: fixed;
-                z-index: 1000;
-                top: 0;
-                left: 0;
-                width: 750px;
-                height: 600px;
-                background: rgba( 255, 255, 255, .8 ) url('/Content/themes/base/images/ajax-loader.gif') 50% 50% no-repeat;
+            .divGraph8_Pies {
+                margin: auto;
+                width: 68px;
+                height: 68px;
+                border: 0px solid;
             }
 
-            #divGraph8 {
-                display: none;
-                width: 100%;
-                height: 600px;
-            }
-
-            #divTable8 {
-                display: none;
-            }
-
-            #containerGraph8 {
-                border: solid #e4e4e4 1px;
-                height: 620px;
-                width: 48%;
-                float: left;
-                margin: 5px;
-            }
-
-            .ind_tabla {
+            #ind_tabla {
                 width: 88%;
                 margin: auto;
-                margin-top: 3%;
-                height: 560px;
+                margin-top: 2%;
+                height: 520px;
             }
 
-                .ind_tabla td {
+                #ind_tabla td {
                     border: 1px solid #000;
                     padding: 5px;
+                    margin-top: 0px;
+                    margin-bottom: 0px;
                 }
-
-            #ind_tablafila1 {
-                border-top: none;
-                border-left: none;
-                border-right: none;
-            }
 
             td.ind_titulo3 {
                 background-color: lightgray;
@@ -360,6 +447,7 @@
 
             .ind_titulo {
                 margin: 0px;
+                padding: 0px;
                 font-family: Verdana;
                 font-size: 15px;
                 font-weight: bold;
@@ -378,21 +466,95 @@
                 font-weight: bold;
                 text-align: center;
             }
+
+            .loaderGraph {
+                display: block;
+                position: fixed;
+                z-index: 1000;
+                top: 0;
+                left: 0;
+                width: 750px;
+                height: 600px;
+                background: rgba( 255, 255, 255, .8 ) url('/Content/themes/base/images/ajax-loader.gif') 50% 50% no-repeat;
+            }
+
+            #divGraph8 {
+                display: none;
+                width: 100%;
+                height: 620px;
+            }
+
+            #containerGraph8 {
+                border: solid #e4e4e4 1px;
+                width: 48%;
+                float: left;
+                margin: 5px;
+            }
         </style>
 
         <div id="containerGraph8">
+            <!--
             <div id="divTable8">
-                <table class="ind_tabla">
+                <table id="ind_tabla">
                     <tr>
-                        <td id="ind_tablafila1" colspan="7">
+                        <td id="ind_tablafila1" colspan="3">
                             <p id="IDTitulo1" class="ind_titulo"></p>
                             <p id="IDTitulo2" class="ind_titulo"></p>
                         </td>
                     </tr>
                     <tr>
-                        <td class="ind_titulo3" width="300"><P class="ind_datostyle">Indicador</P></td>
-                        <td colspan="6" class="ind_titulo3"><P class="ind_datostyle">Medida (%)</P></td>
+                        <td class="ind_titulo3" width="55%"><P class="ind_datostyle">Indicador</P></td>
+                        <td class="ind_titulo3" width="15%"><P class="ind_datostyle">Meta</P></td>
+                        <td class="ind_titulo3" width="30%"><P class="ind_datostyle">Resultado</P></td>
                     </tr>
+                    <tr>
+                        <td class="ind_titulo3"><p class="ind_datotitulostyle">Porcentaje de casos de IRAG con muestra de laboratorio.</p></td>
+                        <td><p id="IDMeta3" class="ind_datostyle">Meta 3</p></td>
+                        <td>
+                            <div id="divGraph8_3" class="divGraph8_Pies"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="ind_titulo3"><p class="ind_datotitulostyle">Porcentaje de pacientes con resultado virológico reportado.</p></td>
+                        <td><p id="IDMeta4" class="ind_datostyle">Meta 4</p></td>
+                        <td>
+                            <div id="divGraph8_4" class="divGraph8_Pies"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="ind_titulo3"><p class="ind_datotitulostyle">Porcentaje de casos cerrados de IRAG medidos por la variable de condición de egreso del paciente.</p></td>
+                        <td><p id="IDMeta5" class="ind_datostyle">Meta 5</p></td>
+                        <td><div id="divGraph8_5" class="divGraph8_Pies"></div>
+                    </tr>
+                    <tr>
+                        <td class="ind_titulo3"><p class="ind_datotitulostyle">Mediana entre la recolección de muestras y su recepción en laboratorio.</p></td>
+                        <td><p id="IDMeta6" class="ind_datostyle">Meta 6</p></td>
+                        <td><div id="divGraph8_6" class="divGraph8_Pies"></div>
+                    </tr>
+                    <tr>
+                        <td class="ind_titulo3"><p class="ind_datotitulostyle">Mediana entre la recepcion de la muestra en laboratorio y la notificación de los resultados.</p></td>
+                        <td><p id="IDMeta7" class="ind_datostyle">Meta 7</p></td>
+                        <td><div id="divGraph8_7" class="divGraph8_Pies"></div>
+                    </tr>
+                    <tr>
+                        <td class="ind_titulo3"><p class="ind_datotitulostyle">Mediana entre la fecha de hospitalizacion y la fecha de notificacion en el sistema de vigilancia.</p></td>
+                        <td><p id="IDMeta8" class="ind_datostyle">Meta 8</p></td>
+                        <td><div id="divGraph8_8" class="divGraph8_Pies"></div>
+                    </tr>
+                </table>
+            </div>
+            -->
+            <div id="loaderGraph8" class="loaderGraph"><!-- Place at bottom of page --></div>
+            <div id="divGraph8">
+                <p id="IDTitulo1" class="ind_titulo" style="padding-top:12px"></p>
+                <p id="IDTitulo2" class="ind_titulo"></p>
+                <table id="ind_tabla">
+                    <tr>
+                        <td class="ind_titulo3" width="55%"><P class="ind_datostyle">Indicador</P></td>
+                        <td class="ind_titulo3" width="15%"><P class="ind_datostyle">Meta</P></td>
+                        <td class="ind_titulo3" width="30%"><P class="ind_datostyle">Resultado</P></td>
+                    </tr>
+                    <!--
                     <tr>
                         <td class="ind_titulo3"><P class="ind_datotitulostyle">Cobertura de captación de casos IRAG en la unidad centinela.</P></td>
                         <td colspan="6"><p id="IDDato1" class="ind_datostyle"></p></td>
@@ -415,24 +577,44 @@
                         <td><p id="IDDato2d" class="ind_datostyle"></p></td>
                         <td><p id="IDDato2e" class="ind_datostyle"></p></td>
                         <td><p id="IDDato2f" class="ind_datostyle"></p></td>
-                    </tr>
+                    </tr> -->
                     <tr>
                         <td class="ind_titulo3"><p class="ind_datotitulostyle">Porcentaje de casos de IRAG con muestra de laboratorio.</p></td>
-                        <td colspan="6"><p id="IDDato3" class="ind_datostyle"></p></td>
+                        <td><p id="IDMeta3" class="ind_datostyle">Meta 3</p></td>
+                        <td>
+                            <div id="divGraph8_3" class="divGraph8_Pies"></div>
+                        </td>
                     </tr>
                     <tr>
                         <td class="ind_titulo3"><p class="ind_datotitulostyle">Porcentaje de pacientes con resultado virológico reportado.</p></td>
-                        <td colspan="6"><p id="IDDato4" class="ind_datostyle"></p></td>
+                        <td><p id="IDMeta4" class="ind_datostyle">Meta 4</p></td>
+                        <td>
+                            <div id="divGraph8_4" class="divGraph8_Pies"></div>
+                        </td>
                     </tr>
                     <tr>
                         <td class="ind_titulo3"><p class="ind_datotitulostyle">Porcentaje de casos cerrados de IRAG medidos por la variable de condición de egreso del paciente.</p></td>
-                        <td colspan="6"><p id="IDDato5" class="ind_datostyle"></p></td>
+                        <td><p id="IDMeta5" class="ind_datostyle">Meta 5</p></td>
+                        <td><div id="divGraph8_5" class="divGraph8_Pies"></div>
+                    </tr>
+                    <tr>
+                        <td class="ind_titulo3"><p class="ind_datotitulostyle">Mediana entre la recolección de muestras y su recepción en laboratorio.</p></td>
+                        <td><p id="IDMeta6" class="ind_datostyle">Meta 6</p></td>
+                        <td><div id="divGraph8_6" class="divGraph8_Pies"></div>
+                    </tr>
+                    <tr>
+                        <td class="ind_titulo3"><p class="ind_datotitulostyle">Mediana entre la recepcion de la muestra en laboratorio y la notificación de los resultados.</p></td>
+                        <td><p id="IDMeta7" class="ind_datostyle">Meta 7</p></td>
+                        <td><div id="divGraph8_7" class="divGraph8_Pies"></div>
+                    </tr>
+                    <tr>
+                        <td class="ind_titulo3"><p class="ind_datotitulostyle">Mediana entre la fecha de hospitalizacion y la fecha de notificacion en el sistema de vigilancia.</p></td>
+                        <td><p id="IDMeta8" class="ind_datostyle">Meta 8</p></td>
+                        <td><div id="divGraph8_8" class="divGraph8_Pies"></div>
                     </tr>
                 </table>
             </div>
-            <div id="divGraph8"></div>
         </div>
-
         <!--<script>GetGraphData8();</script>-->
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxFIN Gráfica 8 - Indicadores de Desempeño xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
 
@@ -550,6 +732,7 @@
                         dataType: 'json',
                         async: true,
                         beforeSend: function () {
+                            $("#containerControl0").hide(0);
                             $("#divGraph0").hide(0);
                             $("#loaderGraph0").show();
                             $("#divGraph1").hide(0);
@@ -576,6 +759,7 @@
                             $("#loaderGraph8").show();
                         },
                         complete: function () {
+                            $("#containerControl0").show();
                             $("#divGraph0").show();
                             $("#loaderGraph0").hide(0);
                             $("#divGraph1").show();
@@ -814,17 +998,17 @@
             }*/
 
             .loaderGraph {
-            display:    block;
-            position:   fixed;
-            z-index:    1000;
-            top:        0;
-            left:       0;
-            width:      750px;
-            height:     600px;
-            background: rgba( 255, 255, 255, .8 )
-                        url('/Content/themes/base/images/ajax-loader.gif')
-                        50% 50%
-                        no-repeat;
+                display:    block;
+                position:   fixed;
+                z-index:    1000;
+                top:        0;
+                left:       0;
+                width:      750px;
+                height:     600px;
+                background: rgba( 255, 255, 255, .8 )
+                            url('/Content/themes/base/images/ajax-loader.gif')
+                            50% 50%
+                            no-repeat;
             }
             #divGraph1  {
                 display:none;
@@ -838,16 +1022,16 @@
                 float:  left;
                 margin-left: 5px;
                 padding: 5px 5px;
-                height: 135px;
+                height: 90px;
                 margin:15px 0px;
             }
             #subcontainerControl0{                    
                 padding: 6px 8px;
-                height: 100px;
+                height: 30px;
             }
             #subcontainerControl1{                    
                 padding: 6px 8px;
-                height: 100px;
+                height: 30px;   
             }
             #selectYears{
                 float:left;
@@ -957,8 +1141,6 @@
                 <input id="chkEti" type="checkbox" value="eti" disabled/>ETI
             </div>
             
-            
-            
             <div id="subcontainerControl1">
                 <div class='input-group' id="selectRegions">
                     <span class="input-group-addon">
@@ -1013,7 +1195,6 @@
         <div id="containerGraph1">
             <!--Inicio de gráficas-->
             <!--Gráfica Epidemiológica 1-->
-
 
             <div id="loaderGraph1" class="loaderGraph"></div>
             <div id="divGraph1"></div>
@@ -3867,8 +4048,9 @@
 }
 <!-- /ko -->
 
-
+<!-- #### CAFQ
     <script type="text/javascript">
-    var msg = "@ResourcesM.ResourcesM.testMessage";
+    var msg = "ResourcesM.ResourcesM.testMessage";
     alert("Javascript test: " + msg);
     </script>
+-->

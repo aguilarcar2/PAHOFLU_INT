@@ -2,11 +2,12 @@
 <!-- ko with: app.Views.Exportar -->
 <div class="row" style="margin-bottom:15px; margin-top:1em;">
 
-        <div class='input-group'>
-            <span class="input-group-addon">
-                <b>Generación de reportes</b>
-            </span>
-        </div>
+    <div class='input-group'>
+        <span class="input-group-addon">
+            <!--<b>Generación de reportes</b>-->
+            <b>@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarLabelReportsGeneration"))</b>
+        </span>
+    </div>
 
 </div>
 <!--div class="row" style="margin-bottom: 15px; margin-top: 1em;">
@@ -31,13 +32,14 @@
     <div class="col-md-5">
         <div class='input-group'>
             <span class="input-group-addon">
-                Reportes:
+                <!--Reportes:-->
+                @(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarLabelReports"))
             </span>
             <select id="Reports" class="form-control" data-bind="options: reportsCountries,
                        optionsText: 'Name',
                        optionsValue: 'Id',
                        value: selectedReportCountryId,
-                       optionsCaption: 'Select...',
+                       optionsCaption: '@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarFieldSelect"))',
                        valueUpdate:'change'"></select>
         </div>
     </div>
@@ -48,20 +50,21 @@
         <div class="col-md-5">
             <div class='input-group'>
                 <span class="input-group-addon">
-                       País:
-                   </span>
+                    <!--País:-->
+                    @(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarLabelCountry"))
+                </span>
                 <select id="Pais" class="form-control" data-bind="options: activecountries,
                            optionsText: 'Name',
                            optionsValue: 'Id',
                            value: selectedCountryId,
-                           optionsCaption: 'Select...',
+                           optionsCaption: '@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarFieldSelect"))',
                            event:{ change: ReloadInstitutions},"></select>
             </div>
         </div>
     </div>
 }
 @if (Model.DisplayRegionals)
-            {
+{
     <!--div id="RegionalsGroup" class='input-group col-md-7' style="margin-top: 7px; display: block; float: left" data-bind="visible: displayFilters">
         <span class="input-group-addon">
             Región:
@@ -76,13 +79,14 @@
         <div class="col-md-5">
             <div class='input-group'>
                 <span class="input-group-addon">
-                    Región:
+                    <!--Región:-->
+                    @(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarLabelRegion"))
                 </span>
                 <select id="Regions" class="form-control" data-bind="options: regions,
                        optionsText: 'Name',
                        optionsValue: 'Id',
                        value: selectedRegionId,
-                       optionsCaption: 'Select...',
+                       optionsCaption: '@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarFieldSelect"))',
                        valueUpdate:'change',
                        event:{ change: ReloadInstitutions}"></select>
 
@@ -97,13 +101,14 @@
         <div class="col-md-5">
             <div class='input-group'>
                 <span class="input-group-addon">
-                    Establecimiento:
-            </span>
+                    <!--Establecimiento:-->
+                    @(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarLabelHospital"))
+                </span>
                 <select id="Hospitals" class="form-control" data-bind="options: institutions,
                        optionsText: 'Name',
                        optionsValue: 'Id',
                        value: selectedInstitutionId,
-                       optionsCaption: 'Select...',
+                       optionsCaption: '@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarFieldSelect"))',
                        valueUpdate:'change'"></select>
 
                 @*optionsCaption: 'Select...',*@
@@ -111,11 +116,13 @@
         </div>
     </div>
 }
+
 <div class="row" style="margin-bottom:15px; margin-top:1em;">
     <div class="col-md-3">
         <div class='input-group'>
             <span class="input-group-addon">
-                Año:
+                <!--Año:-->
+                @(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarLabelYear"))
             </span>
             <input id="año" type='text' class="form-control" data-bind="value: Year" />
         </div>
@@ -123,7 +130,8 @@
     <div class="col-md-3">
         <div class='input-group'>
             <span class="input-group-addon">
-                Mes:
+                <!--Mes:-->
+                @(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarLabelMonth"))
             </span>
             <input id="Mes" type='text' class="form-control" data-bind="value: Month" />
         </div>
@@ -131,7 +139,8 @@
     <div class="col-md-3">
         <div class='input-group'>
             <span class="input-group-addon">
-                S.E.:
+                <!--S.E.:-->
+                @(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarLabelEW"))
             </span>
             <input id="SE" type='text' class="form-control" data-bind="value: SE" />
         </div>
@@ -142,7 +151,8 @@
     <div class="col-md-3">
         <div class='input-group'>
             <span class="input-group-addon">
-                Año desde:
+                <!--Año desde:-->
+                @(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarLabelYearFrom"))
             </span>
             <input id="yearfrom" type='text' class="form-control" data-bind="value: YearFrom" />
         </div>
@@ -150,7 +160,8 @@
     <div class="col-md-3">
         <div class='input-group'>
             <span class="input-group-addon">
-                Año hasta:
+                <!--Año hasta:-->
+                @(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarLabelYearTo"))
             </span>
             <input id="yearto" type='text' class="form-control" data-bind="value: YearTo" />
         </div>
@@ -162,7 +173,8 @@
     <div class="col-md-3">
         <div class='input-group'>
             <span class="input-group-addon">
-                Fecha inicio:
+                <!--Fecha inicio:-->
+                @(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarLabelStartDate"))
             </span>
             <input id="StartDate" type='text' class="form-control" data-bind="datepicker: StartDate" />
         </div>
@@ -170,17 +182,20 @@
     <div class="col-md-3">
         <div class='input-group'>
             <span class="input-group-addon">
-               Fecha fin:
+                <!--Fecha fin:-->
+                @(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarLabelEndDate"))
             </span>
             <input id="EndDate" type='text' class="form-control" data-bind="datepicker: EndDate" />
         </div>
     </div>
 </div>
+
 <div class="row" style="margin-bottom:15px; margin-top:1em;">
     <div class="col-md-3">
         <div class='btn-group input-group'>
             @*<a href="#" target="_blank" title="Generar reporte" class="btn btn-primary" data-bind="attr: { href: url}">Generar</a>*@
-            <button id="GenerarReporte" type="button" class="btn btn-primary" data-bind="click: exportar">Generar</button>
+            <!--<button id="GenerarReporte" type="button" class="btn btn-primary" data-bind="click: exportar">Generar</button>-->
+            <button id="GenerarReporte" type="button" class="btn btn-primary" data-bind="click: exportar">@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarButtonGenerate"))</button>
         </div>
     </div>
 </div>
@@ -193,5 +208,3 @@
     var CountryID = @Html.Raw(Model.CountryID);
 </script>
 <!-- /ko -->
-
-

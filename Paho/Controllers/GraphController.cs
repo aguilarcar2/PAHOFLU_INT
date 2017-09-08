@@ -1886,6 +1886,8 @@ namespace Paho.Controllers
 
         private static string graficoIndicadoreDesempenio(string languaje_country, int countryId, int? year, int? hospitalId, int? weekFrom, int? weekTo, List<string> datosID)
         {
+            /*var user = UserManager.FindById(User.Identity.GetUserId());
+            var nombPais = user.Institution.Country.Name;*/
             var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
             decimal[] nDato1 = new decimal[] { 0 };
@@ -1896,15 +1898,22 @@ namespace Paho.Controllers
             decimal[] nDato6 = new decimal[] { 0 };
             string[,] aDato7 = new string[6, 2];
             decimal[] nDato8 = new decimal[] { 0 };
+            decimal[] nDato9 = new decimal[] { 0 };
+            decimal[] nDato10 = new decimal[] { 0 };
+            decimal[] nDato11 = new decimal[] { 0 };
 
             recuperarDatosIndDes(consString, languaje_country, countryId, 0, year, hospitalId, 0, 0, null, null, 0, 0, 1, 1, nDato1);
             recuperarDatosIndDes(consString, languaje_country, countryId, 0, year, hospitalId, 0, 0, null, null, 0, 0, 1, 2, nDato2);
-            recuperarDatosIndDes(consString, languaje_country, countryId, 0, year, hospitalId, 0, 0, null, null, 0, 0, 1, 3, nDato1, aDato3);
+            //recuperarDatosIndDes(consString, languaje_country, countryId, 0, year, hospitalId, 0, 0, null, null, 0, 0, 1, 3, nDato1, aDato3);
             recuperarDatosIndDes(consString, languaje_country, countryId, 0, year, hospitalId, 0, 0, null, null, 0, 0, 1, 4, nDato4);
             recuperarDatosIndDes(consString, languaje_country, countryId, 0, year, hospitalId, 0, 0, null, null, 0, 0, 1, 5, nDato5);
             recuperarDatosIndDes(consString, languaje_country, countryId, 0, year, hospitalId, 0, 0, null, null, 0, 0, 1, 6, nDato6);
-            recuperarDatosIndDes(consString, languaje_country, countryId, 0, year, hospitalId, 0, 0, null, null, 0, 0, 1, 7, nDato1, aDato7);
+            //recuperarDatosIndDes(consString, languaje_country, countryId, 0, year, hospitalId, 0, 0, null, null, 0, 0, 1, 7, nDato1, aDato7);
             recuperarDatosIndDes(consString, languaje_country, countryId, 0, year, hospitalId, 0, 0, null, null, 0, 0, 1, 8, nDato8);
+
+            recuperarDatosIndDes(consString, languaje_country, countryId, 0, year, hospitalId, 0, 0, null, null, 0, 0, 1, 9, nDato9);
+            recuperarDatosIndDes(consString, languaje_country, countryId, 0, year, hospitalId, 0, 0, null, null, 0, 0, 1, 10, nDato10);
+            recuperarDatosIndDes(consString, languaje_country, countryId, 0, year, hospitalId, 0, 0, null, null, 0, 0, 1, 11, nDato11);
             //****
             string titulo = "";
             if (year != 0)
@@ -1915,6 +1924,8 @@ namespace Paho.Controllers
                 nombPais = "Costa Rica";
             else if (countryId == 7)
                 nombPais = "Chile";
+            else if (countryId == 25)
+                nombPais = "Surinam";
             else if (countryId == 3)
                 nombPais = "Bolivia";
 
@@ -1942,7 +1953,11 @@ namespace Paho.Controllers
             else
                 datosID.Add("0");
 
-            decimal nTemp = 0;
+            datosID.Add((nDato9[0]).ToString("#,##0.0", CultureInfo.InvariantCulture));
+            datosID.Add((nDato10[0]).ToString("#,##0.0", CultureInfo.InvariantCulture));
+            datosID.Add((nDato11[0]).ToString("#,##0.0", CultureInfo.InvariantCulture));
+
+            /*decimal nTemp = 0;
             for (int nI = 0; nI <= 5; ++nI)
             {
                 nTemp = Convert.ToDecimal(aDato3[nI, 1], new CultureInfo("en-US"));
@@ -1950,6 +1965,16 @@ namespace Paho.Controllers
                     datosID.Add((Convert.ToDecimal(aDato7[nI, 1], new CultureInfo("en-US")) / nTemp * 100).ToString("#,##0.0", CultureInfo.InvariantCulture));
                 else
                     datosID.Add("0");
+            }*/
+            //**** metas
+            string cMetas = ConfigurationManager.AppSettings["IndicadoresDesempenioMetas_" + countryId.ToString()];
+            if (cMetas == null)
+                cMetas = "0:0:0:0:0:0";
+
+            string[] aMeta = cMetas.Split(':');
+            for (int nI = 0; nI < aMeta.Length; ++nI)
+            {
+                datosID.Add(aMeta[nI]);
             }
 
             return "";
@@ -1959,7 +1984,8 @@ namespace Paho.Controllers
         {
             using (var con = new SqlConnection(consString))
             {
-                using (var command = new SqlCommand("IndicDesemp", con) { CommandType = CommandType.StoredProcedure })
+                using (var command = new SqlCommand("IndicDesemp", con) { CommandType = CommandType.StoredProcedure, CommandTimeout = 1200 })
+                //using (var command = new SqlCommand("IndicDesemp", con) { CommandType = CommandType.StoredProcedure})
                 {
                     command.Parameters.Clear();
                     command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
@@ -1982,14 +2008,23 @@ namespace Paho.Controllers
                         int nFila = 0;
                         while (reader.Read())
                         {
-                            if (opcion == 3 || opcion == 7)
+                            if (opcion == 3 || opcion == 7)         // No son pais
                             {
                                 aResuOut[nFila, 0] = reader.GetValue(0).ToString();
                                 aResuOut[nFila, 1] = reader.GetValue(1).ToString();
                                 ++nFila;
                             }
                             else
-                                nResuOut[0] = Convert.ToDecimal(reader.GetValue(0));
+                            {
+                                if (reader.GetValue(0).ToString() == "")
+                                {
+                                    nResuOut[0] = Convert.ToDecimal(0);
+                                }
+                                else
+                                {
+                                    nResuOut[0] = Convert.ToDecimal(reader.GetValue(0));
+                                }
+                            }
                         }
                     }
 
@@ -2085,6 +2120,12 @@ namespace Paho.Controllers
                 sheet = "BOLIVIA CENETROP";
                 nSeIn = 1;
                 cTitu = "Líneas de base: porcentaje de positividad para influenza en Bolivia (CENETROP) 2016, en comparación al período 2010-2015. Semana epidemiológica 1 a 52";
+            }
+            else if (countryId == 25)
+            {
+                sheet = "Surinam";
+                nSeIn = 1;
+                cTitu = "Baselines: Suriname Percentage Positivity for Influenza 2016 and SARI cases (%) (As Compare To 2010 - 2015) - EW 1 to EW52 2016";
             }
             else
             {

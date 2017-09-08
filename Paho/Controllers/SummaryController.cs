@@ -76,6 +76,14 @@ namespace Paho.Controllers
                 SummaryViewModel.Institutions = institutionsDisplay;
             };
 
+            /* #### CAFQ
+            string cAGL = getMsg("msgViewSummaryLabelUnder2YearOld") + ":" + getMsg("msgViewSummaryLabel2to4YearsOld");
+            cAGL = cAGL + ":" + getMsg("msgViewSummaryLabel5to19YearsOld") + ":" + getMsg("msgViewSummaryLabel20to39YearsOld");
+            cAGL = cAGL + ":" + getMsg("msgViewSummaryLabel40to59YearsOld") + ":" + getMsg("msgViewSummaryLabel60YearsOldAndOver");
+            SummaryViewModel.AgeGroupLang = cAGL;     // Agregar en el modelo "SummaryViewModel" la propiedad AgeGroupLang
+            //System.Diagnostics.Debug.WriteLine("XXX->" + cAGL);
+            */
+
             return View(SummaryViewModel);
         }
    
@@ -247,6 +255,18 @@ namespace Paho.Controllers
             }
             return Json(summaryPerYear, JsonRequestBehavior.AllowGet);
         }
-        
+
+        public string getMsg(string msgView)
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            string searchedMsg = msgView;
+            int? countryID = user.Institution.CountryID;
+            string countryLang = user.Institution.Country.Language;
+
+            ResourcesM myR = new ResourcesM();
+            //searchedMsg = myR.getMessage(searchedMsg,countryID,countryLang);
+            searchedMsg = myR.getMessage(searchedMsg, 0, "ENG");
+            return searchedMsg;
+        }
     }
 }
