@@ -366,7 +366,8 @@
                                 {
                                     <span class="input-group-addon">  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelRUN")): <font color="#FF0000">*</font></span>
                                 }
-                                @if (ViewBag.UsrCtry != 25)@*Hace que si el pais no es Suriname, tenga una propiedad onBlur el campo NoExpediente*@
+                                @*Hace que si el pais no es Suriname, tenga una propiedad onBlur el campo NoExpediente*@
+                                @if (ViewBag.UsrCtry != 25)
                                 {
                                 <input id="NoExpediente" type='text' class="form-control case_letter" data-bind="value: NoExpediente, event: { blur: GetPatient }" />
                                 }
@@ -2155,12 +2156,12 @@
                                         }
                                         else if (ViewBag.UsrCtry == 7)
                                         {
-                                            <option value="1">>@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabCaseLabelUnderStudy"))</option>
+                                            <option value="1">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabCaseLabelUnderStudy"))</option>
                                             @*<option value="2">Descartado</option>*@
                                             <option value="3">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabCaseLabelClosed"))</option>
                                         }
 										else{
-											<option value="1">>@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabCaseLabelUnderStudy"))</option>
+											<option value="1">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabCaseLabelUnderStudy"))</option>
                                             <option value="2" data-bind="visible: app.Views.Hospital.CaseIsSample">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabCaseLabelDiscarded"))</option>
                                             <option value="3">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabCaseLabelClosed"))</option>
 										}

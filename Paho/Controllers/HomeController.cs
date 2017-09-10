@@ -318,8 +318,8 @@ namespace Paho.Controllers
             string countryLang = user.Institution.Country.Language;
 
             ResourcesM myR = new ResourcesM();
-            //searchedMsg = myR.getMessage(searchedMsg,countryID,countryLang);
-            searchedMsg = myR.getMessage(searchedMsg, 0, "ENG");
+            searchedMsg = myR.getMessage(searchedMsg,countryID,countryLang);
+            //searchedMsg = myR.getMessage(searchedMsg, 0, "ENG");
             return searchedMsg;
         }
     }
