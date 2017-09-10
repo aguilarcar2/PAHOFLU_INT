@@ -62,11 +62,11 @@ function SummaryYearItem(data) {
         return (self.UsrCountry() == 3) ? false : true;
     }, self);
 
-    self.EnableSUR = ko.computed(function () {
+    self.ActiveSUR = ko.computed(function () {
         return (self.UsrCountry() == 25) ? true : false;
     }, self);
 
-    self.DisableSUR = ko.computed(function () {
+    self.NoActiveSUR = ko.computed(function () {
         return (self.UsrCountry() == 25) ? false : true;
     }, self);
 }
@@ -102,11 +102,11 @@ function SummayItem(data) {
         return (self.UsrCountry() == 3) ? false : true;
     }, self);
 
-    self.EnableSUR = ko.computed(function () {
+    self.ActiveSUR = ko.computed(function () {
         return (self.UsrCountry() == 25) ? true : false;
     }, self);
 
-    self.DisableSUR = ko.computed(function () {
+    self.NoActiveSUR = ko.computed(function () {
         return (self.UsrCountry() == 25) ? false : true;
     }, self);
 
@@ -267,11 +267,11 @@ function SummaryViewModel(app, dataModel) {
         return (self.UsrCountry() == 3) ? false : true;
     }, self);
 
-    self.EnableSUR = ko.computed(function () {
+    self.ActiveSUR = ko.computed(function () {
         return (self.UsrCountry() == 25) ? true : false;
     }, self);
 
-    self.DisableSUR = ko.computed(function () {
+    self.NoActiveSUR = ko.computed(function () {
         return (self.UsrCountry() == 25) ? false : true;
     }, self);
 

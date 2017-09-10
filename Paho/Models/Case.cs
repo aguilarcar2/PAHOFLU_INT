@@ -989,7 +989,7 @@ namespace Paho.Models
     {
         public int Id { get; set; }
         public int CaseSummaryId { get; set; }
-        public AgeGroup AgeGroup { get; set; }
+        public int AgeGroup { get; set; }
         public int ETIDenoFem { get; set; }
         public int ETIDenoMaso { get; set; }
         public int ETIDenoST { get; set; }
@@ -1098,6 +1098,17 @@ namespace Paho.Models
         Age_15_to_34_years = 4,
         Age_35_to_64_years = 5,
         Age_65_years_and_over = 6
+    }
+    public enum AgeGroup_SUR
+    {
+        Age_child_under_6_months = 1,
+        Age_6_to_11_months = 2,
+        Age_12_to_23_months = 3,
+        Age_2_to_4_years = 4,
+        Age_5_to_14_years = 5,
+        Age_15_to_34_years = 6,
+        Age_35_to_64_years = 7,
+        Age_65_years_and_over = 8
     }
 
     public enum AMeasure

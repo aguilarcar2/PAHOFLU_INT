@@ -92,6 +92,7 @@ namespace Paho.Controllers
         {
             var HospitalDate = DateTime.Parse(hospitalDate);
             var casesummary =  db.CaseSummaries.FirstOrDefault(s=>s.HosiptalId == hospitalId && s.StartDateOfWeek == HospitalDate);
+            var user = UserManager.FindById(User.Identity.GetUserId());
             if (casesummary == null)
             {
                 casesummary  =  new CaseSummary(){
@@ -102,12 +103,13 @@ namespace Paho.Controllers
                 CaseSummaryDetails = new List<CaseSummaryDetail>()
                 };
                 db.Entry(casesummary).State = EntityState.Added;
-                foreach  (AgeGroup agegroup in (AgeGroup[])Enum.GetValues(typeof(AgeGroup)) )
+                var AgeGroupbyCountry = db.CatAgeGroup.Where(i => i.id_country == user.Institution.CountryID).ToList();
+                foreach  (CatAgeGroup agegroup in AgeGroupbyCountry )
                 {
                     casesummary.CaseSummaryDetails.Add(
                         new  CaseSummaryDetail()
                         {
-                            AgeGroup = agegroup,
+                            AgeGroup = agegroup.id_conf_country,
                             ETINumFem = 0,
                             ETINumMaso = 0,
                             ETINumST = 0,

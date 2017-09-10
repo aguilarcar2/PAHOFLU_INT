@@ -1042,6 +1042,7 @@ namespace Paho.Controllers
         public ActionResult GetSummaryDetailsExcel(int hospitalId, string hospitalDate, int EpiWeek, int EpiYear)
         {
             var HospitalDate = DateTime.Parse(hospitalDate);
+            var user = UserManager.FindById(User.Identity.GetUserId());
             var casesummary = db.CaseSummaries.FirstOrDefault(s => s.HosiptalId == hospitalId && s.StartDateOfWeek == HospitalDate);
             if (casesummary == null)
             {
@@ -1054,12 +1055,13 @@ namespace Paho.Controllers
                     CaseSummaryDetails = new List<CaseSummaryDetail>()
                 };
                 db.Entry(casesummary).State = EntityState.Added;
-                foreach (AgeGroup agegroup in (AgeGroup[])Enum.GetValues(typeof(AgeGroup)))
-                {
+                var AgeGroupbyCountry = db.CatAgeGroup.Where(i => i.id_country == user.Institution.CountryID).ToList();
+                foreach (CatAgeGroup agegroup in AgeGroupbyCountry)
+                { 
                     casesummary.CaseSummaryDetails.Add(
                         new CaseSummaryDetail()
                         {
-                            AgeGroup = agegroup,
+                            AgeGroup = agegroup.id_conf_country,
                             ETINumFem = 0,
                             ETINumMaso = 0,
                             ETINumST = 0,
