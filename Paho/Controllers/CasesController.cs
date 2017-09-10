@@ -750,8 +750,14 @@ namespace Paho.Controllers
             flucase.nationality = nationality;
             flucase.InsertDate = DateTime.Now;
             //flucase.UserID = User.Identity.Name;
-            db.SaveChanges();
-
+            try
+            {
+                db.SaveChanges();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
             // Grabar en la bitacora
 
             if (!id.HasValue)
