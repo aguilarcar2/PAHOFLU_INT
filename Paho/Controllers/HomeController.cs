@@ -69,6 +69,12 @@ namespace Paho.Controllers
                     institutions = db.Institutions.OfType<Hospital>()
                                    .Where(i => i.AreaID == user.Institution.AreaID);
                 }
+                else if (user.Institution is Hospital && user.Institution.AccessLevel != AccessLevel.Service)//línea agregada de la versión en inglés. Según AM, sirve para los servicios
+                {
+
+                    institutions = db.Institutions.OfType<Hospital>()
+                                .Where(i => i.Father_ID == user.InstitutionID || i.ID == user.InstitutionID);
+                }
                 else if (user.Institution.AccessLevel == AccessLevel.Regional)
                 {
 

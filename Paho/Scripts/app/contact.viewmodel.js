@@ -30,6 +30,8 @@
     self.SavePrev_var = ko.observable(true);
     self.IsSurv = ko.observable("");
     self.SurvInusual = ko.observable(false);
+    self.servicesArr = ko.observableArray(institutions);
+    self.selectedServiceId = ko.observable("");
     self.Brote = ko.observable(false);
     self.region_institucional = ko.observable("");
     self.region_salud = ko.observable("");
@@ -203,6 +205,11 @@
             }
         //}
     };  // Fin validacion es RUT
+
+    self.displayService = ko.computed(function () {
+        console.log(self.servicesArr().length)
+        return (self.servicesArr().length > 1) ? true : false;
+    }, self);
 
     self.DocumentType.subscribe(function (NewRUN) {
 
@@ -683,7 +690,10 @@
         date_reg_date = parseDate($("#RegDate").val(), date_format_);
         date_DOB = parseDate($("#DOB").val(), date_format_);
         date_fever_dummy = parseDate($("#FeverDate").val(), date_format_);
-
+        console.log("Entro funcion SaveContact y metió parámetros");
+        if (self.DocumentType() == "" && self.UsrCountry() == 25) {//sirve para que en el caso de Suriname, el DocumentType se llene con un valor predeterminado            
+            self.DocumentType(8);
+        }
          $.post(app.dataModel.saveContactUrl,
             {
                 id: self.Id(),
@@ -709,8 +719,6 @@
                 DateFeverDummy: moment(date_fever_dummy).format(date_format_ISO)
             },
             function (data) {
-
-
                 if (typeof data != "number") {
                     alert(data);
                     self.displayFilters(true);
