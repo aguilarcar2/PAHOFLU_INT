@@ -212,8 +212,9 @@
     }, self);
 
     self.DocumentType.subscribe(function (NewRUN) {
-
-        self.NoExpediente("");
+        if (self.UsrCountry() != 25) {//Solo ejecuta este subscribe si el país es diferente de Suriname
+            self.NoExpediente("");
+        }
 
     });
 
@@ -675,6 +676,7 @@
     };
 
     self.Save = function (option_Save, object_Save) {
+
         app.Views.Home.ValidateAll(option_Save);
 
     };
@@ -712,7 +714,7 @@
                 Gender: self.Gender(),
                 HospitalDate: moment(date_hospital).format(date_format_ISO),
                 RegDate: moment(date_reg_date).format(date_format_ISO),
-                HospitalId: app.Views.Home.selectedInstitutionId(),
+                HospitalId: self.selectedServiceId() > 0 ? self.selectedServiceId() : app.Views.Home.selectedInstitutionId(),
                 nativepeople: self.selectedNativepeopleID(),
                 nationality: self.selectedNationalityID(),
                 NoExpediente: self.NoExpediente() == null ? "" : self.NoExpediente().toLocaleUpperCase(),
