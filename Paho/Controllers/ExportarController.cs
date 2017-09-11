@@ -627,8 +627,20 @@ namespace Paho.Controllers
 
 									using (var reader2 = command2.ExecuteReader())
 									{
-										row = 212;
-										column = 6;
+                                        //row = 212;
+                                        int nAnDa = 0;
+                                        if (countryId == 25)
+                                        {
+                                            row = row - 1 + (9 * 3) + 15;
+                                            nAnDa = 8 * 8;              // 8: Nº Age Group
+                                        }
+                                        else
+                                        {
+                                            row = 212;
+                                            nAnDa = 6 * 8;              // 6: Nº Age Group
+                                        }
+                                        column = 6;
+
 										var contador_salto2 = 0;
 										while (reader2.Read())
 										{
@@ -642,7 +654,9 @@ namespace Paho.Controllers
 												excelWorksheet.Cells[row, col2 + i - 5].Value = reader2.GetValue(i);
 											}
 											contador_salto2++;
-											if (contador_salto2 % 48 == 0)
+
+                                            //if (contador_salto2 % 48 == 0)
+                                            if (contador_salto2 % nAnDa == 0)
 											{
 												row += 5;
 											}
