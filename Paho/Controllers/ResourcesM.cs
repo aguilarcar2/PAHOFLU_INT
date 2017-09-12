@@ -46,6 +46,10 @@ namespace Paho.Controllers
             {
                 dbMessage = msg;
                 dbMessage = resourceProvider.GetResource(dbMessage, dbLang).ToString();
+                if (dbMessage == "")
+                {
+                    dbMessage = " ";
+                }
             }
             return dbMessage;
         }
