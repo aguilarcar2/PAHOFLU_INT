@@ -711,7 +711,7 @@
         
 
         if ($("#FeverDate").val() == "")
-            msg += "\n" + "Fecha de inicio de síntomas es requerida";
+            msg += "\n" + msgValidationOnsetOnFever;
         if ($("#FeverDate").val() != "" && !moment(moment(date_fever).format(date_format_moment), [date_format_moment], true).isValid())
             msg += "\n" + "Fecha de inicio de síntomas es inválida";
         if (date_notification != null && date_fever != null && moment(date_fever).isAfter(moment(date_notification), "days")) {
@@ -816,7 +816,7 @@
 
         }
 
-        if (msg !== "") { alert('INF. CLÍNICA:' + msg); $('#tabs').tabs({ active: 3 }); return false; }
+        if (msg !== "") { alert(msgValidationClinicalInfo + msg); $('#tabs').tabs({ active: 3 }); return false; }
         if (nextStep != null) nextStep();
         return true;
     };

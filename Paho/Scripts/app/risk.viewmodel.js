@@ -492,7 +492,7 @@
         //}
 
         if (!self.AntiViral())
-            msg += "\n" + "Información de tratamiento antiviral es requerida";
+            msg += "\n" + msgValidationAntiviralTreatment;
 
         if (self.EnableAntiViralDate() && app.Views.Contact.SurvSARI() == true) {
             if (date_antiviral == null)
@@ -506,9 +506,9 @@
         }
 
         if (!self.RiskFactors() || self.RiskFactors == "")
-            msg += "\n" + "Información para factores de riesgo es requerida";
+            msg += "\n" + msgValidationRiskFactor;
 
-        if (msg !== "") { alert('HIST. MÉDICO:' + msg); $('#tabs').tabs({ active: 2 }); return false; }
+        if (msg !== "") { alert(msgValidationMedicalHistory + msg); $('#tabs').tabs({ active: 2 }); return false; }
         if (nextStep != null) nextStep();
         return true;
     };

@@ -8,13 +8,13 @@
     <ul class="nav navbar-nav navbar-right">
         @if (User.IsInRole("Admin"))
         {
-        <li>@Html.ActionLink("UsersAdmin", "", "UsersAdmin", routeValues: new { area = "" }, htmlAttributes: new { id = "usersadminLink" })</li>
+        <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuUsersAdminView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "", "UsersAdmin", routeValues: new { area = "" }, htmlAttributes: new { id = "usersadminLink" })</li>
         }
         <li>
-            @Html.ActionLink("Hola " + User.Identity.GetUserName() + "!", "Manage", "Account", routeValues: new { area = "" }, htmlAttributes: new { title = "Manage" })
+            @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgGeneralGreeting", ViewBag.UsrCtry, ViewBag.UsrCtryLang) + " " + User.Identity.GetUserName() + "!", "Manage", "Account", routeValues: new { area = "" }, htmlAttributes: new { title = "Manage" })
         </li>
         <li>
-            <a href="javascript:sessionStorage.removeItem('accessToken');$('#logoutForm').submit();">Log off</a>
+            <a href="javascript:sessionStorage.removeItem('accessToken');$('#logoutForm').submit();">@Paho.Controllers.ResourcesM.SgetMessage("msgGeneralLogOff", ViewBag.UsrCtry, ViewBag.UsrCtryLang)</a>
             <input type="hidden" value="@ViewBag.UserInstitutionType" id="ITy" name="ITy"/>
             <input type="hidden" value="@ViewBag.UsrInstID" id="IIDL" name="IIDL" />
             <input type="hidden" value="@ViewBag.DateofServer" id="DSrv" name="DSrv" />

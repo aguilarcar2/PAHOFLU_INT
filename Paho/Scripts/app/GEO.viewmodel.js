@@ -226,11 +226,11 @@
             msg += "\n" + "País de residencia es requerido";
         if (self.UsrCountry() == self.selectedCountryId()) {
             if (!self.selectedAreaId() || self.selectedAreaId() == "") {
-                msg += "\n" + ((self.UsrCountry() != 7) ? (self.UsrCountry() == 3)  ?  "Departamento" : "Provincia " : "Región ") + " es requerido";
+                msg += "\n" + msgValidationAreaRequired;
             }
                 
             if (!self.selectedStateId() || self.selectedStateId() == "") {
-                msg += "\n" + ((self.UsrCountry() != 7) ? (self.UsrCountry() == 3) ? "Municipio" : "Cantón " : "Provincia ") + " es requerido";
+                msg += "\n" + msgValidationStateRequired;
             }
                 
 
@@ -241,7 +241,7 @@
         }
         
         
-        if (msg !== "") { alert('REF. GEOGRÁFICA:' + msg); $('#tabs').tabs({ active: 1 }); return false; }
+        if (msg !== "") { alert(msgValidationGeoRef + msg); $('#tabs').tabs({ active: 1 }); return false; }
         if (nextStep != null) nextStep();
         return true;
     };

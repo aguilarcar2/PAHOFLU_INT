@@ -524,19 +524,19 @@
                 
 
         if (self.IsSurv() == "")  
-            msg += "\n" + "Tipo de vigilancia es requerido";
+            msg += "\n" + msgValidationSurvType;
 
         
         if (!self.DocumentType() && self.UsrCountry() != 25)//agregado el 25 para que esta validación ignore SURINAME
             msg += "\n" + "Tipo de documento de identificación es requerido";
 
         if (!self.NoExpediente()) {
-            msg += "\n" + (self.UsrCountry != 7) ? "Documento de identificación " : "RUN " + " es requerido";
+            msg += "\n" + msgValidationDocumentIDRequired;
         }
             
 
         if ($("#HospitalDate").val() == "")
-            msg += "\n" + "Fecha de notificación es requerido";
+            msg += "\n" + msgValidationNotificationDateRequired;
         if ($("#HospitalDate").val() != "" && !moment(moment(date_hospital).format(date_format_moment), [date_format_moment], true).isValid())
             msg += "\n" + "Fecha de notificación es inválida";
         //if ($("#RegDate").val() == "")
@@ -550,11 +550,11 @@
         }
             
         if (!self.LName1())
-            msg += "\n" + "Primer apellido es requerido";
+            msg += "\n" + msgValidationFirstLastNameRequired;
         if (!self.LName2() && self.UsrCountry == 9 )
-            msg += "\n" + "Segundo apellido es requerido";
+            msg += "\n" + msgValidationSecondLastNameRequired;
         if (!self.FName1())
-            msg += "\n" + "Nombre es requerido";
+            msg += "\n" + msgValidationFirstNameRequired;
 
 
 //        if (!self.DOB())
@@ -566,7 +566,7 @@
 //        if (self.RegDate() && self.DOB() && moment(self.RegDate()).isBefore(moment(self.DOB())))
 //            msg += "\n" + "Fecha de nacimiento no puede ser posterior a la de notificación ";
         if (!self.Gender())
-            msg += "\n" + "Sexo es requerido";
+            msg += "\n" + msgValidationSexRequired;
 
         // Validaciones Chile
 
@@ -578,7 +578,8 @@
         }
                 
 
-        if (msg !== "") { alert('DAT. VIGILANCIA:' + msg); $('#tabs').tabs({ active: 0 }); return false; }
+        //if (msg !== "") { alert('DAT. VIGILANCIA:' + msg); $('#tabs').tabs({ active: 0 }); return false; }
+        if (msg !== "") { alert(msgValidationSurvData + msg); $('#tabs').tabs({ active: 0 }); return false; }
         if (nextStep != null) nextStep();
         return true;
     };

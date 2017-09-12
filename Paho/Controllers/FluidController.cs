@@ -115,7 +115,8 @@ namespace Paho.Controllers {
 
                 if (regionsDisplay.Count() > 1)
                 {
-                    var all = new LookupView<Region> { Id = "0", Name = "-- Todo(a)s --" };
+                    //var all = new LookupView<Region> { Id = "0", Name = "-- Todo(a)s --" };
+                    var all = new LookupView<Region> { Id = "0", Name = getMsg("msgGeneralMessageAll") };
                     regionsDisplay.Insert(0, all);
                     FluidViewModel.DisplayRegionals = true;
                 }
@@ -272,6 +273,18 @@ namespace Paho.Controllers {
                 excelWorksheet.Cells[2, 3].Value = Pais.Name.ToString();
             }
 
+        }
+        public string getMsg(string msgView)
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            string searchedMsg = msgView;
+            int? countryID = user.Institution.CountryID;
+            string countryLang = user.Institution.Country.Language;
+
+            ResourcesM myR = new ResourcesM();
+            searchedMsg = myR.getMessage(searchedMsg,countryID,countryLang);
+            //searchedMsg = myR.getMessage(searchedMsg, 0, "ENG");
+            return searchedMsg;
         }
 
     }

@@ -60,6 +60,7 @@ namespace Paho.Controllers
                 ViewBag.SARI = (user.Institution.SARI == true ) ? true : false ;
                 ViewBag.ILI = (user.Institution.ILI == true ) ? true : false;
                 ViewBag.UsrCtry = user.Institution.CountryID;
+                ViewBag.UsrCtryLang = user.Institution.Country.Language;
                 ViewBag.UsrInstID = user.InstitutionID;
                 ViewBag.UR = (string) (User.IsInRole("Admin") ? "adm" : User.IsInRole("Staff") ? "stf" : User.IsInRole("Report") ? "rpt" : "");
             }

@@ -149,7 +149,8 @@ namespace Paho.Controllers
 
                 if (regionsDisplay.Count() > 1)
                 {
-                    var all = new LookupView<Region> { Id = "0", Name = "-- Todo(a)s --" };
+                    //var all = new LookupView<Region> { Id = "0", Name = "-- Todo(a)s --" };
+                    var all = new LookupView<Region> { Id = "0", Name = getMsg("msgGeneralMessageAll") };
                     regionsDisplay.Insert(0, all);
                     CaseViewModel.DisplayRegionals = true;
                 }
@@ -166,7 +167,8 @@ namespace Paho.Controllers
                 }).ToList();
 
                 if (institutionsDisplay.Count() > 1) {
-                    var all = new LookupView<Institution> { Id = "0", Name = "-- Todo(a)s --" };
+                    //var all = new LookupView<Institution> { Id = "0", Name = "-- Todo(a)s --" };
+                    var all = new LookupView<Institution> { Id = "0", Name = getMsg("msgGeneralMessageAll") };
                     institutionsDisplay.Insert(0, all);
                     
                 }

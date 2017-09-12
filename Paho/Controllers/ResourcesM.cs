@@ -34,6 +34,21 @@ namespace Paho.Controllers
             }
             return dbMessage;
         }
+        public static string SgetMessage(string msg, int? countryID, string countryLang)
+        {
+            string dbMessage = msg;
+            string dbCountry = countryID.ToString();
+            string dbLang = countryLang;
+
+            //dbMessage = "Pepito";
+            dbMessage = resourceProvider.GetResource(dbMessage, dbCountry).ToString();
+            if (dbMessage == "")
+            {
+                dbMessage = msg;
+                dbMessage = resourceProvider.GetResource(dbMessage, dbLang).ToString();
+            }
+            return dbMessage;
+        }
         public static string msgCaselistVigTabCase
         {
             get
