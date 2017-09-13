@@ -150,12 +150,17 @@
                     <input id = "SNStartDate" type='text' class="form-control" data-bind="datepicker: SNStartDate" />
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-2">
                 <div class='input-group'>
                     <span class="input-group-addon">
                          @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgSNEndDate"))
                     </span>
                     <input id = "SNEndDate" type='text' class="form-control" data-bind="datepicker: SNEndDate" />
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class='input-group'>
+                    <button id="search" type="button" class="btn btn-primary" data-bind="click: SearchFlucases"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_btnSearch"))</button>
                 </div>
             </div>
 
@@ -170,10 +175,8 @@
                     </span>
                     <input id = "SRecordId" type='text' class="form-control" />
                 </div>
-            </div>
-
-            
-			}
+            </div>            
+			}            
         </div>
 	</div>
 </div>
@@ -182,11 +185,9 @@
                 {
     <div class="row" style="margin-top:1em;" data-bind="visible: newButton">
         <div class="col-md-8">
-            <div class="col-md-6">
-                <div class='input-group'>
-                    <button id="search" type="button" class="btn btn-primary" data-bind="click: SearchFlucases"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_btnSearch"))</button>
-                </div>
-            </div>
+            
+                
+            
             <div class="col-md-4">
                 <div class='input-group'>
                     <button id="nuevo" type="button" class="btn btn-primary" data-bind="click: NewFluCase"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_btnNew"))</button>
@@ -1421,7 +1422,7 @@
                         </div>
                     </div>
                 </div>
-@if (ViewBag.UsrCtry != 7 && ViewBag.UsrCtry !=3)
+@if (ViewBag.UsrCtry != 7 && ViewBag.UsrCtry !=3 && ViewBag.UsrCtry != 25)
 {
                 <div class="row rowform">
                     <div class="col-md-12">
@@ -1430,8 +1431,7 @@
                             <span class="glyphicon glyphicon-chevron-up span_arrow"></span><br/>
                             <hr style="margin-top:3px; margin-bottom:0px; border-width:1px  0  0; "/>
                         </div>
-                        <div id="exposicion" class="collapse in">
-							@if (ViewBag.UsrCtry != 7 && ViewBag.UsrCtry !=3 && ViewBag.UsrCtry !=25){
+                        <div id="exposicion" class="collapse in">							
                             <div class="row rowform">
                                 <div class="col-md-3">
                                     <label class="btn btn-default">
@@ -1459,7 +1459,6 @@
                                     </div>
                                
                             </div>
-							}
                         </div>
                     </div>
                 </div>

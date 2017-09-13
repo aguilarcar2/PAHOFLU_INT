@@ -995,7 +995,7 @@ namespace Paho.Controllers
 
         public ActionResult GetLabsHospital(long? institutionId)
         {
-            if (institutionId == null) return Json(new { });
+            if (institutionId == null) return Json(new { }, JsonRequestBehavior.AllowGet);
             return Json(new
             {
                 LabsHospital = GetLabsByInstitution(Convert.ToInt32(institutionId)).Select(x => new { Id = x.ID, x.Name }).ToList()
