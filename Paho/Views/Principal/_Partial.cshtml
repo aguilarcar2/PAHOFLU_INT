@@ -48,6 +48,7 @@
             <script src="~/Scripts/amcharts/plugins/export/export.min.js"></script>
             <link rel="stylesheet" href="~/Scripts/amcharts/plugins/export/export.css" type="text/css" media="all" />
         
+        
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGráfica 7 - Lineas Basalesxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <script>
             var jsonX;
@@ -618,6 +619,7 @@
         <!--<script>GetGraphData8();</script>-->
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxFIN Gráfica 8 - Indicadores de Desempeño xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
 
+        
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGráfica 1 - Epidemiológico 1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <script>
             var expanded = false;
@@ -786,7 +788,17 @@
                             $("#loaderGraph8").hide(0);
                         },
                         success: function (data) {
-
+                            //################################################################# DESARROLLO
+                            if(GraphCountryID == 25){
+                                GetGraphData11();
+                                GetGraphData12();
+                                GetGraphData9();
+                                GetGraphData10();
+                                GetGraphData7();
+                                GetGraphData8();
+                                return '';
+                            }
+                            //################################################################# END DESARROLLO
                             var json_obj = JSON.parse(data);
                             jsonX = JSON.parse(data);
                             var chartData = [];
@@ -2911,287 +2923,612 @@
 
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGráfica 11 - Casos IRAG x GE xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <script>
-            var jsonX;
+                var jsonX;
 
-            function GetGraphData11() {
-                var dataRegion = 0;
-                var dataHospital = 0;
-                var dataIrag = 0;
-                var dataEti = 0;
-                //****
-                $("#divGraph11").hide();
-                $("#loaderGraph11").show();
-                //**** Parametros
-                if($("#chkCountry").is(':checked')){
-                    dataRegion = 0;
-                    dataHospital = 0;
-                    dataIrag = 0;
-                    dataEti = 0;
-                }
-                else{
-                    dataRegion = $("#Regions option:selected").val();
-                    dataHospital = $("#Hospitals option:selected").val();
-                    if($("#chkIrag").is(':checked')){
-                        dataIrag = 1;
+                function GetGraphData11() {
+                    if(GraphCountryID == 25){
+                        GetGraphData11_25();
+                        return '';
                     }
-                    if($("#chkEti").is(':checked')){
-                        dataEti = 1;
+                    //****
+                    var dataRegion = 0;
+                    var dataHospital = 0;
+                    var dataIrag = 0;
+                    var dataEti = 0;
+                    //****
+                    $("#divGraph11").hide();
+                    $("#loaderGraph11").show();
+                    //**** Parametros
+                    if($("#chkCountry").is(':checked')){
+                        dataRegion = 0;
+                        dataHospital = 0;
+                        dataIrag = 0;
+                        dataEti = 0;
                     }
-                }
-                //**** Anios
-                var allVals = [];
-                var yrs = "";
-                $('#c_b :checked').each(function() {
-                    allVals.push($(this).val());
-                });
-                yrs = allVals.join();
-                $("#anios").val(yrs);
-                //****
-                $(document).ready(function () {
-                    $.ajax({
-                        type: 'POST',
-                        url: '/Graph/GetGraphDataTuned',
-                        data: "{'CountryID':" + GraphCountryID +",'Year':'" + $("#anios").val() + "','Graph':'Graph11','RegionID':'" + dataRegion + "', 'HospitalID':'" + dataHospital + "', 'IRAG':'" + dataIrag + "', 'ETI':'" + dataEti + "'}",
-                        contentType: "application/json",
-                        dataType: 'json',
-                        success: function (data) {
-                            $("#divGraph11").show();
-                            $("#loaderGraph11").hide();
-                            //****
-                            jsonX = JSON.parse(data);
-                            var chartData = [];
-                            $.each(jsonX, function(index, element) {
-                                $.each(element.graphData.graphDataItem, function(index2, element2) {
-                                    chartData.push({
-                                        semana: element2.semana,
-                                        serie1: element2.serie1,
-                                        serie2: element2.serie2,
-                                        serie3: element2.serie3,
-                                        serie4: element2.serie4,
-                                        serie5: element2.serie5,
-                                        serie6: element2.serie6
+                    else{
+                        dataRegion = $("#Regions option:selected").val();
+                        dataHospital = $("#Hospitals option:selected").val();
+                        if($("#chkIrag").is(':checked')){
+                            dataIrag = 1;
+                        }
+                        if($("#chkEti").is(':checked')){
+                            dataEti = 1;
+                        }
+                    }
+                    //**** Anios
+                    var allVals = [];
+                    var yrs = "";
+                    $('#c_b :checked').each(function() {
+                        allVals.push($(this).val());
+                    });
+                    yrs = allVals.join();
+                    $("#anios").val(yrs);
+                    //****
+                    $(document).ready(function () {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/Graph/GetGraphDataTuned',
+                            data: "{'CountryID':" + GraphCountryID +",'Year':'" + $("#anios").val() + "','Graph':'Graph11','RegionID':'" + dataRegion + "', 'HospitalID':'" + dataHospital + "', 'IRAG':'" + dataIrag + "', 'ETI':'" + dataEti + "'}",
+                            contentType: "application/json",
+                            dataType: 'json',
+                            success: function (data) {
+                                $("#divGraph11").show();
+                                $("#loaderGraph11").hide();
+                                //****
+                                jsonX = JSON.parse(data);
+                                var chartData = [];
+                                $.each(jsonX, function(index, element) {
+                                    $.each(element.graphData.graphDataItem, function(index2, element2) {
+                                        chartData.push({
+                                            semana: element2.semana,
+                                            serie1: element2.serie1,
+                                            serie2: element2.serie2,
+                                            serie3: element2.serie3,
+                                            serie4: element2.serie4,
+                                            serie5: element2.serie5,
+                                            serie6: element2.serie6
+                                        });
                                     });
                                 });
-                            });
-                            //-----------------Quita los ceros del fin y del inicio del array----------------------
-                            chartDataLength = chartData.length;
-                            if(chartDataLength>0){
-                                for(i = chartDataLength-1; i>0;i--){
-                                    //alert(chartData[i].semana);
-                                    if(chartData[i].serie1==0 && chartData[i].serie2==0 && chartData[i].serie3==0 && chartData[i].serie4==0 && chartData[i].serie5==0 && chartData[i].serie6==0){
-                                        chartData.pop();
-                                    }
-                                    else{
-                                        break;
+                                //-----------------Quita los ceros del fin y del inicio del array----------------------
+                                chartDataLength = chartData.length;
+                                if(chartDataLength>0){
+                                    for(i = chartDataLength-1; i>0;i--){
+                                        //alert(chartData[i].semana);
+                                        if(chartData[i].serie1==0 && chartData[i].serie2==0 && chartData[i].serie3==0 && chartData[i].serie4==0 && chartData[i].serie5==0 && chartData[i].serie6==0){
+                                            chartData.pop();
+                                        }
+                                        else{
+                                            break;
+                                        }
                                     }
                                 }
-                            }
-                            chartDataLength = chartData.length;
-                            //alert(chartDataLength);
-                            chartData.reverse();
-                            if(chartDataLength>0){
-                                for(i = chartDataLength-1; i>0;i--){
-                                    //alert(chartData[i].semana);
-                                    if(chartData[i].serie1==0 && chartData[i].serie2==0 && chartData[i].serie3==0 && chartData[i].serie4==0 && chartData[i].serie5==0 && chartData[i].serie6==0){
-                                        chartData.pop();
-                                    }
-                                    else{
-                                        break;
+                                chartDataLength = chartData.length;
+                                //alert(chartDataLength);
+                                chartData.reverse();
+                                if(chartDataLength>0){
+                                    for(i = chartDataLength-1; i>0;i--){
+                                        //alert(chartData[i].semana);
+                                        if(chartData[i].serie1==0 && chartData[i].serie2==0 && chartData[i].serie3==0 && chartData[i].serie4==0 && chartData[i].serie5==0 && chartData[i].serie6==0){
+                                            chartData.pop();
+                                        }
+                                        else{
+                                            break;
+                                        }
                                     }
                                 }
-                            }
-                            chartData.reverse();
-                            //-----------------FIN de Quita los ceros del fin y del inicio del array----------------------
-                            var chart = AmCharts.makeChart("divGraph11", {
-                                "type": "serial",
-                                "theme": "light",
-                                "mouseWheelZoomEnabled":false,
-                                "legend": {
-                                    "useGraphSettings": true
-                                },
-                                "titles": [{
-                                    "text": jsonX.graph.graphTitle,
-                                    "size": 15
-                                }],
-                                "dataProvider": chartData,
-                                "synchronizeGrid": true,
-                                "valueAxes": [{
-                                    "id":"v1",
-                                    "axisColor": "#FF6600",
-                                    "axisThickness": 2,
-                                    "axisAlpha": 1,
-                                    "stackType": "regular",
-                                    "position": "left",
-                                    "gridAlpha": 0,
-                                    "title":jsonX.graph.graphYAxisTitle
-                                }],
-                                "graphs": [
-                                    {
-                                    /*0 a <2 años*/
-                                    "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
-                                    "fillAlphas": 1,
-                                    "labelText": "[[value]]",
-                                    "lineAlpha": 0.3,
-                                    "type": "column",
-                                    "valueAxis": "v1",
-                                    "lineColor": "#00b0f0",
-                                    "title": jsonX.graph.graphSeries1Label,
-                                    "valueField": "serie1",
-                                    "type": "column",
-                                    "fillAlphas": 1,
-                                    "balloonFunction": function(info) {
-                                        if (info.values.value)
-                                            return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                        else
-                                            return '';
-                                        }
-                                    }, {
-                                        /*2 a <5 años*/
-                                        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
-                                        "fillAlphas": 1,
-                                        "labelText": "[[value]]",
-                                        "lineAlpha": 0.3,
-                                        "type": "column",
-                                        "valueAxis": "v1",
-                                        "lineColor": "#ff99ff",
-                                        "title": jsonX.graph.graphSeries2Label,
-                                        "valueField": "serie2",
-                                        "type": "column",
-                                        "fillAlphas": 1,
-                                        "balloonFunction": function(info) {
-                                            if (info.values.value){
-                                                return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-
-                                            }
-                                            else
-                                                return '';
-                                        }
-                                    }, {
-                                        /*5 a <19 años*/
-                                        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
-                                        "fillAlphas": 1,
-                                        "labelText": "[[value]]",
-                                        "lineAlpha": 0.3,
-                                        "type": "column",
-                                        "valueAxis": "v1",
-                                        "lineColor": "#0070c0",
-                                        "title": jsonX.graph.graphSeries3Label,
-                                        "valueField": "serie3",
-                                        "type": "column",
-                                        "fillAlphas": 1,
-                                        "balloonFunction": function(info) {
-                                            if (info.values.value){
-                                                return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-
-                                            }
-                                            else
-                                                return '';
-                                        }
-                                    }, {
-                                        /*20 a <39 años*/
-                                        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
-                                        "fillAlphas": 1,
-                                        "labelText": "[[value]]",
-                                        "lineAlpha": 0.3,
-                                        "type": "column",
-                                        "valueAxis": "v1",
-                                        "lineColor": "#7030a0",
-                                        "title": jsonX.graph.graphSeries4Label,
-                                        "valueField": "serie4",
-                                        "type": "column",
-                                        "fillAlphas": 1,
-                                        "balloonFunction": function(info) {
-                                            if (info.values.value){
-                                                return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                            }
-                                            else
-                                                return '';
-                                        }
-                                    }, {
-                                        /*40 a <59 años*/
-                                        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
-                                        "fillAlphas": 1,
-                                        "labelText": "[[value]]",
-                                        "lineAlpha": 0.3,
-                                        "type": "column",
-                                        "valueAxis": "v1",
-                                        "lineColor": "#99cc00",
-                                        "title": jsonX.graph.graphSeries5Label,
-                                        "valueField": "serie5",
-                                        "type": "column",
-                                        "fillAlphas": 1,
-                                        "balloonFunction": function(info) {
-                                            if (info.values.value){
-                                                return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                            }
-                                            else
-                                                return '';
-                                        }
-                                    }, {
-                                        /*60 años y +*/
-                                        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
-                                        "fillAlphas": 1,
-                                        "labelText": "[[value]]",
-                                        "lineAlpha": 0.3,
-                                        "type": "column",
-                                        "valueAxis": "v1",
-                                        "lineColor": "#ff9900",
-                                        "title": jsonX.graph.graphSeries6Label,
-                                        "valueField": "serie6",
-                                        "type": "column",
-                                        "fillAlphas": 1,
-                                        "balloonFunction": function(info) {
-                                            if (info.values.value){
-                                                return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                            }
-                                            else
-                                                return '';
-                                        }
-                                    }
-                                    ],
-                                "chartScrollbar": {},
-                                "chartCursor": {
-                                    "cursorPosition": "mouse"
-                                },
-                                "categoryField": "semana",
-                                "categoryAxis": {
-                                    "parseDates": false,
-                                    "axisColor": "#DADADA",
-                                    "minorGridEnabled": true,
-                                    "title":jsonX.graph.graphXAxisTitle
-                                },
-                                /*"export": {
-                                    "enabled": true,
-                                    "position": "top-right"
-                                },*/
-                                "export": {
-                                    "enabled": true,
-                                    "menu": [{
-                                        "class": "export-main",
-                                        "menu": [{
-                                            "label": "Descargar",
-                                            "menu": [ "PNG", "JPG", "PDF","SVG" ]
-                                        },
+                                chartData.reverse();
+                                //-----------------FIN de Quita los ceros del fin y del inicio del array----------------------
+                                var chart = AmCharts.makeChart("divGraph11", {
+                                    "type": "serial",
+                                    "theme": "light",
+                                    "mouseWheelZoomEnabled":false,
+                                    "legend": {
+                                        "useGraphSettings": true
+                                    },
+                                    "titles": [{
+                                        "text": jsonX.graph.graphTitle,
+                                        "size": 15
+                                    }],
+                                    "dataProvider": chartData,
+                                    "synchronizeGrid": true,
+                                    "valueAxes": [{
+                                        "id":"v1",
+                                        "axisColor": "#FF6600",
+                                        "axisThickness": 2,
+                                        "axisAlpha": 1,
+                                        "stackType": "regular",
+                                        "position": "left",
+                                        "gridAlpha": 0,
+                                        "title":jsonX.graph.graphYAxisTitle
+                                    }],
+                                    "graphs": [
                                         {
-                                            "label": "Imprimir",
-                                            "format": "PRINT"
+                                        /*0 a <2 años*/
+                                        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                                        "fillAlphas": 1,
+                                        "labelText": "[[value]]",
+                                        "lineAlpha": 0.3,
+                                        "type": "column",
+                                        "valueAxis": "v1",
+                                        "lineColor": "#00b0f0",
+                                        "title": jsonX.graph.graphSeries1Label,
+                                        "valueField": "serie1",
+                                        "type": "column",
+                                        "fillAlphas": 1,
+                                        "balloonFunction": function(info) {
+                                            if (info.values.value)
+                                                return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
+                                            else
+                                                return '';
+                                            }
+                                        }, {
+                                            /*2 a <5 años*/
+                                            "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                                            "fillAlphas": 1,
+                                            "labelText": "[[value]]",
+                                            "lineAlpha": 0.3,
+                                            "type": "column",
+                                            "valueAxis": "v1",
+                                            "lineColor": "#ff99ff",
+                                            "title": jsonX.graph.graphSeries2Label,
+                                            "valueField": "serie2",
+                                            "type": "column",
+                                            "fillAlphas": 1,
+                                            "balloonFunction": function(info) {
+                                                if (info.values.value){
+                                                    return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
+
+                                                }
+                                                else
+                                                    return '';
+                                            }
+                                        }, {
+                                            /*5 a <19 años*/
+                                            "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                                            "fillAlphas": 1,
+                                            "labelText": "[[value]]",
+                                            "lineAlpha": 0.3,
+                                            "type": "column",
+                                            "valueAxis": "v1",
+                                            "lineColor": "#0070c0",
+                                            "title": jsonX.graph.graphSeries3Label,
+                                            "valueField": "serie3",
+                                            "type": "column",
+                                            "fillAlphas": 1,
+                                            "balloonFunction": function(info) {
+                                                if (info.values.value){
+                                                    return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
+
+                                                }
+                                                else
+                                                    return '';
+                                            }
+                                        }, {
+                                            /*20 a <39 años*/
+                                            "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                                            "fillAlphas": 1,
+                                            "labelText": "[[value]]",
+                                            "lineAlpha": 0.3,
+                                            "type": "column",
+                                            "valueAxis": "v1",
+                                            "lineColor": "#7030a0",
+                                            "title": jsonX.graph.graphSeries4Label,
+                                            "valueField": "serie4",
+                                            "type": "column",
+                                            "fillAlphas": 1,
+                                            "balloonFunction": function(info) {
+                                                if (info.values.value){
+                                                    return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
+                                                }
+                                                else
+                                                    return '';
+                                            }
+                                        }, {
+                                            /*40 a <59 años*/
+                                            "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                                            "fillAlphas": 1,
+                                            "labelText": "[[value]]",
+                                            "lineAlpha": 0.3,
+                                            "type": "column",
+                                            "valueAxis": "v1",
+                                            "lineColor": "#99cc00",
+                                            "title": jsonX.graph.graphSeries5Label,
+                                            "valueField": "serie5",
+                                            "type": "column",
+                                            "fillAlphas": 1,
+                                            "balloonFunction": function(info) {
+                                                if (info.values.value){
+                                                    return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
+                                                }
+                                                else
+                                                    return '';
+                                            }
+                                        }, {
+                                            /*60 años y +*/
+                                            "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                                            "fillAlphas": 1,
+                                            "labelText": "[[value]]",
+                                            "lineAlpha": 0.3,
+                                            "type": "column",
+                                            "valueAxis": "v1",
+                                            "lineColor": "#ff9900",
+                                            "title": jsonX.graph.graphSeries6Label,
+                                            "valueField": "serie6",
+                                            "type": "column",
+                                            "fillAlphas": 1,
+                                            "balloonFunction": function(info) {
+                                                if (info.values.value){
+                                                    return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
+                                                }
+                                                else
+                                                    return '';
+                                            }
+                                        }
+                                        ],
+                                    "chartScrollbar": {},
+                                    "chartCursor": {
+                                        "cursorPosition": "mouse"
+                                    },
+                                    "categoryField": "semana",
+                                    "categoryAxis": {
+                                        "parseDates": false,
+                                        "axisColor": "#DADADA",
+                                        "minorGridEnabled": true,
+                                        "title":jsonX.graph.graphXAxisTitle
+                                    },
+                                    /*"export": {
+                                        "enabled": true,
+                                        "position": "top-right"
+                                    },*/
+                                    "export": {
+                                        "enabled": true,
+                                        "menu": [{
+                                            "class": "export-main",
+                                            "menu": [{
+                                                "label": "Descargar",
+                                                "menu": [ "PNG", "JPG", "PDF","SVG" ]
+                                            },
+                                            {
+                                                "label": "Imprimir",
+                                                "format": "PRINT"
+                                            }]
                                         }]
-                                    }]
+                                    }
+                                });
+
+                                //chart.addListener("dataUpdated", zoomChart);
+                                chart.addListener("rendered", zoomChart);
+                                zoomChart();
+                                function zoomChart(){
+                                    chart.zoomToIndexes(0, chart.dataProvider.length);
                                 }
-                            });
-
-                            //chart.addListener("dataUpdated", zoomChart);
-                            chart.addListener("rendered", zoomChart);
-                            zoomChart();
-                            function zoomChart(){
-                                chart.zoomToIndexes(0, chart.dataProvider.length);
+                                //chart.zoomToIndexes(chart.dataProvider.length - 10, chart.dataProvider.length - 1);
                             }
-                            //chart.zoomToIndexes(chart.dataProvider.length - 10, chart.dataProvider.length - 1);
-                        }
-                    });
-                })
-            };
+                        });
+                    })
+                };
 
+                function GetGraphData11_25() {
+                    var dataRegion = 0;
+                    var dataHospital = 0;
+                    var dataIrag = 0;
+                    var dataEti = 0;
+                    //****
+                    $("#divGraph11").hide();
+                    $("#loaderGraph11").show();
+                    //**** Parametros
+                    if($("#chkCountry").is(':checked')){
+                        dataRegion = 0;
+                        dataHospital = 0;
+                        dataIrag = 0;
+                        dataEti = 0;
+                    }
+                    else{
+                        dataRegion = $("#Regions option:selected").val();
+                        dataHospital = $("#Hospitals option:selected").val();
+                        if($("#chkIrag").is(':checked')){
+                            dataIrag = 1;
+                        }
+                        if($("#chkEti").is(':checked')){
+                            dataEti = 1;
+                        }
+                    }
+                    //**** Anios
+                    var allVals = [];
+                    var yrs = "";
+                    $('#c_b :checked').each(function() {
+                        allVals.push($(this).val());
+                    });
+                    yrs = allVals.join();
+                    $("#anios").val(yrs);
+                    //****
+                    $(document).ready(function () {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/Graph/GetGraphDataTuned',
+                            data: "{'CountryID':" + GraphCountryID +",'Year':'" + $("#anios").val() + "','Graph':'Graph11','RegionID':'" + dataRegion + "', 'HospitalID':'" + dataHospital + "', 'IRAG':'" + dataIrag + "', 'ETI':'" + dataEti + "'}",
+                            contentType: "application/json",
+                            dataType: 'json',
+                            success: function (data) {
+                                $("#divGraph11").show();
+                                $("#loaderGraph11").hide();
+                                //****
+                                jsonX = JSON.parse(data);
+                                var chartData = [];
+                                $.each(jsonX, function(index, element) {
+                                    $.each(element.graphData.graphDataItem, function(index2, element2) {
+                                        chartData.push({
+                                            semana: element2.semana,
+                                            serie1: element2.serie1,
+                                            serie2: element2.serie2,
+                                            serie3: element2.serie3,
+                                            serie4: element2.serie4,
+                                            serie5: element2.serie5,
+                                            serie6: element2.serie6,
+                                            serie7: element2.serie7,
+                                            serie8: element2.serie8
+                                        });
+                                    });
+                                });
+                                //-----------------Quita los ceros del fin y del inicio del array----------------------
+                                chartDataLength = chartData.length;
+                                if(chartDataLength>0){
+                                    for(i = chartDataLength-1; i>0;i--){
+                                        //alert(chartData[i].semana);
+                                        if(chartData[i].serie1==0 && chartData[i].serie2==0 && chartData[i].serie3==0 && chartData[i].serie4==0 && chartData[i].serie5==0 && chartData[i].serie6==0 && chartData[i].serie7==0 && chartData[i].serie8==0){
+                                            chartData.pop();
+                                        }
+                                        else{
+                                            break;
+                                        }
+                                    }
+                                }
+                                chartDataLength = chartData.length;
+                                //alert(chartDataLength);
+                                chartData.reverse();
+                                if(chartDataLength>0){
+                                    for(i = chartDataLength-1; i>0;i--){
+                                        //alert(chartData[i].semana);
+                                        if(chartData[i].serie1==0 && chartData[i].serie2==0 && chartData[i].serie3==0 && chartData[i].serie4==0 && chartData[i].serie5==0 && chartData[i].serie6==0 && chartData[i].serie7==0 && chartData[i].serie8==0){
+                                            chartData.pop();
+                                        }
+                                        else{
+                                            break;
+                                        }
+                                    }
+                                }
+                                chartData.reverse();
+                                //-----------------FIN de Quita los ceros del fin y del inicio del array----------------------
+                                var chart = AmCharts.makeChart("divGraph11", {
+                                    "type": "serial",
+                                    "theme": "light",
+                                    "mouseWheelZoomEnabled":false,
+                                    "legend": {
+                                        "useGraphSettings": true
+                                    },
+                                    "titles": [{
+                                        "text": jsonX.graph.graphTitle,
+                                        "size": 15
+                                    }],
+                                    "dataProvider": chartData,
+                                    "synchronizeGrid": true,
+                                    "valueAxes": [{
+                                        "id":"v1",
+                                        "axisColor": "#FF6600",
+                                        "axisThickness": 2,
+                                        "axisAlpha": 1,
+                                        "stackType": "regular",
+                                        "position": "left",
+                                        "gridAlpha": 0,
+                                        "title":jsonX.graph.graphYAxisTitle
+                                    }],
+                                    "graphs": [
+                                        {
+                                            /*0 a <2 años*/
+                                            "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                                            "fillAlphas": 1,
+                                            "labelText": "[[value]]",
+                                            "lineAlpha": 0.3,
+                                            "type": "column",
+                                            "valueAxis": "v1",
+                                            "lineColor": "#00b0f0",
+                                            "title": jsonX.graph.graphSeries1Label,
+                                            "valueField": "serie1",
+                                            "type": "column",
+                                            "fillAlphas": 1,
+                                            "balloonFunction": function(info) {
+                                                if (info.values.value)
+                                                    return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
+                                                else
+                                                    return '';
+                                            }
+                                        }, {
+                                            /*2 a <5 años*/
+                                            "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                                            "fillAlphas": 1,
+                                            "labelText": "[[value]]",
+                                            "lineAlpha": 0.3,
+                                            "type": "column",
+                                            "valueAxis": "v1",
+                                            "lineColor": "#ff99ff",
+                                            "title": jsonX.graph.graphSeries2Label,
+                                            "valueField": "serie2",
+                                            "type": "column",
+                                            "fillAlphas": 1,
+                                            "balloonFunction": function(info) {
+                                                if (info.values.value){
+                                                    return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
+
+                                                }
+                                                else
+                                                    return '';
+                                            }
+                                        }, {
+                                            /*5 a <19 años*/
+                                            "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                                            "fillAlphas": 1,
+                                            "labelText": "[[value]]",
+                                            "lineAlpha": 0.3,
+                                            "type": "column",
+                                            "valueAxis": "v1",
+                                            "lineColor": "#0070c0",
+                                            "title": jsonX.graph.graphSeries3Label,
+                                            "valueField": "serie3",
+                                            "type": "column",
+                                            "fillAlphas": 1,
+                                            "balloonFunction": function(info) {
+                                                if (info.values.value){
+                                                    return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
+
+                                                }
+                                                else
+                                                    return '';
+                                            }
+                                        }, {
+                                            /*20 a <39 años*/
+                                            "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                                            "fillAlphas": 1,
+                                            "labelText": "[[value]]",
+                                            "lineAlpha": 0.3,
+                                            "type": "column",
+                                            "valueAxis": "v1",
+                                            "lineColor": "#7030a0",
+                                            "title": jsonX.graph.graphSeries4Label,
+                                            "valueField": "serie4",
+                                            "type": "column",
+                                            "fillAlphas": 1,
+                                            "balloonFunction": function(info) {
+                                                if (info.values.value){
+                                                    return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
+                                                }
+                                                else
+                                                    return '';
+                                            }
+                                        }, {
+                                            /*40 a <59 años*/
+                                            "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                                            "fillAlphas": 1,
+                                            "labelText": "[[value]]",
+                                            "lineAlpha": 0.3,
+                                            "type": "column",
+                                            "valueAxis": "v1",
+                                            "lineColor": "#99cc00",
+                                            "title": jsonX.graph.graphSeries5Label,
+                                            "valueField": "serie5",
+                                            "type": "column",
+                                            "fillAlphas": 1,
+                                            "balloonFunction": function(info) {
+                                                if (info.values.value){
+                                                    return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
+                                                }
+                                                else
+                                                    return '';
+                                            }
+                                        }, {
+                                            /*60 años y +*/
+                                            "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                                            "fillAlphas": 1,
+                                            "labelText": "[[value]]",
+                                            "lineAlpha": 0.3,
+                                            "type": "column",
+                                            "valueAxis": "v1",
+                                            "lineColor": "#ff9900",
+                                            "title": jsonX.graph.graphSeries6Label,
+                                            "valueField": "serie6",
+                                            "type": "column",
+                                            "fillAlphas": 1,
+                                            "balloonFunction": function(info) {
+                                                if (info.values.value){
+                                                    return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
+                                                }
+                                                else
+                                                    return '';
+                                            }
+                                        }, {
+                                            /*777 años y +*/
+                                            "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                                            "fillAlphas": 1,
+                                            "labelText": "[[value]]",
+                                            "lineAlpha": 0.3,
+                                            "type": "column",
+                                            "valueAxis": "v1",
+                                            "lineColor": "#FF0000",
+                                            "title": jsonX.graph.graphSeries7Label,
+                                            "valueField": "serie7",
+                                            "type": "column",
+                                            "fillAlphas": 1,
+                                            "balloonFunction": function(info) {
+                                                if (info.values.value){
+                                                    return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
+                                                }
+                                                else
+                                                    return '';
+                                            }
+                                        }, {
+                                            /*888 años y +*/
+                                            "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                                            "fillAlphas": 1,
+                                            "labelText": "[[value]]",
+                                            "lineAlpha": 0.3,
+                                            "type": "column",
+                                            "valueAxis": "v1",
+                                            "lineColor": "#0000FF",
+                                            "title": jsonX.graph.graphSeries8Label,
+                                            "valueField": "serie8",
+                                            "type": "column",
+                                            "fillAlphas": 1,
+                                            "balloonFunction": function(info) {
+                                                if (info.values.value){
+                                                    return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
+                                                }
+                                                else
+                                                    return '';
+                                            }
+                                        }
+                                    ],
+                                    "chartScrollbar": {},
+                                    "chartCursor": {
+                                        "cursorPosition": "mouse"
+                                    },
+                                    "categoryField": "semana",
+                                    "categoryAxis": {
+                                        "parseDates": false,
+                                        "axisColor": "#DADADA",
+                                        "minorGridEnabled": true,
+                                        "title":jsonX.graph.graphXAxisTitle
+                                    },
+                                    /*"export": {
+                                        "enabled": true,
+                                        "position": "top-right"
+                                    },*/
+                                    "export": {
+                                        "enabled": true,
+                                        "menu": [{
+                                            "class": "export-main",
+                                            "menu": [{
+                                                "label": "Descargar",
+                                                "menu": [ "PNG", "JPG", "PDF","SVG" ]
+                                            },
+                                            {
+                                                "label": "Imprimir",
+                                                "format": "PRINT"
+                                            }]
+                                        }]
+                                    }
+                                });
+
+                                //chart.addListener("dataUpdated", zoomChart);
+                                chart.addListener("rendered", zoomChart);
+                                zoomChart();
+                                function zoomChart(){
+                                    chart.zoomToIndexes(0, chart.dataProvider.length);
+                                }
+                                //chart.zoomToIndexes(chart.dataProvider.length - 10, chart.dataProvider.length - 1);
+                            }
+                        });
+                    })
+                };
         </script>
 
         <style>
@@ -3230,310 +3567,661 @@
 
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGráfica 12 - Fallecidos IRAG x GE xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <script>
-            var jsonX;
+                var jsonX;
 
-            function GetGraphData12() {
-                var dataRegion = 0;
-                var dataHospital = 0;
-                var dataIrag = 0;
-                var dataEti = 0;
-                //****
-                $("#divGraph12").hide();
-                $("#loaderGraph12").show();
-                //**** Parametros
-                if($("#chkCountry").is(':checked')){
-                    dataRegion = 0;
-                    dataHospital = 0;
-                    dataIrag = 0;
-                    dataEti = 0;
-                }
-                else{
-                    dataRegion = $("#Regions option:selected").val();
-                    dataHospital = $("#Hospitals option:selected").val();
-                    if($("#chkIrag").is(':checked')){
-                        dataIrag = 1;
+                function GetGraphData12() {
+                    if(GraphCountryID == 25){
+                        GetGraphData12_25();
+                        return '';
                     }
-                    if($("#chkEti").is(':checked')){
-                        dataEti = 1;
+                    //****
+                    var dataRegion = 0;
+                    var dataHospital = 0;
+                    var dataIrag = 0;
+                    var dataEti = 0;
+                    //****
+                    $("#divGraph12").hide();
+                    $("#loaderGraph12").show();
+                    //**** Parametros
+                    if($("#chkCountry").is(':checked')){
+                        dataRegion = 0;
+                        dataHospital = 0;
+                        dataIrag = 0;
+                        dataEti = 0;
                     }
-                }
-                //**** Anios
-                var allVals = [];
-                var yrs = "";
-                $('#c_b :checked').each(function() {
-                    allVals.push($(this).val());
-                });
-                yrs = allVals.join();
-                $("#anios").val(yrs);
-                //****
-                $(document).ready(function () {
-                    $.ajax({
-                        type: 'POST',
-                        url: '/Graph/GetGraphDataTuned',
-                        data: "{'CountryID':" + GraphCountryID +",'Year':'" + $("#anios").val() + "','Graph':'Graph12','RegionID':'" + dataRegion + "', 'HospitalID':'" + dataHospital + "', 'IRAG':'" + dataIrag + "', 'ETI':'" + dataEti + "'}",
-                        contentType: "application/json",
-                        dataType: 'json',
-                        success: function (data) {
-                            $("#divGraph12").show();
-                            $("#loaderGraph12").hide();
-                            //****
-                            jsonX = JSON.parse(data);
-                            var chartData = [];
-                            $.each(jsonX, function(index, element) {
-                                $.each(element.graphData.graphDataItem, function(index2, element2) {
-                                    chartData.push({
-                                        semana: element2.semana,
-                                        serie1: element2.serie1,
-                                        serie2: element2.serie2,
-                                        serie3: element2.serie3,
-                                        serie4: element2.serie4,
-                                        serie5: element2.serie5,
-                                        serie6: element2.serie6,
-                                        serie7: element2.serie7
+                    else{
+                        dataRegion = $("#Regions option:selected").val();
+                        dataHospital = $("#Hospitals option:selected").val();
+                        if($("#chkIrag").is(':checked')){
+                            dataIrag = 1;
+                        }
+                        if($("#chkEti").is(':checked')){
+                            dataEti = 1;
+                        }
+                    }
+                    //**** Anios
+                    var allVals = [];
+                    var yrs = "";
+                    $('#c_b :checked').each(function() {
+                        allVals.push($(this).val());
+                    });
+                    yrs = allVals.join();
+                    $("#anios").val(yrs);
+                    //****
+                    $(document).ready(function () {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/Graph/GetGraphDataTuned',
+                            data: "{'CountryID':" + GraphCountryID +",'Year':'" + $("#anios").val() + "','Graph':'Graph12','RegionID':'" + dataRegion + "', 'HospitalID':'" + dataHospital + "', 'IRAG':'" + dataIrag + "', 'ETI':'" + dataEti + "'}",
+                            contentType: "application/json",
+                            dataType: 'json',
+                            success: function (data) {
+                                $("#divGraph12").show();
+                                $("#loaderGraph12").hide();
+                                //****
+                                jsonX = JSON.parse(data);
+                                var chartData = [];
+                                $.each(jsonX, function(index, element) {
+                                    $.each(element.graphData.graphDataItem, function(index2, element2) {
+                                        chartData.push({
+                                            semana: element2.semana,
+                                            serie1: element2.serie1,
+                                            serie2: element2.serie2,
+                                            serie3: element2.serie3,
+                                            serie4: element2.serie4,
+                                            serie5: element2.serie5,
+                                            serie6: element2.serie6,
+                                            serie7: element2.serie7
+                                        });
                                     });
                                 });
-                            });
-                            //-----------------Quita los ceros del fin y del inicio del array----------------------
-                            //*
-                            chartDataLength = chartData.length;
-                            if(chartDataLength>0){
-                                for(i = chartDataLength-1; i>0;i--){
-                                    //alert(chartData[i].semana);
-                                    if(chartData[i].serie1==0 && chartData[i].serie2==0 && chartData[i].serie3==0 && chartData[i].serie4==0 && chartData[i].serie5==0 && chartData[i].serie6==0 && chartData[i].serie7==0){
-                                        chartData.pop();
-                                    }
-                                    else{
-                                        break;
+                                //-----------------Quita los ceros del fin y del inicio del array----------------------
+                                //*
+                                chartDataLength = chartData.length;
+                                if(chartDataLength>0){
+                                    for(i = chartDataLength-1; i>0;i--){
+                                        //alert(chartData[i].semana);
+                                        if(chartData[i].serie1==0 && chartData[i].serie2==0 && chartData[i].serie3==0 && chartData[i].serie4==0 && chartData[i].serie5==0 && chartData[i].serie6==0 && chartData[i].serie7==0){
+                                            chartData.pop();
+                                        }
+                                        else{
+                                            break;
+                                        }
                                     }
                                 }
-                            }
-                            chartDataLength = chartData.length;
-                            //alert(chartDataLength);
-                            chartData.reverse();
-                            if(chartDataLength>0){
-                                for(i = chartDataLength-1; i>0;i--){
-                                    //alert(chartData[i].semana);
-                                    if(chartData[i].serie1==0 && chartData[i].serie2==0 && chartData[i].serie3==0 && chartData[i].serie4==0 && chartData[i].serie5==0 && chartData[i].serie6==0 && chartData[i].serie7==0){
-                                        chartData.pop();
-                                    }
-                                    else{
-                                        break;
+                                chartDataLength = chartData.length;
+                                //alert(chartDataLength);
+                                chartData.reverse();
+                                if(chartDataLength>0){
+                                    for(i = chartDataLength-1; i>0;i--){
+                                        //alert(chartData[i].semana);
+                                        if(chartData[i].serie1==0 && chartData[i].serie2==0 && chartData[i].serie3==0 && chartData[i].serie4==0 && chartData[i].serie5==0 && chartData[i].serie6==0 && chartData[i].serie7==0){
+                                            chartData.pop();
+                                        }
+                                        else{
+                                            break;
+                                        }
                                     }
                                 }
-                            }
-                            chartData.reverse();
-                            //*/
-                            //-----------------FIN de Quita los ceros del fin y del inicio del array----------------------
-                            var chart = AmCharts.makeChart("divGraph12", {
-                                "type": "serial",
-                                "theme": "light",
-                                "mouseWheelZoomEnabled":false,
-                                "legend": {
-                                    "useGraphSettings": true
-                                },
-                                "titles": [{
-                                    "text": jsonX.graph.graphTitle,
-                                    "size": 15
-                                }],
-                                "dataProvider": chartData,
-                                "synchronizeGrid": true,
-                                "valueAxes": [{
-                                    "id":"v1",
-                                    "axisColor": "#FF6600",
-                                    "axisThickness": 2,
-                                    "axisAlpha": 1,
-                                    "stackType": "regular",
-                                    "position": "left",
-                                    "gridAlpha": 0,
-                                    "title":jsonX.graph.graphYAxisTitle
-                                }],
-                                "graphs": [
-                                    {
-                                    /*0 a <2 años*/
-                                    "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
-                                    "fillAlphas": 1,
-                                    "labelText": "[[value]]",
-                                    "lineAlpha": 0.3,
-                                    "type": "column",
-                                    "valueAxis": "v1",
-                                    "lineColor": "#00b0f0",
-                                    "title": jsonX.graph.graphSeries1Label,
-                                    "valueField": "serie1",
-                                    "type": "column",
-                                    "fillAlphas": 1,
-                                    "balloonFunction": function(info) {
-                                        if (info.values.value)
-                                            //return String(info.values.value);
-                                            return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                        else
-                                            return '';
-                                        }
-                                    }, {
-                                        /*2 a <5 años*/
-                                        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
-                                        "fillAlphas": 1,
-                                        "labelText": "[[value]]",
-                                        "lineAlpha": 0.3,
-                                        "type": "column",
-                                        "valueAxis": "v1",
-                                        "lineColor": "#ff99ff",
-                                        "title": jsonX.graph.graphSeries2Label,
-                                        "valueField": "serie2",
-                                        "type": "column",
-                                        "fillAlphas": 1,
-                                        "balloonFunction": function(info) {
-                                            if (info.values.value){
-                                                return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-
-                                            }
-                                            else
-                                                return '';
-                                        }
-                                    }, {
-                                        /*5 a <19 años*/
-                                        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
-                                        "fillAlphas": 1,
-                                        "labelText": "[[value]]",
-                                        "lineAlpha": 0.3,
-                                        "type": "column",
-                                        "valueAxis": "v1",
-                                        "lineColor": "#0070c0",
-                                        "title": jsonX.graph.graphSeries3Label,
-                                        "valueField": "serie3",
-                                        "type": "column",
-                                        "fillAlphas": 1,
-                                        "balloonFunction": function(info) {
-                                            if (info.values.value){
-                                                return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-
-                                            }
-                                            else
-                                                return '';
-                                        }
-                                    }, {
-                                        /*20 a <39 años*/
-                                        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
-                                        "fillAlphas": 1,
-                                        "labelText": "[[value]]",
-                                        "lineAlpha": 0.3,
-                                        "type": "column",
-                                        "valueAxis": "v1",
-                                        "lineColor": "#7030a0",
-                                        "title": jsonX.graph.graphSeries4Label,
-                                        "valueField": "serie4",
-                                        "type": "column",
-                                        "fillAlphas": 1,
-                                        "balloonFunction": function(info) {
-                                            if (info.values.value){
-                                                return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                            }
-                                            else
-                                                return '';
-                                        }
-                                    }, {
-                                        /*40 a <59 años*/
-                                        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
-                                        "fillAlphas": 1,
-                                        "labelText": "[[value]]",
-                                        "lineAlpha": 0.3,
-                                        "type": "column",
-                                        "valueAxis": "v1",
-                                        "lineColor": "#99cc00",
-                                        "title": jsonX.graph.graphSeries5Label,
-                                        "valueField": "serie5",
-                                        "type": "column",
-                                        "fillAlphas": 1,
-                                        "balloonFunction": function(info) {
-                                            if (info.values.value){
-                                                return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                            }
-                                            else
-                                                return '';
-                                        }
-                                    }, {
-                                        /*60 años y +*/
-                                        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
-                                        "fillAlphas": 1,
-                                        "labelText": "[[value]]",
-                                        "lineAlpha": 0.3,
-                                        "type": "column",
-                                        "valueAxis": "v1",
-                                        "lineColor": "#ff9900",
-                                        "title": jsonX.graph.graphSeries6Label,
-                                        "valueField": "serie6",
-                                        "type": "column",
-                                        "fillAlphas": 1,
-                                        "balloonFunction": function(info) {
-                                            if (info.values.value){
-                                                return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                            }
-                                            else
-                                                return '';
-                                        }
-                                    }, {
-                                        /*Edad desconocida*/
-                                        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
-                                        "fillAlphas": 1,
-                                        "labelText": "[[value]]",
-                                        "lineAlpha": 0.3,
-                                        "type": "column",
-                                        "valueAxis": "v1",
-                                        "lineColor": "#ff0000",
-                                        "title": jsonX.graph.graphSeries7Label,
-                                        "valueField": "serie7",
-                                        "type": "column",
-                                        "fillAlphas": 1,
-                                        "balloonFunction": function(info) {
-                                            if (info.values.value){
-                                                return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                            }
-                                            else
-                                                return '';
-                                        }
-                                    }
-                                    ],
-                                "chartScrollbar": {},
-                                "chartCursor": {
-                                    "cursorPosition": "mouse"
-                                },
-                                "categoryField": "semana",
-                                "categoryAxis": {
-                                    "parseDates": false,
-                                    "axisColor": "#DADADA",
-                                    "minorGridEnabled": true,
-                                    "title":jsonX.graph.graphXAxisTitle
-                                },
-                                /*"export": {
-                                    "enabled": true,
-                                    "position": "top-right"
-                                },*/
-                                "export": {
-                                    "enabled": true,
-                                    "menu": [{
-                                        "class": "export-main",
-                                        "menu": [{
-                                            "label": "Descargar",
-                                            "menu": [ "PNG", "JPG", "PDF","SVG" ]
-                                        },
+                                chartData.reverse();
+                                //*/
+                                //-----------------FIN de Quita los ceros del fin y del inicio del array----------------------
+                                var chart = AmCharts.makeChart("divGraph12", {
+                                    "type": "serial",
+                                    "theme": "light",
+                                    "mouseWheelZoomEnabled":false,
+                                    "legend": {
+                                        "useGraphSettings": true
+                                    },
+                                    "titles": [{
+                                        "text": jsonX.graph.graphTitle,
+                                        "size": 15
+                                    }],
+                                    "dataProvider": chartData,
+                                    "synchronizeGrid": true,
+                                    "valueAxes": [{
+                                        "id":"v1",
+                                        "axisColor": "#FF6600",
+                                        "axisThickness": 2,
+                                        "axisAlpha": 1,
+                                        "stackType": "regular",
+                                        "position": "left",
+                                        "gridAlpha": 0,
+                                        "title":jsonX.graph.graphYAxisTitle
+                                    }],
+                                    "graphs": [
                                         {
-                                            "label": "Imprimir",
-                                            "format": "PRINT"
-                                        }]
-                                    }]
-                                }
-                            });
+                                            /*0 a <2 años*/
+                                            "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                                            "fillAlphas": 1,
+                                            "labelText": "[[value]]",
+                                            "lineAlpha": 0.3,
+                                            "type": "column",
+                                            "valueAxis": "v1",
+                                            "lineColor": "#00b0f0",
+                                            "title": jsonX.graph.graphSeries1Label,
+                                            "valueField": "serie1",
+                                            "type": "column",
+                                            "fillAlphas": 1,
+                                            "balloonFunction": function(info) {
+                                                if (info.values.value)
+                                                    //return String(info.values.value);
+                                                    return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
+                                                else
+                                                    return '';
+                                            }
+                                        }, {
+                                            /*2 a <5 años*/
+                                            "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                                            "fillAlphas": 1,
+                                            "labelText": "[[value]]",
+                                            "lineAlpha": 0.3,
+                                            "type": "column",
+                                            "valueAxis": "v1",
+                                            "lineColor": "#ff99ff",
+                                            "title": jsonX.graph.graphSeries2Label,
+                                            "valueField": "serie2",
+                                            "type": "column",
+                                            "fillAlphas": 1,
+                                            "balloonFunction": function(info) {
+                                                if (info.values.value){
+                                                    return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
 
-                            //chart.addListener("dataUpdated", zoomChart);
-                            chart.addListener("rendered", zoomChart);
-                            zoomChart();
-                            function zoomChart(){
-                                chart.zoomToIndexes(0, chart.dataProvider.length);
+                                                }
+                                                else
+                                                    return '';
+                                            }
+                                        }, {
+                                            /*5 a <19 años*/
+                                            "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                                            "fillAlphas": 1,
+                                            "labelText": "[[value]]",
+                                            "lineAlpha": 0.3,
+                                            "type": "column",
+                                            "valueAxis": "v1",
+                                            "lineColor": "#0070c0",
+                                            "title": jsonX.graph.graphSeries3Label,
+                                            "valueField": "serie3",
+                                            "type": "column",
+                                            "fillAlphas": 1,
+                                            "balloonFunction": function(info) {
+                                                if (info.values.value){
+                                                    return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
+
+                                                }
+                                                else
+                                                    return '';
+                                            }
+                                        }, {
+                                            /*20 a <39 años*/
+                                            "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                                            "fillAlphas": 1,
+                                            "labelText": "[[value]]",
+                                            "lineAlpha": 0.3,
+                                            "type": "column",
+                                            "valueAxis": "v1",
+                                            "lineColor": "#7030a0",
+                                            "title": jsonX.graph.graphSeries4Label,
+                                            "valueField": "serie4",
+                                            "type": "column",
+                                            "fillAlphas": 1,
+                                            "balloonFunction": function(info) {
+                                                if (info.values.value){
+                                                    return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
+                                                }
+                                                else
+                                                    return '';
+                                            }
+                                        }, {
+                                            /*40 a <59 años*/
+                                            "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                                            "fillAlphas": 1,
+                                            "labelText": "[[value]]",
+                                            "lineAlpha": 0.3,
+                                            "type": "column",
+                                            "valueAxis": "v1",
+                                            "lineColor": "#99cc00",
+                                            "title": jsonX.graph.graphSeries5Label,
+                                            "valueField": "serie5",
+                                            "type": "column",
+                                            "fillAlphas": 1,
+                                            "balloonFunction": function(info) {
+                                                if (info.values.value){
+                                                    return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
+                                                }
+                                                else
+                                                    return '';
+                                            }
+                                        }, {
+                                            /*60 años y +*/
+                                            "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                                            "fillAlphas": 1,
+                                            "labelText": "[[value]]",
+                                            "lineAlpha": 0.3,
+                                            "type": "column",
+                                            "valueAxis": "v1",
+                                            "lineColor": "#ff9900",
+                                            "title": jsonX.graph.graphSeries6Label,
+                                            "valueField": "serie6",
+                                            "type": "column",
+                                            "fillAlphas": 1,
+                                            "balloonFunction": function(info) {
+                                                if (info.values.value){
+                                                    return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
+                                                }
+                                                else
+                                                    return '';
+                                            }
+                                        }, {
+                                            /*Edad desconocida*/
+                                            "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                                            "fillAlphas": 1,
+                                            "labelText": "[[value]]",
+                                            "lineAlpha": 0.3,
+                                            "type": "column",
+                                            "valueAxis": "v1",
+                                            "lineColor": "#ff0000",
+                                            "title": jsonX.graph.graphSeries7Label,
+                                            "valueField": "serie7",
+                                            "type": "column",
+                                            "fillAlphas": 1,
+                                            "balloonFunction": function(info) {
+                                                if (info.values.value){
+                                                    return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
+                                                }
+                                                else
+                                                    return '';
+                                            }
+                                        }
+                                    ],
+                                    "chartScrollbar": {},
+                                    "chartCursor": {
+                                        "cursorPosition": "mouse"
+                                    },
+                                    "categoryField": "semana",
+                                    "categoryAxis": {
+                                        "parseDates": false,
+                                        "axisColor": "#DADADA",
+                                        "minorGridEnabled": true,
+                                        "title":jsonX.graph.graphXAxisTitle
+                                    },
+                                    /*"export": {
+                                        "enabled": true,
+                                        "position": "top-right"
+                                    },*/
+                                    "export": {
+                                        "enabled": true,
+                                        "menu": [{
+                                            "class": "export-main",
+                                            "menu": [{
+                                                "label": "Descargar",
+                                                "menu": [ "PNG", "JPG", "PDF","SVG" ]
+                                            },
+                                            {
+                                                "label": "Imprimir",
+                                                "format": "PRINT"
+                                            }]
+                                        }]
+                                    }
+                                });
+
+                                //chart.addListener("dataUpdated", zoomChart);
+                                chart.addListener("rendered", zoomChart);
+                                zoomChart();
+                                function zoomChart(){
+                                    chart.zoomToIndexes(0, chart.dataProvider.length);
+                                }
+                                //chart.zoomToIndexes(chart.dataProvider.length - 10, chart.dataProvider.length - 1);
                             }
-                            //chart.zoomToIndexes(chart.dataProvider.length - 10, chart.dataProvider.length - 1);
+                        });
+                    })
+                };
+
+                function GetGraphData12_25() {
+                    var dataRegion = 0;
+                    var dataHospital = 0;
+                    var dataIrag = 0;
+                    var dataEti = 0;
+                    //****
+                    $("#divGraph12").hide();
+                    $("#loaderGraph12").show();
+                    //**** Parametros
+                    if($("#chkCountry").is(':checked')){
+                        dataRegion = 0;
+                        dataHospital = 0;
+                        dataIrag = 0;
+                        dataEti = 0;
+                    }
+                    else{
+                        dataRegion = $("#Regions option:selected").val();
+                        dataHospital = $("#Hospitals option:selected").val();
+                        if($("#chkIrag").is(':checked')){
+                            dataIrag = 1;
                         }
+                        if($("#chkEti").is(':checked')){
+                            dataEti = 1;
+                        }
+                    }
+                    //**** Anios
+                    var allVals = [];
+                    var yrs = "";
+                    $('#c_b :checked').each(function() {
+                        allVals.push($(this).val());
                     });
-                })
-            };
+                    yrs = allVals.join();
+                    $("#anios").val(yrs);
+                    //****
+                    $(document).ready(function () {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/Graph/GetGraphDataTuned',
+                            data: "{'CountryID':" + GraphCountryID +",'Year':'" + $("#anios").val() + "','Graph':'Graph12','RegionID':'" + dataRegion + "', 'HospitalID':'" + dataHospital + "', 'IRAG':'" + dataIrag + "', 'ETI':'" + dataEti + "'}",
+                            contentType: "application/json",
+                            dataType: 'json',
+                            success: function (data) {
+                                $("#divGraph12").show();
+                                $("#loaderGraph12").hide();
+                                //****
+                                jsonX = JSON.parse(data);
+                                var chartData = [];
+                                $.each(jsonX, function(index, element) {
+                                    $.each(element.graphData.graphDataItem, function(index2, element2) {
+                                        chartData.push({
+                                            semana: element2.semana,
+                                            serie1: element2.serie1,
+                                            serie2: element2.serie2,
+                                            serie3: element2.serie3,
+                                            serie4: element2.serie4,
+                                            serie5: element2.serie5,
+                                            serie6: element2.serie6,
+                                            serie7: element2.serie7,
+                                            serie8: element2.serie8,
+                                            serie9: element2.serie9
+                                        });
+                                    });
+                                });
+                                //-----------------Quita los ceros del fin y del inicio del array----------------------
+                                //*
+                                chartDataLength = chartData.length;
+                                if(chartDataLength>0){
+                                    for(i = chartDataLength-1; i>0;i--){
+                                        //alert(chartData[i].semana);
+                                        if(chartData[i].serie1==0 && chartData[i].serie2==0 && chartData[i].serie3==0 && chartData[i].serie4==0 && chartData[i].serie5==0 && chartData[i].serie6==0 && chartData[i].serie7==0 && chartData[i].serie8==0 && chartData[i].serie9==0){
+                                            chartData.pop();
+                                        }
+                                        else{
+                                            break;
+                                        }
+                                    }
+                                }
+                                chartDataLength = chartData.length;
+                                //alert(chartDataLength);
+                                chartData.reverse();
+                                if(chartDataLength>0){
+                                    for(i = chartDataLength-1; i>0;i--){
+                                        //alert(chartData[i].semana);
+                                        if(chartData[i].serie1==0 && chartData[i].serie2==0 && chartData[i].serie3==0 && chartData[i].serie4==0 && chartData[i].serie5==0 && chartData[i].serie6==0 && chartData[i].serie7==0 && chartData[i].serie8==0 && chartData[i].serie9==0){
+                                            chartData.pop();
+                                        }
+                                        else{
+                                            break;
+                                        }
+                                    }
+                                }
+                                chartData.reverse();
+                                //*/
+                                //-----------------FIN de Quita los ceros del fin y del inicio del array----------------------
+                                var chart = AmCharts.makeChart("divGraph12", {
+                                    "type": "serial",
+                                    "theme": "light",
+                                    "mouseWheelZoomEnabled":false,
+                                    "legend": {
+                                        "useGraphSettings": true
+                                    },
+                                    "titles": [{
+                                        "text": jsonX.graph.graphTitle,
+                                        "size": 15
+                                    }],
+                                    "dataProvider": chartData,
+                                    "synchronizeGrid": true,
+                                    "valueAxes": [{
+                                        "id":"v1",
+                                        "axisColor": "#FF6600",
+                                        "axisThickness": 2,
+                                        "axisAlpha": 1,
+                                        "stackType": "regular",
+                                        "position": "left",
+                                        "gridAlpha": 0,
+                                        "title":jsonX.graph.graphYAxisTitle
+                                    }],
+                                    "graphs": [
+                                        {
+                                        /*0 a <2 años*/
+                                        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                                        "fillAlphas": 1,
+                                        "labelText": "[[value]]",
+                                        "lineAlpha": 0.3,
+                                        "type": "column",
+                                        "valueAxis": "v1",
+                                        "lineColor": "#00b0f0",
+                                        "title": jsonX.graph.graphSeries1Label,
+                                        "valueField": "serie1",
+                                        "type": "column",
+                                        "fillAlphas": 1,
+                                        "balloonFunction": function(info) {
+                                            if (info.values.value)
+                                                //return String(info.values.value);
+                                                return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
+                                            else
+                                                return '';
+                                            }
+                                        }, {
+                                            /*2 a <5 años*/
+                                            "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                                            "fillAlphas": 1,
+                                            "labelText": "[[value]]",
+                                            "lineAlpha": 0.3,
+                                            "type": "column",
+                                            "valueAxis": "v1",
+                                            "lineColor": "#ff99ff",
+                                            "title": jsonX.graph.graphSeries2Label,
+                                            "valueField": "serie2",
+                                            "type": "column",
+                                            "fillAlphas": 1,
+                                            "balloonFunction": function(info) {
+                                                if (info.values.value){
+                                                    return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
+
+                                                }
+                                                else
+                                                    return '';
+                                            }
+                                        }, {
+                                            /*5 a <19 años*/
+                                            "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                                            "fillAlphas": 1,
+                                            "labelText": "[[value]]",
+                                            "lineAlpha": 0.3,
+                                            "type": "column",
+                                            "valueAxis": "v1",
+                                            "lineColor": "#0070c0",
+                                            "title": jsonX.graph.graphSeries3Label,
+                                            "valueField": "serie3",
+                                            "type": "column",
+                                            "fillAlphas": 1,
+                                            "balloonFunction": function(info) {
+                                                if (info.values.value){
+                                                    return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
+
+                                                }
+                                                else
+                                                    return '';
+                                            }
+                                        }, {
+                                            /*20 a <39 años*/
+                                            "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                                            "fillAlphas": 1,
+                                            "labelText": "[[value]]",
+                                            "lineAlpha": 0.3,
+                                            "type": "column",
+                                            "valueAxis": "v1",
+                                            "lineColor": "#7030a0",
+                                            "title": jsonX.graph.graphSeries4Label,
+                                            "valueField": "serie4",
+                                            "type": "column",
+                                            "fillAlphas": 1,
+                                            "balloonFunction": function(info) {
+                                                if (info.values.value){
+                                                    return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
+                                                }
+                                                else
+                                                    return '';
+                                            }
+                                        }, {
+                                            /*40 a <59 años*/
+                                            "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                                            "fillAlphas": 1,
+                                            "labelText": "[[value]]",
+                                            "lineAlpha": 0.3,
+                                            "type": "column",
+                                            "valueAxis": "v1",
+                                            "lineColor": "#99cc00",
+                                            "title": jsonX.graph.graphSeries5Label,
+                                            "valueField": "serie5",
+                                            "type": "column",
+                                            "fillAlphas": 1,
+                                            "balloonFunction": function(info) {
+                                                if (info.values.value){
+                                                    return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
+                                                }
+                                                else
+                                                    return '';
+                                            }
+                                        }, {
+                                            /*60 años y +*/
+                                            "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                                            "fillAlphas": 1,
+                                            "labelText": "[[value]]",
+                                            "lineAlpha": 0.3,
+                                            "type": "column",
+                                            "valueAxis": "v1",
+                                            "lineColor": "#ff9900",
+                                            "title": jsonX.graph.graphSeries6Label,
+                                            "valueField": "serie6",
+                                            "type": "column",
+                                            "fillAlphas": 1,
+                                            "balloonFunction": function(info) {
+                                                if (info.values.value){
+                                                    return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
+                                                }
+                                                else
+                                                    return '';
+                                            }
+                                        },
+                                            {
+                                            /* GE 777*/
+                                            "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                                            "fillAlphas": 1,
+                                            "labelText": "[[value]]",
+                                            "lineAlpha": 0.3,
+                                            "type": "column",
+                                            "valueAxis": "v1",
+                                            "lineColor": "#ff0000",
+                                            "title": jsonX.graph.graphSeries7Label,
+                                            "valueField": "serie7",
+                                            "type": "column",
+                                            "fillAlphas": 1,
+                                            "balloonFunction": function(info) {
+                                                if (info.values.value){
+                                                    return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
+                                                }
+                                                else
+                                                    return '';
+                                            }
+                                            }, {
+                                                /*GE 888*/
+                                                "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                                                "fillAlphas": 1,
+                                                "labelText": "[[value]]",
+                                                "lineAlpha": 0.3,
+                                                "type": "column",
+                                                "valueAxis": "v1",
+                                                "lineColor": "#0033FF",
+                                                "title": jsonX.graph.graphSeries8Label,
+                                                "valueField": "serie8",
+                                                "type": "column",
+                                                "fillAlphas": 1,
+                                                "balloonFunction": function(info) {
+                                                    if (info.values.value){
+                                                        return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
+                                                    }
+                                                    else
+                                                        return '';
+                                                }
+                                            }, {
+                                                /*GE Deconocida*/
+                                                "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                                                "fillAlphas": 1,
+                                                "labelText": "[[value]]",
+                                                "lineAlpha": 0.3,
+                                                "type": "column",
+                                                "valueAxis": "v1",
+                                                "lineColor": "#660000",
+                                                "title": jsonX.graph.graphSeries9Label,
+                                                "valueField": "serie9",
+                                                "type": "column",
+                                                "fillAlphas": 1,
+                                                "balloonFunction": function(info) {
+                                                    if (info.values.value){
+                                                        return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
+                                                    }
+                                                    else
+                                                        return '';
+                                                }
+                                            }
+                                        ],
+                                    "chartScrollbar": {},
+                                    "chartCursor": {
+                                        "cursorPosition": "mouse"
+                                    },
+                                    "categoryField": "semana",
+                                    "categoryAxis": {
+                                        "parseDates": false,
+                                        "axisColor": "#DADADA",
+                                        "minorGridEnabled": true,
+                                        "title":jsonX.graph.graphXAxisTitle
+                                    },
+                                    /*"export": {
+                                        "enabled": true,
+                                        "position": "top-right"
+                                    },*/
+                                    "export": {
+                                        "enabled": true,
+                                        "menu": [{
+                                            "class": "export-main",
+                                            "menu": [{
+                                                "label": "Descargar",
+                                                "menu": [ "PNG", "JPG", "PDF","SVG" ]
+                                            },
+                                            {
+                                                "label": "Imprimir",
+                                                "format": "PRINT"
+                                            }]
+                                        }]
+                                    }
+                                });
+
+                                //chart.addListener("dataUpdated", zoomChart);
+                                chart.addListener("rendered", zoomChart);
+                                zoomChart();
+                                function zoomChart(){
+                                    chart.zoomToIndexes(0, chart.dataProvider.length);
+                                }
+                                //chart.zoomToIndexes(chart.dataProvider.length - 10, chart.dataProvider.length - 1);
+                            }
+                        });
+                    })
+                };
         </script>
 
         <style>
@@ -3569,201 +4257,200 @@
 
         <!--<script>GetGraphData12();</script>-->
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxFIN Gráfica 12 - Fallecidos IRAG x GE xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
-
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGráfica 9 - ETI 1 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <script>
-                    var jsonX;
+                        var jsonX;
 
-                    function GetGraphData9() {
-                        var dataRegion = 0;
-                        var dataHospital = 0;
-                        var dataIrag = 0;
-                        var dataEti = 0;
-                        //***
-                        $("#divGraph9").hide();
-                        $("#loaderGraph9").show();
-                        //*** Parametros
-                        if($("#chkCountry").is(':checked')){
-                            dataRegion = 0;
-                            dataHospital = 0;
-                            dataIrag = 0;
-                            dataEti = 0;
-                        }
-                        else{
-                            dataRegion = $("#Regions option:selected").val();
-                            dataHospital = $("#Hospitals option:selected").val();
-                            if($("#chkIrag").is(':checked')){
-                                dataIrag = 1;
+                        function GetGraphData9() {
+                            var dataRegion = 0;
+                            var dataHospital = 0;
+                            var dataIrag = 0;
+                            var dataEti = 0;
+                            //***
+                            $("#divGraph9").hide();
+                            $("#loaderGraph9").show();
+                            //*** Parametros
+                            if($("#chkCountry").is(':checked')){
+                                dataRegion = 0;
+                                dataHospital = 0;
+                                dataIrag = 0;
+                                dataEti = 0;
                             }
-                            if($("#chkEti").is(':checked')){
-                                dataEti = 1;
+                            else{
+                                dataRegion = $("#Regions option:selected").val();
+                                dataHospital = $("#Hospitals option:selected").val();
+                                if($("#chkIrag").is(':checked')){
+                                    dataIrag = 1;
+                                }
+                                if($("#chkEti").is(':checked')){
+                                    dataEti = 1;
+                                }
                             }
-                        }
-                        //*** Anios
-                        var allVals = [];
-                        var yrs = "";
-                        $('#c_b :checked').each(function() {
-                            allVals.push($(this).val());
-                        });
-                        yrs = allVals.join();
-                        $("#anios").val(yrs);
-                        //***
-                        $(document).ready(function () {
-                            $.ajax({
-                                type: 'POST',
-                                url: '/Graph/GetGraphDataTuned',
-                                data: "{'CountryID':" + GraphCountryID +",'Year':'" + $("#anios").val() + "','Graph':'Graph9','RegionID':'" + dataRegion + "', 'HospitalID':'" + dataHospital + "', 'IRAG':'" + dataIrag + "', 'ETI':'" + dataEti + "'}",
-                                contentType: "application/json",
-                                dataType: 'json',
-                                success: function (data) {
-                                    $("#divGraph9").show();
-                                    $("#loaderGraph9").hide();
-                                    //****
-                                    jsonX = JSON.parse(data);
-                                    var chartData = [];
-                                    $.each(jsonX, function(index, element) {
-                                        $.each(element.graphData.graphDataItem, function(index2, element2) {
-                                            chartData.push({
-                                                semana: element2.semana,
-                                                serie1: element2.serie1,
-                                                serie2: element2.serie2
+                            //*** Anios
+                            var allVals = [];
+                            var yrs = "";
+                            $('#c_b :checked').each(function() {
+                                allVals.push($(this).val());
+                            });
+                            yrs = allVals.join();
+                            $("#anios").val(yrs);
+                            //***
+                            $(document).ready(function () {
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/Graph/GetGraphDataTuned',
+                                    data: "{'CountryID':" + GraphCountryID +",'Year':'" + $("#anios").val() + "','Graph':'Graph9','RegionID':'" + dataRegion + "', 'HospitalID':'" + dataHospital + "', 'IRAG':'" + dataIrag + "', 'ETI':'" + dataEti + "'}",
+                                    contentType: "application/json",
+                                    dataType: 'json',
+                                    success: function (data) {
+                                        $("#divGraph9").show();
+                                        $("#loaderGraph9").hide();
+                                        //****
+                                        jsonX = JSON.parse(data);
+                                        var chartData = [];
+                                        $.each(jsonX, function(index, element) {
+                                            $.each(element.graphData.graphDataItem, function(index2, element2) {
+                                                chartData.push({
+                                                    semana: element2.semana,
+                                                    serie1: element2.serie1,
+                                                    serie2: element2.serie2
+                                                });
                                             });
                                         });
-                                    });
 
-                                    //-----------------Quita los ceros del fin y del inicio del array----------------------
-                                    chartDataLength = chartData.length;
-                                    if(chartDataLength>0){
-                                        for(i = chartDataLength-1; i>0;i--){
-                                            //alert(chartData[i].semana);
-                                            if(chartData[i].serie1==0 && chartData[i].serie2==0){
-                                                chartData.pop();
-                                            }
-                                            else{
-                                                break;
+                                        //-----------------Quita los ceros del fin y del inicio del array----------------------
+                                        chartDataLength = chartData.length;
+                                        if(chartDataLength>0){
+                                            for(i = chartDataLength-1; i>0;i--){
+                                                //alert(chartData[i].semana);
+                                                if(chartData[i].serie1==0 && chartData[i].serie2==0){
+                                                    chartData.pop();
+                                                }
+                                                else{
+                                                    break;
+                                                }
                                             }
                                         }
-                                    }
-                                    chartDataLength = chartData.length;
-                                    //alert(chartDataLength);
-                                    chartData.reverse();
-                                    if(chartDataLength>0){
-                                        for(i = chartDataLength-1; i>0;i--){
-                                            //alert(chartData[i].semana);
-                                            if(chartData[i].serie1==0 && chartData[i].serie2==0){
-                                                chartData.pop();
-                                            }
-                                            else{
-                                                break;
+                                        chartDataLength = chartData.length;
+                                        //alert(chartDataLength);
+                                        chartData.reverse();
+                                        if(chartDataLength>0){
+                                            for(i = chartDataLength-1; i>0;i--){
+                                                //alert(chartData[i].semana);
+                                                if(chartData[i].serie1==0 && chartData[i].serie2==0){
+                                                    chartData.pop();
+                                                }
+                                                else{
+                                                    break;
+                                                }
                                             }
                                         }
-                                    }
-                                    chartData.reverse();
-                                    //-----------------FIN de Quita los ceros del fin y del inicio del array----------------------
+                                        chartData.reverse();
+                                        //-----------------FIN de Quita los ceros del fin y del inicio del array----------------------
 
-                                    var chart = AmCharts.makeChart("divGraph9", {
-                                        "type": "serial",
-                                        "theme": "light",
-                                        "mouseWheelZoomEnabled":false,
-                                        "legend": {
-                                            "useGraphSettings": true
-                                        },
-                                        "titles": [{
-                                            "text": jsonX.graph.graphTitle,
-                                            "size": 15
-                                        }],
-                                        "dataProvider": chartData,
-                                        "synchronizeGrid":true,
-                                        "valueAxes": [{
-                                            "id":"v1",
-                                            "axisColor": "#FF6600",
-                                            "axisThickness": 2,
-                                            "axisAlpha": 1,
-                                            "position": "left",
-                                            "title":jsonX.graph.graphYAxisTitle
-                                            },{
-                                            "id":"v2",
-                                            "axisColor": "#FF6600",
-                                            "axisThickness": 2,
-                                            "axisAlpha": 1,
-                                            "position": "right",
-                                            "title":jsonX.graph.graphYAxisTitle2
+                                        var chart = AmCharts.makeChart("divGraph9", {
+                                            "type": "serial",
+                                            "theme": "light",
+                                            "mouseWheelZoomEnabled":false,
+                                            "legend": {
+                                                "useGraphSettings": true
+                                            },
+                                            "titles": [{
+                                                "text": jsonX.graph.graphTitle,
+                                                "size": 15
                                             }],
-                                        "graphs": [{
-                                            /*Numero de casos ETI*/
-                                            "valueAxis": "v1",
-                                            "lineColor": "#00b0f0",
-                                            "title": jsonX.graph.graphSeries1Label,
-                                            "valueField": "serie1",
-                                            "type": "column",
-                                            "fillAlphas": 1,
-                                            "balloonFunction": function(info) {
-                                                if (info.values.value)
-                                                    return String(info.values.value);
-                                                else
-                                                    return '';
-                                                }
-                                            },
-                                            {
-                                            /*% ETI del total de consultas*/
-                                            "valueAxis": "v2",
-                                            "lineColor": "#000000",
-                                            "bullet": "round",
-                                            "bulletBorderThickness": 1,
-                                            "hideBulletsCount": 40,
-                                            "title": jsonX.graph.graphSeries2Label,
-                                            "valueField": "serie2",
-                                            "type": "line",
-                                            "fillAlphas": 0,
-                                            "balloonFunction": function(info) {
-                                                if (info.values.value)
-                                                    return String(info.values.value) + "%";
-                                                else
-                                                    return '';
-                                                }
-                                            }],
-                                        "chartScrollbar": {},
-                                        "chartCursor": {
-                                            "cursorPosition": "mouse"
-                                            },
-                                        "categoryField": "semana",
-                                        "categoryAxis": {
-                                            "parseDates": false,
-                                            "axisColor": "#DADADA",
-                                            "minorGridEnabled": true,
-                                            "title":jsonX.graph.graphXAxisTitle
-                                            },
-                                        /*"export": {
-                                            "enabled": true,
-                                            "position": "top-right"
-                                        },*/
-                                        "export": {
-                                            "enabled": true,
-                                            "menu": [{
-                                                "class": "export-main",
-                                                "menu": [{
-                                                    "label": "Descargar",
-                                                    "menu": [ "PNG", "JPG", "PDF","SVG" ]
+                                            "dataProvider": chartData,
+                                            "synchronizeGrid":true,
+                                            "valueAxes": [{
+                                                "id":"v1",
+                                                "axisColor": "#FF6600",
+                                                "axisThickness": 2,
+                                                "axisAlpha": 1,
+                                                "position": "left",
+                                                "title":jsonX.graph.graphYAxisTitle
+                                                },{
+                                                "id":"v2",
+                                                "axisColor": "#FF6600",
+                                                "axisThickness": 2,
+                                                "axisAlpha": 1,
+                                                "position": "right",
+                                                "title":jsonX.graph.graphYAxisTitle2
+                                                }],
+                                            "graphs": [{
+                                                /*Numero de casos ETI*/
+                                                "valueAxis": "v1",
+                                                "lineColor": "#00b0f0",
+                                                "title": jsonX.graph.graphSeries1Label,
+                                                "valueField": "serie1",
+                                                "type": "column",
+                                                "fillAlphas": 1,
+                                                "balloonFunction": function(info) {
+                                                    if (info.values.value)
+                                                        return String(info.values.value);
+                                                    else
+                                                        return '';
+                                                    }
                                                 },
                                                 {
-                                                    "label": "Imprimir",
-                                                    "format": "PRINT"
+                                                /*% ETI del total de consultas*/
+                                                "valueAxis": "v2",
+                                                "lineColor": "#000000",
+                                                "bullet": "round",
+                                                "bulletBorderThickness": 1,
+                                                "hideBulletsCount": 40,
+                                                "title": jsonX.graph.graphSeries2Label,
+                                                "valueField": "serie2",
+                                                "type": "line",
+                                                "fillAlphas": 0,
+                                                "balloonFunction": function(info) {
+                                                    if (info.values.value)
+                                                        return String(info.values.value) + "%";
+                                                    else
+                                                        return '';
+                                                    }
+                                                }],
+                                            "chartScrollbar": {},
+                                            "chartCursor": {
+                                                "cursorPosition": "mouse"
+                                                },
+                                            "categoryField": "semana",
+                                            "categoryAxis": {
+                                                "parseDates": false,
+                                                "axisColor": "#DADADA",
+                                                "minorGridEnabled": true,
+                                                "title":jsonX.graph.graphXAxisTitle
+                                                },
+                                            /*"export": {
+                                                "enabled": true,
+                                                "position": "top-right"
+                                            },*/
+                                            "export": {
+                                                "enabled": true,
+                                                "menu": [{
+                                                    "class": "export-main",
+                                                    "menu": [{
+                                                        "label": "Descargar",
+                                                        "menu": [ "PNG", "JPG", "PDF","SVG" ]
+                                                    },
+                                                    {
+                                                        "label": "Imprimir",
+                                                        "format": "PRINT"
+                                                    }]
                                                 }]
-                                            }]
-                                            }
-                                    });
+                                                }
+                                        });
 
-                                    //chart.addListener("dataUpdated", zoomChart);
-                                    chart.addListener("rendered", zoomChart);
-                                    zoomChart();
-                                    function zoomChart(){
-                                        chart.zoomToIndexes(0, chart.dataProvider.length);
+                                        //chart.addListener("dataUpdated", zoomChart);
+                                        chart.addListener("rendered", zoomChart);
+                                        zoomChart();
+                                        function zoomChart(){
+                                            chart.zoomToIndexes(0, chart.dataProvider.length);
+                                        }
+                                        //chart.zoomToIndexes(chart.dataProvider.length - 10, chart.dataProvider.length - 1);
                                     }
-                                    //chart.zoomToIndexes(chart.dataProvider.length - 10, chart.dataProvider.length - 1);
-                                }
-                            });
-                        })
-                    };
+                                });
+                            })
+                        };
         </script>
 
         <style>
@@ -3799,201 +4486,200 @@
 
         <!--<script>GetGraphData9();</script>-->
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxFIN Gráfica 9 - ETI 1 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
-
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGráfica 10 - ETI 2 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <script>
-                    var jsonX;
+                        var jsonX;
 
-                    function GetGraphData10() {
-                        var dataRegion = 0;
-                        var dataHospital = 0;
-                        var dataIrag = 0;
-                        var dataEti = 0;
-                        //****
-                        $("#divGraph10").hide();
-                        $("#loaderGraph10").show();
-                        //**** Parametros
-                        if($("#chkCountry").is(':checked')){
-                            dataRegion = 0;
-                            dataHospital = 0;
-                            dataIrag = 0;
-                            dataEti = 0;
-                        }
-                        else{
-                            dataRegion = $("#Regions option:selected").val();
-                            dataHospital = $("#Hospitals option:selected").val();
-                            if($("#chkIrag").is(':checked')){
-                                dataIrag = 1;
+                        function GetGraphData10() {
+                            var dataRegion = 0;
+                            var dataHospital = 0;
+                            var dataIrag = 0;
+                            var dataEti = 0;
+                            //****
+                            $("#divGraph10").hide();
+                            $("#loaderGraph10").show();
+                            //**** Parametros
+                            if($("#chkCountry").is(':checked')){
+                                dataRegion = 0;
+                                dataHospital = 0;
+                                dataIrag = 0;
+                                dataEti = 0;
                             }
-                            if($("#chkEti").is(':checked')){
-                                dataEti = 1;
+                            else{
+                                dataRegion = $("#Regions option:selected").val();
+                                dataHospital = $("#Hospitals option:selected").val();
+                                if($("#chkIrag").is(':checked')){
+                                    dataIrag = 1;
+                                }
+                                if($("#chkEti").is(':checked')){
+                                    dataEti = 1;
+                                }
                             }
-                        }
-                        //**** Anios
-                        var allVals = [];
-                        var yrs = "";
-                        $('#c_b :checked').each(function() {
-                            allVals.push($(this).val());
-                        });
-                        yrs = allVals.join();
-                        $("#anios").val(yrs);
-                        //****
-                        $(document).ready(function () {
-                            $.ajax({
-                                type: 'POST',
-                                url: '/Graph/GetGraphDataTuned',
-                                data: "{'CountryID':" + GraphCountryID +",'Year':'" + $("#anios").val() + "','Graph':'Graph10','RegionID':'" + dataRegion + "', 'HospitalID':'" + dataHospital + "', 'IRAG':'" + dataIrag + "', 'ETI':'" + dataEti + "'}",
-                                contentType: "application/json",
-                                dataType: 'json',
-                                success: function (data) {
-                                    $("#divGraph10").show();
-                                    $("#loaderGraph10").hide();
-                                    //****
-                                    jsonX = JSON.parse(data);
-                                    var chartData = [];
-                                    $.each(jsonX, function(index, element) {
-                                        $.each(element.graphData.graphDataItem, function(index2, element2) {
-                                            chartData.push({
-                                                semana: element2.semana,
-                                                serie1: element2.serie1,
-                                                serie2: element2.serie2
+                            //**** Anios
+                            var allVals = [];
+                            var yrs = "";
+                            $('#c_b :checked').each(function() {
+                                allVals.push($(this).val());
+                            });
+                            yrs = allVals.join();
+                            $("#anios").val(yrs);
+                            //****
+                            $(document).ready(function () {
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/Graph/GetGraphDataTuned',
+                                    data: "{'CountryID':" + GraphCountryID +",'Year':'" + $("#anios").val() + "','Graph':'Graph10','RegionID':'" + dataRegion + "', 'HospitalID':'" + dataHospital + "', 'IRAG':'" + dataIrag + "', 'ETI':'" + dataEti + "'}",
+                                    contentType: "application/json",
+                                    dataType: 'json',
+                                    success: function (data) {
+                                        $("#divGraph10").show();
+                                        $("#loaderGraph10").hide();
+                                        //****
+                                        jsonX = JSON.parse(data);
+                                        var chartData = [];
+                                        $.each(jsonX, function(index, element) {
+                                            $.each(element.graphData.graphDataItem, function(index2, element2) {
+                                                chartData.push({
+                                                    semana: element2.semana,
+                                                    serie1: element2.serie1,
+                                                    serie2: element2.serie2
+                                                });
                                             });
                                         });
-                                    });
 
-                                    //-----------------Quita los ceros del fin y del inicio del array----------------------
-                                    chartDataLength = chartData.length;
-                                    if(chartDataLength>0){
-                                        for(i = chartDataLength-1; i>0;i--){
-                                            //alert(chartData[i].semana);
-                                            if(chartData[i].serie1==0 && chartData[i].serie2==0){
-                                                chartData.pop();
-                                            }
-                                            else{
-                                                break;
-                                            }
-                                        }
-                                    }
-                                    chartDataLength = chartData.length;
-                                    //alert(chartDataLength);
-                                    chartData.reverse();
-                                    if(chartDataLength>0){
-                                        for(i = chartDataLength-1; i>0;i--){
-                                            //alert(chartData[i].semana);
-                                            if(chartData[i].serie1==0 && chartData[i].serie2==0){
-                                                chartData.pop();
-                                            }
-                                            else{
-                                                break;
-                                            }
-                                        }
-                                    }
-                                    chartData.reverse();
-                                    //-----------------FIN de Quita los ceros del fin y del inicio del array----------------------
-
-                                    var chart = AmCharts.makeChart("divGraph10", {
-                                        "type": "serial",
-                                        "theme": "light",
-                                        "mouseWheelZoomEnabled":false,
-                                        "legend": {
-                                            "useGraphSettings": true
-                                        },
-                                        "titles": [{
-                                            "text": jsonX.graph.graphTitle,
-                                            "size": 15
-                                        }],
-                                        "dataProvider": chartData,
-                                        "synchronizeGrid":true,
-                                        "valueAxes": [{
-                                            "id":"v1",
-                                            "axisColor": "#FF6600",
-                                            "axisThickness": 2,
-                                            "axisAlpha": 1,
-                                            "position": "left",
-                                            "title":jsonX.graph.graphYAxisTitle
-                                        },{
-                                            "id":"v2",
-                                            "axisColor": "#FF6600",
-                                            "axisThickness": 2,
-                                            "axisAlpha": 1,
-                                            "position": "right",
-                                            "title":jsonX.graph.graphYAxisTitle2
-                                        }],
-                                        "graphs": [{
-                                            /*Casos ETI influenza (+)*/
-                                            "valueAxis": "v1",
-                                            "lineColor": "#00b0f0",
-                                            "title": jsonX.graph.graphSeries1Label,
-                                            "valueField": "serie1",
-                                            "type": "column",
-                                            "fillAlphas": 1,
-                                            "balloonFunction": function(info) {
-                                                if (info.values.value)
-                                                    return String(info.values.value);
-                                                else
-                                                    return '';
+                                        //-----------------Quita los ceros del fin y del inicio del array----------------------
+                                        chartDataLength = chartData.length;
+                                        if(chartDataLength>0){
+                                            for(i = chartDataLength-1; i>0;i--){
+                                                //alert(chartData[i].semana);
+                                                if(chartData[i].serie1==0 && chartData[i].serie2==0){
+                                                    chartData.pop();
                                                 }
+                                                else{
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        chartDataLength = chartData.length;
+                                        //alert(chartDataLength);
+                                        chartData.reverse();
+                                        if(chartDataLength>0){
+                                            for(i = chartDataLength-1; i>0;i--){
+                                                //alert(chartData[i].semana);
+                                                if(chartData[i].serie1==0 && chartData[i].serie2==0){
+                                                    chartData.pop();
+                                                }
+                                                else{
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        chartData.reverse();
+                                        //-----------------FIN de Quita los ceros del fin y del inicio del array----------------------
+
+                                        var chart = AmCharts.makeChart("divGraph10", {
+                                            "type": "serial",
+                                            "theme": "light",
+                                            "mouseWheelZoomEnabled":false,
+                                            "legend": {
+                                                "useGraphSettings": true
                                             },
-                                            {
-                                            /*% Casos influenza (+) del total de ETI con muestra*/
-                                            "valueAxis": "v2",
-                                            "lineColor": "#000000",
-                                            "bullet": "round",
-                                            "bulletBorderThickness": 1,
-                                            "hideBulletsCount": 40,
-                                            "title": jsonX.graph.graphSeries2Label,
-                                            "valueField": "serie2",
-                                            "type": "line",
-                                            "fillAlphas": 0,
-                                            "balloonFunction": function(info) {
-                                                if (info.values.value)
-                                                    return String(info.values.value) + "%";
-                                                else
-                                                    return '';
-                                                }
+                                            "titles": [{
+                                                "text": jsonX.graph.graphTitle,
+                                                "size": 15
                                             }],
-                                        "chartScrollbar": {},
-                                        "chartCursor": {
-                                            "cursorPosition": "mouse"
-                                        },
-                                        "categoryField": "semana",
-                                        "categoryAxis": {
-                                            "parseDates": false,
-                                            "axisColor": "#DADADA",
-                                            "minorGridEnabled": true,
-                                            "title":jsonX.graph.graphXAxisTitle
-                                        },
-                                        /*"export": {
-                                            "enabled": true,
-                                            "position": "top-right"
-                                        },*/
-                                        "export": {
-                                            "enabled": true,
-                                            "menu": [{
-                                                "class": "export-main",
-                                                "menu": [{
-                                                    "label": "Descargar",
-                                                    "menu": [ "PNG", "JPG", "PDF","SVG" ]
+                                            "dataProvider": chartData,
+                                            "synchronizeGrid":true,
+                                            "valueAxes": [{
+                                                "id":"v1",
+                                                "axisColor": "#FF6600",
+                                                "axisThickness": 2,
+                                                "axisAlpha": 1,
+                                                "position": "left",
+                                                "title":jsonX.graph.graphYAxisTitle
+                                            },{
+                                                "id":"v2",
+                                                "axisColor": "#FF6600",
+                                                "axisThickness": 2,
+                                                "axisAlpha": 1,
+                                                "position": "right",
+                                                "title":jsonX.graph.graphYAxisTitle2
+                                            }],
+                                            "graphs": [{
+                                                /*Casos ETI influenza (+)*/
+                                                "valueAxis": "v1",
+                                                "lineColor": "#00b0f0",
+                                                "title": jsonX.graph.graphSeries1Label,
+                                                "valueField": "serie1",
+                                                "type": "column",
+                                                "fillAlphas": 1,
+                                                "balloonFunction": function(info) {
+                                                    if (info.values.value)
+                                                        return String(info.values.value);
+                                                    else
+                                                        return '';
+                                                    }
                                                 },
                                                 {
-                                                    "label": "Imprimir",
-                                                    "format": "PRINT"
+                                                /*% Casos influenza (+) del total de ETI con muestra*/
+                                                "valueAxis": "v2",
+                                                "lineColor": "#000000",
+                                                "bullet": "round",
+                                                "bulletBorderThickness": 1,
+                                                "hideBulletsCount": 40,
+                                                "title": jsonX.graph.graphSeries2Label,
+                                                "valueField": "serie2",
+                                                "type": "line",
+                                                "fillAlphas": 0,
+                                                "balloonFunction": function(info) {
+                                                    if (info.values.value)
+                                                        return String(info.values.value) + "%";
+                                                    else
+                                                        return '';
+                                                    }
+                                                }],
+                                            "chartScrollbar": {},
+                                            "chartCursor": {
+                                                "cursorPosition": "mouse"
+                                            },
+                                            "categoryField": "semana",
+                                            "categoryAxis": {
+                                                "parseDates": false,
+                                                "axisColor": "#DADADA",
+                                                "minorGridEnabled": true,
+                                                "title":jsonX.graph.graphXAxisTitle
+                                            },
+                                            /*"export": {
+                                                "enabled": true,
+                                                "position": "top-right"
+                                            },*/
+                                            "export": {
+                                                "enabled": true,
+                                                "menu": [{
+                                                    "class": "export-main",
+                                                    "menu": [{
+                                                        "label": "Descargar",
+                                                        "menu": [ "PNG", "JPG", "PDF","SVG" ]
+                                                    },
+                                                    {
+                                                        "label": "Imprimir",
+                                                        "format": "PRINT"
+                                                    }]
                                                 }]
-                                            }]
-                                        }
-                                    });
+                                            }
+                                        });
 
-                                    //chart.addListener("dataUpdated", zoomChart);
-                                    chart.addListener("rendered", zoomChart);
-                                    zoomChart();
-                                    function zoomChart(){
-                                        chart.zoomToIndexes(0, chart.dataProvider.length);
+                                        //chart.addListener("dataUpdated", zoomChart);
+                                        chart.addListener("rendered", zoomChart);
+                                        zoomChart();
+                                        function zoomChart(){
+                                            chart.zoomToIndexes(0, chart.dataProvider.length);
+                                        }
+                                        //chart.zoomToIndexes(chart.dataProvider.length - 10, chart.dataProvider.length - 1);
                                     }
-                                    //chart.zoomToIndexes(chart.dataProvider.length - 10, chart.dataProvider.length - 1);
-                                }
-                            });
-                        })
-                    };
+                                });
+                            })
+                        };
         </script>
 
         <style>

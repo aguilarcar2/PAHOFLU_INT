@@ -631,8 +631,13 @@ namespace Paho.Controllers
                 string Languaje_ = user.Institution.Country.Language ?? "SPA";
                 int? ETI_ = ETI;
                 int? IRAG_ = IRAG;
-
-
+                //################################################################# DESARROLLO
+                if (Graph == "Graph1" && CountryID == 25)
+                {
+                    string cGraph1JS = "";
+                    return Json(cGraph1JS); ;
+                }
+                //################################################################# END DESARROLLO
                 //variable para armar los datos en un XML
                 //cada xml corresponde a cada gráfica
                 //la idea es utilizar la generación del excel de una vez para generar los datos de las dema's graficas
@@ -2260,6 +2265,46 @@ namespace Paho.Controllers
             return jsonTextLB;
         }
 
+        private static void recuperarDatos(string consString, string storedProcedure, int countryId, string languaje_country, int year, ArrayList aData)
+        {
+            using (var con = new SqlConnection(consString))
+            {
+                using (var command = new SqlCommand(storedProcedure, con) { CommandType = CommandType.StoredProcedure })
+                {
+                    command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
+                    command.Parameters.Add("@Languaje", SqlDbType.NVarChar).Value = languaje_country;
+                    command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
+                    command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = null;
+                    command.Parameters.Add("@Mes_", SqlDbType.Int).Value = null;
+                    command.Parameters.Add("@SE", SqlDbType.Int).Value = null;
+                    command.Parameters.Add("@Fecha_inicio", SqlDbType.Int).Value = null;
+                    command.Parameters.Add("@Fecha_fin", SqlDbType.Int).Value = null;
+                    command.Parameters.Add("@label_beg", SqlDbType.Int).Value = null;
+                    command.Parameters.Add("@table_temp_name", SqlDbType.Int).Value = null;
+                    command.Parameters.Add("@IRAG", SqlDbType.Int).Value = 1;
+
+                    con.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            if (reader.GetValue(0).ToString() == "")
+                            {
+                            }
+                            else
+                            {
+                                if ((int)reader.GetValue(0) <= 52)
+                                    aData[(int)reader.GetValue(0)] = reader.GetValue(1);
+                            }
+                        }
+                    }
+
+                    command.Parameters.Clear();
+                    con.Close();
+                }
+            }
+        }
+
         private static void recuperarDatosExcel(int CountryID, ArrayList aCEP1, ArrayList aCEP2, ArrayList aUA1, ArrayList aUA2, ArrayList aUE1, ArrayList aUE2, string sheet)
         {
             string cPathPlan = "";
@@ -2306,45 +2351,62 @@ namespace Paho.Controllers
             }
         }
 
-        private static void recuperarDatos(string consString, string storedProcedure, int countryId, string languaje_country, int year, ArrayList aData)
+        public static string graficoETINumeroCasos(int countryId, string[] years, int? hospitalId)
         {
-            using (var con = new SqlConnection(consString))
+            //System.Diagnostics.Debug.WriteLine("graficoETINumeroCasos->START");
+            ArrayList aData = new ArrayList();
+            string jsonTextLB = "";
+            string storedProcedure = "FLUID_ETI";
+            var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            //****
+            try
             {
-                using (var command = new SqlCommand(storedProcedure, con) { CommandType = CommandType.StoredProcedure })
+                for (int nI = 0; nI < years.Length; ++nI)
                 {
-                    command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
-                    command.Parameters.Add("@Languaje", SqlDbType.NVarChar).Value = languaje_country;
-                    command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
-                    command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = null;
-                    command.Parameters.Add("@Mes_", SqlDbType.Int).Value = null;
-                    command.Parameters.Add("@SE", SqlDbType.Int).Value = null;
-                    command.Parameters.Add("@Fecha_inicio", SqlDbType.Int).Value = null;
-                    command.Parameters.Add("@Fecha_fin", SqlDbType.Int).Value = null;
-                    command.Parameters.Add("@label_beg", SqlDbType.Int).Value = null;
-                    command.Parameters.Add("@table_temp_name", SqlDbType.Int).Value = null;
-                    command.Parameters.Add("@IRAG", SqlDbType.Int).Value = 1;
-
-                    con.Open();
-                    using (var reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            if (reader.GetValue(0).ToString() == "")
-                            {
-                            }
-                            else
-                            {
-                                if ((int)reader.GetValue(0) <= 52)
-                                    aData[(int)reader.GetValue(0)] = reader.GetValue(1);
-                            }
-                        }
-                    }
-
-                    command.Parameters.Clear();
-                    con.Close();
+                    recuperarDatosETI(consString, storedProcedure, countryId, hospitalId, Int32.Parse(years[nI]), aData);
                 }
+                //**** Crear el JSON
+                string cTitu = "Número de casos ETI por semana epidemiológica - " + string.Join(",", years);
+                jsonTextLB = "";
+                string cJS = "";
+                string cTemp = "";
+
+                jsonTextLB = jsonTextLB + "{\"" + "graph" + "\":";
+                jsonTextLB = jsonTextLB + "{\"" + "graphTitle" + "\":\"" + cTitu + "\",";
+                jsonTextLB = jsonTextLB + "\"" + "graphXAxisTitle" + "\":\"" + "Semana Epidemiológica" + "\",";
+                jsonTextLB = jsonTextLB + "\"" + "graphYAxisTitle" + "\":\"" + "Número de Casos" + "\",";
+                jsonTextLB = jsonTextLB + "\"" + "graphYAxisTitle2" + "\":\"" + "Porcentaje de Casos ETI del Total de Consultas" + "\",";
+                jsonTextLB = jsonTextLB + "\"" + "graphData" + "\":{\"" + "graphDataItem" + "\":";
+
+                for (int nI = 0; nI < aData.Count; ++nI)
+                {
+                    string[] aDaSe;
+                    aDaSe = (string[])aData[nI];
+
+                    cTemp = "{";
+                    cTemp = cTemp + "\"" + "semana" + "\":\"" + aDaSe[0] + "-" + aDaSe[1] + "\",";
+                    cTemp = cTemp + "\"" + "serie1" + "\":\"" + aDaSe[2] + "\",";               // Casos
+                    cTemp = cTemp + "\"" + "serie2" + "\":\"" + aDaSe[3] + "\"";               // Porcentaje
+                    cTemp = cTemp + "}";
+
+                    cJS = (nI == 0) ? cTemp : cJS + "," + cTemp;
+                }
+
+                cJS = "[" + cJS + "]";
+                jsonTextLB = jsonTextLB + cJS + "},";
+
+                jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + "Número de Casos ETI" + "\",";
+                jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + "% ETI del total de consultas" + "\"";
+                jsonTextLB = jsonTextLB + "}}";
             }
-        }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("graficoETINumeroCasos->Error:" + e.Message + "<-");
+            }
+            //**** 
+            //System.Diagnostics.Debug.WriteLine("graficoETINumeroCasos->END");
+            return jsonTextLB;
+        }//END graficoETINumeroCasos
 
         private static void recuperarDatosETI(string consString, string storProc, int countryId, int? hospitalId, int? year, ArrayList aData)
         {
@@ -2406,114 +2468,6 @@ namespace Paho.Controllers
             }
         }//END recuperarDatosETI
 
-        public static string graficoETINumeroCasos(int countryId, string[] years, int? hospitalId)
-        {
-            //System.Diagnostics.Debug.WriteLine("graficoETINumeroCasos->START");
-            ArrayList aData = new ArrayList();
-            string jsonTextLB = "";
-            string storedProcedure = "FLUID_ETI";
-            var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            //****
-            try
-            {
-                for (int nI = 0; nI < years.Length; ++nI)
-                {
-                    recuperarDatosETI(consString, storedProcedure, countryId, hospitalId, Int32.Parse(years[nI]), aData);
-                }
-                //**** Crear el JSON
-                string cTitu = "Número de casos ETI por semana epidemiológica - " + string.Join(",", years);
-                jsonTextLB = "";
-                string cJS = "";
-                string cTemp = "";
-
-                jsonTextLB = jsonTextLB + "{\"" + "graph" + "\":";
-                jsonTextLB = jsonTextLB + "{\"" + "graphTitle" + "\":\"" + cTitu + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphXAxisTitle" + "\":\"" + "Semana Epidemiológica" + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphYAxisTitle" + "\":\"" + "Número de Casos" + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphYAxisTitle2" + "\":\"" + "Porcentaje de Casos ETI del Total de Consultas" + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphData" + "\":{\"" + "graphDataItem" + "\":";
-
-                for (int nI = 0; nI < aData.Count; ++nI)
-                {
-                    string[] aDaSe;
-                    aDaSe = (string[])aData[nI];
-
-                    cTemp = "{";
-                    cTemp = cTemp + "\"" + "semana" + "\":\"" + aDaSe[0] + "-" + aDaSe[1] + "\",";
-                    cTemp = cTemp + "\"" + "serie1" + "\":\"" + aDaSe[2] + "\",";               // Casos
-                    cTemp = cTemp + "\"" + "serie2" + "\":\"" + aDaSe[3] + "\"";               // Porcentaje
-                    cTemp = cTemp + "}";
-
-                    cJS = (nI == 0) ? cTemp : cJS + "," + cTemp;
-                }
-
-                cJS = "[" + cJS + "]";
-                jsonTextLB = jsonTextLB + cJS + "},";
-
-                jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + "Número de Casos ETI" + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + "% ETI del total de consultas" + "\"";
-                jsonTextLB = jsonTextLB + "}}";
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine("graficoETINumeroCasos->Error:" + e.Message + "<-");
-            }
-            //**** 
-            //System.Diagnostics.Debug.WriteLine("graficoETINumeroCasos->END");
-            return jsonTextLB;
-        }//END graficoETINumeroCasos
-
-        private static void recuperarDatosETIPositivos(string consString, string storProc, int countryId, int? hospitalId, int? year, ArrayList aData)
-        {
-            //System.Diagnostics.Debug.WriteLine("recuperarDatosETIPositivos->START");
-            try
-            {
-                using (var con = new SqlConnection(consString))
-                {
-                    using (var command = new SqlCommand(storProc, con) { CommandType = CommandType.StoredProcedure })
-                    {
-                        command.Parameters.Clear();
-                        command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
-                        command.Parameters.Add("@Languaje", SqlDbType.NVarChar).Value = null;
-                        command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
-                        command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
-                        command.Parameters.Add("@Mes_", SqlDbType.Int).Value = 0;
-                        command.Parameters.Add("@SE", SqlDbType.Int).Value = 0;
-                        command.Parameters.Add("@Fecha_inicio", SqlDbType.Int).Value = null;
-                        command.Parameters.Add("@Fecha_fin", SqlDbType.Int).Value = null;
-                        command.Parameters.Add("@weekFrom", SqlDbType.Int).Value = 0;
-                        command.Parameters.Add("@weekTo", SqlDbType.Int).Value = 0;
-
-                        //System.Threading.Thread.Sleep(1000);         // Stop de 2 segundos
-                        con.Open();
-                        using (var reader = command.ExecuteReader())
-                        {
-                            int nCasos, nPoIn;
-                            double nPorc;
-                            CultureInfo oCI = new CultureInfo("en-US");
-
-                            while (reader.Read())
-                            {
-                                nCasos = (int)reader.GetValue(6);                           // Casos + a influenza
-                                nPoIn = (int)reader.GetValue(5);                            // Casos ETI (con muestra)
-                                nPorc = (nPoIn == 0) ? 0 : (Convert.ToDouble(nCasos) / Convert.ToDouble(nPoIn)) * 100;
-
-                                aData.Add(new string[] { reader.GetValue(1).ToString(), reader.GetValue(2).ToString(), nCasos.ToString(), nPorc.ToString("###0.0", oCI) });
-                            }
-                        }
-
-                        command.Parameters.Clear();
-                        con.Close();
-                    }
-                }
-                //System.Diagnostics.Debug.WriteLine("recuperarDatosETIPositivos->END");
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine("recuperarDatosETIPositivos->Error:" + e.Message + "<-");
-            }
-        }//END recuperarDatosETIPositivos
-
         public static string graficoETINumeroCasosPositivos(int countryId, string[] years, int? hospitalId)
         {
             //System.Diagnostics.Debug.WriteLine("graficoETINumeroCasosPositivos->START");
@@ -2571,6 +2525,148 @@ namespace Paho.Controllers
             return jsonTextLB;
         }//END-graficoETINumeroCasos
 
+        private static void recuperarDatosETIPositivos(string consString, string storProc, int countryId, int? hospitalId, int? year, ArrayList aData)
+        {
+            //System.Diagnostics.Debug.WriteLine("recuperarDatosETIPositivos->START");
+            try
+            {
+                using (var con = new SqlConnection(consString))
+                {
+                    using (var command = new SqlCommand(storProc, con) { CommandType = CommandType.StoredProcedure })
+                    {
+                        command.Parameters.Clear();
+                        command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
+                        command.Parameters.Add("@Languaje", SqlDbType.NVarChar).Value = null;
+                        command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
+                        command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
+                        command.Parameters.Add("@Mes_", SqlDbType.Int).Value = 0;
+                        command.Parameters.Add("@SE", SqlDbType.Int).Value = 0;
+                        command.Parameters.Add("@Fecha_inicio", SqlDbType.Int).Value = null;
+                        command.Parameters.Add("@Fecha_fin", SqlDbType.Int).Value = null;
+                        command.Parameters.Add("@weekFrom", SqlDbType.Int).Value = 0;
+                        command.Parameters.Add("@weekTo", SqlDbType.Int).Value = 0;
+
+                        //System.Threading.Thread.Sleep(1000);         // Stop de 2 segundos
+                        con.Open();
+                        using (var reader = command.ExecuteReader())
+                        {
+                            int nCasos, nPoIn;
+                            double nPorc;
+                            CultureInfo oCI = new CultureInfo("en-US");
+
+                            while (reader.Read())
+                            {
+                                nCasos = (int)reader.GetValue(6);                           // Casos + a influenza
+                                nPoIn = (int)reader.GetValue(5);                            // Casos ETI (con muestra)
+                                nPorc = (nPoIn == 0) ? 0 : (Convert.ToDouble(nCasos) / Convert.ToDouble(nPoIn)) * 100;
+
+                                aData.Add(new string[] { reader.GetValue(1).ToString(), reader.GetValue(2).ToString(), nCasos.ToString(), nPorc.ToString("###0.0", oCI) });
+                            }
+                        }
+
+                        command.Parameters.Clear();
+                        con.Close();
+                    }
+                }
+                //System.Diagnostics.Debug.WriteLine("recuperarDatosETIPositivos->END");
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("recuperarDatosETIPositivos->Error:" + e.Message + "<-");
+            }
+        }//END recuperarDatosETIPositivos
+
+        public static string graficoIRAGFallecidosxGE(int countryId, string[] years, int? hospitalId)
+        {
+            //System.Diagnostics.Debug.WriteLine("graficoIRAGFallecidosxGE->START");
+            ArrayList aData = new ArrayList();
+            string jsonTextLB = "";
+            string storedProcedure = "FLUID_DEATHS_IRAG";
+            var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            //****
+            try
+            {
+                for (int nI = 0; nI < years.Length; ++nI)
+                {
+                    recuperarDatosIRAGFallecidosxGE(consString, storedProcedure, countryId, hospitalId, Int32.Parse(years[nI]), aData);
+                }
+                //**** Crear el JSON  
+                string cTitu = "Distribución de fallecidos de IRAG por grupos de edad por semana epidemiológica - " + string.Join(",", years);
+                jsonTextLB = "";
+                string cJS = "";
+                string cTemp = "";
+                if (countryId == 25)
+                    cTitu = "Distribution of SARI deaths by age groups per epidemiological week - " + string.Join(",", years);
+                //****
+                jsonTextLB = jsonTextLB + "{\"" + "graph" + "\":";
+                jsonTextLB = jsonTextLB + "{\"" + "graphTitle" + "\":\"" + cTitu + "\",";
+                jsonTextLB = jsonTextLB + "\"" + "graphXAxisTitle" + "\":\"" + "Semana Epidemiológica" + "\",";
+                jsonTextLB = jsonTextLB + "\"" + "graphYAxisTitle" + "\":\"" + "Número de Casos" + "\",";
+                jsonTextLB = jsonTextLB + "\"" + "graphData" + "\":{\"" + "graphDataItem" + "\":";
+
+                for (int nI = 0; nI < aData.Count; ++nI)
+                {
+                    string[] aDaSe;
+                    aDaSe = (string[])aData[nI];
+
+                    cTemp = "{";
+                    cTemp = cTemp + "\"" + "semana" + "\":\"" + aDaSe[0] + "-" + aDaSe[1] + "\",";
+                    cTemp = cTemp + "\"" + "serie1" + "\":\"" + aDaSe[2] + "\",";              //
+                    cTemp = cTemp + "\"" + "serie2" + "\":\"" + aDaSe[3] + "\",";               //
+                    cTemp = cTemp + "\"" + "serie3" + "\":\"" + aDaSe[4] + "\",";               //
+                    cTemp = cTemp + "\"" + "serie4" + "\":\"" + aDaSe[5] + "\",";               //
+                    cTemp = cTemp + "\"" + "serie5" + "\":\"" + aDaSe[6] + "\",";               //
+                    cTemp = cTemp + "\"" + "serie6" + "\":\"" + aDaSe[7] + "\",";               //
+                    cTemp = cTemp + "\"" + "serie7" + "\":\"" + aDaSe[8] + "\"";               //
+                    if (countryId == 25)
+                    {
+                        cTemp = cTemp + ",";
+                        cTemp = cTemp + "\"" + "serie8" + "\":\"" + aDaSe[9] + "\",";               //
+                        cTemp = cTemp + "\"" + "serie9" + "\":\"" + aDaSe[10] + "\"";               //
+                    }
+
+                    cTemp = cTemp + "}";
+
+                    cJS = (nI == 0) ? cTemp : cJS + "," + cTemp;
+                }
+
+                cJS = "[" + cJS + "]";
+                jsonTextLB = jsonTextLB + cJS + "},";
+
+                if (countryId == 25)
+                {
+                    jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + "Under 6 months" + "\",";
+                    jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + "6 to 11 months" + "\",";
+                    jsonTextLB = jsonTextLB + "\"" + "graphSeries3Label" + "\":\"" + "12 to 23 months" + "\",";
+                    jsonTextLB = jsonTextLB + "\"" + "graphSeries4Label" + "\":\"" + "2 to 4 years" + "\",";
+                    jsonTextLB = jsonTextLB + "\"" + "graphSeries5Label" + "\":\"" + "5 to 14 years" + "\",";
+                    jsonTextLB = jsonTextLB + "\"" + "graphSeries6Label" + "\":\"" + "15 to 49 years" + "\",";
+                    jsonTextLB = jsonTextLB + "\"" + "graphSeries7Label" + "\":\"" + "50 to 64 years" + "\",";
+                    jsonTextLB = jsonTextLB + "\"" + "graphSeries8Label" + "\":\"" + "65 years +" + "\",";
+                    jsonTextLB = jsonTextLB + "\"" + "graphSeries9Label" + "\":\"" + "Age unknown" + "\"";
+                    jsonTextLB = jsonTextLB + "}}";
+                }
+                else
+                {
+                    jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + "0 a <2 años" + "\",";
+                    jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + "2 a <5 años" + "\",";
+                    jsonTextLB = jsonTextLB + "\"" + "graphSeries3Label" + "\":\"" + "5 a 19 años" + "\",";
+                    jsonTextLB = jsonTextLB + "\"" + "graphSeries4Label" + "\":\"" + "20 a 39 años" + "\",";
+                    jsonTextLB = jsonTextLB + "\"" + "graphSeries5Label" + "\":\"" + "40 a 59 años" + "\",";
+                    jsonTextLB = jsonTextLB + "\"" + "graphSeries6Label" + "\":\"" + "60 años y +" + "\",";
+                    jsonTextLB = jsonTextLB + "\"" + "graphSeries7Label" + "\":\"" + "Edad desconocida" + "\"";
+                    jsonTextLB = jsonTextLB + "}}";
+                }
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("graficoIRAGFallecidosxGE->Error:" + e.Message + "<-");
+            }
+            //**** 
+            //System.Diagnostics.Debug.WriteLine("graficoIRAGFallecidosxGE->END");
+            return jsonTextLB;
+        }//END graficoETINumeroCasos
+
         private static void recuperarDatosIRAGFallecidosxGE(string consString, string storProc, int countryId, int? hospitalId, int? year, ArrayList aData)
         {
             //System.Diagnostics.Debug.WriteLine("recuperarDatosIRAGFallecidosxGE->START");
@@ -2598,7 +2694,7 @@ namespace Paho.Controllers
                         using (var reader = command.ExecuteReader())
                         {
                             string cAnio, cSema;
-                            string cGE1, cGE2, cGE3, cGE4, cGE5, cGE6, cGE7;
+                            string cGE1, cGE2, cGE3, cGE4, cGE5, cGE6, cGE7, cGE8, cGE9;
 
                             while (reader.Read())
                             {
@@ -2611,7 +2707,16 @@ namespace Paho.Controllers
                                 cGE5 = ((int)reader.GetValue(7)).ToString();
                                 cGE6 = ((int)reader.GetValue(8)).ToString();
                                 cGE7 = ((int)reader.GetValue(9)).ToString();
-                                aData.Add(new string[] { cAnio, cSema, cGE1, cGE2, cGE3, cGE4, cGE5, cGE6, cGE7 });
+                                if (countryId == 25)
+                                {
+                                    cGE8 = ((int)reader.GetValue(10)).ToString();
+                                    cGE9 = ((int)reader.GetValue(11)).ToString();
+                                    aData.Add(new string[] { cAnio, cSema, cGE1, cGE2, cGE3, cGE4, cGE5, cGE6, cGE7, cGE8, cGE9 });
+                                }
+                                else
+                                {
+                                    aData.Add(new string[] { cAnio, cSema, cGE1, cGE2, cGE3, cGE4, cGE5, cGE6, cGE7 });
+                                }
                             }
                         }
 
@@ -2627,25 +2732,27 @@ namespace Paho.Controllers
             }
         }//END-recuperarDatosIRAGFallecidosxGE
 
-        public static string graficoIRAGFallecidosxGE(int countryId, string[] years, int? hospitalId)
+        public static string graficoIRAGxGrupoEdad(int countryId, string[] years, int? hospitalId)
         {
-            //System.Diagnostics.Debug.WriteLine("graficoIRAGFallecidosxGE->START");
+            //System.Diagnostics.Debug.WriteLine("graficoIRAGxGrupoEdad->START");
             ArrayList aData = new ArrayList();
             string jsonTextLB = "";
-            string storedProcedure = "FLUID_DEATHS_IRAG";
+            string storedProcedure = "FLUID_IRAG";
             var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             //****
             try
             {
                 for (int nI = 0; nI < years.Length; ++nI)
                 {
-                    recuperarDatosIRAGFallecidosxGE(consString, storedProcedure, countryId, hospitalId, Int32.Parse(years[nI]), aData);
+                    recuperarDatosIRAGxGrupoEdad(consString, storedProcedure, countryId, hospitalId, Int32.Parse(years[nI]), aData);
                 }
                 //**** Crear el JSON
-                string cTitu = "Distribución de fallecidos de IRAG por grupos de edad por semana epidemiológica - " + string.Join(",", years);
+                string cTitu = "Distribución de total de casos de IRAG por  grupos de edad y semana epidemiológica - " + string.Join(",", years);
                 jsonTextLB = "";
                 string cJS = "";
                 string cTemp = "";
+                if (countryId == 25)
+                    cTitu = "Distribution of total SARI cases by age group and epidemiological week - " + string.Join(",", years);
 
                 jsonTextLB = jsonTextLB + "{\"" + "graph" + "\":";
                 jsonTextLB = jsonTextLB + "{\"" + "graphTitle" + "\":\"" + cTitu + "\",";
@@ -2665,8 +2772,13 @@ namespace Paho.Controllers
                     cTemp = cTemp + "\"" + "serie3" + "\":\"" + aDaSe[4] + "\",";               //
                     cTemp = cTemp + "\"" + "serie4" + "\":\"" + aDaSe[5] + "\",";               //
                     cTemp = cTemp + "\"" + "serie5" + "\":\"" + aDaSe[6] + "\",";               //
-                    cTemp = cTemp + "\"" + "serie6" + "\":\"" + aDaSe[7] + "\",";               //
-                    cTemp = cTemp + "\"" + "serie7" + "\":\"" + aDaSe[8] + "\"";               //
+                    cTemp = cTemp + "\"" + "serie6" + "\":\"" + aDaSe[7] + "\"";               //
+                    if (countryId == 25)
+                    {
+                        cTemp = cTemp + ",";
+                        cTemp = cTemp + "\"" + "serie7" + "\":\"" + aDaSe[8] + "\",";               //
+                        cTemp = cTemp + "\"" + "serie8" + "\":\"" + aDaSe[9] + "\"";               //
+                    }
 
                     cTemp = cTemp + "}";
 
@@ -2676,23 +2788,37 @@ namespace Paho.Controllers
                 cJS = "[" + cJS + "]";
                 jsonTextLB = jsonTextLB + cJS + "},";
 
-                jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + "0 a <2 años" + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + "2 a <5 años" + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphSeries3Label" + "\":\"" + "5 a 19 años" + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphSeries4Label" + "\":\"" + "20 a 39 años" + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphSeries5Label" + "\":\"" + "40 a 59 años" + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphSeries6Label" + "\":\"" + "60 años y +" + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphSeries7Label" + "\":\"" + "Edad desconocida" + "\"";
+                if (countryId == 25)
+                {
+                    jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + "Under 6 months" + "\",";
+                    jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + "6 to 11 months" + "\",";
+                    jsonTextLB = jsonTextLB + "\"" + "graphSeries3Label" + "\":\"" + "12 to 23 months" + "\",";
+                    jsonTextLB = jsonTextLB + "\"" + "graphSeries4Label" + "\":\"" + "2 to 4 years" + "\",";
+                    jsonTextLB = jsonTextLB + "\"" + "graphSeries5Label" + "\":\"" + "5 to 14 years" + "\",";
+                    jsonTextLB = jsonTextLB + "\"" + "graphSeries6Label" + "\":\"" + "15 to 49 years" + "\",";
+                    jsonTextLB = jsonTextLB + "\"" + "graphSeries7Label" + "\":\"" + "50 to 64 years" + "\",";
+                    jsonTextLB = jsonTextLB + "\"" + "graphSeries8Label" + "\":\"" + "65 years +" + "\"";
+                }
+                else
+                {
+                    jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + "0 a <2 años" + "\",";
+                    jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + "2 a <5 años" + "\",";
+                    jsonTextLB = jsonTextLB + "\"" + "graphSeries3Label" + "\":\"" + "5 a 19 años" + "\",";
+                    jsonTextLB = jsonTextLB + "\"" + "graphSeries4Label" + "\":\"" + "20 a 39 años" + "\",";
+                    jsonTextLB = jsonTextLB + "\"" + "graphSeries5Label" + "\":\"" + "40 a 59 años" + "\",";
+                    jsonTextLB = jsonTextLB + "\"" + "graphSeries6Label" + "\":\"" + "60 años y +" + "\"";
+                }
+
                 jsonTextLB = jsonTextLB + "}}";
             }
             catch (Exception e)
             {
-                System.Diagnostics.Debug.WriteLine("graficoIRAGFallecidosxGE->Error:" + e.Message + "<-");
+                System.Diagnostics.Debug.WriteLine("graficoIRAGxGrupoEdad->Error:" + e.Message + "<-");
             }
             //**** 
-            //System.Diagnostics.Debug.WriteLine("graficoIRAGFallecidosxGE->END");
+            //System.Diagnostics.Debug.WriteLine("graficoIRAGxGrupoEdad->END");
             return jsonTextLB;
-        }//END graficoETINumeroCasos
+        }//END
 
         private static void recuperarDatosIRAGxGrupoEdad(string consString, string storProc, int countryId, int? hospitalId, int? year, ArrayList aData)
         {
@@ -2715,13 +2841,12 @@ namespace Paho.Controllers
                         command.Parameters.Add("@weekFrom", SqlDbType.Int).Value = 0;
                         command.Parameters.Add("@weekTo", SqlDbType.Int).Value = 0;
 
-                        //System.Threading.Thread.Sleep(1000);         // Stop de 2 segundos
                         con.Open();
 
                         using (var reader = command.ExecuteReader())
                         {
                             string cAnio, cSema;
-                            string cGE1, cGE2, cGE3, cGE4, cGE5, cGE6;
+                            string cGE1, cGE2, cGE3, cGE4, cGE5, cGE6, cGE7, cGE8;
 
                             while (reader.Read())
                             {
@@ -2733,8 +2858,16 @@ namespace Paho.Controllers
                                 cGE4 = ((int)reader.GetValue(14)).ToString();
                                 cGE5 = ((int)reader.GetValue(15)).ToString();
                                 cGE6 = ((int)reader.GetValue(16)).ToString();
-
-                                aData.Add(new string[] { cAnio, cSema, cGE1, cGE2, cGE3, cGE4, cGE5, cGE6 });
+                                if (countryId == 25)
+                                {
+                                    cGE7 = ((int)reader.GetValue(17)).ToString();
+                                    cGE8 = ((int)reader.GetValue(18)).ToString();
+                                    aData.Add(new string[] { cAnio, cSema, cGE1, cGE2, cGE3, cGE4, cGE5, cGE6, cGE7, cGE8 });
+                                }
+                                else
+                                {
+                                    aData.Add(new string[] { cAnio, cSema, cGE1, cGE2, cGE3, cGE4, cGE5, cGE6 });
+                                }
                             }
                         }
 
@@ -2749,70 +2882,6 @@ namespace Paho.Controllers
                 System.Diagnostics.Debug.WriteLine("graficoIRAGxGrupoEdad->Error:" + e.Message + "<-");
             }
         }//END-
-
-        public static string graficoIRAGxGrupoEdad(int countryId, string[] years, int? hospitalId)
-        {
-            System.Diagnostics.Debug.WriteLine("graficoIRAGxGrupoEdad->START");
-            ArrayList aData = new ArrayList();
-            string jsonTextLB = "";
-            string storedProcedure = "FLUID_IRAG";
-            var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            //****
-            try
-            {
-                for (int nI = 0; nI < years.Length; ++nI)
-                {
-                    recuperarDatosIRAGxGrupoEdad(consString, storedProcedure, countryId, hospitalId, Int32.Parse(years[nI]), aData);
-                }
-                //**** Crear el JSON
-                string cTitu = "Distribución de total de casos de IRAG por  grupos de edad y semana epidemiológica - " + string.Join(",", years); //Year = string.Join(",", years);
-                jsonTextLB = "";
-                string cJS = "";
-                string cTemp = "";
-
-                jsonTextLB = jsonTextLB + "{\"" + "graph" + "\":";
-                jsonTextLB = jsonTextLB + "{\"" + "graphTitle" + "\":\"" + cTitu + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphXAxisTitle" + "\":\"" + "Semana Epidemiológica" + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphYAxisTitle" + "\":\"" + "Número de Casos" + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphData" + "\":{\"" + "graphDataItem" + "\":";
-
-                for (int nI = 0; nI < aData.Count; ++nI)
-                {
-                    string[] aDaSe;
-                    aDaSe = (string[])aData[nI];
-
-                    cTemp = "{";
-                    cTemp = cTemp + "\"" + "semana" + "\":\"" + aDaSe[0] + "-" + aDaSe[1] + "\",";
-                    cTemp = cTemp + "\"" + "serie1" + "\":\"" + aDaSe[2] + "\",";              //
-                    cTemp = cTemp + "\"" + "serie2" + "\":\"" + aDaSe[3] + "\",";               //
-                    cTemp = cTemp + "\"" + "serie3" + "\":\"" + aDaSe[4] + "\",";               //
-                    cTemp = cTemp + "\"" + "serie4" + "\":\"" + aDaSe[5] + "\",";               //
-                    cTemp = cTemp + "\"" + "serie5" + "\":\"" + aDaSe[6] + "\",";               //
-                    cTemp = cTemp + "\"" + "serie6" + "\":\"" + aDaSe[7] + "\"";               //
-                    cTemp = cTemp + "}";
-
-                    cJS = (nI == 0) ? cTemp : cJS + "," + cTemp;
-                }
-
-                cJS = "[" + cJS + "]";
-                jsonTextLB = jsonTextLB + cJS + "},";
-
-                jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + "0 a <2 años" + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + "2 a <5 años" + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphSeries3Label" + "\":\"" + "5 a 19 años" + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphSeries4Label" + "\":\"" + "20 a 39 años" + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphSeries5Label" + "\":\"" + "40 a 59 años" + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphSeries6Label" + "\":\"" + "60 años y +" + "\"";
-                jsonTextLB = jsonTextLB + "}}";
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine("graficoIRAGxGrupoEdad->Error:" + e.Message + "<-");
-            }
-            //**** 
-            //System.Diagnostics.Debug.WriteLine("graficoIRAGxGrupoEdad->END");
-            return jsonTextLB;
-        }//END graficoETINumeroCasos
 
     }
 }
