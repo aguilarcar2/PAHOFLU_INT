@@ -9,205 +9,203 @@
 @if (ViewBag.UsrCtry > 0)
 {
 <div class="row rowform" data-bind="visibility: true" style="margin-left:5px;">
-    <!--div class="col-md-10"-->
-
+        <!--div class="col-md-10"-->
         <!--div class="col-md-9"-->
 
-            <style>
-                    /*.axis--x path {
-                    display: none;
-                }*/
+        <style>
+                /*.axis--x path {
+                display: none;
+            }*/
 
-                    .grid .tick {
-                        stroke: lightgrey;
-                        stroke-opacity: 0.7;
-                        shape-rendering: crispEdges;
-                    }
+                .grid .tick {
+                    stroke: lightgrey;
+                    stroke-opacity: 0.7;
+                    shape-rendering: crispEdges;
+                }
 
-                    .grid path {
-                        stroke-width: 0;
-                    }
+                .grid path {
+                    stroke-width: 0;
+                }
 
-                    .line {
-                        fill: none;
-                        stroke: steelblue;
-                        stroke-width: 1.5px;
-                    }
-            </style>
+                .line {
+                    fill: none;
+                    stroke: steelblue;
+                    stroke-width: 1.5px;
+                }
+        </style>
 
-            <!--script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
-            <script src="https://www.amcharts.com/lib/3/serial.js"></script>
-            <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
-            <script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
-            <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" /-->
+        <!--script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+        <script src="https://www.amcharts.com/lib/3/serial.js"></script>
+        <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+        <script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+        <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" /-->
 
-            <script src="~/Scripts/amcharts/amcharts.js"></script>
-            <script src="~/Scripts/amcharts/serial.js"></script>
-            <script src="~/Scripts/amcharts/pie.js"></script>
-            <script src="~/Scripts/amcharts/themes/light.js"></script>
-            <script src="~/Scripts/amcharts/plugins/export/export.min.js"></script>
-            <link rel="stylesheet" href="~/Scripts/amcharts/plugins/export/export.css" type="text/css" media="all" />
-        
+        <script src="~/Scripts/amcharts/amcharts.js"></script>
+        <script src="~/Scripts/amcharts/serial.js"></script>
+        <script src="~/Scripts/amcharts/pie.js"></script>
+        <script src="~/Scripts/amcharts/themes/light.js"></script>
+        <script src="~/Scripts/amcharts/plugins/export/export.min.js"></script>
+        <link rel="stylesheet" href="~/Scripts/amcharts/plugins/export/export.css" type="text/css" media="all" />
         
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGráfica 7 - Lineas Basalesxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <script>
-            var jsonX;
+                var jsonX;
 
-            function GetGraphData7() {
-                var dataRegion = 0;
-                var dataHospital = 0;
-                var dataIrag = 1;
-                var dataEti = 0;
+                function GetGraphData7() {
+                    var dataRegion = 0;
+                    var dataHospital = 0;
+                    var dataIrag = 1;
+                    var dataEti = 0;
 
-                //Esta sección sirve para consolidar los años seleccionados en un string separado por comas
-                var allVals = [];
-                var yrs = "";
-                $("#divGraph7").hide();
-                $("#loaderGraph7").show();
-                $('#c_b7 :checked').each(function() {
-                    allVals.push($(this).val());
-                });
-                yrs = allVals.join();
-                $("#anios7").val(yrs);
+                    //Esta sección sirve para consolidar los años seleccionados en un string separado por comas
+                    var allVals = [];
+                    var yrs = "";
+                    $("#divGraph7").hide();
+                    $("#loaderGraph7").show();
+                    $('#c_b7 :checked').each(function() {
+                        allVals.push($(this).val());
+                    });
+                    yrs = allVals.join();
+                    $("#anios7").val(yrs);
 
-                //alert($("#anios").val());
-                $(document).ready(function () {
-                    $.ajax({
-                        type: 'POST',
-                        //url: '/Graph/GetGraphDataSample2',
-                        //data: "{'CountryID':" + GraphCountryID +",'Year':'" + $("#anios").val() + "','Graph':'Graph7','RegionID':'" + dataRegion + "', 'HospitalID':'" + dataHospital + "'}",
-                        url: '/Graph/GetGraphDataTuned',
-                        data: "{'CountryID':" + GraphCountryID +",'Year':'" + $("#anios").val() + "','Graph':'Graph7','RegionID':'" + dataRegion + "', 'HospitalID':'" + dataHospital + "', 'IRAG':'" + dataIrag + "', 'ETI':'" + dataEti + "'}",
-                        contentType: "application/json",
-                        dataType: 'json',
-                        success: function (data) {
-                            $("#divGraph7").show();
-                            $("#loaderGraph7").hide();
-                            var json_obj = JSON.parse(data);
-                            jsonX = JSON.parse(data);
-                            $("#divPrueba7").show();
-                            var chartData = [];
-                            $.each(jsonX, function(index, element) {
-                                $.each(element.graphData.graphDataItem, function(index2, element2) {
-                                    chartData.push({
-                                        semana: element2.semana,
-                                        serie1: element2.serie1,
-                                        serie2: element2.serie2,
-                                        serie3: element2.serie3,
-                                        serie4: element2.serie4
+                    //alert($("#anios").val());
+                    $(document).ready(function () {
+                        $.ajax({
+                            type: 'POST',
+                            //url: '/Graph/GetGraphDataSample2',
+                            //data: "{'CountryID':" + GraphCountryID +",'Year':'" + $("#anios").val() + "','Graph':'Graph7','RegionID':'" + dataRegion + "', 'HospitalID':'" + dataHospital + "'}",
+                            url: '/Graph/GetGraphDataTuned',
+                            data: "{'CountryID':" + GraphCountryID +",'Year':'" + $("#anios").val() + "','Graph':'Graph7','RegionID':'" + dataRegion + "', 'HospitalID':'" + dataHospital + "', 'IRAG':'" + dataIrag + "', 'ETI':'" + dataEti + "'}",
+                            contentType: "application/json",
+                            dataType: 'json',
+                            success: function (data) {
+                                $("#divGraph7").show();
+                                $("#loaderGraph7").hide();
+                                var json_obj = JSON.parse(data);
+                                jsonX = JSON.parse(data);
+                                $("#divPrueba7").show();
+                                var chartData = [];
+                                $.each(jsonX, function(index, element) {
+                                    $.each(element.graphData.graphDataItem, function(index2, element2) {
+                                        chartData.push({
+                                            semana: element2.semana,
+                                            serie1: element2.serie1,
+                                            serie2: element2.serie2,
+                                            serie3: element2.serie3,
+                                            serie4: element2.serie4
+                                        });
                                     });
+
                                 });
 
-                            });
-
-                            var chart = AmCharts.makeChart("divGraph7", {
-                                "type": "serial",
-                                "theme": "light",
-                                "mouseWheelZoomEnabled":false,
-                                "legend": {
-                                    "useGraphSettings": true
+                                var chart = AmCharts.makeChart("divGraph7", {
+                                    "type": "serial",
+                                    "theme": "light",
+                                    "mouseWheelZoomEnabled":false,
+                                    "legend": {
+                                        "useGraphSettings": true
+                                        },
+                                    "titles": [{
+                                        "text": jsonX.graph.graphTitle,
+                                        "size": 15
+                                        }],
+                                    "dataProvider": chartData,
+                                    "synchronizeGrid":true,
+                                    "valueAxes": [{
+                                        "id":"v1",
+                                        "axisColor": "#FF6600",
+                                        "axisThickness": 2,
+                                        "axisAlpha": 1,
+                                        "position": "left",
+                                        "title":jsonX.graph.graphYAxisTitle
+                                        }],
+                                    "graphs": [{
+                                        "valueAxis": "v1",
+                                        "lineColor": "#2F75B5",
+                                        "lineThickness": 2,
+                                        "bullet": "round",
+                                        "bulletBorderThickness": 1,
+                                        "hideBulletsCount": 20,
+                                        "title": jsonX.graph.graphSeries1Label,
+                                        "valueField": "serie1",
+                                        "type": "line",
+                                        "fillAlphas": 0
+                                        }, {
+                                        "valueAxis": "v1",
+                                        "lineColor": "#FF0000",
+                                        "lineThickness": 2,
+                                        "bullet": "square",
+                                        "bulletBorderThickness": 1,
+                                        "hideBulletsCount": 20,
+                                        "title": jsonX.graph.graphSeries2Label,
+                                        "valueField": "serie2",
+                                        "type": "line",
+                                        "fillAlphas": 0
+                                        }, {
+                                        "valueAxis": "v1",
+                                        "lineColor": "#808080",
+                                        "lineThickness": 2,
+                                        "bullet": "triangleUp",
+                                        "bulletBorderThickness": 1,
+                                        "hideBulletsCount": 20,
+                                        "title": jsonX.graph.graphSeries3Label,
+                                        "valueField": "serie3",
+                                        "type": "line",
+                                        "fillAlphas": 0
+                                        }, {
+                                        "valueAxis": "v1",
+                                        "lineColor": "#009900",
+                                        "lineThickness": 2,
+                                        "bullet": "triangleUp",
+                                        "bulletBorderThickness": 1,
+                                        "hideBulletsCount": 20,
+                                        "title": jsonX.graph.graphSeries4Label,
+                                        "valueField": "serie4",
+                                        "type": "line",
+                                        "fillAlphas": 0
+                                        }],
+                                    "chartScrollbar": {},
+                                    "chartCursor": {
+                                        "cursorPosition": "mouse"
+                                        },
+                                    "categoryField": "semana",
+                                    "categoryAxis": {
+                                        "parseDates": false,
+                                        "axisColor": "#DADADA",
+                                        "minorGridEnabled": true,
+                                        "title":jsonX.graph.graphXAxisTitle
                                     },
-                                "titles": [{
-                                    "text": jsonX.graph.graphTitle,
-                                    "size": 15
-                                    }],
-                                "dataProvider": chartData,
-                                "synchronizeGrid":true,
-                                "valueAxes": [{
-                                    "id":"v1",
-                                    "axisColor": "#FF6600",
-                                    "axisThickness": 2,
-                                    "axisAlpha": 1,
-                                    "position": "left",
-                                    "title":jsonX.graph.graphYAxisTitle
-                                    }],
-                                "graphs": [{
-                                    "valueAxis": "v1",
-                                    "lineColor": "#2F75B5",
-                                    "lineThickness": 2,
-                                    "bullet": "round",
-                                    "bulletBorderThickness": 1,
-                                    "hideBulletsCount": 20,
-                                    "title": jsonX.graph.graphSeries1Label,
-                                    "valueField": "serie1",
-                                    "type": "line",
-                                    "fillAlphas": 0
-                                    }, {
-                                    "valueAxis": "v1",
-                                    "lineColor": "#FF0000",
-                                    "lineThickness": 2,
-                                    "bullet": "square",
-                                    "bulletBorderThickness": 1,
-                                    "hideBulletsCount": 20,
-                                    "title": jsonX.graph.graphSeries2Label,
-                                    "valueField": "serie2",
-                                    "type": "line",
-                                    "fillAlphas": 0
-                                    }, {
-                                    "valueAxis": "v1",
-                                    "lineColor": "#808080",
-                                    "lineThickness": 2,
-                                    "bullet": "triangleUp",
-                                    "bulletBorderThickness": 1,
-                                    "hideBulletsCount": 20,
-                                    "title": jsonX.graph.graphSeries3Label,
-                                    "valueField": "serie3",
-                                    "type": "line",
-                                    "fillAlphas": 0
-                                    }, {
-                                    "valueAxis": "v1",
-                                    "lineColor": "#009900",
-                                    "lineThickness": 2,
-                                    "bullet": "triangleUp",
-                                    "bulletBorderThickness": 1,
-                                    "hideBulletsCount": 20,
-                                    "title": jsonX.graph.graphSeries4Label,
-                                    "valueField": "serie4",
-                                    "type": "line",
-                                    "fillAlphas": 0
-                                    }],
-                                "chartScrollbar": {},
-                                "chartCursor": {
-                                    "cursorPosition": "mouse"
-                                    },
-                                "categoryField": "semana",
-                                "categoryAxis": {
-                                    "parseDates": false,
-                                    "axisColor": "#DADADA",
-                                    "minorGridEnabled": true,
-                                    "title":jsonX.graph.graphXAxisTitle
-                                },
-                                /*"export": {
-                                    "enabled": true,
-                                    "position": "top-right"
-                                },*/
-                                "export": {
-                                    "enabled": true,
-                                    "menu": [{
-                                        "class": "export-main",
-                                            "menu": [{
-                                                "label": "Descargar",
-                                                "menu": [ "PNG", "JPG", "PDF","SVG" ]
-                                            },
-                                            {
-                                                "label": "Imprimir",
-                                                "format": "PRINT"
+                                    /*"export": {
+                                        "enabled": true,
+                                        "position": "top-right"
+                                    },*/
+                                    "export": {
+                                        "enabled": true,
+                                        "menu": [{
+                                            "class": "export-main",
+                                                "menu": [{
+                                                    "label": "Descargar",
+                                                    "menu": [ "PNG", "JPG", "PDF","SVG" ]
+                                                },
+                                                {
+                                                    "label": "Imprimir",
+                                                    "format": "PRINT"
+                                                }]
                                             }]
-                                        }]
-                                }
-                            });
+                                    }
+                                });
 
-                            //chart.addListener("dataUpdated", zoomChart);
-                            chart.addListener("rendered", zoomChart);
-                            zoomChart();
-                            function zoomChart(){
-                                chart.zoomToIndexes(0, chart.dataProvider.length);
+                                //chart.addListener("dataUpdated", zoomChart);
+                                chart.addListener("rendered", zoomChart);
+                                zoomChart();
+                                function zoomChart(){
+                                    chart.zoomToIndexes(0, chart.dataProvider.length);
+                                }
+                                //chart.zoomToIndexes(chart.dataProvider.length - 10, chart.dataProvider.length - 1);
                             }
-                            //chart.zoomToIndexes(chart.dataProvider.length - 10, chart.dataProvider.length - 1);
-                        }
-                    });
-                })
-            };
+                        });
+                    })
+                };
         </script>
 
         <style>
@@ -256,168 +254,222 @@
         </div>
         <!--<script>GetGraphData7();</script>-->
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxFIN Gráfica 7 - Lineas Basales xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
-        
+
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGráfica 8 - Indicadores de Desempeño xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <script>
-            var jsonX;
+                var jsonX;
+                cIndi3 = "Porcentaje de casos de IRAG con muestra de laboratorio.";     //Porcentaje de casos de IRAG con muestra de laboratorio.
+                cIndi3_e = "SARI cases percentage with sample.";
+                cIndi4 = "Porcentaje de pacientes con resultado virológico reportado.";     //Porcentaje de pacientes con resultado virológico reportado.
+                cIndi4_e = "Pacients percentage with reported virological result.";
+                cIndi5 = "Porcentaje de casos cerrados de IRAG medidos por la variable de condición de egreso del paciente.";       //Porcentaje de casos cerrados de IRAG medidos por la variable de condición de egreso del paciente.
+                cIndi5_e = "SARI closed cases percentage, measured by patient destination.";
+                cIndi6 = "Mediana entre la recolección de muestras y su recepción en laboratorio.";         // Mediana entre la recolección de muestras y su recepción en laboratorio.
+                cIndi6_e = "Median between sample collecting and laboratory sample reception.";
+                cIndi7 = "Mediana entre la recepcion de la muestra en laboratorio y la notificación de los resultados.";        //Mediana entre la recepcion de la muestra en laboratorio y la notificación de los resultados.
+                cIndi7_e = "Median between laboratory sample reception and the results notification.";
+                cIndi8 = "Mediana entre la fecha de hospitalizacion y la fecha de notificacion en el sistema de vigilancia.";       //Mediana entre la fecha de hospitalizacion y la fecha de notificacion en el sistema de vigilancia.
+                cIndi8_e = "Median between hospitalization date and notification date in the surveillance system.";
+                cIndi = "Indicador";
+                cIndi_e = "Indicator";
+                cMeta = "Meta";
+                cMeta_e = "Goal";
+                cResu = "Resultado";
+                cResu_e = "Result";
+                cDia = "Día";                                       // Variables globales
+                cDia_e = "Day";
+                cDias = "Dias";
+                cDias_e = "Days";
+                cInDe = "Indicadores de desempeño";
+                cInDe_e = "Indicators of performance";
 
-            function GetGraphData8(){
-                var dataRegion = 0;
-                var dataHospital = 0;
-                var dataIrag = 1;
-                var dataEti = 0;
-                //****
-                /*$("#divGraph8").hide();
-                $("#divTable8").hide();
-                $("#loaderGraph8").show();*/
-                //****
-                var allVals = [];
-                var yrs = (new Date).getFullYear();
+                function GetGraphData8(){
+                    var dataRegion = 0;
+                    var dataHospital = 0;
+                    var dataIrag = 1;
+                    var dataEti = 0;
+                    //****
+                    /*$("#divGraph8").hide();
+                    $("#divTable8").hide();
+                    $("#loaderGraph8").show();*/
+                    //****
+                    var allVals = [];
+                    var yrs = (new Date).getFullYear();
 
-                $(document).ready(function () {
-                    $.ajax({
-                        type: 'POST',
-                        url: '/Graph/GetGraphDataTuned',
-                        data: "{'CountryID':" + GraphCountryID +",'Year':'" + yrs.toString() + "','Graph':'Graph8','RegionID':'" + dataRegion + "', 'HospitalID':'" + dataHospital + "', 'IRAG':'" + dataIrag + "', 'ETI':'" + dataEti + "'}",
-                        contentType: "application/json",
-                        dataType: 'json',
-                        success: function (data){
-                            /*$("#divGraph8").show();
-                            $("#divTable8").show();
-                            $("#loaderGraph8").hide();*/
-                            //****
-                            var json_obj = JSON.parse(data);
+                    $(document).ready(function () {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/Graph/GetGraphDataTuned',
+                            data: "{'CountryID':" + GraphCountryID +",'Year':'" + yrs.toString() + "','Graph':'Graph8','RegionID':'" + dataRegion + "', 'HospitalID':'" + dataHospital + "', 'IRAG':'" + dataIrag + "', 'ETI':'" + dataEti + "'}",
+                            contentType: "application/json",
+                            dataType: 'json',
+                            success: function (data){
+                                /*$("#divGraph8").show();
+                                $("#divTable8").show();
+                                $("#loaderGraph8").hide();*/
+                                //****
+                                var json_obj = JSON.parse(data);
 
-                            $("#IDTitulo1").text('Indicadores de Desempeño');
-                            $("#IDTitulo2").text(json_obj[0]);
+                                if(GraphCountryID == 25){
+                                    $("#IDTitulo1").text(cInDe_e);
+                                    $("#indicador").text(cIndi_e);
+                                    $("#meta").text(cMeta_e);
+                                    $("#resultado").text(cResu_e);
+                                    $("#indicador3").text(cIndi3_e);
+                                    $("#indicador4").text(cIndi4_e);
+                                    $("#indicador5").text(cIndi5_e);
+                                    $("#indicador6").text(cIndi6_e);
+                                    $("#indicador7").text(cIndi7_e);
+                                    $("#indicador8").text(cIndi8_e);
+                                }
+                                else{
+                                    $("#IDTitulo1").text(cInDe);
+                                    $("#indicador").text(cIndi);
+                                    $("#meta").text(cMeta);
+                                    $("#resultado").text(cResu);
+                                    $("#indicador3").text(cIndi3);
+                                    $("#indicador4").text(cIndi4);
+                                    $("#indicador5").text(cIndi5);
+                                    $("#indicador6").text(cIndi6);
+                                    $("#indicador7").text(cIndi7);
+                                    $("#indicador8").text(cIndi8);
+                                }
 
-                            var t = FormatearMeta(json_obj[9]);
-                            $("#IDMeta3").text(t[1]);
-                            var nMeta3 = t[0];
-                            var cUnid3 = t[2];
+                                $("#IDTitulo2").text(json_obj[0]);
 
-                            var t = FormatearMeta(json_obj[10]);
-                            $("#IDMeta4").text(t[1]);
-                            var nMeta4 = t[0];
-                            var cUnid4 = t[2];
+                                var t = FormatearMeta(json_obj[9]);
+                                $("#IDMeta3").text(t[1]);
+                                var nMeta3 = t[0];
+                                var cUnid3 = t[2];
 
-                            var t = FormatearMeta(json_obj[11]);
-                            $("#IDMeta5").text(t[1]);
-                            var nMeta5 = t[0];
-                            var cUnid5 = t[2];
+                                var t = FormatearMeta(json_obj[10]);
+                                $("#IDMeta4").text(t[1]);
+                                var nMeta4 = t[0];
+                                var cUnid4 = t[2];
 
-                            var t = FormatearMeta(json_obj[12]);
-                            $("#IDMeta6").text(t[1]);
-                            var nMeta6 = t[0];
-                            var cUnid6 = t[2];
+                                var t = FormatearMeta(json_obj[11]);
+                                $("#IDMeta5").text(t[1]);
+                                var nMeta5 = t[0];
+                                var cUnid5 = t[2];
 
-                            var t = FormatearMeta(json_obj[13]);
-                            $("#IDMeta7").text(t[1]);
-                            var nMeta7 = t[0];
-                            var cUnid7 = t[2];
+                                var t = FormatearMeta(json_obj[12]);
+                                $("#IDMeta6").text(t[1]);
+                                var nMeta6 = t[0];
+                                var cUnid6 = t[2];
 
-                            var t = FormatearMeta(json_obj[14]);
-                            $("#IDMeta8").text(t[1]);
-                            var nMeta8 = t[0];
-                            var cUnid8 = t[2];
-                            //****
-                            var rojo = "#FF0000"
-                            var verde = "#548235"
+                                var t = FormatearMeta(json_obj[13]);
+                                $("#IDMeta7").text(t[1]);
+                                var nMeta7 = t[0];
+                                var cUnid7 = t[2];
 
-                            var color3 = rojo;
-                            var color4 = rojo;
-                            var color5 = rojo;
-                            var color6 = rojo;
-                            var color7 = rojo;
-                            var color8 = rojo;
+                                var t = FormatearMeta(json_obj[14]);
+                                $("#IDMeta8").text(t[1]);
+                                var nMeta8 = t[0];
+                                var cUnid8 = t[2];
+                                //****
+                                var rojo = "#FF0000"
+                                var verde = "#548235"
 
-                            if (parseFloat(json_obj[3]) >= nMeta3)
-                                color3 = verde;
-                            if (parseFloat(json_obj[4]) >= nMeta4)
-                                color4 = verde;
-                            if (parseFloat(json_obj[5]) >= nMeta5)
-                                color5 = verde;
-                            if (parseFloat(json_obj[6]) <= nMeta6)
-                                color6 = verde;
-                            if (parseFloat(json_obj[7]) <= nMeta7)
-                                color7 = verde;
-                            if (parseFloat(json_obj[8]) <= nMeta8)
-                                color8 = verde;
-                            //****
-                            ConstruirPie("divGraph8_3", color3, String(json_obj[3]), cUnid3)
-                            ConstruirPie("divGraph8_4", color4, String(json_obj[4]), cUnid4)
-                            ConstruirPie("divGraph8_5", color5, String(json_obj[5]), cUnid5)
-                            ConstruirPie("divGraph8_6", color6, String(json_obj[6]), cUnid6)
-                            ConstruirPie("divGraph8_7", color7, String(json_obj[7]), cUnid7)
-                            ConstruirPie("divGraph8_8", color8, String(json_obj[8]), cUnid8)
-                        }
-                    });
-                })
-            }
+                                var color3 = rojo;
+                                var color4 = rojo;
+                                var color5 = rojo;
+                                var color6 = rojo;
+                                var color7 = rojo;
+                                var color8 = rojo;
 
-            function FormatearMeta(_Meta){
-                var cMeta = _Meta.substring(0, _Meta.length-1);
-                var nMeta = parseFloat(cMeta);
-                var cUnid = "";
-
-                if(_Meta.slice(-1)=="%"){
-                    cUnid = "%";
-                    cMeta = cMeta + "%";
-                }else if(_Meta.slice(-1)=="D"){
-                    cUnid = " D.";
-                    if (nMeta==1)
-                        cMeta = cMeta + " Día";
-                    else
-                        cMeta = cMeta + " Días";
+                                if (parseFloat(json_obj[3]) >= nMeta3)
+                                    color3 = verde;
+                                if (parseFloat(json_obj[4]) >= nMeta4)
+                                    color4 = verde;
+                                if (parseFloat(json_obj[5]) >= nMeta5)
+                                    color5 = verde;
+                                if (parseFloat(json_obj[6]) <= nMeta6)
+                                    color6 = verde;
+                                if (parseFloat(json_obj[7]) <= nMeta7)
+                                    color7 = verde;
+                                if (parseFloat(json_obj[8]) <= nMeta8)
+                                    color8 = verde;
+                                //****
+                                ConstruirPie("divGraph8_3", color3, String(json_obj[3]), cUnid3)
+                                ConstruirPie("divGraph8_4", color4, String(json_obj[4]), cUnid4)
+                                ConstruirPie("divGraph8_5", color5, String(json_obj[5]), cUnid5)
+                                ConstruirPie("divGraph8_6", color6, String(json_obj[6]), cUnid6)
+                                ConstruirPie("divGraph8_7", color7, String(json_obj[7]), cUnid7)
+                                ConstruirPie("divGraph8_8", color8, String(json_obj[8]), cUnid8)
+                            }
+                        });
+                    })
                 }
-                return [nMeta, cMeta, cUnid]
-            }
 
-            function ConstruirPie(_nombDiv, _color, _labeltext, _Unid){
-                var labeltext = _labeltext.replace(".0", "") + _Unid
+                function FormatearMeta(_Meta){
+                    var cMeta = _Meta.substring(0, _Meta.length-1);
+                    var nMeta = parseFloat(cMeta);
+                    var cUnid = "";
 
-                var chart = AmCharts.makeChart(_nombDiv, {
-                    "type": "pie",
-                    "hideCredits": true,
-                    "showBalloon": false,
-                    "fontSize": 14,
-                    "outlineAlpha": 1,
-                    "outlineColor": _color,
-                    "outlineThickness": 2,
-                    "labelRadius":-33,
-                    "labelText": labeltext,
-                    "colorField": _color,
-                    "labelsEnabled": true,
-                    "autoMargins": false,           // Ocupar todo el contenedor
-                    "marginTop": 1,
-                    "marginBottom": 1,
-                    "marginLeft": 1,
-                    "marginRight": 1,
-                    "pullOutRadius": 1,
-                    "dataProvider": [{
-                        "country": "Lithuania",
-                        "litres": 0,
-                        "color": _color,
-                        "labelColor": "#FFFFFF",
-                    },
-                    {
-                        "country": "",
-                        "litres": 100,
-                        "color": _color,
-                        "labelColor": "#FFFFFF",
-                    }],
-                    "valueField": "litres",
-                    "titleField": "country",
-                    "colorField": "color",
-                    "labelColorField": "labelColor",
-                    "balloon":{
-                        "fixedPosition":true
-                    },
-                    "export": {
-                        "enabled": false
+                    if(_Meta.slice(-1)=="%"){
+                        cUnid = "%";
+                        cMeta = cMeta + "%";
+                    }else if(_Meta.slice(-1)=="D"){
+                        cUnid = " D.";
+                        if (nMeta==1)
+                            if(GraphCountryID == 25)
+                                cMeta = cMeta + " " + cDia_e;
+                            else
+                                cMeta = cMeta + " " + cDia;
+                        else
+                            if(GraphCountryID == 25)
+                                cMeta = cMeta + " " + cDias_e;
+                            else
+                                cMeta = cMeta + " " + cDias;
                     }
-                } );
-            }
+                    return [nMeta, cMeta, cUnid]
+                }
+
+                function ConstruirPie(_nombDiv, _color, _labeltext, _Unid){
+                    var labeltext = _labeltext.replace(".0", "") + _Unid
+
+                    var chart = AmCharts.makeChart(_nombDiv, {
+                        "type": "pie",
+                        "hideCredits": true,
+                        "showBalloon": false,
+                        "fontSize": 14,
+                        "outlineAlpha": 1,
+                        "outlineColor": _color,
+                        "outlineThickness": 2,
+                        "labelRadius":-33,
+                        "labelText": labeltext,
+                        "colorField": _color,
+                        "labelsEnabled": true,
+                        "autoMargins": false,           // Ocupar todo el contenedor
+                        "marginTop": 1,
+                        "marginBottom": 1,
+                        "marginLeft": 1,
+                        "marginRight": 1,
+                        "pullOutRadius": 1,
+                        "dataProvider": [{
+                            "country": "Lithuania",
+                            "litres": 0,
+                            "color": _color,
+                            "labelColor": "#FFFFFF",
+                        },
+                        {
+                            "country": "",
+                            "litres": 100,
+                            "color": _color,
+                            "labelColor": "#FFFFFF",
+                        }],
+                        "valueField": "litres",
+                        "titleField": "country",
+                        "colorField": "color",
+                        "labelColorField": "labelColor",
+                        "balloon":{
+                            "fixedPosition":true
+                        },
+                        "export": {
+                            "enabled": false
+                        }
+                    } );
+                }
         </script>
 
         <style>
@@ -551,18 +603,9 @@
                 <p id="IDTitulo2" class="ind_titulo"></p>
                 <table id="ind_tabla">
                     <tr>
-                        @if (ViewBag.UsrCtry != 25)
-                        {
-                        <td class="ind_titulo3" width="55%"><P class="ind_datostyle">Indicador</P></td>
-                        <td class="ind_titulo3" width="15%"><P class="ind_datostyle">Meta</P></td>
-                        <td class="ind_titulo3" width="30%"><P class="ind_datostyle">Resultado</P></td>
-                        }
-                        else
-                        {
-                            <td class="ind_titulo3" width="55%"><P class="ind_datostyle">Indicator</P></td>
-                            <td class="ind_titulo3" width="15%"><P class="ind_datostyle">Goal</P></td>
-                            <td class="ind_titulo3" width="30%"><P class="ind_datostyle">Result</P></td>
-                        }
+                        <td class="ind_titulo3" width="55%"><P id="indicador" class="ind_datostyle">...</P></td>
+                        <td class="ind_titulo3" width="15%"><P id="meta" class="ind_datostyle">...</P></td>
+                        <td class="ind_titulo3" width="30%"><P id="resultado" class="ind_datostyle">...</P></td>
                     </tr>
                     <!--
                     <tr>
@@ -589,79 +632,37 @@
                         <td><p id="IDDato2f" class="ind_datostyle"></p></td>
                     </tr> -->
                     <tr>
-                        @if (ViewBag.UsrCtry != 25)
-                        {
-                        <td class="ind_titulo3"><p class="ind_datotitulostyle">Porcentaje de casos de IRAG con muestra de laboratorio.</p></td>
-                        }
-                        else
-                        {
-                        <td class="ind_titulo3"><p class="ind_datotitulostyle">SARI cases percentage with sample.</p></td>
-                        }
-                        <td><p id="IDMeta3" class="ind_datostyle">Meta 3</p></td>
+                        <td class="ind_titulo3"><p id="indicador3" class="ind_datotitulostyle">...</p></td>
+                        <td><p id="IDMeta3" class="ind_datostyle">...</p></td>
                         <td>
                             <div id="divGraph8_3" class="divGraph8_Pies"></div>
                         </td>
                     </tr>
                     <tr>
-                        @if (ViewBag.UsrCtry != 25)
-                        {
-                        <td class="ind_titulo3"><p class="ind_datotitulostyle">Porcentaje de pacientes con resultado virológico reportado.</p></td>
-                        }
-                        else
-                        {
-                        <td class="ind_titulo3"><p class="ind_datotitulostyle">Pacients percentage with reported virological result.</p></td>
-                        }
-                        <td><p id="IDMeta4" class="ind_datostyle">Meta 4</p></td>
+                        <td class="ind_titulo3"><p id="indicador4" class="ind_datotitulostyle">...</p></td>
+                        <td><p id="IDMeta4" class="ind_datostyle">...</p></td>
                         <td>
                             <div id="divGraph8_4" class="divGraph8_Pies"></div>
                         </td>
                     </tr>
                     <tr>
-                        @if (ViewBag.UsrCtry != 25)
-                        {
-                        <td class="ind_titulo3"><p class="ind_datotitulostyle">Porcentaje de casos cerrados de IRAG medidos por la variable de condición de egreso del paciente.</p></td>
-                        }
-                        else
-                        {
-                        <td class="ind_titulo3"><p class="ind_datotitulostyle">SARI closed cases percentage, measured by patient destination.</p></td>
-                        }
-                        <td><p id="IDMeta5" class="ind_datostyle">Meta 5</p></td>
+                        <td class="ind_titulo3"><p id="indicador5" class="ind_datotitulostyle">...</p></td>
+                        <td><p id="IDMeta5" class="ind_datostyle">...</p></td>
                         <td><div id="divGraph8_5" class="divGraph8_Pies"></div>
                     </tr>
                     <tr>
-                        @if (ViewBag.UsrCtry != 25)
-                        {
-                        <td class="ind_titulo3"><p class="ind_datotitulostyle">Mediana entre la recolección de muestras y su recepción en laboratorio.</p></td>
-                        }
-                        else
-                        {
-                            <td class="ind_titulo3"><p class="ind_datotitulostyle">Median between sample collecting and laboratory sample reception.</p></td>
-                        }
-                        <td><p id="IDMeta6" class="ind_datostyle">Meta 6</p></td>
+                        <td class="ind_titulo3"><p id="indicador6" class="ind_datotitulostyle">...</p></td>
+                        <td><p id="IDMeta6" class="ind_datostyle">...</p></td>
                         <td><div id="divGraph8_6" class="divGraph8_Pies"></div>
                     </tr>
                     <tr>
-                        @if (ViewBag.UsrCtry != 25)
-                        {
-                        <td class="ind_titulo3"><p class="ind_datotitulostyle">Mediana entre la recepcion de la muestra en laboratorio y la notificación de los resultados.</p></td>
-                        }
-                        else
-                        {
-                            <td class="ind_titulo3"><p class="ind_datotitulostyle">Median between laboratory sample reception and the results notification.</p></td>
-                        }
-                        <td><p id="IDMeta7" class="ind_datostyle">Meta 7</p></td>
+                        <td class="ind_titulo3"><p id="indicador7" class="ind_datotitulostyle">...</p></td>
+                        <td><p id="IDMeta7" class="ind_datostyle">...</p></td>
                         <td><div id="divGraph8_7" class="divGraph8_Pies"></div>
                     </tr>
                     <tr>
-                        @if (ViewBag.UsrCtry != 25)
-                        {
-                        <td class="ind_titulo3"><p class="ind_datotitulostyle">Mediana entre la fecha de hospitalizacion y la fecha de notificacion en el sistema de vigilancia.</p></td>
-                        }
-                        else
-                        {
-                            <td class="ind_titulo3"><p class="ind_datotitulostyle">Median between hospitalization date and notification date in the surveillance system.</p></td>
-                        }
-                        <td><p id="IDMeta8" class="ind_datostyle">Meta 8</p></td>
+                        <td class="ind_titulo3"><p id="indicador8" class="ind_datotitulostyle">...</p></td>
+                        <td><p id="IDMeta8" class="ind_datostyle">...</p></td>
                         <td><div id="divGraph8_8" class="divGraph8_Pies"></div>
                     </tr>
                 </table>
@@ -669,7 +670,6 @@
         </div>
         <!--<script>GetGraphData8();</script>-->
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxFIN Gráfica 8 - Indicadores de Desempeño xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
-
         
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGráfica 1 - Epidemiológico 1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <script>
@@ -2971,7 +2971,7 @@
         </div>
 
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxFIN Gráfica 5 - Epidemiológico 5xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
-
+        
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGráfica 11 - Casos IRAG x GE xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <script>
                 var jsonX;
@@ -3612,7 +3612,6 @@
             <div id="loaderGraph11" class="loaderGraph"><!-- Place at bottom of page --></div>
             <div id="divGraph11"></div>
         </div>
-
         <!--<script>GetGraphData11();</script>-->
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxFIN Gráfica 11 - Casos IRAG x GE xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
 
@@ -4305,203 +4304,203 @@
             <div id="loaderGraph12" class="loaderGraph"><!-- Place at bottom of page --></div>
             <div id="divGraph12"></div>
         </div>
-
         <!--<script>GetGraphData12();</script>-->
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxFIN Gráfica 12 - Fallecidos IRAG x GE xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGráfica 9 - ETI 1 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <script>
-                        var jsonX;
+                var jsonX;
 
-                        function GetGraphData9() {
-                            var dataRegion = 0;
-                            var dataHospital = 0;
-                            var dataIrag = 0;
-                            var dataEti = 0;
-                            //***
-                            $("#divGraph9").hide();
-                            $("#loaderGraph9").show();
-                            //*** Parametros
-                            if($("#chkCountry").is(':checked')){
-                                dataRegion = 0;
-                                dataHospital = 0;
-                                dataIrag = 0;
-                                dataEti = 0;
-                            }
-                            else{
-                                dataRegion = $("#Regions option:selected").val();
-                                dataHospital = $("#Hospitals option:selected").val();
-                                if($("#chkIrag").is(':checked')){
-                                    dataIrag = 1;
-                                }
-                                if($("#chkEti").is(':checked')){
-                                    dataEti = 1;
-                                }
-                            }
-                            //*** Anios
-                            var allVals = [];
-                            var yrs = "";
-                            $('#c_b :checked').each(function() {
-                                allVals.push($(this).val());
-                            });
-                            yrs = allVals.join();
-                            $("#anios").val(yrs);
-                            //***
-                            $(document).ready(function () {
-                                $.ajax({
-                                    type: 'POST',
-                                    url: '/Graph/GetGraphDataTuned',
-                                    data: "{'CountryID':" + GraphCountryID +",'Year':'" + $("#anios").val() + "','Graph':'Graph9','RegionID':'" + dataRegion + "', 'HospitalID':'" + dataHospital + "', 'IRAG':'" + dataIrag + "', 'ETI':'" + dataEti + "'}",
-                                    contentType: "application/json",
-                                    dataType: 'json',
-                                    success: function (data) {
-                                        $("#divGraph9").show();
-                                        $("#loaderGraph9").hide();
-                                        //****
-                                        jsonX = JSON.parse(data);
-                                        var chartData = [];
-                                        $.each(jsonX, function(index, element) {
-                                            $.each(element.graphData.graphDataItem, function(index2, element2) {
-                                                chartData.push({
-                                                    semana: element2.semana,
-                                                    serie1: element2.serie1,
-                                                    serie2: element2.serie2
-                                                });
-                                            });
+                function GetGraphData9() {
+                    var dataRegion = 0;
+                    var dataHospital = 0;
+                    var dataIrag = 0;
+                    var dataEti = 0;
+                    //***
+                    $("#divGraph9").hide();
+                    $("#loaderGraph9").show();
+                    //*** Parametros
+                    if($("#chkCountry").is(':checked')){
+                        dataRegion = 0;
+                        dataHospital = 0;
+                        dataIrag = 0;
+                        dataEti = 0;
+                    }
+                    else{
+                        dataRegion = $("#Regions option:selected").val();
+                        dataHospital = $("#Hospitals option:selected").val();
+                        if($("#chkIrag").is(':checked')){
+                            dataIrag = 1;
+                        }
+                        if($("#chkEti").is(':checked')){
+                            dataEti = 1;
+                        }
+                    }
+                    //*** Anios
+                    var allVals = [];
+                    var yrs = "";
+                    $('#c_b :checked').each(function() {
+                        allVals.push($(this).val());
+                    });
+                    yrs = allVals.join();
+                    $("#anios").val(yrs);
+                    //***
+                    $(document).ready(function () {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/Graph/GetGraphDataTuned',
+                            data: "{'CountryID':" + GraphCountryID +",'Year':'" + $("#anios").val() + "','Graph':'Graph9','RegionID':'" + dataRegion + "', 'HospitalID':'" + dataHospital + "', 'IRAG':'" + dataIrag + "', 'ETI':'" + dataEti + "'}",
+                            contentType: "application/json",
+                            dataType: 'json',
+                            success: function (data) {
+                                $("#divGraph9").show();
+                                $("#loaderGraph9").hide();
+                                //****
+                                jsonX = JSON.parse(data);
+                                var chartData = [];
+                                $.each(jsonX, function(index, element) {
+                                    $.each(element.graphData.graphDataItem, function(index2, element2) {
+                                        chartData.push({
+                                            semana: element2.semana,
+                                            serie1: element2.serie1,
+                                            serie2: element2.serie2
                                         });
-
-                                        //-----------------Quita los ceros del fin y del inicio del array----------------------
-                                        chartDataLength = chartData.length;
-                                        if(chartDataLength>0){
-                                            for(i = chartDataLength-1; i>0;i--){
-                                                //alert(chartData[i].semana);
-                                                if(chartData[i].serie1==0 && chartData[i].serie2==0){
-                                                    chartData.pop();
-                                                }
-                                                else{
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                        chartDataLength = chartData.length;
-                                        //alert(chartDataLength);
-                                        chartData.reverse();
-                                        if(chartDataLength>0){
-                                            for(i = chartDataLength-1; i>0;i--){
-                                                //alert(chartData[i].semana);
-                                                if(chartData[i].serie1==0 && chartData[i].serie2==0){
-                                                    chartData.pop();
-                                                }
-                                                else{
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                        chartData.reverse();
-                                        //-----------------FIN de Quita los ceros del fin y del inicio del array----------------------
-
-                                        var chart = AmCharts.makeChart("divGraph9", {
-                                            "type": "serial",
-                                            "theme": "light",
-                                            "mouseWheelZoomEnabled":false,
-                                            "legend": {
-                                                "useGraphSettings": true
-                                            },
-                                            "titles": [{
-                                                "text": jsonX.graph.graphTitle,
-                                                "size": 15
-                                            }],
-                                            "dataProvider": chartData,
-                                            "synchronizeGrid":true,
-                                            "valueAxes": [{
-                                                "id":"v1",
-                                                "axisColor": "#FF6600",
-                                                "axisThickness": 2,
-                                                "axisAlpha": 1,
-                                                "position": "left",
-                                                "title":jsonX.graph.graphYAxisTitle
-                                                },{
-                                                "id":"v2",
-                                                "axisColor": "#FF6600",
-                                                "axisThickness": 2,
-                                                "axisAlpha": 1,
-                                                "position": "right",
-                                                "title":jsonX.graph.graphYAxisTitle2
-                                                }],
-                                            "graphs": [{
-                                                /*Numero de casos ETI*/
-                                                "valueAxis": "v1",
-                                                "lineColor": "#00b0f0",
-                                                "title": jsonX.graph.graphSeries1Label,
-                                                "valueField": "serie1",
-                                                "type": "column",
-                                                "fillAlphas": 1,
-                                                "balloonFunction": function(info) {
-                                                    if (info.values.value)
-                                                        return String(info.values.value);
-                                                    else
-                                                        return '';
-                                                    }
-                                                },
-                                                {
-                                                /*% ETI del total de consultas*/
-                                                "valueAxis": "v2",
-                                                "lineColor": "#000000",
-                                                "bullet": "round",
-                                                "bulletBorderThickness": 1,
-                                                "hideBulletsCount": 40,
-                                                "title": jsonX.graph.graphSeries2Label,
-                                                "valueField": "serie2",
-                                                "type": "line",
-                                                "fillAlphas": 0,
-                                                "balloonFunction": function(info) {
-                                                    if (info.values.value)
-                                                        return String(info.values.value) + "%";
-                                                    else
-                                                        return '';
-                                                    }
-                                                }],
-                                            "chartScrollbar": {},
-                                            "chartCursor": {
-                                                "cursorPosition": "mouse"
-                                                },
-                                            "categoryField": "semana",
-                                            "categoryAxis": {
-                                                "parseDates": false,
-                                                "axisColor": "#DADADA",
-                                                "minorGridEnabled": true,
-                                                "title":jsonX.graph.graphXAxisTitle
-                                                },
-                                            /*"export": {
-                                                "enabled": true,
-                                                "position": "top-right"
-                                            },*/
-                                            "export": {
-                                                "enabled": true,
-                                                "menu": [{
-                                                    "class": "export-main",
-                                                    "menu": [{
-                                                        "label": "Descargar",
-                                                        "menu": [ "PNG", "JPG", "PDF","SVG" ]
-                                                    },
-                                                    {
-                                                        "label": "Imprimir",
-                                                        "format": "PRINT"
-                                                    }]
-                                                }]
-                                                }
-                                        });
-
-                                        //chart.addListener("dataUpdated", zoomChart);
-                                        chart.addListener("rendered", zoomChart);
-                                        zoomChart();
-                                        function zoomChart(){
-                                            chart.zoomToIndexes(0, chart.dataProvider.length);
-                                        }
-                                        //chart.zoomToIndexes(chart.dataProvider.length - 10, chart.dataProvider.length - 1);
-                                    }
+                                    });
                                 });
-                            })
-                        };
+
+                                //-----------------Quita los ceros del fin y del inicio del array----------------------
+                                chartDataLength = chartData.length;
+                                if(chartDataLength>0){
+                                    for(i = chartDataLength-1; i>0;i--){
+                                        //alert(chartData[i].semana);
+                                        if(chartData[i].serie1==0 && chartData[i].serie2==0){
+                                            chartData.pop();
+                                        }
+                                        else{
+                                            break;
+                                        }
+                                    }
+                                }
+                                chartDataLength = chartData.length;
+                                //alert(chartDataLength);
+                                chartData.reverse();
+                                if(chartDataLength>0){
+                                    for(i = chartDataLength-1; i>0;i--){
+                                        //alert(chartData[i].semana);
+                                        if(chartData[i].serie1==0 && chartData[i].serie2==0){
+                                            chartData.pop();
+                                        }
+                                        else{
+                                            break;
+                                        }
+                                    }
+                                }
+                                chartData.reverse();
+                                //-----------------FIN de Quita los ceros del fin y del inicio del array----------------------
+
+                                var chart = AmCharts.makeChart("divGraph9", {
+                                    "type": "serial",
+                                    "theme": "light",
+                                    "mouseWheelZoomEnabled":false,
+                                    "legend": {
+                                        "useGraphSettings": true
+                                    },
+                                    "titles": [{
+                                        "text": jsonX.graph.graphTitle,
+                                        "size": 15
+                                    }],
+                                    "dataProvider": chartData,
+                                    "synchronizeGrid":true,
+                                    "valueAxes": [{
+                                        "id":"v1",
+                                        "axisColor": "#FF6600",
+                                        "axisThickness": 2,
+                                        "axisAlpha": 1,
+                                        "position": "left",
+                                        "title":jsonX.graph.graphYAxisTitle
+                                        },{
+                                        "id":"v2",
+                                        "axisColor": "#FF6600",
+                                        "axisThickness": 2,
+                                        "axisAlpha": 1,
+                                        "position": "right",
+                                        "title":jsonX.graph.graphYAxisTitle2
+                                        }],
+                                    "graphs": [{
+                                        /*Numero de casos ETI*/
+                                        "valueAxis": "v1",
+                                        "lineColor": "#00b0f0",
+                                        "title": jsonX.graph.graphSeries1Label,
+                                        "valueField": "serie1",
+                                        "type": "column",
+                                        "fillAlphas": 1,
+                                        "balloonFunction": function(info) {
+                                            if (info.values.value)
+                                                return String(info.values.value);
+                                            else
+                                                return '';
+                                            }
+                                        },
+                                        {
+                                        /*% ETI del total de consultas*/
+                                        "valueAxis": "v2",
+                                        "lineColor": "#000000",
+                                        "bullet": "round",
+                                        "bulletBorderThickness": 1,
+                                        "hideBulletsCount": 40,
+                                        "title": jsonX.graph.graphSeries2Label,
+                                        "valueField": "serie2",
+                                        "type": "line",
+                                        "fillAlphas": 0,
+                                        "balloonFunction": function(info) {
+                                            if (info.values.value)
+                                                return String(info.values.value) + "%";
+                                            else
+                                                return '';
+                                            }
+                                        }],
+                                    "chartScrollbar": {},
+                                    "chartCursor": {
+                                        "cursorPosition": "mouse"
+                                        },
+                                    "categoryField": "semana",
+                                    "categoryAxis": {
+                                        "parseDates": false,
+                                        "axisColor": "#DADADA",
+                                        "minorGridEnabled": true,
+                                        "title":jsonX.graph.graphXAxisTitle
+                                        },
+                                    /*"export": {
+                                        "enabled": true,
+                                        "position": "top-right"
+                                    },*/
+                                    "export": {
+                                        "enabled": true,
+                                        "menu": [{
+                                            "class": "export-main",
+                                            "menu": [{
+                                                "label": "Descargar",
+                                                "menu": [ "PNG", "JPG", "PDF","SVG" ]
+                                            },
+                                            {
+                                                "label": "Imprimir",
+                                                "format": "PRINT"
+                                            }]
+                                        }]
+                                        }
+                                });
+
+                                //chart.addListener("dataUpdated", zoomChart);
+                                chart.addListener("rendered", zoomChart);
+                                zoomChart();
+                                function zoomChart(){
+                                    chart.zoomToIndexes(0, chart.dataProvider.length);
+                                }
+                                //chart.zoomToIndexes(chart.dataProvider.length - 10, chart.dataProvider.length - 1);
+                            }
+                        });
+                    })
+                };
         </script>
 
         <style>
@@ -4534,203 +4533,203 @@
             <div id="loaderGraph9" class="loaderGraph"><!-- Place at bottom of page --></div>
             <div id="divGraph9"></div>
         </div>
-
         <!--<script>GetGraphData9();</script>-->
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxFIN Gráfica 9 - ETI 1 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGráfica 10 - ETI 2 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <script>
-                        var jsonX;
+                var jsonX;
 
-                        function GetGraphData10() {
-                            var dataRegion = 0;
-                            var dataHospital = 0;
-                            var dataIrag = 0;
-                            var dataEti = 0;
-                            //****
-                            $("#divGraph10").hide();
-                            $("#loaderGraph10").show();
-                            //**** Parametros
-                            if($("#chkCountry").is(':checked')){
-                                dataRegion = 0;
-                                dataHospital = 0;
-                                dataIrag = 0;
-                                dataEti = 0;
-                            }
-                            else{
-                                dataRegion = $("#Regions option:selected").val();
-                                dataHospital = $("#Hospitals option:selected").val();
-                                if($("#chkIrag").is(':checked')){
-                                    dataIrag = 1;
-                                }
-                                if($("#chkEti").is(':checked')){
-                                    dataEti = 1;
-                                }
-                            }
-                            //**** Anios
-                            var allVals = [];
-                            var yrs = "";
-                            $('#c_b :checked').each(function() {
-                                allVals.push($(this).val());
-                            });
-                            yrs = allVals.join();
-                            $("#anios").val(yrs);
-                            //****
-                            $(document).ready(function () {
-                                $.ajax({
-                                    type: 'POST',
-                                    url: '/Graph/GetGraphDataTuned',
-                                    data: "{'CountryID':" + GraphCountryID +",'Year':'" + $("#anios").val() + "','Graph':'Graph10','RegionID':'" + dataRegion + "', 'HospitalID':'" + dataHospital + "', 'IRAG':'" + dataIrag + "', 'ETI':'" + dataEti + "'}",
-                                    contentType: "application/json",
-                                    dataType: 'json',
-                                    success: function (data) {
-                                        $("#divGraph10").show();
-                                        $("#loaderGraph10").hide();
-                                        //****
-                                        jsonX = JSON.parse(data);
-                                        var chartData = [];
-                                        $.each(jsonX, function(index, element) {
-                                            $.each(element.graphData.graphDataItem, function(index2, element2) {
-                                                chartData.push({
-                                                    semana: element2.semana,
-                                                    serie1: element2.serie1,
-                                                    serie2: element2.serie2
-                                                });
-                                            });
+                function GetGraphData10() {
+                    var dataRegion = 0;
+                    var dataHospital = 0;
+                    var dataIrag = 0;
+                    var dataEti = 0;
+                    //****
+                    $("#divGraph10").hide();
+                    $("#loaderGraph10").show();
+                    //**** Parametros
+                    if($("#chkCountry").is(':checked')){
+                        dataRegion = 0;
+                        dataHospital = 0;
+                        dataIrag = 0;
+                        dataEti = 0;
+                    }
+                    else{
+                        dataRegion = $("#Regions option:selected").val();
+                        dataHospital = $("#Hospitals option:selected").val();
+                        if($("#chkIrag").is(':checked')){
+                            dataIrag = 1;
+                        }
+                        if($("#chkEti").is(':checked')){
+                            dataEti = 1;
+                        }
+                    }
+                    //**** Anios
+                    var allVals = [];
+                    var yrs = "";
+                    $('#c_b :checked').each(function() {
+                        allVals.push($(this).val());
+                    });
+                    yrs = allVals.join();
+                    $("#anios").val(yrs);
+                    //****
+                    $(document).ready(function () {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/Graph/GetGraphDataTuned',
+                            data: "{'CountryID':" + GraphCountryID +",'Year':'" + $("#anios").val() + "','Graph':'Graph10','RegionID':'" + dataRegion + "', 'HospitalID':'" + dataHospital + "', 'IRAG':'" + dataIrag + "', 'ETI':'" + dataEti + "'}",
+                            contentType: "application/json",
+                            dataType: 'json',
+                            success: function (data) {
+                                $("#divGraph10").show();
+                                $("#loaderGraph10").hide();
+                                //****
+                                jsonX = JSON.parse(data);
+                                var chartData = [];
+                                $.each(jsonX, function(index, element) {
+                                    $.each(element.graphData.graphDataItem, function(index2, element2) {
+                                        chartData.push({
+                                            semana: element2.semana,
+                                            serie1: element2.serie1,
+                                            serie2: element2.serie2
                                         });
+                                    });
+                                });
 
-                                        //-----------------Quita los ceros del fin y del inicio del array----------------------
-                                        chartDataLength = chartData.length;
-                                        if(chartDataLength>0){
-                                            for(i = chartDataLength-1; i>0;i--){
-                                                //alert(chartData[i].semana);
-                                                if(chartData[i].serie1==0 && chartData[i].serie2==0){
-                                                    chartData.pop();
-                                                }
-                                                else{
-                                                    break;
-                                                }
-                                            }
+                                //-----------------Quita los ceros del fin y del inicio del array----------------------
+                                chartDataLength = chartData.length;
+                                if(chartDataLength>0){
+                                    for(i = chartDataLength-1; i>0;i--){
+                                        //alert(chartData[i].semana);
+                                        if(chartData[i].serie1==0 && chartData[i].serie2==0){
+                                            chartData.pop();
                                         }
-                                        chartDataLength = chartData.length;
-                                        //alert(chartDataLength);
-                                        chartData.reverse();
-                                        if(chartDataLength>0){
-                                            for(i = chartDataLength-1; i>0;i--){
-                                                //alert(chartData[i].semana);
-                                                if(chartData[i].serie1==0 && chartData[i].serie2==0){
-                                                    chartData.pop();
-                                                }
-                                                else{
-                                                    break;
-                                                }
-                                            }
+                                        else{
+                                            break;
                                         }
-                                        chartData.reverse();
-                                        //-----------------FIN de Quita los ceros del fin y del inicio del array----------------------
+                                    }
+                                }
+                                chartDataLength = chartData.length;
+                                //alert(chartDataLength);
+                                chartData.reverse();
+                                if(chartDataLength>0){
+                                    for(i = chartDataLength-1; i>0;i--){
+                                        //alert(chartData[i].semana);
+                                        if(chartData[i].serie1==0 && chartData[i].serie2==0){
+                                            chartData.pop();
+                                        }
+                                        else{
+                                            break;
+                                        }
+                                    }
+                                }
+                                chartData.reverse();
+                                //-----------------FIN de Quita los ceros del fin y del inicio del array----------------------
 
-                                        var chart = AmCharts.makeChart("divGraph10", {
-                                            "type": "serial",
-                                            "theme": "light",
-                                            "mouseWheelZoomEnabled":false,
-                                            "legend": {
-                                                "useGraphSettings": true
-                                            },
-                                            "titles": [{
-                                                "text": jsonX.graph.graphTitle,
-                                                "size": 15
-                                            }],
-                                            "dataProvider": chartData,
-                                            "synchronizeGrid":true,
-                                            "valueAxes": [{
-                                                "id":"v1",
-                                                "axisColor": "#FF6600",
-                                                "axisThickness": 2,
-                                                "axisAlpha": 1,
-                                                "position": "left",
-                                                "title":jsonX.graph.graphYAxisTitle
-                                            },{
-                                                "id":"v2",
-                                                "axisColor": "#FF6600",
-                                                "axisThickness": 2,
-                                                "axisAlpha": 1,
-                                                "position": "right",
-                                                "title":jsonX.graph.graphYAxisTitle2
-                                            }],
-                                            "graphs": [{
-                                                /*Casos ETI influenza (+)*/
-                                                "valueAxis": "v1",
-                                                "lineColor": "#00b0f0",
-                                                "title": jsonX.graph.graphSeries1Label,
-                                                "valueField": "serie1",
-                                                "type": "column",
-                                                "fillAlphas": 1,
-                                                "balloonFunction": function(info) {
-                                                    if (info.values.value)
-                                                        return String(info.values.value);
-                                                    else
-                                                        return '';
-                                                    }
-                                                },
-                                                {
-                                                /*% Casos influenza (+) del total de ETI con muestra*/
-                                                "valueAxis": "v2",
-                                                "lineColor": "#000000",
-                                                "bullet": "round",
-                                                "bulletBorderThickness": 1,
-                                                "hideBulletsCount": 40,
-                                                "title": jsonX.graph.graphSeries2Label,
-                                                "valueField": "serie2",
-                                                "type": "line",
-                                                "fillAlphas": 0,
-                                                "balloonFunction": function(info) {
-                                                    if (info.values.value)
-                                                        return String(info.values.value) + "%";
-                                                    else
-                                                        return '';
-                                                    }
-                                                }],
-                                            "chartScrollbar": {},
-                                            "chartCursor": {
-                                                "cursorPosition": "mouse"
-                                            },
-                                            "categoryField": "semana",
-                                            "categoryAxis": {
-                                                "parseDates": false,
-                                                "axisColor": "#DADADA",
-                                                "minorGridEnabled": true,
-                                                "title":jsonX.graph.graphXAxisTitle
-                                            },
-                                            /*"export": {
-                                                "enabled": true,
-                                                "position": "top-right"
-                                            },*/
-                                            "export": {
-                                                "enabled": true,
-                                                "menu": [{
-                                                    "class": "export-main",
-                                                    "menu": [{
-                                                        "label": "Descargar",
-                                                        "menu": [ "PNG", "JPG", "PDF","SVG" ]
-                                                    },
-                                                    {
-                                                        "label": "Imprimir",
-                                                        "format": "PRINT"
-                                                    }]
-                                                }]
+                                var chart = AmCharts.makeChart("divGraph10", {
+                                    "type": "serial",
+                                    "theme": "light",
+                                    "mouseWheelZoomEnabled":false,
+                                    "legend": {
+                                        "useGraphSettings": true
+                                    },
+                                    "titles": [{
+                                        "text": jsonX.graph.graphTitle,
+                                        "size": 15
+                                    }],
+                                    "dataProvider": chartData,
+                                    "synchronizeGrid":true,
+                                    "valueAxes": [{
+                                        "id":"v1",
+                                        "axisColor": "#FF6600",
+                                        "axisThickness": 2,
+                                        "axisAlpha": 1,
+                                        "position": "left",
+                                        "title":jsonX.graph.graphYAxisTitle
+                                    },{
+                                        "id":"v2",
+                                        "axisColor": "#FF6600",
+                                        "axisThickness": 2,
+                                        "axisAlpha": 1,
+                                        "position": "right",
+                                        "title":jsonX.graph.graphYAxisTitle2
+                                    }],
+                                    "graphs": [{
+                                        /*Casos ETI influenza (+)*/
+                                        "valueAxis": "v1",
+                                        "lineColor": "#00b0f0",
+                                        "title": jsonX.graph.graphSeries1Label,
+                                        "valueField": "serie1",
+                                        "type": "column",
+                                        "fillAlphas": 1,
+                                        "balloonFunction": function(info) {
+                                            if (info.values.value)
+                                                return String(info.values.value);
+                                            else
+                                                return '';
                                             }
-                                        });
-
-                                        //chart.addListener("dataUpdated", zoomChart);
-                                        chart.addListener("rendered", zoomChart);
-                                        zoomChart();
-                                        function zoomChart(){
-                                            chart.zoomToIndexes(0, chart.dataProvider.length);
-                                        }
-                                        //chart.zoomToIndexes(chart.dataProvider.length - 10, chart.dataProvider.length - 1);
+                                        },
+                                        {
+                                        /*% Casos influenza (+) del total de ETI con muestra*/
+                                        "valueAxis": "v2",
+                                        "lineColor": "#000000",
+                                        "bullet": "round",
+                                        "bulletBorderThickness": 1,
+                                        "hideBulletsCount": 40,
+                                        "title": jsonX.graph.graphSeries2Label,
+                                        "valueField": "serie2",
+                                        "type": "line",
+                                        "fillAlphas": 0,
+                                        "balloonFunction": function(info) {
+                                            if (info.values.value)
+                                                return String(info.values.value) + "%";
+                                            else
+                                                return '';
+                                            }
+                                        }],
+                                    "chartScrollbar": {},
+                                    "chartCursor": {
+                                        "cursorPosition": "mouse"
+                                    },
+                                    "categoryField": "semana",
+                                    "categoryAxis": {
+                                        "parseDates": false,
+                                        "axisColor": "#DADADA",
+                                        "minorGridEnabled": true,
+                                        "title":jsonX.graph.graphXAxisTitle
+                                    },
+                                    /*"export": {
+                                        "enabled": true,
+                                        "position": "top-right"
+                                    },*/
+                                    "export": {
+                                        "enabled": true,
+                                        "menu": [{
+                                            "class": "export-main",
+                                            "menu": [{
+                                                "label": "Descargar",
+                                                "menu": [ "PNG", "JPG", "PDF","SVG" ]
+                                            },
+                                            {
+                                                "label": "Imprimir",
+                                                "format": "PRINT"
+                                            }]
+                                        }]
                                     }
                                 });
-                            })
-                        };
+
+                                //chart.addListener("dataUpdated", zoomChart);
+                                chart.addListener("rendered", zoomChart);
+                                zoomChart();
+                                function zoomChart(){
+                                    chart.zoomToIndexes(0, chart.dataProvider.length);
+                                }
+                                //chart.zoomToIndexes(chart.dataProvider.length - 10, chart.dataProvider.length - 1);
+                            }
+                        });
+                    })
+                };
         </script>
 
         <style>
@@ -4763,7 +4762,6 @@
             <div id="loaderGraph10" class="loaderGraph"><!-- Place at bottom of page --></div>
             <div id="divGraph10"></div>
         </div>
-
         <!--<script>GetGraphData10();</script>-->
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxFIN Gráfica 10 - ETI 2 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
 

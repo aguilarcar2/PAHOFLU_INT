@@ -613,6 +613,7 @@ namespace Paho.Controllers
             }
 
         }
+
         private static void AppendDataToExcel(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? irag_, int? eti_)
         {
 
@@ -2718,26 +2719,25 @@ namespace Paho.Controllers
             //**** 
             recuperarDatosExcel(countryId, aCEP1, aCEP2, aUA1, aUA2, aUE1, aUE2, sheet);
             //**** Crear el JSON
+            string cSema, cPorc, cJS = "", cTemp = "";
             jsonTextLB = "";
-            string cJS = "";
-            string cTemp = "";
 
-            if (countryId != 25)
+            if (countryId == 25)
             {
-                jsonTextLB = "{\"" + "graph" + "\":";
-                jsonTextLB = jsonTextLB + "{\"" + "graphTitle" + "\":\"" + cTitu + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphXAxisTitle" + "\":\"" + "Semana Epidemiológica" + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphYAxisTitle" + "\":\"" + "Porcentaje" + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphData" + "\":{\"" + "graphDataItem" + "\":";
+                cSema = "Epidemiological Week";
+                cPorc = "Percentage";
             }
             else
             {
-                jsonTextLB = "{\"" + "graph" + "\":";
-                jsonTextLB = jsonTextLB + "{\"" + "graphTitle" + "\":\"" + cTitu + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphXAxisTitle" + "\":\"" + "Epidemiological week" + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphYAxisTitle" + "\":\"" + "Percent" + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphData" + "\":{\"" + "graphDataItem" + "\":";
+                cSema = "Semana Epidemiológica";
+                cPorc = "Porcentaje";
             }
+
+            jsonTextLB = "{\"" + "graph" + "\":";
+            jsonTextLB = jsonTextLB + "{\"" + "graphTitle" + "\":\"" + cTitu + "\",";
+            jsonTextLB = jsonTextLB + "\"" + "graphXAxisTitle" + "\":\"" + cSema + "\",";
+            jsonTextLB = jsonTextLB + "\"" + "graphYAxisTitle" + "\":\"" + cPorc + "\",";
+            jsonTextLB = jsonTextLB + "\"" + "graphData" + "\":{\"" + "graphDataItem" + "\":";
             //** Ultima semana con data
             int nSeFi = 0;
             if (countryId == 9)
@@ -2966,16 +2966,33 @@ namespace Paho.Controllers
                     recuperarDatosETI(consString, storedProcedure, countryId, hospitalId, Int32.Parse(years[nI]), aData);
                 }
                 //**** Crear el JSON
-                string cTitu = "Número de casos ETI por semana epidemiológica - " + string.Join(",", years);
+                string cTitu, cSeEp, cNuCa, cPoCa, cCaEt, cPoEC, cJS = "", cTemp = "";
                 jsonTextLB = "";
-                string cJS = "";
-                string cTemp = "";
+
+                if (countryId == 25)
+                {
+                    cTitu = "Number of ILI cases per epidemiological week - " + string.Join(",", years);
+                    cSeEp = "Epidemiological Week";
+                    cNuCa = "Number of cases";
+                    cPoCa = "Percentage of ILI cases of total consultations";
+                    cCaEt = "Number of cases ILI";
+                    cPoEC = "% ILI of total consultations";
+                }
+                else
+                {//
+                    cTitu = "Número de casos ETI por semana epidemiológica - " + string.Join(",", years);
+                    cSeEp = "Semana epidemiológica";
+                    cNuCa = "Número de casos";
+                    cPoCa = "Porcentaje de casos ETI del total de consultas";
+                    cCaEt = "Número de casos ETI";
+                    cPoEC = "% ETI del total de consultas";
+                }
 
                 jsonTextLB = jsonTextLB + "{\"" + "graph" + "\":";
                 jsonTextLB = jsonTextLB + "{\"" + "graphTitle" + "\":\"" + cTitu + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphXAxisTitle" + "\":\"" + "Semana Epidemiológica" + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphYAxisTitle" + "\":\"" + "Número de Casos" + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphYAxisTitle2" + "\":\"" + "Porcentaje de Casos ETI del Total de Consultas" + "\",";
+                jsonTextLB = jsonTextLB + "\"" + "graphXAxisTitle" + "\":\"" + cSeEp + "\",";
+                jsonTextLB = jsonTextLB + "\"" + "graphYAxisTitle" + "\":\"" + cNuCa + "\",";
+                jsonTextLB = jsonTextLB + "\"" + "graphYAxisTitle2" + "\":\"" + cPoCa + "\",";
                 jsonTextLB = jsonTextLB + "\"" + "graphData" + "\":{\"" + "graphDataItem" + "\":";
 
                 for (int nI = 0; nI < aData.Count; ++nI)
@@ -2995,8 +3012,8 @@ namespace Paho.Controllers
                 cJS = "[" + cJS + "]";
                 jsonTextLB = jsonTextLB + cJS + "},";
 
-                jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + "Número de Casos ETI" + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + "% ETI del total de consultas" + "\"";
+                jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + cCaEt + "\",";
+                jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + cPoEC + "\"";
                 jsonTextLB = jsonTextLB + "}}";
             }
             catch (Exception e)
@@ -3083,16 +3100,33 @@ namespace Paho.Controllers
                     recuperarDatosETIPositivos(consString, storedProcedure, countryId, hospitalId, Int32.Parse(years[nI]), aData);
                 }
                 //**** Crear el JSON
-                string cTitu = "Número de casos ETI positivos a influenza por semana epidemiológica - " + string.Join(",", years) + " (porcentaje de casos positivos a influenza de todos casos de ETI)";
+                string cTitu, cSeEp, cNuCa, cPoCa, cInPo, cPoEP, cJS = "", cTemp = "";
                 jsonTextLB = "";
-                string cJS = "";
-                string cTemp = "";
+
+                if (countryId == 25)
+                {
+                    cTitu = "Number of influenza positive ILI cases per epidemiological week - " + string.Join(",", years) + " (percentage of influenza positive cases in all ILI cases)";
+                    cSeEp = "Epidemiological Week";
+                    cNuCa = "Number of positive cases";
+                    cPoCa = "Percentage of positive cases";
+                    cInPo = "Influenza positive ILI cases";
+                    cPoEP = "% of influenza positive ILI cases";
+                }
+                else
+                {//
+                    cTitu = cTitu = "Número de casos ETI positivos a influenza por semana epidemiológica - " + string.Join(",", years) + " (porcentaje de casos positivos a influenza de todos casos de ETI)";
+                    cSeEp = "Semana epidemiológica";
+                    cNuCa = "Número de casos";
+                    cPoCa = "Porcentaje de casos positivos";
+                    cInPo = "Casos ETI positivos a influenza";
+                    cPoEP = "% de casos ETI positivos a influenza";
+                }
 
                 jsonTextLB = jsonTextLB + "{\"" + "graph" + "\":";
                 jsonTextLB = jsonTextLB + "{\"" + "graphTitle" + "\":\"" + cTitu + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphXAxisTitle" + "\":\"" + "Semana Epidemiológica" + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphYAxisTitle" + "\":\"" + "Número de Casos Positivos" + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphYAxisTitle2" + "\":\"" + "Porcentaje de Casos Positivos" + "\",";
+                jsonTextLB = jsonTextLB + "\"" + "graphXAxisTitle" + "\":\"" + cSeEp + "\",";
+                jsonTextLB = jsonTextLB + "\"" + "graphYAxisTitle" + "\":\"" + cNuCa + "\",";
+                jsonTextLB = jsonTextLB + "\"" + "graphYAxisTitle2" + "\":\"" + cPoCa + "\",";
                 jsonTextLB = jsonTextLB + "\"" + "graphData" + "\":{\"" + "graphDataItem" + "\":";
 
                 for (int nI = 0; nI < aData.Count; ++nI)
@@ -3112,8 +3146,8 @@ namespace Paho.Controllers
                 cJS = "[" + cJS + "]";
                 jsonTextLB = jsonTextLB + cJS + "},";
 
-                jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + "Casos ETI Positivos a Influenza" + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + "% de Casos ETI Positivos a Influenza" + "\"";
+                jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + cInPo + "\",";
+                jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + cPoEP + "\"";
                 jsonTextLB = jsonTextLB + "}}";
             }
             catch (Exception e)
@@ -3191,17 +3225,27 @@ namespace Paho.Controllers
                     recuperarDatosIRAGFallecidosxGE(consString, storedProcedure, countryId, hospitalId, Int32.Parse(years[nI]), aData);
                 }
                 //**** Crear el JSON  
-                string cTitu = "Distribución de fallecidos de IRAG por grupos de edad por semana epidemiológica - " + string.Join(",", years);
+                string cTitu, cSeEp, cNuCa, cJS = "", cTemp = "";
                 jsonTextLB = "";
-                string cJS = "";
-                string cTemp = "";
+
                 if (countryId == 25)
+                {
                     cTitu = "Distribution of SARI deaths by age groups per epidemiological week - " + string.Join(",", years);
+                    cSeEp = "Epidemiological Week";
+                    cNuCa = "Number of cases";
+                }
+                else
+                {
+                    cTitu = "Distribución de total de casos de IRAG por  grupos de edad y semana epidemiológica - " + string.Join(",", years);
+                    cSeEp = "Semana Epidemiológica";
+                    cNuCa = "Número de Casos";
+                }
+
                 //****
                 jsonTextLB = jsonTextLB + "{\"" + "graph" + "\":";
                 jsonTextLB = jsonTextLB + "{\"" + "graphTitle" + "\":\"" + cTitu + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphXAxisTitle" + "\":\"" + "Semana Epidemiológica" + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphYAxisTitle" + "\":\"" + "Número de Casos" + "\",";
+                jsonTextLB = jsonTextLB + "\"" + "graphXAxisTitle" + "\":\"" + cSeEp + "\",";
+                jsonTextLB = jsonTextLB + "\"" + "graphYAxisTitle" + "\":\"" + cNuCa + "\",";
                 jsonTextLB = jsonTextLB + "\"" + "graphData" + "\":{\"" + "graphDataItem" + "\":";
 
                 for (int nI = 0; nI < aData.Count; ++nI)
@@ -3347,17 +3391,27 @@ namespace Paho.Controllers
                     recuperarDatosIRAGxGrupoEdad(consString, storedProcedure, countryId, hospitalId, Int32.Parse(years[nI]), aData);
                 }
                 //**** Crear el JSON
-                string cTitu = "Distribución de total de casos de IRAG por  grupos de edad y semana epidemiológica - " + string.Join(",", years);
+                string cTitu, cSeEp, cNuCa, cJS = "", cTemp = "";
+
                 jsonTextLB = "";
-                string cJS = "";
-                string cTemp = "";
+
                 if (countryId == 25)
+                {
                     cTitu = "Distribution of total SARI cases by age group and epidemiological week - " + string.Join(",", years);
+                    cSeEp = "Epidemiological Week";
+                    cNuCa = "Number of cases";
+                }
+                else
+                {
+                    cTitu = "Distribución de total de casos de IRAG por  grupos de edad y semana epidemiológica - " + string.Join(",", years);
+                    cSeEp = "Semana Epidemiológica";
+                    cNuCa = "Número de Casos";
+                }
 
                 jsonTextLB = jsonTextLB + "{\"" + "graph" + "\":";
                 jsonTextLB = jsonTextLB + "{\"" + "graphTitle" + "\":\"" + cTitu + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphXAxisTitle" + "\":\"" + "Semana Epidemiológica" + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphYAxisTitle" + "\":\"" + "Número de Casos" + "\",";
+                jsonTextLB = jsonTextLB + "\"" + "graphXAxisTitle" + "\":\"" + cSeEp + "\",";
+                jsonTextLB = jsonTextLB + "\"" + "graphYAxisTitle" + "\":\"" + cNuCa + "\",";
                 jsonTextLB = jsonTextLB + "\"" + "graphData" + "\":{\"" + "graphDataItem" + "\":";
 
                 for (int nI = 0; nI < aData.Count; ++nI)
@@ -3419,26 +3473,6 @@ namespace Paho.Controllers
             //System.Diagnostics.Debug.WriteLine("graficoIRAGxGrupoEdad->END");
             return jsonTextLB;
         }//END
-
-        private string getMsg(string msgView)
-        {
-            var user = UserManager.FindById(User.Identity.GetUserId()); 
-            string searchedMsg = msgView;
-            int? countryID = user.Institution.CountryID;
-            string countryLang = user.Institution.Country.Language;
-
-            ResourcesM myR = new ResourcesM();
-            searchedMsg = myR.getMessage(searchedMsg, countryID, countryLang);
-            //searchedMsg = myR.getMessage(searchedMsg, 0, "ENG");
-            return searchedMsg;
-        }
-
-        private static string SgetMsg(string msgView, int? countryDisp, string langDisp)
-        {
-            string searchedMsg = ResourcesM.SgetMessage(msgView,countryDisp,langDisp);
-            //searchedMsg = myR.getMessage(searchedMsg, 0, "ENG");
-            return searchedMsg;
-        }
 
         private static void recuperarDatosIRAGxGrupoEdad(string consString, string storProc, int countryId, int? hospitalId, int? year, ArrayList aData)
         {
@@ -3502,6 +3536,26 @@ namespace Paho.Controllers
                 System.Diagnostics.Debug.WriteLine("graficoIRAGxGrupoEdad->Error:" + e.Message + "<-");
             }
         }//END-
+
+        private string getMsg(string msgView)
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId()); 
+            string searchedMsg = msgView;
+            int? countryID = user.Institution.CountryID;
+            string countryLang = user.Institution.Country.Language;
+
+            ResourcesM myR = new ResourcesM();
+            searchedMsg = myR.getMessage(searchedMsg, countryID, countryLang);
+            //searchedMsg = myR.getMessage(searchedMsg, 0, "ENG");
+            return searchedMsg;
+        }
+
+        private static string SgetMsg(string msgView, int? countryDisp, string langDisp)
+        {
+            string searchedMsg = ResourcesM.SgetMessage(msgView,countryDisp,langDisp);
+            //searchedMsg = myR.getMessage(searchedMsg, 0, "ENG");
+            return searchedMsg;
+        }
 
     }
 }
