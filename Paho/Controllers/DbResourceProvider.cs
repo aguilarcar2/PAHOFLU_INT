@@ -76,7 +76,12 @@ namespace Paho.Controllers
                         };
                     }
 
-                    if (!reader.HasRows) throw new Exception(string.Format("Resource {0} for culture {1} was not found", name, culture));
+                    //if (!reader.HasRows) throw new Exception(string.Format("Resource {0} for culture {1} was not found", name, culture));
+                    if (!reader.HasRows)
+                    {
+                        resource = new ResourceEntry();
+                        resource.Value = "";
+                    }
                 }
             }
 

@@ -551,9 +551,18 @@
                 <p id="IDTitulo2" class="ind_titulo"></p>
                 <table id="ind_tabla">
                     <tr>
+                        @if (ViewBag.UsrCtry != 25)
+                        {
                         <td class="ind_titulo3" width="55%"><P class="ind_datostyle">Indicador</P></td>
                         <td class="ind_titulo3" width="15%"><P class="ind_datostyle">Meta</P></td>
                         <td class="ind_titulo3" width="30%"><P class="ind_datostyle">Resultado</P></td>
+                        }
+                        else
+                        {
+                            <td class="ind_titulo3" width="55%"><P class="ind_datostyle">Indicator</P></td>
+                            <td class="ind_titulo3" width="15%"><P class="ind_datostyle">Goal</P></td>
+                            <td class="ind_titulo3" width="30%"><P class="ind_datostyle">Result</P></td>
+                        }
                     </tr>
                     <!--
                     <tr>
@@ -580,36 +589,78 @@
                         <td><p id="IDDato2f" class="ind_datostyle"></p></td>
                     </tr> -->
                     <tr>
+                        @if (ViewBag.UsrCtry != 25)
+                        {
                         <td class="ind_titulo3"><p class="ind_datotitulostyle">Porcentaje de casos de IRAG con muestra de laboratorio.</p></td>
+                        }
+                        else
+                        {
+                        <td class="ind_titulo3"><p class="ind_datotitulostyle">SARI cases percentage with sample.</p></td>
+                        }
                         <td><p id="IDMeta3" class="ind_datostyle">Meta 3</p></td>
                         <td>
                             <div id="divGraph8_3" class="divGraph8_Pies"></div>
                         </td>
                     </tr>
                     <tr>
+                        @if (ViewBag.UsrCtry != 25)
+                        {
                         <td class="ind_titulo3"><p class="ind_datotitulostyle">Porcentaje de pacientes con resultado virológico reportado.</p></td>
+                        }
+                        else
+                        {
+                        <td class="ind_titulo3"><p class="ind_datotitulostyle">Pacients percentage with reported virological result.</p></td>
+                        }
                         <td><p id="IDMeta4" class="ind_datostyle">Meta 4</p></td>
                         <td>
                             <div id="divGraph8_4" class="divGraph8_Pies"></div>
                         </td>
                     </tr>
                     <tr>
+                        @if (ViewBag.UsrCtry != 25)
+                        {
                         <td class="ind_titulo3"><p class="ind_datotitulostyle">Porcentaje de casos cerrados de IRAG medidos por la variable de condición de egreso del paciente.</p></td>
+                        }
+                        else
+                        {
+                        <td class="ind_titulo3"><p class="ind_datotitulostyle">SARI closed cases percentage, measured by patient destination.</p></td>
+                        }
                         <td><p id="IDMeta5" class="ind_datostyle">Meta 5</p></td>
                         <td><div id="divGraph8_5" class="divGraph8_Pies"></div>
                     </tr>
                     <tr>
+                        @if (ViewBag.UsrCtry != 25)
+                        {
                         <td class="ind_titulo3"><p class="ind_datotitulostyle">Mediana entre la recolección de muestras y su recepción en laboratorio.</p></td>
+                        }
+                        else
+                        {
+                            <td class="ind_titulo3"><p class="ind_datotitulostyle">Median between sample collecting and laboratory sample reception.</p></td>
+                        }
                         <td><p id="IDMeta6" class="ind_datostyle">Meta 6</p></td>
                         <td><div id="divGraph8_6" class="divGraph8_Pies"></div>
                     </tr>
                     <tr>
+                        @if (ViewBag.UsrCtry != 25)
+                        {
                         <td class="ind_titulo3"><p class="ind_datotitulostyle">Mediana entre la recepcion de la muestra en laboratorio y la notificación de los resultados.</p></td>
+                        }
+                        else
+                        {
+                            <td class="ind_titulo3"><p class="ind_datotitulostyle">Median between laboratory sample reception and the results notification.</p></td>
+                        }
                         <td><p id="IDMeta7" class="ind_datostyle">Meta 7</p></td>
                         <td><div id="divGraph8_7" class="divGraph8_Pies"></div>
                     </tr>
                     <tr>
+                        @if (ViewBag.UsrCtry != 25)
+                        {
                         <td class="ind_titulo3"><p class="ind_datotitulostyle">Mediana entre la fecha de hospitalizacion y la fecha de notificacion en el sistema de vigilancia.</p></td>
+                        }
+                        else
+                        {
+                            <td class="ind_titulo3"><p class="ind_datotitulostyle">Median between hospitalization date and notification date in the surveillance system.</p></td>
+                        }
                         <td><p id="IDMeta8" class="ind_datostyle">Meta 8</p></td>
                         <td><div id="divGraph8_8" class="divGraph8_Pies"></div>
                     </tr>
@@ -788,7 +839,7 @@
                             $("#loaderGraph8").hide(0);
                         },
                         success: function (data) {
-                            //################################################################# DESARROLLO
+                            /*################################################################# DESARROLLO
                             if(GraphCountryID == 25){
                                 GetGraphData11();
                                 GetGraphData12();
@@ -798,7 +849,7 @@
                                 GetGraphData8();
                                 return '';
                             }
-                            //################################################################# END DESARROLLO
+                            //################################################################# END DESARROLLO*/
                             var json_obj = JSON.parse(data);
                             jsonX = JSON.parse(data);
                             var chartData = [];
@@ -1109,7 +1160,7 @@
             }
             #selectInstitutions {
                 float: left;
-                width: 410px;
+                width: 420px;
             }
             #selectRegions {
                 float: left;

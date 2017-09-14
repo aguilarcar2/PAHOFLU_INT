@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Resources.Entities;
+using System.Configuration;
 
 namespace Resources.Abstract
 {
@@ -14,7 +15,15 @@ namespace Resources.Abstract
         private static object lockResources = new object();
 
         public BaseResourceProvider() {
-            Cache = true; // By default, enable caching for performance
+            //Cache = true; // By default, enable caching for performance
+            if (ConfigurationManager.AppSettings["messagesCache"] == "true")
+            {
+                Cache = true;
+            }
+            else
+            {
+                Cache = false;
+            }
         }
 
         protected bool Cache { get; set; } // Cache resources ?
