@@ -285,18 +285,38 @@ namespace Paho.Controllers
             var UsrRegion = user.Institution.cod_region_institucional;
             var UsrInstitution = user.Institution.ID;
 
-            if (InstitutionDB == 0 ) {
+            var Access_Lever_IT = false;
+
+            if (InstitutionDB > 0)
+                Access_Lever_IT = db.Institutions.Where(f => f.ID == InstitutionDB).FirstOrDefault().AccessLevel == AccessLevel.Service ? true : false;
+
+            if ((InstitutionDB == 0 && user.Institution is Hospital) || (InstitutionDB > 0 && Access_Lever_IT && user.Institution is Hospital))
+            {
+                if (InstitutionDB == 0)
+                    InstitutionDB = Convert.ToInt32(user.InstitutionID);
+
+                var institution_type = db.Institutions.Where(f => f.ID == InstitutionDB).ToList();
+
+                if (institution_type.Any())
+                    if (institution_type[0].Father_ID.ToString() != "" && institution_type[0].Father_ID.ToString() != "0")
+                        Int32.TryParse(institution_type[0].Father_ID.ToString(), out InstitutionDB);
+
+                if (institution_type[0] is Hospital && institution_type[0].AccessLevel != AccessLevel.Service)
+                {
+                    var institutions_service = db.Institutions.OfType<Hospital>()
+                                      .Where(i => i.Father_ID == InstitutionDB || i.ID == InstitutionDB).Select(t => t.ID).ToList();
+                    if (institutions_service.Any())
+                    {
+                        flucases = db.FluCases.Where(y => institutions_service.Contains(y.HospitalID));
+                    }
+                }
+            } else if (InstitutionDB == 0 ) {
                 //flucases = db.FluCases.Where(f => f.CountryID == UsrCtry) as IQueryable<FluCase>;
                 flucases = db.FluCases.Where(f => f.CountryID == UsrCtry);
             } else {
                 //flucases = db.FluCases.Where(f => f.HospitalID == InstitutionDB) as IQueryable<FluCase>;
                 flucases = db.FluCases.Where(f => f.HospitalID == InstitutionDB);
             }
-
-            var Access_Lever_IT = false;
-
-            if (InstitutionDB > 0)
-                Access_Lever_IT = db.Institutions.Where(f => f.ID == InstitutionDB).FirstOrDefault().AccessLevel != AccessLevel.Service ? true : false;
 
 
             if ((regionId > 0 || UsrAccessLevel == AccessLevel.Regional) && institutionId == 0)
@@ -309,7 +329,7 @@ namespace Paho.Controllers
                 {
                     flucases = flucases.Where(k => list_regions.Contains(k.HospitalID));
                 }
-            }
+            } 
 
             var pageIndex = Convert.ToInt32(page) - 1;
             var pageSize = rows;
@@ -478,18 +498,17 @@ namespace Paho.Controllers
                                        id = x.id_D.ToString(),
                                        cell = new string[]
                                      {
-                                         "<img src='/Content/themes/base/images/" + x.surv_ID.ToString() + "_ES.png' alt='"+ (x.surv_ID == 1 ? "IRAG":"ETI") + "'/>",
+                                         "<img src='/Content/themes/base/images/" + x.surv_ID.ToString() + "_EN.png' alt='"+ (x.surv_ID == 1 ? "SARI":"ILI") + "'/>",
                                          x.id_D.ToString(),
                                          x.H_D.ToString("d", CultureInfo.CreateSpecificCulture("es-GT")),
                                          x.LN_D,
                                          x.FN_D,
                                          x.NE_D ?? "",
-                                         x.VR_IF_D == null ? "" :  x.VR_IF_D.TestResultID == null ? "": x.VR_IF_D.TestResultID.ToString() == "N" ? "Negativo":   x.VR_IF_D.TestResultID.ToString() == "I" ? "Indeterminado":  x.VR_IF_D.TestResultID.ToString() == "U" ? "No realizado": x.VR_IF_D.CatVirusType == null ? "" : x.VR_IF_D.CatVirusType.SPA ,
-                                         x.VR_PCR_D == null ? "" : x.VR_PCR_D.TestResultID == null ? "": x.VR_PCR_D.TestResultID.ToString() == "N" ? "Negativo":   x.VR_PCR_D.TestResultID.ToString() == "I" ? "Indeterminado":   x.VR_PCR_D.TestResultID.ToString() == "U" ? "No realizado": x.VR_PCR_D.CatVirusType == null ? "" : x.VR_PCR_D.CatVirusType.SPA.Contains("Influenza A") == true ? x.VR_PCR_D.CatVirusSubType.SPA : x.VR_PCR_D.CatVirusType.SPA ,
-                                         x.IS_D == false ? "Sin muestra" : x.FR_D == "U" ? "No realizado" : x.FR_D == "N" ? "Negativo" : x.FR_D == "I" ? "Indeterminado": (x.FRVT_D == 1) ? "Influenza A" : (x.FRVT_D == 2) ? "Influenza B" : (x.FRVT_D == 3) ? "Parainfluenza I" : (x.FRVT_D == 4) ? "Parainfluenza II" : (x.FRVT_D == 5) ? "Parainfluenza III" : (x.FRVT_D == 6) ? "VRS" : (x.FRVT_D == 7) ? "Adenovirus" : (x.FRVT_D == 8) ? "Metapneumovirus" :  (x.FRVT_D == 9) ? "Otro" : (x.P_D == false) ? "No procesado" :""  ,
+                                         x.VR_IF_D == null ? "" :  x.VR_IF_D.TestResultID == null ? "": x.VR_IF_D.TestResultID.ToString() == "N" ? "Negative":   x.VR_IF_D.TestResultID.ToString() == "I" ? "Indeterminate":  x.VR_IF_D.TestResultID.ToString() == "U" ? "Unrealized": x.VR_IF_D.CatVirusType == null ? "" : x.VR_IF_D.CatVirusType.SPA ,
+                                         x.VR_PCR_D == null ? "" : x.VR_PCR_D.TestResultID == null ? "": x.VR_PCR_D.TestResultID.ToString() == "N" ? "Negative":   x.VR_PCR_D.TestResultID.ToString() == "I" ? "Indeterminate":   x.VR_PCR_D.TestResultID.ToString() == "U" ? "Unrealized": x.VR_PCR_D.CatVirusType == null ? "" : x.VR_PCR_D.CatVirusType.SPA.Contains("Influenza A") == true ? x.VR_PCR_D.CatVirusSubType.SPA : x.VR_PCR_D.CatVirusType.SPA ,
+                                         x.IS_D == false ? "No sample" : x.FR_D == "U" ? "Unrealized" : x.FR_D == "N" ? "Negative" : x.FR_D == "I" ? "Indeterminate": (x.FRVT_D == 1) ? "Influenza A" : (x.FRVT_D == 2) ? "Influenza B" : (x.FRVT_D == 3) ? "Parainfluenza I" : (x.FRVT_D == 4) ? "Parainfluenza II" : (x.FRVT_D == 5) ? "Parainfluenza III" : (x.FRVT_D == 6) ? "VRS" : (x.FRVT_D == 7) ? "Adenovirus" : (x.FRVT_D == 8) ? "Metapneumovirus" :  (x.FRVT_D == 9) ? "Other" : (x.P_D == false) ? "Not processed" :""  ,
                                          x.HEALTH_INST ?? "",
-                                         x.CS_D == 1 ?  "<img src='/Content/themes/base/images/open.png' alt='En estudio'/>" + " En estudio" : x.CS_D == 2 ? "<img src='/Content/themes/base/images/close.png' alt='Descartado'/>" + " Descartado" : x.CS_D == 3 ? "<img src='/Content/themes/base/images/close.png' alt='Cerrado'/>" + " Cerrado"  : "<img src='/Content/themes/base/images/open.png' alt='Sin estatus'/>" + " Sin estatus"
-
+                                         x.CS_D == 1 ?  "<img src='/Content/themes/base/images/open.png' alt='En estudio'/>" + " Under study" : x.CS_D == 2 ? "<img src='/Content/themes/base/images/close.png' alt='Descartado'/>" + " Discarded" : x.CS_D == 3 ? "<img src='/Content/themes/base/images/close.png' alt='Cerrado'/>" + " Closed"  : "<img src='/Content/themes/base/images/open.png' alt='Sin estatus'/>" + " No status"
                                      }
                                    }).ToArray();
             //}
