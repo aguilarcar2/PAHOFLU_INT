@@ -2428,7 +2428,7 @@
                         <div class="row rowform" data-bind="visible:EnableOtherVirusTypes">
                             <div class="col-md-5">
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class='input-group' data-bind="visible:EnableOtherVirusTypes">
                                     <span class="input-group-addon">
                                         @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelOtherVirus"))
@@ -2439,6 +2439,7 @@
                                             <option value="2">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabEnterovirus")) </option>
                                             <option value="3">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabParainfluenzaIV"))</option>
                                         </select>
+                                    <input id="OtherVirus" type='text' maxlength="20" class="form-control" data-bind="value:OtherVirus, enable:CanEdit, visible:EnableOtherVirusTypes" />
                                 </div>
                             </div>
                             <div class="col-md-1_5">
@@ -2713,6 +2714,14 @@
                                     <input type="radio" value="false" data-bind="checked: ProcessLab, enable:CanEdit"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelNo"))
                                 </label>
                             </div>
+                            @*<div class="row" data-bind="visible: NotShowProcessedLab">
+                                <div class='input-group'>
+                                    <span class="input-group-addon">
+                                        Why not processed?
+                                    </span>
+                                    <input id="NoReason" type='text' class="form-control" data-bind="value:NoProRen, enable:CanEdit" />
+                                </div>
+                            </div>*@
                             <!-- div class="row" data-bind="visible: NotShowProcessedLab">
             <div class='input-group'>
                 <span class="input-group-addon">
@@ -2797,7 +2806,7 @@
                         <div class="row rowform" data-bind="visible:EnableOtherVirusTypes">
                             <div class="col-md-5">
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class='input-group' data-bind="visible:EnableOtherVirusTypes">
                                     <span class="input-group-addon">
                                         @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelOtherVirus"))
@@ -2808,6 +2817,7 @@
                                             <option value="2">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabEnterovirus")) </option>
                                             <option value="3">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabParainfluenzaIV"))</option>
                                         </select>
+                                    <input id="OtherVirus" type='text' maxlength="20" class="form-control" data-bind="value:OtherVirus, enable:CanEdit, visible:EnableOtherVirusTypes" />
                                 </div>
                             </div>
                             <div class="col-md-1_5">
@@ -3196,7 +3206,7 @@
                         <div class="row rowform" data-bind="visible:EnableOtherVirusTypes">
                             <div class="col-md-5">
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class='input-group' data-bind="visible:EnableOtherVirusTypes">
                                     <span class="input-group-addon">
                                         @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelOtherVirus"))
@@ -3207,7 +3217,12 @@
                                             <option value="2">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabEnterovirus")) </option>
                                             <option value="3">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabParainfluenzaIV"))</option>
                                         </select>
+                                    
                                 </div>
+                                <div class='input-group' data-bind="visible:EnableOtherVirusTypes">
+                                    <input id="OtherVirus" type='text' maxlength="20" class="form-control" data-bind="value:OtherVirus, enable:CanEdit, visible:EnableOtherVirusTypes" />
+                                </div>
+
                             </div>
                             <div class="col-md-1_5">
                                 <div class='input-group' data-bind="visible:EnableCTOtherVirusType">

@@ -35,6 +35,7 @@
     self.OtherVirusTypeID = ko.observable("");
     self.CTOtherVirusType = ko.observable("").extend({ numeric: 2 });
     self.CTRLOtherVirusType = ko.observable("").extend({ numeric: 2 });
+    self.OtherVirus = ko.observable("");
     self.VirusSubTypeID = ko.observable("");
     self.CTSubType = ko.observable("").extend({ numeric: 2 });
     self.CTRLSubType = ko.observable("").extend({ numeric: 2 });
@@ -1010,7 +1011,7 @@ function LabViewModel(app, dataModel) {
                     { msg += "\n" + "Ingreso el CT de Virus"; }
                 }
 
-                if ((self.ArrayValidate()[index].TestResultID() === "P" || self.ArrayValidate()[index].TestResultID() === "I") && self.ArrayValidate()[index].VirusTypeID() === "9" && self.ArrayValidate()[index].OtherVirusTypeID() === "")
+                if ((self.ArrayValidate()[index].TestResultID() === "P" || self.ArrayValidate()[index].TestResultID() === "I") && self.ArrayValidate()[index].VirusTypeID() === "9" && self.ArrayValidate()[index].OtherVirusTypeID() === "" && self.ArrayValidate()[index].OtherVirus() === "")
                 { msg += "\n" + "Indique el otro virus detectado"; }
                 else {
                     if (self.ArrayValidate()[index].UsrCountry() == 7 && self.ArrayValidate()[index].CTOtherVirusType() === "" && self.ArrayValidate()[index].VirusTypeID() === "9" && self.ArrayValidate()[index].TestType() === "2" && self.ArrayValidate()[index].OtherVirusTypeID() != "")
@@ -1132,6 +1133,7 @@ function LabViewModel(app, dataModel) {
                         labtest.OtherVirusTypeID(data.LabTests[index].OtherVirusTypeID);
                         labtest.CTOtherVirusType(data.LabTests[index].CTOtherVirusType);
                         labtest.CTRLOtherVirusType(data.LabTests[index].CTRLOtherVirusType);
+                        labtest.OtherVirus(data.LabTests[index].OtherVirus);
                         labtest.InfA(data.LabTests[index].InfA);
                         labtest.VirusSubTypeID(data.LabTests[index].VirusSubTypeID);
                         console.log(data.LabTests[index].CTSubType);
@@ -1185,6 +1187,7 @@ function LabViewModel(app, dataModel) {
                         labtest_s2.OtherVirusTypeID(data.LabTests_Sample2[index].OtherVirusTypeID);
                         labtest_s2.CTOtherVirusType(data.LabTests_Sample2[index].CTOtherVirusType);
                         labtest_s2.CTRLOtherVirusType(data.LabTests_Sample2[index].CTRLOtherVirusType);
+                        labtest_s2.OtherVirus(data.LabTests_Sample2[index].OtherVirus);
                         labtest_s2.InfA(data.LabTests_Sample2[index].InfA);
                         labtest_s2.VirusSubTypeID(data.LabTests_Sample2[index].VirusSubTypeID);
                         labtest_s2.CTSubType(data.LabTests_Sample2[index].CTSubType);
@@ -1232,6 +1235,7 @@ function LabViewModel(app, dataModel) {
                         labtest_s3.OtherVirusTypeID(data.LabTests_Sample3[index].OtherVirusTypeID);
                         labtest_s3.CTOtherVirusType(data.LabTests_Sample3[index].CTOtherVirusType);
                         labtest_s3.CTRLOtherVirusType(data.LabTests_Sample3[index].CTRLOtherVirusType);
+                        labtest_s2.OtherVirus(data.LabTests_Sample3[index].OtherVirus);
                         labtest_s3.InfA(data.LabTests_Sample3[index].InfA);
                         labtest_s3.VirusSubTypeID(data.LabTests_Sample3[index].VirusSubTypeID);
                         labtest_s3.CTSubType(data.LabTests_Sample3[index].CTSubType);
@@ -1413,6 +1417,7 @@ function LabViewModel(app, dataModel) {
                 OtherVirusTypeID: self.LabTests()[index].OtherVirusTypeID(),
                 CTOtherVirusType: self.LabTests()[index].CTOtherVirusType(),
                 CTRLOtherVirusType: self.LabTests()[index].CTRLOtherVirusType(),
+                OtherVirus: self.LabTests()[index].OtherVirus(),
                 InfA: self.LabTests()[index].InfA(),
                 VirusSubTypeID: self.LabTests()[index].VirusSubTypeID(),
                 CTSubType: self.LabTests()[index].CTSubType(),
@@ -1466,6 +1471,7 @@ function LabViewModel(app, dataModel) {
                 OtherVirusTypeID: self.LabTests_Sample2()[index].OtherVirusTypeID(),
                 CTOtherVirusType: self.LabTests_Sample2()[index].CTOtherVirusType(),
                 CTRLOtherVirusType: self.LabTests_Sample2()[index].CTRLOtherVirusType(),
+                OtherVirus: self.LabTests_Sample2()[index].OtherVirus(),
                 InfA: self.LabTests_Sample2()[index].InfA(),
                 VirusSubTypeID: self.LabTests_Sample2()[index].VirusSubTypeID(),
                 CTSubType: self.LabTests_Sample2()[index].CTSubType(),
@@ -1514,6 +1520,7 @@ function LabViewModel(app, dataModel) {
                 OtherVirusTypeID: self.LabTests_Sample3()[index].OtherVirusTypeID(),
                 CTOtherVirusType: self.LabTests_Sample3()[index].CTOtherVirusType(),
                 CTRLOtherVirusType: self.LabTests_Sample3()[index].CTRLOtherVirusType(),
+                OtherVirus: self.LabTests_Sample3()[index].OtherVirus(),
                 InfA: self.LabTests_Sample3()[index].InfA(),
                 VirusSubTypeID: self.LabTests_Sample3()[index].VirusSubTypeID(),
                 CTSubType: self.LabTests_Sample3()[index].CTSubType(),
