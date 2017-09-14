@@ -1,0 +1,72 @@
+﻿@model PagedList.IPagedList<Paho.Models.CatPopulationInstitution>
+
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Catálogo - Población por institución de todo el país";
+}
+
+
+<h4>Catálogo - Población por institución de todo el país</h4>
+<p>
+    @Html.ActionLink("Crear nuevo", "Create", new object { }, new { @class = "btn btn-default", style = "background-color:green; color:white" })
+</p>
+@using (Html.BeginForm("Index", "CatPopulationInstitutions", FormMethod.Get))
+{
+    <p>
+        Criterio de búsqueda: @Html.TextBox("searchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Buscar" />
+    </p>
+    }
+    <table class="table">
+        <tr>
+            <th>
+                @Html.ActionLink("País", "Index", new { sortOrder = ViewBag.FullNameCountry, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+               @Html.ActionLink("Institución", "Index", new { sortOrder = ViewBag.FullNameInstitution, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Año", "Index", new { sortOrder = ViewBag.PopulationYear, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                Cant. Población
+            </th>
+
+            @*<th>
+                @Html.DisplayNameFor(model => model.fh_insert)
+            </th>*@
+            <th></th>
+        </tr>
+    
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CountryPopulation.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InstitutionPopulation.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.year)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.population)
+            </td>
+
+            @*<td>
+                @Html.DisplayFor(modelItem => item.fh_insert)
+            </td>*@
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id=item.id }) |
+                @Html.ActionLink("Borrar", "Delete", new { id=item.id })
+            </td>
+        </tr>
+    }
+    
+    </table>
+    Pagina @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))

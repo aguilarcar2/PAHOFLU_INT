@@ -1,0 +1,52 @@
+﻿@model Paho.Models.CatPopulationInstitution
+
+
+    <h3>Desea borrar el registro?</h3>
+    <div>
+        <h4>Borrar población de esta institución</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt class="vertical-align, text-right">
+                País:
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CountryPopulation.Name)
+            </dd>
+    
+            <dt class="vertical-align, text-right">
+                Nombre de la institución:
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.InstitutionPopulation.FullName)
+            </dd>
+    
+            <dt class="vertical-align, text-right">
+                Población:
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.population)
+            </dd>
+    
+            <dt class="vertical-align, text-right">
+                Año:
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.year)
+            </dd>
+    
+    
+        </dl>
+    
+        @using (Html.BeginForm()) {
+            @Html.AntiForgeryToken()
+    
+            <div class="form-actions no-color">
+                <input type="submit" value="Borrar" class="btn btn-default" /> |
+                @Html.ActionLink("Regreso a la lista de opciones", "Index")
+            </div>
+        }
+    </div>
