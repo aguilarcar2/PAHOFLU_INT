@@ -195,20 +195,30 @@ namespace Paho.Controllers
             }).ToList();
 
             CVT = db.CatVirusType.OrderBy(i => i.orden);
-            var CVTDisplay = CVT.Select(i => new LookupView<CatVirusType>()
+            var CVTDisplay = ( user.Institution.Country.Language ==  "SPA" ? CVT.Select(i => new LookupView<CatVirusType>()
             {
                 Id = i.ID.ToString(),
                 Name = i.SPA,
                 orden = i.orden.ToString()
-            }).ToList();
+            }).ToList() : CVT.Select(i => new LookupView<CatVirusType>()
+            {
+                Id = i.ID.ToString(),
+                Name = i.ENG,
+                orden = i.orden.ToString()
+            }).ToList()) ;
 
             CVST = db.CatVirusSubType.OrderBy(i => i.orden);
-            var CVSTDisplay = CVST.Select(i => new LookupView<CatVirusSubType>()
+            var CVSTDisplay = (user.Institution.Country.Language == "SPA" ? CVST.Select(i => new LookupView<CatVirusSubType>()
             {
                 Id = i.ID.ToString(),
                 Name = i.SPA,
                 orden = i.orden.ToString()
-            }).ToList();
+            }).ToList() : CVST.Select(i => new LookupView<CatVirusSubType>()
+            {
+                Id = i.ID.ToString(),
+                Name = i.ENG,
+                orden = i.orden.ToString()
+            }).ToList());
 
 
             var CatVirusSubtypeConfiguration = db.CatVirusSubTypeConfByLab.OfType<CatVirusSubTypeConfByLab>().Where(i => i.id_Institution == user.InstitutionID);
@@ -223,21 +233,31 @@ namespace Paho.Controllers
                 CVST_Test = db.CatVirusSubType.Where(k => ListVaccines.Contains(k.ID));
             }
 
-            var CVST_TestDisplay = CVST_Test.Select(i => new LookupView<CatVirusSubType>()
+            var CVST_TestDisplay = (user.Institution.Country.Language == "SPA" ?  CVST_Test.Select(i => new LookupView<CatVirusSubType>()
             {
                 Id = i.ID.ToString(),
                 Name = i.SPA,
                 orden = i.orden.ToString()
-            }).ToList();
+            }).ToList() : CVST_Test.Select(i => new LookupView<CatVirusSubType>()
+            {
+                Id = i.ID.ToString(),
+                Name = i.ENG,
+                orden = i.orden.ToString()
+            }).ToList());
 
 
             CVL = db.CatVirusLinaje.OrderBy(i => i.orden);
-            var CVLDisplay = CVL.Select(i => new LookupView<CatVirusLinaje>()
+            var CVLDisplay = (user.Institution.Country.Language == "SPA" ?  CVL.Select(i => new LookupView<CatVirusLinaje>()
             {
                 Id = i.ID.ToString(),
                 Name = i.SPA,
                 orden = i.orden.ToString()
-            }).ToList();
+            }).ToList() : CVL.Select(i => new LookupView<CatVirusLinaje>()
+            {
+                Id = i.ID.ToString(),
+                Name = i.ENG,
+                orden = i.orden.ToString()
+            }).ToList());
 
             CNP = db.CatNativePeople.OrderBy(i => i.description);
             var CNPDisplay = CNP.Select(i => new LookupView<CatNativePeople>()
