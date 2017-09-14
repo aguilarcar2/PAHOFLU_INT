@@ -65,6 +65,7 @@ namespace Paho.Models
         public int? OtherVirusTypeID { get; set; }
         public Decimal? CTOtherVirusType { get; set; }
         public Decimal? CTRLOtherVirusType { get; set; }
+        public string OtherVirus { get; set; }
         public int? InfA { get; set; }
         public int? VirusSubTypeID { get; set; }
         public Decimal? CTSubType { get; set; }
@@ -934,6 +935,7 @@ namespace Paho.Models
         public int? OtherVirusTypeID { get; set; }
         public decimal? CTOtherVirusType { get; set; }
         public decimal? CTRLOtherVirusType { get; set; }
+        public string OtherVirus { get; set; }
         public int? InfA { get; set; }
         public int? VirusSubTypeID { get; set; }
         public Decimal? CTSubType { get; set; }

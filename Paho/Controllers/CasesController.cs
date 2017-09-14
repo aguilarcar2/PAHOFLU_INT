@@ -293,6 +293,12 @@ namespace Paho.Controllers
                 flucases = db.FluCases.Where(f => f.HospitalID == InstitutionDB);
             }
 
+            var Access_Lever_IT = false;
+
+            if (InstitutionDB > 0)
+                Access_Lever_IT = db.Institutions.Where(f => f.ID == InstitutionDB).FirstOrDefault().AccessLevel != AccessLevel.Service ? true : false;
+
+
             if ((regionId > 0 || UsrAccessLevel == AccessLevel.Regional) && institutionId == 0)
             {
                 var RegionId_ = (UsrAccessLevel == AccessLevel.Regional) ? UsrRegion : regionId;
@@ -413,42 +419,42 @@ namespace Paho.Controllers
             //flucases = flucases.Skip(pageIndex * pageSize).Take(pageSize);
             var jsondata = new List<Object>();
 
-            var Arrayrows = (from flucase in flucases
-                             select new
-                             {
-                                 id_D = flucase.ID,
-                                 H_D = flucase.HospitalDate,
-                                 LN_D = flucase.LName1 + " " + flucase.LName2 ?? "",
-                                 FN_D = flucase.FName1 + " " + flucase.FName2 ?? "",
-                                 NE_D = flucase.NoExpediente ?? "",
-                                 IS_D = flucase.IsSample,
-                                 FR_D = flucase.FinalResult,
-                                 D_D = flucase.Destin,
-                                 FRVT_D = flucase.FinalResultVirusTypeID,
-                                 P_D = flucase.Processed,
-                                 CS_D = flucase.CaseStatus,
-                                 //CLT_D = flucase.CaseLabTests.Where(z => z.LabID == 60).ToList()
-                             }).AsEnumerable()
-                                .Select(x => new
-                                {
-                                    id = x.id_D.ToString(),
-                                    cell = new string[]
-                                    {
-                                        x.id_D.ToString(),
-                                        x.H_D.ToString("d", CultureInfo.CreateSpecificCulture("es-GT")),
-                                        x.LN_D,
-                                        x.FN_D,
-                                        x.NE_D ?? "",
-                                        (x.IS_D == true) ? BooleanType.Si.ToString() : (x.IS_D == false) ? BooleanType.No.ToString(): "",
-                                        x.FR_D == "U" ? "No realizado" : x.FR_D == "N" ? "Negativo" : x.FR_D == "I" ? "Indeterminado": (x.FRVT_D == 1) ? "Influenza A" : (x.FRVT_D == 2) ? "Influenza B" : (x.FRVT_D == 3) ? "Parainfluenza I" : (x.FRVT_D == 4) ? "Parainfluenza II" : (x.FRVT_D == 5) ? "Parainfluenza III" : (x.FRVT_D == 6) ? "VSR" : (x.FRVT_D == 7) ? "Adenovirus" : (x.FRVT_D == 8) ? "Metapneumovirus" :  (x.FRVT_D == 9) ? "Otro" : (x.P_D == false) ? "No procesado" :""  ,
-                                        x.D_D == "A" ? "Dado de Alta" : x.D_D == "D" ? "Fallecido" : x.D_D == "R" ? "Referido" : "",
-                                        //x.CLT_D.Select(z => new { Id = z..ID.ToString(), x.Name }).ToList()
-                                    }
-                                }).ToArray();
-            if (UsrCtry >= 1)
-            {
+            //var Arrayrows = (from flucase in flucases
+            //                 select new
+            //                 {
+            //                     id_D = flucase.ID,
+            //                     H_D = flucase.HospitalDate,
+            //                     LN_D = flucase.LName1 + " " + flucase.LName2 ?? "",
+            //                     FN_D = flucase.FName1 + " " + flucase.FName2 ?? "",
+            //                     NE_D = flucase.NoExpediente ?? "",
+            //                     IS_D = flucase.IsSample,
+            //                     FR_D = flucase.FinalResult,
+            //                     D_D = flucase.Destin,
+            //                     FRVT_D = flucase.FinalResultVirusTypeID,
+            //                     P_D = flucase.Processed,
+            //                     CS_D = flucase.CaseStatus,
+            //                     //CLT_D = flucase.CaseLabTests.Where(z => z.LabID == 60).ToList()
+            //                 }).AsEnumerable()
+            //                    .Select(x => new
+            //                    {
+            //                        id = x.id_D.ToString(),
+            //                        cell = new string[]
+            //                        {
+            //                            x.id_D.ToString(),
+            //                            x.H_D.ToString("d", CultureInfo.CreateSpecificCulture("es-GT")),
+            //                            x.LN_D,
+            //                            x.FN_D,
+            //                            x.NE_D ?? "",
+            //                            (x.IS_D == true) ? BooleanType.Si.ToString() : (x.IS_D == false) ? BooleanType.No.ToString(): "",
+            //                            x.FR_D == "U" ? "No realizado" : x.FR_D == "N" ? "Negativo" : x.FR_D == "I" ? "Indeterminado": (x.FRVT_D == 1) ? "Influenza A" : (x.FRVT_D == 2) ? "Influenza B" : (x.FRVT_D == 3) ? "Parainfluenza I" : (x.FRVT_D == 4) ? "Parainfluenza II" : (x.FRVT_D == 5) ? "Parainfluenza III" : (x.FRVT_D == 6) ? "VSR" : (x.FRVT_D == 7) ? "Adenovirus" : (x.FRVT_D == 8) ? "Metapneumovirus" :  (x.FRVT_D == 9) ? "Otro" : (x.P_D == false) ? "No procesado" :""  ,
+            //                            x.D_D == "A" ? "Dado de Alta" : x.D_D == "D" ? "Fallecido" : x.D_D == "R" ? "Referido" : "",
+            //                            //x.CLT_D.Select(z => new { Id = z..ID.ToString(), x.Name }).ToList()
+            //                        }
+            //                    }).ToArray();
+            //if (UsrCtry >= 1)
+            //{
 
-                 Arrayrows = (from flucase in flucases
+            var  Arrayrows = (from flucase in flucases
                                  select new
                                  {
                                      surv_ID = flucase.Surv,
@@ -464,7 +470,8 @@ namespace Paho.Controllers
                                      P_D = flucase.Processed,
                                      CS_D = flucase.CaseStatus,
                                      VR_IF_D = flucase.CaseLabTests.Where(e => e.TestType == (TestType)1 && e.Processed != null).OrderBy(d => d.SampleNumber).ThenBy(f => f.CatTestResult.orden).ThenBy(u => u.TestDate).ThenBy(y => y.CatVirusType.orden).FirstOrDefault(),
-                                     VR_PCR_D = flucase.CaseLabTests.Where(e => e.TestType == (TestType)2 && e.Processed != null).OrderBy(d => d.SampleNumber).ThenBy(f => f.CatTestResult.orden).ThenBy(u => u.TestDate).ThenBy(y => y.CatVirusType.orden).FirstOrDefault()
+                                     VR_PCR_D = flucase.CaseLabTests.Where(e => e.TestType == (TestType)2 && e.Processed != null).OrderBy(d => d.SampleNumber).ThenBy(f => f.CatTestResult.orden).ThenBy(u => u.TestDate).ThenBy(y => y.CatVirusType.orden).FirstOrDefault(),
+                                     HEALTH_INST = flucase.Hospital.Name ?? ""
                                  }).AsEnumerable()
                                    .Select(x => new
                                    {
@@ -480,11 +487,12 @@ namespace Paho.Controllers
                                          x.VR_IF_D == null ? "" :  x.VR_IF_D.TestResultID == null ? "": x.VR_IF_D.TestResultID.ToString() == "N" ? "Negativo":   x.VR_IF_D.TestResultID.ToString() == "I" ? "Indeterminado":  x.VR_IF_D.TestResultID.ToString() == "U" ? "No realizado": x.VR_IF_D.CatVirusType == null ? "" : x.VR_IF_D.CatVirusType.SPA ,
                                          x.VR_PCR_D == null ? "" : x.VR_PCR_D.TestResultID == null ? "": x.VR_PCR_D.TestResultID.ToString() == "N" ? "Negativo":   x.VR_PCR_D.TestResultID.ToString() == "I" ? "Indeterminado":   x.VR_PCR_D.TestResultID.ToString() == "U" ? "No realizado": x.VR_PCR_D.CatVirusType == null ? "" : x.VR_PCR_D.CatVirusType.SPA.Contains("Influenza A") == true ? x.VR_PCR_D.CatVirusSubType.SPA : x.VR_PCR_D.CatVirusType.SPA ,
                                          x.IS_D == false ? "Sin muestra" : x.FR_D == "U" ? "No realizado" : x.FR_D == "N" ? "Negativo" : x.FR_D == "I" ? "Indeterminado": (x.FRVT_D == 1) ? "Influenza A" : (x.FRVT_D == 2) ? "Influenza B" : (x.FRVT_D == 3) ? "Parainfluenza I" : (x.FRVT_D == 4) ? "Parainfluenza II" : (x.FRVT_D == 5) ? "Parainfluenza III" : (x.FRVT_D == 6) ? "VRS" : (x.FRVT_D == 7) ? "Adenovirus" : (x.FRVT_D == 8) ? "Metapneumovirus" :  (x.FRVT_D == 9) ? "Otro" : (x.P_D == false) ? "No procesado" :""  ,
-                                         x.CS_D == 1 ? "En estudio" : x.CS_D == 2 ? "Descartado" : x.CS_D == 3 ? "Cerrado" : "Sin estatus"
+                                         x.HEALTH_INST ?? "",
+                                         x.CS_D == 1 ?  "<img src='/Content/themes/base/images/open.png' alt='En estudio'/>" + " En estudio" : x.CS_D == 2 ? "<img src='/Content/themes/base/images/close.png' alt='Descartado'/>" + " Descartado" : x.CS_D == 3 ? "<img src='/Content/themes/base/images/close.png' alt='Cerrado'/>" + " Cerrado"  : "<img src='/Content/themes/base/images/open.png' alt='Sin estatus'/>" + " Sin estatus"
 
                                      }
                                    }).ToArray();
-            }
+            //}
 
                 jsondata.Add(new
                 {
@@ -1493,6 +1501,7 @@ namespace Paho.Controllers
                               OtherVirusTypeID = caselabtest.OtherVirusTypeID,
                               CTOtherVirusType = caselabtest.CTOtherVirusType,
                               CTRLOtherVirusType = caselabtest.CTRLOtherVirusType,
+                              OtherVirus = caselabtest.OtherVirus,
                               InfA = caselabtest.InfA,
                               VirusSubTypeID = caselabtest.VirusSubTypeID,
                               CTSubType = caselabtest.CTSubType,
@@ -1547,6 +1556,7 @@ namespace Paho.Controllers
                               OtherVirusTypeID = caselabtest.OtherVirusTypeID,
                               CTOtherVirusType = caselabtest.CTOtherVirusType,
                               CTRLOtherVirusType = caselabtest.CTRLOtherVirusType,
+                              OtherVirus = caselabtest.OtherVirus,
                               InfA = caselabtest.InfA,
                               VirusSubTypeID = caselabtest.VirusSubTypeID,
                               CTSubType = caselabtest.CTSubType,
@@ -1593,6 +1603,7 @@ namespace Paho.Controllers
                               CTRLVirusType = caselabtest.CTRLVirusType,
                               OtherVirusTypeID = caselabtest.OtherVirusTypeID,
                               CTOtherVirusType = caselabtest.CTOtherVirusType,
+                              OtherVirus = caselabtest.OtherVirus,
                               InfA = caselabtest.InfA,
                               VirusSubTypeID = caselabtest.VirusSubTypeID,
                               CTSubType = caselabtest.CTSubType,
@@ -1765,6 +1776,7 @@ namespace Paho.Controllers
                             OtherVirusTypeID = labTestViewModel.OtherVirusTypeID,
                             CTOtherVirusType = labTestViewModel.CTOtherVirusType,
                             CTRLOtherVirusType = labTestViewModel.CTRLOtherVirusType,
+                            OtherVirus = labTestViewModel.OtherVirus,
                             InfA = labTestViewModel.InfA,
                             VirusSubTypeID = labTestViewModel.VirusSubTypeID,
                             CTSubType = labTestViewModel.CTSubType,
@@ -1848,12 +1860,15 @@ namespace Paho.Controllers
             List<Dictionary<string, string>> logsPerUser = new List<Dictionary<string, string>>();
 
             var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            var user = UserManager.FindById(User.Identity.GetUserId());
+
             using (var con = new SqlConnection(consString))
             {
                 using (var command = new SqlCommand("B1", con) { CommandType = CommandType.StoredProcedure })
                 {
                     command.Parameters.Clear();
                     command.Parameters.Add("@Record_ID", SqlDbType.Int).Value = caseId;
+                    command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = user.Institution.CountryID;
                     con.Open();
                     using (var reader = command.ExecuteReader())
                     {

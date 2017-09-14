@@ -110,6 +110,8 @@
             var current_value = typeof (newHospExDate) == "object" ? newHospExDate : parseDate(newHospExDate, date_format_);
             var date_hospital_ = typeof (self.HospAmDate()) == "object" ? self.HospAmDate() : parseDate(self.HospAmDate(), date_format_);
 
+            if (current_value == null) self.Destin("");
+
             if (self.hasReset() != true) {
                 if (date_hospital_ == null || date_hospital_ == "") {
                     alert("Por favor ingrese antes la fecha de admisión de hospitalización");
@@ -585,7 +587,14 @@
     }, self);
 
     self.Destin.subscribe(function (NewDestin) {
-        if (app.Views.Contact.SurvSARI() == true && app.Views.Contact.IsSurv() != "") {
+
+        if (app.Views.Contact.SurvSARI() == true && app.Views.Contact.IsSurv() != "" && NewDestin != null && NewDestin != "") {
+            if (self.HospExDate() == "" || self.HospExDate() == "undefined" || self.HospExDate() == null)
+            {
+                alert("Es necesario ingresar antes la 'Fecha de Egreso' para poder ingresar la 'Condición de egreso' ");
+                self.Destin("");
+                $("#HospExDate").focus();
+             }
             if (NewDestin != "" && self.IsSample() === "false") {
                 $("a[href*='tab-case']").show();
                 $("#tab-case").show();
@@ -600,6 +609,10 @@
                 $("a[href*='tab-case']").show();
                 $("#tab-case").show();
                 $("#tabs").tabs("refresh");
+            } else if (self.IsSample() === "true" && app.Views.Lab.Processed() === "false" ) {
+                    $("a[href*='tab-case']").show();
+                    $("#tab-case").show();
+                    $("#tabs").tabs("refresh");
             } else if (app.Views.Contact.Id() != null) {
                 $("a[href*='tab-case']").hide();
                 $("#tab-case").hide();

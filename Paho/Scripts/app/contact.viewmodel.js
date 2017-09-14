@@ -598,7 +598,7 @@
         } else {
             $.getJSON(app.dataModel.getPatientInformationUrl, { DTP: self.DocumentType(), DNP: self.NoExpediente() }, function (data, status) {
                 if (data.length <= 0) {
-                    alert("Datos del paciente no están registrados, revise el No. de identificación o ingrese datos correspondientes");
+                    alert("No están registrado estos datos del paciente en el sistema PAHOFLU, presione click en aceptar y continue con el registro del caso.");
                 }
                 else {
                     self.FName1(data[0].nombre1);
