@@ -2485,7 +2485,7 @@
                                 <select class="form-control" data-bind="options: CTR,
                                             optionsText: 'Name',
                                             optionsValue: 'Id',
-							                optionsCaption: 'Resultado...',
+							                optionsCaption: '@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelResultSelect"))',
                                             value: TestResultID_VirusSubType,
                                             visible:EnableVirusSubTypeID,
                                             enable:CanEdit"> </select>
@@ -2528,7 +2528,7 @@
                                 <select class="form-control" data-bind="options: CTR,
                                             optionsText: 'Name',
                                             optionsValue: 'Id',
-							                optionsCaption: 'Resultado...',
+							                optionsCaption: '@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelResultSelect"))',
                                             value: TestResultID_VirusSubType_2,
                                             visible:EnableVirusSubTypeID_2,
                                             enable:CanEdit"></select>
@@ -2852,45 +2852,45 @@
                                         optionsValue: 'Id',
                                         value:VirusSubTypeID,
                                         visible: EnableVirusSubTypeID,
-                                        optionsCaption: 'Subtipo...',
+                                        optionsCaption:@(ViewBag.UsrCtryLang == "SPA" ? "Subtipo..." : "Subtype..."),
                                         enable:CanEdit"></select>
-                                </div>
-                            </div>
-                            <div class='input-group col-md-4' data-bind="visible: EnableVirusSubTypeID">
-                                <span class="input-group-addon">
-                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelSubtypeResult"))
-                                </span>
-                                <select class="form-control" data-bind="options: CTR,
-                                            optionsText: 'Name',
-                                            optionsValue: 'Id',
-							                optionsCaption: 'Resultado...',
-                                            value: TestResultID_VirusSubType,
-                                            visible:EnableVirusSubTypeID,
-                                            enable:CanEdit"></select>
-                            </div>
-                            <div class='input-group col-md-1_5' data-bind="visible:EnableCTSubType">
-                                <span class="input-group-addon CTSpan">
-                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelCT")) <font color="#FF0000">*</font>:
-                                </span>
-                                <input id="CTSubType" type='text' maxlength="5" class="form-control CTInput" data-bind="value:CTSubType, enable:CanEdit, visible:EnableCTSubType" />
-                            </div>
-                            <div class='input-group col-md-1_5' data-bind="visible:EnableCTSubType">
-                                <span class="input-group-addon CTSpan">
-                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelCtrlPos"))
-                                </span>
-                                <input id="CTRLSubType" type='text' maxlength="5" class="form-control CTInput" data-bind="value:CTRLSubType, enable:CanEdit, visible:EnableCTSubType" />
-                            </div>
                         </div>
-                        <div class="row rowform" data-bind="visible: EnableVirusSubTypeID_2()">
-                            <div class="col-md-2">
-                            </div>
+                    </div>
+                    <div class='input-group col-md-4' data-bind="visible: EnableVirusSubTypeID">
+                        <span class="input-group-addon">
+                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelSubtypeResult"))
+                        </span>
+                        <select class="form-control" data-bind="options: CTR,
+                                    optionsText: 'Name',
+                                    optionsValue: 'Id',
+                                    optionsCaption: 'Resultado...',
+                                    value: TestResultID_VirusSubType,
+                                    visible:EnableVirusSubTypeID,
+                                    enable:CanEdit"></select>
+                    </div>
+                    <div class='input-group col-md-1_5' data-bind="visible:EnableCTSubType">
+                        <span class="input-group-addon CTSpan">
+                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelCT")) <font color="#FF0000">*</font>:
+                        </span>
+                        <input id="CTSubType" type='text' maxlength="5" class="form-control CTInput" data-bind="value:CTSubType, enable:CanEdit, visible:EnableCTSubType" />
+                    </div>
+                    <div class='input-group col-md-1_5' data-bind="visible:EnableCTSubType">
+                        <span class="input-group-addon CTSpan">
+                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelCtrlPos"))
+                        </span>
+                        <input id="CTRLSubType" type='text' maxlength="5" class="form-control CTInput" data-bind="value:CTRLSubType, enable:CanEdit, visible:EnableCTSubType" />
+                    </div>
+                </div>
+                <div class="row rowform" data-bind="visible: EnableVirusSubTypeID_2()">
+                    <div class="col-md-2">
+                    </div>
 
-                            <div class='input-group col-md-3' data-bind="visible: EnableVirusSubTypeID_2">
+                    <div class='input-group col-md-3' data-bind="visible: EnableVirusSubTypeID_2">
 
-                                <span class="input-group-addon">
-                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelSubtype"))
-                                </span>
-                                <div @*data-bind="visible: CanEdit()"*@>
+                        <span class="input-group-addon">
+                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelSubtype"))
+                        </span>
+                        <div @*data-bind="visible: CanEdit()"*@>
                                     <select name="VirusSubTypeID_2" id="VirusSubTypeID_2" class="form-control" data-bind="options:$parent.SubTypeByLabRes,
                                         optionsText: 'Name',
                                         optionsValue: 'Id',

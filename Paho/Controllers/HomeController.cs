@@ -187,12 +187,17 @@ namespace Paho.Controllers
             }).ToList();
 
             CTR = db.CatTestResult.OrderBy(i => i.orden);
-            var CTRDisplay = CTR.Select(j => new LookupView<CatTestResult>()
+            var CTRDisplay = (user.Institution.Country.Language == "SPA" ? CTR.Select(j => new LookupView<CatTestResult>()
             {
                 Id = j.value.ToString().Trim(),
                 Name = j.description.ToString().Trim(),
                 orden = j.orden.ToString()
-            }).ToList();
+            }).ToList() : CTR.Select(j => new LookupView<CatTestResult>()
+            {
+                Id = j.value.ToString().Trim(),
+                Name = j.ENG.ToString().Trim(),
+                orden = j.orden.ToString()
+            }).ToList());
 
             CVT = db.CatVirusType.OrderBy(i => i.orden);
             var CVTDisplay = ( user.Institution.Country.Language ==  "SPA" ? CVT.Select(i => new LookupView<CatVirusType>()

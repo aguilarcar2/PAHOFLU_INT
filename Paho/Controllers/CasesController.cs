@@ -1683,6 +1683,7 @@ namespace Paho.Controllers
         public object GetSubTypebyLab(long? id)
         {
             IQueryable<CatVirusSubType> CVST_Test = null;
+            var user = UserManager.FindById(User.Identity.GetUserId());
 
             var CatVirusSubtypeConfiguration = db.CatVirusSubTypeConfByLab.OfType<CatVirusSubTypeConfByLab>()
         .Where(i => i.id_Institution == id);
@@ -1697,7 +1698,7 @@ namespace Paho.Controllers
                 CVST_Test = db.CatVirusSubType.Where(k => ListVaccines.Contains(k.ID));
             }
 
-            return CVST_Test.Select(x => new { Id = x.ID.ToString(), Name = x.SPA }).ToList();
+            return (user.Institution.Country.Language == "SPA" ?  CVST_Test.Select(x => new { Id = x.ID.ToString(), Name = x.SPA }).ToList() : CVST_Test.Select(x => new { Id = x.ID.ToString(), Name = x.ENG }).ToList());
         }
 
         // POST: Cases/SaveGEO/5

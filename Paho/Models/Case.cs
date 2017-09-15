@@ -474,6 +474,8 @@ namespace Paho.Models
         public int ID { get; set; }
         [Display(Name = "Descripción:")]
         public string description { get; set; }
+        [Display(Name = "ENG:")]
+        public string ENG { get; set; }
         [Key]
         [Display(Name = "Valor:")]
         public string value { get; set; }
