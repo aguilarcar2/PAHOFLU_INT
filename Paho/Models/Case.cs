@@ -447,7 +447,19 @@ namespace Paho.Models
 
     // Catalogos para resultado de laboratorio
 
+    public class CatSampleNoProcessed
+    {
 
+        public int ID { get; set; }
+        [Display(Name = "Descripción SPA:")]
+        public string SPA { get; set; }
+        [Display(Name = "Descripción ENG:")]
+        public string ENG { get; set; }
+        [Display(Name = "Orden:")]
+        public int? orden { get; set; }
+        [Display(Name = "Activo:")]
+        public bool? active { get; set; }
+    }
 
     public class CatTestType
     {
