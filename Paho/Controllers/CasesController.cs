@@ -388,7 +388,7 @@ namespace Paho.Controllers
 
             if (SPend == true && ITy != 2)
             {
-                flucases = flucases.Where(f => f.Destin == "" || f.CaseStatus == null || f.Destin == null);
+                flucases = flucases.Where(f => (f.Surv== 1 && (f.Destin == "" || f.Destin == null)) || f.CaseStatus == null );
                 //flucases = flucases.Where(f => f.CaseStatus != null);
             }
 
@@ -711,7 +711,7 @@ namespace Paho.Controllers
             string LName2,
             string FName1,
             string FName2,
-            int DocumentType,
+            int? DocumentType,
             string NoExpediente,
             string NationalId,
             DateTime? DOB,

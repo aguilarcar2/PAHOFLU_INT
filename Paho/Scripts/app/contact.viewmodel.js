@@ -635,6 +635,7 @@
                 self.region_salud(data.region_salud);
                 self.region_pais(data.region_salud);
                 self.DocumentType(data.DocumentType);
+                self.selectedServiceId(data.hospitalIDRecord);
                 self.LName1(data.LName1);
                 self.LName2(data.LName2);
                 self.FName1(data.FName1);

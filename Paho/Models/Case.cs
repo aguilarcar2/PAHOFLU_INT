@@ -396,15 +396,6 @@ namespace Paho.Models
         public string Diag { get; set; }
     }
 
-    public class CatPopulationInstitution
-    {
-        public int ID { get; set; }
-        public int country_id { get; set; }
-        public int id_institution { get; set; }
-        public Int64 population { get; set; }
-        public int year { get; set; }
-        public int fh_insert { get; set; }
-}
 
     public class CatDocumentType
     {
@@ -979,6 +970,43 @@ namespace Paho.Models
 
 
     }
+    public class CatPopulationInstitution : CaseBase
+    {
+
+        public int id { get; set; }
+        [Display(Name = "País")]
+        public int country_id { get; set; }
+        [Display(Name = "Institución")]
+        public long id_institution { get; set; }
+        [Display(Name = "Población")]
+        public long population { get; set; }
+        [Display(Name = "Año")]
+        public int year { get; set; }
+
+        [ForeignKey("country_id")]
+        public virtual Country CountryPopulation { get; set; }
+
+        [ForeignKey("id_institution")]
+        public virtual Institution InstitutionPopulation { get; set; }
+
+        [ForeignKey("CatPobInstId")]
+        public virtual ICollection<CatPopulationInstitutionDetail> CatPopulationDetails { get; set; }
+
+    }
+
+    public class CatPopulationInstitutionDetail
+    {
+        public int Id { get; set; }
+        //[Key]
+        public int CatPobInstId { get; set; }
+        public int? AgeGroup { get; set; }
+        public int? PopulationFem { get; set; }
+        public int? PopulationMaso { get; set; }
+        public int? PopulationT { get; set; }
+
+        [ForeignKey("AgeGroup")]
+        public virtual CatAgeGroup AgeGroupbyCountry { get; set; }
+    }
 
     public class CaseSummary : CaseBase
     {
@@ -1228,6 +1256,8 @@ namespace Paho.Models
         public DbSet<CatNativePeople> CatNativePeople { get; set; }
         public DbSet<CatVaccinSource> CatVaccinSource { get; set; }
         public DbSet<CatVaccinSourceConf> CatVaccinSourceConf { get; set; }
+        public DbSet<CatPopulationInstitution> CatPopulationInstitutions { get; set; }
+        public DbSet<CatPopulationInstitutionDetail> CatPopulationInstitutionsDetails { get; set; }
 
         public DbSet<CaseLabTest> CaseLabTests { get; set; }
         public DbSet<CaseSummary> CaseSummaries { get; set; }
