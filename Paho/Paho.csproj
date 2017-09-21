@@ -293,6 +293,7 @@
     <Compile Include="Controllers\CatInstitucionConfController.cs" />
     <Compile Include="Controllers\CatInstitucionController.cs" />
     <Compile Include="Controllers\CatVaccinSourcesController.cs" />
+    <Compile Include="Controllers\CatPopulationInstitutionsController.cs" />
     <Compile Include="Controllers\CatVirusSubTypesController.cs" />
     <Compile Include="Controllers\CatVirusTypeController.cs" />
     <Compile Include="Controllers\ControllerBase.cs" />
@@ -707,6 +708,7 @@
     <Content Include="Scripts\amcharts\xy.js" />
     <Content Include="Scripts\app\catalog.institution-conf.js" />
     <Content Include="Scripts\app\catalog.institution.js" />
+    <Content Include="Scripts\app\catalog.population.js" />
     <Content Include="Scripts\app\contact.viewmodel.js" />
     <Content Include="Scripts\app\fluid.viewmodel.js" />
     <Content Include="Scripts\app\principal.viewmodel.js" />
@@ -953,6 +955,10 @@
     <Content Include="Views\CatVaccinSources\Delete.cshtml" />
     <Content Include="Views\CatVaccinSources\Edit.cshtml" />
     <Content Include="Views\CatVaccinSources\Index.cshtml" />
+    <Content Include="Views\CatPopulationInstitutions\Create.cshtml" />
+    <Content Include="Views\CatPopulationInstitutions\Delete.cshtml" />
+    <Content Include="Views\CatPopulationInstitutions\Edit.cshtml" />
+    <Content Include="Views\CatPopulationInstitutions\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
