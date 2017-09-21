@@ -2267,6 +2267,11 @@
                             @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelCauseNotProcessed")) 
                         </span>
                         <input id="NoReason" type='text' class="form-control case_letter" data-bind="value: NoProRen" />
+                        <select id="NoReasonId" class="form-control" data-bind="options: CSNP,
+                                optionsText: 'Name',
+                                optionsValue: 'Id',
+                                value: NoReasonId">
+                        </select>
                     </div>
                     @*<div class='input-group'>
                         <span class="input-group-addon">
@@ -2654,6 +2659,10 @@
                             @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelCauseNotProcessed2")) 
                         </span>
                         <input id="NoReason2" type='text' class="form-control case_letter" data-bind="value: NoProRen2" />
+                        <select id="NoReasonId2" class="form-control" data-bind="options: CSNP,
+                                optionsText: 'Name',
+                                optionsValue: 'Id',
+                                value: NoReasonId2"></select>
                     </div>
                 </div>
             </div>
@@ -3047,6 +3056,10 @@
                             @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelCauseNotProcessed3"))
                         </span>
                         <input id="NoReason3" type='text' class="form-control case_letter" data-bind="value: NoProRen3" />
+                        <select id="NoReasonId3" class="form-control" data-bind="options: CSNP,
+                                optionsText: 'Name',
+                                optionsValue: 'Id',
+                                value: NoReasonId3"></select>
                     </div>
                 </div>
             </div>
@@ -3969,6 +3982,7 @@
         var msgValidationOnsetOnFever = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationOnsetOnFever"))";
 
         /* Catalogos de Laboratorio*/
+        var CSNP= @Html.Raw(Json.Encode(Model.CSNP));
         var CTT= @Html.Raw(Json.Encode(Model.CTT));
         var CTR= @Html.Raw(Json.Encode(Model.CTR));
         var CVT= @Html.Raw(Json.Encode(Model.CVT));

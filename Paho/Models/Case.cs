@@ -33,9 +33,10 @@ namespace Paho.Models
         public bool DisplayHospitals { get; set; }
         public bool DisplayLabs { get; set; }
         //public int? UsrCtry { get; set; }
-        
-            // Catalogos de laboratorio
-        
+
+        // Catalogos de laboratorio
+
+        public IEnumerable<LookupView<CatSampleNoProcessed>> CSNP { get; set; }
         public IEnumerable<LookupView<CatTestType>> CTT { get; set; }
         public IEnumerable<LookupView<CatTestResult>> CTR { get; set; }
         public IEnumerable<LookupView<CatVirusType>> CVT { get; set; }
@@ -1255,6 +1256,8 @@ namespace Paho.Models
         public DbSet<TestResult> TestResults { get; set; }
 
         //Catalogos
+        
+        public DbSet<CatSampleNoProcessed> CatSampleNoProcessed { get; set; }
         public DbSet<CatCaseStatus> CatCaseStatus { get; set; }
         public DbSet<CatTestType> CatTestType { get; set; }
         public DbSet<CatTestResult> CatTestResult { get; set; }

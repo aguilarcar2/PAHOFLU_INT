@@ -16,7 +16,8 @@ namespace Paho.Controllers
             var CaseViewModel = new CaseViewModel();
             IQueryable<Institution> institutions = null;
             IQueryable<Region> regions = null;
-            
+
+            IQueryable<CatSampleNoProcessed> CSNP = null;
             IQueryable<CatTestType> CTT = null;
             IQueryable<CatTestResult> CTR = null;
             IQueryable<CatVirusType> CVT = null;
@@ -178,6 +179,20 @@ namespace Paho.Controllers
 
             // Catalogos del laboratorio
 
+
+            CSNP = db.CatSampleNoProcessed.OrderBy(i => i.orden).ThenBy(j => j.SPA);
+            var CSNPDisplay = (user.Institution.Country.Language == "SPA" ? CSNP.Select(i => new LookupView<CatSampleNoProcessed>()
+            {
+                Id = i.ID.ToString(),
+                Name = i.SPA,
+                orden = i.orden.ToString()
+            }).ToList() : CSNP.Select(i => new LookupView<CatSampleNoProcessed>()
+            {
+                Id = i.ID.ToString(),
+                Name = i.ENG,
+                orden = i.orden.ToString()
+            }).ToList());
+
             CTT = db.CatTestType.OrderBy(i => i.orden);
             var CTTDisplay = CTT.Select(i => new LookupView<CatTestType>()
             {
@@ -290,6 +305,7 @@ namespace Paho.Controllers
                 Name = i.description,
             }).ToList();
 
+            CaseViewModel.CSNP = CSNPDisplay;
             CaseViewModel.CTT = CTTDisplay;
             CaseViewModel.CTR = CTRDisplay;
             CaseViewModel.CVT = CVTDisplay;
@@ -299,6 +315,7 @@ namespace Paho.Controllers
 
             CaseViewModel.CNP = CNPDisplay;
             CaseViewModel.CVS = CVSDisplay;
+
 
             // Laboratorios de la ficha
             // *** DELETE ***
