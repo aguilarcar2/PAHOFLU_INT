@@ -794,12 +794,12 @@ namespace Paho.Controllers
 
             if (!id.HasValue)
             {
-                HistoryRecord(flucase.ID, 1, flucase.flow, 2);
+                HistoryRecord(flucase.ID, 1, flucase.flow, 1);
                 HistoryRecord(flucase.ID, 1, flucase.flow, 3);
             }
             else
             {
-                HistoryRecord(id, 2, flucase.flow, flucase.statement);
+                HistoryRecord(id, 2, flucase.flow, 5);
             }
 
             return Json(flucase.ID);
