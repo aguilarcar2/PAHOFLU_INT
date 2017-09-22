@@ -476,14 +476,17 @@ function LabViewModel(app, dataModel) {
     self.RecDate = ko.observable(null);
     self.Processed = ko.observable("");
     self.NoProRen = ko.observable("");
+    self.NoProRenId = ko.observable("");
 
     self.RecDate2 = ko.observable(null);
     self.Processed2 = ko.observable("");
     self.NoProRen2 = ko.observable("");
+    self.NoProRenId2 = ko.observable("");
 
     self.RecDate3 = ko.observable(null);
     self.Processed3 = ko.observable("");
     self.NoProRen3 = ko.observable("");
+    self.NoProRenId3 = ko.observable("");
 
     self.CanPCRLab = ko.observable(true);
     self.CanIFILab = ko.observable(true);
@@ -584,37 +587,6 @@ function LabViewModel(app, dataModel) {
 
     }, self);
 
-
-    self.ShowProcessed = ko.computed(function () {
-        self.NoProRen("");
-        return (self.Processed() === "true")
-    }, self);
-
-    self.ShowProcessed2 = ko.computed(function () {
-        self.NoProRen2("");
-        return (self.Processed2() === "true")
-    }, self);
-
-    self.ShowProcessed3 = ko.computed(function () {
-        self.NoProRen3("");
-        return (self.Processed3() === "true")
-    }, self);
-
-    self.NotShowProcessed = ko.computed(function () {
-        return (self.Processed() === "false")
-    }, self);
-
-    self.NotShowProcessed2 = ko.computed(function () {
-        return (self.Processed2() === "false")
-    }, self);
-
-    self.NotShowProcessed3 = ko.computed(function () {
-        return (self.Processed3() === "false")
-    }, self);
-
-
-    self.EndLabDate = ko.observable(null);
-    self.Comments = ko.observable("");
     self.FinalResult = ko.observable("");
     self.FinalResultVirusTypeID = ko.observable("");
     self.FinalResultVirusSubTypeID = ko.observable("");
@@ -629,6 +601,73 @@ function LabViewModel(app, dataModel) {
     self.FinalResultVirusTypeID_3 = ko.observable("");
     self.FinalResultVirusSubTypeID_3 = ko.observable("");
     self.FinalResultVirusLineageID_3 = ko.observable("");
+
+    self.resetFinalResult = function () {
+
+        self.FinalResult("");
+        self.FinalResultVirusTypeID("");
+        self.FinalResultVirusSubTypeID("");
+        self.FinalResultVirusLineageID("");
+        self.FinalResult_2("");
+        self.FinalResultVirusTypeID_2("");
+        self.FinalResultVirusSubTypeID_2("");
+        self.FinalResultVirusLineageID_2("");
+        self.FinalResult_3("");
+        self.FinalResultVirusTypeID_3("");
+        self.FinalResultVirusSubTypeID_3("");
+        self.FinalResultVirusLineageID_3("");
+
+    };
+
+
+    self.ShowProcessed = ko.computed(function () {
+        self.NoProRen("");
+        self.NoProRenId("");
+        self.resetFinalResult();
+        return (self.Processed() === "true")
+    }, self);
+
+    self.ShowProcessed2 = ko.computed(function () {
+        self.NoProRen2("");
+        self.NoProRenId2("");
+        self.resetFinalResult();
+        return (self.Processed2() === "true")
+    }, self);
+
+    self.ShowProcessed3 = ko.computed(function () {
+        self.NoProRen3("");
+        self.NoProRenId3("");
+        self.resetFinalResult();
+        return (self.Processed3() === "true")
+    }, self);
+
+    self.NotShowProcessed = ko.computed(function () {
+        return (self.Processed() === "false")
+    }, self);
+    self.NotShowProcessedOther = ko.computed(function () {
+        return (self.NoProRenId() === "5")
+    }, self);
+
+    self.NotShowProcessed2 = ko.computed(function () {
+        return (self.Processed2() === "false")
+    }, self);
+
+    self.NotShowProcessedOther2 = ko.computed(function () {
+        return (self.NoProRenId2() === "5")
+    }, self);
+
+    self.NotShowProcessed3 = ko.computed(function () {
+        return (self.Processed3() === "false")
+    }, self);
+
+    self.NotShowProcessedOther3 = ko.computed(function () {
+        return (self.NoProRenId3() === "5")
+    }, self);
+
+
+    self.EndLabDate = ko.observable(null);
+    self.Comments = ko.observable("");
+
 
     self.LabTests = ko.observableArray([]);
     self.LabTests_Sample2 = ko.observableArray([]);
@@ -877,6 +916,9 @@ function LabViewModel(app, dataModel) {
         self.NoProRen("");
         self.NoProRen2("");
         self.NoProRen3("");
+        self.NoProRenId("");
+        self.NoProRenId2("");
+        self.NoProRenId3("");
         self.LabTests([]);
         self.LabTests_Sample2([]);
         self.LabTests_Sample3([]);
@@ -940,7 +982,7 @@ function LabViewModel(app, dataModel) {
 
         }
 
-        if (self.Processed() == "false" && self.NoProRen() == "") {
+        if (self.Processed() == "false" &&  self.NoProRenId() == "") {
             msg += "\n" + "Indique la razón porque no fue procesada la muestra";
         }
 
@@ -1067,15 +1109,18 @@ function LabViewModel(app, dataModel) {
                 (data.RecDate) ? self.RecDate(moment(data.RecDate).format(date_format_moment)) : self.RecDate("");
                 self.Processed((data.Processed != null) ? data.Processed.toString() : "");
                 self.NoProRen(data.NoProRen);
+                self.NoProRenId(data.NoProRenId);
                 self.hasGet(true);
 
                 (data.RecDate2) ? self.RecDate2(moment(data.RecDate2).format(date_format_moment)) : self.RecDate2("");
                 self.Processed2((data.Processed2 != null) ? data.Processed2.toString() : "");
                 self.NoProRen2(data.NoProRen2);
+                self.NoProRenId2(data.NoProRenId2);
 
                 (data.RecDate3) ? self.RecDate3(moment(data.RecDate3).format(date_format_moment)) : self.RecDate3("");
                 self.Processed3((data.Processed3 != null) ? data.Processed3.toString() : "");
                 self.NoProRen3(data.NoProRen3);
+                self.NoProRenId3(data.NoProRenId3);
 
                  (data.EndLabDate) ? self.EndLabDate(moment(data.EndLabDate).format(date_format_moment)) : self.EndLabDate("");
                 self.FResult(data.FResult);
@@ -1283,22 +1328,6 @@ function LabViewModel(app, dataModel) {
              })
     };
 
-    self.resetFinalResult = function () {
-
-        self.FinalResult("");
-        self.FinalResultVirusTypeID("");
-        self.FinalResultVirusSubTypeID("");
-        self.FinalResultVirusLineageID("");
-        self.FinalResult_2("");
-        self.FinalResultVirusTypeID_2("");
-        self.FinalResultVirusSubTypeID_2("");
-        self.FinalResultVirusLineageID_2("");
-        self.FinalResult_3("");
-        self.FinalResultVirusTypeID_3("");
-        self.FinalResultVirusSubTypeID_3("");
-        self.FinalResultVirusLineageID_3("");
-
-    };
 
     self.OrdenFinalResult = function () {
 
@@ -1557,14 +1586,17 @@ function LabViewModel(app, dataModel) {
                 RecDate: $("#RecDate").val() == "" ? null : moment(rec_date).format(date_format_ISO),
                 Processed: self.Processed() === "true" ? true : self.Processed() === "false" ? false : null,
                 NoProRen: self.NoProRen() ? self.NoProRen().toLocaleUpperCase() : "",
+                NoProRenId: self.NoProRenId(),
 
                 RecDate2: $("#RecDate2").val() == "" ? null : moment(rec_date2).format(date_format_ISO),
                 Processed2: self.Processed2() === "true" ? true : self.Processed2() === "false" ? false : null,
                 NoProRen2: self.NoProRen2() ? self.NoProRen2().toLocaleUpperCase() : "",
+                NoProRenId2: self.NoProRenId2(),
 
                 RecDate3: $("#RecDate3").val() == "" ? null : moment(rec_date3).format(date_format_ISO),
                 Processed3: self.Processed3() === "true" ? true : self.Processed3() === "false" ? false : null,
                 NoProRen3: self.NoProRen3() ? self.NoProRen3().toLocaleUpperCase() : "",
+                NoProRenId3: self.NoProRenId3(),
 
                 EndLabDate: $("#EndLabDate").val() == "" ? null : moment(date_close_date_lab).format(date_format_ISO),
                 FResult: self.FResult(),          

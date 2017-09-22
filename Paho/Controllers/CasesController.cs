@@ -1490,6 +1490,11 @@ namespace Paho.Controllers
                     EndLabDate = flucase.EndLabDate,
                     FResult = flucase.FResult,
                     NoProRen = flucase.NoProRen,
+                    NoProRenId = flucase.NoProRenId,
+                    NoProRen2 = flucase.NoProRen2,
+                    NoProRenId2 = flucase.NoProRenId2,
+                    NoProRen3 = flucase.NoProRen3,
+                    NoProRenId3 = flucase.NoProRenId3,
                     Comments = flucase.Comments,
                     FinalResult = flucase.FinalResult,
                     FinalResultVirusTypeID = flucase.FinalResultVirusTypeID,
@@ -1724,8 +1729,11 @@ namespace Paho.Controllers
                 bool? Processed3,
                 DateTime? EndLabDate,
                 string FResult,
+                int? NoProRenId,
                 string NoProRen,
+                int? NoProRenId2,
                 string NoProRen2,
+                int? NoProRenId3,
                 string NoProRen3,
                 string Comments,
                 string FinalResult,
@@ -1772,6 +1780,14 @@ namespace Paho.Controllers
             flucase.EndLabDate = EndLabDate;
             flucase.FResult = FResult;
             flucase.NoProRen = NoProRen;
+            flucase.NoProRenId = NoProRenId;
+
+            flucase.NoProRen2 = NoProRen2;
+            flucase.NoProRenId2 = NoProRenId2;
+
+            flucase.NoProRen3 = NoProRen3;
+            flucase.NoProRenId3 = NoProRenId3;
+
             flucase.Comments = Comments;
             flucase.FinalResult = FinalResult;
             flucase.FinalResultVirusTypeID = FinalResultVirusTypeID;

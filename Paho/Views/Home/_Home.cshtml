@@ -2266,12 +2266,13 @@
                         <span class="input-group-addon">
                             @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelCauseNotProcessed")) 
                         </span>
-                        <input id="NoReason" type='text' class="form-control case_letter" data-bind="value: NoProRen" />
-                        <select id="NoReasonId" class="form-control" data-bind="options: CSNP,
+                        <select id="NoProRenId" class="form-control" data-bind="options: CSNP,
                                 optionsText: 'Name',
                                 optionsValue: 'Id',
-                                value: NoReasonId">
-                        </select>
+                                optionsCaption: 'Select...',
+                                value: NoProRenId"></select>
+                        <input id="NoReason" type='text' class="form-control case_letter" data-bind="value: NoProRen , visible:NotShowProcessedOther" />
+
                     </div>
                     @*<div class='input-group'>
                         <span class="input-group-addon">
@@ -2658,11 +2659,13 @@
                         <span class="input-group-addon">
                             @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelCauseNotProcessed2")) 
                         </span>
-                        <input id="NoReason2" type='text' class="form-control case_letter" data-bind="value: NoProRen2" />
-                        <select id="NoReasonId2" class="form-control" data-bind="options: CSNP,
+                        <select id="NoProRenId2" class="form-control" data-bind="options: CSNP,
                                 optionsText: 'Name',
                                 optionsValue: 'Id',
-                                value: NoReasonId2"></select>
+                                optionsCaption: 'Select...',
+                                value: NoProRenId2"></select>
+                        <input id="NoReason2" type='text' class="form-control case_letter" data-bind="value: NoProRen2, visible:NotShowProcessedOther2" />
+
                     </div>
                 </div>
             </div>
@@ -3055,11 +3058,13 @@
                         <span class="input-group-addon">
                             @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelCauseNotProcessed3"))
                         </span>
-                        <input id="NoReason3" type='text' class="form-control case_letter" data-bind="value: NoProRen3" />
-                        <select id="NoReasonId3" class="form-control" data-bind="options: CSNP,
+                        <select id="NoProRenId3" class="form-control" data-bind="options: CSNP,
                                 optionsText: 'Name',
                                 optionsValue: 'Id',
-                                value: NoReasonId3"></select>
+                                optionsCaption: 'Select...',
+                                value: NoProRenId3"></select>
+                        <input id="NoReason3" type='text' class="form-control case_letter" data-bind="value: NoProRen3, visible:NotShowProcessedOther3" />
+
                     </div>
                 </div>
             </div>
