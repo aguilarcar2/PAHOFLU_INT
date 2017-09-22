@@ -1890,13 +1890,19 @@ namespace Paho.Controllers
             result = SaveChanges();
 
             //Bitacora
+            if (IFI_Count == 0 && PCR_Count == 0)
+            HistoryRecord(flucase.ID, 4, flucase.flow, 1);
+
+            if (IFI_Count > 0 || PCR_Count > 0)
+                HistoryRecord(flucase.ID, 4, flucase.flow, 5);
+
             if (IFI_RecordHistory && IFI_Count == 0)
             HistoryRecord(flucase.ID, 4, flucase.flow, 7);
 
             if (PCR_RecordHistory && PCR_Count == 0)
                 HistoryRecord(flucase.ID, 4, flucase.flow, 8);
 
-            HistoryRecord(flucase.ID, 4, flucase.flow, flucase.statement);
+            
 
             return result;
         }
