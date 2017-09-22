@@ -22,13 +22,15 @@ namespace Paho.Controllers
     public class CasesController : ControllerBase
     {
 
-        public void HistoryRecord( int? RecordId , int Action_history)
+        public void HistoryRecord(int? RecordId, int Action_history, int? flow, int? state)
         {
             RecordHistory history;
             history = new RecordHistory();
             history.Action = Action_history;
             history.Recordid = RecordId;
             history.Userid = User.Identity.GetUserId();
+            history.flow = flow;
+            history.state = state;
             history.DateAction = DateTime.Now;
             db.Entry(history).State = EntityState.Added;
             db.SaveChanges();
@@ -688,10 +690,12 @@ namespace Paho.Controllers
         {
             try {
                 var flucase = db.FluCases.Find(id);
+                var flow = flucase.flow;
+                var statement = flucase.statement;
                 db.Entry(flucase).State = EntityState.Deleted;
                 db.FluCases.Remove(flucase);
                 db.SaveChanges();
-                HistoryRecord(id, 3);
+                HistoryRecord(id, 3, flow, statement);
                 return Json("Registo borrado!", JsonRequestBehavior.AllowGet);
             } catch (Exception) {
                 return Json("Fallo borrar el registro !", JsonRequestBehavior.AllowGet);
@@ -749,6 +753,7 @@ namespace Paho.Controllers
                     flucase.HospitalID = HospitalId;
                     flucase.flow = 0;
                     db.Entry(flucase).State = EntityState.Added;
+
                 }
             }
             else
@@ -789,11 +794,12 @@ namespace Paho.Controllers
 
             if (!id.HasValue)
             {
-                HistoryRecord(flucase.ID, 1);
+                HistoryRecord(flucase.ID, 1, flucase.flow, 2);
+                HistoryRecord(flucase.ID, 1, flucase.flow, 3);
             }
             else
             {
-                HistoryRecord(id, 2);
+                HistoryRecord(id, 2, flucase.flow, flucase.statement);
             }
 
             return Json(flucase.ID);
@@ -1298,6 +1304,9 @@ namespace Paho.Controllers
             flucase.ObservationCase = ObservationCase;
             db.SaveChanges();
 
+            if (flucase.flow == 99 )
+                HistoryRecord(flucase.ID, 1, flucase.flow, 9);
+
             return Json("Success");
         }
 
@@ -1736,6 +1745,11 @@ namespace Paho.Controllers
             )
         {
             FluCase flucase;
+            var IFI_RecordHistory = false;
+            var PCR_RecordHistory = false;
+            var IFI_Count = 0;
+            var PCR_Count = 0;
+            var user = UserManager.FindById(User.Identity.GetUserId());
 
             flucase = db.FluCases.Find(id);
 
@@ -1746,7 +1760,8 @@ namespace Paho.Controllers
                 db.Entry(flucase).State = EntityState.Modified;
             }
 
-            var user = UserManager.FindById(User.Identity.GetUserId());
+            IFI_Count = flucase.CaseLabTests.Where(e => e.FluCaseID == id && e.TestType == (TestType)1 && e.Processed != null).Count();
+            PCR_Count = flucase.CaseLabTests.Where(e => e.FluCaseID == id && e.TestType == (TestType)2 && e.Processed != null).Count();
 
             flucase.RecDate = RecDate;
             flucase.Processed = Processed;
@@ -1772,6 +1787,8 @@ namespace Paho.Controllers
             flucase.FinalResultVirusLineageID_3 = FinalResultVirusLineageID_3;
             //flucase.flow = 2;
 
+            //if (db.CaseLabTests.Count() > 0) PCR_IFI_RecordHistory = true;
+
             db.CaseLabTests.RemoveRange(flucase.CaseLabTests);
             var existrecordlabtest = false;
             flucase.CaseLabTests = new List<CaseLabTest>();
@@ -1779,6 +1796,8 @@ namespace Paho.Controllers
                 foreach (LabTestViewModel labTestViewModel in LabTests.OrderBy(x=>x.SampleNumber).ThenBy(z => z.TestDate).ThenBy(y=>y.LabID)) {
                     if (labTestViewModel.LabID == user.InstitutionID)
                         existrecordlabtest = true;
+                    if (labTestViewModel.TestType == 1) IFI_RecordHistory = true;
+                    if (labTestViewModel.TestType == 2) PCR_RecordHistory = true;
 
                     flucase.CaseLabTests.Add(
                         new CaseLabTest {
@@ -1871,7 +1890,13 @@ namespace Paho.Controllers
             result = SaveChanges();
 
             //Bitacora
-            HistoryRecord(flucase.ID, 4);
+            if (IFI_RecordHistory && IFI_Count == 0)
+            HistoryRecord(flucase.ID, 4, flucase.flow, 7);
+
+            if (PCR_RecordHistory && PCR_Count == 0)
+                HistoryRecord(flucase.ID, 4, flucase.flow, 8);
+
+            HistoryRecord(flucase.ID, 4, flucase.flow, flucase.statement);
 
             return result;
         }
@@ -1907,6 +1932,7 @@ namespace Paho.Controllers
                             userRecord.Add("actionDesc", reader["actionDesc"].ToString());
                             userRecord.Add("userOperator", reader["userOperator"].ToString());
                             userRecord.Add("healthUnit", reader["healthUnit"].ToString());
+                            userRecord.Add("stateRecord", reader["stateRecord"].ToString());
                             userRecord.Add("operationDate", reader["operationDate"].ToString());
                             logsPerUser.Add(userRecord);
 

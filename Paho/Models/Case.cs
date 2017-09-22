@@ -1098,6 +1098,8 @@ namespace Paho.Models
         public string Userid { get; set; }
         public int? Recordid { get; set; }
         public int Action { get; set; }
+        public int? flow { get; set; }
+        public int? state { get; set; }
         public DateTime DateAction { get; set; }
     }
 
