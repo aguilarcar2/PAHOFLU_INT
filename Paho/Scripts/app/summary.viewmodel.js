@@ -563,16 +563,21 @@ function SummaryViewModel(app, dataModel) {
             window.open(app.dataModel.getSummayDetailsExcel + "?" + $.param(namevalues, true), "_blank");
         } else {
             if ((typeof self.selectedHospitalId() == "undefined") || self.selectedHospitalId() == "") {
-                alert("Seleccionar un establecimiento es requerido");
+                //alert("Seleccionar un establecimiento es requerido");
+                if ((self.UsrCountry() == 25))
+                    alert("Hospital is required");
+                else
+                    alert("Seleccionar un establecimiento es requerido");
             }
 
             if ((typeof self.HospitalDate() == "undefined") || self.HospitalDate() == "") {
-                alert("La fecha es requerida");
+                //alert("La fecha es requeridaxxxx");
+                if ((self.UsrCountry() == 25))
+                    alert("Date is required");
+                else
+                    alert("La fecha es requerida");
             }
-
-
         }
-
     }
 
     self.GetSummayItems = function () {
@@ -591,16 +596,19 @@ function SummaryViewModel(app, dataModel) {
             })
         } else {
             if ((typeof self.selectedHospitalId() == "undefined") || self.selectedHospitalId() == "") {
-                alert("Seleccionar un establecimiento es requerido");
+                if (self.UsrCountry() == 25)
+                    alert("Hospital is required");
+                else
+                    alert("Seleccionar un establecimiento es requerido");
             }
 
             if ((typeof self.HospitalDate() == "undefined") || self.HospitalDate() == "") {
-                alert("La fecha es requerida");
+                if (self.UsrCountry() == 25)
+                    alert("Date is required");
+                else
+                    alert("La fecha es requerida");
             }
-
-
         }
-
     };
 
     self.SaveSummayItems = function () {
@@ -612,7 +620,11 @@ function SummaryViewModel(app, dataModel) {
             data: JSON.stringify({ casesummaryDetails: self.MakeValuesOfSummayItems() }),
             contentType: 'application/json; charset=utf-8',
             success: function (data, textStatus, jqXHR) {
-                alert(data);
+                //alert(data);
+                if (self.UsrCountry() == 25)
+                    alert("Data saved");
+                else
+                    alert(data);
             },
         })
     };

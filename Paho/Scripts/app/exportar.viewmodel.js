@@ -51,31 +51,45 @@ function ExportarViewModel(app, dataModel) {
         var selectCountryUsr = self.selectedCountryId() ? self.selectedCountryId() : CountryID
 
         if ($("#Hospitals").children().length <= 2 && self.selectedInstitutionId() == null)
-           msg += "\n" + " - Es requerido que ingrese la institución";
+        {
+            if (self.selectedCountryId() == 25)
+                msg += "\n" + " - You are required to enter the hospital";
+            else
+                msg += "\n" + " - Es requerido que ingrese la institución";
+        }
 
         if ($("#Report").val() == "R1" || $("#Report").val() == "R2" || $("#Report").val() == "R3" || $("#Report").val() == "R4" ){
             if ( self.Year() == "" )
-                msg += "\n" + " - Ingrese el año de generación del reporte"
+                if (self.selectedCountryId() == 25)
+                    msg += "\n" + " - Enter year of report generation";
+                else
+                    msg += "\n" + " - Ingrese el año de generación del reporte";
             if (self.Month() == "" && self.SE() == "" && self.StartDate() == "" && self.EndDate() == "" && self.Year() == "")
-                msg += "\n" + " - Ingrese algún critero de restricción del reporte (Año, Mes, SE, Fecha inicio y Fecha fin) "
+                if (self.selectedCountryId() == 25)
+                    msg += "\n" + " - Enter any restriction criteria for the report (Year, Month, WE, Start Date and End Date) "
+                else
+                    msg += "\n" + " - Ingrese algún critero de restricción del reporte (Año, Mes, SE, Fecha inicio y Fecha fin) "
         }
 
-        if (msg !== "") { alert('Reportes:' + msg); return false; }
+        if (msg !== "") {
+            if (self.selectedCountryId() == 25)
+                alert('Reports:' + msg);
+            else
+                alert('Reportes:' + msg);
+            return false;
+        }
 
         return true;
     };
 
     self.exportar = function () {
-
         var namevalues = { Report: self.Report(), CountryID: self.selectedCountryId() ? self.selectedCountryId() : CountryID, HospitalID: self.selectedInstitutionId(), Year: self.Year(), Month: self.Month(), SE: self.SE(), StartDate: self.StartDate() ? moment(self.StartDate()).format(date_format_moment) : null, EndDate: self.EndDate() ? moment(self.EndDate()).format(date_format_moment) : null, ReportCountry:self.selectedReportCountryId(), RegionID:self.selectedRegionId(),YearFrom: self.YearFrom(),YearTo: self.YearTo() }
         if(self.validate() == true)
             window.open(app.dataModel.getExportar + "?" + $.param(namevalues, true), "_blank");
-
     };
 
 
     self.url = ko.computed(function () {
-
         var namevalues = { Report: self.Report(), CountryID: self.selectedCountryId() ? self.selectedCountryId() : CountryID, HospitalID: self.selectedInstitutionId(), Year: self.Year(), Month: self.Month(), SE: self.SE(), StartDate: self.StartDate() ? moment(self.StartDate()).format(date_format_moment) : null, EndDate: self.EndDate() ? moment(self.EndDate()).format(date_format_moment) : null }
         return app.dataModel.getExportar + "?" + $.param(namevalues, true);
     });

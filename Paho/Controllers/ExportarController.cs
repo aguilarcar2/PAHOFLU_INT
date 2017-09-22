@@ -406,15 +406,35 @@ namespace Paho.Controllers
 
         private static void AppendDataToExcel(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo)
         {
-
             var excelWorksheet = excelWorkBook.Worksheets[sheet];
             var row = startRow;
             var column = startColumn;
+            string _storedProcedure;
+            int excelColTota = 0, nPosiTipo = 0, nInicTip2 = 0, nPoSuViGr = 0;
+
+            _storedProcedure = storedProcedure;
+            if (storedProcedure == "R5")
+            {
+                if (countryId == 25)
+                {
+                    _storedProcedure = "R5_2";
+                    nPosiTipo = 19;
+                    nInicTip2 = 10;                 //Inicio hospitalizados
+                    nPoSuViGr = 12;                 // Posic. Ecel Sumatoria
+                }
+                else
+                {
+                    nPosiTipo = 15;
+                    nInicTip2 = 8;                  //Inicio hospitalizados
+                    nPoSuViGr = 10;                 // Posic. Ecel Sumatoria
+                }
+            }
 
             var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (var con = new SqlConnection(consString))
             {
-                using (var command = new SqlCommand(storedProcedure, con) { CommandType = CommandType.StoredProcedure })
+                //using (var command = new SqlCommand(storedProcedure, con) { CommandType = CommandType.StoredProcedure })
+                using (var command = new SqlCommand(_storedProcedure, con) { CommandType = CommandType.StoredProcedure })
                 {
                     command.Parameters.Clear();
                     command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
@@ -441,7 +461,7 @@ namespace Paho.Controllers
                         formulas1[6] = "='Inf A'!C{{toreplace}}";
                         formulas1[7] = "='Inf B'!C{{toreplace}}";
                         formulas1[8] = "=Metapnemovirus!C{{toreplace}}";
-                        formulas1[9] = "=VRS!J{{toreplace}}";
+                        /*formulas1[9] = "=VRS!J{{toreplace}}";
                         formulas1[10] = "=VRS!K{{toreplace}}+Ad!K{{toreplace}}+Parainfluenza!K{{toreplace}}+'Inf A'!K{{toreplace}}+'Inf B'!K{{toreplace}}+Metapnemovirus!K{{toreplace}}";
                         formulas1[11] = "=VRS!K{{toreplace}}";
                         formulas1[12] = "=Ad!K{{toreplace}}";
@@ -450,8 +470,39 @@ namespace Paho.Controllers
                         formulas1[15] = "='Inf B'!K{{toreplace}}";
                         formulas1[16] = "=Metapnemovirus!K{{toreplace}}";
                         formulas1[17] = "=D{{toreplace}}+E{{toreplace}}+F{{toreplace}}+G{{toreplace}}+H{{toreplace}}+I{{toreplace}}";
-                        formulas1[18] = "=L{{toreplace}}+M{{toreplace}}+N{{toreplace}}+O{{toreplace}}+P{{toreplace}}+Q{{toreplace}}";
-                        for (int i = 1; i <= 7; i++)
+                        formulas1[18] = "=L{{toreplace}}+M{{toreplace}}+N{{toreplace}}+O{{toreplace}}+P{{toreplace}}+Q{{toreplace}}";*/
+                        if (countryId == 25)
+                        {
+                            formulas1[9] = "=VRS!L{{toreplace}}";
+                            formulas1[10] = "=VRS!M{{toreplace}}+Ad!M{{toreplace}}+Parainfluenza!M{{toreplace}}+'Inf A'!M{{toreplace}}+'Inf B'!M{{toreplace}}+Metapnemovirus!M{{toreplace}}";
+
+                            formulas1[11] = "=VRS!M{{toreplace}}";
+                            formulas1[12] = "=Ad!M{{toreplace}}";
+                            formulas1[13] = "=Parainfluenza!M{{toreplace}}";
+                            formulas1[14] = "='Inf A'!M{{toreplace}}";
+                            formulas1[15] = "='Inf B'!M{{toreplace}}";
+                            formulas1[16] = "=Metapnemovirus!M{{toreplace}}";
+
+                            formulas1[17] = "=D{{toreplace}}+E{{toreplace}}+F{{toreplace}}+G{{toreplace}}+H{{toreplace}}+I{{toreplace}}+J{{toreplace}}+K{{toreplace}}";
+                            formulas1[18] = "=N{{toreplace}}+O{{toreplace}}+P{{toreplace}}+Q{{toreplace}}+R{{toreplace}}+S{{toreplace}}+T{{toreplace}}+U{{toreplace}}";
+                        }
+                        else
+                        {
+                            formulas1[9] = "=VRS!J{{toreplace}}";
+                            formulas1[10] = "=VRS!K{{toreplace}}+Ad!K{{toreplace}}+Parainfluenza!K{{toreplace}}+'Inf A'!K{{toreplace}}+'Inf B'!K{{toreplace}}+Metapnemovirus!K{{toreplace}}";
+
+                            formulas1[11] = "=VRS!K{{toreplace}}";
+                            formulas1[12] = "=Ad!K{{toreplace}}";
+                            formulas1[13] = "=Parainfluenza!K{{toreplace}}";
+                            formulas1[14] = "='Inf A'!K{{toreplace}}";
+                            formulas1[15] = "='Inf B'!K{{toreplace}}";
+                            formulas1[16] = "=Metapnemovirus!K{{toreplace}}";
+
+                            formulas1[17] = "=D{{toreplace}}+E{{toreplace}}+F{{toreplace}}+G{{toreplace}}+H{{toreplace}}+I{{toreplace}}";
+                            formulas1[18] = "=L{{toreplace}}+M{{toreplace}}+N{{toreplace}}+O{{toreplace}}+P{{toreplace}}+Q{{toreplace}}";
+                        }
+
+                        for (int i = 1; i <= 7; i++)            // i: Hoja
                         {
                             var virustype = 0;
                             switch (i)
@@ -490,20 +541,21 @@ namespace Paho.Controllers
                             command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
                             var excelWorksheet2 = excelWorkBook.Worksheets[i];
 
-
-
                             using (var reader = command.ExecuteReader())
                             {
+                                excelColTota = reader.FieldCount + 1; 
                                 row = 3;
                                 column = 1;
                                 var tipo_anterior = 1;
                                 while (reader.Read())
                                 {
-                                    if (Convert.ToInt32(reader.GetValue(15)) != tipo_anterior)
+                                    //if (Convert.ToInt32(reader.GetValue(15)) != tipo_anterior)
+                                    if (Convert.ToInt32(reader.GetValue(nPosiTipo)) != tipo_anterior)
                                     {
                                         row++;
                                     }
-                                    tipo_anterior = Convert.ToInt32(reader.GetValue(15));
+                                    //tipo_anterior = Convert.ToInt32(reader.GetValue(15));
+                                    tipo_anterior = Convert.ToInt32(reader.GetValue(nPosiTipo));
                                     var col = 1;
                                     var readercont = 0;
                                     int stylerow;
@@ -517,11 +569,12 @@ namespace Paho.Controllers
                                     }
                                     excelWorksheet2.InsertRow(row, 1);
                                     //excelWorksheet.InsertRow(row, 1);
-                                    for (int j = 0; j < 17; j++)
+                                    //for (int j = 0; j < 17; j++)
+                                    for (int j = 0; j < excelColTota; j++)                              // Total columnas retornadas x consulta
                                     {
-
                                         var cell = excelWorksheet2.Cells[stylerow, col + j];
-                                        if (tipo_anterior == 2 && j > 8)
+                                        //if (tipo_anterior == 2 && j > 8)
+                                        if (tipo_anterior == 2 && j > nInicTip2)            // nInicTip2: Inicio hospitalizados (8 o 10)
                                         {
                                         }
                                         else
@@ -534,7 +587,8 @@ namespace Paho.Controllers
                                                 }
                                                 else
                                                 {
-                                                    if (j == 10)
+                                                    //if (j == 10)
+                                                    if (j == nPoSuViGr)                 // Totales fila  de virus hospitalizados
                                                     {
                                                         excelWorksheet2.Cells[row, col + j].Formula = formulas1[18].Replace("{{toreplace}}", row.ToString()); ;
                                                     }
@@ -544,26 +598,21 @@ namespace Paho.Controllers
                                                         readercont++;
                                                     }
                                                 }
-
-
                                             }
                                             else
                                             {
-                                                if (formulas1.ContainsKey(j))
+                                                //if (formulas1.ContainsKey(j))
+                                                if (j < 17 && formulas1.ContainsKey(j))
                                                 {
-                                                    //                                                excelWorksheet2.Cells[row, col + j].Value = 8555;
+                                                    //excelWorksheet2.Cells[row, col + j].Value = 8555;
                                                     excelWorksheet2.Cells[row, col + j].Formula = formulas1[j].Replace("{{toreplace}}", row.ToString()); ;
                                                     //excelWorksheet2.Cells[row, col + j].Formula = "=5+1";
-
                                                 }
-
                                             }
                                         }
                                         excelWorksheet2.Cells[row, col + j].StyleID = cell.StyleID;
                                     }
-
                                     row++;
-
                                 }
                                 //Si se borran las rows auxiliares, las referencias de las funciones ya no funcionan?
                                 //excelWorksheet2.DeleteRow(row);
@@ -1546,13 +1595,19 @@ namespace Paho.Controllers
 
         private static string ID_formatearMeta(double _Meta, string _Unid)
         {
-            string cForma = "";
-            string cMeta = _Meta.ToString("###.#", CultureInfo.InvariantCulture);
+            string cForma = "", cMeta = "";
 
             if (_Unid == "%")
+            {
+                cMeta = _Meta.ToString("##0.0", CultureInfo.InvariantCulture);
                 cForma = cMeta + _Unid;
+            }
+
             if (_Unid == "D")
+            {
+                cMeta = _Meta.ToString("###.#", CultureInfo.InvariantCulture);
                 cForma = (_Meta == 1) ? cMeta + " Día" : cMeta + " Días";
+            }
 
             return cForma;
         }
@@ -1599,6 +1654,6 @@ namespace Paho.Controllers
             //searchedMsg = myR.getMessage(searchedMsg, 0, "ENG");
             return searchedMsg;
         }
-
+         
     }
 }
