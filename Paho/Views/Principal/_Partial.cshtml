@@ -693,18 +693,18 @@
             });
 
             function addCheckbox(yval) {
-                var container = $('#c_b');                   
+                var container = $('#c_b');
 
                 $('<input />', { type: 'checkbox', id: 'cb'+yval, value: yval, class:'yearCheckBox' }).appendTo(container);
                 $('<label />', { 'for': 'cb'+yval, text: yval, class:'labelYearCheckBox' }).appendTo(container);
                 $('<br />', { class:'labelYearCheckBox' }).appendTo(container);
             }
             function GetDataYears() {
-                    
+
                 //Esta sección sirve para consolidar los años seleccionados en un string separado por comas
                 var allVals = [];
                 var yrs = "";
-                    
+
 
                 //alert($("#anios").val());
                 $(document).ready(function () {
@@ -714,17 +714,17 @@
                         data: "{'CountryID':" + GraphCountryID +"}",
                         contentType: "application/json",
                         dataType: 'json',
-                        async: true,                            
+                        async: true,
                         success: function (data) {
                             var json_obj = JSON.parse(data);
                             jsonX = JSON.parse(data);
                             var chartData = [];
                             $.each(jsonX, function(index, element) {
-                                    
+
                                 //alert(element);
                                 addCheckbox(element)
-                                    
-                            });                               
+
+                            });
                         }
                     });
                 })
@@ -863,7 +863,7 @@
                                     });
                                 });
                             });
-                                
+
                             //-----------------Quita los ceros del fin y del inicio del array----------------------
                             chartDataLength = chartData.length;
                             if(chartDataLength>0){
@@ -903,7 +903,7 @@
                                 },
                                 "titles":   [
 		                                        {
-		                                            "text": "IRAG(%): Hospitalizaciones, admisiones a UCI y Fallecidos",
+		                                            "text": "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraph1Title"))",
 		                                            "size": 15
 		                                        }
                                             ],
@@ -915,7 +915,7 @@
                                     "axisThickness": 2,
                                     "axisAlpha": 1,
                                     "position": "left",
-                                    "title":jsonX.graph.graphYAxisTitle
+                                    "title":"@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraph1YAxisTitle"))"
                                 }],
                                 "graphs": [{
                                     "valueAxis": "v1",
@@ -978,24 +978,24 @@
                                     "parseDates": false,
                                     "axisColor": "#DADADA",
                                     "minorGridEnabled": true,
-                                    "title":jsonX.graph.graphXAxisTitle
+                                    "title":"@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraph1XAxisTitle"))"
                                 },
                                 /*"export": {
                                 "enabled": true,
                                 "position": "top-right"
                                 }*/
                                 "export": {
-                                    "enabled": true,    
+                                    "enabled": true,
                                     "menu": [ {
                                         "class": "export-main",
                                         "menu": [ {
-                                            "label": "Descargar",
+                                            "label": "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphExportDownloadTitle"))",
                                             "menu": [ "PNG", "JPG", "PDF","SVG" ]
                                         },
                                         {
-                                            "label": "Imprimir",
+                                            "label": "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphExportDownloadTitle"))",
                                             "format": "PRINT"
-                                        }]                                        
+                                        }]
                                     }]
                                 }
                             });
@@ -1199,15 +1199,15 @@
 
         <div id="containerControl0">
             <div id="subcontainerControl0">
-                <input id="chkCountry" type="checkbox" value="pais" checked onchange="toggleHospitalRegionControls();" title="Desmarcar país para seleccionar región y hospital" />País        
-                <input id="chkIrag" type="checkbox" value="irag" disabled/>IRAG
-                <input id="chkEti" type="checkbox" value="eti" disabled/>ETI
+                <input id="chkCountry" type="checkbox" value="pais" checked onchange="toggleHospitalRegionControls();" title="Desmarcar país para seleccionar región y hospital" />@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphCountryCheckboxLabel"))
+                <input id="chkIrag" type="checkbox" value="irag" disabled/>@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphSARICheckboxLabel"))
+                <input id="chkEti" type="checkbox" value="eti" disabled/>@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphILICheckboxLabel"))
             </div>
             
             <div id="subcontainerControl1">
                 <div class='input-group' id="selectRegions">
                     <span class="input-group-addon">
-                        Región:
+                        @(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphRegionSelect"))
                     </span>
                     <select id="Regions" disabled class="form-control" data-bind="options: regions,
                            optionsText: 'Name',
@@ -1220,7 +1220,7 @@
 
                 <div class='input-group' id="selectInstitutions">
                     <span class="input-group-addon">
-                        Establecimiento:
+                        @(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphInstitutionSelect"))
                     </span>
                     <select id="Hospitals" disabled class="form-control" data-bind="options: institutions,
                            optionsText: 'Name',
@@ -1233,11 +1233,11 @@
                 </div>
 
                 <div class='input-group' id="selectYears">
-                    <div id="labelYearsContainer" class="input-group-addon">Años:</div>
+                    <div id="labelYearsContainer" class="input-group-addon">@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphYearsSelect"))</div>
                     <div id="yearsContainer">
                         <div id="fakeSelectYear" onclick="showCheckboxes()">
                             <select id="selectYearFake" class="form-control">
-                                <option selected>Seleccione los años deseados</option>
+                                <option selected>@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphYearsOptionSelect"))</option>
                             </select>
                             <div class="overSelect"></div>
                         </div>
@@ -1247,7 +1247,7 @@
                 </div>
                               
                 <input type="text" style="display:none;" id="anios" value="2017" />
-                <div><button id="btnGetGraphData1" onclick="GetGraphData1()">Actualizar</button></div>
+                <div><button id="btnGetGraphData1" onclick="GetGraphData1()">@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphUpdateButton"))</button></div>
                 <!--div id="c_b" style="display:block;">
                     Años:
                 </div-->
@@ -1328,7 +1328,7 @@
                                     //alert (JSON.stringify(element));
                                     var container = $('#divGraph0');
                                     container.empty();
-                                    $('<p />', { text: element.graphTitle, class:'amcharts-title amcharts-title-own' }).appendTo(container);
+                                    $('<p />', { text: "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraph0Title"))", class:'amcharts-title amcharts-title-own' }).appendTo(container);
                                     //alert (JSON.stringify(element.graphTitle));
                                     $('<table />', {id:'tableAntecedentes', class:'table-own' }).appendTo(container);
                                     var container = $('#tableAntecedentes');
@@ -1627,7 +1627,7 @@
                                 },
                                 "titles":   [
                                                 {
-                                                    "text": "Distribución de casos de IRAG según tipos y subtipos de virus de influenza y de las proporciones de positividad de las muestras analizadas según SE de inicio de síntomas",
+                                                    "text": "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraph2Title"))",
                                                     "size": 15
                                                 }
                                 ],
@@ -1639,14 +1639,14 @@
                                     "axisThickness": 2,
                                     "axisAlpha": 1,
                                     "position": "left",
-                                    "title":jsonX.graph.graphYAxisTitle
+                                    "title":"@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraph2YAxisTitle"))"
                                 },{
                                     "id":"v2",
                                     "axisColor": "#FF6600",
                                     "axisThickness": 2,
                                     "axisAlpha": 1,
                                     "position": "right",
-                                    "title":jsonX.graph.graphYAxisTitle2
+                                    "title":"@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraph2YAxisTitle2"))"
                                 }],
                                 "graphs": [{
                                     /*Influenza B*/
@@ -1760,24 +1760,24 @@
                                     "parseDates": false,
                                     "axisColor": "#DADADA",
                                     "minorGridEnabled": true,
-                                    "title":jsonX.graph.graphXAxisTitle
+                                    "title":"@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraph2XAxisTitle"))"
                                 },
                                 /*"export": {
                                     "enabled": true,
                                     "position": "top-right"
                                     }*/
                                 "export": {
-                                    "enabled": true,    
+                                    "enabled": true,
                                     "menu": [ {
                                         "class": "export-main",
                                         "menu": [ {
-                                            "label": "Descargar",
+                                            "label": "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphExportDownloadTitle"))",
                                             "menu": [ "PNG", "JPG", "PDF","SVG" ]
                                         },
                                         {
-                                            "label": "Imprimir",
+                                            "label": "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphExportPrintTitle"))",
                                             "format": "PRINT"
-                                        }]                                        
+                                        }]
                                     }]
                                 }
                             });
@@ -1936,7 +1936,7 @@
                                 },
                                 "titles":   [
                                                 {
-                                                    "text": "Distribución de casos de IRAG según virus respiratorios en vigilancia y  de las proporciones de positividad de las muestras analizadas, según SE de inicio de síntomas",
+                                                    "text": "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraph3Title"))",
                                                     "size": 15
                                                 }
                                 ],
@@ -1948,14 +1948,14 @@
                                     "axisThickness": 2,
                                     "axisAlpha": 1,
                                     "position": "left",
-                                    "title":jsonX.graph.graphYAxisTitle
+                                    "title":"@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraph3YAxisTitle"))"
                                 },{
                                     "id":"v2",
                                     "axisColor": "#FF6600",
                                     "axisThickness": 2,
                                     "axisAlpha": 1,
                                     "position": "right",
-                                    "title":jsonX.graph.graphYAxisTitle2
+                                    "title":"@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraph3YAxisTitle2"))"
                                 }],
                                 "graphs": [{
                                     /*Otros*/
@@ -2125,24 +2125,24 @@
                                     "parseDates": false,
                                     "axisColor": "#DADADA",
                                     "minorGridEnabled": true,
-                                    "title":jsonX.graph.graphXAxisTitle
+                                    "title":"@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraph3XAxisTitle"))"
                                 },
                                 /*"export": {
                                     "enabled": true,
                                     "position": "top-right"
                                     }*/
                                 "export": {
-                                    "enabled": true,    
+                                    "enabled": true,
                                     "menu": [ {
                                         "class": "export-main",
                                         "menu": [ {
-                                            "label": "Descargar",
+                                            "label": "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphExportDownloadTitle"))",
                                             "menu": [ "PNG", "JPG", "PDF","SVG" ]
                                         },
                                         {
-                                            "label": "Imprimir",
+                                            "label": "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphExportPrintTitle"))",
                                             "format": "PRINT"
-                                        }]                                        
+                                        }]
                                     }]
                                 }
                             });
@@ -2274,7 +2274,7 @@
                                 },
                                 "titles":   [
                                                 {
-                                                    "text": "Distribución de casos de IRAG según tipos y sub tipos virus respiratorios en vigilancia y grupos de edad",
+                                                    "text": "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraph4Title"))",
                                                     "size": 15
                                                 }
                                 ],
@@ -2288,7 +2288,7 @@
                                     "stackType": "regular",
                                     "position": "left",
                                     "gridAlpha": 0,
-                                    "title":jsonX.graph.graphYAxisTitle
+                                    "title":"@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraph4YAxisTitle"))"
                                 }],
                                 "graphs": [{
                                     /*Otros*/
@@ -2297,7 +2297,7 @@
                                     "fillAlphas": 1,
                                     "labelText": "[[value]]",
                                     "lineAlpha": 0.3,
-                                    "type": "column",                                    
+                                    "type": "column",
                                     "valueAxis": "v1",
                                     "lineColor": "#7f7f7f",
                                     "title": jsonX.graph.graphSeries1Label,
@@ -2305,9 +2305,9 @@
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
-                                        if (info.values.value){                                           
+                                        if (info.values.value){
                                             return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                            
+
                                         }
                                         else
                                             return '';
@@ -2318,7 +2318,7 @@
                                     "fillAlphas": 1,
                                     "labelText": "[[value]]",
                                     "lineAlpha": 0.3,
-                                    "type": "column",                                   
+                                    "type": "column",
                                     "valueAxis": "v1",
                                     "lineColor": "#ff99ff",
                                     "title": jsonX.graph.graphSeries2Label,
@@ -2326,9 +2326,9 @@
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
-                                        if (info.values.value){                                           
+                                        if (info.values.value){
                                             return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                            
+
                                         }
                                         else
                                             return '';
@@ -2339,7 +2339,7 @@
                                     "fillAlphas": 1,
                                     "labelText": "[[value]]",
                                     "lineAlpha": 0.3,
-                                    "type": "column",                                    
+                                    "type": "column",
                                     "valueAxis": "v1",
                                     "lineColor": "#0070c0",
                                     "title": jsonX.graph.graphSeries3Label,
@@ -2347,9 +2347,9 @@
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
-                                        if (info.values.value){                                           
+                                        if (info.values.value){
                                             return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                            
+
                                         }
                                         else
                                             return '';
@@ -2360,7 +2360,7 @@
                                     "fillAlphas": 1,
                                     "labelText": "[[value]]",
                                     "lineAlpha": 0.3,
-                                    "type": "column",                                    
+                                    "type": "column",
                                     "valueAxis": "v1",
                                     "lineColor": "#7030a0",
                                     "title": jsonX.graph.graphSeries4Label,
@@ -2368,9 +2368,9 @@
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
-                                        if (info.values.value){                                           
+                                        if (info.values.value){
                                             return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                            
+
                                         }
                                         else
                                             return '';
@@ -2389,9 +2389,9 @@
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
-                                        if (info.values.value){                                           
+                                        if (info.values.value){
                                             return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                            
+
                                         }
                                         else
                                             return '';
@@ -2402,7 +2402,7 @@
                                     "fillAlphas": 1,
                                     "labelText": "[[value]]",
                                     "lineAlpha": 0.3,
-                                    "type": "column",                                    
+                                    "type": "column",
                                     "valueAxis": "v1",
                                     "lineColor": "#00b0f0",
                                     "title": jsonX.graph.graphSeries6Label,
@@ -2410,9 +2410,9 @@
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
-                                        if (info.values.value){                                           
+                                        if (info.values.value){
                                             return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                            
+
                                         }
                                         else
                                             return '';
@@ -2423,7 +2423,7 @@
                                     "fillAlphas": 1,
                                     "labelText": "[[value]]",
                                     "lineAlpha": 0.3,
-                                    "type": "column",                                    
+                                    "type": "column",
                                     "valueAxis": "v1",
                                     "lineColor": "#ff0000",
                                     "title": jsonX.graph.graphSeries7Label,
@@ -2431,9 +2431,9 @@
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
-                                        if (info.values.value){                                           
+                                        if (info.values.value){
                                             return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                            
+
                                         }
                                         else
                                             return '';
@@ -2444,7 +2444,7 @@
                                     "fillAlphas": 1,
                                     "labelText": "[[value]]",
                                     "lineAlpha": 0.3,
-                                    "type": "column",                                    
+                                    "type": "column",
                                     "valueAxis": "v1",
                                     "lineColor": "#000000",
                                     "title": jsonX.graph.graphSeries8Label,
@@ -2452,9 +2452,9 @@
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
-                                        if (info.values.value){                                           
+                                        if (info.values.value){
                                             return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                            
+
                                         }
                                         else
                                             return '';
@@ -2465,7 +2465,7 @@
                                     "fillAlphas": 1,
                                     "labelText": "[[value]]",
                                     "lineAlpha": 0.3,
-                                    "type": "column",                                    
+                                    "type": "column",
                                     "valueAxis": "v1",
                                     "lineColor": "#ffff00",
                                     "title": jsonX.graph.graphSeries9Label,
@@ -2473,9 +2473,9 @@
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
-                                        if (info.values.value){                                           
+                                        if (info.values.value){
                                             return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                            
+
                                         }
                                         else
                                             return '';
@@ -2486,7 +2486,7 @@
                                     "fillAlphas": 1,
                                     "labelText": "[[value]]",
                                     "lineAlpha": 0.3,
-                                    "type": "column",                                    
+                                    "type": "column",
                                     "valueAxis": "v1",
                                     "lineColor": "#ff9900",
                                     "title": jsonX.graph.graphSeries10Label,
@@ -2494,9 +2494,9 @@
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
-                                        if (info.values.value){                                           
+                                        if (info.values.value){
                                             return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                            
+
                                         }
                                         else
                                             return '';
@@ -2512,24 +2512,24 @@
                                     "parseDates": false,
                                     "axisColor": "#DADADA",
                                     "minorGridEnabled": true,
-                                    "title":jsonX.graph.graphXAxisTitle
+                                    "title":"@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraph4XAxisTitle"))"
                                 },
                                 /*"export": {
                                     "enabled": true,
                                     "position": "top-right"
                                     }*/
                                 "export": {
-                                    "enabled": true,    
+                                    "enabled": true,
                                     "menu": [ {
                                         "class": "export-main",
                                         "menu": [ {
-                                            "label": "Descargar",
+                                            "label": "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphExportDownloadTitle"))",
                                             "menu": [ "PNG", "JPG", "PDF","SVG" ]
                                         },
                                         {
-                                            "label": "Imprimir",
+                                            "label": "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphExportPrintTitle"))",
                                             "format": "PRINT"
-                                        }]                                        
+                                        }]
                                     }]
                                 }
                             });
@@ -2662,7 +2662,7 @@
                                 },
                                 "titles":   [
                                                 {
-                                                    "text": "Distribución de casos de IRAG según tipos y sub tipos  virus respiratorios en vigilancia y gravedad",
+                                                    "text": "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraph5Title"))",
                                                     "size": 15
                                                 }
                                 ],
@@ -2676,7 +2676,7 @@
                                     "stackType": "regular",
                                     "position": "left",
                                     "gridAlpha": 0,
-                                    "title":jsonX.graph.graphYAxisTitle
+                                    "title":"@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraph5YAxisTitle"))"
                                 }],
                                 "graphs": [{
                                     /*Otros*/
@@ -2684,7 +2684,7 @@
                                     "fillAlphas": 1,
                                     "labelText": "[[value]]",
                                     "lineAlpha": 0.3,
-                                    "type": "column",                                    
+                                    "type": "column",
                                     "valueAxis": "v1",
                                     "lineColor": "#7f7f7f",
                                     "title": jsonX.graph.graphSeries1Label,
@@ -2692,9 +2692,9 @@
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
-                                        if (info.values.value){                                           
+                                        if (info.values.value){
                                             return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                            
+
                                         }
                                         else
                                             return '';
@@ -2705,7 +2705,7 @@
                                     "fillAlphas": 1,
                                     "labelText": "[[value]]",
                                     "lineAlpha": 0.3,
-                                    "type": "column",                                    
+                                    "type": "column",
                                     "valueAxis": "v1",
                                     "lineColor": "#ff99ff",
                                     "title": jsonX.graph.graphSeries2Label,
@@ -2713,9 +2713,9 @@
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
-                                        if (info.values.value){                                           
+                                        if (info.values.value){
                                             return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                            
+
                                         }
                                         else
                                             return '';
@@ -2726,7 +2726,7 @@
                                     "fillAlphas": 1,
                                     "labelText": "[[value]]",
                                     "lineAlpha": 0.3,
-                                    "type": "column",                                    
+                                    "type": "column",
                                     "valueAxis": "v1",
                                     "lineColor": "#0070c0",
                                     "title": jsonX.graph.graphSeries3Label,
@@ -2734,9 +2734,9 @@
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
-                                        if (info.values.value){                                           
+                                        if (info.values.value){
                                             return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                            
+
                                         }
                                         else
                                             return '';
@@ -2747,7 +2747,7 @@
                                     "fillAlphas": 1,
                                     "labelText": "[[value]]",
                                     "lineAlpha": 0.3,
-                                    "type": "column",                                    
+                                    "type": "column",
                                     "valueAxis": "v1",
                                     "lineColor": "#7030a0",
                                     "title": jsonX.graph.graphSeries4Label,
@@ -2755,9 +2755,9 @@
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
-                                        if (info.values.value){                                           
+                                        if (info.values.value){
                                             return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                            
+
                                         }
                                         else
                                             return '';
@@ -2768,7 +2768,7 @@
                                     "fillAlphas": 1,
                                     "labelText": "[[value]]",
                                     "lineAlpha": 0.3,
-                                    "type": "column",                                    
+                                    "type": "column",
                                     "valueAxis": "v1",
                                     "lineColor": "#99cc00",
                                     "title": jsonX.graph.graphSeries5Label,
@@ -2776,9 +2776,9 @@
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
-                                        if (info.values.value){                                           
+                                        if (info.values.value){
                                             return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                            
+
                                         }
                                         else
                                             return '';
@@ -2789,7 +2789,7 @@
                                     "fillAlphas": 1,
                                     "labelText": "[[value]]",
                                     "lineAlpha": 0.3,
-                                    "type": "column",                                    
+                                    "type": "column",
                                     "valueAxis": "v1",
                                     "lineColor": "#00b0f0",
                                     "title": jsonX.graph.graphSeries6Label,
@@ -2797,9 +2797,9 @@
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
-                                        if (info.values.value){                                           
+                                        if (info.values.value){
                                             return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                            
+
                                         }
                                         else
                                             return '';
@@ -2810,7 +2810,7 @@
                                     "fillAlphas": 1,
                                     "labelText": "[[value]]",
                                     "lineAlpha": 0.3,
-                                    "type": "column",                                    
+                                    "type": "column",
                                     "valueAxis": "v1",
                                     "lineColor": "#ff0000",
                                     "title": jsonX.graph.graphSeries7Label,
@@ -2818,9 +2818,9 @@
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
-                                        if (info.values.value){                                           
+                                        if (info.values.value){
                                             return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                            
+
                                         }
                                         else
                                             return '';
@@ -2831,7 +2831,7 @@
                                     "fillAlphas": 1,
                                     "labelText": "[[value]]",
                                     "lineAlpha": 0.3,
-                                    "type": "column",                                    
+                                    "type": "column",
                                     "valueAxis": "v1",
                                     "lineColor": "#000000",
                                     "title": jsonX.graph.graphSeries8Label,
@@ -2839,9 +2839,9 @@
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
-                                        if (info.values.value){                                           
+                                        if (info.values.value){
                                             return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                            
+
                                         }
                                         else
                                             return '';
@@ -2852,7 +2852,7 @@
                                     "fillAlphas": 1,
                                     "labelText": "[[value]]",
                                     "lineAlpha": 0.3,
-                                    "type": "column",                                    
+                                    "type": "column",
                                     "valueAxis": "v1",
                                     "lineColor": "#ffff00",
                                     "title": jsonX.graph.graphSeries9Label,
@@ -2860,9 +2860,9 @@
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
-                                        if (info.values.value){                                           
+                                        if (info.values.value){
                                             return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                            
+
                                         }
                                         else
                                             return '';
@@ -2873,7 +2873,7 @@
                                     "fillAlphas": 1,
                                     "labelText": "[[value]]",
                                     "lineAlpha": 0.3,
-                                    "type": "column",                                    
+                                    "type": "column",
                                     "valueAxis": "v1",
                                     "lineColor": "#ff9900",
                                     "title": jsonX.graph.graphSeries10Label,
@@ -2881,9 +2881,9 @@
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
-                                        if (info.values.value){                                           
+                                        if (info.values.value){
                                             return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                            
+
                                         }
                                         else
                                             return '';
@@ -2899,24 +2899,24 @@
                                     "parseDates": false,
                                     "axisColor": "#DADADA",
                                     "minorGridEnabled": true,
-                                    "title":jsonX.graph.graphXAxisTitle
+                                    "title":"@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraph5XAxisTitle"))"
                                 },
                                 /*"export": {
                                     "enabled": true,
                                     "position": "top-right"
                                     }*/
                                 "export": {
-                                    "enabled": true,    
+                                    "enabled": true,
                                     "menu": [ {
                                         "class": "export-main",
                                         "menu": [ {
-                                            "label": "Descargar",
+                                            "label": "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphExportDownloadTitle"))",
                                             "menu": [ "PNG", "JPG", "PDF","SVG" ]
                                         },
                                         {
-                                            "label": "Imprimir",
+                                            "label": "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphExportPrintTitle"))",
                                             "format": "PRINT"
-                                        }]                                        
+                                        }]
                                     }]
                                 }
                             });

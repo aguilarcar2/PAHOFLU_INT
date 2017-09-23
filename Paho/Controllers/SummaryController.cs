@@ -208,8 +208,9 @@ namespace Paho.Controllers
             var epiYear = DateTime.Now.Year.ToString();
             int intEpiYear = Int32.Parse(epiYear);
             List<Dictionary<string, int>> summaryPerYear = new List<Dictionary<string, int>>();
-            
-            for (int i = 1; i <= 52; i++)
+
+            //for (int i = 1; i <= 52; i++)
+            for (int i = 52; i >= 1; i--)
             {
                 Dictionary<string, int> dictionary = new Dictionary<string, int>();
                 var ColHospTST = 0;
@@ -254,6 +255,7 @@ namespace Paho.Controllers
                 dictionary.Add("ColVentTST", ColVentTST);
                 Int32 unixTimestamp = (Int32)(StartDateOfWeek.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
                 dictionary.Add("StartDateOfWeek", unixTimestamp);
+                dictionary.Add("EpiYear", intEpiYear);
                 summaryPerYear.Add(dictionary);
             }
             return Json(summaryPerYear, JsonRequestBehavior.AllowGet);

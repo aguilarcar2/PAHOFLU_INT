@@ -182,13 +182,13 @@
         //    return false;
         //} else {
         if (rut.search("-") <= 0) {
-            alert("El RUN " + rut + " no incluye el '-' ");
+            alert(msgValidationRUN + rut + msgValidationRUNDashedPart2);
             self.NoExpediente("");//limpio el valor del campo rut
             $("#NoExpediente").focus();//me posiciono en el campo nuevamente
             return false;
         }
             if (self.EsRut(rut) == false) {
-                alert("El RUN " + rut + " no es válido");
+                alert(msgValidationRUN + rut + msgValidationRUNValidPart2);
                 self.NoExpediente("");//limpio el valor del campo rut
                 $("#NoExpediente").focus();//me posiciono en el campo nuevamente
                 return false;
@@ -227,13 +227,13 @@
             //console.log(/^[1-9]\d$/.test(self.NoExpediente()));
             //|| /^[0-9]\d$/.test(self.NoExpediente()) == false
             if (self.DocumentType() == 1 && (string_length != 9 || isNaN(self.NoExpediente()) == true )) {
-                alert("El número de cédula tiene que ser de 9 dígitos y únicamente númerico");
+                alert(msgValidationDocumentFormat);
                 self.NoExpediente("");
             } else if (self.DocumentType() == 2 && string_length != 10) {
-                alert("El número de asegurado tiene que ser de 10 dígitos y únicamente númerico");
+                alert(msgValidationInsuredNumber);
                 self.NoExpediente("");
             } else if (self.DocumentType() == 3 && string_length != 14) {
-                alert("El Doc. interno tiene que ser de 14 dígitos");
+                alert(msgValidationInternalDoc);
                 self.NoExpediente("");
             }
 
@@ -412,7 +412,7 @@
     };
 
     self.Borrar = function () {
-        if (confirm("Usted esta a punto de eliminar el registro seleccionado, está seguro?")) {
+        if (confirm(msgConfirmationDeleteRecord)) {
             $.getJSON(app.dataModel.deletetUrl, { id: self.Id() }, function(data, status) {
                     console.log(data);
                     app.Views.Home.CancelEdit();
@@ -518,7 +518,7 @@
 
         if (date_inicio_sintomas != null)
             if (moment(date_hospital).isBefore(moment(date_inicio_sintomas))) {
-                msg += "\n" + "La fecha de inicio de síntomas no puede ser mayor a fecha de notificación";
+                msg += "\n" + msgValidationOnsetFeverDate;
                 $("#HospitalDate").focus();
             }
                 
@@ -528,7 +528,7 @@
 
         
         if (!self.DocumentType() && self.UsrCountry() != 25)//agregado el 25 para que esta validación ignore SURINAME
-            msg += "\n" + "Tipo de documento de identificación es requerido";
+            msg += "\n" + msgValidationTypeOfDocument;
 
         if (!self.NoExpediente()) {
             msg += "\n" + msgValidationDocumentIDRequired;
@@ -538,14 +538,14 @@
         if ($("#HospitalDate").val() == "")
             msg += "\n" + msgValidationNotificationDateRequired;
         if ($("#HospitalDate").val() != "" && !moment(moment(date_hospital).format(date_format_moment), [date_format_moment], true).isValid())
-            msg += "\n" + "Fecha de notificación es inválida";
+            msg += "\n" + msgValidationNotificationDate;
         //if ($("#RegDate").val() == "")
         //    msg += "\n" + "Fecha de notificación es requerido";
         if ($("#RegDate").val() != "" && !moment(moment(date_reg_date).format(date_format_moment), [date_format_moment], true).isValid())
-            msg += "\n" + "Fecha de registro es inválida ";
+            msg += "\n" + msgValidationRecordDate;
         if (date_hospital != null && date_reg_date != null && moment(date_hospital).isAfter(moment(date_reg_date)))
         {
-            msg += "\n" + "La fecha de registro no puede ser posterior de la fecha de notificación";
+            msg += "\n" + msgValidationRecordDateLater;
             $("#HospitalDate").focus();
         }
             
@@ -572,9 +572,9 @@
 
         if (self.UsrCountry() == 7) {
             if (date_DOB == null || date_DOB == "")
-                msg += "\n" + "Ingrese la fecha de nacimiento. ";
+                msg += "\n" + msgValidationTypeDOB;
             if (moment(date_DOB).isAfter(moment(date_hospital)))
-                msg += "\n" + "La fecha de nacimiento no puede ser mayor a la fecha de notificación ";
+                msg += "\n" + msgValidationDOBLater;
         }
                 
 
@@ -585,7 +585,7 @@
     };
 
     self.Cancel = function () {
-        if (confirm("Usted esta apunto de salir del registro, está seguro?")) {
+        if (confirm(msgConfirmationExitRecord)) {
             app.Views.Home.CancelEdit();
         }
     };
@@ -594,11 +594,11 @@
 
         if ((self.DocumentType() == "" && self.UsrCountry() != 25) || self.NoExpediente() == "")
         {
-            alert("Necesita ingresar el Tipo de documento y No. de identificación para traer la información del paciente");
+            alert(msgConfirmationDocumentTypeNumberRequired);
         } else {
             $.getJSON(app.dataModel.getPatientInformationUrl, { DTP: self.DocumentType(), DNP: self.NoExpediente() }, function (data, status) {
                 if (data.length <= 0) {
-                    alert("No están registrado estos datos del paciente en el sistema PAHOFLU, presione click en aceptar y continue con el registro del caso.");
+                    alert(msgValidationPacientInfoMissing);
                 }
                 else {
                     self.FName1(data[0].nombre1);
@@ -613,7 +613,7 @@
                 }
             })
             .fail(function (jqXHR, textStatus, errorThrown) {
-                alert("Error de comunicación con el servidor");
+                alert(msgValidationServerError);
                 //console.log(errorThrown);
             });
         }
@@ -694,7 +694,6 @@
         date_reg_date = parseDate($("#RegDate").val(), date_format_);
         date_DOB = parseDate($("#DOB").val(), date_format_);
         date_fever_dummy = parseDate($("#FeverDate").val(), date_format_);
-        console.log("Entro funcion SaveContact y metió parámetros");
         if (self.DocumentType() == "" && self.UsrCountry() == 25) {//sirve para que en el caso de Suriname, el DocumentType se llene con un valor predeterminado            
             self.DocumentType(8);
         }

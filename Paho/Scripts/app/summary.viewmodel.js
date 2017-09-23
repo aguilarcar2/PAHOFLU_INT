@@ -33,7 +33,9 @@ function SummaryYearItem(data) {
     self.ColHospTST = data.ColHospTST;
     self.ColUCITST = data.ColUCITST;
     self.ColFalleTST = data.ColFalleTST;
+    self.ColEpiYear = data.EpiYear;
     self.ColEpiWeek = data.EpiWeek;
+    self.ColEpiYearWeek = data.EpiYear + "-" + data.EpiWeek;
     self.ColETINumST = data.ColETINumST;
     self.ColETIDenoST = data.ColETIDenoST;
     self.ColETINumEmerST = data.ColETINumEmerST;

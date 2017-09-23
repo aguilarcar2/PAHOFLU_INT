@@ -263,17 +263,21 @@
 					<div class="col-md-6">
                         <div id="ServicesGroup" class='input-group' data-bind="visible: displayService">
                             <span class="input-group-addon">
-                                Service:
+                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelService"))
                             </span>
-                            <select id="cmbServices" class="form-control" style="max-width:400px;" data-bind="options: app.Views.Home.institutions,
+
+                            <select id="cmbServices" class="form-control" style="max-width:85%;" data-bind="options: app.Views.Home.institutions,
+
                        optionsText: 'Name',
                        optionsValue: 'Id',
                        value: selectedServiceId "></select>
                         </div>
                     </div>
-					}
-					@if (ViewBag.UsrCtry == 7 && ViewBag.UsrCtry == 9 && ViewBag.UsrCtry == 3 ){
-                    <div class="col-md-6" data-bind="visible:VisHopName">
+                    }
+                    @*Agregar aqui a todos los paises que deben mostrar la institución*@
+					@if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 3 ) 
+                    {
+                    <div class="col-md-5" data-bind="visible:VisHopName">
                         <div class='input-group'>
                             <span class="input-group-addon">
                                  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelHospital"))
@@ -3988,6 +3992,27 @@
         var msgValidationRiskFactor = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationRiskFactor"))";
         var msgValidationClinicalInfo = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationClinicalInfo"))";
         var msgValidationOnsetOnFever = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationOnsetOnFever"))";
+        var msgValidationRUN = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationRUN"))";
+        var msgValidationRUNDasehdPart2 = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationRUNDasehdPart2"))";
+        var msgValidationRUNValidPart2 = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationRUNValidPart2"))";
+        var msgValidationDocumentFormat = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationDocumentFormat"))";
+        var msgValidationInsuredNumber = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationInsuredNumber"))";
+        var msgValidationInternalDoc = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationInternalDoc"))";
+        var msgConfirmationDeleteRecord = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgConfirmationDeleteRecord"))";
+        var msgValidationOnsetFeverDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationOnsetFeverDate"))";
+        var msgValidationNotificationDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationNotificationDate"))";
+        var msgValidationRecordDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationRecordDate"))";
+        var msgValidationRecordDateLater = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationRecordDateLater"))";
+        var msgValidationTypeDOB = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationTypeDOB"))";
+        var msgValidationDOBLater = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationDOBLater"))";
+        var msgConfirmationExitRecord = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgConfirmationExitRecord"))";
+        var msgConfirmationDocumentTypeNumberRequired = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgConfirmationDocumentTypeNumberRequired"))";
+        var msgValidationPacientInfoMissing = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationPacientInfoMissing"))";
+        var msgValidationServerError = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationServerError"))";
+        var msgValidationInstitutionRequired = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationInstitutionRequired"))";
+        var msgValidationGenarationYearRequired = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationGenarationYearRequired"))";
+        var msgValidationReportRestrictionCriteriaRequired = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationReportRestrictionCriteriaRequired"))";
+        var msgValidationReports = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationReports"))";
 
         /* Catalogos de Laboratorio*/
         var CSNP= @Html.Raw(Json.Encode(Model.CSNP));

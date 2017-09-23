@@ -37,10 +37,10 @@ function FluidViewModel(app, dataModel) {
         var selectCountryUsr = self.selectedCountryId() ? self.selectedCountryId() : CountryID
 
         if ($("#Hospitals").children().length == 2 && self.selectedInstitutionId() == null)
-            msg += "\n" + " - It is required select the institution";
+            msg += "\n" + msgValidationInstitutionRequired;
 
         if (self.Year() == "")
-            msg += "\n" + " - Enter the year of FLUID generation"
+            msg += "\n" + msgValidationFluidDate
 
         if (msg !== "") { alert('Report FLUID:' + msg); return false; }
 
