@@ -836,6 +836,8 @@
 
     self.GetHospital = function (id) {
         self.Id = id;
+
+            
         $.getJSON(app.dataModel.getHospitalUrl, { id: id, institutionId: app.Views.Home.selectedInstitutionId() }, function (data, status) {
                 self.CHNum(data.CHNum);
                 self.hasReset(true);
@@ -965,7 +967,18 @@
                     self.CloseDate(moment(data.CloseDate).format(date_format_moment));
                 self.ObservationCase( data.ObservationCase  != null ? data.ObservationCase : "" );
                 self.hasReset(false);
-                self.LabsHospital(data.LabsHospital);
+                //if (app.Views.Contact.selectedServiceId() > 0) {
+                //    alert("labs_list");
+                //    $.getJSON(app.dataModel.getLabsHospitalUrl, { institutionId: app.Views.Contact.selectedServiceId() }, function (data, status) {
+                //        console.log(data.LabsHospital);
+                //        console.log(self.LabsHospital());
+                //        self.LabsHospital(data.LabsHospital);
+                //        console.log(self.LabsHospital());
+                //    });
+                //} else {
+                    self.LabsHospital(data.LabsHospital);
+                //}
+                
 
             })
             .fail(function(jqXHR, textStatus, errorThrown) {

@@ -651,36 +651,37 @@ namespace Paho.Controllers
 
             var result =
                  new
-                  {
-                      Id = flucase.ID.ToString(),
-                      Surv = flucase.Surv.ToString(),
-                      SurvInusual = flucase.SurvInusual,
-                      Brote = flucase.Brote,
-                      LName1 = flucase.LName1,
-                      LName2 = flucase.LName2,
-                      FName1 = flucase.FName1,
-                      FName2 = flucase.FName2,
-                      DocumentType = flucase.DocumentType,
-                      NoExpediente = flucase.NoExpediente,
-                      NationalId = flucase.NationalId,
-                      DOB = flucase.DOB,
-                      Age = flucase.Age,
-                      AMeasure = flucase.AMeasure.ToString(),
-                      Gender = flucase.Gender.ToString(),
-                      HospitalDate = flucase.HospitalDate,
-                      RegDate = flucase.RegDate,
-                      nationality = flucase.nationality,
-                      nativepeople = flucase.nativepeople,
-                      hospitalIDRecord = flucase.HospitalID,
-                      hospitalName = institutionsName[0],
-                      DataStatement = flucase.statement,
-                      flow_record = flucase.flow,
-                      flow_institution = flow_local_lab,
-                      flow_max = flow_max,
-                      flow_open_always = flow_open_always,
-                      region_institucional = region_institutional.FirstOrDefault(),
-                      region_salud = region_salud.FirstOrDefault(),
-                      region_pais = region_pais.FirstOrDefault()
+                 {
+                     Id = flucase.ID.ToString(),
+                     Surv = flucase.Surv.ToString(),
+                     SurvInusual = flucase.SurvInusual,
+                     Brote = flucase.Brote,
+                     LName1 = flucase.LName1,
+                     LName2 = flucase.LName2,
+                     FName1 = flucase.FName1,
+                     FName2 = flucase.FName2,
+                     DocumentType = flucase.DocumentType,
+                     NoExpediente = flucase.NoExpediente,
+                     NationalId = flucase.NationalId,
+                     DOB = flucase.DOB,
+                     Age = flucase.Age,
+                     AMeasure = flucase.AMeasure.ToString(),
+                     Gender = flucase.Gender.ToString(),
+                     HospitalDate = flucase.HospitalDate,
+                     RegDate = flucase.RegDate,
+                     nationality = flucase.nationality,
+                     nativepeople = flucase.nativepeople,
+                     hospitalIDRecord = flucase.HospitalID,
+                     hospitalName = institutionsName[0],
+                     DataStatement = flucase.statement,
+                     flow_record = flucase.flow,
+                     flow_institution = flow_local_lab,
+                     flow_max = flow_max,
+                     flow_open_always = flow_open_always,
+                     region_institucional = region_institutional.FirstOrDefault(),
+                     region_salud = region_salud.FirstOrDefault(),
+                     region_pais = region_pais.FirstOrDefault(),
+                     selectedServiceId = (db.Institutions.Where(j => j.ID == flucase.HospitalID).FirstOrDefault().AccessLevel == (AccessLevel)6) ? flucase.HospitalID : 0 
                  };
             return Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -1036,6 +1037,17 @@ namespace Paho.Controllers
         }
 
         private IQueryable<Institution> GetLabsByInstitution(long institutionId) {
+            if (institutionId == 0)
+            {
+                var user = UserManager.FindById(User.Identity.GetUserId());
+                var service_inst = db.Institutions.Where(j => j.Father_ID == user.InstitutionID && j.AccessLevel == AccessLevel.Service).Any();
+
+                if (user.Institution.AccessLevel == AccessLevel.Service || (user.Institution.AccessLevel == AccessLevel.SelfOnly && user.Institution is Hospital && service_inst == true))
+                {
+                    institutionId = (long)user.InstitutionID;
+                } 
+
+            }
             //var user = UserManager.FindById(User.Identity.GetUserId());
             //if (institutionId == 0) { institutionId = Convert.ToInt32(user.InstitutionID); }
             var institutionsConfiguration = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>()
