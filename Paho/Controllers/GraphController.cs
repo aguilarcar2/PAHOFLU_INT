@@ -2508,7 +2508,7 @@ namespace Paho.Controllers
             else if (countryId == 7)
                 nombPais = "Chile";
             else if (countryId == 25)
-                nombPais = "Surinam";
+                nombPais = "Suriname";
             else if (countryId == 3)
                 nombPais = "Bolivia";
 

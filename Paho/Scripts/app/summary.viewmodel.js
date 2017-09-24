@@ -27,7 +27,7 @@ var AgeGroupDescriptionCHI = [
     "40 a 59 años",
     "60 años y más"
 ];
-
+    
 function SummaryYearItem(data) {
     var self = this;
     self.ColHospTST = data.ColHospTST;
@@ -110,6 +110,14 @@ function SummayItem(data) {
 
     self.NoActiveSUR = ko.computed(function () {
         return (self.UsrCountry() == 25) ? false : true;
+    }, self);
+
+    self.ActiveCOS = ko.computed(function () {
+        return (self.UsrCountry() == 9) ? true : false;
+    }, self);
+
+    self.NoActiveCOS = ko.computed(function () {
+        return (self.UsrCountry() == 9) ? false : true;
     }, self);
 
     self.ETINumFem = ko.observable(data.ETINumFem);
@@ -275,6 +283,14 @@ function SummaryViewModel(app, dataModel) {
 
     self.NoActiveSUR = ko.computed(function () {
         return (self.UsrCountry() == 25) ? false : true;
+    }, self);
+
+    self.ActiveCOS = ko.computed(function () {
+        return (self.UsrCountry() == 9) ? true : false;
+    }, self);
+
+    self.NoActiveCOS = ko.computed(function () {
+        return (self.UsrCountry() == 9) ? false : true;
     }, self);
 
     self.PickFirstDay = function (date) {
