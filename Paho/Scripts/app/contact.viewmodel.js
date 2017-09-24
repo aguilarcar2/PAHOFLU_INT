@@ -576,6 +576,9 @@
             if (moment(date_DOB).isAfter(moment(date_hospital)))
                 msg += "\n" + msgValidationDOBLater;
         }
+
+        if ((date_DOB == null || date_DOB == "") && (self.Age() == "") )
+            msg += "\n" + msgValidationTypeDOBorAge;
                 
 
         //if (msg !== "") { alert('DAT. VIGILANCIA:' + msg); $('#tabs').tabs({ active: 0 }); return false; }

@@ -762,7 +762,7 @@ namespace Paho.Models
         public virtual Neighborhood Neighborhood { get; set; }
         //public class CaseRisk : CaseBase
         public Vaccin? Vaccin { get; set; }
-        public RiskFactor RiskFactors { get; set; }
+        public RiskFactor? RiskFactors { get; set; }
         public bool? HDisease { get; set; }
         public bool? Diabetes { get; set; }
         public bool? Neuro { get; set; }
