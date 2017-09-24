@@ -71,6 +71,14 @@ function SummaryYearItem(data) {
     self.NoActiveSUR = ko.computed(function () {
         return (self.UsrCountry() == 25) ? false : true;
     }, self);
+
+    self.ActiveCOS = ko.computed(function () {
+        return (self.UsrCountry() == 9) ? true : false;
+    }, self);
+
+    self.NoActiveCOS = ko.computed(function () {
+        return (self.UsrCountry() == 9) ? false : true;
+    }, self);
 }
 
 function SummayItem(data) {
@@ -643,6 +651,8 @@ function SummaryViewModel(app, dataModel) {
                     alert("Data saved");
                 else
                     alert(data);
+                //****
+                self.CancelarItems();
             },
         })
     };
