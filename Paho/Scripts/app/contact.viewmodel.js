@@ -212,7 +212,7 @@
     }, self);
 
     self.DocumentType.subscribe(function (NewRUN) {
-        if (self.UsrCountry() != 25) {//Solo ejecuta este subscribe si el país es diferente de Suriname
+        if (self.UsrCountry() != 25 && self.UsrCountry() != 11 && self.UsrCountry() != 18) {//Solo ejecuta este subscribe si el país es diferente de Suriname
             self.NoExpediente("");
         }
 
@@ -527,7 +527,7 @@
             msg += "\n" + msgValidationSurvType;
 
         
-        if (!self.DocumentType() && self.UsrCountry() != 25)//agregado el 25 para que esta validación ignore SURINAME
+        if (!self.DocumentType() && (self.UsrCountry() != 25 && self.UsrCountry() != 11 && self.UsrCountry() != 18))//agregado el 25 para que esta validación ignore SURINAME
             msg += "\n" + msgValidationTypeOfDocument;
 
         if (!self.NoExpediente()) {
@@ -595,7 +595,7 @@
 
     self.GetPatient = function () {
 
-        if ((self.DocumentType() == "" && self.UsrCountry() != 25) || self.NoExpediente() == "")
+        if ((self.DocumentType() == "" && self.UsrCountry() != 25 && self.UsrCountry() != 11 && self.UsrCountry() != 18) || self.NoExpediente() == "")
         {
             alert(msgConfirmationDocumentTypeNumberRequired);
         } else {
@@ -697,7 +697,7 @@
         date_reg_date = parseDate($("#RegDate").val(), date_format_);
         date_DOB = parseDate($("#DOB").val(), date_format_);
         date_fever_dummy = parseDate($("#FeverDate").val(), date_format_);
-        if (self.DocumentType() == "" && self.UsrCountry() == 25) {//sirve para que en el caso de Suriname, el DocumentType se llene con un valor predeterminado            
+        if (self.DocumentType() == "" && (self.UsrCountry() == 25 || self.UsrCountry() == 11 || self.UsrCountry() == 18)) {//sirve para que en el caso de Suriname, el DocumentType se llene con un valor predeterminado            
             self.DocumentType(8);
         }
          $.post(app.dataModel.saveContactUrl,
@@ -747,7 +747,7 @@
     };
     // Revision del flujo si es epidemiologico o laboratorio
     self.Flow_Local_Institution_Lab = ko.computed(function () {
-        console.log("Contact epi - frecord_lab -- " + self.flow_record() + ", finstitution_lab -- " + self.flow_institution() + ", dataStatement_lab -- " + self.DataStatement() + ", userRole " + app.Views.Home.UserRole() + ", Inst" + $("#ITy").val() + ", OpenAlways" + self.flow_open_always());
+        //console.log("Contact epi - frecord_lab -- " + self.flow_record() + ", finstitution_lab -- " + self.flow_institution() + ", dataStatement_lab -- " + self.DataStatement() + ", userRole " + app.Views.Home.UserRole() + ", Inst" + $("#ITy").val() + ", OpenAlways" + self.flow_open_always());
         if ((self.flow_record() == (self.flow_institution() - 1) && (self.DataStatement() == 2 || self.DataStatement() == null || self.flow_open_always() == true)) || (self.flow_record() == self.flow_institution() && (self.DataStatement() == 1 || self.DataStatement() == null || self.flow_open_always() == true)) || (self.flow_close_case() == 99 && self.flow_open_always() == true)) {
             return true;
         }
@@ -765,7 +765,8 @@
         } else if ($("#ITy").val() == "3"  && app.Views.Home.UserRole() == "adm") {
             return true;
         }
-        else if ((self.flow_record() == 0 && self.DataStatement() == 1) ||  (self.flow_record() == self.flow_institution() && self.DataStatement() == 2) || (self.Id() == "") || (self.flow_record() == self.flow_max() && (self.DataStatement() == 2 || self.DataStatement() == null))) {  // Case Status ==3 cuando esta cerrado
+        //else if ((self.flow_record() == 0 && self.DataStatement() == 1) ||  (self.flow_record() == self.flow_institution() && self.DataStatement() == 2) || (self.Id() == "") || (self.flow_record() == self.flow_max() && (self.DataStatement() == 2 || self.DataStatement() == null))) {  // Case Status ==3 cuando esta cerrado  -- Modificacion requerida por RRR 20170924 no desactivar en caso cerrado
+        else if ((self.flow_record() == 0 && self.DataStatement() == 1) ||  (self.flow_record() == self.flow_institution() && self.DataStatement() == 2) || (self.Id() == "") || (self.flow_record() == self.flow_max() && (self.DataStatement() == 2 || self.DataStatement() == null))) {  
             return true;
         }
         else {

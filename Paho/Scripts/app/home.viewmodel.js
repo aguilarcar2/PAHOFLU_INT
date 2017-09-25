@@ -428,7 +428,7 @@
          } else if ($("#ITy").val() == "1" &&  app.Views.Contact.Flow_Local_Institution_Epi() == false)
          {
              console.log("aqui _ stf 3");
-            $("#tab-contact :input, #tab-GEO :input, #tab-hospital :input, #tab-risk :input, #tab-case :input").attr('disabled', true);
+            //$("#tab-contact :input, #tab-GEO :input, #tab-hospital :input, #tab-risk :input, #tab-case :input").attr('disabled', true);
             self.ModDataNo();
             $("#tab-lab :input").prop('disabled', true);
         }
@@ -443,7 +443,8 @@
 
         if (app.Views.Hospital.CaseStatus() == "3") {
             console.log("aqui _ CaseStatus 3");
-            $("#tabs :input").prop('disabled', true);
+            //$("#tabs :input").prop('disabled', true); Modificacion para que se pueda modificar el registro aunque este cerrado el caso.
+            self.ModDataNo();
             if (self.OpenAlwaysLab() == true) {
                 $("#PrintM1").prop('disabled', false);
                 $("#addLabTest_1").prop('disabled', false);
@@ -466,7 +467,7 @@
 
     self.FlowDataLab = function () {
         if ($("#ITy").val() == "2" && app.Views.Contact.Flow_Local_Institution_Lab() == true) {
-            console.log("aqui _ FlowDataLab");
+            //console.log("aqui _ FlowDataLab");
             $("#tab-lab :input").prop('disabled', false);
         }
     };
@@ -480,24 +481,24 @@
 
 
         if (($("#ITy").val() == "1" || $("#ITy").val() == "3") && flow_check.length > 0) {
-            console.log("DataLabAfter epi 1" + flow_check.length);
+            //console.log("DataLabAfter epi 1" + flow_check.length);
             $("#tab-contact :input, #tab-GEO :input, #tab-hospital :input, #tab-risk :input, #tab-case :input").attr('disabled', false);
             self.ModDataNo();
             $("#saveGeneral_1").show();
             $("#saveGeneral_2").show();
         }
         else if ($("#ITy").val() == "2" && (app.Views.Contact.flow_record() > app.Views.Contact.flow_institution()) && self.OpenAlwaysLab() == false) {
-            console.log("DataLabAfter epi 2" + flow_check.length);
+            //console.log("DataLabAfter epi 2" + flow_check.length);
             $("#tab-lab :input").prop('disabled', true);
         } else if ($("#ITy").val() == "2" && (app.Views.Contact.flow_record() == app.Views.Contact.flow_institution() && app.Views.Contact.DataStatement() == 2) && self.OpenAlwaysLab() == false) {
-            console.log("DataLabAfter epi 3" + flow_check.length);
+            //console.log("DataLabAfter epi 3" + flow_check.length);
             $("#tab-lab :input").prop('disabled', true);
         } else if ($("#ITy").val() == "1" || $("#ITy").val() == "3") {
-            console.log("DataLabAfter epi 4" + flow_check.length);
+            //console.log("DataLabAfter epi 4" + flow_check.length);
             $("#tab-lab :input").prop('disabled', true);
         }
 
-        console.log("aqui _ LabAfter");
+        //console.log("aqui _ LabAfter");
 
         $("#PrintM1").prop('disabled', false);
         $("#PrintM2").prop('disabled', false);

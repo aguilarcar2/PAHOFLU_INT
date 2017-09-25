@@ -594,8 +594,7 @@
                 alert("Es necesario ingresar antes la 'Fecha de Egreso' para poder ingresar la 'Condición de egreso' ");
                 self.Destin("");
                 $("#HospExDate").focus();
-             }
-            if (NewDestin != "" && self.IsSample() === "false") {
+             } else if (NewDestin != "" && self.IsSample() === "false") {
                 $("a[href*='tab-case']").show();
                 $("#tab-case").show();
                 $("#CaseStatus").attr("disabled", false);
