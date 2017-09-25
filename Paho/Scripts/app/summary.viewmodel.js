@@ -90,7 +90,7 @@ function SummayItem(data) {
 
     if (self.UsrCountry() == 7 || self.UsrCountry() == 3) {
         self.AgeGroupDescription = AgeGroupDescriptionCHI[parseInt(self.AgeGroup) - 1];
-    } else if (self.UsrCountry() == 25) {
+    } else if (self.UsrCountry() == 25 || self.UsrCountry() == 11 || self.UsrCountry() == 18) {
         self.AgeGroupDescription = AgeGroupDescriptionSUR[parseInt(self.AgeGroup) - 1];
     } else {
         self.AgeGroupDescription = AgeGroupDescription[parseInt(self.AgeGroup) - 1];
