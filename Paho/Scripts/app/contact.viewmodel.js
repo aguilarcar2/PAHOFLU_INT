@@ -327,7 +327,17 @@
             if (self.Age() < 34) return "15 a 34 años";
             if (self.Age() < 65) return "35 a 64 años";
             return "65 años y más";
-        } else
+        } else if (self.UsrCountry() == 25 || self.UsrCountry() == 11 || self.UsrCountry() == 18) {
+        if (self.AMeasure() === "Day" || (self.AMeasure() === "Month" && self.Age() <= 6)) return "child under 6 months"
+        if (self.AMeasure() === "Month" && self.Age() >= 6 && self.Age() <= 12) return "6 to 11 months";
+        if ((self.AMeasure() === "Month" && self.Age() >= 12 && self.Age() <= 24) || (self.AMeasure() === "Year" && self.Age() == 1)) return "12 to 23 months";
+        if (self.Age() < 5) return "2 to 4 years";
+        if (self.Age() < 15) return "5 to 14 years";
+        if (self.Age() < 50) return "15 to 49 years";
+        if (self.Age() < 65) return "50 to 64 years";
+        return "65 years and over";
+        }
+        else
         {
             if (self.AMeasure() == "Day" || (self.AMeasure() == "Month" && self.Age() <= 12)) return "Niños menores de 2 años"
             if (self.Age() < 2) return "Niños menores de 2 años";

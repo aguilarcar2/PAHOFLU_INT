@@ -430,7 +430,7 @@
                                 <span class="input-group-addon">
                                      @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelDOB")) <font color="#FF0000">*</font>
                                 </span>
-                                <input id="DOB" type='text' class="form-control" data-bind='valueUpdate:"change" , datepicker: DOB , datepickerOptions: { changeYear: true, yearRange: "-90:+0" , maxDate:@Model.DatePickerConfig,  dateFormat:"@Model.DateFormatDP"}' />
+                                <input id="DOB" type='text' class="form-control" data-bind='valueUpdate:"change" , datepicker: DOB , datepickerOptions: { changeYear: true, yearRange: "-105:+0" , maxDate:@Model.DatePickerConfig,  dateFormat:"@Model.DateFormatDP"}' />
                                 <input id="DOB_dummy" type='text' class="form-control" data-bind='datepicker: DOB , datepickerOptions: { changeYear: true, maxDate:@Model.DatePickerConfig,  dateFormat:"@Model.DateFormatDP"}, visible:false' />
                                 <label class="date_format">dd/mm/yyyy</label>
                             </div>
