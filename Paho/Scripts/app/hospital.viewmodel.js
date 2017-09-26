@@ -592,7 +592,7 @@
             if (self.HospExDate() == "" || self.HospExDate() == "undefined" || self.HospExDate() == null)
             {
                 alert("Es necesario ingresar antes la 'Fecha de Egreso' para poder ingresar la 'Condición de egreso' ");
-                self.Destin("");
+                //self.Destin(""); Desactivado por requerimiento de RRR
                 $("#HospExDate").focus();
              } else if (NewDestin != "" && self.IsSample() === "false") {
                 $("a[href*='tab-case']").show();
@@ -775,6 +775,12 @@
                 msg += "\n" + "La fecha de fallecido no puede ser menor que la fecha de hospitalización(ingreso)";
                 $("#FalleDate").focus();
             }
+        }
+
+        if ((self.HospExDate() == "" || self.HospExDate() == "undefined" || self.HospExDate() == null) && self.Destin() != "") {
+            alert("Es necesario ingresar la 'Fecha de Egreso' para poder guardar ");
+            //self.Destin(""); Desactivado por requerimiento de RRR
+            $("#HospExDate").focus();
         }
         
          

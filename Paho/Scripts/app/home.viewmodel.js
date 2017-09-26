@@ -310,7 +310,7 @@
                 app.Views.GEO.SaveGEO(function () {
                     app.Views.Risk.SaveRisk(function () {
                         app.Views.Hospital.SaveHospital(function () {
-                            if ($("#ITy").val() == "1") {
+                            if ($("#ITy").val() != "2") {
                                 alert("Registro guardado!. Registro No. " + app.Views.Hospital.Id);
                                 //app.Views.Home.CancelEdit();
                                 if (option_Save == 1 || option_Save == 2) app.Views.Home.CancelEdit();
@@ -341,7 +341,7 @@
                 app.Views.GEO.validate(function () {
                     app.Views.Risk.validate(function () {
                         app.Views.Hospital.validate(function () {
-                            if ($("#ITy").val() == "1") {
+                            if ($("#ITy").val() != "2") {
                                 self.SaveAll(option_Save);
                             } else {
                                 app.Views.Lab.validate(function () {
@@ -408,19 +408,20 @@
     self.FlowData = function () {
         console.log("FlowData - frecord_flowMax -- " + app.Views.Contact.flow_max() + ", frecord_flowdata -- " + app.Views.Contact.flow_record() + ", finsti_flowdata -- " + app.Views.Contact.flow_institution() + ", dataStatement_flowdata -- " + app.Views.Contact.DataStatement() + ", userRole " + self.UserRole() + ", Inst" + $("#ITy").val());
         
-        if (($("#ITy").val() == "1" || $("#ITy").val() == "3") && self.UserRole() == "adm") {
+        if (($("#ITy").val() != 2) && self.UserRole() == "adm") {
             console.log("aqui _ adm");
             $("#tab-contact :input, #tab-GEO :input, #tab-hospital :input, #tab-risk :input, #tab-case :input").attr('disabled', false);
-            self.ModDataNo();
+            //self.ModDataNo();
             $("#tab-lab :input").prop('disabled', true);
         }
-        else if (($("#ITy").val() == "1" && self.UserRole() == "stf" && app.Views.Contact.flow_record() == app.Views.Contact.flow_max() && (app.Views.Contact.DataStatement() == 2 || app.Views.Contact.DataStatement() == null))) {
-            console.log("aqui _ stf 1");
-            $("#tab-contact :input, #tab-GEO :input, #tab-hospital :input, #tab-risk :input, #tab-case :input").attr('disabled', false);
-            self.ModDataNo();
-            $("#tab-lab :input").prop('disabled', true);
-        }
-        else if (($("#ITy").val() == "1" && self.UserRole() == "stf" && app.Views.Contact.flow_record() == 0)) {
+        //else if (($("#ITy").val() == "1" && self.UserRole() == "stf" && app.Views.Contact.flow_record() == app.Views.Contact.flow_max() && (app.Views.Contact.DataStatement() == 2 || app.Views.Contact.DataStatement() == null))) {
+        //    console.log("aqui _ stf 1");
+        //    $("#tab-contact :input, #tab-GEO :input, #tab-hospital :input, #tab-risk :input, #tab-case :input").attr('disabled', false);
+        //    self.ModDataNo();
+        //    $("#tab-lab :input").prop('disabled', true);
+        //}   // Esto fue comentariado porque ya no necesitamos flujo en la parte epidemiologica, fue desactivado por pedido de RRR
+        //else if (($("#ITy").val() == "1" && self.UserRole() == "stf" && app.Views.Contact.flow_record() == 0)) {  // Este cambio porque ya no necesitamos flujo en la parte epidemiologica por requerimiento de RRR
+        else if (($("#ITy").val() == "1" && self.UserRole() == "stf" )) {
             console.log("aqui _ stf 2");
             $("#tab-contact :input, #tab-GEO :input, #tab-hospital :input, #tab-risk :input, #tab-case :input").attr('disabled', false);
             self.ModDataNo();
@@ -428,7 +429,7 @@
          } else if ($("#ITy").val() == "1" &&  app.Views.Contact.Flow_Local_Institution_Epi() == false)
          {
              console.log("aqui _ stf 3");
-            //$("#tab-contact :input, #tab-GEO :input, #tab-hospital :input, #tab-risk :input, #tab-case :input").attr('disabled', true);
+            $("#tab-contact :input, #tab-GEO :input, #tab-hospital :input, #tab-risk :input, #tab-case :input").attr('disabled', true);
             self.ModDataNo();
             $("#tab-lab :input").prop('disabled', true);
         }
@@ -441,9 +442,26 @@
 
     self.FlowDataCaseStatus = function () {
 
-        if (app.Views.Hospital.CaseStatus() == "3") {
+        //if (app.Views.Hospital.CaseStatus() == "3" && self.UserRole() != "stf") {
+        //    console.log("aqui _ CaseStatus 3");
+        //    $("#tabs :input").prop('disabled', true); //Modificacion para que se pueda modificar el registro aunque este cerrado el caso.
+        //    self.ModDataNo();
+        //    if (self.OpenAlwaysLab() == true) {
+        //        $("#PrintM1").prop('disabled', false);
+        //        $("#addLabTest_1").prop('disabled', false);
+        //        $("#PrintM2").prop('disabled', false);
+        //        $("#addLabTest_2").prop('disabled', false);
+        //        $("#PrintM3").prop('disabled', false);
+        //        $("#addLabTest_3").prop('disabled', false);
+
+        //    }
+        //    $("a[href*='tab-case']").show();
+        //    $("#tab-case").show();
+        //    $("#tabs").tabs("refresh");
+        //} else
+            if (app.Views.Hospital.CaseStatus() == "3" && self.UserRole() != "adm") {
             console.log("aqui _ CaseStatus 3");
-            //$("#tabs :input").prop('disabled', true); Modificacion para que se pueda modificar el registro aunque este cerrado el caso.
+            $("#tabs :input").prop('disabled', true); // Modificacion para que se pueda modificar el registro aunque este cerrado el caso.
             self.ModDataNo();
             if (self.OpenAlwaysLab() == true) {
                 $("#PrintM1").prop('disabled', false);
