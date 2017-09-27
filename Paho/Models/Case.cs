@@ -1120,6 +1120,14 @@ namespace Paho.Models
         public string Name { get; set; }
     }
 
+    public class CatDashboardLink
+    {
+        public int id { get; set; }
+        public int id_country { get; set; }
+        public string link { get; set; }
+        public string title { get; set; }
+    }
+
     public enum TestType
     {
         IFA = 1,
@@ -1259,9 +1267,9 @@ namespace Paho.Models
         public DbSet<FluCase> FluCases { get; set; }
         public DbSet<VirusType> VirusTypes { get; set; }
         public DbSet<TestResult> TestResults { get; set; }
+        public DbSet<CatDashboardLink> CatDashboarLinks { get; set; }        //#### CAFQ
 
         //Catalogos
-        
         public DbSet<CatSampleNoProcessed> CatSampleNoProcessed { get; set; }
         public DbSet<CatCaseStatus> CatCaseStatus { get; set; }
         public DbSet<CatTestType> CatTestType { get; set; }

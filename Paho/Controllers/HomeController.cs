@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using System.Globalization;
+using System.Collections.Generic;
 
 namespace Paho.Controllers
 {
@@ -349,7 +350,20 @@ namespace Paho.Controllers
 
             // *** DELETE ***
 
+            //**** Link Dashboard
+            string dashbUrl = "", dashbTitle = "";
+            List<CatDashboardLink> lista = (from tg in db.CatDashboarLinks
+                                            where tg.id_country == user.Institution.CountryID
+                                            select tg).ToList();
+            if (lista.Count > 0)
+            {
+                dashbUrl = lista[0].link;
+                dashbTitle = lista[0].title;
+            }
 
+            ViewBag.DashbUrl = dashbUrl;
+            ViewBag.DashbTitle = dashbTitle;
+            //****
 
             return View(CaseViewModel);
         }

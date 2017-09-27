@@ -489,11 +489,11 @@ function SummaryViewModel(app, dataModel) {
         //self.Id(null);
         self.selectedHospitalId("");
         self.HospitalDate("");
+        self.HospitalEW("");
+        self.HospitalYE("");
         $("#TotalSummary").hide();
         $("#LabelSummary").hide();
-
         $("#ButtonSummary").hide();
-
     };
 
     self.CalculateEW = function (FieldDate, FieldAct, FieldActYear) {

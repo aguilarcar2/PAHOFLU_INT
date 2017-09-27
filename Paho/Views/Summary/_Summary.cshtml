@@ -93,7 +93,7 @@
     @if (ViewBag.ILI == true)
     {
         <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 25 || ViewBag.UsrCtry == 9) ?  "col-md-2_5" : "col-md-1")">
-            <div class="col-md-1 input-group" data-bind="visible:EnableCHI() && NoActiveBOL() && ActiveCOS()">
+            <div class="col-md-1 input-group" data-bind="visible:EnableCHI() && NoActiveBOL() && (ActiveCOS() || ActiveSUR())">
                 <span class="input-group-addon">
                     <!-- "Pobl." : "Tot. Cons."-->
                     @(ViewBag.UsrCtry == 7 ? (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelPopulation")) : (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelTotalCons")))
@@ -253,7 +253,7 @@
             <div class='col-md-1 input-group' data-bind="visible:DisableCHI() || ActiveBOL()">
                 <input type='text' name="HospMaso" id="ETINumMaso" class="form-control" style="padding:6px;" data-bind="value: ETINumMaso" />
             </div>
-            <div class='col-md-1 input-group' data-bind="visible:EnableCHI() && NoActiveBOL() && (ActiveSUR() || ActiveCOS())">
+            <div class='col-md-1 input-group' data-bind="visible:(ActiveBOL() || ActiveSUR() || ActiveCOS() || DisableCHI())">
                 <!--<input type='text' name="ETINumST" id="ETINumST" class="form-control" style="padding:6px;" ((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "readonly='readonly'" : "") data-bind="value: ETINumST" />-->
                 <input type='text' name="ETINumST" id="ETINumST" class="form-control" style="padding:6px;" data-bind="value: ETINumST" />
             </div>
@@ -462,7 +462,7 @@
         <div class="btn-group">
             <button id="ConfirmarItems" type="button" class="btn btn-primary" data-bind="click: SaveSummayItems">@(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryButtonSave"))</button>
             <button id="CancelarItems" type="button" class="btn btn-primary" data-bind="click: CancelarItems">@(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryButtonCancel"))</button>
-            <button id="excel" type="button" class="btn btn-primary" data-bind="click: GetSummaryExcel">@(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryButtonDownloadAsExcel"))</button>
+            <!--<button id="excel" type="button" class="btn btn-primary" data-bind="click: GetSummaryExcel">(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryButtonDownloadAsExcel"))</button>-->
             <!-- button id = "RecargarItems" type="button" class="btn btn-primary" data-bind="click: RecargarItems" style="display:none;">Recharge</!--button -->
         </div>
     </div>

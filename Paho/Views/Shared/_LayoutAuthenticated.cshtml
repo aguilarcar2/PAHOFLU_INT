@@ -131,11 +131,18 @@
                     }
                     @if (ViewBag.UsrCtry == 9) {
 
-								<li dstyle="display:none;"> @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuNotImportedView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "NotImported", new { area = "" }, null) </li>
-                                @*<li dstyle="display:none;"> @Html.ActionLink((((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelNotImportedList")), "Index", "NotImported", new { area = "" }, null) </li>*@
+						<li dstyle="display:none;"> @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuNotImportedView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "NotImported", new { area = "" }, null) </li>
+                        @*<li dstyle="display:none;"> @Html.ActionLink((((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelNotImportedList")), "Index", "NotImported", new { area = "" }, null) </li>*@
 
                     }
                     @*<li>@Html.ActionLink("Searches", "Index", "Report", new { area = "" }, null)</li>*@
+
+                    <!--Dashboard-->
+                    @if (ViewBag.DashbUrl != "")
+                    {
+                        <li dstyle="display:none;"><a href=@ViewBag.DashbUrl target="_blank">@ViewBag.DashbTitle</a></li>
+                    }
+
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

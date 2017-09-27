@@ -77,13 +77,20 @@ namespace Paho.Controllers
                 SummaryViewModel.Institutions = institutionsDisplay;
             };
 
-            /* #### CAFQ
-            string cAGL = getMsg("msgViewSummaryLabelUnder2YearOld") + ":" + getMsg("msgViewSummaryLabel2to4YearsOld");
-            cAGL = cAGL + ":" + getMsg("msgViewSummaryLabel5to19YearsOld") + ":" + getMsg("msgViewSummaryLabel20to39YearsOld");
-            cAGL = cAGL + ":" + getMsg("msgViewSummaryLabel40to59YearsOld") + ":" + getMsg("msgViewSummaryLabel60YearsOldAndOver");
-            SummaryViewModel.AgeGroupLang = cAGL;     // Agregar en el modelo "SummaryViewModel" la propiedad AgeGroupLang
-            //System.Diagnostics.Debug.WriteLine("XXX->" + cAGL);
-            */
+            //**** Link Dashboard
+            string dashbUrl = "", dashbTitle = "";
+            List<CatDashboardLink> lista = (from tg in db.CatDashboarLinks
+                                            where tg.id_country == user.Institution.CountryID
+                                            select tg).ToList();
+            if (lista.Count > 0)
+            {
+                dashbUrl = lista[0].link;
+                dashbTitle = lista[0].title;
+            }
+
+            ViewBag.DashbUrl = dashbUrl;
+            ViewBag.DashbTitle = dashbTitle;
+            //****
 
             return View(SummaryViewModel);
         }

@@ -165,6 +165,21 @@ namespace Paho.Controllers
                 ExportarViewModel.Institutions = institutionsDisplay;
             };
 
+            //**** Link Dashboard
+            string dashbUrl = "", dashbTitle = "";
+            List<CatDashboardLink> lista = (from tg in db.CatDashboarLinks
+                                            where tg.id_country == user.Institution.CountryID
+                                            select tg).ToList();
+            if (lista.Count > 0)
+            {
+                dashbUrl = lista[0].link;
+                dashbTitle = lista[0].title;
+            }
+
+            ViewBag.DashbUrl = dashbUrl;
+            ViewBag.DashbTitle = dashbTitle;
+            //****
+
             return View(ExportarViewModel);
         }
 
