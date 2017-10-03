@@ -14,6 +14,24 @@
     <link href="~/Content/jquery.jqGrid/ui.jqgrid.bootstrap.css" rel="stylesheet" />
     <script src="~/Scripts/i18n/grid.locale-en.js"></script>
     <script src="~/Scripts/jquery.jqGrid.src.js"></script>
+
+    <style>
+        a#dashboard {
+            color: yellow;
+            font-style: italic;
+            font-weight: bold;
+        }
+
+            a#dashboard:hover {
+                color: black;
+                background-color: #ffa500; /*Naranja*/
+            }
+
+            a#dashboard:visited {
+                color: yellow;
+                background-color: #008dc9; /*Celeste**/
+            }
+    </style>
 </head>
 <body>
     <div class="masthead row">
@@ -140,7 +158,7 @@
                     <!--Dashboard-->
                     @if (ViewBag.DashbUrl != "")
                     {
-                        <li dstyle="display:none;"><a href=@ViewBag.DashbUrl target="_blank">@ViewBag.DashbTitle</a></li>
+                        <li dstyle="display:none;"><a id="dashboard" href=@ViewBag.DashbUrl target="popup" onClick="var ancho=((screen.width)/2-(1200/2)); window.open(this.href, this.target, 'width=1200,height=600,left='+ancho+',top=100'); return false;">@ViewBag.DashbTitle</a></li>
                     }
 
                 </ul>
