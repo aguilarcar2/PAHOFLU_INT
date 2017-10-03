@@ -123,13 +123,16 @@
 						<li class="dropdown">  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Mantenimiento <b class="caret"></b></a>
                         @*<li class="dropdown">  <a href="#" class="dropdown-toggle" data-toggle="dropdown">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelMaintenance")) <b class="caret"></b></a>*@
                             <ul class="dropdown-menu">
+                            @if (@ViewBag.UserInstitutionType == 3)
+                            {
 								<li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuDiccionarioView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Diccionario", new { area = "" }, null) </li>
-                                <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatInstitucionView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "CatInstitucion", new { area = "" }, null)</li>
-                                <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatInstitucionConfView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "CatInstitucionConf", new { area = "" }, null)</li>
                                 <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatVirusTypeView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "CatVirusType", new { area = "" }, null)</li>
                                 <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatVirusSubTypeView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "CatVirusSubTypes", new { area = "" }, null)</li>
                                 <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatAgeGroupView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "CatAgeGroup", new { area = "" }, null)</li>
                                 <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatVaccinSourcesView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "CatVaccinSources", new { area = "" }, null)</li>
+                            }
+                                <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatInstitucionView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "CatInstitucion", new { area = "" }, null)</li>
+                                <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatInstitucionConfView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "CatInstitucionConf", new { area = "" }, null)</li>
                                 @*<li>@Html.ActionLink((((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelDataDictionary")), "Index", "Diccionario", new { area = "" }, null) </li>
                                 <li>@Html.ActionLink((((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelInstitutionCatalog")), "Index", "CatInstitucion", new { area = "" }, null)</li>
                                 <li>@Html.ActionLink((((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelFlowCatalog")), "Index", "CatInstitucionConf", new { area = "" }, null)</li>

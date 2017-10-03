@@ -73,6 +73,11 @@ namespace Paho.Controllers
                     break;
             }
 
+            if (user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
+            {
+                catalogo = catalogo.Where(j => j.InstitutionParentID == user.InstitutionID);
+            }
+
             int pageSize = _pageSize;
             int pageNumber = (page ?? 1);
 

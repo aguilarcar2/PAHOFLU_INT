@@ -20,6 +20,7 @@ namespace Paho.Controllers
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
             var countryId = user.Institution.CountryID ?? 0;
+            //var userInstitutionId = user.InstitutionID;
 
             ViewBag.CurrentSort = sortOrder;
             ViewBag.FullNameSortParm = string.IsNullOrEmpty(sortOrder) ? "fullname_desc" : "";
@@ -63,6 +64,16 @@ namespace Paho.Controllers
                 default:
                     catalogo = catalogo.OrderBy(s => s.FullName);
                     break;
+            }
+
+            if (user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service )
+            {
+                if (user.Institution is Hospital) {
+                    catalogo = catalogo.OfType<Hospital>().Where(j => j.ID == user.InstitutionID || j.Father_ID == user.InstitutionID);
+                } else if (user.Institution is Lab) {
+                    catalogo = catalogo.OfType<Lab>().Where(j => j.ID == user.InstitutionID);
+                }
+                
             }
 
             int pageSize = _pageSize;

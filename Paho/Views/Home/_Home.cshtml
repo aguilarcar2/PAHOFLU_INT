@@ -288,7 +288,7 @@
                     </div>
 					}
                 </div>
-                @if (ViewBag.UsrCtry == 9)
+                @*@if (ViewBag.UsrCtry == 9)
                 {
                     <div class="row rowform">
 
@@ -312,6 +312,36 @@
 
                             </div>
                         </div>
+                }*@
+                @if (ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 3)
+                {
+
+                    <div class="row rowform">
+                        @if (ViewBag.UsrCtry == 9)
+                        {
+                            <div class="col-md-4">
+                                <div class='input-group'>
+                                    <span class="input-group-addon">
+                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelRegionMINSA")):
+                                    </span>
+                                    <span id="region_salud" class="form-control" data-bind="text:region_salud" disabled />
+                                </div>
+
+                            </div>
+                            <div class="col-md-2"></div>
+                        }
+
+                        <div class="col-md-4">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @((ViewBag.UsrCtry == 9) ? ((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelRegionCCSS") : (ViewBag.UsrCtry == 3) ? "SEDES" : "Región") :
+                                </span>
+                                <span id="region_institucional" class="form-control" data-bind="text:region_institucional" disabled />
+                            </div>
+
+                        </div>
+                    </div>
+
                 }
                 <div class="row rowform">
                         <div class="col-md-6">

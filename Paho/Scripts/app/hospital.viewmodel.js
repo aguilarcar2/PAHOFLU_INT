@@ -405,7 +405,11 @@
             }
 
             if (app.Views.Contact.SurvILI() == true && app.Views.Lab.FinalResult()) {
+                //$("#CaseStatus").attr("disabled", false);
+                $("a[href*='tab-case']").show();
+                $("#tab-case").show();
                 $("#CaseStatus").attr("disabled", false);
+                $("#tabs").tabs("refresh");
             }
         }
         else {
@@ -587,7 +591,6 @@
     }, self);
 
     self.Destin.subscribe(function (NewDestin) {
-
         if (app.Views.Contact.SurvSARI() == true && app.Views.Contact.IsSurv() != "" && NewDestin != null && NewDestin != "") {
             if (self.HospExDate() == "" || self.HospExDate() == "undefined" || self.HospExDate() == null)
             {
@@ -619,7 +622,15 @@
             }
             //$("#tabs").tabs("refresh");
 
-            }
+        } else if (NewDestin == null || NewDestin == "") {
+            $("a[href*='tab-case']").hide();
+            $("#tab-case").hide();
+            $("#tabs").tabs("refresh");
+            $("#CaseStatus").attr("disabled", true);
+            self.CaseStatus("");
+            self.CloseDate("");
+        }
+
       });
 
     self.CaseStatus.subscribe(function (NewDestin) {
@@ -822,15 +833,19 @@
             if (!self.SampleType() || self.SampleType() == "")
                 msg += "\n" + "Tipo de muestra es requerido";
 
-            //if (self.EnableCloseDate()) {
-            //    if ($("#CloseDate").val() == "")
-            //        msg += "\n" + "Fecha de cierre de caso es requerida";
-            //    if ($("#CloseDate").val() != "" && !moment(moment(date_close_case).format(date_format_moment), [date_format_moment], true).isValid())
-            //        msg += "\n" + "Fecha de cierre de caso es inválida";
+            if ( self.CaseStatus() != "") {
 
-            //    if (app.Views.Lab.EndLabDate() && self.CloseDate() && moment(app.Views.Lab.EndLabDate()).isAfter(moment(self.CloseDate())))
-            //        msg += "\n" + "Fecha de cierre no puede ser menor a la de laboratorio";
-            //}
+                if ((self.EnableCloseDate() == "" || self.EnableCloseDate() == "undefined" || self.EnableCloseDate() == null)) {
+                    if ($("#CloseDate").val() == "")
+                        msg += "\n" + "Fecha de cierre de caso es requerida";
+                    if ($("#CloseDate").val() != "" && !moment(moment(date_close_case).format(date_format_moment), [date_format_moment], true).isValid())
+                        msg += "\n" + "Fecha de cierre de caso es inválida";
+
+                    if (app.Views.Lab.EndLabDate() && self.CloseDate() && moment(app.Views.Lab.EndLabDate()).isAfter(moment(self.CloseDate())))
+                        msg += "\n" + "Fecha de cierre no puede ser menor a la de laboratorio";
+                }
+
+            }
 
         }
 
