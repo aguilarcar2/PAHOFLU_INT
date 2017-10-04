@@ -444,7 +444,13 @@
             self.ShipDate3(null);
             self.LabId3(null);
 
-            if (self.Destin() != "" || app.Views.Contact.SurvILI() == true) {
+            if (app.Views.Contact.SurvILI() == true && self.IsSample() === "false") {
+                //$("#CaseStatus").attr("disabled", false);
+                $("a[href*='tab-case']").show();
+                $("#tab-case").show();
+                $("#CaseStatus").attr("disabled", false);
+                $("#tabs").tabs("refresh");
+            } else if (self.Destin() != "" || app.Views.Contact.SurvILI() == true) {
                 $("#CaseStatus").attr("disabled", false);
             } else {
                 if (app.Views.Contact.IsSurv() == 2) {
