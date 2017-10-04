@@ -47,11 +47,11 @@
 
         if (self.hasReset() != true) {
             if (date_hospital_ == null || date_hospital_ == "") {
-                alert("Por favor ingrese antes la fecha de notificación");
+                alert(msgValidationNotificationDateEnter);
                 self.FeverDate("");
             } else {
                 if (moment(current_value).isAfter(moment(date_hospital_))) {
-                    alert("La fecha de inicio de síntomas no puede ser mayor a la fecha de notificación");
+                    alert(msgValidationNotificationDateGtFeverDate);
                     self.FeverDate("");
                 }
             }
@@ -85,15 +85,15 @@
 
             if (self.hasReset() != true) {
                 if (date_hospital_ == null || date_hospital_ == "") {
-                    alert("Por favor ingrese antes la fecha de notificación");
+                    alert(msgValidationNotificationDateEnter);
                     self.HospAmDate("");
                 } else {
                     if (moment(current_value).isAfter(moment(date_hospital_))) {
-                        alert("La fecha de Ingreso de Hospitalización no puede ser mayor a la fecha de notificación");
+                        alert(msgValidationNotificationDateGtHospDate);
                         self.HospAmDate("");
                     }
                     if (current_value != null && date_fever_ != null && moment(current_value).isBefore(moment(date_fever_), "days")) {
-                        alert("La fecha de hospitalización (ingreso) no puede ser menor que la fecha de inicio de síntomas");
+                        alert(msgValidationHospDateGtFeverDate);
                         self.HospAmDate("");
                     }
                 }
@@ -129,11 +129,11 @@
 
             if (self.hasReset() != true) {
                 if (date_hospital_ == null || date_hospital_ == "") {
-                    alert("Por favor ingrese antes la fecha de admisión de hospitalización");
+                    alert(msgValidationNotificationDateEnter);
                     self.HospExDate("");
                 } else {
                     if (moment(current_value).isBefore(moment(date_hospital_), "days")) {
-                        alert("La fecha de Egreso de Hospitalización no puede ser menor a la fecha de Ingreso de hospitalización");
+                        alert(msgValidationHospExDateGtHospDate);
                         self.HospExDate("");
                     }
                 }

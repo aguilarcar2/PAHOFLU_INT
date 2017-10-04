@@ -903,7 +903,7 @@
                                 },
                                 "titles":   [
 		                                        {
-		                                            "text": "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraph1Title"))",
+		                                            "text": jsonX.graph.graphTitle,
 		                                            "size": 15
 		                                        }
                                             ],
@@ -915,7 +915,7 @@
                                     "axisThickness": 2,
                                     "axisAlpha": 1,
                                     "position": "left",
-                                    "title":"@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraph1YAxisTitle"))"
+                                    "title":jsonX.graph.graphYAxisTitle
                                 }],
                                 "graphs": [{
                                     "valueAxis": "v1",
@@ -978,7 +978,7 @@
                                     "parseDates": false,
                                     "axisColor": "#DADADA",
                                     "minorGridEnabled": true,
-                                    "title":"@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraph1XAxisTitle"))"
+                                    "title":jsonX.graph.graphXAxisTitle
                                 },
                                 /*"export": {
                                 "enabled": true,
@@ -1328,7 +1328,7 @@
                                     //alert (JSON.stringify(element));
                                     var container = $('#divGraph0');
                                     container.empty();
-                                    $('<p />', { text: "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraph0Title"))", class:'amcharts-title amcharts-title-own' }).appendTo(container);
+                                    $('<p />', { text: jsonX.graph.graphTitle, class:'amcharts-title amcharts-title-own' }).appendTo(container);
                                     //alert (JSON.stringify(element.graphTitle));
                                     $('<table />', {id:'tableAntecedentes', class:'table-own' }).appendTo(container);
                                     var container = $('#tableAntecedentes');
@@ -1627,7 +1627,7 @@
                                 },
                                 "titles":   [
                                                 {
-                                                    "text": "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraph2Title"))",
+                                                    "text": jsonX.graph.graphTitle,
                                                     "size": 15
                                                 }
                                 ],
@@ -1639,14 +1639,14 @@
                                     "axisThickness": 2,
                                     "axisAlpha": 1,
                                     "position": "left",
-                                    "title":"@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraph2YAxisTitle"))"
+                                    "title":jsonX.graph.graphYAxisTitle
                                 },{
                                     "id":"v2",
                                     "axisColor": "#FF6600",
                                     "axisThickness": 2,
                                     "axisAlpha": 1,
                                     "position": "right",
-                                    "title":"@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraph2YAxisTitle2"))"
+                                    "title":jsonX.graph.graphYAxisTitle2
                                 }],
                                 "graphs": [{
                                     /*Influenza B*/
@@ -1760,7 +1760,7 @@
                                     "parseDates": false,
                                     "axisColor": "#DADADA",
                                     "minorGridEnabled": true,
-                                    "title":"@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraph2XAxisTitle"))"
+                                    "title":jsonX.graph.graphXAxisTitle
                                 },
                                 /*"export": {
                                     "enabled": true,
@@ -1936,7 +1936,7 @@
                                 },
                                 "titles":   [
                                                 {
-                                                    "text": "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraph3Title"))",
+                                                    "text": jsonX.graph.graphTitle,
                                                     "size": 15
                                                 }
                                 ],
@@ -1948,14 +1948,14 @@
                                     "axisThickness": 2,
                                     "axisAlpha": 1,
                                     "position": "left",
-                                    "title":"@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraph3YAxisTitle"))"
+                                    "title":jsonX.graph.graphYAxisTitle
                                 },{
                                     "id":"v2",
                                     "axisColor": "#FF6600",
                                     "axisThickness": 2,
                                     "axisAlpha": 1,
                                     "position": "right",
-                                    "title":"@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraph3YAxisTitle2"))"
+                                    "title":jsonX.graph.graphYAxisTitle2
                                 }],
                                 "graphs": [{
                                     /*Otros*/
@@ -2125,7 +2125,7 @@
                                     "parseDates": false,
                                     "axisColor": "#DADADA",
                                     "minorGridEnabled": true,
-                                    "title":"@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraph3XAxisTitle"))"
+                                    "title":jsonX.graph.graphXAxisTitle
                                 },
                                 /*"export": {
                                     "enabled": true,
@@ -2274,7 +2274,7 @@
                                 },
                                 "titles":   [
                                                 {
-                                                    "text": "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraph4Title"))",
+                                                    "text": jsonX.graph.graphTitle,
                                                     "size": 15
                                                 }
                                 ],
@@ -2288,7 +2288,7 @@
                                     "stackType": "regular",
                                     "position": "left",
                                     "gridAlpha": 0,
-                                    "title":"@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraph4YAxisTitle"))"
+                                    "title":jsonX.graph.graphYAxisTitle
                                 }],
                                 "graphs": [{
                                     /*Otros*/
@@ -2512,7 +2512,7 @@
                                     "parseDates": false,
                                     "axisColor": "#DADADA",
                                     "minorGridEnabled": true,
-                                    "title":"@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraph4XAxisTitle"))"
+                                    "title":jsonX.graph.graphXAxisTitle
                                 },
                                 /*"export": {
                                     "enabled": true,
@@ -2662,7 +2662,7 @@
                                 },
                                 "titles":   [
                                                 {
-                                                    "text": "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraph5Title"))",
+                                                    "text": jsonX.graph.graphTitle,
                                                     "size": 15
                                                 }
                                 ],
@@ -2676,7 +2676,7 @@
                                     "stackType": "regular",
                                     "position": "left",
                                     "gridAlpha": 0,
-                                    "title":"@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraph5YAxisTitle"))"
+                                    "title":jsonX.graph.graphYAxisTitle
                                 }],
                                 "graphs": [{
                                     /*Otros*/
@@ -2899,7 +2899,7 @@
                                     "parseDates": false,
                                     "axisColor": "#DADADA",
                                     "minorGridEnabled": true,
-                                    "title":"@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraph5XAxisTitle"))"
+                                    "title":jsonX.graph.graphXAxisTitle
                                 },
                                 /*"export": {
                                     "enabled": true,

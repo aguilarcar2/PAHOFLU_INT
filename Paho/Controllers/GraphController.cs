@@ -1194,6 +1194,7 @@ namespace Paho.Controllers
                 int CountryID_ = CountryID;
                 //int? HospitalID_ = (user.Institution.Father_ID > 0 || user.Institution.Father_ID == null) ? HospitalID : Convert.ToInt32(user.Institution.ID);
                 int? HospitalID_ = HospitalID;
+                int? HospitalID_Cache = HospitalID;
                 //int? RegionID_ = (RegionID >= 0) ? RegionID : (user.Institution.cod_region_institucional ?? 0);
                 int? RegionID_ = RegionID;
                 //int? StateID_ = (StateID > 0) ? StateID : 0;
@@ -1242,7 +1243,7 @@ namespace Paho.Controllers
                         command.Parameters.Add("@Year", SqlDbType.Text).Value = Year;
                         command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = RegionID_;
                         command.Parameters.Add("@State_ID", SqlDbType.Int).Value = StateID_;
-                        command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = HospitalID_;
+                        command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = HospitalID_Cache;
                         command.Parameters.Add("@IRAG", SqlDbType.Int).Value = IRAG_;
                         command.Parameters.Add("@ETI", SqlDbType.Int).Value = ETI_;
                         con.Open();
@@ -1404,7 +1405,9 @@ namespace Paho.Controllers
                                         myXmlDoc0.AppendChild(myXmlDoc0.CreateElement("graph"));
                                         XmlNode myXmlNode0;
                                         myXmlNode0 = myXmlDoc0.CreateElement("graphTitle");
-                                        myXmlNode0.InnerText = "Número y porcentaje de casos por tipo de comorbilidades, en hospitalizaciones, UCI y fallecidos";
+                                        //myXmlNode0.InnerText = "Número y porcentaje de casos por tipo de comorbilidades, en hospitalizaciones, UCI y fallecidos";
+                                        //getMsg("viewSituationalGraph0Title")
+                                        myXmlNode0.InnerText = getMsg("viewSituationalGraph0Title");
                                         myXmlDoc0.DocumentElement.AppendChild(myXmlNode0);
                                         myXmlNode0 = myXmlDoc0.CreateElement("graphData");                                        
                                         myXmlDoc0.DocumentElement.AppendChild(myXmlNode0);
@@ -1417,15 +1420,16 @@ namespace Paho.Controllers
                                         myXmlDoc1.AppendChild(myXmlDoc1.CreateElement("graph"));
                                         XmlNode myXmlNode;
                                         myXmlNode = myXmlDoc1.CreateElement("graphTitle");
-                                        myXmlNode.InnerText = "Distribución de las proporciones de hospitalizaciones, admisiones en UCI y fallecidos por IRAG según SE";
+                                        myXmlNode.InnerText = getMsg("viewSituationalGraph1Title");
+                                        //getMsg("viewSituationalGraph1Title")
                                         myXmlDoc1.DocumentElement.AppendChild(myXmlNode);
 
                                         myXmlNode = myXmlDoc1.CreateElement("graphXAxisTitle");
-                                        myXmlNode.InnerText = "Semana Epidemiológica";
+                                        myXmlNode.InnerText = getMsg("viewSituationalGraph1XAxisTitle");
                                         myXmlDoc1.DocumentElement.AppendChild(myXmlNode);
 
                                         myXmlNode = myXmlDoc1.CreateElement("graphYAxisTitle");
-                                        myXmlNode.InnerText = "Porcentaje";
+                                        myXmlNode.InnerText = getMsg("viewSituationalGraph1YAxisTitle");
                                         myXmlDoc1.DocumentElement.AppendChild(myXmlNode);
 
                                         myXmlNode = myXmlDoc1.CreateElement("graphData");
@@ -1438,19 +1442,19 @@ namespace Paho.Controllers
                                         myXmlDoc2.AppendChild(myXmlDoc2.CreateElement("graph"));
                                         XmlNode myXmlNode2;
                                         myXmlNode2 = myXmlDoc2.CreateElement("graphTitle");
-                                        myXmlNode2.InnerText = "Distribución de casos de IRAG según tipos y subtipos de virus de influenza y de las proporciones de positividad de las muestras analizadas según SE de inicio de síntomas";
+                                        myXmlNode2.InnerText = getMsg("viewSituationalGraph2Title");
                                         myXmlDoc2.DocumentElement.AppendChild(myXmlNode2);
 
                                         myXmlNode2 = myXmlDoc2.CreateElement("graphXAxisTitle");
-                                        myXmlNode2.InnerText = "Semana Epidemiológica";
+                                        myXmlNode2.InnerText = getMsg("viewSituationalGraph2XAxisTitle");
                                         myXmlDoc2.DocumentElement.AppendChild(myXmlNode2);
 
                                         myXmlNode2 = myXmlDoc2.CreateElement("graphYAxisTitle");
-                                        myXmlNode2.InnerText = "Número de casos positivos";
+                                        myXmlNode2.InnerText = getMsg("viewSituationalGraph2YAxisTitle");
                                         myXmlDoc2.DocumentElement.AppendChild(myXmlNode2);
 
                                         myXmlNode2 = myXmlDoc2.CreateElement("graphYAxisTitle2");
-                                        myXmlNode2.InnerText = "% positivos a influenza";
+                                        myXmlNode2.InnerText = getMsg("viewSituationalGraph2YAxisTitle2");
                                         myXmlDoc2.DocumentElement.AppendChild(myXmlNode2);
 
                                         myXmlNode2 = myXmlDoc2.CreateElement("graphData");
@@ -1463,19 +1467,19 @@ namespace Paho.Controllers
                                         myXmlDoc3.AppendChild(myXmlDoc3.CreateElement("graph"));
                                         XmlNode myXmlNode3;
                                         myXmlNode3 = myXmlDoc3.CreateElement("graphTitle");
-                                        myXmlNode3.InnerText = "Distribución de casos de IRAG según virus respiratorios en vigilancia y  de las proporciones de positividad de las muestras analizadas, según SE de inicio de síntomas";
+                                        myXmlNode3.InnerText = getMsg("viewSituationalGraph3Title");
                                         myXmlDoc3.DocumentElement.AppendChild(myXmlNode3);
 
                                         myXmlNode3 = myXmlDoc3.CreateElement("graphXAxisTitle");
-                                        myXmlNode3.InnerText = "Semana Epidemiológica";
+                                        myXmlNode3.InnerText = getMsg("viewSituationalGraph3XAxisTitle");
                                         myXmlDoc3.DocumentElement.AppendChild(myXmlNode3);
 
                                         myXmlNode3 = myXmlDoc3.CreateElement("graphYAxisTitle");
-                                        myXmlNode3.InnerText = "Número de casos positivos";
+                                        myXmlNode3.InnerText = getMsg("viewSituationalGraph3YAxisTitle");
                                         myXmlDoc3.DocumentElement.AppendChild(myXmlNode3);
 
                                         myXmlNode3 = myXmlDoc3.CreateElement("graphYAxisTitle2");
-                                        myXmlNode3.InnerText = "% positivos a influenza";
+                                        myXmlNode3.InnerText = getMsg("viewSituationalGraph3YAxisTitle2");
                                         myXmlDoc3.DocumentElement.AppendChild(myXmlNode3);
 
                                         myXmlNode3 = myXmlDoc3.CreateElement("graphData");
@@ -1489,15 +1493,15 @@ namespace Paho.Controllers
                                         myXmlDoc4.AppendChild(myXmlDoc4.CreateElement("graph"));
                                         XmlNode myXmlNode4;
                                         myXmlNode4 = myXmlDoc4.CreateElement("graphTitle");
-                                        myXmlNode4.InnerText = "Distribución de casos de IRAG según tipos y sub tipos virus respiratorios en vigilancia y grupos de edad";
+                                        myXmlNode4.InnerText = getMsg("viewSituationalGraph4Title");
                                         myXmlDoc4.DocumentElement.AppendChild(myXmlNode4);
 
                                         myXmlNode4 = myXmlDoc4.CreateElement("graphXAxisTitle");
-                                        myXmlNode4.InnerText = "Grupos de edad";
+                                        myXmlNode4.InnerText = getMsg("viewSituationalGraph4XAxisTitle");
                                         myXmlDoc4.DocumentElement.AppendChild(myXmlNode4);
 
                                         myXmlNode4 = myXmlDoc4.CreateElement("graphYAxisTitle");
-                                        myXmlNode4.InnerText = "Porcentaje";
+                                        myXmlNode4.InnerText = getMsg("viewSituationalGraph4YAxisTitle");
                                         myXmlDoc4.DocumentElement.AppendChild(myXmlNode4);
 
 
@@ -1512,15 +1516,15 @@ namespace Paho.Controllers
                                         myXmlDoc5.AppendChild(myXmlDoc5.CreateElement("graph"));
                                         XmlNode myXmlNode5;
                                         myXmlNode5 = myXmlDoc5.CreateElement("graphTitle");
-                                        myXmlNode5.InnerText = "Distribución de casos de IRAG según tipos y sub tipos  virus respiratorios en vigilancia y gravedad";
+                                        myXmlNode5.InnerText = getMsg("viewSituationalGraph5Title");
                                         myXmlDoc5.DocumentElement.AppendChild(myXmlNode5);
 
                                         myXmlNode5 = myXmlDoc5.CreateElement("graphXAxisTitle");
-                                        myXmlNode5.InnerText = "Estadío";
+                                        myXmlNode5.InnerText = getMsg("viewSituationalGraph5XAxisTitle");
                                         myXmlDoc5.DocumentElement.AppendChild(myXmlNode5);
 
                                         myXmlNode5 = myXmlDoc5.CreateElement("graphYAxisTitle");
-                                        myXmlNode5.InnerText = "Porcentaje";
+                                        myXmlNode5.InnerText = getMsg("viewSituationalGraph5YAxisTitle");
                                         myXmlDoc5.DocumentElement.AppendChild(myXmlNode5);
 
                                         myXmlNode5 = myXmlDoc5.CreateElement("graphData");
@@ -1724,6 +1728,28 @@ namespace Paho.Controllers
                                             yearNodeAtt = myXmlDoc1.CreateAttribute("date");
                                             yearNodeAtt.InnerText = yr;
                                             yearXmlNode1.Attributes.Append(yearNodeAtt);*/
+                                            /*--------------Parámetros dependiendo del país del gráficos-----------*/
+                                            int qtyGruposEdad = 0;
+                                            int filaInicial = 8;
+                                            int filaInicialTabla2 = 0;
+                                            int qtyRowsGrupoEdad = 27;
+                                            int indiceInicial = 0;
+                                            int indiceInicial2 = 0;
+                                            if (CountryID_==3 || CountryID_ == 7 || CountryID_ == 9)
+                                            {
+                                                qtyGruposEdad = 6;
+                                                filaInicialTabla2 = 208;
+                                                indiceInicial = 886;
+                                                indiceInicial2 = 887;
+                                            }
+                                            else
+                                            {
+                                                qtyGruposEdad = 8;
+                                                filaInicialTabla2 = 262;
+                                                indiceInicial = 1156;
+                                                indiceInicial2 = 1157;
+                                            }
+                                            /*--------------Fin Parámetros dependiendo del país del gráficos-----------*/
 
                                             for (int i = 0; i < 53; i++)
                                             {
@@ -1737,7 +1763,7 @@ namespace Paho.Controllers
                                                 bool conversionResult;
 
                                                 anotherAuxXmlNode = myXmlDoc1.CreateElement("serie1");
-                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[176, 6 + i].Formula).ToString(), out auxVal);
+                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[(filaInicial+6+(qtyGruposEdad * qtyRowsGrupoEdad)), 6 + i].Formula).ToString(), out auxVal);
                                                 auxVal = (conversionResult) ? (auxVal * 100) : 0;
                                                 auxVal = Math.Round(auxVal, 2);
                                                 anotherAuxXmlNode.InnerText = auxVal.ToString(new CultureInfo("en-US"));
@@ -1745,7 +1771,7 @@ namespace Paho.Controllers
                                                 auxXmlNode.AppendChild(anotherAuxXmlNode);
 
                                                 anotherAuxXmlNode = myXmlDoc1.CreateElement("serie2");
-                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[185, 6 + i].Formula).ToString(), out auxVal);
+                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[(filaInicial + 6 + 9 + (qtyGruposEdad * qtyRowsGrupoEdad)), 6 + i].Formula).ToString(), out auxVal);
                                                 auxVal = (conversionResult) ? (auxVal * 100) : 0;
                                                 auxVal = Math.Round(auxVal, 2);
                                                 anotherAuxXmlNode.InnerText = auxVal.ToString(new CultureInfo("en-US"));
@@ -1753,7 +1779,7 @@ namespace Paho.Controllers
                                                 auxXmlNode.AppendChild(anotherAuxXmlNode);
 
                                                 anotherAuxXmlNode = myXmlDoc1.CreateElement("serie3");
-                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[194, 6 + i].Formula).ToString(), out auxVal);
+                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[(filaInicial + 6 + 9 + 9 +(qtyGruposEdad * qtyRowsGrupoEdad)), 6 + i].Formula).ToString(), out auxVal);
                                                 auxVal = (conversionResult) ? (auxVal * 100) : 0;
                                                 auxVal = Math.Round(auxVal, 2);
                                                 anotherAuxXmlNode.InnerText = auxVal.ToString(new CultureInfo("en-US"));
@@ -1785,7 +1811,7 @@ namespace Paho.Controllers
                                                 bool conversionResult;
 
                                                 anotherAuxXmlNode2 = myXmlDoc2.CreateElement("serie1");
-                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[757, 6 + i].Formula).ToString(), out auxVal);
+                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[(((qtyGruposEdad * 12) + 3) * 5) + filaInicialTabla2, 6 + i].Formula).ToString(), out auxVal);
                                                 auxVal = (conversionResult) ? (auxVal) : 0;
                                                 auxVal = Math.Round(auxVal, 2);
                                                 anotherAuxXmlNode2.InnerText = auxVal.ToString(new CultureInfo("en-US"));
@@ -1793,7 +1819,7 @@ namespace Paho.Controllers
                                                 auxXmlNode2.AppendChild(anotherAuxXmlNode2);
 
                                                 anotherAuxXmlNode2 = myXmlDoc2.CreateElement("serie2");
-                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[658, 6 + i].Formula).ToString(), out auxVal);
+                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[(((qtyGruposEdad * 12) + 3) * 4) + filaInicialTabla2, 6 + i].Formula).ToString(), out auxVal);
                                                 auxVal = (conversionResult) ? (auxVal) : 0;
                                                 auxVal = Math.Round(auxVal, 2);
                                                 anotherAuxXmlNode2.InnerText = auxVal.ToString(new CultureInfo("en-US"));
@@ -1801,7 +1827,7 @@ namespace Paho.Controllers
                                                 auxXmlNode2.AppendChild(anotherAuxXmlNode2);
 
                                                 anotherAuxXmlNode2 = myXmlDoc2.CreateElement("serie3");
-                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[559, 6 + i].Formula).ToString(), out auxVal);
+                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[(((qtyGruposEdad * 12) + 3) * 3) + filaInicialTabla2, 6 + i].Formula).ToString(), out auxVal);
                                                 auxVal = (conversionResult) ? (auxVal) : 0;
                                                 auxVal = Math.Round(auxVal, 2);
                                                 anotherAuxXmlNode2.InnerText = auxVal.ToString(new CultureInfo("en-US"));
@@ -1809,7 +1835,7 @@ namespace Paho.Controllers
                                                 auxXmlNode2.AppendChild(anotherAuxXmlNode2);
 
                                                 anotherAuxXmlNode2 = myXmlDoc2.CreateElement("serie4");
-                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[460, 6 + i].Formula).ToString(), out auxVal);
+                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[(((qtyGruposEdad * 12) + 3) * 2) + filaInicialTabla2, 6 + i].Formula).ToString(), out auxVal);
                                                 auxVal = (conversionResult) ? (auxVal) : 0;
                                                 auxVal = Math.Round(auxVal, 2);
                                                 anotherAuxXmlNode2.InnerText = auxVal.ToString(new CultureInfo("en-US"));
@@ -1817,7 +1843,7 @@ namespace Paho.Controllers
                                                 auxXmlNode2.AppendChild(anotherAuxXmlNode2);
 
                                                 anotherAuxXmlNode2 = myXmlDoc2.CreateElement("serie5");
-                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[361, 6 + i].Formula).ToString(), out auxVal);
+                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[(((qtyGruposEdad * 12) + 3) * 1) + filaInicialTabla2, 6 + i].Formula).ToString(), out auxVal);
                                                 auxVal = (conversionResult) ? (auxVal) : 0;
                                                 auxVal = Math.Round(auxVal, 2);
                                                 anotherAuxXmlNode2.InnerText = auxVal.ToString(new CultureInfo("en-US"));
@@ -1825,7 +1851,7 @@ namespace Paho.Controllers
                                                 auxXmlNode2.AppendChild(anotherAuxXmlNode2);
 
                                                 anotherAuxXmlNode2 = myXmlDoc2.CreateElement("serie6");
-                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[262, 6 + i].Formula).ToString(), out auxVal);
+                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[(((qtyGruposEdad * 12) + 3) * 0) + filaInicialTabla2, 6 + i].Formula).ToString(), out auxVal);
                                                 auxVal = (conversionResult) ? (auxVal) : 0;
                                                 auxVal = Math.Round(auxVal, 2);
                                                 anotherAuxXmlNode2.InnerText = auxVal.ToString(new CultureInfo("en-US"));
@@ -1833,7 +1859,7 @@ namespace Paho.Controllers
                                                 auxXmlNode2.AppendChild(anotherAuxXmlNode2);
 
                                                 anotherAuxXmlNode2 = myXmlDoc2.CreateElement("serie7");
-                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[1650, 6 + i].Formula).ToString(), out auxVal);
+                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[(((qtyGruposEdad * 12) + 3) * 14) + 2+ filaInicialTabla2, 6 + i].Formula).ToString(), out auxVal);
                                                 auxVal = (conversionResult) ? (auxVal * 100) : 0;
                                                 auxVal = Math.Round(auxVal, 2);
                                                 anotherAuxXmlNode2.InnerText = auxVal.ToString(new CultureInfo("en-US"));
@@ -1865,7 +1891,7 @@ namespace Paho.Controllers
                                                 bool conversionResult;
 
                                                 anotherAuxXmlNode3 = myXmlDoc3.CreateElement("serie1");
-                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[1153, 6 + i].Formula).ToString(), out auxVal);
+                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[(((qtyGruposEdad * 12) + 3) * 9) + filaInicialTabla2, 6 + i].Formula).ToString(), out auxVal);
                                                 auxVal = (conversionResult) ? (auxVal) : 0;
                                                 auxVal = Math.Round(auxVal, 2);
                                                 anotherAuxXmlNode3.InnerText = auxVal.ToString(new CultureInfo("en-US"));
@@ -1873,7 +1899,7 @@ namespace Paho.Controllers
                                                 auxXmlNode3.AppendChild(anotherAuxXmlNode3);
 
                                                 anotherAuxXmlNode3 = myXmlDoc3.CreateElement("serie2");
-                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[1054, 6 + i].Formula).ToString(), out auxVal);
+                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[(((qtyGruposEdad * 12) + 3) * 8) + filaInicialTabla2, 6 + i].Formula).ToString(), out auxVal);
                                                 auxVal = (conversionResult) ? (auxVal) : 0;
                                                 auxVal = Math.Round(auxVal, 2);
                                                 anotherAuxXmlNode3.InnerText = auxVal.ToString(new CultureInfo("en-US"));
@@ -1881,7 +1907,7 @@ namespace Paho.Controllers
                                                 auxXmlNode3.AppendChild(anotherAuxXmlNode3);
 
                                                 anotherAuxXmlNode3 = myXmlDoc3.CreateElement("serie3");
-                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[955, 6 + i].Formula).ToString(), out auxVal);
+                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[(((qtyGruposEdad * 12) + 3) * 7) + filaInicialTabla2, 6 + i].Formula).ToString(), out auxVal);
                                                 auxVal = (conversionResult) ? (auxVal) : 0;
                                                 auxVal = Math.Round(auxVal, 2);
                                                 anotherAuxXmlNode3.InnerText = auxVal.ToString(new CultureInfo("en-US"));
@@ -1889,7 +1915,7 @@ namespace Paho.Controllers
                                                 auxXmlNode3.AppendChild(anotherAuxXmlNode3);
 
                                                 anotherAuxXmlNode3 = myXmlDoc3.CreateElement("serie4");
-                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[856, 6 + i].Formula).ToString(), out auxVal);
+                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[(((qtyGruposEdad * 12) + 3) * 6) + filaInicialTabla2, 6 + i].Formula).ToString(), out auxVal);
                                                 auxVal = (conversionResult) ? (auxVal) : 0;
                                                 auxVal = Math.Round(auxVal, 2);
                                                 anotherAuxXmlNode3.InnerText = auxVal.ToString(new CultureInfo("en-US"));
@@ -1897,7 +1923,7 @@ namespace Paho.Controllers
                                                 auxXmlNode3.AppendChild(anotherAuxXmlNode3);
 
                                                 anotherAuxXmlNode3 = myXmlDoc3.CreateElement("serie5");
-                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[757, 6 + i].Formula).ToString(), out auxVal);
+                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[(((qtyGruposEdad * 12) + 3) * 5) + filaInicialTabla2, 6 + i].Formula).ToString(), out auxVal);
                                                 auxVal = (conversionResult) ? (auxVal) : 0;
                                                 auxVal = Math.Round(auxVal, 2);
                                                 anotherAuxXmlNode3.InnerText = auxVal.ToString(new CultureInfo("en-US"));
@@ -1905,7 +1931,7 @@ namespace Paho.Controllers
                                                 auxXmlNode3.AppendChild(anotherAuxXmlNode3);
 
                                                 anotherAuxXmlNode3 = myXmlDoc3.CreateElement("serie6");
-                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[658, 6 + i].Formula).ToString(), out auxVal);
+                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[(((qtyGruposEdad * 12) + 3) * 4) + filaInicialTabla2, 6 + i].Formula).ToString(), out auxVal);
                                                 auxVal = (conversionResult) ? (auxVal) : 0;
                                                 auxVal = Math.Round(auxVal, 2);
                                                 anotherAuxXmlNode3.InnerText = auxVal.ToString(new CultureInfo("en-US"));
@@ -1913,7 +1939,7 @@ namespace Paho.Controllers
                                                 auxXmlNode3.AppendChild(anotherAuxXmlNode3);
 
                                                 anotherAuxXmlNode3 = myXmlDoc3.CreateElement("serie7");
-                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[559, 6 + i].Formula).ToString(), out auxVal);
+                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[(((qtyGruposEdad * 12) + 3) * 3) + filaInicialTabla2, 6 + i].Formula).ToString(), out auxVal);
                                                 auxVal = (conversionResult) ? (auxVal) : 0;
                                                 auxVal = Math.Round(auxVal, 2);
                                                 anotherAuxXmlNode3.InnerText = auxVal.ToString(new CultureInfo("en-US"));
@@ -1921,7 +1947,7 @@ namespace Paho.Controllers
                                                 auxXmlNode3.AppendChild(anotherAuxXmlNode3);
 
                                                 anotherAuxXmlNode3 = myXmlDoc3.CreateElement("serie8");
-                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[460, 6 + i].Formula).ToString(), out auxVal);
+                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[(((qtyGruposEdad * 12) + 3) * 2) + filaInicialTabla2, 6 + i].Formula).ToString(), out auxVal);
                                                 auxVal = (conversionResult) ? (auxVal) : 0;
                                                 auxVal = Math.Round(auxVal, 2);
                                                 anotherAuxXmlNode3.InnerText = auxVal.ToString(new CultureInfo("en-US"));
@@ -1929,7 +1955,7 @@ namespace Paho.Controllers
                                                 auxXmlNode3.AppendChild(anotherAuxXmlNode3);
 
                                                 anotherAuxXmlNode3 = myXmlDoc3.CreateElement("serie9");
-                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[361, 6 + i].Formula).ToString(), out auxVal);
+                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[(((qtyGruposEdad * 12) + 3) * 1) + filaInicialTabla2, 6 + i].Formula).ToString(), out auxVal);
                                                 auxVal = (conversionResult) ? (auxVal) : 0;
                                                 auxVal = Math.Round(auxVal, 2);
                                                 anotherAuxXmlNode3.InnerText = auxVal.ToString(new CultureInfo("en-US"));
@@ -1937,7 +1963,7 @@ namespace Paho.Controllers
                                                 auxXmlNode3.AppendChild(anotherAuxXmlNode3);
 
                                                 anotherAuxXmlNode3 = myXmlDoc3.CreateElement("serie10");
-                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[262, 6 + i].Formula).ToString(), out auxVal);
+                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[(((qtyGruposEdad * 12) + 3) * 0) + filaInicialTabla2, 6 + i].Formula).ToString(), out auxVal);
                                                 auxVal = (conversionResult) ? (auxVal) : 0;
                                                 auxVal = Math.Round(auxVal, 2);
                                                 anotherAuxXmlNode3.InnerText = auxVal.ToString(new CultureInfo("en-US"));
@@ -1945,7 +1971,7 @@ namespace Paho.Controllers
                                                 auxXmlNode3.AppendChild(anotherAuxXmlNode3);
 
                                                 anotherAuxXmlNode3 = myXmlDoc3.CreateElement("serie11");
-                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[1651, 6 + i].Formula).ToString(), out auxVal);
+                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[(((qtyGruposEdad * 12) + 3) * 14) + 3 + filaInicialTabla2, 6 + i].Formula).ToString(), out auxVal);
                                                 auxVal = (conversionResult) ? (auxVal * 100) : 0;
                                                 auxVal = Math.Round(auxVal, 2);
                                                 anotherAuxXmlNode3.InnerText = auxVal.ToString(new CultureInfo("en-US"));
@@ -1965,15 +1991,23 @@ namespace Paho.Controllers
                                             yearNodeAtt4.InnerText = yr;
                                             yearXmlNode4.Attributes.Append(yearNodeAtt4);
                                             //yearXmlNode4.AppendChild(yearNodeAtt4);
-                                            int indiceInicial = 1156;
-                                            for (int i = 11; i < 17; i++)
+                                            
+                                            for (int i = 11; i < (11+qtyGruposEdad); i++)
                                             {
                                                 auxXmlNode4 = myXmlDoc4.CreateElement("graphDataItem");
 
                                                 anotherAuxXmlNode4 = myXmlDoc4.CreateElement("edad");
 
-                                                //anotherAuxXmlNode4.InnerText = yr + "-" + ep.Workbook.Worksheets[1].Cells[6, 6 + i].Value.ToString();
-                                                anotherAuxXmlNode4.InnerText = ep.Workbook.Worksheets[1].Cells["BJ" + i.ToString()].Value.ToString();
+                                                ////anotherAuxXmlNode4.InnerText = yr + "-" + ep.Workbook.Worksheets[1].Cells[6, 6 + i].Value.ToString();
+                                                //anotherAuxXmlNode4.InnerText = ep.Workbook.Worksheets[1].Cells["BJ" + i.ToString()].Value.ToString();
+                                                if (CountryID_ == 3 || CountryID_ == 7 || CountryID_ == 9)
+                                                {
+                                                    anotherAuxXmlNode4.InnerText = ep.Workbook.Worksheets[1].Cells["BJ" + i.ToString()].Value.ToString();
+                                                }
+                                                else
+                                                {
+                                                    anotherAuxXmlNode4.InnerText = ep.Workbook.Worksheets[1].Cells["BK" + i.ToString()].Value.ToString();
+                                                }
                                                 auxXmlNode4.AppendChild(anotherAuxXmlNode4);
 
                                                 decimal auxVal;
@@ -2017,7 +2051,7 @@ namespace Paho.Controllers
                                                             break;
                                                     }
                                                     anotherAuxXmlNode4 = myXmlDoc4.CreateElement(labelVirus);
-                                                    conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells["BG" + (indiceInicial + (12 * (i - 11)) - (99 * j)).ToString()].Formula).ToString(), out auxVal);
+                                                    conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells["BG" + (indiceInicial - (((qtyGruposEdad*12)+3) * j) + (12 * (i - 11)) ).ToString()].Formula).ToString(), out auxVal);
                                                     auxVal = (conversionResult) ? (auxVal) : 0;
                                                     anotherAuxXmlNode4.InnerText = auxVal.ToString(new CultureInfo("en-US"));
                                                     auxXmlNode4.AppendChild(anotherAuxXmlNode4);
@@ -2035,7 +2069,7 @@ namespace Paho.Controllers
                                             yearNodeAtt5.InnerText = yr;
                                             yearXmlNode5.Attributes.Append(yearNodeAtt5);
                                             //yearXmlNode5.AppendChild(yearNodeAtt5);
-                                            int indiceInicial2 = 1157;
+                                            
                                             for (int i = 18; i < 21; i++)
                                             {
                                                 auxXmlNode5 = myXmlDoc5.CreateElement("graphDataItem");
@@ -2087,7 +2121,7 @@ namespace Paho.Controllers
                                                             break;
                                                     }
                                                     anotherAuxXmlNode5 = myXmlDoc5.CreateElement(labelVirus);
-                                                    conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells["BK" + (indiceInicial2 + (3 * (i - 18)) - (99 * j)).ToString()].Formula).ToString(), out auxVal);
+                                                    conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells["BK" + (indiceInicial2 - (((qtyGruposEdad * 12) + 3) * j) + (3 * (i - 18))).ToString()].Formula).ToString(), out auxVal);
                                                     auxVal = (conversionResult) ? (auxVal) : 0;
                                                     anotherAuxXmlNode5.InnerText = auxVal.ToString(new CultureInfo("en-US"));
                                                     auxXmlNode5.AppendChild(anotherAuxXmlNode5);
@@ -2167,160 +2201,176 @@ namespace Paho.Controllers
                                         myXmlDoc1.DocumentElement.AppendChild(myXmlNode);
                                         //----------------Fin del armado de la estructura de datos para la gráfica
 
+                                        int indiceInicial3 = 0;
+                                        int indiceInicial4 = 0;
+                                        int altoGrupo = 0;
+                                        if (CountryID_ == 3 || CountryID_ == 7 || CountryID_ == 9)
+                                        {
+                                            indiceInicial3 = 583;
+                                            indiceInicial4 = 883;
+                                            altoGrupo = 75;
+                                        }
+                                        else
+                                        {
+                                            indiceInicial3 = 757;
+                                            indiceInicial4 = 1153;
+                                            altoGrupo = 99;
+                                        }
+
                                         myXmlNode2 = myXmlDoc2.CreateElement("graphSeries1Label");
-                                        myXmlNode2.InnerText = auxEp.Workbook.Worksheets[1].Cells["A757"].Value.ToString();
+                                        myXmlNode2.InnerText = auxEp.Workbook.Worksheets[1].Cells["A"+(indiceInicial3-(0*altoGrupo))].Value.ToString();
                                         myXmlDoc2.DocumentElement.AppendChild(myXmlNode2);
 
                                         myXmlNode2 = myXmlDoc2.CreateElement("graphSeries2Label");
-                                        myXmlNode2.InnerText = auxEp.Workbook.Worksheets[1].Cells["B658"].Value.ToString();
+                                        myXmlNode2.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial3 - (1 * altoGrupo))].Value.ToString();
                                         myXmlDoc2.DocumentElement.AppendChild(myXmlNode2);
 
                                         myXmlNode2 = myXmlDoc2.CreateElement("graphSeries3Label");
-                                        myXmlNode2.InnerText = auxEp.Workbook.Worksheets[1].Cells["B559"].Value.ToString();
+                                        myXmlNode2.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial3 - (2 * altoGrupo))].Value.ToString();
                                         myXmlDoc2.DocumentElement.AppendChild(myXmlNode2);
 
                                         myXmlNode2 = myXmlDoc2.CreateElement("graphSeries4Label");
-                                        myXmlNode2.InnerText = auxEp.Workbook.Worksheets[1].Cells["B460"].Value.ToString();
+                                        myXmlNode2.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial3 - (3 * altoGrupo))].Value.ToString();
                                         myXmlDoc2.DocumentElement.AppendChild(myXmlNode2);
 
                                         myXmlNode2 = myXmlDoc2.CreateElement("graphSeries5Label");
-                                        myXmlNode2.InnerText = auxEp.Workbook.Worksheets[1].Cells["B361"].Value.ToString();
+                                        myXmlNode2.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial3 - (4 * altoGrupo))].Value.ToString();
                                         myXmlDoc2.DocumentElement.AppendChild(myXmlNode2);
 
                                         myXmlNode2 = myXmlDoc2.CreateElement("graphSeries6Label");
-                                        myXmlNode2.InnerText = auxEp.Workbook.Worksheets[1].Cells["B262"].Value.ToString();
+                                        myXmlNode2.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial3 - (5 * altoGrupo))].Value.ToString();
                                         myXmlDoc2.DocumentElement.AppendChild(myXmlNode2);
 
                                         myXmlNode2 = myXmlDoc2.CreateElement("graphSeries7Label");
-                                        myXmlNode2.InnerText = auxEp.Workbook.Worksheets[1].Cells["A1650"].Value.ToString();
+                                        myXmlNode2.InnerText = auxEp.Workbook.Worksheets[1].Cells["A" + (indiceInicial3 + (9 * altoGrupo) + 2)].Value.ToString();
                                         myXmlDoc2.DocumentElement.AppendChild(myXmlNode2);
                                         //----------------Fin del armado de la estructura de datos para la gráfica
 
                                         myXmlNode3 = myXmlDoc3.CreateElement("graphSeries1Label");
-                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["B1153"].Value.ToString();
+                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (0 * altoGrupo))].Value.ToString();
                                         myXmlDoc3.DocumentElement.AppendChild(myXmlNode3);
 
                                         myXmlNode3 = myXmlDoc3.CreateElement("graphSeries2Label");
-                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["B1054"].Value.ToString();
+                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (1 * altoGrupo))].Value.ToString();
                                         myXmlDoc3.DocumentElement.AppendChild(myXmlNode3);
 
                                         myXmlNode3 = myXmlDoc3.CreateElement("graphSeries3Label");
-                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["B955"].Value.ToString();
+                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (2 * altoGrupo))].Value.ToString();
                                         myXmlDoc3.DocumentElement.AppendChild(myXmlNode3);
 
                                         myXmlNode3 = myXmlDoc3.CreateElement("graphSeries4Label");
-                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["B856"].Value.ToString();
+                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (3 * altoGrupo))].Value.ToString();
                                         myXmlDoc3.DocumentElement.AppendChild(myXmlNode3);
 
                                         myXmlNode3 = myXmlDoc3.CreateElement("graphSeries5Label");
-                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["A757"].Value.ToString();
+                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["A" + (indiceInicial4 - (4 * altoGrupo))].Value.ToString();
                                         myXmlDoc3.DocumentElement.AppendChild(myXmlNode3);
 
                                         myXmlNode3 = myXmlDoc3.CreateElement("graphSeries6Label");
-                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["B658"].Value.ToString();
+                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (5 * altoGrupo))].Value.ToString();
                                         myXmlDoc3.DocumentElement.AppendChild(myXmlNode3);
 
                                         myXmlNode3 = myXmlDoc3.CreateElement("graphSeries7Label");
-                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["B559"].Value.ToString();
+                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (6 * altoGrupo))].Value.ToString();
                                         myXmlDoc3.DocumentElement.AppendChild(myXmlNode3);
 
                                         myXmlNode3 = myXmlDoc3.CreateElement("graphSeries8Label");
-                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["B460"].Value.ToString();
+                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (7 * altoGrupo))].Value.ToString();
                                         myXmlDoc3.DocumentElement.AppendChild(myXmlNode3);
 
                                         myXmlNode3 = myXmlDoc3.CreateElement("graphSeries9Label");
-                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["B361"].Value.ToString();
+                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (8 * altoGrupo))].Value.ToString();
                                         myXmlDoc3.DocumentElement.AppendChild(myXmlNode3);
 
                                         myXmlNode3 = myXmlDoc3.CreateElement("graphSeries10Label");
-                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["B262"].Value.ToString();
+                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (9 * altoGrupo))].Value.ToString();
                                         myXmlDoc3.DocumentElement.AppendChild(myXmlNode3);
 
                                         myXmlNode3 = myXmlDoc3.CreateElement("graphSeries11Label");
-                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["A1651"].Value.ToString();
+                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["A" + (indiceInicial4 + (5 * altoGrupo) + 3)].Value.ToString();
                                         myXmlDoc3.DocumentElement.AppendChild(myXmlNode3);
                                         //----------------Fin del armado de la estructura de datos para la gráfica
 
                                         myXmlNode4 = myXmlDoc4.CreateElement("graphSeries1Label");
-                                        myXmlNode4.InnerText = "Otros";
+                                        myXmlNode4.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (0 * altoGrupo))].Value.ToString();
                                         myXmlDoc4.DocumentElement.AppendChild(myXmlNode4);
 
                                         myXmlNode4 = myXmlDoc4.CreateElement("graphSeries2Label");
-                                        myXmlNode4.InnerText = "Adenovirus";
+                                        myXmlNode4.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (1 * altoGrupo))].Value.ToString();
                                         myXmlDoc4.DocumentElement.AppendChild(myXmlNode4);
 
                                         myXmlNode4 = myXmlDoc4.CreateElement("graphSeries3Label");
-                                        myXmlNode4.InnerText = "VSR";
+                                        myXmlNode4.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (2 * altoGrupo))].Value.ToString();
                                         myXmlDoc4.DocumentElement.AppendChild(myXmlNode4);
 
                                         myXmlNode4 = myXmlDoc4.CreateElement("graphSeries4Label");
-                                        myXmlNode4.InnerText = "Parainfluenza";
+                                        myXmlNode4.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (3 * altoGrupo))].Value.ToString();
                                         myXmlDoc4.DocumentElement.AppendChild(myXmlNode4);
 
                                         myXmlNode4 = myXmlDoc4.CreateElement("graphSeries5Label");
-                                        myXmlNode4.InnerText = "Influenza B";
+                                        myXmlNode4.InnerText = auxEp.Workbook.Worksheets[1].Cells["A" + (indiceInicial4 - (4 * altoGrupo))].Value.ToString();
                                         myXmlDoc4.DocumentElement.AppendChild(myXmlNode4);
 
                                         myXmlNode4 = myXmlDoc4.CreateElement("graphSeries6Label");
-                                        myXmlNode4.InnerText = "Influenza A/H3";
+                                        myXmlNode4.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (5 * altoGrupo))].Value.ToString();
                                         myXmlDoc4.DocumentElement.AppendChild(myXmlNode4);
 
                                         myXmlNode4 = myXmlDoc4.CreateElement("graphSeries7Label");
-                                        myXmlNode4.InnerText = "Influenza A/H1";
+                                        myXmlNode4.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (6 * altoGrupo))].Value.ToString();
                                         myXmlDoc4.DocumentElement.AppendChild(myXmlNode4);
 
                                         myXmlNode4 = myXmlDoc4.CreateElement("graphSeries8Label");
-                                        myXmlNode4.InnerText = "Influenza A No Subtipificable";
+                                        myXmlNode4.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (7 * altoGrupo))].Value.ToString();
                                         myXmlDoc4.DocumentElement.AppendChild(myXmlNode4);
 
                                         myXmlNode4 = myXmlDoc4.CreateElement("graphSeries9Label");
-                                        myXmlNode4.InnerText = "Influenza A No Suptipificada";
+                                        myXmlNode4.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (8 * altoGrupo))].Value.ToString();
                                         myXmlDoc4.DocumentElement.AppendChild(myXmlNode4);
 
                                         myXmlNode4 = myXmlDoc4.CreateElement("graphSeries10Label");
-                                        myXmlNode4.InnerText = "Influenza A(H1N1)pdm09";
+                                        myXmlNode4.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (9 * altoGrupo))].Value.ToString();
                                         myXmlDoc4.DocumentElement.AppendChild(myXmlNode4);
 
                                         //----------------Fin del armado de la estructura de datos para la gráfica
 
                                         myXmlNode5 = myXmlDoc5.CreateElement("graphSeries1Label");
-                                        myXmlNode5.InnerText = "Otros";
+                                        myXmlNode5.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (0 * altoGrupo))].Value.ToString();
                                         myXmlDoc5.DocumentElement.AppendChild(myXmlNode5);
 
                                         myXmlNode5 = myXmlDoc5.CreateElement("graphSeries2Label");
-                                        myXmlNode5.InnerText = "Adenovirus";
+                                        myXmlNode5.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (1 * altoGrupo))].Value.ToString();
                                         myXmlDoc5.DocumentElement.AppendChild(myXmlNode5);
 
                                         myXmlNode5 = myXmlDoc5.CreateElement("graphSeries3Label");
-                                        myXmlNode5.InnerText = "VSR";
+                                        myXmlNode5.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (2 * altoGrupo))].Value.ToString();
                                         myXmlDoc5.DocumentElement.AppendChild(myXmlNode5);
 
                                         myXmlNode5 = myXmlDoc5.CreateElement("graphSeries4Label");
-                                        myXmlNode5.InnerText = "Parainfluenza";
+                                        myXmlNode5.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (3 * altoGrupo))].Value.ToString();
                                         myXmlDoc5.DocumentElement.AppendChild(myXmlNode5);
 
                                         myXmlNode5 = myXmlDoc5.CreateElement("graphSeries5Label");
-                                        myXmlNode5.InnerText = "Influenza B";
+                                        myXmlNode5.InnerText = auxEp.Workbook.Worksheets[1].Cells["A" + (indiceInicial4 - (4 * altoGrupo))].Value.ToString();
                                         myXmlDoc5.DocumentElement.AppendChild(myXmlNode5);
 
                                         myXmlNode5 = myXmlDoc5.CreateElement("graphSeries6Label");
-                                        myXmlNode5.InnerText = "Influenza A/H3";
+                                        myXmlNode5.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (5 * altoGrupo))].Value.ToString();
                                         myXmlDoc5.DocumentElement.AppendChild(myXmlNode5);
 
                                         myXmlNode5 = myXmlDoc5.CreateElement("graphSeries7Label");
-                                        myXmlNode5.InnerText = "Influenza A/H1";
+                                        myXmlNode5.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (6 * altoGrupo))].Value.ToString();
                                         myXmlDoc5.DocumentElement.AppendChild(myXmlNode5);
 
                                         myXmlNode5 = myXmlDoc5.CreateElement("graphSeries8Label");
-                                        myXmlNode5.InnerText = "Influenza A No Subtipificable";
+                                        myXmlNode5.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (7 * altoGrupo))].Value.ToString();
                                         myXmlDoc5.DocumentElement.AppendChild(myXmlNode5);
 
                                         myXmlNode5 = myXmlDoc5.CreateElement("graphSeries9Label");
-                                        myXmlNode5.InnerText = "Influenza A No Suptipificada";
+                                        myXmlNode5.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (8 * altoGrupo))].Value.ToString();
                                         myXmlDoc5.DocumentElement.AppendChild(myXmlNode5);
 
                                         myXmlNode5 = myXmlDoc5.CreateElement("graphSeries10Label");
-                                        myXmlNode5.InnerText = "Influenza A(H1N1)pdm09";
+                                        myXmlNode5.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (9 * altoGrupo))].Value.ToString();
                                         myXmlDoc5.DocumentElement.AppendChild(myXmlNode5);
 
                                         //----------------Fin del armado de la estructura de datos para la gráfica
@@ -2405,7 +2455,7 @@ namespace Paho.Controllers
                                         command.Parameters.Add("@Year", SqlDbType.Text).Value = Year;
                                         command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = RegionID_;
                                         command.Parameters.Add("@State_ID", SqlDbType.Int).Value = StateID_;
-                                        command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = HospitalID_;
+                                        command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = HospitalID_Cache;
                                         command.Parameters.Add("@IRAG", SqlDbType.Int).Value = IRAG_;
                                         command.Parameters.Add("@ETI", SqlDbType.Int).Value = ETI_;
                                         command.Parameters.Add("@GraphData", SqlDbType.Text).Value = jsonGraphData;
@@ -2435,7 +2485,7 @@ namespace Paho.Controllers
                                     command.Parameters.Add("@Year", SqlDbType.Text).Value = Year;
                                     command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = RegionID_;
                                     command.Parameters.Add("@State_ID", SqlDbType.Int).Value = StateID_;
-                                    command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = HospitalID_;
+                                    command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = HospitalID_Cache;
                                     command.Parameters.Add("@IRAG", SqlDbType.Int).Value = IRAG_;
                                     command.Parameters.Add("@ETI", SqlDbType.Int).Value = ETI_;
                                     con.Open();

@@ -518,13 +518,13 @@
                 @if (ViewBag.ILI == true)
                 {
                     <td data-bind="visible:EnableCHI() && NoActiveBOL() && ActiveSUR()">
-                        <span data-bind="value: ColETIDenoST" />
+                        <span data-bind="text: ColETIDenoST" />
                     </td>
                     <td data-bind="visible:NoActiveSUR()">
-                        <span data-bind="value: ColETINumST" />
+                        <span data-bind="text: ColETINumST" />
                     </td>
                     <td data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR()">
-                        <span data-bind="value: ColETINumEmerST" />
+                        <span data-bind="text: ColETINumEmerST" />
                     </td>
                 }
                 @if (ViewBag.SARI == true)

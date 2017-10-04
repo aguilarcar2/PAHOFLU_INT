@@ -51,14 +51,14 @@
     self.PregnantWeek.subscribe(function (NewWeek) {
         if (NewWeek == null || NewWeek == "") return false;
         if (isNaN(parseFloat(NewWeek)) === true) {
-            alert("Semana gestacional solo puede ser numerico");
+            alert(msgValidationGestationalWeekNum);
             self.PregnantWeek("");
             $("#PregnantWeek").focus();
         } else {
             if (NewWeek < 40) {
                 self.Trimester(Math.round(NewWeek/12));
             } else {
-                alert("La semana gestacional no puede ser mayor de 40");
+                alert(msgValidationGestationalWeekLt40);
                 self.PregnantWeek("");
             }
         }
