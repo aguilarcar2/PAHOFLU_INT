@@ -110,7 +110,22 @@
             var current_value = typeof (newHospExDate) == "object" ? newHospExDate : parseDate(newHospExDate, date_format_);
             var date_hospital_ = typeof (self.HospAmDate()) == "object" ? self.HospAmDate() : parseDate(self.HospAmDate(), date_format_);
 
-            if (current_value == null) self.Destin("");
+            if (current_value == null)
+            {
+                $("a[href*='tab-case']").hide();
+                $("#tab-case").hide();
+                $("#CaseStatus").attr("disabled", true);
+                //self.Destin("");
+            } else if (self.Destin() == "" ){
+                $("a[href*='tab-case']").hide();
+                $("#tab-case").hide();
+                $("#CaseStatus").attr("disabled", true);
+            } else {
+                $("a[href*='tab-case']").show();
+                $("#tab-case").show();
+                $("#tabs").tabs("refresh");
+                $("#CaseStatus").attr("disabled", false);
+            }
 
             if (self.hasReset() != true) {
                 if (date_hospital_ == null || date_hospital_ == "") {
@@ -592,10 +607,15 @@
 
     self.Destin.subscribe(function (NewDestin) {
         if (app.Views.Contact.SurvSARI() == true && app.Views.Contact.IsSurv() != "" && NewDestin != null && NewDestin != "") {
+            console.log(self.HospExDate());
             if (self.HospExDate() == "" || self.HospExDate() == "undefined" || self.HospExDate() == null)
             {
                 alert("Es necesario ingresar antes la 'Fecha de Egreso' para poder ingresar la 'Condición de egreso' ");
                 //self.Destin(""); Desactivado por requerimiento de RRR
+                $("a[href*='tab-case']").hide();
+                $("#tab-case").hide();
+                $("#CaseStatus").attr("disabled", true);
+                $("#tabs").tabs("refresh");
                 $("#HospExDate").focus();
              } else if (NewDestin != "" && self.IsSample() === "false") {
                 $("a[href*='tab-case']").show();
@@ -789,7 +809,7 @@
         }
 
         if ((self.HospExDate() == "" || self.HospExDate() == "undefined" || self.HospExDate() == null) && self.Destin() != "") {
-            alert("Es necesario ingresar la 'Fecha de Egreso' para poder guardar ");
+            msg += "\n" + "Es necesario ingresar la 'Fecha de Egreso' para poder guardar";
             //self.Destin(""); Desactivado por requerimiento de RRR
             $("#HospExDate").focus();
         }
@@ -833,18 +853,20 @@
             if (!self.SampleType() || self.SampleType() == "")
                 msg += "\n" + "Tipo de muestra es requerido";
 
-            if ( self.CaseStatus() != "") {
 
-                if ((self.EnableCloseDate() == "" || self.EnableCloseDate() == "undefined" || self.EnableCloseDate() == null)) {
-                    if ($("#CloseDate").val() == "")
-                        msg += "\n" + "Fecha de cierre de caso es requerida";
-                    if ($("#CloseDate").val() != "" && !moment(moment(date_close_case).format(date_format_moment), [date_format_moment], true).isValid())
-                        msg += "\n" + "Fecha de cierre de caso es inválida";
 
-                    if (app.Views.Lab.EndLabDate() && self.CloseDate() && moment(app.Views.Lab.EndLabDate()).isAfter(moment(self.CloseDate())))
-                        msg += "\n" + "Fecha de cierre no puede ser menor a la de laboratorio";
-                }
+        }
 
+        if (self.CaseStatus() != "") {
+
+            if ((self.EnableCloseDate() == "" || self.EnableCloseDate() == "undefined" || self.EnableCloseDate() == null)) {
+                if ($("#CloseDate").val() == "")
+                    msg += "\n" + "Fecha de cierre de caso es requerida";
+                if ($("#CloseDate").val() != "" && !moment(moment(date_close_case).format(date_format_moment), [date_format_moment], true).isValid())
+                    msg += "\n" + "Fecha de cierre de caso es inválida";
+
+                if (app.Views.Lab.EndLabDate() && self.CloseDate() && moment(app.Views.Lab.EndLabDate()).isAfter(moment(self.CloseDate())))
+                    msg += "\n" + "Fecha de cierre no puede ser menor a la de laboratorio";
             }
 
         }
