@@ -271,6 +271,12 @@
     self.Age.subscribe(function (newage) {
         //if (self.AMeasure() != "" || self.AMeasure() != "Year") self.CalculateDOB();
         if (self.AMeasure() == "") self.AMeasure("Year");
+        if (newage != "" && self.AMeasure() != "" && (self.DOB() == "" || self.DOB() == null)) $("#DOB").prop("disabled", true);
+    });
+
+    self.AMeasure.subscribe(function (newAMeasure) {
+        //if (self.AMeasure() != "" || self.AMeasure() != "Year") self.CalculateDOB();
+        if (newAMeasure != "" && self.Age() != "" && (self.DOB() == "" || self.DOB() == null)) $("#DOB").prop("disabled", true);
     });
     self.CalculateDOB = function () {
         if (self.AMeasure() == "") self.AMeasure("Year");
