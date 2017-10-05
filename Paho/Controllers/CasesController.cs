@@ -1940,6 +1940,7 @@ namespace Paho.Controllers
 
             var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             var user = UserManager.FindById(User.Identity.GetUserId());
+            var user_lang = user.Institution.Country.Language.ToString() ?? "SPA";
 
             using (var con = new SqlConnection(consString))
             {
@@ -1966,7 +1967,7 @@ namespace Paho.Controllers
                             userRecord.Add("actionDesc", reader["actionDesc"].ToString());
                             userRecord.Add("userOperator", reader["userOperator"].ToString());
                             userRecord.Add("healthUnit", reader["healthUnit"].ToString());
-                            userRecord.Add("stateRecord", reader["stateRecord"].ToString());
+                            userRecord.Add("stateRecord", (user_lang == "ENG") ? reader["stateRecord_ENG"].ToString() : reader["stateRecord"].ToString());
                             userRecord.Add("operationDate", reader["operationDate"].ToString());
                             logsPerUser.Add(userRecord);
 
