@@ -939,18 +939,22 @@ function LabViewModel(app, dataModel) {
         //if (app.Views.Hospital.IsSample() === "true" && $("#ITy").val() != 1 && $("#RecDate").val() !="") {
         if (app.Views.Hospital.IsSample() === "true" && $("#ITy").val() != 1 && self.Processed() == "true") {
 
-            if ($("#RecDate").val() =="")
-                msg += "\n" + "Fecha de recepción es requerida";
+            if ($("#RecDate").val() == "")
+                msg += "\n" + msgValidateRecDateRequired;
+                    //"Fecha de recepción es requerida";
             if ($("#RecDate").val() != "" && !moment(moment(rec_date).format(date_format_moment), [date_format_moment], true).isValid())
-                msg += "\n" + "Fecha de recepción es inválida ";
+                msg += "\n" + msgValidateRecDateInvalid;
+                    //"Fecha de recepción es inválida ";
 
             if (date_ShipDate != null && rec_date != null && moment(rec_date).isBefore(moment(date_ShipDate), 'days'))
-                msg += "\n" + "'Fecha de recepcion' no puede ser anterior a la 'Fecha de envío'";
+                msg += "\n" + msgValidateRecDateShipDate;
+                    //"'Fecha de recepcion' no puede ser anterior a la 'Fecha de envío'";
             
 
             if (self.Processed() == "true") {
                 if (self.LabTests().length <= 0) {
-                    msg += "\n" + "Inserte al menos un resultado";
+                    msg += "\n" + msgValidateInsertResult;
+                        //"Inserte al menos un resultado";
                 }
 
                 // Verificación de procesos uno 1
@@ -965,17 +969,21 @@ function LabViewModel(app, dataModel) {
             });
             if (labtests_check.length > 0) {
                 if ($("#EndLabDate").val() == "")
-                    msg += "\n" + "Fecha del resultado final es requerida";
+                    msg += "\n" + msgValidateFinalResultDate;
+                        //"Fecha del resultado final es requerida";
 
                 if ($("#EndLabDate").val() != "") {
                     if (!moment(moment(date_close_date_lab).format(date_format_moment), [date_format_moment], true).isValid())
-                        msg += "\n" + "Fecha del resultado final es inválida";
+                        msg += "\n" + msgValidateFinalResultDateInvalid;
+                            //"Fecha del resultado final es inválida";
 
                     if ($("#RecDate").val() != "" && moment(rec_date).isAfter(moment(date_close_date_lab), 'days'))
-                        msg += "\n" + "'Fecha del resultado final' no puede ser anterior a la 'Fecha de recepción'";
+                        msg += "\n" + msgValidateFinalResultDateRecDate;
+                            //"'Fecha del resultado final' no puede ser anterior a la 'Fecha de recepción'";
 
                     if (!self.FinalResult() || self.FinalResult() == "") {
-                        msg += "\n" + "Selecione un resultado final";
+                        msg += "\n" + msgValidateFinalResult;
+                            //"Selecione un resultado final";
                     }
                 }
             }
@@ -985,10 +993,11 @@ function LabViewModel(app, dataModel) {
         }
 
         if (self.Processed() == "false" &&  self.NoProRenId() == "") {
-            msg += "\n" + "Indique la razón porque no fue procesada la muestra";
+            msg += "\n" + msgValidateProcessedReason;
+                //"Indique la razón porque no fue procesada la muestra";
         }
 
-        if (msg !== "") { alert('LABORATORIO:' + msg); $('#tabs').tabs({ active: 4 }); return false; }
+        if (msg !== "") { alert(msgValidationTitleLab + msg); $('#tabs').tabs({ active: 4 }); return false; }
 
         //if (self.UsrCountry == 7) {
         //    if (msg !== "") { alert('LABORATORIO:' + msg); $('#tabs').tabs({ active: 4 }); return false; }
