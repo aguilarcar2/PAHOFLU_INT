@@ -84,11 +84,13 @@
         //date_receive = typeof (date_receive) == "object" ? date_receive : parseDate(date_receive, date_format_);
 
         if (date_receive == null || date_receive == "") {
-            alert("Por favor ingrese antes la fecha de recepción de muestra de la Muestra 1");
+            //alert("Por favor ingrese antes la fecha de recepción de muestra de la Muestra 1");
+            alert(msgValidationTestDateInvalidDate);
             self.TestDate("");
         } else {
             if (moment(current_value).isBefore(moment(date_receive), "days")) {
-                alert("La fecha de proceso de la Muestra 1 no puede ser menor a la fecha de recepción de muestra de la Muestra 1");
+                //alert("La fecha de proceso de la Muestra 1 no puede ser menor a la fecha de recepción de muestra de la Muestra 1");
+                alert(msgValidationTestDateProcessAlert);
                 self.TestDate("");
             }
         }

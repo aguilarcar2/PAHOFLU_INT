@@ -864,8 +864,8 @@
         }
 
         if (self.CaseStatus() != "") {
-
-            if ((self.EnableCloseDate() == "" || self.EnableCloseDate() == "undefined" || self.EnableCloseDate() == null)) {
+            console.log(" CloseDate " + self.CloseDate());
+            if ((self.CloseDate() == "" || self.CloseDate() == "undefined" || self.CloseDate() == null)) {
                 if ($("#CloseDate").val() == "")
                     msg += "\n" + "Fecha de cierre de caso es requerida";
                 if ($("#CloseDate").val() != "" && !moment(moment(date_close_case).format(date_format_moment), [date_format_moment], true).isValid())

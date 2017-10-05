@@ -4054,6 +4054,11 @@
         var msgValidationHospDateGtFeverDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationHospDateGtFeverDate"))";
         var msgValidationHospExDateGtHospDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationHospExDateGtHospDate"))";
 
+        /* Labs AM */
+        var msgValidationTestDateInvalidDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationTestDateInvalidDate"))";
+        var msgValidationNotificationDateGtFeverDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationNotificationDateGtFeverDate"))";
+        
+
         /* Catalogos de Laboratorio*/
         var CSNP= @Html.Raw(Json.Encode(Model.CSNP));
         var CTT= @Html.Raw(Json.Encode(Model.CTT));
