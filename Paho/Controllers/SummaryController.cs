@@ -99,7 +99,8 @@ namespace Paho.Controllers
         public JsonResult GetSummaryDetails(int hospitalId, string hospitalDate, int EpiWeek, int EpiYear)
         {
             var HospitalDate = DateTime.Parse(hospitalDate);
-            var casesummary =  db.CaseSummaries.FirstOrDefault(s=>s.HosiptalId == hospitalId && s.StartDateOfWeek == HospitalDate);
+            //var casesummary =  db.CaseSummaries.FirstOrDefault(s=>s.HosiptalId == hospitalId && s.StartDateOfWeek == HospitalDate);
+            var casesummary = db.CaseSummaries.FirstOrDefault(s => s.HosiptalId == hospitalId && s.EpiYear == EpiYear && s.EW == EpiWeek);
             var user = UserManager.FindById(User.Identity.GetUserId());
             if (casesummary == null)
             {
