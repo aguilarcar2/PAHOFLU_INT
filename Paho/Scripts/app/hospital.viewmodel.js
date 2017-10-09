@@ -640,6 +640,7 @@
             } else if (self.IsSample() === "true" && app.Views.Lab.Processed() === "false" ) {
                     $("a[href*='tab-case']").show();
                     $("#tab-case").show();
+                    $("#CaseStatus").attr("disabled", false);
                     $("#tabs").tabs("refresh");
             } else if (app.Views.Contact.Id() != null) {
                 $("a[href*='tab-case']").hide();

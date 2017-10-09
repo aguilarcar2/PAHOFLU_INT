@@ -457,20 +457,26 @@
             }
             $("a[href*='tab-case']").show();
             $("#tab-case").show();
-            $("#tabs").tabs("refresh");
-        }
-        else if ($("#ITy").val() == "1" && (app.Views.Hospital.IsSample() === "true" && app.Views.Lab.Processed() === "false")) {
-            console.log("aqui _  Flow status no processed");
-            $("a[href*='tab-case']").show();
-            $("#tab-case").show();
+            $("#CaseStatus").attr("disabled", false);
             $("#tabs").tabs("refresh");
         }
         else if (app.Views.Contact.SurvSARI() == true && app.Views.Hospital.IsSample() === "true" && (app.Views.Lab.FinalResult() == "" || app.Views.Hospital.Destin() == "" || app.Views.Hospital.HospExDate() == "" || app.Views.Hospital.HospExDate() == null)) {
             console.log("aqui _ no processed 3");
             $("a[href*='tab-case']").hide();
             $("#tab-case").hide();
+            $("#CaseStatus").attr("disabled", false);
             $("#tabs").tabs("refresh");
         }
+        else if ($("#ITy").val() == "1" && (app.Views.Hospital.IsSample() === "true" && app.Views.Lab.Processed() === "false")) {
+            console.log("aqui _  Flow status no processed");
+            $("a[href*='tab-case']").show();
+            $("#tab-case").show();
+            $("#CaseStatus").attr("disabled", false);
+            $("#tabs").tabs("refresh");
+        }
+
+
+
         else if ($("#ITy").val() == "1" && (app.Views.Hospital.CaseStatus() != "" && app.Views.Hospital.CaseStatus() != null)) {
             console.log("aqui _ CaseStatus");
             $("#tab-lab :input").prop('disabled', true);
