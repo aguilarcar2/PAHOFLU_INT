@@ -223,7 +223,7 @@
     self.validate = function (nextStep) {
         var msg = "";
         if (!self.selectedCountryId() || self.selectedCountryId() == "")
-            msg += "\n" + "País de residencia es requerido";
+            msg += "\n" + viewValidateCountryRequired;
         if (self.UsrCountry() == self.selectedCountryId()) {
             if (!self.selectedAreaId() || self.selectedAreaId() == "") {
                 msg += "\n" + msgValidationAreaRequired;
@@ -236,7 +236,7 @@
 
             if (self.UsrCountry() == 7) {
                 if (!self.Neighborhoods() || self.Neighborhoods() == "")
-                    msg += "\n" + "Comuna es requerido";
+                    msg += "\n" + viewValidateComuneRequired;
             }
         }
         
@@ -251,7 +251,7 @@
     };
 
     self.Cancel = function () {
-        if (confirm("Usted esta a punto de salir del registro, está seguro?")) {
+        if (confirm(viewConfirmExit)) {
             app.Views.Home.CancelEdit();
         }
     };

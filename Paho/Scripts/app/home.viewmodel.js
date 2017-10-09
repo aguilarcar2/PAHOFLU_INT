@@ -154,13 +154,13 @@
         //    return false;
         //} else {
         if (rut.search("-") <= 0) {
-            alert("El RUN " + rut + " no incluye el '-' ");
+            alert(viewValidateRUN + rut + viewValidateRUNSinDash);
             self.SCasenumber("");//limpio el valor del campo rut
             $("#SCasenumber").focus();//me posiciono en el campo nuevamente
             return false;
         }
         if (self.EsRut(rut) == false) {
-            alert("El RUN " + rut + " no es válido");
+            alert(viewValidateRUN + rut + viewValidateRUNNotValid);
             self.NoExpediente("");//limpio el valor del campo rut
             $("#SCasenumber").focus();//me posiciono en el campo nuevamente
             return false;
@@ -298,7 +298,7 @@
 
         if ($("#ITy").val() == "2") {
             app.Views.Lab.SaveLab(function () {
-                alert("Información guardada!, registro No. " + app.Views.Lab.Id);
+                alert(viewValidateSavedInfo + app.Views.Lab.Id);
                 if (option_Save == 1 || option_Save ==2)
                     app.Views.Home.CancelEdit();
                 if (option_Save == 0)
@@ -311,14 +311,14 @@
                     app.Views.Risk.SaveRisk(function () {
                         app.Views.Hospital.SaveHospital(function () {
                             if ($("#ITy").val() != "2") {
-                                alert("Registro guardado!. Registro No. " + app.Views.Hospital.Id);
+                                alert(viewValidateSavedRecord + app.Views.Hospital.Id);
                                 //app.Views.Home.CancelEdit();
                                 if (option_Save == 1 || option_Save == 2) app.Views.Home.CancelEdit();
                                 if (option_Save == 0) app.Views.Home.NewFluCase();
                                 //app.Views.Home.ResetFluCase();
                             } else {
                                 app.Views.Lab.SaveLab(function () {
-                                    alert("Registro guardado!. Registro No. " + app.Views.Lab.Id);
+                                    alert(viewValidateSavedRecord + app.Views.Lab.Id);
                                     app.Views.Home.CancelEdit();
                                 });
                             }
