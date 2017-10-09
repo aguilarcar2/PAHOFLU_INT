@@ -158,16 +158,16 @@
         if (self.hasReset() != true) {
 
             if (date_hospital_ == null || date_hospital_ == "") {
-                alert("Por favor ingrese antes la admisión de hospitalización");
+                alert(viewValidateHospitalizationDate);
                 self.FalleDate("");
             } else {
                 if (moment(current_value).isBefore(moment(date_hospital_), "days")) {
-                    alert("La fecha de Admisión de Hospitalización no puede ser mayor a la fecha de fallecimiento" );
+                    alert(viewValidateHospDateLtDefDate);
                     self.FalleDate("");
                 }
                 if (date_UCI_ex != null && date_UCI_ex != "") {
                     if (moment(current_value).isBefore(moment(date_UCI_ex), "days")) {
-                        alert("La fecha de Egreso de "+ (self.UsrCountry() == 7 ? " UPC " : " UCI ") +" no puede ser mayor a la fecha de fallecimiento ");
+                        alert(viewValidateExitDateLtDefDate);
                         self.FalleDate("");
                     }
                 }
@@ -199,16 +199,16 @@
 
             if (self.hasReset() != true) {
                 if (date_hospital_ == null || date_hospital_ == "") {
-                    alert("Por favor ingrese antes la admisión de hospitalización");
+                    alert(viewValidateHospDateMandatory);
                     self.ICUAmDate("");
                 } else {
                     if (moment(current_value).isBefore(moment(date_hospital_), "days")) {
-                        alert("La fecha de Admisión de Hospitalización no puede ser mayor a la fecha ingreso a" + (self.UsrCountry() == 7 ? " UPC" : " UCI"));
+                        alert(viewValidateHospDateLtUCIDate);
                         self.ICUAmDate("");
                     }
                     if (date_hospital_ex != null && date_hospital_ex != "") {
                         if (moment(current_value).isAfter(moment(date_hospital_ex), "days")) {
-                            alert("La fecha de Egreso de Hospitalización no puede ser menor a la fecha ingreso a" + (self.UsrCountry() == 7 ? " UPC" : " UCI"));
+                            alert(viewValidateExitDateGtUCIDate);
                             self.ICUAmDate("");
                         }
                     }
@@ -230,28 +230,28 @@
 
             if (self.hasReset() != true) {
                 if (date_hospital_ == null || date_hospital_ == "") {
-                    alert("Por favor ingrese antes la admisión de hospitalización");
+                    alert(viewValidateHospDateMandatory);
                     self.ICUExDate("");
                 } else {
                     if (date_hospital_ == null || date_hospital_ == "") {
-                        alert("Por favor ingrese antes la admisión de" + (self.UsrCountry() == 7 ? " UPC" : " UCI"));
+                        alert(viewValidateUCIAdmission);
                         self.ICUExDate("");
                     } else {
                         if (moment(current_value).isBefore(moment(date_hospital_), "days")) {
-                            alert("La fecha de Admisión de Hospitalización no puede ser mayor a la fecha egreso de" + (self.UsrCountry() == 7 ? " UPC" : " UCI"));
+                            alert(viewValidateHospDateLtUCIExitDate);
                             self.ICUExDate("");
                         }
                         if (moment(current_value).isAfter(moment(date_hospital_ex), "days")) {
-                            alert("La fecha de Egreso de Hospitalización no puede ser menor a la fecha egreso de" + (self.UsrCountry() == 7 ? " UPC" : " UCI"));
+                            alert(viewValidateHospExitDateGtUCIExitDate);
                             self.ICUExDate("");
                         }
                         if (moment(current_value).isBefore(moment(date_icu_adm), "days")) {
-                            alert("La fecha de Admisión a UPC no puede ser menor a la fecha egreso de" + (self.UsrCountry() == 7 ? " UPC" : " UCI"));
+                            alert(viewValidateUPCDateGtUCI);
                             self.ICUExDate("");
                         }
                         if (date_death != null || date_death != "") {
                             if (moment(current_value).isAfter(moment(date_death), "days")) {
-                                alert("La fecha de fallecido no puede ser menor a la fecha egreso de" + ( self.UsrCountry() == 7 ? " UPC" : " UCI" ) );
+                                alert(viewValidateDeathDateGtUCIExitDate);
                                 self.ICUExDate("");
                             }
 
@@ -311,12 +311,12 @@
 
     self.CheckDiagDate = function () {
         if (self.FeverDate() == null || self.FeverDate() == "") {
-            alert("Por favor ingrese la fecha de inicio de síntomas");
+            alert(viewValidateOnsetFeverDate);
             self.DiagDate(null);
         } else {
 
             if (moment(self.DiagDate()).isBefore(moment(self.FeverDate()))) {
-                alert("La fecha de diagnóstico no puede ser menor a la fecha de inicio de síntomas");
+                alert(viewValidateDiagnosticDate);
                 self.DiagDate(null);
             }
 
@@ -479,11 +479,11 @@
 
         if (self.hasReset() != true) {
             if (date_fever_ == null || date_fever_ == "") {
-                alert("Por favor ingrese antes la fecha de inicio de síntomas");
+                alert(viewValidateOnsetFeverDate);
                 self.SampleDate("");
             } else {
                 if (moment(current_value).diff(date_fever_, 'days', false) < 0) {
-                    alert("La fecha de toma de muestra no puede ser menor a la fecha de inicio de síntomas");
+                    alert(viewValidateSampleDateGtOnsetFeverDate);
                     self.SampleDate("");
                 }
             }
@@ -509,20 +509,20 @@
 
             if (self.hasReset() != true && newSampleDate2 != "") {
                 if (date_fever_ == null || date_fever_ == "") {
-                    alert("Por favor ingrese antes la fecha de inicio de síntomas");
+                    alert(viewValidateOnsetFeverDate);
                     self.SampleDate2("");
                 } else {
                     if (moment(current_value).isBefore(moment(date_fever_))) {
-                        alert("La fecha de toma de muestra no puede ser menor a la fecha de inicio de síntomas");
+                        alert(viewValidateSampleDateGtOnsetFeverDate);
                         self.SampleDate2("");
                     }
                     if (moment(current_value).diff(date_sampledate_, 'days', false) < 0) {
-                        alert("La fecha de toma de muestra 2 no puede ser menor de la fecha de toma de muestra 1 ");
+                        alert(viewValidateSample2DateGtSample1Date);
                         self.SampleDate2("");
                     }
 
                     if (moment(current_value).diff(date_fever_, 'days', false) > 15) {
-                        alert("La fecha de toma de muestra 2 no puede ser de más de 15 días de diferencia con la fecha de inicio de síntomas ");
+                        alert(viewValidateSample2DateLtOnsetDate);
                         self.SampleDate2("");
                     }
 
@@ -547,24 +547,24 @@
 
             if (self.hasReset() != true && newSampleDate3 != "") {
                 if (date_fever_ == null || date_fever_ == "") {
-                    alert("Por favor ingrese antes la fecha de inicio de síntomas");
+                    alert(viewValidateOnsetFeverDate);
                     self.SampleDate3("");
                 } else {
                     if (moment(current_value).isBefore(moment(date_fever_))) {
-                        alert("La fecha de toma de muestra no puede ser menor a la fecha de inicio de síntomas");
+                        alert(viewValidateSampleDateGtOnsetFeverDate);
                         self.SampleDate3("");
                     }
                     if (moment(current_value).diff(date_sampledate_, 'days', false) < 0) {
-                        alert("La fecha de toma de muestra 3 no puede ser menor de la fecha de toma de muestra 1 ");
+                        alert(viewValidateSample3DateGtSample1Date);
                         self.SampleDate3("");
                     }
                     if (moment(current_value).diff(date_sampledate2_, 'days', false) < 0) {
-                        alert("La fecha de toma de muestra 3 no puede ser menor de la fecha de toma de muestra 2 ");
+                        alert(viewValidateSample3DateGtSample2Date);
                         self.SampleDate3("");
                     }
 
                     if (moment(current_value).diff(date_fever_, 'days', false) > 15) {
-                        alert("La fecha de toma de muestra 3 no puede ser de más de 15 días de diferencia con la fecha de inicio de síntomas ");
+                        alert(viewValidateSample3DateLtOnsetDate);
                         self.SampleDate3("");
                     }
 
@@ -616,7 +616,7 @@
             console.log(self.HospExDate());
             if (self.HospExDate() == "" || self.HospExDate() == "undefined" || self.HospExDate() == null)
             {
-                alert("Es necesario ingresar antes la 'Fecha de Egreso' para poder ingresar la 'Condición de egreso' ");
+                alert(viewValidateExitDateBeforeDestin);
                 //self.Destin(""); Desactivado por requerimiento de RRR
                 $("a[href*='tab-case']").hide();
                 $("#tab-case").hide();
@@ -762,36 +762,36 @@
         if ($("#FeverDate").val() == "")
             msg += "\n" + msgValidationOnsetOnFever;
         if ($("#FeverDate").val() != "" && !moment(moment(date_fever).format(date_format_moment), [date_format_moment], true).isValid())
-            msg += "\n" + "Fecha de inicio de síntomas es inválida";
+            msg += "\n" + viewValidateOnsetInvalid;
         if (date_notification != null && date_fever != null && moment(date_fever).isAfter(moment(date_notification), "days")) {
-            msg += "\n" + "La fecha de inicio de síntomas no puede ser mayor a la fecha de notificación";
+            msg += "\n" + viewValidateOnsetLtNotiDate;
             $("#FeverDate").focus();
         }
             
 
         if (date_diagnostic != null && date_fever != null && moment(date_diagnostic).isBefore(moment(date_fever))) {
-            msg += "\n" + "La fecha de diagnóstico no puede ser menor a la fecha de inicio de síntomas";
+            msg += "\n" + viewValidateDiagnosticDateGtOnsetFeverDate;
             $("#DiagDate").focus();
         }
             
         if (app.Views.Contact.NoActiveBOL == true) {
             if (!self.Adenopatia() && !self.AntecedentesFiebre() && !self.Rinorrea() && !self.Malestar() && !self.Nauseas() && !self.DolorMuscular() && !self.Disnea() && !self.DolorCabeza() && !self.Estridor() && !self.Tos() && !self.Tiraje() && !self.Odinofagia()) {
-                msg += "\n" + "Seleccione por lo menos un síntoma";
+                msg += "\n" + viewValidateSelectSypmtom;
             }
         }
         
         if (app.Views.Contact.SurvSARI() == true) {
             if ($("#HospAmDate").val() == "")
-                msg += "\n" + "Fecha de hospitalización es requerida";
+                msg += "\n" + viewValidateHospDateRequired;
             if ($("#HospAmDate").val() != "" && !moment(moment(date_hosp_adm).format(date_format_moment), [date_format_moment], true).isValid())
-                msg += "\n" + "Fecha de hospitalización es inválida";
+                msg += "\n" + viewValidateHospDateInvalid;
             if (date_hosp_adm != null && date_fever != null && moment(date_hosp_adm).isBefore(moment(date_fever), "days")) {
-                msg += "\n" + "La fecha de hospitalización (ingreso) no puede ser menor que la fecha de inicio de síntomas";
+                msg += "\n" + viewValidateHospDateGtOnsetDate;
                 $("#HospAmDate").focus();
             }
 
             if (date_hosp_adm != null && date_hosp_disc != null && moment(date_hosp_disc).isBefore(moment(date_hosp_adm), "days")) {
-                msg += "\n" + "La fecha de hospitalización (egreso) no puede ser menor que la fecha de hospitalización(ingreso)";
+                msg += "\n" + viewValidateHospExitDateGtHospDate;
                 $("#HospExDate").focus();
             }
         }
@@ -800,22 +800,22 @@
 
         if (self.Destin() == "D") {
             if ($("#FalleDate").val() == "")
-                msg += "\n" + "Fecha de fallecido es requerida";
+                msg += "\n" + viewValidateDeathDateRequired;
             if ($("#FalleDate").val() != "" && !moment(moment(date_falle).format(date_format_moment), [date_format_moment], true).isValid())
-                msg += "\n" + "Fecha de fallecido es inválida";
+                msg += "\n" + viewValidateDeathDateInvalid;
             if (date_falle != null && date_fever != null && moment(date_falle).isBefore(moment(date_fever), "days")) {
-                msg += "\n" + "La fecha de fallecido no puede ser menor que la fecha de inicio de síntomas";
+                msg += "\n" + viewValidateDeathDateGtOnsetDate;
                 $("#FalleDate").focus();
             }
 
             if (date_falle != null && date_hosp_adm != null && moment(date_falle).isBefore(moment(date_hosp_adm), "days")) {
-                msg += "\n" + "La fecha de fallecido no puede ser menor que la fecha de hospitalización(ingreso)";
+                msg += "\n" + viewValidateDeatDateGtHospDate;
                 $("#FalleDate").focus();
             }
         }
 
         if ((self.HospExDate() == "" || self.HospExDate() == "undefined" || self.HospExDate() == null) && self.Destin() != "") {
-            msg += "\n" + "Es necesario ingresar la 'Fecha de Egreso' para poder guardar";
+            msg += "\n" + viewValidateExitDateRequired;
             //self.Destin(""); Desactivado por requerimiento de RRR
             $("#HospExDate").focus();
         }
@@ -825,7 +825,7 @@
 
         if (app.Views.Contact.SurvSARICHI() == true) {
             if (!self.ICU() || self.ICU() == "")
-                msg += "\n" + "Información de UPC es requerido";
+                msg += "\n" + viewValidateUPCRequired;
         }
 
 //        if (!self.ICUAmDate())
@@ -836,28 +836,28 @@
 //           msg += "\n" + "Fecha de UCI no puede ser posterior a la de hospitalización";
 
         if (!self.IsSample())
-            msg += "\n" + "Información de la muestra es requerida";
+            msg += "\n" + viewValidateSampleInfoRequired;
 
         if (self.IsSample() == "true") {
             if ($("#SampleDate").val() == "")
-                msg += "\n" + "Fecha de toma de muestra es requerida";
+                msg += "\n" + viewValidateSampleDateRequired;
             if ($("#SampleDate").val() != "" && !moment(moment(date_sample).format(date_format_moment), [date_format_moment], true).isValid())
-                msg += "\n" + "Fecha de toma de muestra es inválida";
+                msg += "\n" + viewValidateSampleDateInvalid;
             if (date_sample != null && date_fever != null && moment(date_sample).isBefore(moment(date_fever), "days")) {
-                msg += "\n" + "Fecha de toma de muestra no puede ser anterior a la fecha de inicio de síntomas";
+                msg += "\n" + viewValidateSampleDateGtOnsetDate;
                 $("#SampleDate").focus()
             }
                 
 
             if (date_sample != null && date_ship != null && moment(date_ship).isBefore(moment(date_sample), "days")) {
-                msg += "\n" + "Fecha de envío de muestra no puede ser anterior a la fecha de toma de muestra";
+                msg += "\n" + viewValidateSentSampleDateGtSampleDate;
                 $("#ShipDate").focus()
             }
                 
             //if (self.HospAmDate() && self.SampleDate() && moment(self.HospAmDate()).isBefore(moment(self.SampleDate())))
             //    msg += "\n" + "Fecha de toma de muestra no puede ser posterior a la de hospitalización";
             if (!self.SampleType() || self.SampleType() == "")
-                msg += "\n" + "Tipo de muestra es requerido";
+                msg += "\n" + viewValidateSampleTypeRequired;
 
 
 
@@ -867,12 +867,12 @@
             console.log(" CloseDate " + self.CloseDate());
             if ((self.CloseDate() == "" || self.CloseDate() == "undefined" || self.CloseDate() == null)) {
                 if ($("#CloseDate").val() == "")
-                    msg += "\n" + "Fecha de cierre de caso es requerida";
+                    msg += "\n" + viewValidateCloseDateRequired;
                 if ($("#CloseDate").val() != "" && !moment(moment(date_close_case).format(date_format_moment), [date_format_moment], true).isValid())
-                    msg += "\n" + "Fecha de cierre de caso es inválida";
+                    msg += "\n" + viewValidateCloseDateInvalid;
 
                 if (app.Views.Lab.EndLabDate() && self.CloseDate() && moment(app.Views.Lab.EndLabDate()).isAfter(moment(self.CloseDate())))
-                    msg += "\n" + "Fecha de cierre no puede ser menor a la de laboratorio";
+                    msg += "\n" + viewValidateCloseDateGtLabDate;
             }
 
         }
@@ -1039,7 +1039,7 @@
     };
 
     self.Cancel = function () {
-        if (confirm("Usted esta apunto de salir del registro, está seguro?")) {
+        if (confirm(viewConfirmExit)) {
             app.Views.Home.CancelEdit();
         }
     };

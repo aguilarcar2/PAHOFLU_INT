@@ -518,7 +518,7 @@
     };
 
     self.Cancel = function () {
-        if (confirm("Usted esta apunto de salir del registro, está seguro?")) {
+        if (confirm(viewConfirmExit)) {
             app.Views.Home.CancelEdit();
         }
     };
