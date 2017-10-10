@@ -102,11 +102,13 @@
         var date_TestBeginDate = typeof (self.TestDate()) == "object" ? self.TestDate() : parseDate(self.TestDate(), date_format_);
 
         if (date_TestBeginDate == null || date_TestBeginDate == "") {
-            alert("Por favor ingrese antes la fecha de inicio del proceso");
+            //alert("Por favor ingrese antes la fecha de inicio del proceso");
+            alert(msgValidationTestBeginDateInvalidDate);
             self.TestEndDate("");
         } else {
             if (moment(current_value).isBefore(moment(date_TestBeginDate), "days")) {
-                alert("La fecha de fin de proceso de la Muestra 1 no puede ser menor a la fecha de inicio de proceso de muestra de la Muestra 1");
+                //alert("La fecha de fin de proceso de la Muestra 1 no puede ser menor a la fecha de inicio de proceso de muestra de la Muestra 1");
+                alert(msgValidationTestBeginDateProcessAlert);
                 self.TestEndDate("");
             }
         }
@@ -500,11 +502,13 @@ function LabViewModel(app, dataModel) {
             var date_sample_date_ = typeof (app.Views.Hospital.SampleDate()) == "object" ? app.Views.Hospital.SampleDate() : parseDate(app.Views.Hospital.SampleDate(), date_format_);
 
             if ((date_sample_date_ == null || date_sample_date_ == "") && self.hasReset() != true) {
-                    alert("Por favor ingrese antes la fecha de toma muestra de la Muestra 1");
+                //alert("Por favor ingrese antes la fecha de toma muestra de la Muestra 1");
+                alert(msgValidationSampleDateS1);
                     self.RecDate("");
                 } else {
                     if (moment(current_value).isBefore(moment(date_sample_date_), "days")) {
-                        alert("La fecha de recepción de Muestra 1 no puede ser menor a la fecha de toma muestra de la Muestra 1");
+                        //alert("La fecha de recepción de Muestra 1 no puede ser menor a la fecha de toma muestra de la Muestra 1");
+                        alert(msgValidationSampleDateValidateS1);
                         self.RecDate("");
                     }
                   }
@@ -512,17 +516,19 @@ function LabViewModel(app, dataModel) {
     });
 
     self.RecDate2.subscribe(function (newRecDate2) {
-        if (self.UsrCountry() == 7) {
+        if (self.UsrCountry() == 7 || self.UsrCountry() == 3 || self.UsrCountry() == 25) {
             if (self.hasReset() != true && newRecDate2 != "") {
                 var current_value = typeof (newRecDate2) == "object" ? newRecDate2 : parseDate(newRecDate2, date_format_);
                 var date_sample_date_ = typeof (app.Views.Hospital.SampleDate2()) == "object" ? app.Views.Hospital.SampleDate2() : parseDate(app.Views.Hospital.SampleDate2(), date_format_);
 
                 if (date_sample_date_ == null || date_sample_date_ == "") {
-                    alert("Por favor ingrese antes la fecha de toma muestra de la Muestra 2");
+                    //alert("Por favor ingrese antes la fecha de toma muestra de la Muestra 2");
+                    alert(msgValidationSampleDateS2);
                     self.RecDate2("");
                 } else {
                     if (moment(current_value).isBefore(moment(date_sample_date_), "days")) {
-                        alert("La fecha de recepción de Muestra 2 no puede ser menor a la fecha de toma muestra de la Muestra 2");
+                        //alert("La fecha de recepción de Muestra 2 no puede ser menor a la fecha de toma muestra de la Muestra 2");
+                        alert(msgValidationSampleDateValidateS2);
                         self.RecDate2("");
                     }
                 }
@@ -539,11 +545,13 @@ function LabViewModel(app, dataModel) {
                 if (self.UsrCountry() == 7) {
                     if (self.hasReset() != true && newRecDate3 != "") {
                         if (date_sample_date_ == null || date_sample_date_ == "") {
-                            alert("Por favor ingrese antes la fecha de toma muestra de la Muestra 3");
+                            //alert("Por favor ingrese antes la fecha de toma muestra de la Muestra 3");
+                            alert(msgValidationSampleDateS3);
                             self.RecDate3("");
                         } else {
                             if (moment(current_value).isBefore(moment(date_sample_date_), "days")) {
-                                alert("La fecha de recepción de Muestra 3 no puede ser menor a la fecha de toma muestra de la Muestra 3");
+                                //alert("La fecha de recepción de Muestra 3 no puede ser menor a la fecha de toma muestra de la Muestra 3");
+                                alert(msgValidationSampleDateValidateS3);
                                 self.RecDate3("");
                             }
                         }

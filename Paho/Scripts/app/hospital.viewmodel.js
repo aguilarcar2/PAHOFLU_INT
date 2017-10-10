@@ -500,7 +500,7 @@
     self.LabId = ko.observable("");
 
     self.SampleDate2 = ko.observable("");
-    if (self.UsrCountry() == 7) {
+    if (self.UsrCountry() == 7 || self.UsrCountry() == 3 || self.UsrCountry() == 25) {
         self.SampleDate2.subscribe(function (newSampleDate2) {
             var current_value = typeof (newSampleDate2) == "object" ? newSampleDate2 : parseDate(newSampleDate2, date_format_);
             var date_sampledate_ = typeof (self.SampleDate()) == "object" ? self.SampleDate() : parseDate(self.SampleDate(), date_format_);
@@ -580,7 +580,7 @@
     self.LabId3 = ko.observable("");
 
     self.VisibleMuestra2 = ko.computed(function () {
-        return (self.UsrCountry() == 7 && self.SampleDate() && app.Views.Contact.IsSurv() == 1) ? true : false;
+        return ((self.UsrCountry() == 7 || self.UsrCountry() == 3 || self.UsrCountry() == 25) && self.SampleDate() && app.Views.Contact.IsSurv() == 1) ? true : false;
 
     }, self);
     self.VisibleMuestra3 = ko.computed(function () {
