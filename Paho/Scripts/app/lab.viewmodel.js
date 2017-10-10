@@ -957,7 +957,7 @@ function LabViewModel(app, dataModel) {
                         //"Inserte al menos un resultado";
                 }
 
-                // Verificación de procesos uno 1
+                // Verificación de procesos uno de la muestra 1
                 var errRes = self.validatebeforeadd(1,1);
                 if (errRes != "") {
                     msg += errRes;
@@ -1012,7 +1012,6 @@ function LabViewModel(app, dataModel) {
     self.validatebeforeadd = function (nextStep, SaveVerif) {
         var msg = "";
         self.ArrayValidate((nextStep == 1) ? self.LabTests() : (nextStep == 2) ? self.LabTests_Sample2() : self.LabTests_Sample3());
-        
         for (index = 0; index < self.ArrayValidate().length; ++index) {
             date_1 = self.ArrayValidate()[index].TestDate();
             date_2 = self.ArrayValidate()[index].TestEndDate();
@@ -1025,54 +1024,82 @@ function LabViewModel(app, dataModel) {
             date_RecDate = jQuery.type(date_Received) === 'date' ? date_Received : parseDate($("#RecDate").val(), date_format_);
 
             if (self.ArrayValidate()[index].ProcLab() === "" || typeof self.ArrayValidate()[index].ProcLab() === "undefined")
-                msg += "\n" + "'Laboratorio': Seleccione el laboratorio que procesa la prueba";
+                msg += "\n" + msgValidateProcessSelectLab;
+                    //"'Laboratorio': Seleccione el laboratorio que procesa la prueba";
 
             if (self.ArrayValidate()[index].ProcessLab() === "")
-                msg += "\n" + "'Procesada': Indique si la prueba fue procesada";
+                msg += "\n" + msgValidateProcessProcessLab;
+                    //"'Procesada': Indique si la prueba fue procesada";
  
             if (self.ArrayValidate()[index].ProcessLab() === "true") {
 
                 if (date_RecDate != null && date_test_start != null && moment(date_test_start).isBefore(moment(date_RecDate), 'days'))
-                    msg += "\n" + "'Fecha de inicio del proceso' no puede ser menor a la 'Fecha de recepcion de la muestra'";
+                    msg += "\n" + msgValidateProcessStartReceiptDate;
+                    //'Process start date' can not be less than the 'Date of receipt of the sample'
+                        //"'Fecha de inicio del proceso' no puede ser menor a la 'Fecha de recepcion de la muestra'";
                 //return false;
 
                 if (date_test_start === null)
-                    msg += "\n" + "Fecha de inicio de proceso es requerida";
+                    msg += "\n" + msgValidateProcessStartRequired;
+                    //Process start date is required
+                    //    "Fecha de inicio de proceso es requerida";
                 if (date_test_start != null && !moment(moment(date_test_start).format(date_format_moment), [date_format_moment], true).isValid())
-                    msg += "\n" + "Fecha de inicio de proceso es inválida";
+                    msg += "\n" + msgValidateProcessStartInvalid;
+                        //"Fecha de inicio de proceso es inválida";
                 //if (date_RecDate != null && date_test_start != null && moment(date_test_start).isBefore(moment(date_RecDate), 'days'))
                 //    msg += "\n" + "'Start date' cannot be less than the 'Received date'";
 
                 if (date_test_final === null)
-                    msg += "\n" + "Fecha final del proceso es requerida";
+                    msg += "\n" + msgValidateProcessEndDateRequired;
+                        //"Fecha final del proceso es requerida";
                 if (date_test_final != null && !moment(moment(date_test_final).format(date_format_moment), [date_format_moment], true).isValid())
-                    msg += "\n" + "Fecha final del proceso es inválida";
+                    msg += "\n" + msgValidateProcessEndDateInvalid;
+                        //"Fecha final del proceso es inválida";
                 if (date_test_start != null && date_test_final != null
                     && moment(date_test_start).isAfter(moment(date_test_final), 'days'))
-                    msg += "\n" + "'Fecha final del proceso' no puede ser menor a la 'Fecha de inicio del proceso'";
+                    msg += "\n" + msgValidateProcessEndDateStartDate;
+                        //'Process end date' can not be less than 'Process start date'
+                        //"'Fecha final del proceso' no puede ser menor a la 'Fecha de inicio del proceso'";
 
                 if (self.ArrayValidate()[index].TestType() === "")
-                    msg += "\n" + "Indique el tipo de proceso realizado";
+                    msg += "\n" + msgValidateProcessType;
+                        //Insert the type of completed process
+                        //"Indique el tipo de proceso realizado";
 
                 if (self.ArrayValidate()[index].TestResultID() === "")
-                    msg += "\n" + "Indique el resultado del proceso";
+                    msg += "\n" + msgValidateProcessResult;
+                        //Insert the result of the process
+                        //"Indique el resultado del proceso";
 
-                if ((self.ArrayValidate()[index].TestResultID() === "P" || self.ArrayValidate()[index].TestResultID() === "I") && self.ArrayValidate()[index].VirusTypeID() === "")
-                { msg += "\n" + "Indique el virus detectado"; }
+                if ((self.ArrayValidate()[index].TestResultID() === "P" || self.ArrayValidate()[index].TestResultID() === "I") && (self.ArrayValidate()[index].VirusTypeID() === "" || self.ArrayValidate()[index].VirusTypeID() == undefined))
+                {
+                    msg += "\n" + msgValidateProcessVirus;
+                        //Insert the detected virus
+                        //"Ingrese el virus detectado";
+                }
                 else {
                     if (self.ArrayValidate()[index].UsrCountry() == 7 && self.ArrayValidate()[index].CTVirusType() === "" && self.ArrayValidate()[index].VirusTypeID() != "" && self.ArrayValidate()[index].TestType() === "2")
                     { msg += "\n" + "Ingreso el CT de Virus"; }
                 }
 
-                if ((self.ArrayValidate()[index].TestResultID() === "P" || self.ArrayValidate()[index].TestResultID() === "I") && self.ArrayValidate()[index].VirusTypeID() === "9" && self.ArrayValidate()[index].OtherVirusTypeID() === "" && self.ArrayValidate()[index].OtherVirus() === "")
-                { msg += "\n" + "Indique el otro virus detectado"; }
+                if ((self.ArrayValidate()[index].TestResultID() === "P" || self.ArrayValidate()[index].TestResultID() === "I") && self.ArrayValidate()[index].VirusTypeID() === "9" && (self.ArrayValidate()[index].OtherVirusTypeID() === "" || self.ArrayValidate()[index].OtherVirusTypeID() == undefined) && self.ArrayValidate()[index].OtherVirus() === "")
+                {
+                    msg += "\n" + msgValidateProcessOtherVirus;
+                      //  Insert the other detected virus
+                      //"Indique el otro virus detectado";
+                }
                 else {
                     if (self.ArrayValidate()[index].UsrCountry() == 7 && self.ArrayValidate()[index].CTOtherVirusType() === "" && self.ArrayValidate()[index].VirusTypeID() === "9" && self.ArrayValidate()[index].TestType() === "2" && self.ArrayValidate()[index].OtherVirusTypeID() != "")
                     { msg += "\n" + "Ingreso el CT de Otro Virus"; }
                 }
 
-                if (self.ArrayValidate()[index].TestResultID() === "P" && self.ArrayValidate()[index].VirusTypeID() === "1" && self.ArrayValidate()[index].VirusSubTypeID() === "" && self.ArrayValidate()[index].TestType() === "2")
-                { msg += "\n" + "Indique el Subtipo detectado"; }
+
+                if (self.ArrayValidate()[index].TestResultID() === "P" && self.ArrayValidate()[index].VirusTypeID() === "1" && (self.ArrayValidate()[index].VirusSubTypeID() === "" || self.ArrayValidate()[index].VirusSubTypeID() == undefined) && self.ArrayValidate()[index].TestType() === "2")
+                {
+                    msg += "\n" + msgValidateProcessSubtype;
+                      //  Insert the detected Subtype
+                      //"Ingrese el Subtipo detectado";
+                }
                 else {
                     if ((self.ArrayValidate()[index].VirusSubTypeID() == 3 || self.ArrayValidate()[index].VirusSubTypeID() == 10) && self.ArrayValidate()[index].UsrCountry() == 7 && self.ArrayValidate()[index].CTSubType() === "" && self.ArrayValidate()[index].VirusSubTypeID() != "1" && self.ArrayValidate()[index].VirusTypeID() === "1" && self.ArrayValidate()[index].TestType() === "2")
                     { msg += "\n" + "Ingreso el CT de Subtipo"; }
@@ -1080,7 +1107,11 @@ function LabViewModel(app, dataModel) {
 
                 if (self.ArrayValidate()[index].LabID() == self.ISPID() || self.UsrCountry() != 7) {
                     if (self.ArrayValidate()[index].TestResultID() === "P" && self.ArrayValidate()[index].VirusTypeID() === "2" && self.ArrayValidate()[index].VirusLineageID() === "" && self.ArrayValidate()[index].TestType() === "2")
-                    { msg += "\n" + "Indique el Linaje detectado"; }
+                    {
+                        msg += "\n" + msgValidateProcessLinage;
+                          //Insert the detected Linage
+                          //"Ingrese el Linaje detectado";
+                    }
                     else {
                         if ((self.ArrayValidate()[index].VirusLineageID() == 2 || self.ArrayValidate()[index].VirusLineageID() == 3) && self.ArrayValidate()[index].UsrCountry() == 7 && self.ArrayValidate()[index].CTLineage() === "" && self.ArrayValidate()[index].VirusTypeID() === "2" && self.ArrayValidate()[index].TestType() === "2")
                         { msg += "\n" + "Ingreso el CT de Linaje"; }
@@ -1103,13 +1134,17 @@ function LabViewModel(app, dataModel) {
             ArrayValidate.length = ArrayValidate.length - 1;
 
         if (ArrayValidate.length >= 4)
-            msg += "\n" + "Proceso para PCR no puede ser mayor a 3 procesos para el mismo laboratorio";
+            msg += "\n" + msgValidateProcessPCR3times;
+                //For PCR can not be more than 3 processes for the same laboratory
+                //"Para PCR no puede ser mayor a 3 procesos para el mismo laboratorio";
 
         ArrayValidate = $.grep(self.ArrayValidate(), function (v) {
             return (v.TestType() === "1" && v.ProcLab() == self.UsrInstID());
         });
         if (ArrayValidate.length >= 3)
-            msg += "\n" + "Proceso para  IF no puede ser mayor a 3 procesos para el mismo laboratorio";
+            msg += "\n" + msgValidateProcessIFI3times;
+                //For IF it can not be more than 3 processes for the same laboratory
+                //"Para IF no puede ser mayor a 3 procesos para el mismo laboratorio";
         
         return msg;
     };
@@ -1170,7 +1205,7 @@ function LabViewModel(app, dataModel) {
                         labtest.Id = data.LabTests[index].Id;
                         labtest.CaseLabID = self.Id;
                         labtest.CanEdit(data.LabTests[index].CanEdit);
-                        console.log(data.LabTests[index].CanEdit);
+                        //console.log(data.LabTests[index].CanEdit);
                         labtest.CanPCR((typeof data.LabTests[index].CanPCR === "undefined" ) ? false : data.LabTests[index].CanPCR );
                         labtest.CanIFI((typeof data.LabTests[index].CanIFI === "undefined") ? false : data.LabTests[index].CanIFI);
                         labtest.EndFlow(data.LabTests[index].EndFlow);
@@ -1192,7 +1227,7 @@ function LabViewModel(app, dataModel) {
                         labtest.OtherVirus(data.LabTests[index].OtherVirus);
                         labtest.InfA(data.LabTests[index].InfA);
                         labtest.VirusSubTypeID(data.LabTests[index].VirusSubTypeID);
-                        console.log(data.LabTests[index].CTSubType);
+                        //console.log(data.LabTests[index].CTSubType);
                         labtest.CTSubType(data.LabTests[index].CTSubType);
                         labtest.CTRLSubType(data.LabTests[index].CTRLSubType);
                         labtest.TestResultID_VirusSubType(data.LabTests[index].TestResultID_VirusSubType);
@@ -1350,7 +1385,7 @@ function LabViewModel(app, dataModel) {
             self.OrderDummy(self.OrderArrayFinalResult.sort(self.generateSortFn([{ name: 'OrdenTestResultID' }, { name: 'OrdenVirusTypeID' }, { name: 'OrdenTestResultID_VirusSubType' }, { name: 'OrdenTestResultID_VirusSubType_2' }, { name: 'OrdenSubTypeID' }, { name: 'OrdenLineageID' }, { name: 'OrdenTestType' }])));
 
             self.OrderArrayFinalResult([]);
-            console.log(self.OrderDummy());
+            //console.log(self.OrderDummy());
 
 
             self.OrderDummy().forEach(function (v, i) {
@@ -1365,7 +1400,7 @@ function LabViewModel(app, dataModel) {
                 }
             });
 
-            console.log(self.OrderArrayFinalResult());
+            //console.log(self.OrderArrayFinalResult());
             self.OrderArrayFinalResult().forEach(function (v, i) {
                 
                 if (i == 0) {
@@ -1486,7 +1521,7 @@ function LabViewModel(app, dataModel) {
                 TestEndDate: moment(date_test_final).format(date_format_ISO)
             });
         }
-        console.log(postData);
+        //console.log(postData);
         // Muestra numero 2 dos
         for (var index = 0; index < self.LabTests_Sample2().length; ++index) {
             date_1 = self.LabTests_Sample2()[index].TestDate();
