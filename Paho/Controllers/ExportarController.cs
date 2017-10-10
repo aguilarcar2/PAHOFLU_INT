@@ -336,7 +336,7 @@ namespace Paho.Controllers
                 var report = db.Reports.FirstOrDefault(s => s.ID == reportID);
                 string reportTemplate = report.Template;//contiene el nombre del template, que luego se relacionará al archivo template de Excel
 
-                if (user.Institution.AccessLevel == AccessLevel.SelfOnly) { HospitalID_ = Convert.ToInt32(user.Institution.ID); }
+                if (user.Institution.AccessLevel == AccessLevel.SelfOnly && HospitalID_ == 0) { HospitalID_ = Convert.ToInt32(user.Institution.ID); }
 
 
                 if (ReportCountry < 1)

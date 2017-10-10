@@ -104,11 +104,17 @@
                     <!--Establecimiento:-->
                     @(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarLabelHospital"))
                 </span>
-                <select id="Hospitals" class="form-control" data-bind="options: institutions,
+                @*<select id="Hospitals" class="form-control" data-bind="options: institutions,
                        optionsText: 'Name',
                        optionsValue: 'Id',
                        value: selectedInstitutionId,
                        optionsCaption: '@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarFieldSelect"))',
+                       valueUpdate:'change'"></select>*@
+
+                <select id="Hospitals" class="form-control" data-bind="options: institutions,
+                       optionsText: 'Name',
+                       optionsValue: 'Id',
+                       value: selectedInstitutionId,
                        valueUpdate:'change'"></select>
 
                 @*optionsCaption: 'Select...',*@
