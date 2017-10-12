@@ -1418,7 +1418,7 @@ namespace Paho.Controllers
             String[] yy = (String[])aMetas[1];                      // Unidades de la meta
 
             for (int nI = 0; nI < xx.Length; ++nI)
-                excelWorksheet2.Cells[row + nI, column].Value = ID_formatearMeta(xx[nI], yy[nI]);
+                excelWorksheet2.Cells[row + nI, column].Value = ID_formatearMeta(xx[nI], yy[nI], countryId);
             //**** resultados
             double nTemp = 0;
             row = startRow;
@@ -1426,14 +1426,14 @@ namespace Paho.Controllers
             if (nDato1[0] != 0)
             {
                 nTemp = (double)(nDato4[0] / nDato1[0] * 100);
-                excelWorksheet2.Cells[row, column + 1].Value = ID_formatearMeta(nTemp, yy[0]);
+                excelWorksheet2.Cells[row, column + 1].Value = ID_formatearMeta(nTemp, yy[0], countryId);
                 ID_setResultados(excelWorksheet1, nTemp, xx[0], 2, yy[0]);
             }
 
             if (nDato8[0] != 0)
             {
                 nTemp = (double)(nDato5[0] / nDato8[0] * 100);
-                excelWorksheet2.Cells[row + 1, column + 1].Value = ID_formatearMeta(nTemp, yy[1]);
+                excelWorksheet2.Cells[row + 1, column + 1].Value = ID_formatearMeta(nTemp, yy[1], countryId);
                 ID_setResultados(excelWorksheet1, nTemp, xx[1], 3, yy[1]);
             }
 
@@ -1441,20 +1441,20 @@ namespace Paho.Controllers
             if (nDato1[0] != 0)
             {
                 nTemp = (double)(nDato6[0] / nDato1[0] * 100);
-                excelWorksheet2.Cells[row + 2, column + 1].Value = ID_formatearMeta(nTemp, yy[2]);
+                excelWorksheet2.Cells[row + 2, column + 1].Value = ID_formatearMeta(nTemp, yy[2], countryId);
                 ID_setResultados(excelWorksheet1, nTemp, xx[2], 4, yy[2]);
             }
 
             nTemp = (double)nDato9[0];
-            excelWorksheet2.Cells[row + 3, column + 1].Value = ID_formatearMeta(nTemp, yy[3]);
+            excelWorksheet2.Cells[row + 3, column + 1].Value = ID_formatearMeta(nTemp, yy[3], countryId);
             ID_setResultados(excelWorksheet1, nTemp, xx[3], 5, yy[3]);
 
             nTemp = (double)nDato10[0];
-            excelWorksheet2.Cells[row + 4, column + 1].Value = ID_formatearMeta(nTemp, yy[4]);
+            excelWorksheet2.Cells[row + 4, column + 1].Value = ID_formatearMeta(nTemp, yy[4], countryId);
             ID_setResultados(excelWorksheet1, nTemp, xx[4], 6, yy[4]);
 
             nTemp = (double)nDato11[0];
-            excelWorksheet2.Cells[row + 5, column + 1].Value = ID_formatearMeta(nTemp, yy[5]);
+            excelWorksheet2.Cells[row + 5, column + 1].Value = ID_formatearMeta(nTemp, yy[5], countryId);
             ID_setResultados(excelWorksheet1, nTemp, xx[5], 7, yy[5]);
             /*
             decimal nTemp = 0;
@@ -1614,7 +1614,7 @@ namespace Paho.Controllers
             _aMetas.Add(arr2);
         }
 
-        private static string ID_formatearMeta(double _Meta, string _Unid)
+        private static string ID_formatearMeta(double _Meta, string _Unid, int countryId)
         {
             string cForma = "", cMeta = "";
 
@@ -1627,7 +1627,11 @@ namespace Paho.Controllers
             if (_Unid == "D")
             {
                 cMeta = _Meta.ToString("###.#", CultureInfo.InvariantCulture);
-                cForma = (_Meta == 1) ? cMeta + " Día" : cMeta + " Días";
+                //cForma = (_Meta == 1) ? cMeta + " Día" : cMeta + " Días";
+                if (countryId == 25)
+                    cForma = (_Meta == 1) ? cMeta + " Day" : cMeta + " Days";
+                else
+                    cForma = (_Meta == 1) ? cMeta + " Día" : cMeta + " Días";
             }
 
             return cForma;
