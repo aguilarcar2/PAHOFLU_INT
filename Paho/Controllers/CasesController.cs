@@ -681,7 +681,7 @@ namespace Paho.Controllers
                      region_institucional = region_institutional.FirstOrDefault(),
                      region_salud = region_salud.FirstOrDefault(),
                      region_pais = region_pais.FirstOrDefault(),
-                     selectedServiceId = (db.Institutions.Where(j => j.ID == flucase.HospitalID).FirstOrDefault().AccessLevel == (AccessLevel)6) ? flucase.HospitalID : 0 
+                     selectedServiceId = (db.Institutions.Where(j => j.ID == flucase.HospitalID).FirstOrDefault().AccessLevel == (AccessLevel)6) ? flucase.HospitalID : 0
                  };
             return Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -760,6 +760,7 @@ namespace Paho.Controllers
             else
             {
                 flucase = db.FluCases.Find(id);
+                flucase.HospitalID = HospitalId;
                 db.Entry(flucase).State = EntityState.Modified;
             }
             flucase.Surv = Surv;

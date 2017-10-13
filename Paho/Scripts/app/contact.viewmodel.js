@@ -573,8 +573,10 @@
             msg += "\n" + msgValidationFirstNameRequired;
 
         // validacion del combo de servicios
-        if ($("#cmbServices option").length() > 0){
-            if (self.selectedServiceId() > 0 )
+        
+        if ($("#cmbServices option").length > 1) {
+            //console.log(self.selectedServiceId());
+            if (self.selectedServiceId() == 0 )
             {
                 msg += "\n" + msgValidationService;
             }

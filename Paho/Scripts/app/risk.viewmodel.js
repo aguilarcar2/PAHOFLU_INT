@@ -9,6 +9,7 @@
 
     self.Id = "";
     self.UsrCountry = ko.observable(app.Views.Home.UsrCountry()); // Pais del usuario logueado
+    self.hasReset = ko.observable(false);
     self.Pregnant = ko.observable();
     self.Pperium = ko.observable();
     self.PregnantWeek = ko.observable("");
@@ -32,6 +33,22 @@
     self.VaccinFuente = ko.observable(null);
     self.AntiViral = ko.observable("");
     self.AntiViralDate = ko.observable("");
+
+    self.AntiViralDate.subscribe(function (newAntiviralDate) {
+        var current_value = typeof (newAntiviralDate) == "object" ? newAntiviralDate : parseDate(newAntiviralDate, date_format_);
+        var date_fever_ = typeof (app.Views.Hospital.FeverDate()) == "object" ? app.Views.Hospital.FeverDate() : parseDate(app.Views.Hospital.FeverDate(), date_format_);
+
+        if (self.hasReset() != true) {
+            if (date_fever_ != null || date_fever_ != "") {
+                if (moment(current_value).isBefore(moment(date_fever_),"days")) {
+                    alert(msgValidationAntiviralDateGtFeverDate);
+                    self.FeverDate("");
+                }
+            }
+        }
+
+    });
+
     self.AntiViralDateEnd = ko.observable("");
     self.AntiViralType = ko.observable(null);
     self.AStartDate = ko.observable("");
@@ -262,6 +279,7 @@
     });
    
     self.ResetRisk = function () {
+        self.hasReset(true);
         self.Id = "";
         self.Pregnant("");
         self.Pperium(null);
@@ -311,6 +329,7 @@
         self.AntiViralType("");
         self.OseltaDose("");
         self.AntiViralDose("");
+        self.hasReset(false);
 
     };
 
@@ -318,7 +337,8 @@
         self.Id = id;
         console.log("Getting ...");
         console.log(self.Id);
-        $.getJSON(app.dataModel.getRiskUrl, { id: id }, function(data, status) {
+        $.getJSON(app.dataModel.getRiskUrl, { id: id }, function (data, status) {
+            self.hasReset(true);
                 self.Vaccin(data.Vaccin);
                 self.HDisease(data.HDisease);
                 self.Diabetes(data.Diabetes);
@@ -371,6 +391,7 @@
                 self.AntiViralType(data.AntiViralType);
                 self.OseltaDose(data.OseltaDose);
                 self.AntiViralDose(data.AntiViralDose);
+                self.hasReset(false);
 
             })
             .fail(function(jqXHR, textStatus, errorThrown) {
@@ -386,6 +407,7 @@
         date_antiviral_end = parseDate($("#AntiViralDateEnd").val(), date_format_);
         date_neumococo = parseDate($("#VacNeumococoDate").val(), date_format_);
         date_DOB_dummy = parseDate($("#DOB_dummy").val(), date_format_);
+        date_fever_risk = parseDate($("#FeverDate").val(), date_format_);
         
         //alert($("#AntiViralDate").val());
         //alert(date_antiviral);
@@ -496,9 +518,14 @@
 
         if (self.EnableAntiViralDate() && app.Views.Contact.SurvSARI() == true) {
             if (date_antiviral == null)
-                msg += "\n" + "Fecha de tratamiento antiviral es requerida";
-            if (date_antiviral != null && !moment(moment(date_antiviral).format(date_format_moment), [date_format_moment], true).isValid())
-                msg += "\n" + "Fecha de tratamiento antiviral es inválida";
+                //msg += "\n" + "Fecha de tratamiento antiviral es requerida";
+                msg += "\n" + msgValidationAntiviralDateRequired;
+            else if (date_antiviral != null && !moment(moment(date_antiviral).format(date_format_moment), [date_format_moment], true).isValid())
+                //msg += "\n" + "Fecha de tratamiento antiviral es inválida";
+                msg += "\n" + msgValidationAntiviralDateInvalid;
+            else if (moment(date_antiviral).isBefore(date_fever_risk, "days"))
+                alert(msgValidationAntiviralDateGtFeverDate);
+
         }
 
         if (app.Views.Contact.ActiveBOL() && !self.AntiViralType() && self.AntiViral() == "1" ) {
