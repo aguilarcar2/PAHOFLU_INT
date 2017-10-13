@@ -1,8 +1,25 @@
 ﻿function GEOViewModel(app, dataModel) {
     var self = this;
     self.Id = "";
+    self.hasReset = ko.observable(false);
     self.UsrCountry = ko.observable(app.Views.Home.UsrCountry()); // Pais del usuario logueado
     self.selectedCountryId = ko.observable();
+
+    self.selectedCountryId.subscribe(function (newCountrySelect) {
+        if (self.hasReset() != true) {
+            if (self.UsrCountry() != self.selectedCountryId()) {
+                $("#Area").attr("disabled", true);
+                $("#provincia").attr("disabled", true);
+                $("#Neighborhoods").attr("disabled", true);
+            } else if (self.UsrCountry() == self.selectedCountryId()) {
+                $("#Area").attr("disabled", false);
+                $("#provincia").attr("disabled", false);
+                $("#Neighborhoods").attr("disabled", false);      
+            }
+            
+        }
+        
+    });
     self.selectedCountryOrigin = ko.observable();
     self.selectedAreaId = ko.observable();
     self.selectedStateId = ko.observable();
@@ -36,6 +53,7 @@
     }, self);
 
     self.ResetGEO = function () {
+        self.hasReset(true);
         self.Id = "";
         //alert(app.Views.Home);
         //self.selectedCountryId() ? self.selectedCountryId() : (CountryID > 0) ? CountryID : 0
@@ -55,6 +73,7 @@
         self.PhoneNumber("");
         self.Latitude("");
         self.Longitude("");
+        self.hasReset(false);
     };
 
     self.GetGEO = function (id) {
@@ -257,6 +276,9 @@
     };
 
     self.SaveGEO = function (nextStep) {
+        $("#Area").attr("disabled", false);
+        $("#provincia").attr("disabled", false);
+        $("#Neighborhoods").attr("disabled", false);
          $.post(app.dataModel.saveGEOUrl,
             {
                 id: self.Id,

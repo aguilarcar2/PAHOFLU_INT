@@ -591,7 +591,7 @@ function LabViewModel(app, dataModel) {
     //}, self);
 
     self.VisibleMuestraRec2 = ko.computed(function () {
-        return (self.UsrCountry() == 7 && app.Views.Hospital.SampleDate2() != null  ) ? true : false;
+        return ((self.UsrCountry() == 7 || self.UsrCountry() == 3 || self.UsrCountry() == 25) && app.Views.Hospital.SampleDate2() != null) ? true : false;
 
     }, self);
 
