@@ -196,6 +196,10 @@
             var current_value = typeof (newICUAmDate) == "object" ? newICUAmDate : parseDate(newICUAmDate, date_format_);
             var date_hospital_ = typeof (self.HospAmDate()) == "object" ? self.HospAmDate() : parseDate(self.HospAmDate(), date_format_);
             var date_hospital_ex = typeof (self.HospExDate()) == "object" ? self.HospExDate() : parseDate(self.HospExDate(), date_format_);
+            console.log("Validacion ICUAmDate")
+            console.log(current_value);
+            console.log(date_hospital_);
+            console.log(date_hospital_ex);
 
             if (self.hasReset() != true) {
                 if (date_hospital_ == null || date_hospital_ == "") {
@@ -500,45 +504,49 @@
     self.LabId = ko.observable("");
 
     self.SampleDate2 = ko.observable("");
-    if (self.UsrCountry() == 7 || self.UsrCountry() == 3 || self.UsrCountry() == 25) {
+    //if (self.UsrCountry() == 7 || self.UsrCountry() == 3 || self.UsrCountry() == 25) {
         self.SampleDate2.subscribe(function (newSampleDate2) {
-            var current_value = typeof (newSampleDate2) == "object" ? newSampleDate2 : parseDate(newSampleDate2, date_format_);
-            var date_sampledate_ = typeof (self.SampleDate()) == "object" ? self.SampleDate() : parseDate(self.SampleDate(), date_format_);
-            var date_fever_ = typeof (self.FeverDate()) == "object" ? self.FeverDate() : parseDate(self.FeverDate(), date_format_);
+            if (newSampleDate2 != "") {
+                var current_value = typeof (newSampleDate2) == "object" ? newSampleDate2 : parseDate(newSampleDate2, date_format_);
+                var date_sampledate_ = typeof (self.SampleDate()) == "object" ? self.SampleDate() : parseDate(self.SampleDate(), date_format_);
+                var date_fever_ = typeof (self.FeverDate()) == "object" ? self.FeverDate() : parseDate(self.FeverDate(), date_format_);
 
 
-            if (self.hasReset() != true && newSampleDate2 != "") {
-                if (date_fever_ == null || date_fever_ == "") {
-                    alert(viewValidateOnsetFeverDate);
-                    self.SampleDate2("");
-                } else {
-                    if (moment(current_value).isBefore(moment(date_fever_))) {
-                        alert(viewValidateSampleDateGtOnsetFeverDate);
+                if (self.hasReset() != true && newSampleDate2 != "") {
+                    if (date_fever_ == null || date_fever_ == "") {
+                        alert(viewValidateOnsetFeverDate);
                         self.SampleDate2("");
-                    }
-                    if (moment(current_value).diff(date_sampledate_, 'days', false) < 0) {
-                        alert(viewValidateSample2DateGtSample1Date);
-                        self.SampleDate2("");
-                    }
+                    } else {
+                        if (moment(current_value).isBefore(moment(date_fever_))) {
+                            alert(viewValidateSampleDateGtOnsetFeverDate);
+                            self.SampleDate2("");
+                        }
+                        if (moment(current_value).diff(date_sampledate_, 'days', false) < 0) {
+                            alert(viewValidateSample2DateGtSample1Date);
+                            self.SampleDate2("");
+                        }
 
-                    if (moment(current_value).diff(date_fever_, 'days', false) > 15) {
-                        alert(viewValidateSample2DateLtOnsetDate);
-                        self.SampleDate2("");
-                    }
+                        if (moment(current_value).diff(date_fever_, 'days', false) > 15) {
+                            alert(viewValidateSample2DateLtOnsetDate);
+                            self.SampleDate2("");
+                        }
 
+                    }
                 }
             }
-
+            
         });
-    }
+    //}
     
     self.SampleType2 = ko.observable("");
     self.ShipDate2 = ko.observable("");
     self.LabId2 = ko.observable("");
 
     self.SampleDate3 = ko.observable("");
-    if (self.UsrCountry() == 7) {
-        self.SampleDate3.subscribe(function (newSampleDate3) {
+
+    self.SampleDate3.subscribe(function (newSampleDate3) {
+
+        if (self.UsrCountry() == 7) {
             var current_value = typeof (newSampleDate3) == "object" ? newSampleDate3 : parseDate(newSampleDate3, date_format_);
             var date_sampledate_ = typeof (self.SampleDate()) == "object" ? self.SampleDate() : parseDate(self.SampleDate(), date_format_);
             var date_sampledate2_ = typeof (self.SampleDate2()) == "object" ? self.SampleDate2() : parseDate(self.SampleDate2(), date_format_);
@@ -572,9 +580,9 @@
 
                 }
             }
-
+        }
         });
-    }
+
     self.SampleType3 = ko.observable("");
     self.ShipDate3 = ko.observable("");
     self.LabId3 = ko.observable("");

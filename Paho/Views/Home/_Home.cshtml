@@ -2283,6 +2283,18 @@
                         <input id="RecDate" type='text' class="form-control " data-bind='datepicker: RecDate , datepickerOptions: { maxDate:@Model.DatePickerConfig,  dateFormat:"@Model.DateFormatDP"}' />
                     </div>
                 </div>
+                <div class="col-md-2_5" >
+                    <div class='input-group'>
+                        <span class="input-group-addon">
+                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelTemp"))
+                        </span>
+                        <input id="TempSample1" type='text' class="form-control case_letter" data-bind="value: TempSample1" />
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="row rowform" >
                 <div class="col-md-5">
                     <span>
                         @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelProcessed"))
@@ -2294,9 +2306,7 @@
                         <input type="radio" name="Processed" id="Processed" value="false" checked data-bind="checked: Processed"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelNo"))
                     </label>
                 </div>
-            </div>
-            <div class="row rowform" data-bind="visible:NotShowProcessed">
-                <div class="col-md-10">
+                <div class="col-md-5" data-bind="visible:NotShowProcessed">
                     <div class='input-group'>
                         <span class="input-group-addon">
                             @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelCauseNotProcessed")) 
@@ -4053,6 +4063,7 @@
         var msgValidationNotificationDateGtHospDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationNotificationDateGtHospDate"))";
         var msgValidationHospDateGtFeverDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationHospDateGtFeverDate"))";
         var msgValidationHospExDateGtHospDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationHospExDateGtHospDate"))";
+        var viewValidateHospDateLtUCIDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateHospDateLtUCIDate"))";
 		var viewValidateCountryRequired = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateCountryRequired"))";
 		var viewValidateComuneRequired = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateComuneRequired"))";
         var viewConfirmExit = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewConfirmExit"))";

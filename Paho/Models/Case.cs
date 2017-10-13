@@ -884,14 +884,17 @@ namespace Paho.Models
         public bool? Processed { get; set; }
         public int? NoProRenId { get; set; }
         public string NoProRen { get; set; }
+        public Decimal? TempSample1 { get; set; }
         public DateTime? RecDate2 { get; set; }
         public bool? Processed2 { get; set; }
         public string NoProRen2 { get; set; }
         public int? NoProRenId2 { get; set; }
+        public Decimal? TempSample2 { get; set; }
         public DateTime? RecDate3 { get; set; }
         public bool? Processed3 { get; set; }
         public string NoProRen3 { get; set; }
         public int? NoProRenId3 { get; set; }
+        public Decimal? TempSample3 { get; set; }
         public DateTime? EndLabDate { get; set; }
         public string FResult { get; set; }
         public string Comments { get; set; }
@@ -1468,14 +1471,17 @@ namespace Paho.Models
                    p.Processed,
                    p.NoProRen,
                    p.NoProRenId,
+                   p.TempSample1,
                    p.RecDate2,
                    p.Processed2,
                    p.NoProRenId2,
                    p.NoProRen2,
+                   p.TempSample2,
                    p.RecDate3,
                    p.Processed3,
                    p.NoProRenId3,
                    p.NoProRen3,
+                   p.TempSample3,
                    p.EndLabDate,
                    p.FResult,
                    p.Comments,

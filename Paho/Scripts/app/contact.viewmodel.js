@@ -572,6 +572,15 @@
         if (!self.FName1())
             msg += "\n" + msgValidationFirstNameRequired;
 
+        // validacion del combo de servicios
+        if ($("#cmbServices option").length() > 0){
+            if (self.selectedServiceId() > 0 )
+            {
+                msg += "\n" + msgValidationService;
+            }
+        }
+            
+
 
 //        if (!self.DOB())
 //            msg += "\n" + "Date of birth is invalid";

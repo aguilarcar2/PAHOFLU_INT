@@ -478,16 +478,19 @@ function LabViewModel(app, dataModel) {
     self.hasReset = ko.observable(false);
     self.hasGet = ko.observable(false);
     self.RecDate = ko.observable(null);
+    self.TempSample1 = ko.observable("");
     self.Processed = ko.observable("");
     self.NoProRen = ko.observable("");
     self.NoProRenId = ko.observable("");
 
     self.RecDate2 = ko.observable(null);
+    self.TempSample2 = ko.observable("");
     self.Processed2 = ko.observable("");
     self.NoProRen2 = ko.observable("");
     self.NoProRenId2 = ko.observable("");
 
     self.RecDate3 = ko.observable(null);
+    self.TempSample3 = ko.observable("");
     self.Processed3 = ko.observable("");
     self.NoProRen3 = ko.observable("");
     self.NoProRenId3 = ko.observable("");
@@ -904,10 +907,13 @@ function LabViewModel(app, dataModel) {
         self.RecDate(null);
         self.RecDate("");
         self.Processed("");
+        self.TempSample1("");
         self.RecDate2(null);
         self.Processed2("");
+        self.TempSample2("");
         self.RecDate3(null);
         self.Processed3("");
+        self.TempSample3("");
         self.EndLabDate(null);
         self.FResult("");
         self.Comments("");
