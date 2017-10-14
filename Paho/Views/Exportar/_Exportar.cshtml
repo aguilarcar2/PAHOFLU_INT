@@ -86,10 +86,9 @@
                        optionsText: 'Name',
                        optionsValue: 'Id',
                        value: selectedRegionId,
-                       optionsCaption: '@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarFieldSelect"))',
                        valueUpdate:'change',
                        event:{ change: ReloadInstitutions}"></select>
-
+                @*optionsCaption: '@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarFieldSelect"))',*@
                 @*optionsCaption: 'Select...',*@
             </div>
         </div>
@@ -212,5 +211,6 @@
     var institutions = @Html.Raw(Json.Encode(Model.Institutions));
     var reportsCountries = @Html.Raw(Json.Encode(Model.ReportsCountries));
     var CountryID = @Html.Raw(Model.CountryID);
+    var selcty = @ViewBag.UsrCtry;
 </script>
 <!-- /ko -->

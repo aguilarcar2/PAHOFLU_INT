@@ -115,6 +115,20 @@ namespace Paho.Controllers
                 var institutions =
                  (
                   from institution in db.Institutions as IQueryable<Institution>
+                  where institution.CountryID == UsrCtry 
+                  select new
+                  {
+                      Id = institution.ID,
+                      Name = institution.Name,
+                      InstitutionType = institution is Hospital ? InstitutionType.Hospital : InstitutionType.Lab
+                      //InstitutionType = InstitutionType.Hospital
+                  }).ToArray();
+
+                if ((user.type_region == 1 || user.type_region == null) && RegionID > 0)
+                {
+                    institutions =
+                 (
+                  from institution in db.Institutions as IQueryable<Institution>
                   where institution.CountryID == UsrCtry && institution.cod_region_institucional == RegionID
                   select new
                   {
@@ -123,6 +137,8 @@ namespace Paho.Controllers
                       InstitutionType = institution is Hospital ? InstitutionType.Hospital : InstitutionType.Lab
                       //InstitutionType = InstitutionType.Hospital
                   }).ToArray();
+                }
+                
 
                 if ( user.type_region == 2)
                 {
@@ -185,12 +201,29 @@ namespace Paho.Controllers
                   {
                       Id = institution.ID,
                       Name = institution.Name,
-                      InstitutionType = institution is Hospital ? InstitutionType.Hospital : InstitutionType.Lab
+                      InstitutionType = institution is Lab ? InstitutionType.Lab : InstitutionType.Hospital
                       //InstitutionType = InstitutionType.Hospital
                   }).ToArray();
 
+                var institutionsDisplay = institutions.Select(i => new LookupView<Institution>()
+                {
+                    Id = i.Id.ToString(),
+                    Name = i.Name
+                }).ToList();
 
-                return Json(institutions, JsonRequestBehavior.AllowGet);
+                if (institutions.Count() > 1)
+                {
+                    var all = new LookupView<Institution> { Id = "0", Name = getMsg("msgGeneralMessageAll") };
+                    institutionsDisplay.Insert(0, all);
+                }
+                else if (institutions.Count() == 0)
+                {
+                    var all = new LookupView<Institution> { Id = "0", Name = "-- Sin unidades centinela --" };
+                    institutionsDisplay.Insert(0, all);
+                }
+
+
+                return Json(institutionsDisplay, JsonRequestBehavior.AllowGet);
             }
 
 

@@ -524,7 +524,7 @@
                 //msg += "\n" + "Fecha de tratamiento antiviral es inválida";
                 msg += "\n" + msgValidationAntiviralDateInvalid;
             else if (moment(date_antiviral).isBefore(date_fever_risk, "days"))
-                alert(msgValidationAntiviralDateGtFeverDate);
+                msg += "\n" + msgValidationAntiviralDateGtFeverDate;
 
         }
 

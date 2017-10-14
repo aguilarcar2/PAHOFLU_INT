@@ -99,6 +99,7 @@ namespace Paho.Controllers
             }
             else
             {
+                ExportarViewModel.DisplayHospitals = true;
                 if (user.Institution.AccessLevel == AccessLevel.Country)
                 {
                     institutions = db.Institutions.OfType<Lab>()

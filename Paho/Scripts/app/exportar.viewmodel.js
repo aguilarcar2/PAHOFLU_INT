@@ -2,6 +2,7 @@
 function ExportarViewModel(app, dataModel) {
     var self = this;
     var date_format_moment = app.dataModel.date_format_ISO;
+    self.UsrCountry = ko.observable(selcty);
     self.displayFilters = ko.observable(false);
     self.selectedCountryId = ko.observable(CountryID);
     self.countries = ko.observableArray(countries);
