@@ -476,6 +476,10 @@
         self.flow_institution(0);
         self.flow_record(0);
         self.DataStatement(1);
+        // Regiones
+        self.region_institucional(app.Views.Home.UsrRegInst());
+        self.region_salud(app.Views.Home.UsrRegSalud());
+        self.region_pais(app.Views.Home.UsrRegPais());
     };
 
     self.FormatDateWrite = function (node_date) {

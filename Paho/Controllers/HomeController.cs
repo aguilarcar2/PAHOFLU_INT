@@ -28,6 +28,7 @@ namespace Paho.Controllers
 
             IQueryable<CatNativePeople> CNP = null;
             IQueryable<CatVaccinSource> CVS = null;
+            
 
             var user = UserManager.FindById(User.Identity.GetUserId());
             var DoS = DateTime.Now.ToString("d", CultureInfo.CreateSpecificCulture("es-GT"));
@@ -177,6 +178,23 @@ namespace Paho.Controllers
 
                 CaseViewModel.Institutions = institutionsDisplay;
             }
+
+            // Informacion del usuario
+
+            var region_institucional_usr = user.Institution.cod_region_institucional;
+            var region_salud_usr = user.Institution.cod_region_salud;
+            var region_pais_usr = user.Institution.cod_region_pais;
+
+            if (region_institucional_usr > 0)
+                CaseViewModel.reg_inst_usr = db.Regions.Where(j => j.CountryID == user.Institution.CountryID && j.tipo_region == 1 && j.orig_country == user.Institution.cod_region_institucional).FirstOrDefault().Name.ToString();
+
+            if (region_salud_usr > 0)
+                CaseViewModel.reg_salu_usr = db.Regions.Where(j => j.CountryID == user.Institution.CountryID && j.tipo_region == 2 && j.orig_country == user.Institution.cod_region_salud).FirstOrDefault().Name.ToString();
+
+            if (region_pais_usr > 0)
+                CaseViewModel.reg_pais_usr = db.Regions.Where(j => j.CountryID == user.Institution.CountryID && j.tipo_region == 3 && j.orig_country == user.Institution.cod_region_pais).FirstOrDefault().Name.ToString();
+
+
 
             // Catalogos del laboratorio
 

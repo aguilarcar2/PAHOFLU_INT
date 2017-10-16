@@ -4015,6 +4015,9 @@
         var labs = @Html.Raw(Json.Encode(Model.Labs));
         var institutions = @Html.Raw(Json.Encode(Model.Institutions));
         var selcty = @ViewBag.UsrCtry;
+        var reg_inst_usr = @Html.Raw(Json.Encode(Model.reg_inst_usr));
+        var reg_salu_usr = @Html.Raw(Json.Encode(Model.reg_salu_usr));
+        var reg_pais_usr = @Html.Raw(Json.Encode(Model.reg_pais_usr));
 
         /*   Mensajes de alerta de validaciones    */
         var msgValidationSurvData = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationSurvData"))";
@@ -4049,7 +4052,7 @@
         var msgValidationTypeDOB = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationTypeDOB"))";
         var msgValidationTypeDOBorAge = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationTypeDOBorAge"))";
         var msgValidationDOBLater = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationDOBLater"))";
-        var msgConfirmationExitRecord = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgConfirmationExitRecord"))";
+        var msgConfirmationExitRecord = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgConfirmationExitRecord")))";
         var msgConfirmationDocumentTypeNumberRequired = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgConfirmationDocumentTypeNumberRequired"))";
         var msgValidationPacientInfoMissing = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationPacientInfoMissing"))";
         var msgValidationServerError = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationServerError"))";

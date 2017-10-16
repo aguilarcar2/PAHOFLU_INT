@@ -28,6 +28,9 @@
     self.UserRole = ko.observable(URle);
 
     self.UsrCountry = ko.observable(selcty);
+    self.UsrRegInst = ko.observable(reg_inst_usr);
+    self.UsrRegSalud = ko.observable(reg_salu_usr);
+    self.UsrRegPais = ko.observable(reg_pais_usr);
     self.selectedCountryId = ko.observable("");
     self.selectedRegionId = ko.observable("");
     self.institutions = ko.observableArray(institutions);

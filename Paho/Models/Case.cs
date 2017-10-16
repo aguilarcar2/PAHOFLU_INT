@@ -34,6 +34,12 @@ namespace Paho.Models
         public bool DisplayLabs { get; set; }
         //public int? UsrCtry { get; set; }
 
+        // Regiones de usuario asignadas
+        public string reg_inst_usr { get; set; }
+        public string reg_salu_usr { get; set; }
+        public string reg_pais_usr { get; set; }
+
+
         // Catalogos de laboratorio
 
         public IEnumerable<LookupView<CatSampleNoProcessed>> CSNP { get; set; }
