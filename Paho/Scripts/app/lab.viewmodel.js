@@ -73,6 +73,11 @@
 
     }, self);
 
+    self.DisableCHI = ko.computed(function () {
+        return (self.UsrCountry() == 7) ? true : false;
+
+    }, self);
+
     self.IFI_option = ko.computed(function () {
         return (self.UsrCountry() == 7 && self.TestType() == 1) ? true : false;
 
@@ -127,7 +132,7 @@
     }, self);
 
     self.EnableVirusTypes = ko.computed(function () {
-        if (self.TestResultID() != "U" && self.TestResultID() != "" && typeof self.TestResultID() != "undefined" ) {
+        if (((self.TestResultID() != "U" && self.TestResultID() != "N" && self.EnableCHI()) || (self.TestResultID() != "U" && self.DisableCHI())) && self.TestResultID() != "" && typeof self.TestResultID() != "undefined") {
             if (self.TestType() == 1 && self.TestResultID() == "N"){
                 return false;
             } else {
@@ -199,6 +204,8 @@
             
         return result;
     }, self);
+
+    // Aqui agregar la funcion para esconder el resultado del subtipo
 
     self.EnableVirusSubTypeID_2 = ko.computed(function () {
         //var result = (self.VirusTypeID() == "1" && self.TestResultID() == "P"); // modificacion solicitada por Rodrigo
@@ -478,19 +485,19 @@ function LabViewModel(app, dataModel) {
     self.hasReset = ko.observable(false);
     self.hasGet = ko.observable(false);
     self.RecDate = ko.observable(null);
-    self.TempSample1 = ko.observable("");
+    self.TempSample1 = ko.observable("").extend({ numeric: 2 });
     self.Processed = ko.observable("");
     self.NoProRen = ko.observable("");
     self.NoProRenId = ko.observable("");
 
     self.RecDate2 = ko.observable(null);
-    self.TempSample2 = ko.observable("");
+    self.TempSample2 = ko.observable("").extend({ numeric: 2 });
     self.Processed2 = ko.observable("");
     self.NoProRen2 = ko.observable("");
     self.NoProRenId2 = ko.observable("");
 
     self.RecDate3 = ko.observable(null);
-    self.TempSample3 = ko.observable("");
+    self.TempSample3 = ko.observable("").extend({ numeric: 2 });
     self.Processed3 = ko.observable("");
     self.NoProRen3 = ko.observable("");
     self.NoProRenId3 = ko.observable("");
@@ -1170,17 +1177,20 @@ function LabViewModel(app, dataModel) {
                 self.Processed((data.Processed != null) ? data.Processed.toString() : "");
                 self.NoProRen(data.NoProRen);
                 self.NoProRenId(data.NoProRenId);
+                self.TempSample1(data.TempSample1);
                 self.hasGet(true);
 
                 (data.RecDate2) ? self.RecDate2(moment(data.RecDate2).format(date_format_moment)) : self.RecDate2("");
                 self.Processed2((data.Processed2 != null) ? data.Processed2.toString() : "");
                 self.NoProRen2(data.NoProRen2);
                 self.NoProRenId2(data.NoProRenId2);
+                self.TempSample2(data.TempSample2);
 
                 (data.RecDate3) ? self.RecDate3(moment(data.RecDate3).format(date_format_moment)) : self.RecDate3("");
                 self.Processed3((data.Processed3 != null) ? data.Processed3.toString() : "");
                 self.NoProRen3(data.NoProRen3);
                 self.NoProRenId3(data.NoProRenId3);
+                self.TempSample3(data.TempSample3);
 
                  (data.EndLabDate) ? self.EndLabDate(moment(data.EndLabDate).format(date_format_moment)) : self.EndLabDate("");
                 self.FResult(data.FResult);
@@ -1647,16 +1657,19 @@ function LabViewModel(app, dataModel) {
                 Processed: self.Processed() === "true" ? true : self.Processed() === "false" ? false : null,
                 NoProRen: self.NoProRen() ? self.NoProRen().toLocaleUpperCase() : "",
                 NoProRenId: self.NoProRenId(),
+                TempSample1: self.TempSample1(),
 
                 RecDate2: $("#RecDate2").val() == "" ? null : moment(rec_date2).format(date_format_ISO),
                 Processed2: self.Processed2() === "true" ? true : self.Processed2() === "false" ? false : null,
                 NoProRen2: self.NoProRen2() ? self.NoProRen2().toLocaleUpperCase() : "",
                 NoProRenId2: self.NoProRenId2(),
+                TempSample2: self.TempSample2(),
 
                 RecDate3: $("#RecDate3").val() == "" ? null : moment(rec_date3).format(date_format_ISO),
                 Processed3: self.Processed3() === "true" ? true : self.Processed3() === "false" ? false : null,
                 NoProRen3: self.NoProRen3() ? self.NoProRen3().toLocaleUpperCase() : "",
                 NoProRenId3: self.NoProRenId3(),
+                TempSample3: self.TempSample3(),
 
                 EndLabDate: $("#EndLabDate").val() == "" ? null : moment(date_close_date_lab).format(date_format_ISO),
                 FResult: self.FResult(),          

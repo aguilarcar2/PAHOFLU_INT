@@ -2275,7 +2275,7 @@
                 </div>
             </div>
             <div class="row rowform">
-                <div class="col-md-2_5">
+                <div class="col-md-3_5">
                     <div class='input-group'>
                         <span class="input-group-addon">
                             @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelReceptionDate"))
@@ -2283,7 +2283,7 @@
                         <input id="RecDate" type='text' class="form-control " data-bind='datepicker: RecDate , datepickerOptions: { maxDate:@Model.DatePickerConfig,  dateFormat:"@Model.DateFormatDP"}' />
                     </div>
                 </div>
-                <div class="col-md-2" >
+                <div class="col-md-3" >
                     <div class='input-group'>
                         <span class="input-group-addon">
                             @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelTemp"))
@@ -4020,150 +4020,150 @@
         var reg_pais_usr = @Html.Raw(Json.Encode(Model.reg_pais_usr));
 
         /*   Mensajes de alerta de validaciones    */
-        var msgValidationSurvData = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationSurvData"))";
-        var msgValidationSurvType = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationSurvType"))";
-        var msgValidationTypeOfDocument = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationTypeOfDocument"))";
-        var msgValidationDocumentIDRequired = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationDocumentIDRequired"))";
-        var msgValidationNotificationDateRequired = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationNotificationDateRequired"))";
-        var msgValidationFirstLastNameRequired = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationFirstLastNameRequired"))";
-        var msgValidationSecondLastNameRequired = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationSecondLastNameRequired"))";
-        var msgValidationFirstNameRequired = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationFirstNameRequired"))";
-        var msgValidationService = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationService"))";
-        var msgValidationSexRequired = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationSexRequired"))";
-        var msgValidationGeoRef = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationGeoRef"))";
-        var msgValidationAreaRequired = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationAreaRequired"))";
-        var msgValidationStateRequired = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationStateRequired"))";
-        var msgValidationMedicalHistory = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationMedicalHistory"))";
-        var msgValidationAntiviralTreatment = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationAntiviralTreatment"))";
-        var msgValidationRiskFactor = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationRiskFactor"))";
-        var msgValidationClinicalInfo = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationClinicalInfo"))";
-        var msgValidationOnsetOnFever = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationOnsetOnFever"))";
-        var msgValidationRUN = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationRUN"))";
-        var msgValidationRUNDasehdPart2 = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationRUNDasehdPart2"))";
-        var msgValidationRUNValidPart2 = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationRUNValidPart2"))";
-        var msgValidationDocumentFormat = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationDocumentFormat"))";
-        var msgValidationInsuredNumber = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationInsuredNumber"))";
-        var msgValidationInternalDoc = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationInternalDoc"))";
-        var msgConfirmationDeleteRecord = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgConfirmationDeleteRecord"))";
-        var msgValidationOnsetFeverDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationOnsetFeverDate"))";
-        var msgValidationNotificationDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationNotificationDate"))";
-        var msgValidationRecordDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationRecordDate"))";
-        var msgValidationRecordDateLater = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationRecordDateLater"))";
-        var msgValidationTypeDOB = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationTypeDOB"))";
-        var msgValidationTypeDOBorAge = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationTypeDOBorAge"))";
-        var msgValidationDOBLater = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationDOBLater"))";
+        var msgValidationSurvData = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationSurvData")))";
+        var msgValidationSurvType = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationSurvType")))";
+        var msgValidationTypeOfDocument = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationTypeOfDocument")))";
+        var msgValidationDocumentIDRequired = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationDocumentIDRequired")))";
+        var msgValidationNotificationDateRequired = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationNotificationDateRequired")))";
+        var msgValidationFirstLastNameRequired = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationFirstLastNameRequired")))";
+        var msgValidationSecondLastNameRequired = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationSecondLastNameRequired")))";
+        var msgValidationFirstNameRequired = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationFirstNameRequired")))";
+        var msgValidationService = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationService")))";
+        var msgValidationSexRequired = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationSexRequired")))";
+        var msgValidationGeoRef = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationGeoRef")))";
+        var msgValidationAreaRequired = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationAreaRequired")))";
+        var msgValidationStateRequired = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationStateRequired")))";
+        var msgValidationMedicalHistory = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationMedicalHistory")))";
+        var msgValidationAntiviralTreatment = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationAntiviralTreatment")))";
+        var msgValidationRiskFactor = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationRiskFactor")))";
+        var msgValidationClinicalInfo = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationClinicalInfo")))";
+        var msgValidationOnsetOnFever = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationOnsetOnFever")))";
+        var msgValidationRUN = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationRUN")))";
+        var msgValidationRUNDasehdPart2 = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationRUNDasehdPart2")))";
+        var msgValidationRUNValidPart2 = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationRUNValidPart2")))";
+        var msgValidationDocumentFormat = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationDocumentFormat")))";
+        var msgValidationInsuredNumber = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationInsuredNumber")))";
+        var msgValidationInternalDoc = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationInternalDoc")))";
+        var msgConfirmationDeleteRecord = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgConfirmationDeleteRecord")))";
+        var msgValidationOnsetFeverDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationOnsetFeverDate")))";
+        var msgValidationNotificationDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationNotificationDate")))";
+        var msgValidationRecordDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationRecordDate")))";
+        var msgValidationRecordDateLater = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationRecordDateLater")))";
+        var msgValidationTypeDOB = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationTypeDOB")))";
+        var msgValidationTypeDOBorAge = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationTypeDOBorAge")))";
+        var msgValidationDOBLater = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationDOBLater")))";
         var msgConfirmationExitRecord = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgConfirmationExitRecord")))";
-        var msgConfirmationDocumentTypeNumberRequired = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgConfirmationDocumentTypeNumberRequired"))";
-        var msgValidationPacientInfoMissing = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationPacientInfoMissing"))";
-        var msgValidationServerError = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationServerError"))";
-        var msgValidationInstitutionRequired = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationInstitutionRequired"))";
-        var msgValidationGenarationYearRequired = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationGenarationYearRequired"))";
-        var msgValidationReportRestrictionCriteriaRequired = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationReportRestrictionCriteriaRequired"))";
-        var msgValidationReports = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationReports"))";
-        var msgValidationGestationalWeekNum = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationGestationalWeekNum"))";
-        var msgValidationGestationalWeekLt40 = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationGestationalWeekLt40"))";
-        var msgValidationNotificationDateEnter = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationNotificationDateEnter"))";
-        var msgValidationNotificationDateGtFeverDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationNotificationDateGtFeverDate"))";
-        var msgValidationAntiviralDateEnter = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationAntiviralDateEnter"))";
-        var msgValidationAntiviralDateRequired = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationAntiviralDateRequired"))";
-        var msgValidationAntiviralDateInvalid = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationAntiviralDateInvalid"))";
-        var msgValidationAntiviralDateGtFeverDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationAntiviralDateGtFeverDate"))";
-        var msgValidationNotificationDateGtHospDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationNotificationDateGtHospDate"))";
-        var msgValidationHospDateGtFeverDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationHospDateGtFeverDate"))";
-        var msgValidationHospExDateGtHospDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationHospExDateGtHospDate"))";
-        var viewValidateHospDateLtUCIDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateHospDateLtUCIDate"))";
-		var viewValidateCountryRequired = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateCountryRequired"))";
-		var viewValidateComuneRequired = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateComuneRequired"))";
-        var viewConfirmExit = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewConfirmExit"))";
-        var viewValidateHospitalizationDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateHospitalizationDate"))";
-        var viewValidateHospDateLtDefDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateHospDateLtDefDate"))";
-        var viewValidateExitDateLtDefDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateExitDateLtDefDate"))";
-        var viewValidateHospDateMandatory = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateHospDateMandatory"))";
-        var viewValidateExitDateGtUCIDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateExitDateGtUCIDate"))";
-        var viewValidateUCIAdmission = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateUCIAdmission"))";
-        var viewValidateHospDateLtUCIExitDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateHospDateLtUCIExitDate"))";
-        var viewValidateHospExitDateGtUCIExitDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateHospExitDateGtUCIExitDate"))";
-        var viewValidateUPCDateGtUCI = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateUPCDateGtUCI"))";
-        var viewValidateDeathDateGtUCIExitDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateDeathDateGtUCIExitDate"))";
-        var viewValidateOnsetFeverDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateOnsetFeverDate"))";
-        var viewValidateDiagnosticDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateDiagnosticDate"))";
-        var viewValidateSampleDateGtOnsetFeverDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSampleDateGtOnsetFeverDate"))";
-        var viewValidateShipDateGtSampleDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateShipDateGtSampleDate"))";
-        var viewValidateSample2DateGtSample1Date = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSample2DateGtSample1Date"))";
-        var viewValidateSample2DateLtOnsetDate =  "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSample2DateLtOnsetDate"))";
-        var viewValidateSample3DateGtSample1Date = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSample3DateGtSample1Date"))";
-        var viewValidateSample3DateGtSample2Date = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSample3DateGtSample2Date"))";
-        var viewValidateSample3DateLtOnsetDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSample3DateLtOnsetDate"))";
-        var viewValidateExitDateBeforeDestin = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateExitDateBeforeDestin"))";
-        var viewValidateOnsetInvalid = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateOnsetInvalid"))";
-        var viewValidateOnsetLtNotiDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateOnsetLtNotiDate"))";
-        var viewValidateDiagnosticDateGtOnsetFeverDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateDiagnosticDateGtOnsetFeverDate"))";
-        var viewValidateSelectSypmtom = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSelectSypmtom"))";
-        var viewValidateHospDateRequired = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateHospDateRequired"))";
-        var viewValidateHospDateInvalid = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateHospDateInvalid"))";
-        var viewValidateHospDateGtOnsetDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateHospDateGtOnsetDate"))";
-        var viewValidateHospExitDateGtHospDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateHospExitDateGtHospDate"))";
-        var viewValidateDeathDateRequired = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateDeathDateRequired"))";
-        var viewValidateDeathDateInvalid = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateDeathDateInvalid"))";
-        var viewValidateDeathDateGtOnsetDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateDeathDateGtOnsetDate"))";
-        var viewValidateDeatDateGtHospDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateDeatDateGtHospDate"))";
-        var viewValidateExitDateRequired = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateExitDateRequired"))";
-        var viewValidateUPCRequired = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateUPCRequired"))";
-        var viewValidateSampleInfoRequired = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSampleInfoRequired"))";
-        var viewValidateSampleDateRequired = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSampleDateRequired"))";
-        var viewValidateSampleDateInvalid = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSampleDateInvalid"))";
-        var viewValidateSampleDateGtOnsetDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSampleDateGtOnsetDate"))";
-        var viewValidateSentSampleDateGtSampleDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSentSampleDateGtSampleDate"))";
-        var viewValidateSampleTypeRequired = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSampleTypeRequired"))";
-        var viewValidateCloseDateRequired = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateCloseDateRequired"))";
-        var viewValidateCloseDateInvalid = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateCloseDateInvalid"))";
-        var viewValidateCloseDateGtLabDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateCloseDateGtLabDate"))";
-        var viewValidateRUN = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateRUN"))";
-        var viewValidateRUNSinDash = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateRUNSinDash"))";
-        var viewValidateRUNNotValid = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateRUNNotValid"))";
-        var viewValidateSavedInfo = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSavedInfo"))";
-        var viewValidateSavedRecord = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSavedRecord"))";
+        var msgConfirmationDocumentTypeNumberRequired = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgConfirmationDocumentTypeNumberRequired")))";
+        var msgValidationPacientInfoMissing = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationPacientInfoMissing")))";
+        var msgValidationServerError = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationServerError")))";
+        var msgValidationInstitutionRequired = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationInstitutionRequired")))";
+        var msgValidationGenarationYearRequired = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationGenarationYearRequired")))";
+        var msgValidationReportRestrictionCriteriaRequired = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationReportRestrictionCriteriaRequired")))";
+        var msgValidationReports = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationReports")))";
+        var msgValidationGestationalWeekNum = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationGestationalWeekNum")))";
+        var msgValidationGestationalWeekLt40 = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationGestationalWeekLt40")))";
+        var msgValidationNotificationDateEnter = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationNotificationDateEnter")))";
+        var msgValidationNotificationDateGtFeverDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationNotificationDateGtFeverDate")))";
+        var msgValidationAntiviralDateEnter = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationAntiviralDateEnter")))";
+        var msgValidationAntiviralDateRequired = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationAntiviralDateRequired")))";
+        var msgValidationAntiviralDateInvalid = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationAntiviralDateInvalid")))";
+        var msgValidationAntiviralDateGtFeverDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationAntiviralDateGtFeverDate")))";
+        var msgValidationNotificationDateGtHospDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationNotificationDateGtHospDate")))";
+        var msgValidationHospDateGtFeverDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationHospDateGtFeverDate")))";
+        var msgValidationHospExDateGtHospDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationHospExDateGtHospDate")))";
+        var viewValidateHospDateLtUCIDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateHospDateLtUCIDate")))";
+		var viewValidateCountryRequired = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateCountryRequired")))";
+		var viewValidateComuneRequired = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateComuneRequired")))";
+        var viewConfirmExit = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewConfirmExit")))";
+        var viewValidateHospitalizationDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateHospitalizationDate")))";
+        var viewValidateHospDateLtDefDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateHospDateLtDefDate")))";
+        var viewValidateExitDateLtDefDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateExitDateLtDefDate")))";
+        var viewValidateHospDateMandatory = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateHospDateMandatory")))";
+        var viewValidateExitDateGtUCIDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateExitDateGtUCIDate")))";
+        var viewValidateUCIAdmission = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateUCIAdmission")))";
+        var viewValidateHospDateLtUCIExitDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateHospDateLtUCIExitDate")))";
+        var viewValidateHospExitDateGtUCIExitDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateHospExitDateGtUCIExitDate")))";
+        var viewValidateUPCDateGtUCI = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateUPCDateGtUCI")))";
+        var viewValidateDeathDateGtUCIExitDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateDeathDateGtUCIExitDate")))";
+        var viewValidateOnsetFeverDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateOnsetFeverDate")))";
+        var viewValidateDiagnosticDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateDiagnosticDate")))";
+        var viewValidateSampleDateGtOnsetFeverDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSampleDateGtOnsetFeverDate")))";
+        var viewValidateShipDateGtSampleDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateShipDateGtSampleDate")))";
+        var viewValidateSample2DateGtSample1Date = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSample2DateGtSample1Date")))";
+        var viewValidateSample2DateLtOnsetDate =  "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSample2DateLtOnsetDate")))";
+        var viewValidateSample3DateGtSample1Date = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSample3DateGtSample1Date")))";
+        var viewValidateSample3DateGtSample2Date = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSample3DateGtSample2Date")))";
+        var viewValidateSample3DateLtOnsetDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSample3DateLtOnsetDate")))";
+        var viewValidateExitDateBeforeDestin = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateExitDateBeforeDestin")))";
+        var viewValidateOnsetInvalid = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateOnsetInvalid")))";
+        var viewValidateOnsetLtNotiDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateOnsetLtNotiDate")))";
+        var viewValidateDiagnosticDateGtOnsetFeverDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateDiagnosticDateGtOnsetFeverDate")))";
+        var viewValidateSelectSypmtom = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSelectSypmtom")))";
+        var viewValidateHospDateRequired = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateHospDateRequired")))";
+        var viewValidateHospDateInvalid = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateHospDateInvalid")))";
+        var viewValidateHospDateGtOnsetDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateHospDateGtOnsetDate")))";
+        var viewValidateHospExitDateGtHospDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateHospExitDateGtHospDate")))";
+        var viewValidateDeathDateRequired = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateDeathDateRequired")))";
+        var viewValidateDeathDateInvalid = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateDeathDateInvalid")))";
+        var viewValidateDeathDateGtOnsetDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateDeathDateGtOnsetDate")))";
+        var viewValidateDeatDateGtHospDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateDeatDateGtHospDate")))";
+        var viewValidateExitDateRequired = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateExitDateRequired")))";
+        var viewValidateUPCRequired = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateUPCRequired")))";
+        var viewValidateSampleInfoRequired = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSampleInfoRequired")))";
+        var viewValidateSampleDateRequired = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSampleDateRequired")))";
+        var viewValidateSampleDateInvalid = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSampleDateInvalid")))";
+        var viewValidateSampleDateGtOnsetDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSampleDateGtOnsetDate")))";
+        var viewValidateSentSampleDateGtSampleDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSentSampleDateGtSampleDate")))";
+        var viewValidateSampleTypeRequired = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSampleTypeRequired")))";
+        var viewValidateCloseDateRequired = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateCloseDateRequired")))";
+        var viewValidateCloseDateInvalid = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateCloseDateInvalid")))";
+        var viewValidateCloseDateGtLabDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateCloseDateGtLabDate")))";
+        var viewValidateRUN = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateRUN")))";
+        var viewValidateRUNSinDash = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateRUNSinDash")))";
+        var viewValidateRUNNotValid = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateRUNNotValid")))";
+        var viewValidateSavedInfo = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSavedInfo")))";
+        var viewValidateSavedRecord = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSavedRecord")))";
 
 
         /* Labs AM */
-        var msgValidationTestDateInvalidDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationTestDateInvalidDate"))";
-        var msgValidationTestDateProcessAlert = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationTestDateProcessAlert"))";
-        var msgValidationTestBeginDateInvalidDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationTestBeginDateInvalidDate"))";
-        var msgValidationTestBeginDateProcessAlert = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationTestBeginDateProcessAlert"))";
-        var msgValidateRecDateRequired = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateRecDateRequired"))";
-        var msgValidateRecDateInvalid = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateRecDateInvalid"))";
-        var msgValidateRecDateShipDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateRecDateShipDate"))";
-        var msgValidateInsertResult = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateInsertResult"))";
-        var msgValidateFinalResultDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateFinalResultDate"))";
-        var msgValidateFinalResultDateInvalid = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateFinalResultDateInvalid"))";
-        var msgValidateFinalResultDateRecDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateFinalResultDateRecDate"))";
-        var msgValidateFinalResult = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateFinalResult"))";
-        var msgValidateProcessedReason = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessedReason"))";
-        var msgValidationTitleLab = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationTitleLab"))";
+        var msgValidationTestDateInvalidDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationTestDateInvalidDate")))";
+        var msgValidationTestDateProcessAlert = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationTestDateProcessAlert")))";
+        var msgValidationTestBeginDateInvalidDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationTestBeginDateInvalidDate")))";
+        var msgValidationTestBeginDateProcessAlert = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationTestBeginDateProcessAlert")))";
+        var msgValidateRecDateRequired = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateRecDateRequired")))";
+        var msgValidateRecDateInvalid = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateRecDateInvalid")))";
+        var msgValidateRecDateShipDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateRecDateShipDate")))";
+        var msgValidateInsertResult = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateInsertResult")))";
+        var msgValidateFinalResultDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateFinalResultDate")))";
+        var msgValidateFinalResultDateInvalid = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateFinalResultDateInvalid")))";
+        var msgValidateFinalResultDateRecDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateFinalResultDateRecDate")))";
+        var msgValidateFinalResult = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateFinalResult")))";
+        var msgValidateProcessedReason = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessedReason")))";
+        var msgValidationTitleLab = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationTitleLab")))";
 
-        var msgValidationSampleDateS1 = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationSampleDateS1"))";
-        var msgValidationSampleDateValidateS1 = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationSampleDateValidateS1"))";
-        var msgValidationSampleDateS2 = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationSampleDateS2"))";
-        var msgValidationSampleDateValidateS2 = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationSampleDateValidateS2"))";
-        var msgValidationSampleDateS3 = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationSampleDateS3"))";
-        var msgValidationSampleDateValidateS3 = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationSampleDateValidateS3"))";
+        var msgValidationSampleDateS1 = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationSampleDateS1")))";
+        var msgValidationSampleDateValidateS1 = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationSampleDateValidateS1")))";
+        var msgValidationSampleDateS2 = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationSampleDateS2")))";
+        var msgValidationSampleDateValidateS2 = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationSampleDateValidateS2")))";
+        var msgValidationSampleDateS3 = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationSampleDateS3")))";
+        var msgValidationSampleDateValidateS3 = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationSampleDateValidateS3")))";
 
 
-        var msgValidateProcessSelectLab = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessSelectLab"))";
-        var msgValidateProcessProcessLab = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessProcessLab"))";
-        var msgValidateProcessStartReceiptDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessStartReceiptDate"))";
-        var msgValidateProcessStartRequired = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessStartRequired"))";
-        var msgValidateProcessStartInvalid = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessStartInvalid"))";
-        var msgValidateProcessEndDateRequired = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessEndDateRequired"))";
-        var msgValidateProcessEndDateStartDate = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessEndDateStartDate"))";
-        var msgValidateProcessType = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessType"))";
-        var msgValidateProcessResult = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessResult"))";
-        var msgValidateProcessVirus = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessVirus"))";
-        var msgValidateProcessOtherVirus = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessOtherVirus"))";
-        var msgValidateProcessSubtype = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessSubtype"))";
-        var msgValidateProcessLinage = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessLinage"))";
-        var msgValidateProcessPCR3times = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessPCR3times"))";
-        var msgValidateProcessIFI3times = "@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessIFI3times"))";
+        var msgValidateProcessSelectLab = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessSelectLab")))";
+        var msgValidateProcessProcessLab = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessProcessLab")))";
+        var msgValidateProcessStartReceiptDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessStartReceiptDate")))";
+        var msgValidateProcessStartRequired = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessStartRequired")))";
+        var msgValidateProcessStartInvalid = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessStartInvalid")))";
+        var msgValidateProcessEndDateRequired = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessEndDateRequired")))";
+        var msgValidateProcessEndDateStartDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessEndDateStartDate")))";
+        var msgValidateProcessType = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessType")))";
+        var msgValidateProcessResult = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessResult")))";
+        var msgValidateProcessVirus = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessVirus")))";
+        var msgValidateProcessOtherVirus = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessOtherVirus")))";
+        var msgValidateProcessSubtype = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessSubtype")))";
+        var msgValidateProcessLinage = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessLinage")))";
+        var msgValidateProcessPCR3times = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessPCR3times")))";
+        var msgValidateProcessIFI3times = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessIFI3times")))";
 
 
         /* Catalogos de Laboratorio*/
@@ -4229,7 +4229,7 @@
                     sortname: 'DateHosp',
                     viewrecords: true,
                     sortorder: 'desc',
-                    caption: " @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgCaselist"))",
+                    caption: "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgCaselist")))",
                     width: 1000,
                     height: "100%",
                     editurl: '@Url.Action("EditFluCase", "cases")',
@@ -4369,7 +4369,7 @@
                     sortname: 'DateHosp',
                     viewrecords: true,
                     sortorder: 'desc',
-                    caption: " @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgCaselist_Pend"))",
+                    caption: "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgCaselist_Pend")))",
                     width: 1000,
                     height: "100%",
                     editurl: '@Url.Action("EditFluCase", "cases")',
