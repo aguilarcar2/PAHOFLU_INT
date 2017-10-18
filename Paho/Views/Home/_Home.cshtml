@@ -890,44 +890,7 @@
                             <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
                         </button>
                         <div id="vacunacion" class="collapse in">
-							@if (@ViewBag.UsrCtry == 7 || @ViewBag.UsrCtry == 9 || @ViewBag.UsrCtry == 3 ){
-                            <div class="row rowform">
-                                <div class='input-group col-md-12'>
-                                    <span class="input-group-addon">
-                                         @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelVaccineSourceRecord")) <font color="#FF0000">*</font>
-                                    </span>
-                                    @*<select id="VaccinFuente" name="VaccinFuente" class="form-control" style="max-width: 345px" data-bind='value: VaccinFuente'>
-                                        @if (ViewBag.UsrCtry != 7)
-                                        {
-                                            <option value="0">Seleccionar...</option>
-                                            <option value="9">Tarjeta de vacunación revisado físicamente</option>
-                                            <option value="10">Registro nominal (papel)</option>
-                                            <option value="11">Registro nacional nominal (electrónico)</option>
-                                            <option value="12">Historia clínica</option>
-                                            <option value="13">Otros registros de inmunización</option>
-                                            <option value="14">Tarjeta de vacunación leído por teléfono</option>
-                                            <option value="15">Informe verbal sin tarjeta de vacunación</option>
-                                            <option value="16">Sin información</option>
-                                        }
-                                        else
-                                        {
-                                            <option value="0">Seleccionar...</option>
-                                            <option value="9">Tarjeta de vacunación revisado físicamente</option>
-                                            <option value="11">Registro nacional nominal (electrónico)</option>
-                                            <option value="12">Historia clínica</option>
-                                            <option value="16">Sin información</option>
-                                        }
 
-                                    </select>*@
-
-                                    <select id="nativepeople" class="form-control" data-bind="options: CVS,
-                                            optionsText: 'Name',
-                                            optionsValue: 'Id',
-							                optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelVaccineSourceRecordSelect"))',
-                                            value: VaccinFuente"></select>
-                                </div>
-                            </div>
-							}
                             <div class="row rowform">
                                 <div class='col-md-12'>
                                     <table class="table-hover table-bordered">
@@ -1133,6 +1096,22 @@
                                     </table>
                                 </div>
                             </div>
+                            @if (@ViewBag.UsrCtry == 7 || @ViewBag.UsrCtry == 9 || @ViewBag.UsrCtry == 3)
+                            {
+                                <div class="row rowform">
+                                    <div class='input-group col-md-12'>
+                                        <span class="input-group-addon">
+                                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelVaccineSourceRecord")) <font color="#FF0000">*</font>
+                                        </span>
+
+                                        <select id="nativepeople" class="form-control" data-bind="options: CVS,
+                                            optionsText: 'Name',
+                                            optionsValue: 'Id',
+							                optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelVaccineSourceRecordSelect"))',
+                                            value: VaccinFuente"></select>
+                                    </div>
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>

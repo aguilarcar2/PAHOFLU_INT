@@ -91,27 +91,27 @@
         self.CalculateEW("HospAmDate", self.HospEW, "");
 
         //if (self.UsrCountry() == 7 && self.UsrCountry() == 3) {
-            var current_value = typeof (newHospAmDate) == "object" ? newHospAmDate : parseDate(newHospAmDate, date_format_);
-            var date_hospital_ = typeof (app.Views.Contact.HospitalDate()) == "object" ? app.Views.Contact.HospitalDate() : parseDate(app.Views.Contact.HospitalDate(), date_format_);
-            var date_fever_ = typeof (self.FeverDate()) == "object" ? self.FeverDate() : parseDate(self.FeverDate(), date_format_);
-            var date_hosp_disc_ = typeof (self.HospExDate()) == "object" ? self.HospExDate() : parseDate(self.HospExDate(), date_format_);
+        var current_value = typeof (newHospAmDate) == "object" ? newHospAmDate : parseDate(newHospAmDate, date_format_);
+        var date_hospital_ = typeof (app.Views.Contact.HospitalDate()) == "object" ? app.Views.Contact.HospitalDate() : parseDate(app.Views.Contact.HospitalDate(), date_format_);
+        var date_fever_ = typeof (self.FeverDate()) == "object" ? self.FeverDate() : parseDate(self.FeverDate(), date_format_);
+        var date_hosp_disc_ = typeof (self.HospExDate()) == "object" ? self.HospExDate() : parseDate(self.HospExDate(), date_format_);
 
-            if (self.hasReset() != true) {
-                if (date_hospital_ == null || date_hospital_ == "") {
-                    alert(msgValidationNotificationDateEnter);
+        if (self.hasReset() != true) {
+            if (date_hospital_ == null || date_hospital_ == "") {
+                alert(msgValidationNotificationDateEnter);
+                self.HospAmDate("");
+            } else {
+                if (moment(current_value).isAfter(moment(date_hospital_))) {
+                    alert(msgValidationNotificationDateGtHospDate);
                     self.HospAmDate("");
-                } else {
-                    if (moment(current_value).isAfter(moment(date_hospital_))) {
-                        alert(msgValidationNotificationDateGtHospDate);
-                        self.HospAmDate("");
-                    }
-                    if (current_value != null && date_fever_ != null && moment(current_value).isBefore(moment(date_fever_), "days")) {
-                        alert(msgValidationHospDateGtFeverDate);
-                        self.HospAmDate("");
-                    }
+                }
+                if (current_value != null && date_fever_ != null && moment(current_value).isBefore(moment(date_fever_), "days")) {
+                    alert(msgValidationHospDateGtFeverDate);
+                    self.HospAmDate("");
                 }
             }
- //       }
+        }
+        //       }
 
     });
 
@@ -120,38 +120,41 @@
     self.HospExDate.subscribe(function (newHospExDate) {
 
         //if (self.UsrCountry() == 7 && self.UsrCountry() == 3) {
-            var current_value = typeof (newHospExDate) == "object" ? newHospExDate : parseDate(newHospExDate, date_format_);
-            var date_hospital_ = typeof (self.HospAmDate()) == "object" ? self.HospAmDate() : parseDate(self.HospAmDate(), date_format_);
+        var current_value = typeof (newHospExDate) == "object" ? newHospExDate : parseDate(newHospExDate, date_format_);
+        var date_hospital_ = typeof (self.HospAmDate()) == "object" ? self.HospAmDate() : parseDate(self.HospAmDate(), date_format_);
 
-            if (current_value == null)
-            {
-                $("a[href*='tab-case']").hide();
-                $("#tab-case").hide();
-                $("#CaseStatus").attr("disabled", true);
-                //self.Destin("");
-            } else if (self.Destin() == "" ){
-                $("a[href*='tab-case']").hide();
-                $("#tab-case").hide();
-                $("#CaseStatus").attr("disabled", true);
+        if (current_value == null)
+        {
+            $("a[href*='tab-case']").hide();
+            $("#tab-case").hide();
+            $("#CaseStatus").attr("disabled", true);
+            //self.Destin("");
+        } else if (self.Destin() == "" ){
+            $("a[href*='tab-case']").hide();
+            $("#tab-case").hide();
+            $("#CaseStatus").attr("disabled", true);
+        } else if (self.UsrCountry() == 9 && self.Destin() == 'D') {
+            self.FalleDate(current_value);
+        }
+        else {
+            $("a[href*='tab-case']").show();
+            $("#tab-case").show();
+            $("#tabs").tabs("refresh");
+            $("#CaseStatus").attr("disabled", false);
+        }
+
+        if (self.hasReset() != true) {
+            if (date_hospital_ == null || date_hospital_ == "") {
+                alert(msgValidationNotificationDateEnter);
+                self.HospExDate("");
             } else {
-                $("a[href*='tab-case']").show();
-                $("#tab-case").show();
-                $("#tabs").tabs("refresh");
-                $("#CaseStatus").attr("disabled", false);
-            }
-
-            if (self.hasReset() != true) {
-                if (date_hospital_ == null || date_hospital_ == "") {
-                    alert(msgValidationNotificationDateEnter);
+                if (moment(current_value).isBefore(moment(date_hospital_), "days")) {
+                    alert(msgValidationHospExDateGtHospDate);
                     self.HospExDate("");
-                } else {
-                    if (moment(current_value).isBefore(moment(date_hospital_), "days")) {
-                        alert(msgValidationHospExDateGtHospDate);
-                        self.HospExDate("");
-                    }
                 }
             }
-//        }
+        }
+        //        }
     });
 
     self.Destin = ko.observable("");
@@ -168,8 +171,8 @@
         var date_UCI_ = typeof (self.ICUAmDate()) == "object" ? self.ICUAmDate() : parseDate(self.ICUAmDate(), date_format_);
         var date_UCI_ex = typeof (self.ICUExDate()) == "object" ? self.ICUExDate() : parseDate(self.ICUExDate(), date_format_);
 
+      
         if (self.hasReset() != true) {
-
             if (date_hospital_ == null || date_hospital_ == "") {
                 alert(viewValidateHospitalizationDate);
                 self.FalleDate("");
@@ -186,14 +189,24 @@
                 }
 
             }
+            
         }
 
 
     });
 
     self.ViewFallecido = ko.computed(function () {
-        return (self.Destin() == 'D') ? true : false;
-        
+        if (self.UsrCountry() != 9 && self.Destin() == 'D') {
+            return true;
+        } 
+        else if (self.UsrCountry() == 9 && self.Destin() == 'D')
+        {
+            self.FalleDate(self.HospExDate());
+            return false;
+        } else {
+            return false;
+        }
+        //return (self.Destin() == 'D') ? (if (self.UsrCountry() != 9) {  return true} else  { return false;} ): false;  
     }, self);
    
     self.ViewRefer = ko.computed(function () {
@@ -684,7 +697,6 @@
 
     self.Destin.subscribe(function (NewDestin) {
         if (app.Views.Contact.SurvSARI() == true && app.Views.Contact.IsSurv() != "" && NewDestin != null && NewDestin != "") {
-            console.log(self.HospExDate());
             if (self.HospExDate() == "" || self.HospExDate() == "undefined" || self.HospExDate() == null)
             {
                 alert(viewValidateExitDateBeforeDestin);
@@ -699,24 +711,29 @@
                 $("#tab-case").show();
                 $("#CaseStatus").attr("disabled", false);
                 $("#tabs").tabs("refresh");
+                if (self.UsrCountry() == 9 && NewDestin == 'D') { self.FalleDate(self.HospExDate()); }
             } else if (NewDestin != "" && self.IsSample() === "true" && app.Views.Lab.FinalResult() != "" && typeof app.Views.Lab.FinalResult() != "undefined") {
                 $("a[href*='tab-case']").show();
                 $("#tab-case").show();
                 $("#CaseStatus").attr("disabled", false);
                 $("#tabs").tabs("refresh");
+                if (self.UsrCountry() == 9 && NewDestin == 'D') { self.FalleDate(self.HospExDate()); }
             } else if (self.IsSample() === "true" && app.Views.Lab.FinalResult() != "" && typeof app.Views.Lab.FinalResult() != "undefined") {
                 $("a[href*='tab-case']").show();
                 $("#tab-case").show();
                 $("#tabs").tabs("refresh");
+                if (self.UsrCountry() == 9 && NewDestin == 'D') { self.FalleDate(self.HospExDate()); }
             } else if (self.IsSample() === "true" && app.Views.Lab.Processed() === "false" ) {
                     $("a[href*='tab-case']").show();
                     $("#tab-case").show();
                     $("#CaseStatus").attr("disabled", false);
                     $("#tabs").tabs("refresh");
+                    if (self.UsrCountry() == 9 && NewDestin == 'D') { self.FalleDate(self.HospExDate()); }
             } else if (app.Views.Contact.Id() != null) {
                 $("a[href*='tab-case']").hide();
                 $("#tab-case").hide();
                 $("#CaseStatus").attr("disabled", true);
+                if (self.UsrCountry() == 9 && NewDestin == 'D') { self.FalleDate(self.HospExDate()); }
             }
             //$("#tabs").tabs("refresh");
 

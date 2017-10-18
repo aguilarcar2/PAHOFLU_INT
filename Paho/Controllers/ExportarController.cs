@@ -408,7 +408,7 @@ namespace Paho.Controllers
                 //return new FileStreamResult(ms, "application/xlsx")
                 //ExcelPackage.ExportAsFixedFormat(Microsoft.Office.Interop.Excel.XlFixedFormatType.xlTypePDF, outputPath);
 
-                string nombFile = reportCountry.description == "" ? "Exportable_" : reportCountry.description.ToString().Replace("%", "_").Replace(" ", "_") + "_";            //#### CAFQ
+                 string nombFile = reportCountry.description == "" ? "Exportable_" : reportCountry.description.ToString().Replace("%", "_").Replace(" ", "_") + "_";            //#### CAFQ
                 if (reportTemplate == "I1")
                     nombFile = "IndicDesempenio_";
 
