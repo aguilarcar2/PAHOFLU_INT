@@ -533,7 +533,7 @@ namespace Paho.Controllers
                                        id = x.id_D.ToString(),
                                        cell = new string[]
                                      {
-                                         "<img src='/Content/themes/base/images/" + x.surv_ID.ToString() + "_EN.png' alt='"+ (x.surv_ID == 1 ? "SARI":"ILI") + "'/>",
+                                         "<img src='/Content/themes/base/images/" + x.surv_ID.ToString() + "_" + user.Institution.Country.Language.ToString() + ".png' alt='"+ (x.surv_ID == 1 ? "SARI":"ILI") + "'/>",
                                          x.id_D.ToString(),
                                          x.H_D.ToString("d", CultureInfo.CreateSpecificCulture("es-GT")),
                                          x.LN_D,
