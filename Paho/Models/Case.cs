@@ -486,8 +486,8 @@ namespace Paho.Models
         public string description { get; set; }
         [Display(Name = "ENG:")]
         public string ENG { get; set; }
-        [Key]
         [Display(Name = "Valor:")]
+        [Key]
         public string value { get; set; }
         public int? id_country { get; set; }
         [Display(Name = "Orden:")]
@@ -536,7 +536,14 @@ namespace Paho.Models
 
     // Catalogos generales
 
+    public class CatStatusCase
+    {
 
+        public int ID { get; set; }
+        public string SPA { get; set; }
+        public string ENG { get; set; }
+        public int? orden { get; set; }
+    }
     // Termina catalogos generales
 
 
@@ -922,6 +929,15 @@ namespace Paho.Models
         public virtual ICollection<CaseLabTest> CaseLabTests { get; set; }
         public virtual Hospital Hospital { get; set; }
         public virtual Lab Lab { get; set; }
+        [ForeignKey("FinalResultVirusTypeID")]
+        public virtual CatVirusType CatVirusType_FR1 { get; set; }
+        [ForeignKey("FinalResultVirusTypeID_2")]
+        public virtual CatVirusType CatVirusType_FR2 { get; set; }
+        [ForeignKey("FinalResultVirusTypeID_3")]
+        public virtual CatVirusType CatVirusType_FR3 { get; set; }
+
+        [ForeignKey("CaseStatus")]
+        public virtual CatStatusCase CatStatusCase { get; set; }
 
         public int? MuestraID1 { get; set; }
         public int? MuestraID2 { get; set; }
@@ -987,10 +1003,10 @@ namespace Paho.Models
         public virtual CatVirusType CatVirusType { get; set; }
         [ForeignKey("VirusSubTypeID")]
         public virtual CatVirusSubType CatVirusSubType { get; set; }
-        [ForeignKey("TestResultID")]
-        //[InverseProperty("value")]
-        public virtual CatTestResult CatTestResult { get; set; }
-        public virtual TestResult TestResult { get; set; }
+        //[ForeignKey("TestResultID")]
+        ////[InverseProperty("value")]
+        //public virtual CatTestResult CatTestResultSamples { get; set; }
+        //public virtual TestResult TestResult { get; set; }
 
 
 
@@ -1295,6 +1311,7 @@ namespace Paho.Models
         public DbSet<CatVaccinSourceConf> CatVaccinSourceConf { get; set; }
         public DbSet<CatPopulationInstitution> CatPopulationInstitutions { get; set; }
         public DbSet<CatPopulationInstitutionDetail> CatPopulationInstitutionsDetails { get; set; }
+        public DbSet<CatStatusCase> CatStatusCase { get; set; }
 
         public DbSet<CaseLabTest> CaseLabTests { get; set; }
         public DbSet<CaseSummary> CaseSummaries { get; set; }

@@ -345,10 +345,10 @@
     <Content Include="Content\moment-datepicker\datepicker.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\Site.css" />
-    <Content Include="Content\themes\base\images\1_EN.png" />
-    <Content Include="Content\themes\base\images\1_ES.png" />
-    <Content Include="Content\themes\base\images\2_EN.png" />
-    <Content Include="Content\themes\base\images\2_ES.png" />
+    <Content Include="Content\themes\base\images\1_ENG.png" />
+    <Content Include="Content\themes\base\images\1_SPA.png" />
+    <Content Include="Content\themes\base\images\2_ENG.png" />
+    <Content Include="Content\themes\base\images\2_SPA.png" />
     <Content Include="Content\themes\base\images\ajax-loader.gif" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\BlueHorizontalSPANISH.png" />

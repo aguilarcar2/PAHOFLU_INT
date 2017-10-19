@@ -75,7 +75,7 @@ $(document).ready(function () {
                 $.ajax({
                     url : "/cases/GetCIE10",
                     type : "GET",
-                    data: { term: $('#DiagPrinAdm').val(), max: 15 },
+                    data: { term: $('#DiagPrinAdm').val(), max: 15, code: "-J"  },
                     dataType: "json",
                     async: true,
                     success: function (data) {
