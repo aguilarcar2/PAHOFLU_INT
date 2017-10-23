@@ -133,10 +133,12 @@
             $("a[href*='tab-case']").hide();
             $("#tab-case").hide();
             $("#CaseStatus").attr("disabled", true);
-        } else if (self.UsrCountry() == 9 && self.Destin() == 'D') {
-            self.FalleDate(current_value);
-        }
+        } 
         else {
+
+            if (self.UsrCountry() == 9 && self.Destin() == 'D') {
+                self.FalleDate(current_value);
+            }
             $("a[href*='tab-case']").show();
             $("#tab-case").show();
             $("#tabs").tabs("refresh");
@@ -480,9 +482,15 @@
                 $("#CaseStatus").attr("disabled", false);
             } else {
                 if (app.Views.Contact.IsSurv() == 2) {
+                    $("a[href*='tab-case']").show();
+                    $("#tab-case").show();
                     $("#CaseStatus").attr("disabled", false);
+                    $("#tabs").tabs("refresh");
                 } else {
+                    $("a[href*='tab-case']").hide();
+                    $("#tab-case").hide();
                     $("#CaseStatus").attr("disabled", true);
+                    $("#tabs").tabs("refresh");
                 }
             }
         }
@@ -978,6 +986,11 @@
         $.getJSON(app.dataModel.getHospitalUrl, { id: id, institutionId: app.Views.Home.selectedInstitutionId() }, function (data, status) {
                 self.CHNum(data.CHNum);
                 self.hasReset(true);
+                if (data.IsSample == true) {
+                    self.IsSample("true");
+                } else if (data.IsSample == false) {
+                    self.IsSample("false");
+                } else self.IsSample("");
                 if (data.FeverDate)
                     self.FeverDate(moment(data.FeverDate).format(date_format_moment));
                 else self.FeverDate(null);
@@ -1060,11 +1073,7 @@
                 else self.ShipDate3(null);
                 self.LabId3(data.LabId3);
 
-               if (data.IsSample == true){
-                self.IsSample("true");
-               }else if (data.IsSample == false){
-                   self.IsSample("false");
-               } else self.IsSample("");
+
 
                 self.Adenopatia(data.Adenopatia);
                 self.AntecedentesFiebre(data.AntecedentesFiebre);
