@@ -158,16 +158,12 @@
                     <input id = "SNEndDate" type='text' class="form-control" data-bind="datepicker: SNEndDate" />
                 </div>
             </div>
-            <div class="col-md-2">
-                <div class='input-group'>
-                    <button id="search" type="button" class="btn btn-primary" data-bind="click: SearchFlucases"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_btnSearch"))</button>
-                </div>
-            </div>
+
 
         </div>
         }
         <div class="row" style="margin-bottom:7px; margin-top:7px;" data-bind="visible: shouldcaselist">
-            @if(ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 3  ){
+
 			<div class="col-md-4">
                 <div class='input-group'>
                     <span class="input-group-addon">
@@ -175,8 +171,12 @@
                     </span>
                     <input id = "SRecordId" type='text' class="form-control" />
                 </div>
-            </div>            
-			}            
+            </div>   
+            <div class="col-md-2">
+                <div class='input-group'>
+                    <button id="search" type="button" class="btn btn-primary" data-bind="click: SearchFlucases"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_btnSearch"))</button>
+                </div>
+            </div>                     
         </div>
 	</div>
 </div>
