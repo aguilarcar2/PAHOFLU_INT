@@ -74,6 +74,13 @@
                             <td class="col-md-1">  @Html.TextBox("Pop_PobTot", null, new { maxlength = "8", @Value = @AGC.PopulationT, @class = "form-control", @readonly = "", @type = "number" }) </td>
                         </tr>
                     }
+                    <tr>
+                        <td class="col-md-3">  Total  </td>
+                        <td class="col-md-1">  @Html.TextBox("Pop_PobTFemTot", null, new { maxlength = "8", @class = "form-control", @readonly = "", @type = "number" }) </td>
+                        <td class="col-md-1">  @Html.TextBox("Pop_PobTMasTot", null, new { maxlength = "8", @class = "form-control", @readonly = "", @type = "number" }) </td>
+                        <td class="col-md-1">  @Html.TextBox("Pop_PobTTotTot", null, new { maxlength = "8", @class = "form-control", @readonly = "", @type = "number" }) </td>
+
+                    </tr>
 
                 </tbody>
             </table>
@@ -88,5 +95,5 @@
 }
 
 <div>
-    @Html.ActionLink(((Paho.Controllers.CatPopulationInstitutionsController)this.ViewContext.Controller).getMsg("msgViewCatPopulation_RegresoListaOpci"), "Index")
+    @Html.ActionLink(((Paho.Controllers.CatPopulationInstitutionsController)this.ViewContext.Controller).getMsg("msgViewCatPopulation_RegresoListaOpci"), "Index", new object { }, new { @class = "btn btn-primary" })
 </div>

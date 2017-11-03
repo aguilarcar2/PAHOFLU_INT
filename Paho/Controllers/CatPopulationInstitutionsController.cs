@@ -320,6 +320,7 @@ namespace Paho.Controllers
 
             var institutionsItems = instQuery.ToList();
 
+            if (institutionsItems.Count > 1)
             institutionsItems.Insert(0, new Hospital { ID = 0, Name = "-- Seleccione -- " });
 
             ViewBag.id_institution = new SelectList(institutionsItems, "ID", "Name", selectedInstitution);
