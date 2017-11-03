@@ -133,17 +133,11 @@
 
     self.EnableVirusTypes = ko.computed(function () {
         if (((self.TestResultID() != "U" && self.TestResultID() != "N" && self.EnableCHI()) || (self.TestResultID() != "U" && self.DisableCHI())) && self.TestResultID() != "" && typeof self.TestResultID() != "undefined") {
-            if (self.TestType() == 1 && self.TestResultID() == "N"){
-                return false;
-            } else {
-                //if (self.TestType() == 1)
-                //    $(this).siblings('select')
-                //          .find('option')
-                //          .filter(function () {
-                //              return $(this).val() === val && $(this).val() !== '';
-                //          })
+            //if (self.TestType() == 1 && self.TestResultID() == "N"){  // Desactivado por requerimiento de RRR y Suriname porque si les interesa ingresar cuando es negativo
+            //    return false;
+            //} else {
                 return true;
-            }   
+            //}   
         }
         else {
             self.VirusTypeID("");

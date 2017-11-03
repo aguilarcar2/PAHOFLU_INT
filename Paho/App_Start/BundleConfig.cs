@@ -39,6 +39,10 @@ namespace Paho
                 "~/Scripts/app/printtest.viewmodel.js",
                 "~/Scripts/app/_run.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/catalog-population").Include(
+                "~/Scripts/app/catalog.population.js"
+                ));
+
             bundles.Add(new ScriptBundle("~/bundles/catalog-institution").Include(
                 "~/Scripts/app/catalog.institution.js"
                 ));
