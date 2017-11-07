@@ -10,8 +10,8 @@ function PrintTestViewModel(app, dataModel) {
 	self.StartDate = ko.observable(null);
 	self.EndDate = ko.observable(null);
 	self.Generate = function (SampleNumber, data ) {
-	    console.log(data);
-	    var namevalues = { Report: "ExportLab", CountryID: app.Views.Home.selectedCountryId() ? app.Views.Home.selectedCountryId() : app.Views.Home.UsrCountry(), InstitutionID: app.Views.Home.selectedInstitutionId() > 0 ? app.Views.Home.selectedInstitutionId() : app.Views.Lab.LabsResult()[0].Id, RecordID: app.Views.Contact.Id(), NumSample: SampleNumber > 0 ? SampleNumber : 1 }
+	    console.log(app.Views.Home.selectedInstitutionId());
+	    var namevalues = { Report: SampleNumber == "record" ? "Cases" : "ExportLab", CountryID: app.Views.Home.selectedCountryId() ? app.Views.Home.selectedCountryId() : app.Views.Home.UsrCountry(),  InstitutionID: app.Views.Home.selectedInstitutionId() > 0  ? app.Views.Home.selectedInstitutionId() :  SampleNumber == "record" ? "" : app.Views.Lab.LabsResult()[0].Id,  RecordID: app.Views.Contact.Id(), NumSample: SampleNumber > 0 ? SampleNumber : 1 }
 
 	    if (app.Views.Lab.validate()) {
 	        app.Views.Lab.SaveLab();

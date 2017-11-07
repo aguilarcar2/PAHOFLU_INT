@@ -69,7 +69,7 @@ namespace Paho.Controllers
                     catalogo = catalogo.OrderByDescending(s => s.month_end);
                     break;
                 default:
-                    catalogo = catalogo.OrderBy(s => s.AgeGroup);
+                    catalogo = catalogo.OrderBy(s => s.month_begin);
                     break;
             }
 
