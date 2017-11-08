@@ -390,7 +390,6 @@ namespace Paho.Controllers
                             // Empieza la impresion de la ficha fisica
                             else if (storedProcedure == "Cases"){
 
-                                bool hasMyColumn = false;
                                 // Datos de vigilancia
                                 if ((reader.GetSchemaTable().Select("ColumnName = 'Vigilancia'").Length > 0))
                                     if (reader.GetValue(reader.GetOrdinal("Vigilancia")).ToString().ToUpper() == "IRAG" || reader.GetValue(reader.GetOrdinal("Vigilancia")).ToString().ToUpper() == "SARI")
