@@ -2565,30 +2565,30 @@ namespace Paho.Controllers
             datosID.Add(nombPais + " - " + year.ToString());                  // Titulo
 
             if (nDato2[0] != 0)
-                datosID.Add((nDato1[0] / nDato2[0] * 100).ToString("#,##0.0", CultureInfo.InvariantCulture));
+                datosID.Add((nDato1[0] / nDato2[0] * 100).ToString("#,##0", CultureInfo.InvariantCulture));
             else
                 datosID.Add("0");
 
             datosID.Add("0");                                               // Grupos Etareos
 
             if (nDato1[0] != 0)
-                datosID.Add((nDato4[0] / nDato1[0] * 100).ToString("#,##0.0", CultureInfo.InvariantCulture));
+                datosID.Add((nDato4[0] / nDato1[0] * 100).ToString("#,##0", CultureInfo.InvariantCulture));
             else
                 datosID.Add("0");
 
             if (nDato8[0] != 0)
-                datosID.Add((nDato5[0] / nDato8[0] * 100).ToString("#,##0.0", CultureInfo.InvariantCulture));
+                datosID.Add((nDato5[0] / nDato8[0] * 100).ToString("#,##0", CultureInfo.InvariantCulture));
             else
                 datosID.Add("0");
 
             if (nDato1[0] != 0)
-                datosID.Add((nDato6[0] / nDato1[0] * 100).ToString("#,##0.0", CultureInfo.InvariantCulture));
+                datosID.Add((nDato6[0] / nDato1[0] * 100).ToString("#,##0", CultureInfo.InvariantCulture));
             else
                 datosID.Add("0");
 
-            datosID.Add((nDato9[0]).ToString("#,##0.0", CultureInfo.InvariantCulture));
-            datosID.Add((nDato10[0]).ToString("#,##0.0", CultureInfo.InvariantCulture));
-            datosID.Add((nDato11[0]).ToString("#,##0.0", CultureInfo.InvariantCulture));
+            datosID.Add((nDato9[0]).ToString("#,##0", CultureInfo.InvariantCulture));
+            datosID.Add((nDato10[0]).ToString("#,##0", CultureInfo.InvariantCulture));
+            datosID.Add((nDato11[0]).ToString("#,##0", CultureInfo.InvariantCulture));
 
             /*decimal nTemp = 0;
             for (int nI = 0; nI <= 5; ++nI)
@@ -2649,14 +2649,15 @@ namespace Paho.Controllers
                             }
                             else
                             {
-                                if (reader.GetValue(0).ToString() == "")
+                                /*if (reader.GetValue(0).ToString() == "")
                                 {
                                     nResuOut[0] = Convert.ToDecimal(0);
                                 }
                                 else
                                 {
                                     nResuOut[0] = Convert.ToDecimal(reader.GetValue(0));
-                                }
+                                }*/
+                                nResuOut[0] = (reader.GetValue(0).ToString() == "") ? Convert.ToDecimal(0) : Convert.ToDecimal(reader.GetValue(0));
                             }
                         }
                     }

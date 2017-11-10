@@ -1524,14 +1524,15 @@ namespace Paho.Controllers
                             }
                             else
                             {
-                                if (reader.GetValue(0).ToString() == "")
+                                /*if (reader.GetValue(0).ToString() == "")
                                 {
                                     nResuOut[0] = Convert.ToDecimal(0);
                                 }
                                 else
                                 {
                                     nResuOut[0] = Convert.ToDecimal(reader.GetValue(0));
-                                }
+                                }*/
+                                nResuOut[0] = (reader.GetValue(0).ToString() == "") ? nResuOut[0] = Convert.ToDecimal(0) : Convert.ToDecimal(reader.GetValue(0));
                             }
                         }
                     }
@@ -1621,13 +1622,13 @@ namespace Paho.Controllers
 
             if (_Unid == "%")
             {
-                cMeta = _Meta.ToString("##0.0", CultureInfo.InvariantCulture);
+                cMeta = _Meta.ToString("##0", CultureInfo.InvariantCulture);
                 cForma = cMeta + _Unid;
             }
 
             if (_Unid == "D")
             {
-                cMeta = _Meta.ToString("###.#", CultureInfo.InvariantCulture);
+                cMeta = _Meta.ToString("###", CultureInfo.InvariantCulture);
                 //cForma = (_Meta == 1) ? cMeta + " Día" : cMeta + " Días";
                 if (countryId == 25)
                     cForma = (_Meta == 1) ? cMeta + " Day" : cMeta + " Days";
