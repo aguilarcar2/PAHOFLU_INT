@@ -545,6 +545,17 @@
             //$("input[id*='IsSample']").prop('disabled', true);
     };
 
+    self.PDFViewer = function (id) {
+        $.ajax({
+            url: "serverSideFunctonWhichRetrivesPdfAsBase64",
+            type: "post",
+            data: { downloadHelperTransferData: transferData },
+            success: function (result) {
+                $("#object-pdf-shower").attr("data", result);
+            }
+        });
+    };
+
     self.OpenAlwaysLab = function () {
         //console.log("Home OpenAlwaysLab - frecord_lab -- " + self.flow_record() + ", finstitution_lab -- " + self.flow_institution() + ", dataStatement_lab -- " + self.DataStatement() + ", userRole " + app.Views.Home.UserRole() + ", Inst" + $("#ITy").val() + ", OpenAlways" + self.flow_open_always());
         if (app.Views.Contact.flow_close_case() == 99 && app.Views.Contact.flow_open_always() == true) {

@@ -23,14 +23,14 @@ namespace Paho.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetPrint(string Report, int CountryID, int? InstitutionID, int RecordID, int? NumSample)
+        public ActionResult GetPrint(string Report, int? CountryID, int? InstitutionID, int? RecordID, int? NumSample)
         {
             try
             {
                 var ms = new MemoryStream();
                 var pdfs = new MemoryStream();
                 //var user = UserManager.FindById(User.Identity.GetUserId());
-                int CountryID_ = CountryID;
+                int? CountryID_ = CountryID;
                 int? HospitalID_ = InstitutionID ?? 0;
                 int? RecordID_ = RecordID;
                 int? NumSample_ = NumSample;
@@ -173,7 +173,7 @@ namespace Paho.Controllers
             AssignValueCell(2, 2, excelWorksheet, reader_, "Id");
         }
 
-        private void AppendDataToExcel(int countryId, int? recordID, int? NumSample, int? hospitalId, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row)
+        private void AppendDataToExcel(int? countryId, int? recordID, int? NumSample, int? hospitalId, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row)
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
             var excelWorksheet = excelWorkBook.Worksheets[sheet];

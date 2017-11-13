@@ -344,6 +344,7 @@
     <Content Include="Content\KoGrid.css" />
     <Content Include="Content\moment-datepicker\datepicker.css" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\PDFViewer.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\themes\base\images\1_ENG.png" />
     <Content Include="Content\themes\base\images\1_SPA.png" />
@@ -362,6 +363,7 @@
     <Content Include="Content\themes\base\images\open.png" />
     <Content Include="Content\themes\base\images\PAHOimagen.gif" />
     <Content Include="Content\themes\base\images\PAHOlogo.gif" />
+    <Content Include="Content\themes\base\images\PDF.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -845,6 +847,8 @@
     <Content Include="Scripts\moment-datepicker.js" />
     <Content Include="Scripts\moment-with-langs.js" />
     <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\pdf.js" />
+    <Content Include="Scripts\pdf.worker.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\Routing.js" />

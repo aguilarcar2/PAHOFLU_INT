@@ -92,6 +92,11 @@ namespace Paho
 
             //bundles.Add(new ScriptBundle("~/bundles/d3library").Include(
             //  "~/Scripts/d3.js"));
+            bundles.Add(new ScriptBundle("~/bundles/pdfviewer").Include(
+            "~/Scripts/pdf.js",
+            "~/Scripts/pdf.worker.js"
+            ));
+
             bundles.Add(new ScriptBundle("~/bundles/d3library").Include(
             "~/Scripts/d3.js"));
 
@@ -125,7 +130,8 @@ namespace Paho
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                  "~/Content/bootstrap.css",
-                 "~/Content/Site.css"));
+                 "~/Content/Site.css",
+                 "~/Content/PDFViewer.css"));
 
             // Set EnableOptimizations to false for debugging. For more information,
             // visit http://go.microsoft.com/fwlink/?LinkId=301862
