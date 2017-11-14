@@ -194,8 +194,6 @@ namespace Paho.Controllers
             if (region_pais_usr > 0)
                 CaseViewModel.reg_pais_usr = db.Regions.Where(j => j.CountryID == user.Institution.CountryID && j.tipo_region == 3 && j.orig_country == user.Institution.cod_region_pais).FirstOrDefault().Name.ToString();
 
-
-
             // Catalogos del laboratorio
 
 
