@@ -2534,6 +2534,8 @@ namespace Paho.Controllers
             decimal[] nDato9 = new decimal[] { 0 };
             decimal[] nDato10 = new decimal[] { 0 };
             decimal[] nDato11 = new decimal[] { 0 };
+            decimal[] nDato12 = new decimal[] { 0 };
+            decimal[] nDato14 = new decimal[] { 0 };
 
             recuperarDatosIndDes(consString, languaje_country, countryId, 0, year, hospitalId, 0, 0, null, null, 0, 0, 1, 1, nDato1);
             recuperarDatosIndDes(consString, languaje_country, countryId, 0, year, hospitalId, 0, 0, null, null, 0, 0, 1, 2, nDato2);
@@ -2547,6 +2549,8 @@ namespace Paho.Controllers
             recuperarDatosIndDes(consString, languaje_country, countryId, 0, year, hospitalId, 0, 0, null, null, 0, 0, 1, 9, nDato9);
             recuperarDatosIndDes(consString, languaje_country, countryId, 0, year, hospitalId, 0, 0, null, null, 0, 0, 1, 10, nDato10);
             recuperarDatosIndDes(consString, languaje_country, countryId, 0, year, hospitalId, 0, 0, null, null, 0, 0, 1, 11, nDato11);
+            recuperarDatosIndDes(consString, languaje_country, countryId, 0, year, hospitalId, 0, 0, null, null, 0, 0, 1, 12, nDato12);
+            recuperarDatosIndDes(consString, languaje_country, countryId, 0, year, hospitalId, 0, 0, null, null, 0, 0, 1, 14, nDato14);
             //****
             string titulo = "";
             if (year != 0)
@@ -2589,6 +2593,8 @@ namespace Paho.Controllers
             datosID.Add((nDato9[0]).ToString("#,##0", CultureInfo.InvariantCulture));
             datosID.Add((nDato10[0]).ToString("#,##0", CultureInfo.InvariantCulture));
             datosID.Add((nDato11[0]).ToString("#,##0", CultureInfo.InvariantCulture));
+            datosID.Add((nDato12[0]).ToString("#,##0", CultureInfo.InvariantCulture));
+            datosID.Add((nDato14[0]).ToString("#,##0", CultureInfo.InvariantCulture));
 
             /*decimal nTemp = 0;
             for (int nI = 0; nI <= 5; ++nI)
@@ -2602,7 +2608,7 @@ namespace Paho.Controllers
             //**** metas
             string cMetas = ConfigurationManager.AppSettings["IndicadoresDesempenioMetas_" + countryId.ToString()];
             if (cMetas == null)
-                cMetas = "0:0:0:0:0:0";
+                cMetas = "0:0:0:0:0:0:0:0";
 
             string[] aMeta = cMetas.Split(':');
             for (int nI = 0; nI < aMeta.Length; ++nI)
