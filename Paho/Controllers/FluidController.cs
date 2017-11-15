@@ -134,11 +134,19 @@ namespace Paho.Controllers {
 
             if (institutions != null)
             {
-                FluidViewModel.Institutions = institutions.Select(i => new LookupView<Institution>()
+                var institutionDisplay = institutions.Select(i => new LookupView<Institution>()
                 {
                     Id = i.ID.ToString(),
                     Name = i.Name
-                }).ToArray();
+                }).ToList();
+
+                if (institutionDisplay.Count() > 1)
+                {
+                    //var all = new LookupView<Region> { Id = "0", Name = "-- Todo(a)s --" };
+                    var all = new LookupView<Institution> { Id = "0", Name = getMsg("msgGeneralMessageAll") };
+                    institutionDisplay.Insert(0, all);
+                }
+                FluidViewModel.Institutions = institutionDisplay;
             };
 
             //**** Link Dashboard

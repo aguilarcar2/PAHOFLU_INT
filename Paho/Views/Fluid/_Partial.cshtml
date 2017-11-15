@@ -29,8 +29,7 @@
                 <select id="Hospitals" class="form-control" data-bind="options: institutions,
                        optionsText: 'Name',
                        optionsValue: 'Id',
-                       value: selectedInstitutionId,
-                       optionsCaption: 'Select...'"></select>
+                       value: selectedInstitutionId"></select>
             </div>
         </div>
     </div>
@@ -91,5 +90,6 @@
     var countries = @Html.Raw(Json.Encode(Model.Countries));
     var institutions = @Html.Raw(Json.Encode(Model.Institutions));
     var CountryID = @Html.Raw(Model.CountryID);
+    var msgValidateInstitution = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateInstitution")))";
 </script>
 <!-- /ko -->

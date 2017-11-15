@@ -49,9 +49,15 @@ function FluidViewModel(app, dataModel) {
 
     self.exportar = function () {
 
-        var namevalues = { CountryID: self.selectedCountryId() ? self.selectedCountryId() : CountryID, HospitalID: self.selectedInstitutionId(), Year: self.Year(), WeekFrom: self.WeekFrom(), WeekTo: self.WeekTo() }
-        if (self.validate() == true)
-            window.open(app.dataModel.getFluid + "?" + $.param(namevalues, true), "_blank");
+        if (self.selectedInstitutionId() > 0) {
+            var namevalues = { CountryID: self.selectedCountryId() ? self.selectedCountryId() : CountryID, HospitalID: self.selectedInstitutionId(), Year: self.Year(), WeekFrom: self.WeekFrom(), WeekTo: self.WeekTo() }
+            if (self.validate() == true)
+                window.open(app.dataModel.getFluid + "?" + $.param(namevalues, true), "_blank");
+        } else {
+            alert(msgValidateInstitution);
+        }
+
+
     };
 
     self.url = ko.computed(function () {
