@@ -90,6 +90,6 @@
     var countries = @Html.Raw(Json.Encode(Model.Countries));
     var institutions = @Html.Raw(Json.Encode(Model.Institutions));
     var CountryID = @Html.Raw(Model.CountryID);
-    var msgValidateInstitution = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateInstitution")))";
+    var msgValidateInstitution = "@(Html.Raw(((Paho.Controllers.FluidController)this.ViewContext.Controller).getMsg("msgValidateInstitution")))";
 </script>
 <!-- /ko -->

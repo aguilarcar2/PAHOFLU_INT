@@ -284,7 +284,7 @@ namespace Paho.Controllers {
                 excelWorksheet.Cells[2, 1].Value = year.ToString();
             }
 
-            if (hospitalId != null)
+            if (hospitalId != null && hospitalId > 0)
             {
                 var Institution = db.Institutions.Find(hospitalId);
 

@@ -34,7 +34,7 @@ namespace Paho.Controllers
                 int? HospitalID_ = InstitutionID ?? 0;
                 int? RecordID_ = RecordID;
                 int? NumSample_ = NumSample;
-                string AppSetings_form = (Report == "Cases" ) ? "FormRecordTemplate" : "PathPrintTest";
+                string AppSetings_form = (Report == "Cases" ) ? "FormRecordTemplate" : "PrintTestTemplate";
                 string Path_Print = ConfigurationManager.AppSettings[AppSetings_form];
                 string Sample_Print_ = "Imp_Mue_" + RecordID_.ToString() + "_" + NumSample_.ToString() + "_" + DateTime.Now.ToString("yyyy_MM_dd_hh_mm");
                 string Record_Print_ = "PAHOFLU_Record_" + RecordID_.ToString() + "_" + DateTime.Now.ToString("yyyy_MM_dd_hh_mm");
@@ -104,6 +104,11 @@ namespace Paho.Controllers
             catch (Exception e)
             {
                 ViewBag.Message = "El reporte no se pudo generar, por favor intente de nuevo";
+                //this code segment write data to file.
+                //FileStream fs1 = new FileStream("C:\\PrintTestController.txt", FileMode.OpenOrCreate, FileAccess.Write);
+                //StreamWriter writer = new StreamWriter(fs1);
+                //writer.Write(e.Message + " \n " + e.Source);
+                //writer.Close();
             }
 
             return null;
