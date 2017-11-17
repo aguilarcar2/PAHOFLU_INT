@@ -672,7 +672,7 @@
     self.LabId3 = ko.observable("");
 
     self.VisibleMuestra2 = ko.computed(function () {
-        return ((self.UsrCountry() == 7 || self.UsrCountry() == 3 || self.UsrCountry() == 25) && self.SampleDate() && app.Views.Contact.IsSurv() == 1) ? true : false;
+        return ((self.UsrCountry() == 7 || self.UsrCountry() == 3 ) && self.SampleDate() && app.Views.Contact.IsSurv() == 1) ? true : false;
 
     }, self);
     self.VisibleMuestra3 = ko.computed(function () {
