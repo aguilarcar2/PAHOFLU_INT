@@ -695,6 +695,63 @@
     self.DifResp = ko.observable("");
     self.MedSatOxig = ko.observable("");
     self.SatOxigPor = ko.observable("");
+
+    self.Temperatura = ko.observable().extend({ numeric: 1 });                     //**** CAFQ
+    self.DolorCabeza = ko.observable("");                                             //**** CAFQ
+    self.Erupcion = ko.observable("");                                             //**** CAFQ
+    self.ErupcionLocaliz = ko.observable("");                                             //**** CAFQ
+    self.DolorMuscular = ko.observable("");                                             //**** CAFQ
+    self.DolorMuscularLocaliz = ko.observable("");                                             //**** CAFQ
+    self.Disnea = ko.observable("");                                             //**** CAFQ
+    self.IsErupcion = ko.computed(function () {                         //**** CAFQ
+        return (self.Erupcion() == true) ? true : false;
+    }, self);                                             //**** CAFQ
+    self.IsDolorMuscular = ko.computed(function () {                    //**** CAFQ
+        return (self.DolorMuscular() == true) ? true : false;
+    }, self);                                             //**** CAFQ
+
+    self.SintomHemorrag = ko.observable("");                                             //**** CAFQ
+    self.SintomHemorragDesc = ko.observable("");                                             //**** CAFQ
+    self.AlteracEstadoMental = ko.observable("");                                             //**** CAFQ
+    self.Altralgia = ko.observable("");                                             //**** CAFQ
+    self.IsSintomaHemorragico = ko.computed(function () {               //**** CAFQ
+        return (self.SintomHemorrag() == true) ? true : false;
+    }, self);                     //**** CAFQ
+
+    self.Escalofrios = ko.observable("");                                             //**** CAFQ
+    self.Conjuntivitis = ko.observable("");                                             //**** CAFQ
+    self.Rinitis = ko.observable("");                                             //**** CAFQ
+    self.DiarreaAguda = ko.observable("");                                             //**** CAFQ
+
+    self.DiarreaCronica = ko.observable("");                                             //**** CAFQ
+    self.Mareo = ko.observable("");                                             //**** CAFQ
+    self.FalloDesarrollo = ko.observable("");                                             //**** CAFQ
+    self.Hepatomegalea = ko.observable("");                                             //**** CAFQ
+
+    self.Ictericia = ko.observable("");                                             //**** CAFQ
+    self.Linfadenopatia = ko.observable("");                                             //**** CAFQ
+    self.Malestar = ko.observable("");                                             //**** CAFQ
+    self.Nauseas = ko.observable("");                                             //**** CAFQ
+
+    self.RigidezNuca = ko.observable("");                                             //**** CAFQ
+    self.Paralisis = ko.observable("");                                             //**** CAFQ
+    self.RespiratSuperior = ko.observable("");                                             //**** CAFQ
+    self.RespiratInferior = ko.observable("");                                             //**** CAFQ
+
+    self.DolorRetrorobitario = ko.observable("");                                             //**** CAFQ
+    self.PerdidaPeso = ko.observable("");                                             //**** CAFQ
+    self.Otro = ko.observable("");                                             //**** CAFQ
+    self.OtroDesc = ko.observable("");                                             //**** CAFQ
+    self.IsOtro = ko.computed(function () {               //**** CAFQ
+        return (self.Otro() == true) ? true : false;
+    }, self);                                             //**** CAFQ
+
+    self.InfeccHospitFecha = ko.observable("");                                             //**** CAFQ
+    self.InfeccHospit = ko.observable("");                                          //**** CAFQ     Radiobutton
+    self.IsInfeHospPrev = ko.computed(function () {               //**** CAFQ
+        return (self.InfeccHospit() == "1") ? true : false;
+    }, self);                                             //**** CAFQ
+
     self.CaseStatus = ko.observable("");
     self.CaseComply = ko.observable("");
     self.CloseDate = ko.observable(null);
@@ -1073,8 +1130,6 @@
                 else self.ShipDate3(null);
                 self.LabId3(data.LabId3);
 
-
-
                 self.Adenopatia(data.Adenopatia);
                 self.AntecedentesFiebre(data.AntecedentesFiebre);
                 self.Rinorrea(data.Rinorrea);
@@ -1085,6 +1140,42 @@
                 self.DolorCabeza(data.DolorCabeza);
                 self.Estridor(data.Estridor);
                 self.Tos(data.Tos);
+
+                self.Temperatura(data.Temperatura);                         //#### CAFQ
+                self.DolorCabeza(data.DolorCabeza);                         //#### CAFQ
+                //self.Erupcion(data.Mialgia);                               //#### CAFQ
+                self.Erupcion(data.Erupcion);                               //#### CAFQ
+                self.ErupcionLocaliz(data.ErupcionLocaliz);                 //#### CAFQ
+                self.DolorMuscular(data.DolorMuscular);                     //#### CAFQ
+                self.DolorMuscularLocaliz(data.DolorMuscularLocaliz);       //#### CAFQ
+                self.Disnea(data.Disnea);                                   //#### CAFQ
+                self.SintomHemorrag(data.SintomHemorrag);                     //#### CAFQ
+                self.SintomHemorragDesc(data.SintomHemorragDesc);                     //#### CAFQ
+                self.AlteracEstadoMental(data.AlteracEstadoMental);                     //#### CAFQ
+                self.Altralgia(data.Altralgia);                     //#### CAFQ
+                self.Escalofrios(data.Escalofrios);                     //#### CAFQ
+                self.Conjuntivitis(data.Conjuntivitis);                     //#### CAFQ
+                self.Rinitis(data.Rinitis);                     //#### CAFQ
+                self.DiarreaAguda(data.DiarreaAguda);                     //#### CAFQ
+                self.DiarreaCronica(data.DiarreaCronica);                     //#### CAFQ
+                self.Mareo(data.Mareo);                     //#### CAFQ
+                self.FalloDesarrollo(data.FalloDesarrollo);                     //#### CAFQ
+                self.Hepatomegalea(data.Hepatomegalea);                    //#### CAFQ
+                self.Ictericia(data.Ictericia);                    //#### CAFQ
+                self.Linfadenopatia(data.Linfadenopatia);                    //#### CAFQ
+                self.Malestar(data.Malestar);                    //#### CAFQ
+                self.Nauseas(data.Nauseas);                    //#### CAFQ
+                self.RigidezNuca(data.RigidezNuca);                    //#### CAFQ
+                self.Paralisis(data.Paralisis);                    //#### CAFQ
+                self.RespiratSuperior(data.RespiratSuperior);                    //#### CAFQ
+                self.RespiratInferior(data.RespiratInferior);                    //#### CAFQ
+                self.DolorRetrorobitario(data.DolorRetrorobitario);                    //#### CAFQ
+                self.PerdidaPeso(data.PerdidaPeso);                    //#### CAFQ
+                self.Otro(data.Otro);                    //#### CAFQ
+                self.OtroDesc(data.OtroDesc);                    //#### CAFQ
+                self.InfeccHospit(data.InfeccHospit);                    //#### CAFQ
+                self.InfeccHospitFecha(data.InfeccHospitFecha);                    //#### CAFQ
+
                 self.DifResp(data.DifResp);
                 self.MedSatOxig(data.MedSatOxig);
                 self.SatOxigPor(data.SatOxigPor);
@@ -1157,9 +1248,21 @@
         date_sample3 = parseDate($("#SampleDate3").val(), date_format_);
         date_ship3 = parseDate($("#ShipDate3").val(), date_format_);
         date_close_case = parseDate($("#CloseDate").val(), date_format_);
-        
+        date_InfeccHospitFecha = parseDate($("#InfeccHospitFecha").val(), date_format_);        //#### CAFQ
+
         // falta la fecha de cierre de caso
 
+        /*
+        console.log(self.Temperatura());                        //#### DESARROLLO
+        console.log(parseFloat(self.Temperatura()));            //#### DESARROLLO 
+        console.log(parseFloat(self.Temperatura(), '####,##'));            //#### DESARROLLO 
+        //var numero = self.Temperatura();
+        //console.log(self.Temperatura().replace(".", ","));
+        //numero = numero.toString().replace('.', ',');
+        var numero = self.Temperatura().toString().replace('.', ',');
+        console.log(numero.toString().replace('.', ','));
+        console.log("self.SaveHospital->MEDIO");                        //#### DESARROLLO
+        */
         $.post(app.dataModel.saveHospitalUrl,
             {
                 id: self.Id,
@@ -1202,6 +1305,41 @@
                 DolorCabeza: self.DolorCabeza(),
                 Estridor: self.Estridor(),
                 Tos: self.Tos(),
+                Temperatura: self.Temperatura().toString().replace('.', ','),                  //#### CAFQ
+                DolorCabeza: self.DolorCabeza(),
+                //Mialgia: self.Mialgia(),                                  //#### CAFQ
+                Erupcion: self.Erupcion(),                                  //#### CAFQ
+                ErupcionLocaliz: self.ErupcionLocaliz(),                    //#### CAFQ
+                DolorMuscular: self.DolorMuscular(),
+                DolorMuscularLocaliz: self.DolorMuscularLocaliz(),          //#### CAFQ
+                Disnea: self.Disnea(),
+                SintomHemorrag: self.SintomHemorrag(),                      //#### CAFQ
+                SintomHemorragDesc: self.SintomHemorragDesc(),              //#### CAFQ
+                AlteracEstadoMental: self.AlteracEstadoMental(),            //#### CAFQ
+                Altralgia: self.Altralgia(),                  //#### CAFQ
+                Escalofrios: self.Escalofrios(),                  //#### CAFQ
+                Conjuntivitis: self.Conjuntivitis(),                  //#### CAFQ
+                Rinitis: self.Rinitis(),                  //#### CAFQ
+                DiarreaAguda: self.DiarreaAguda(),                  //#### CAFQ
+                DiarreaCronica: self.DiarreaCronica(),                  //#### CAFQ
+                Mareo: self.Mareo(),                  //#### CAFQ
+                FalloDesarrollo: self.FalloDesarrollo(),                  //#### CAFQ
+                Hepatomegalea: self.Hepatomegalea(),                  //#### CAFQ
+                Ictericia: self.Ictericia(),                  //#### CAFQ
+                Linfadenopatia: self.Linfadenopatia(),                  //#### CAFQ
+                Malestar: self.Malestar(),                  //#### CAFQ
+                Nauseas: self.Nauseas(),                  //#### CAFQ
+                RigidezNuca: self.RigidezNuca(),                  //#### CAFQ
+                Paralisis: self.Paralisis(),                  //#### CAFQ
+                RespiratSuperior: self.RespiratSuperior(),                  //#### CAFQ
+                RespiratInferior: self.RespiratInferior(),                  //#### CAFQ
+                DolorRetrorobitario: self.DolorRetrorobitario(),                  //#### CAFQ
+                PerdidaPeso: self.PerdidaPeso(),                  //#### CAFQ
+                Otro: self.Otro(),                  //#### CAFQ
+                OtroDesc: self.OtroDesc(),                  //#### CAFQ
+                InfeccHospit: self.InfeccHospit(),                  //#### CAFQ
+                //InfeccHospitFecha: self.InfeccHospitFecha(),                  //#### CAFQ
+                InfeccHospitFecha: $("#InfeccHospitFecha").val() == "" ? null : moment(date_InfeccHospitFecha).format(date_format_ISO),    //#### CAFQ
                 DifResp: self.DifResp(),
                 MedSatOxig: self.MedSatOxig(),
                 SatOxigPor: self.SatOxigPor(),

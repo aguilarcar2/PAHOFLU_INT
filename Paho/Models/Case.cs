@@ -52,6 +52,7 @@ namespace Paho.Models
 
         public IEnumerable<LookupView<CatNativePeople>> CNP { get; set; }
         public IEnumerable<LookupView<CatVaccinSource>> CVS { get; set; }
+        public IEnumerable<LookupView<CatOccupation>> CatOccupations { get; set; }      //**** CAFQ
 
         public object date_format_ { get; set; }
     }
@@ -746,6 +747,67 @@ namespace Paho.Models
         public Gender Gender { get; set; }
         public int? nativepeople { get;  set; }
         public int? nationality { get; set; }
+
+        public int? Ocupacion { get; set; }                  //#### CAFQ
+        public string TrabajoDirecc { get; set; }           //#### CAFQ
+        public string TrabajoEstablec { get; set; }         //#### CAFQ
+        public int? ContactoAnimVivos { get; set; }         //#### CAFQ
+        public int? OcupacMercAnimVivos { get; set; }         //#### CAFQ
+        public int? ViajePrevSintoma { get; set; }         //#### CAFQ
+        public string DestPrevSintoma1 { get; set; }         //#### CAFQ
+        public DateTime? DestFechaLlegada1 { get; set; }         //#### CAFQ
+        public DateTime? DestFechaSalida1 { get; set; }         //#### CAFQ
+        public string DestPrevSintoma2 { get; set; }         //#### CAFQ
+        public DateTime? DestFechaLlegada2 { get; set; }         //#### CAFQ
+        public DateTime? DestFechaSalida2 { get; set; }         //#### CAFQ
+        public string DestPrevSintoma3 { get; set; }         //#### CAFQ
+        public DateTime? DestFechaLlegada3 { get; set; }         //#### CAFQ
+        public DateTime? DestFechaSalida3 { get; set; }         //#### CAFQ
+        public int? ContacDirectoAnim { get; set; }         //#### CAFQ
+        public string AnimalNaturaContac { get; set; }         //#### CAFQ
+        public int? ExpuextoSimilSintoma { get; set; }         //#### CAFQ
+        public string NumeIdentContacto { get; set; }         //#### CAFQ
+        public int? InfluConfirContacto { get; set; }         //#### CAFQ
+        public string TipoRelaContacto { get; set; }         //#### CAFQ
+        public int? FamiDirecContacto { get; set; }         //#### CAFQ
+        public string TrabSaludRama { get; set; }         //#### CAFQ
+        public bool? TrabLaboratorio { get; set; }         //#### CAFQ
+        public string TrabLaboratorioRama { get; set; }         //#### CAFQ
+        public Decimal? Temperatura { get; set; }                       //#### CAFQ
+        //public bool? DolorCabeza { get; set; }                        //#### CAFQ                YA EXISTE (Cefalea)
+        //public bool? Mialgia { get; set; }                              //#### CAFQ
+        public bool? Erupcion { get; set; }                             //#### CAFQ
+        public string ErupcionLocaliz { get; set; }                     //#### CAFQ
+        //public bool? Dolor { get; set; }                                //#### CAFQ
+        public string DolorMuscularLocaliz { get; set; }                        //#### CAFQ
+        //public bool? Disnea { get; set; }                             //#### CAFQ
+        public bool? SintomHemorrag { get; set; }                       //#### CAFQ
+        public string SintomHemorragDesc { get; set; }                  //#### CAFQ
+        public bool? AlteracEstadoMental { get; set; }                       //#### CAFQ
+        public bool? Altralgia { get; set; }                       //#### CAFQ
+        public bool? Escalofrios { get; set; }                       //#### CAFQ
+        public bool? Conjuntivitis { get; set; }                       //#### CAFQ
+        public bool? Rinitis { get; set; }                       //#### CAFQ
+        public bool? DiarreaAguda { get; set; }                       //#### CAFQ
+        public bool? DiarreaCronica { get; set; }                       //#### CAFQ
+        public bool? Mareo { get; set; }                       //#### CAFQ
+        public bool? FalloDesarrollo { get; set; }                       //#### CAFQ
+        public bool? Hepatomegalea { get; set; }                       //#### CAFQ
+        public bool? Ictericia { get; set; }                       //#### CAFQ
+        public bool? Linfadenopatia { get; set; }                       //#### CAFQ
+        //public bool? MalestarGeneral { get; set; }                       //#### CAFQ
+        //public bool? Nausea { get; set; }                       //#### CAFQ
+        public bool? RigidezNuca { get; set; }                       //#### CAFQ
+        public bool? Paralisis { get; set; }                       //#### CAFQ
+        public bool? RespiratSuperior { get; set; }                       //#### CAFQ
+        public bool? RespiratInferior { get; set; }                       //#### CAFQ
+        public bool? DolorRetrorobitario { get; set; }                       //#### CAFQ
+        public bool? PerdidaPeso { get; set; }                       //#### CAFQ
+        public bool? Otro { get; set; }                       //#### CAFQ
+        public string OtroDesc { get; set; }                       //#### CAFQ
+        public bool? InfeccHospit { get; set; }                       //#### CAFQ
+        public DateTime? InfeccHospitFecha { get; set; }                       //#### CAFQ
+
         public int? flow { get; set; }
         public int? statement { get; set; }
         //public int? statement { get; set; }
@@ -1145,12 +1207,20 @@ namespace Paho.Models
         public string Name { get; set; }
     }
 
-    public class CatDashboardLink
+    public class CatDashboardLink          //**** CAFQ
     {
         public int id { get; set; }
         public int id_country { get; set; }
         public string link { get; set; }
         public string title { get; set; }
+    }
+
+    public class CatOccupation          //**** CAFQ
+    {
+        public int Id { get; set; }
+        public string Occupation_SPA { get; set; }
+        public string Occupation_ENG { get; set; }
+        public int CIUO_08 { get; set; }
     }
 
     public enum TestType
@@ -1293,7 +1363,7 @@ namespace Paho.Models
         public DbSet<VirusType> VirusTypes { get; set; }
         public DbSet<TestResult> TestResults { get; set; }
         public DbSet<CatDashboardLink> CatDashboarLinks { get; set; }        //#### CAFQ
-
+        public DbSet<CatOccupation> CatOccupations { get; set; }            //#### CAFQ
         //Catalogos
         public DbSet<CatSampleNoProcessed> CatSampleNoProcessed { get; set; }
         public DbSet<CatCaseStatus> CatCaseStatus { get; set; }
@@ -1364,6 +1434,11 @@ namespace Paho.Models
                    p.Brote,
                    p.nativepeople,
                    p.nationality,
+                   p.Ocupacion,             //#### CAFQ
+                   p.TrabajoDirecc,             //#### CAFQ
+                   p.TrabajoEstablec,             //#### CAFQ
+                   p.ContactoAnimVivos,             //#### CAFQ
+                   p.OcupacMercAnimVivos,             //#### CAFQ
                    p.flow,
                    p.statement,
                    // CaseGeo
@@ -1430,6 +1505,26 @@ namespace Paho.Models
                    p.AntiViralType,
                    p.OseltaDose,
                    p.AntiViralDose,
+                   p.ViajePrevSintoma,             //#### CAFQ
+                   p.DestPrevSintoma1,             //#### CAFQ
+                   p.DestFechaLlegada1,             //#### CAFQ
+                   p.DestFechaSalida1,             //#### CAFQ
+                   p.DestPrevSintoma2,             //#### CAFQ
+                   p.DestFechaLlegada2,             //#### CAFQ
+                   p.DestFechaSalida2,             //#### CAFQ
+                   p.DestPrevSintoma3,             //#### CAFQ
+                   p.DestFechaLlegada3,             //#### CAFQ
+                   p.DestFechaSalida3,             //#### CAFQ
+                   p.ContacDirectoAnim,             //#### CAFQ
+                   p.AnimalNaturaContac,             //#### CAFQ
+                   p.ExpuextoSimilSintoma,             //#### CAFQ
+                   p.NumeIdentContacto,             //#### CAFQ
+                   p.InfluConfirContacto,             //#### CAFQ
+                   p.TipoRelaContacto,             //#### CAFQ
+                   p.FamiDirecContacto,             //#### CAFQ
+                   p.TrabSaludRama,             //#### CAFQ
+                   p.TrabLaboratorio,             //#### CAFQ
+                   p.TrabLaboratorioRama,             //#### CAFQ
                    // CaseHospital
                    p.CHNum,
                    p.FeverDate,
@@ -1489,6 +1584,38 @@ namespace Paho.Models
                    p.Tos,
                    p.Tiraje,
                    p.Odinofagia,
+                   p.Temperatura,                          //#### CAFQ
+                   //p.Mialgia,                          //#### CAFQ
+                   p.Erupcion,                          //#### CAFQ
+                   p.ErupcionLocaliz,                          //#### CAFQ
+                   //p.Dolor,                          //#### CAFQ
+                   p.DolorMuscularLocaliz,                          //#### CAFQ
+                   p.SintomHemorrag,                          //#### CAFQ
+                   p.SintomHemorragDesc,                          //#### CAFQ
+                   p.AlteracEstadoMental,                          //#### CAFQ
+                   p.Altralgia,                          //#### CAFQ
+                   p.Escalofrios,                          //#### CAFQ
+                   p.Conjuntivitis,                          //#### CAFQ
+                   p.Rinitis,                          //#### CAFQ
+                   p.DiarreaAguda,                          //#### CAFQ
+                   p.DiarreaCronica,                          //#### CAFQ
+                   p.Mareo,                          //#### CAFQ
+                   p.FalloDesarrollo,                          //#### CAFQ
+                   p.Hepatomegalea,                          //#### CAFQ
+                   p.Ictericia,                          //#### CAFQ
+                   p.Linfadenopatia,                          //#### CAFQ
+                   //p.MalestarGeneral,                          //#### CAFQ
+                   //p.Nausea,                          //#### CAFQ
+                   p.RigidezNuca,                          //#### CAFQ
+                   p.Paralisis,                          //#### CAFQ
+                   p.RespiratSuperior,                          //#### CAFQ
+                   p.RespiratInferior,                          //#### CAFQ
+                   p.DolorRetrorobitario,                          //#### CAFQ
+                   p.PerdidaPeso,                          //#### CAFQ
+                   p.Otro,                          //#### CAFQ
+                   p.OtroDesc,                          //#### CAFQ
+                   p.InfeccHospit,                          //#### CAFQ
+                   p.InfeccHospitFecha,                          //#### CAFQ
                    // CaseLab
                    p.RecDate,
                    p.Processed,

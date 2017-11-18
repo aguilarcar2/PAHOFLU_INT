@@ -15,6 +15,38 @@
     self.PregnantWeek = ko.observable("");
     self.Trimester = ko.observable();
     self.Vaccin = ko.observable(null);
+
+    self.ViajePrevSintoma = ko.observable();              //#### CAFQ
+    self.DestPrevSintoma1 = ko.observable();              //#### CAFQ
+    self.DestFechaLlegada1 = ko.observable("");              //#### CAFQ
+    self.DestFechaSalida1 = ko.observable("");              //#### CAFQ
+    self.DestPrevSintoma2 = ko.observable();              //#### CAFQ
+    self.DestFechaLlegada2 = ko.observable("");              //#### CAFQ
+    self.DestFechaSalida2 = ko.observable("");               //#### CAFQ
+    self.DestPrevSintoma3 = ko.observable();              //#### CAFQ
+    self.DestFechaLlegada3 = ko.observable("");              //#### CAFQ
+    self.DestFechaSalida3 = ko.observable("");               //#### CAFQ
+    self.ContacDirectoAnim = ko.observable();        //##### CAFQ
+    self.AnimalNaturaContac = ko.observable("");        //##### CAFQ
+    self.ExpuextoSimilSintoma = ko.observable();        //##### CAFQ
+    self.NumeIdentContacto = ko.observable("");        //##### CAFQ
+    self.InfluConfirContacto = ko.observable();        //##### CAFQ
+    self.TipoRelaContacto = ko.observable("");        //##### CAFQ
+    self.FamiDirecContacto = ko.observable();        //##### CAFQ
+    self.TrabSaludRama = ko.observable("");                                 //##### CAFQ
+    self.TrabLaboratorio = ko.observable(false);                            //##### CAFQ
+    self.TrabLaboratorioRama = ko.observable("");                           //##### CAFQ
+
+    self.IsViajePrevSintoma = ko.computed(function () {                     //##### CAFQ
+        return (self.ViajePrevSintoma() == 1) ? true : false;
+    }, self);
+    self.IsContacDirectoAnim = ko.computed(function () {                    //**** CAFQ
+        return (self.ContacDirectoAnim() == 1) ? true : false;
+    }, self);
+    self.IsExpuextoSimilSintoma = ko.computed(function () {                    //**** CAFQ
+        return (self.ExpuextoSimilSintoma() == 1) ? true : false;
+    }, self);
+
     self.RiskFactors = ko.observable("");
     self.VacInfluenza = ko.observable("");
     self.VacInfluenzaDateFirst = ko.observable("");
@@ -231,6 +263,23 @@
         }
     }, self);
 
+    self.IsTrabSalud = ko.computed(function () {                 //**** CAFQ
+        if (self.TrabSalud() == true) {
+            return ($('#SurvInusual').is(':checked') == true) ? true : false;
+        } else {
+            return false;
+        }
+    }, self);
+
+    self.IsTrabLaboratorio = ko.computed(function () {            //**** CAFQ
+        if (self.TrabLaboratorio() == true) {
+            return ($('#SurvInusual').is(':checked') == true) ? true : false;
+        } else {
+            return false;
+        }
+        //return (self.TrabLaboratorio() == true) ? true : false;
+    }, self);
+
     self.RiskFactors.subscribe(function (NewRiskFactors) {
         if (NewRiskFactors == 0 || NewRiskFactors == "" || NewRiskFactors == 9 ) {
             //self.ResetRisk();
@@ -391,6 +440,28 @@
                 self.AntiViralType(data.AntiViralType);
                 self.OseltaDose(data.OseltaDose);
                 self.AntiViralDose(data.AntiViralDose);
+
+                self.ViajePrevSintoma(data.ViajePrevSintoma);           //#### CAFQ
+                self.DestPrevSintoma1(data.DestPrevSintoma1);           //#### CAFQ
+                self.DestPrevSintoma2(data.DestPrevSintoma2);           //#### CAFQ
+                self.DestPrevSintoma3(data.DestPrevSintoma3);           //#### CAFQ
+                if (data.DestFechaLlegada1) self.DestFechaLlegada1(moment(data.DestFechaLlegada1).format(date_format_moment)); else self.DestFechaLlegada1(null);           //#### CAFQ
+                if (data.DestFechaLlegada2) self.DestFechaLlegada2(moment(data.DestFechaLlegada2).format(date_format_moment)); else self.DestFechaLlegada2(null);           //#### CAFQ
+                if (data.DestFechaLlegada3) self.DestFechaLlegada3(moment(data.DestFechaLlegada3).format(date_format_moment)); else self.DestFechaLlegada3(null);           //#### CAFQ
+                if (data.DestFechaSalida1) self.DestFechaSalida1(moment(data.DestFechaSalida1).format(date_format_moment)); else self.DestFechaSalida1(null);           //#### CAFQ
+                if (data.DestFechaSalida2) self.DestFechaSalida2(moment(data.DestFechaSalida2).format(date_format_moment)); else self.DestFechaSalida2(null);           //#### CAFQ
+                if (data.DestFechaSalida3) self.DestFechaSalida3(moment(data.DestFechaSalida3).format(date_format_moment)); else self.DestFechaSalida3(null);           //#### CAFQ
+                self.ContacDirectoAnim(data.ContacDirectoAnim);           //#### CAFQ
+                self.AnimalNaturaContac(data.AnimalNaturaContac);           //#### CAFQ
+                self.ExpuextoSimilSintoma(data.ExpuextoSimilSintoma);           //#### CAFQ
+                self.NumeIdentContacto(data.NumeIdentContacto);           //#### CAFQ
+                self.InfluConfirContacto(data.InfluConfirContacto);           //#### CAFQ
+                self.TipoRelaContacto(data.TipoRelaContacto);           //#### CAFQ
+                self.FamiDirecContacto(data.FamiDirecContacto);           //#### CAFQ
+                self.TrabSaludRama(data.TrabSaludRama);           //#### CAFQ
+                self.TrabLaboratorio(data.TrabLaboratorio);           //#### CAFQ
+                self.TrabLaboratorioRama(data.TrabLaboratorioRama);           //#### CAFQ
+
                 self.hasReset(false);
 
             })
@@ -560,6 +631,12 @@
         date_antiviral = parseDate($("#AntiViralDate").val(), date_format_);
         date_antiviral_end = parseDate($("#AntiViralDateEnd").val(), date_format_);
         
+        date_DestFechaLlegada1 = parseDate($("#DestFechaLlegada1").val(), date_format_);            //#### CAFQ
+        date_DestFechaLlegada2 = parseDate($("#DestFechaLlegada2").val(), date_format_);            //#### CAFQ
+        date_DestFechaLlegada3 = parseDate($("#DestFechaLlegada3").val(), date_format_);            //#### CAFQ
+        date_DestFechaSalida1 = parseDate($("#DestFechaSalida1").val(), date_format_);            //#### CAFQ
+        date_DestFechaSalida2 = parseDate($("#DestFechaSalida2").val(), date_format_);            //#### CAFQ
+        date_DestFechaSalida3 = parseDate($("#DestFechaSalida3").val(), date_format_);            //#### CAFQ
 
          $.post(app.dataModel.saveRiskUrl,
             {
@@ -612,7 +689,28 @@
                 AntiViralType: self.AntiViralType(),
                 OseltaDose: self.OseltaDose(),
                 AntiViralDose: self.AntiViralDose(),
-                RiskFactors: self.RiskFactors()
+                RiskFactors: self.RiskFactors(),
+
+                ViajePrevSintoma: self.ViajePrevSintoma(),          //#### CAFQ
+                DestPrevSintoma1: self.DestPrevSintoma1(),          //#### CAFQ
+                DestPrevSintoma2: self.DestPrevSintoma2(),          //#### CAFQ
+                DestPrevSintoma3: self.DestPrevSintoma3(),          //#### CAFQ
+                DestFechaLlegada1: $("#DestFechaLlegada1").val() == "" ? null : moment(date_DestFechaLlegada1).format(date_format_ISO),          //#### CAFQ
+                DestFechaLlegada2: $("#DestFechaLlegada2").val() == "" ? null : moment(date_DestFechaLlegada2).format(date_format_ISO),          //#### CAFQ
+                DestFechaLlegada3: $("#DestFechaLlegada3").val() == "" ? null : moment(date_DestFechaLlegada3).format(date_format_ISO),          //#### CAFQ
+                DestFechaSalida1: $("#DestFechaSalida1").val() == "" ? null : moment(date_DestFechaSalida1).format(date_format_ISO),          //#### CAFQ
+                DestFechaSalida2: $("#DestFechaSalida2").val() == "" ? null : moment(date_DestFechaSalida2).format(date_format_ISO),          //#### CAFQ
+                DestFechaSalida3: $("#DestFechaSalida3").val() == "" ? null : moment(date_DestFechaSalida3).format(date_format_ISO),          //#### CAFQ
+                ContacDirectoAnim: self.ContacDirectoAnim(),          //#### CAFQ
+                AnimalNaturaContac: self.AnimalNaturaContac(),          //#### CAFQ
+                ExpuextoSimilSintoma: self.ExpuextoSimilSintoma(),          //#### CAFQ
+                NumeIdentContacto: self.NumeIdentContacto(),          //#### CAFQ
+                InfluConfirContacto: self.InfluConfirContacto(),          //#### CAFQ
+                TipoRelaContacto: self.TipoRelaContacto(),          //#### CAFQ
+                FamiDirecContacto: self.FamiDirecContacto(),          //#### CAFQ
+                TrabSaludRama: self.TrabSaludRama(),          //#### CAFQ
+                TrabLaboratorio: self.TrabLaboratorio(),          //#### CAFQ
+                TrabLaboratorioRama: self.TrabLaboratorioRama()          //#### CAFQ
             },
             function (data) {
                 if (nextStep) nextStep();

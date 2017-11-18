@@ -28,7 +28,8 @@ namespace Paho.Controllers
 
             IQueryable<CatNativePeople> CNP = null;
             IQueryable<CatVaccinSource> CVS = null;
-            
+
+            IQueryable<CatOccupation> occupations = null;       //**** CAFQ
 
             var user = UserManager.FindById(User.Identity.GetUserId());
             var DoS = DateTime.Now.ToString("d", CultureInfo.CreateSpecificCulture("es-GT"));
@@ -244,6 +245,19 @@ namespace Paho.Controllers
                 orden = i.orden.ToString()
             }).ToList()) ;
 
+            occupations = db.CatOccupations.OrderBy(i => i.Occupation_SPA);         //**** CAFQ
+            var occupationsDisplay = (user.Institution.Country.Language == "SPA" ? occupations.Select(i => new LookupView<CatOccupation>()
+            {
+                Id = i.Id.ToString(),
+                Name = i.Occupation_SPA,
+                orden = i.CIUO_08.ToString()
+            }).ToList() : occupations.Select(i => new LookupView<CatOccupation>()
+            {
+                Id = i.Id.ToString(),
+                Name = i.Occupation_ENG,
+                orden = i.CIUO_08.ToString()
+            }).ToList());
+
             CVST = db.CatVirusSubType.OrderBy(i => i.orden);
             var CVSTDisplay = (user.Institution.Country.Language == "SPA" ? CVST.Select(i => new LookupView<CatVirusSubType>()
             {
@@ -332,7 +346,7 @@ namespace Paho.Controllers
 
             CaseViewModel.CNP = CNPDisplay;
             CaseViewModel.CVS = CVSDisplay;
-
+            CaseViewModel.CatOccupations = occupationsDisplay;          //**** CAFQ
 
             // Laboratorios de la ficha
             // *** DELETE ***

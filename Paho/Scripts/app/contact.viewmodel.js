@@ -73,6 +73,12 @@
     self.selectedNationalityID = ko.observable("");
     self.selectedNativepeopleID = ko.observable("");
 
+    self.selectedOccupationId = ko.observable();            //**** CAFQ
+    self.TrabajoDirecc = ko.observable("");                 //**** CAFQ 
+    self.TrabajoEstablec = ko.observable("");                 //**** CAFQ
+    self.ContactoAnimVivos = ko.observable();                 //**** CAFQ
+    self.OcupacMercAnimVivos = ko.observable();                 //**** CAFQ
+
     self.ShowOnlyAdult = ko.computed(function () {
             return (self.AMeasure() == "Month" || self.AMeasure() == "Day" || (self.AMeasure() == "Year" && self.Age() < 15)) ? false : true;
     }, self);
@@ -422,6 +428,14 @@
         }
     }, self);
  
+    self.IsInusitado = ko.computed(function () {            //**** CAFQ
+        if (self.SurvInusual() == true) {
+            return true;
+        } else {
+            return false;
+        }
+    }, self);
+
     self.AddFluCase = function () {
 
         app.Views.Home.ResetFluCase();
@@ -702,6 +716,13 @@
                 
                 $("button[id^='Siguiente']").attr("disabled", false);
                 $("button[id^='Atras']").attr("disabled", false);
+                
+                self.selectedOccupationId(data.Ocupacion);                         //#### CAFQ
+                self.TrabajoDirecc(data.TrabajoDirecc);                         //#### CAFQ
+                self.TrabajoEstablec(data.TrabajoEstablec);                       //#### CAFQ
+                self.ContactoAnimVivos(data.ContactoAnimVivos);                       //#### CAFQ
+                self.OcupacMercAnimVivos(data.OcupacMercAnimVivos);                       //#### CAFQ
+
             })
             .fail(function(jqXHR, textStatus, errorThrown) {
                 //alert(errorThrown);
@@ -753,7 +774,12 @@
                 nativepeople: self.selectedNativepeopleID(),
                 nationality: self.selectedNationalityID(),
                 NoExpediente: self.NoExpediente() == null ? "" : self.NoExpediente().toLocaleUpperCase(),
-                DateFeverDummy: moment(date_fever_dummy).format(date_format_ISO)
+                DateFeverDummy: moment(date_fever_dummy).format(date_format_ISO),
+                Ocupacion: self.selectedOccupationId(),                                //#### CAFQ 
+                TrabajoDirecc: self.TrabajoDirecc(),                                //#### CAFQ 
+                TrabajoEstablec: self.TrabajoEstablec(),                                //#### CAFQ
+                ContactoAnimVivos: self.ContactoAnimVivos(),                        //#### CAFQ
+                OcupacMercAnimVivos: self.OcupacMercAnimVivos()                     //#### CAFQ
             },
             function (data) {
                 if (typeof data != "number") {
