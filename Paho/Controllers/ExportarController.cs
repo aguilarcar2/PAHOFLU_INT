@@ -456,7 +456,8 @@ namespace Paho.Controllers
             using (var con = new SqlConnection(consString))
             {
                 //using (var command = new SqlCommand(storedProcedure, con) { CommandType = CommandType.StoredProcedure })
-                using (var command = new SqlCommand(_storedProcedure, con) { CommandType = CommandType.StoredProcedure })
+                //using (var command = new SqlCommand(_storedProcedure, con) { CommandType = CommandType.StoredProcedure })     //**** CAFQ
+                using (var command = new SqlCommand(_storedProcedure, con) { CommandType = CommandType.StoredProcedure, CommandTimeout = 1200 })    //**** CAFQ
                 {
                     command.Parameters.Clear();
                     command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
@@ -472,7 +473,7 @@ namespace Paho.Controllers
                     command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
 
                     con.Open();
-					if ((storedProcedure == "R5"))
+                    if ((storedProcedure == "R5"))
                     {
                         IDictionary<int, string> formulas1 = new Dictionary<int, string>();
                         formulas1[1] = "=VRS!B{{toreplace}}";
@@ -565,7 +566,7 @@ namespace Paho.Controllers
 
                             using (var reader = command.ExecuteReader())
                             {
-                                excelColTota = reader.FieldCount + 1; 
+                                excelColTota = reader.FieldCount + 1;
                                 row = 3;
                                 column = 1;
                                 var tipo_anterior = 1;
@@ -587,7 +588,7 @@ namespace Paho.Controllers
                                     }
                                     else
                                     {
-                                        stylerow = row+1;
+                                        stylerow = row + 1;
                                     }
                                     excelWorksheet2.InsertRow(row, 1);
                                     //excelWorksheet.InsertRow(row, 1);
@@ -642,161 +643,162 @@ namespace Paho.Controllers
                             }
                         }
                     }
-					else{
-							if ((storedProcedure == "R6"))
-							{
-								using (var reader = command.ExecuteReader())
-								{
-									row = 9;
-									column = 6;
-									var contador_salto = 0;
-									while (reader.Read())
-									{
-										var col = column;
-										//excelWorksheet.InsertRow(row, 1);
+                    else
+                    {
+                        if ((storedProcedure == "R6"))
+                        {
+                            using (var reader = command.ExecuteReader())
+                            {
+                                row = 9;
+                                column = 6;
+                                var contador_salto = 0;
+                                while (reader.Read())
+                                {
+                                    var col = column;
+                                    //excelWorksheet.InsertRow(row, 1);
 
-										//excelWorksheet.Cells[row, 1].Value = reader.GetValue(3).ToString();
-										for (int i = 0; i < 53; i++)
-										{
-											var cell = excelWorksheet.Cells[startRow, col + i];
-											excelWorksheet.Cells[row, col + i].Value = reader.GetValue(i);
-										}
-										contador_salto++;
-										if (contador_salto % 4 == 2)
-										{
-											row += 2;
-										}
-										else
-										{
-											if (contador_salto % 4 == 0)
-											{
-												row += 5;
-											}
-											else
-											{
-												row++;
-											}
-										}
-
-									}
-								}
-								/*Inicia llenado de Tabla2. Este reporte, en el mismo tab tiene 2 tablas, con aspectos diferentes entre ellas*/
-								using (var command2 = new SqlCommand(storedProcedure + "_2", con) { CommandType = CommandType.StoredProcedure })
-								{
-									command2.Parameters.Clear();
-									command2.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
-									command2.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
-									command2.Parameters.Add("@Languaje", SqlDbType.Text).Value = languaje_;
-									command2.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
-									command2.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
-									command2.Parameters.Add("@Mes_", SqlDbType.Int).Value = month;
-									command2.Parameters.Add("@SE", SqlDbType.Int).Value = se;
-									command2.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
-									command2.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
-                                    command.Parameters.Add("@yearFrom", SqlDbType.Int).Value = YearFrom;
-                                    command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
-									var con2 = new SqlConnection(consString);
-									con2.Open();
-
-									using (var reader2 = command2.ExecuteReader())
-									{
-                                        //row = 212;
-                                        int nAnDa = 0;
-                                        if (countryId == 25)
+                                    //excelWorksheet.Cells[row, 1].Value = reader.GetValue(3).ToString();
+                                    for (int i = 0; i < 53; i++)
+                                    {
+                                        var cell = excelWorksheet.Cells[startRow, col + i];
+                                        excelWorksheet.Cells[row, col + i].Value = reader.GetValue(i);
+                                    }
+                                    contador_salto++;
+                                    if (contador_salto % 4 == 2)
+                                    {
+                                        row += 2;
+                                    }
+                                    else
+                                    {
+                                        if (contador_salto % 4 == 0)
                                         {
-                                            row = row - 1 + (9 * 3) + 15;
-                                            nAnDa = 8 * 8;              // 8: Nº Age Group
+                                            row += 5;
                                         }
                                         else
                                         {
-                                            row = 212;
-                                            nAnDa = 6 * 8;              // 6: Nº Age Group
+                                            row++;
                                         }
-                                        column = 6;
+                                    }
 
-										var contador_salto2 = 0;
-										while (reader2.Read())
-										{
-											var col2 = column;
-											//excelWorksheet.InsertRow(row, 1);
+                                }
+                            }
+                            /*Inicia llenado de Tabla2. Este reporte, en el mismo tab tiene 2 tablas, con aspectos diferentes entre ellas*/
+                            using (var command2 = new SqlCommand(storedProcedure + "_2", con) { CommandType = CommandType.StoredProcedure })
+                            {
+                                command2.Parameters.Clear();
+                                command2.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
+                                command2.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
+                                command2.Parameters.Add("@Languaje", SqlDbType.Text).Value = languaje_;
+                                command2.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
+                                command2.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
+                                command2.Parameters.Add("@Mes_", SqlDbType.Int).Value = month;
+                                command2.Parameters.Add("@SE", SqlDbType.Int).Value = se;
+                                command2.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
+                                command2.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
+                                command.Parameters.Add("@yearFrom", SqlDbType.Int).Value = YearFrom;
+                                command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
+                                var con2 = new SqlConnection(consString);
+                                con2.Open();
 
-											//excelWorksheet.Cells[row, 1].Value = reader.GetValue(3).ToString();
-											for (int i = 5; i < 58; i++)
-											{
-												var cell = excelWorksheet.Cells[startRow, col2 + i - 5];
-												excelWorksheet.Cells[row, col2 + i - 5].Value = reader2.GetValue(i);
-											}
-											contador_salto2++;
+                                using (var reader2 = command2.ExecuteReader())
+                                {
+                                    //row = 212;
+                                    int nAnDa = 0;
+                                    if (countryId == 25)
+                                    {
+                                        row = row - 1 + (9 * 3) + 15;
+                                        nAnDa = 8 * 8;              // 8: Nº Age Group
+                                    }
+                                    else
+                                    {
+                                        row = 212;
+                                        nAnDa = 6 * 8;              // 6: Nº Age Group
+                                    }
+                                    column = 6;
 
-                                            //if (contador_salto2 % 48 == 0)
-                                            if (contador_salto2 % nAnDa == 0)
-											{
-												row += 5;
-											}
-											else
-											{
-												if (contador_salto2 % 2 == 0)
-												{
-													row += 2;
-												}
-												else
-												{
-													row++;
-												}
-											}
+                                    var contador_salto2 = 0;
+                                    while (reader2.Read())
+                                    {
+                                        var col2 = column;
+                                        //excelWorksheet.InsertRow(row, 1);
 
-										}
-									}
+                                        //excelWorksheet.Cells[row, 1].Value = reader.GetValue(3).ToString();
+                                        for (int i = 5; i < 58; i++)
+                                        {
+                                            var cell = excelWorksheet.Cells[startRow, col2 + i - 5];
+                                            excelWorksheet.Cells[row, col2 + i - 5].Value = reader2.GetValue(i);
+                                        }
+                                        contador_salto2++;
 
-									/*Termina llenado de Tabla2*/
-								}
-							}
-							else
-							{
-								using (var reader = command.ExecuteReader())
-								{
-									while (reader.Read())
-									{
-										var col = column;
-										if (row > startRow && insert_row == true) excelWorksheet.InsertRow(row, 1);
+                                        //if (contador_salto2 % 48 == 0)
+                                        if (contador_salto2 % nAnDa == 0)
+                                        {
+                                            row += 5;
+                                        }
+                                        else
+                                        {
+                                            if (contador_salto2 % 2 == 0)
+                                            {
+                                                row += 2;
+                                            }
+                                            else
+                                            {
+                                                row++;
+                                            }
+                                        }
 
-										for (var i = 0; i < reader.FieldCount; i++)
-										{
-											var cell = excelWorksheet.Cells[startRow, col];
-											if (reader.GetValue(i) != null)
-											{
-												int number;
-												bool isNumber = int.TryParse(reader.GetValue(i).ToString(), out number);
+                                    }
+                                }
 
-												DateTime dt;
-												bool isDate = DateTime.TryParse(reader.GetValue(i).ToString(), out dt);
+                                /*Termina llenado de Tabla2*/
+                            }
+                        }
+                        else
+                        {
+                            using (var reader = command.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    var col = column;
+                                    if (row > startRow && insert_row == true) excelWorksheet.InsertRow(row, 1);
 
-												if (isNumber)
-												{
-													excelWorksheet.Cells[row, col].Value = number;
-												}
-												else
-												{
-													if (isDate)
-													{
-														excelWorksheet.Cells[row, col].Value = dt;
-													}
-													else
-													{
-														excelWorksheet.Cells[row, col].Value = reader.GetValue(i).ToString();
-													}
+                                    for (var i = 0; i < reader.FieldCount; i++)
+                                    {
+                                        var cell = excelWorksheet.Cells[startRow, col];
+                                        if (reader.GetValue(i) != null)
+                                        {
+                                            int number;
+                                            bool isNumber = int.TryParse(reader.GetValue(i).ToString(), out number);
 
-												}
-												excelWorksheet.Cells[row, col].StyleID = cell.StyleID;
-											}
-											col++;
-										}
+                                            DateTime dt;
+                                            bool isDate = DateTime.TryParse(reader.GetValue(i).ToString(), out dt);
 
-										row++;
-									}
-								}
-							}
-					}
+                                            if (isNumber)
+                                            {
+                                                excelWorksheet.Cells[row, col].Value = number;
+                                            }
+                                            else
+                                            {
+                                                if (isDate)
+                                                {
+                                                    excelWorksheet.Cells[row, col].Value = dt;
+                                                }
+                                                else
+                                                {
+                                                    excelWorksheet.Cells[row, col].Value = reader.GetValue(i).ToString();
+                                                }
+
+                                            }
+                                            excelWorksheet.Cells[row, col].StyleID = cell.StyleID;
+                                        }
+                                        col++;
+                                    }
+
+                                    row++;
+                                }
+                            }
+                        }
+                    }
                     command.Parameters.Clear();
                     con.Close();
 
@@ -1461,7 +1463,8 @@ namespace Paho.Controllers
             excelWorksheet2.Cells[row + 5, column + 1].Value = ID_formatearMeta(nTemp, yy[5], countryId);
             ID_setResultados(excelWorksheet1, nTemp, xx[5], 7, yy[5]);
 
-            nTemp = (double)nDato12[0] * 24.0;
+            //nTemp = (double)nDato12[0] * 24.0;
+            nTemp = Math.Round((double)nDato12[0], 0) * 24.0;
             excelWorksheet2.Cells[row + 6, column + 1].Value = ID_formatearMeta(nTemp, yy[6], countryId);
             ID_setResultados(excelWorksheet1, nTemp, xx[6], 8, yy[6]);
 
