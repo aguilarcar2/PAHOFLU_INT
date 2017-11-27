@@ -463,7 +463,7 @@
             $("#CaseStatus").attr("disabled", false);
             $("#tabs").tabs("refresh");
         }
-        else if (app.Views.Contact.SurvSARI() == true && app.Views.Hospital.IsSample() === "true" && (app.Views.Lab.FinalResult() == "" || app.Views.Hospital.Destin() == "" || app.Views.Hospital.HospExDate() == "" || app.Views.Hospital.HospExDate() == null)) {
+        else if (app.Views.Contact.SurvSARI() == true && app.Views.Hospital.IsSample() === "true" && (app.Views.Lab.FinalResult() == "" || app.Views.Hospital.Destin() == "" || app.Views.Hospital.HospExDate() == "" || app.Views.Hospital.HospExDate() == null || app.Views.Lab.CanConclude() == false)) {
             console.log("aqui _ no processed 3");
             $("a[href*='tab-case']").hide();
             $("#tab-case").hide();

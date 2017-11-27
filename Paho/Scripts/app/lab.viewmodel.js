@@ -703,7 +703,7 @@ function LabViewModel(app, dataModel) {
             if (app.Views.Contact.SurvILI() == true) {
                 $("#CaseStatus").attr("disabled", false);
                 }
-            if (app.Views.Contact.SurvSARI() == true && app.Views.Hospital.Destin() != "") {
+            if (app.Views.Contact.SurvSARI() == true && app.Views.Hospital.Destin() != "" && self.CanConclude() == true) {
                 $("#CaseStatus").attr("disabled", false);
             }
             //$("#tabs").tabs("refresh");

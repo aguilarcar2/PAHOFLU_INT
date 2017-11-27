@@ -544,7 +544,7 @@ namespace Paho.Controllers
                                          "<img src='/Content/themes/base/images/PDF.png' alt='print'/>",
                                          x.VR_IF_D == null ? "" :  x.VR_IF_D.TestResultID == null ? "": x.VR_IF_D.TestResultID.ToString() == "P" ? x.VR_IF_D.CatVirusType == null ? "" : (user.Institution.Country.Language == "SPA" ? x.VR_IF_D.CatVirusType.SPA : x.VR_IF_D.CatVirusType.ENG) :  x.VR_IF_D.TestResultID == null  ? ""  : user.Institution.Country.Language == "SPA" ? db.CatTestResult.Where(j=> j.value == x.VR_IF_D.TestResultID.ToString()).FirstOrDefault().description : db.CatTestResult.Where(j=> j.value == x.VR_IF_D.TestResultID.ToString()).FirstOrDefault().ENG ,
                                          x.VR_PCR_D == null ? "" : x.VR_PCR_D.TestResultID == null ? "": x.VR_PCR_D.TestResultID.ToString() == "P" ?  x.VR_PCR_D.CatVirusType == null ? "" : x.VR_PCR_D.CatVirusType.SPA.Contains("Influenza A") == true ? x.VR_PCR_D.CatVirusSubType == null ? "" : (user.Institution.Country.Language == "SPA" ?  x.VR_PCR_D.CatVirusSubType.SPA : x.VR_PCR_D.CatVirusSubType.ENG ): (user.Institution.Country.Language == "SPA" ? x.VR_PCR_D.CatVirusType.SPA : x.VR_PCR_D.CatVirusType.ENG) :  x.VR_PCR_D.TestResultID == null ? "" : user.Institution.Country.Language == "SPA" ? db.CatTestResult.Where(j=> j.value == x.VR_PCR_D.TestResultID.ToString()).FirstOrDefault().description : db.CatTestResult.Where(j=> j.value == x.VR_PCR_D.TestResultID.ToString()).FirstOrDefault().ENG,
-                                         x.IS_D == false ? getMsg("msgFlucasesMessageNoSample") : x.FR_D == "P" ? x.FR_D_C == null ? "" : (user.Institution.Country.Language == "SPA" ? x.FR_D_C.SPA : x.FR_D_C.ENG) : (x.P_D == false) ? getMsg("msgFlucasesMessageNotProcessed") :""  ,
+                                         x.IS_D == false ? getMsg("msgFlucasesMessageNoSample") : x.FR_D == "P" ? x.FR_D_C == null ? "" : (user.Institution.Country.Language == "SPA" ? x.FR_D_C.SPA : x.FR_D_C.ENG) : (x.P_D == false) ? getMsg("msgFlucasesMessageNotProcessed") : x.FR_D == "N" ? getMsg("msgFlucasesMessageNegative") : x.FR_D == "I" ? getMsg("msgFlucasesMessageIndeterminated") : ""  ,
                                          x.HEALTH_INST ?? "",
                                          x.CS_D_Cat == null ? "<img src='/Content/themes/base/images/open.png' alt='Sin estatus'/>" +  getMsg("msgFlucasesMessageNoStatus") : (user.Institution.Country.Language == "SPA" ? "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.SPA+"'/> " + x.CS_D_Cat.SPA : "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.ENG+"'/> " + x.CS_D_Cat.ENG )
                                          //x.CS_D == 1 ?  "<img src='/Content/themes/base/images/open.png' alt='En estudio'/>" + " Under study" : x.CS_D == 2 ? "<img src='/Content/themes/base/images/close.png' alt='Descartado'/>" + " Discarded" : x.CS_D == 3 ? "<img src='/Content/themes/base/images/close.png' alt='Cerrado'/>" + " Closed"  : "<img src='/Content/themes/base/images/open.png' alt='Sin estatus'/>" + " No status"
@@ -1697,6 +1697,16 @@ namespace Paho.Controllers
             var flow_local_lab = 0;
             var flow_statement = flucase.statement ?? 1;
             var flow_open_always = false;
+
+            if (user.Institution is Hospital)
+            {
+                var list_institution_conf = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(i => i.InstitutionParentID == flucase.HospitalID && i.Conclusion == true).Select(t => t.InstitutionToID).ToList();
+                if (list_institution_conf.Any())
+                {
+                     canConclude = flucase.CaseLabTests.Where(y => list_institution_conf.Contains(y.LabID)).Any();
+                }
+            }
+
             if (institutionsConfiguration.Any()) {
                 canConclude = institutionsConfiguration.Count(x => x.Conclusion == true) > 0;
                 CanPCRLab = db.Institutions.OfType<Lab>().Where(i => i.ID == user.Institution.ID).First()?.PCR;

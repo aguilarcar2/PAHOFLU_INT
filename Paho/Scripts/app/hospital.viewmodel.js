@@ -125,11 +125,13 @@
 
         if (current_value == null)
         {
+
             $("a[href*='tab-case']").hide();
             $("#tab-case").hide();
             $("#CaseStatus").attr("disabled", true);
             //self.Destin("");
-        } else if (self.Destin() == "" ){
+        } else if (self.Destin() == "") {
+
             $("a[href*='tab-case']").hide();
             $("#tab-case").hide();
             $("#CaseStatus").attr("disabled", true);
@@ -139,10 +141,18 @@
             if (self.UsrCountry() == 9 && self.Destin() == 'D') {
                 self.FalleDate(current_value);
             }
-            $("a[href*='tab-case']").show();
-            $("#tab-case").show();
-            $("#tabs").tabs("refresh");
-            $("#CaseStatus").attr("disabled", false);
+
+            if (app.Views.Lab.CanConclude() == true) {
+                $("a[href*='tab-case']").show();
+                $("#tab-case").show();
+                $("#tabs").tabs("refresh");
+                $("#CaseStatus").attr("disabled", false);
+            } else {
+                $("a[href*='tab-case']").hide();
+                $("#tab-case").hide();
+                $("#CaseStatus").attr("disabled", true);
+            }
+
         }
 
         if (self.hasReset() != true) {
@@ -447,7 +457,7 @@
                 
             }
 
-            if (app.Views.Contact.SurvILI() == true && app.Views.Lab.FinalResult()) {
+            if (app.Views.Contact.SurvILI() == true && app.Views.Lab.FinalResult() && app.Views.Lab.CanConclude() == true) {
                 //$("#CaseStatus").attr("disabled", false);
                 $("a[href*='tab-case']").show();
                 $("#tab-case").show();
@@ -777,18 +787,18 @@
                 $("#CaseStatus").attr("disabled", false);
                 $("#tabs").tabs("refresh");
                 if (self.UsrCountry() == 9 && NewDestin == 'D') { self.FalleDate(self.HospExDate()); }
-            } else if (NewDestin != "" && self.IsSample() === "true" && app.Views.Lab.FinalResult() != "" && typeof app.Views.Lab.FinalResult() != "undefined") {
+             } else if (NewDestin != "" && self.IsSample() === "true" && app.Views.Lab.FinalResult() != "" && typeof app.Views.Lab.FinalResult() != "undefined" && app.Views.Lab.CanConclude() == true) {
                 $("a[href*='tab-case']").show();
                 $("#tab-case").show();
                 $("#CaseStatus").attr("disabled", false);
                 $("#tabs").tabs("refresh");
                 if (self.UsrCountry() == 9 && NewDestin == 'D') { self.FalleDate(self.HospExDate()); }
-            } else if (self.IsSample() === "true" && app.Views.Lab.FinalResult() != "" && typeof app.Views.Lab.FinalResult() != "undefined") {
+             } else if (self.IsSample() === "true" && app.Views.Lab.FinalResult() != "" && typeof app.Views.Lab.FinalResult() != "undefined" && app.Views.Lab.CanConclude() == true) {
                 $("a[href*='tab-case']").show();
                 $("#tab-case").show();
                 $("#tabs").tabs("refresh");
                 if (self.UsrCountry() == 9 && NewDestin == 'D') { self.FalleDate(self.HospExDate()); }
-            } else if (self.IsSample() === "true" && app.Views.Lab.Processed() === "false" ) {
+            } else if (self.IsSample() === "true" && app.Views.Lab.Processed() === "false" ) {  // preguntar a Rodrigo
                     $("a[href*='tab-case']").show();
                     $("#tab-case").show();
                     $("#CaseStatus").attr("disabled", false);

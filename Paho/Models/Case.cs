@@ -690,9 +690,9 @@ namespace Paho.Models
     public class InstitutionConfiguration
     {
         public long ID { get; set; }
-        public long InstitutionFromID { get; set; }
-        public long InstitutionToID { get; set; }
-        public long InstitutionParentID { get; set; }
+        public long? InstitutionFromID { get; set; }
+        public long? InstitutionToID { get; set; }
+        public long? InstitutionParentID { get; set; }
         [DisplayName("Flujo:")]
         public int Priority { get; set; }
         public bool Conclusion { get; set; }

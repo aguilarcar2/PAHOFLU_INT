@@ -10,6 +10,7 @@ using OfficeOpenXml;
 using Spire.Xls;
 using Microsoft.AspNet;
 using Microsoft.AspNet.Identity;
+using Paho.Models;
 
 namespace Paho.Controllers
 {
@@ -173,6 +174,12 @@ namespace Paho.Controllers
             excelWorksheet.Cells[row_, col_].Style.Border.DiagonalDown = true;
 
         }
+
+        private void CopyRange(string Range_origin, string Range_destin, ExcelWorksheet excelWorksheet)
+        {
+            excelWorksheet.Cells[Range_origin].Copy(excelWorksheet.Cells[Range_destin]);
+        }
+
         private void Record_information_assign(ExcelWorksheet excelWorksheet, SqlDataReader reader_)
         {
             AssignValueCell(2, 2, excelWorksheet, reader_, "Id");
@@ -716,6 +723,30 @@ namespace Paho.Controllers
                     }
                     command.Parameters.Clear();
                     con.Close();
+                    if ((storedProcedure == "Cases"))
+                    {
+                        FluCase flucase = db.FluCases.Find(recordID);
+                        var copies = flucase.CaseLabTests;
+                        if (copies.Count > 1) {
+                            var fila_original_empieza = 104;
+                            var fila_original_termina = 113;
+                            var fila_copiar_empieza = 114;
+                            var fila_copiar_termina = 121;
+                            for (var i = 1; i < copies.Count; i++)
+                            {
+
+                                if (i > 1)
+                                {
+                                    //fila_original = fila_original + 10;
+                                    fila_copiar_empieza = fila_copiar_empieza + 10;
+                                    fila_copiar_termina = fila_copiar_empieza + 8;
+                                }
+                                //CopyRange("B103:AT113", "B113:AT121", excelWorksheet);
+                                CopyRange("B"+fila_original_empieza.ToString()+ ":AT" + fila_original_termina.ToString() , "B" + fila_copiar_empieza.ToString() + ":AT" + fila_copiar_termina.ToString(), excelWorksheet);
+                            }
+                        }
+                        
+                    }
 
                 }
             }
