@@ -430,7 +430,9 @@
  
     self.IsInusitado = ko.computed(function () {            //**** CAFQ
         if (self.SurvInusual() == true) {
-            return true;
+            // Desactivado por el momento requirimiento de RRR //29/Nov/2017
+            //return true;
+            return false;
         } else {
             return false;
         }
