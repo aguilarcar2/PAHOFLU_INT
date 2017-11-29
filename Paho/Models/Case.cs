@@ -711,7 +711,7 @@ namespace Paho.Models
     public class InstitutionConfEndFlowByVirus
     {
         public int ID { get; set; }
-        public int? id_InstCnf { get; set; }
+        public long id_InstCnf { get; set; }
         public int? id_Cat_VirusType { get; set; }
         public int? id_Cat_Subtype { get; set; }
         public string value_Cat_TestResult { get; set; }

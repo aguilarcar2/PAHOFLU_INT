@@ -400,8 +400,16 @@ namespace Paho.Controllers
                     flucases = flucases.Where(f => f.CaseStatus == null);
                     if (institutionsConfiguration.Any())
                     {
-                        //i => i.InstitutionToID == user.Institution.ID && i.InstitutionParentID == flucase.HospitalID
-                        flucases = flucases.Where(h => (h.IsSample == true && h.Processed != false && (h.FinalResult == null || h.FinalResult != "N")) && ( ((h.flow == (institutionsConfiguration.Where(i=> i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j=> j.Priority).ToList().FirstOrDefault() - 1)) && (h.statement == 2 || h.statement == null) ) || ((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault())) && (h.statement == 1 || h.statement == null))) );
+                        //flucases = flucases.Where(h => (h.IsSample == true && h.Processed != false && (h.FinalResult == null || h.FinalResult != "N")) && ( ((h.flow == (institutionsConfiguration.Where(i=> i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j=> j.Priority).ToList().FirstOrDefault() - 1)) && (h.statement == 2 || h.statement == null) ) || ((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault())) && (h.statement == 1 || h.statement == null))) );
+                        flucases = flucases.Where(h => (h.IsSample == true && h.Processed != false) && (((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault() - 1)) && (h.statement == 2 || h.statement == null)) || ((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault())) && (h.statement == 1 || h.statement == null))));
+
+                        //var ListCloseCase = db.InstitutionConfEndFlowByVirus.OfType<InstitutionConfEndFlowByVirus>()
+                        //                .Where(i => institutionsConfiguration.Select(j => j.ID).ToList().Contains(i.id_InstCnf));
+
+                        //if (ListCloseCase.Any())
+                        //{
+
+                        //}
                     }
                     else
                     {
