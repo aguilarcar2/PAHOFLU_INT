@@ -2,6 +2,8 @@
 window.common = (function () {
     var common = {};
 
+
+
     common.getFragment = function getFragment() {
         if (window.location.hash.indexOf("#") === 0) {
             return parseQueryString(window.location.hash.substr(1));
@@ -50,6 +52,13 @@ $(document).ready(function () {
     $.ajaxSetup({
         async: false
     });
+
+    //var moment = require('moment-timezone');
+    moment.tz.setDefault('UTC');
+    var dec = moment("2014-12-01T00:00:00Z");
+    //console.log(moment.tz.names());
+    var s = dec.toLocaleString();
+    console.log(s);
 
     (function ($) {
         $.postJSON = function (url, data) {

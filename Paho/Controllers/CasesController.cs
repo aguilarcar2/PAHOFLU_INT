@@ -431,7 +431,7 @@ namespace Paho.Controllers
 
             if (SPend == true && ITy != 2)
             {
-                flucases = flucases.Where(f => (f.Surv== 1 && (f.Destin == "" || f.Destin == null)) || f.CaseStatus == null );
+                flucases = flucases.Where(f => (f.Surv== 1 && (f.Destin == "" || f.Destin == null)) || (f.CaseStatus != 3 && f.CaseStatus != 2 )  );
                 //flucases = flucases.Where(f => f.CaseStatus != null);
             }
 
