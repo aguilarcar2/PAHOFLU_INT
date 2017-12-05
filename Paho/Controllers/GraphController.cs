@@ -2734,7 +2734,8 @@ namespace Paho.Controllers
             {
                 sheet = "Chile";
                 nSeIn = 1;
-                cTitu = "Líneas de base: Chile, porcentaje de positividad para influenza durante 2016 en comparación al período 2010 -2015.  Semana epidemiológica 1 a 52";
+                //cTitu = "Líneas de base: Chile, porcentaje de positividad para influenza durante 2016 en comparación al período 2010 -2015.  Semana epidemiológica 1 a 52";
+                cTitu = "Porcentaje de positividad para influenza - Vigilancia centinela de IRAG de Chile durante 2017. (En comparación al período 2011 - 2016. SE 1 a 52.";
             }
             else if (countryId == 9)
             {

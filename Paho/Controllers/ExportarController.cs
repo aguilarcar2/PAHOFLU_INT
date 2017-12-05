@@ -767,15 +767,18 @@ namespace Paho.Controllers
                                         var cell = excelWorksheet.Cells[startRow, col];
                                         if (reader.GetValue(i) != null)
                                         {
-                                            int number;
-                                            bool isNumber = int.TryParse(reader.GetValue(i).ToString(), out number);
+                                            //int number;
+                                            //bool isNumber = int.TryParse(reader.GetValue(i).ToString(), out number);
+                                            double numberD;
+                                            bool isNumber = double.TryParse(reader.GetValue(i).ToString(), out numberD);
 
                                             DateTime dt;
                                             bool isDate = DateTime.TryParse(reader.GetValue(i).ToString(), out dt);
 
                                             if (isNumber)
                                             {
-                                                excelWorksheet.Cells[row, col].Value = number;
+                                                //excelWorksheet.Cells[row, col].Value = number;
+                                                excelWorksheet.Cells[row, col].Value = numberD;
                                             }
                                             else
                                             {
@@ -1432,21 +1435,24 @@ namespace Paho.Controllers
 
             if (nDato1[0] != 0)
             {
-                nTemp = (double)(nDato4[0] / nDato1[0] * 100);
+                //nTemp = (double)(nDato4[0] / nDato1[0] * 100);
+                nTemp = Math.Round((double)(nDato4[0] / nDato1[0] * 100), 0);
                 excelWorksheet2.Cells[row, column + 1].Value = ID_formatearMeta(nTemp, yy[0], countryId);
                 ID_setResultados(excelWorksheet1, nTemp, xx[0], 2, yy[0]);
             }
 
             if (nDato8[0] != 0)
             {
-                nTemp = (double)(nDato5[0] / nDato8[0] * 100);
+                //nTemp = (double)(nDato5[0] / nDato8[0] * 100);
+                nTemp = Math.Round((double)(nDato5[0] / nDato8[0] * 100), 0);
                 excelWorksheet2.Cells[row + 1, column + 1].Value = ID_formatearMeta(nTemp, yy[1], countryId);
                 ID_setResultados(excelWorksheet1, nTemp, xx[1], 3, yy[1]);
             }
 
             if (nDato1[0] != 0)
             {
-                nTemp = (double)(nDato6[0] / nDato1[0] * 100);
+                //nTemp = (double)(nDato6[0] / nDato1[0] * 100);
+                nTemp = Math.Round((double)(nDato6[0] / nDato1[0] * 100), 0);
                 excelWorksheet2.Cells[row + 2, column + 1].Value = ID_formatearMeta(nTemp, yy[2], countryId);
                 ID_setResultados(excelWorksheet1, nTemp, xx[2], 4, yy[2]);
             }
