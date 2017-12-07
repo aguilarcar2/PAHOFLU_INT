@@ -1602,6 +1602,23 @@
                         </div>
                     }
 
+                    @if (ViewBag.UsrCtry == 3)
+                    {
+
+                    <div class="row rowform">
+                        <div class='input-group col-md-8'>
+                            <span class="input-group-addon">
+                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelComorbiditiesPresenceLabel")) <font color="#FF0000">*</font>
+                            </span>
+                            <select id="Comorbidities" class="form-control" data-bind="value: Comorbidities" style="width: 300px">
+                                <option value=""> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel"))</option>
+                                <option value="0"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelNo"))</option>
+                                <option value="1"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelYes"))</option>
+                                <option value="9"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelUnknown"))</option>
+                            </select>
+                        </div>
+                    </div>
+                        }
                     <div class="row rowform">
                         <div class='input-group col-md-4'>
                             <label class="btn btn-default">
@@ -2225,7 +2242,7 @@
                     </div>
                 </div>
             </div>					
-                <div class="row rowform" data-bind="visible:EnableCHI()">
+            <div class="row rowform" data-bind="visible:EnableCHI()">
                 <div class="col-md-7">
                     <div class='input-group'>
                         <span class="input-group-addon">

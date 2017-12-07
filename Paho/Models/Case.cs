@@ -838,6 +838,7 @@ namespace Paho.Models
         //public class CaseRisk : CaseBase
         public Vaccin? Vaccin { get; set; }
         public RiskFactor? RiskFactors { get; set; }
+        public int? Comorbidities { get; set; }
         public bool? HDisease { get; set; }
         public bool? Diabetes { get; set; }
         public bool? Neuro { get; set; }
@@ -1032,7 +1033,7 @@ namespace Paho.Models
         public decimal? CTOtherVirusType { get; set; }
         public decimal? CTRLOtherVirusType { get; set; }
         public string OtherVirus { get; set; }
-        public int? InfA { get; set; }
+        //public int? InfA { get; set; }
         public int? VirusSubTypeID { get; set; }
         public Decimal? CTSubType { get; set; }
         public decimal? CTRLSubType { get; set; }
@@ -1042,16 +1043,16 @@ namespace Paho.Models
         public decimal? CTRLSubType_2 { get; set; }
         public string TestResultID_VirusSubType_2 { get; set; }
 
-        public int? InfB { get; set; }
+        //public int? InfB { get; set; }
         public int? VirusLineageID { get; set; }
         public decimal? CTLineage { get; set; }
         public decimal? CTRLLineage { get; set; }
-        public int? ParaInfI { get; set; }
-        public int? ParaInfII { get; set; }
-        public int? ParaInfIII { get; set; }
-        public int? RSV { get; set; }
-        public int? Adenovirus { get; set; }
-        public int? Metapneumovirus { get; set; }
+        //public int? ParaInfI { get; set; }
+        //public int? ParaInfII { get; set; }
+        //public int? ParaInfIII { get; set; }
+        //public int? RSV { get; set; }
+        //public int? Adenovirus { get; set; }
+        //public int? Metapneumovirus { get; set; }
         public decimal? RNP { get; set; }
         public decimal? CTRLRNP { get; set; }
         public decimal? CTRLNegative { get; set; }
@@ -1065,6 +1066,14 @@ namespace Paho.Models
         public virtual CatVirusType CatVirusType { get; set; }
         [ForeignKey("VirusSubTypeID")]
         public virtual CatVirusSubType CatVirusSubType { get; set; }
+        [ForeignKey("VirusSubTypeID_2")]
+        public virtual CatVirusSubType CatVirusSubType_2 { get; set; }
+
+        [ForeignKey("VirusSubTypeID_2")]
+        public virtual CatVirusLinaje CatVirusLinaje { get; set; }
+
+        [ForeignKey("LabID")]
+        public virtual Institution Institution { get; set; }
         //[ForeignKey("TestResultID")]
         ////[InverseProperty("value")]
         //public virtual CatTestResult CatTestResultSamples { get; set; }
@@ -1460,6 +1469,7 @@ namespace Paho.Models
                    //CaseRisk
                    p.Vaccin,
                    p.RiskFactors,
+                   p.Comorbidities,
                    p.HDisease,
                    p.Diabetes,
                    p.Neuro,

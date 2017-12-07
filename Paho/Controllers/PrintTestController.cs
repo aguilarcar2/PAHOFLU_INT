@@ -163,6 +163,8 @@ namespace Paho.Controllers
                 {
                     excelWorksheet.Cells[row_, col_].Value = value_cell;
                 }
+                else
+                { excelWorksheet.Cells[row_, col_].Value = value_cell; }
 
         }
 
@@ -726,13 +728,14 @@ namespace Paho.Controllers
                     if ((storedProcedure == "Cases"))
                     {
                         FluCase flucase = db.FluCases.Find(recordID);
-                        var copies = flucase.CaseLabTests;
-                        if (copies.Count > 1) {
-                            var fila_original_empieza = 104;
+                        var ListTest = flucase.CaseLabTests;
+                        var NumTest = ListTest.Count;
+                        var fila_original_empieza = 104;
+                        if (ListTest.Count > 1) {
                             var fila_original_termina = 113;
                             var fila_copiar_empieza = 114;
                             var fila_copiar_termina = 121;
-                            for (var i = 1; i < copies.Count; i++)
+                            for (var i = 1; i < ListTest.Count; i++)
                             {
 
                                 if (i > 1)
@@ -744,8 +747,20 @@ namespace Paho.Controllers
                                 //CopyRange("B103:AT113", "B113:AT121", excelWorksheet);
                                 CopyRange("B"+fila_original_empieza.ToString()+ ":AT" + fila_original_termina.ToString() , "B" + fila_copiar_empieza.ToString() + ":AT" + fila_copiar_termina.ToString(), excelWorksheet);
                             }
+
                         }
-                        
+
+                        var j = 0;
+                        foreach (CaseLabTest Test in ListTest)
+                        {
+                            j = j + 1;
+                            AssignValueCell_value(fila_original_empieza, 10, excelWorksheet, flucase.RecDate.ToString(), "DateTime"); // Fecha de recepcion
+                            AssignValueCell_value(fila_original_empieza + 2, 10, excelWorksheet, Test.LabID.ToString(), "String"); // Fecha de recepcion
+                        } //Still here? Column not found. 
+
+
+
+
                     }
 
                 }

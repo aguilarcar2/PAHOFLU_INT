@@ -48,6 +48,7 @@
     }, self);
 
     self.RiskFactors = ko.observable("");
+    self.Comorbidities = ko.observable("");
     self.VacInfluenza = ko.observable("");
     self.VacInfluenzaDateFirst = ko.observable("");
     self.VacInfluenzaDateSecond = ko.observable("");
@@ -283,37 +284,83 @@
     self.RiskFactors.subscribe(function (NewRiskFactors) {
         if (NewRiskFactors == 0 || NewRiskFactors == "" || NewRiskFactors == 9 ) {
             //self.ResetRisk();
-            self.HDisease(null);
-            self.Diabetes(null);
-            self.Neuro(null);
-            self.Asthma(null);
-            self.Pulmonary(null);
-            self.Liver(null);
-            self.Renal(null);
-            self.Immunsupp(null);
-            self.ParaCerebral(null);
-            self.Indigena(null);
-            self.TrabSalud(null);
-            self.Desnutricion(null);
-            self.Prematuridad(null);
-            self.BajoPesoNacer(null);
-            self.AusLacMat(null);
-            self.DownSyn(null);
-            self.Alcohol(null);
-            self.Smoking(null);
-            self.Obesity(null);
-            $("#HDisease, #Diabetes, #Neuro, #Asthma, #Pulmonary, #Liver, #Renal, #Immunsupp, #ParaCerebral, #Indigena, #TrabSalud, #Desnutricion, #Prematuridad , #BajoPesoNacer, #AusLacMat, #DownSyn, #Alcohol, #Smoking, #combObesity").prop('disabled', true);
+            //console.log(app.Views.Contact.ActiveBOL());
+            if (app.Views.Contact.ActiveBOL()) {
+
+                self.TrabSalud(null);
+                self.Alcohol(null);
+                self.Smoking(null);
+                self.Indigena(null);
+                self.DownSyn(null);
+                $("#TrabSalud, #Alcohol, #Smoking, #Indigena, #DownSyn").prop('disabled', true);
+            } else {
+                self.Alcohol(null);
+                self.Smoking(null);
+                self.TrabSalud(null);
+                self.Indigena(null);
+                self.DownSyn(null);
+                self.HDisease(null);
+                self.Diabetes(null);
+                self.Neuro(null);
+                self.Asthma(null);
+                self.Pulmonary(null);
+                self.Liver(null);
+                self.Renal(null);
+                self.Immunsupp(null);
+                self.ParaCerebral(null);
+                self.Desnutricion(null);
+                self.Prematuridad(null);
+                self.BajoPesoNacer(null);
+                self.AusLacMat(null);
+                self.Obesity(null);
+                $("#HDisease, #Diabetes, #Neuro, #Asthma, #Pulmonary, #Liver, #Renal, #Immunsupp, #ParaCerebral, #Indigena, #TrabSalud, #Desnutricion, #Prematuridad , #BajoPesoNacer, #AusLacMat, #DownSyn, #Alcohol, #Smoking, #combObesity").prop('disabled', true);
+            }
+            
 
         }
         else {
             if ($("#ITy").val() == 2) {
                 $("#HDisease, #Diabetes, #Neuro, #Asthma, #Pulmonary, #Liver, #Renal, #Immunsupp, #ParaCerebral, #Indigena, #TrabSalud, #Desnutricion, #Prematuridad , #BajoPesoNacer, #AusLacMat, #DownSyn, #Alcohol, #Smoking, #combObesity").prop('disabled', true);
             } else {
-                $("#HDisease, #Diabetes, #Neuro, #Asthma, #Pulmonary, #Liver, #Renal, #Immunsupp, #ParaCerebral, #Indigena, #TrabSalud, #Desnutricion, #Prematuridad , #BajoPesoNacer, #AusLacMat, #DownSyn, #Alcohol, #Smoking, #combObesity").prop('disabled', false);
+                //console.log(app.Views.Contact.ActiveBOL());
+                if (app.Views.Contact.ActiveBOL()) {
+                    $("#TrabSalud, #Alcohol, #Smoking, #Indigena, #DownSyn").prop('disabled', false);
+                } else {
+                    $("#HDisease, #Diabetes, #Neuro, #Asthma, #Pulmonary, #Liver, #Renal, #Immunsupp, #ParaCerebral, #Indigena, #TrabSalud, #Desnutricion, #Prematuridad , #BajoPesoNacer, #AusLacMat, #DownSyn, #Alcohol, #Smoking, #combObesity").prop('disabled', false);
+                }
+
+
+                
             }
             
         }
     });
+
+    self.Comorbidities.subscribe(function (NewComorbidities) {
+        console.log(NewComorbidities);
+        self.HDisease(null);
+        self.Diabetes(null);
+        self.Neuro(null);
+        self.Asthma(null);
+        self.Pulmonary(null);
+        self.Liver(null);
+        self.Renal(null);
+        self.Immunsupp(null);
+        self.ParaCerebral(null);
+        self.Desnutricion(null);
+        self.Prematuridad(null);
+        self.BajoPesoNacer(null);
+        self.AusLacMat(null);
+        self.Obesity(null);
+        if ((NewComorbidities == 0 || NewComorbidities == "" || NewComorbidities == 9) && app.Views.Contact.ActiveBOL()) {
+           
+            $("#HDisease, #Diabetes, #Neuro, #Asthma, #Pulmonary, #Liver, #Renal, #Immunsupp, #ParaCerebral,  #Desnutricion, #Prematuridad , #BajoPesoNacer, #AusLacMat,  #combObesity").prop('disabled', true);
+        } else if (app.Views.Contact.ActiveBOL()) {
+
+            $("#HDisease, #Diabetes, #Neuro, #Asthma, #Pulmonary, #Liver, #Renal, #Immunsupp, #ParaCerebral,  #Desnutricion, #Prematuridad , #BajoPesoNacer, #AusLacMat,  #combObesity").prop('disabled', false);
+        }
+    });
+
     self.Pregnant.subscribe(function (NewPregnant) {
         console.log(NewPregnant);
         if (NewPregnant != 1) {
@@ -336,6 +383,7 @@
         self.PregnantWeek(null);
         self.Vaccin(null);
         self.RiskFactors(null);
+        self.Comorbidities(null);
         self.HDisease(false);
         self.Diabetes(false);
         self.Neuro(false);
@@ -388,6 +436,8 @@
         console.log(self.Id);
         $.getJSON(app.dataModel.getRiskUrl, { id: id }, function (data, status) {
             self.hasReset(true);
+                self.RiskFactors(data.RiskFactors);
+                self.Comorbidities(data.Comorbidities); //Unicamente para Bolivia
                 self.Vaccin(data.Vaccin);
                 self.HDisease(data.HDisease);
                 self.Diabetes(data.Diabetes);
@@ -415,7 +465,7 @@
                 self.DownSyn(data.DownSyn);
                 self.Obesity(data.Obesity);
                 self.OtherRisk(data.OtherRisk);
-                self.RiskFactors(data.RiskFactors);
+
 
                 if (data.VacInfluenza) self.VacInfluenza(data.VacInfluenza);
                 if (data.VacInfluenzaDateFirst) self.VacInfluenzaDateFirst(moment(data.VacInfluenzaDateFirst).format(date_format_moment)); else self.VacInfluenzaDateFirst(null);
@@ -603,8 +653,14 @@
             msg += "\n" + "Información de tipo de tratamiento antiviral es requerida";
         }
 
-        if (!self.RiskFactors() || self.RiskFactors == "")
+        if (!self.RiskFactors() || self.RiskFactors() == "")
             msg += "\n" + msgValidationRiskFactor;
+
+        if (app.Views.Contact.ActiveBOL()) {
+            if (!self.Comorbidities() || self.Comorbidities() == "")
+                msg += "\n" + msgValidationRiskFactor;
+        }
+        
 
         if (msg !== "") { alert(msgValidationMedicalHistory + msg); $('#tabs').tabs({ active: 2 }); return false; }
         if (nextStep != null) nextStep();
@@ -690,6 +746,7 @@
                 OseltaDose: self.OseltaDose(),
                 AntiViralDose: self.AntiViralDose(),
                 RiskFactors: self.RiskFactors(),
+                Comorbidities: self.Comorbidities(),
 
                 ViajePrevSintoma: self.ViajePrevSintoma(),          //#### CAFQ
                 DestPrevSintoma1: self.DestPrevSintoma1(),          //#### CAFQ
