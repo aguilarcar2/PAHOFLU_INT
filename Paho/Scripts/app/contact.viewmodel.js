@@ -438,8 +438,8 @@
         }
     }, self);
 
-    self.AddFluCase = function () {
 
+    self.AddFluCase = function () {
         app.Views.Home.ResetFluCase();
     };
 

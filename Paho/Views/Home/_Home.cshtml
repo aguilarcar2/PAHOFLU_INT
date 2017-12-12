@@ -1571,7 +1571,13 @@
                             }
                         </div>
 
-                        <div class="row rowform" data-bind="visible:(app.Views.Contact.ShowOnlyAdult && app.Views.Contact.IsInusitado)">
+                        <!-- 
+                            self.IsInusitadoAdulto
+                            <div class="row rowform" data-bind="visible:(app.Views.Contact.ShowOnlyAdult && app.Views.Contact.IsInusitado)">
+                    <div class="row rowform" data-bind="visible: app.Views.Contact.IsInusitadoAdulto">
+                            -->
+
+                        <div class="row rowform" data-bind="visible:IsInusitadoAdulto">
                             <!-- Trabajador de laboratorio -->
                             <div class="col-md-3">
                                 <label class="btn btn-default">
@@ -2144,14 +2150,21 @@
                             </label>
                         </div>
 
+                        <!-- Mialgia -->
+                        <div class="col-md-3">
+                            <label class="btn btn-default">
+                                <input type="checkbox" name="Mialgia" id="Mialgia" value="1" data-bind="checked: Mialgia"> Mialgia
+                            </label>
+                        </div>
+
                         <!-- Otro/Descripcion otro -->
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-inline">
                                 <div class="input-group">
                                     <label class="btn btn-default">
                                         <input type="checkbox" name="Otro" id="Otro" value="1" data-bind="checked: Otro"> Otro
                                     </label>
-                                    <span data-bind="visible: IsOtro">&nbsp;&nbsp;Descripción de otro:</span>
+                                    <span data-bind="visible: IsOtro">&nbsp;&nbsp;Descripción otro:</span>
                                     <input type='text' id="OtroDesc" style="width: 200px" class="form-control case_letter" data-bind="visible: IsOtro, value: OtroDesc" />
                                 </div>
                             </div>
@@ -2222,50 +2235,61 @@
         
         <div id="Fechas" class="collapse in">
 			@if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry ==9 || ViewBag.UsrCtry ==3){
+                <!-- Servicio / Diagnóstico principal de ingreso -->
                 <div class="row rowform">
-                <div class="col-md-4">
-                    <div class='input-group'>
-                        <span class="input-group-addon">
-                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelService"))
-                        </span>
-                        <input id="Salon" type='text' class="form-control case_letter" data-bind="value: Salon" style="max-width:200px;" />
-                        <input id="SalonVal" type='hidden' class="form-control" data-bind="value: SalonVal, valueUpdate:'change'" />
+                    <div class="col-md-4">
+                        <div class='input-group'>
+                            <span class="input-group-addon">
+                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelService"))
+                            </span>
+                            <input id="Salon" type='text' class="form-control case_letter" data-bind="value: Salon" style="max-width:200px;" />
+                            <input id="SalonVal" type='hidden' class="form-control" data-bind="value: SalonVal, valueUpdate:'change'" />
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class='input-group'>
+                            <span class="input-group-addon">
+                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelPrincipalDiagnosisAdmission"))
+                            </span>
+                            <input id="DiagPrinAdm" type='text' class="form-control case_letter" data-bind="value: DiagPrinAdm" style="max-width:300px;" />
+                            <input id="DiagPrinAdmVal" type='hidden' class="form-control" data-bind="value: DiagPrinAdmVal, valueUpdate:'change'" />
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-7">
-                    <div class='input-group'>
-                        <span class="input-group-addon">
-                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelPrincipalDiagnosisAdmission"))
-                        </span>
-                        <input id="DiagPrinAdm" type='text' class="form-control case_letter" data-bind="value: DiagPrinAdm" style="max-width:300px;" />
-                        <input id="DiagPrinAdmVal" type='hidden' class="form-control" data-bind="value: DiagPrinAdmVal, valueUpdate:'change'" />
+                <!-- Otro diagnostico de admisión -->					
+                <div class="row rowform" data-bind="visible:EnableCHI()">
+                    <div class="col-md-7">
+                        <div class='input-group'>
+                            <span class="input-group-addon">
+                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOtherDiagnosisAdmission")) 
+                            </span>
+                            <input id="DiagOtroAdm" type='text' data-bind="value: DiagOtroAdm" class="form-control case_letter" style="max-width:300px;" />
+                        </div>
                     </div>
                 </div>
-            </div>					
-            <div class="row rowform" data-bind="visible:EnableCHI()">
-                <div class="col-md-7">
-                    <div class='input-group'>
-                        <span class="input-group-addon">
-                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOtherDiagnosisAdmission")) 
-                        </span>
-                        <input id="DiagOtroAdm" type='text' data-bind="value: DiagOtroAdm" class="form-control case_letter" style="max-width:300px;" />
-                    </div>
-                </div>
-            </div>
 			}
             @if (ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 18)
             {
+                <!-- Diagnóstico egreso rel. IRAG / Otro diagnostico de egreso -->
                 <div class="row rowform" data-bind="visible:app.Views.Contact.NoActiveBOL">
-                <div class="col-md-12">
-                    <div class='input-group'>
-                        <span class="input-group-addon">
-                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelDiagnosisExitRelSARI")) 
-                        </span>
-                        <input id="DiagEg" type='text' class="form-control case_letter" data-bind="value: DiagEg" style="max-width:480px;" />
-                        <input id="DiagEgVal" type='hidden' class="form-control" data-bind="value: DiagEgVal, valueUpdate:'change'" />
+                    <div class="col-md-6">
+                        <div class='input-group'>
+                            <span class="input-group-addon">
+                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelDiagnosisExitRelSARI")) 
+                            </span>
+                            <input id="DiagEg" type='text' class="form-control case_letter" data-bind="value: DiagEg" style="max-width:480px;" />
+                            <input id="DiagEgVal" type='hidden' class="form-control" data-bind="value: DiagEgVal, valueUpdate:'change'" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class='input-group'>
+                            <span class="input-group-addon">
+                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOtherDiagnosisExitRelSARI"))
+                            </span>
+                            <input id="DiagEgOtro" type='text' data-bind="value: DiagEgOtro" class="form-control case_letter" />
+                        </div>
                     </div>
                 </div>
-            </div>
             }
 
             <div class="row rowform">
@@ -2349,23 +2373,6 @@
                         <input id="InfeccHospitFecha" type="text" class="form-control" data-bind='datepicker: InfeccHospitFecha, datepickerOptions: {maxDate:@Model.DatePickerConfig, dateFormat:"@Model.DateFormatDP"}' />
                     </div>
                 </div>
-                <!--
-                <div class="col-md-6">
-                    <div class="form-inline">
-                        <div class="input-group">
-                            <span>¿Infección adquirida durante hospitalización previa?:&nbsp;&nbsp;</span>
-
-                            <label class="btn btn-default">
-                                <input type="radio" name="InfeHospPrev" id="InfeHospPrev" value="1"> Si
-                            </label>
-                            &nbsp;
-                            <label class="btn btn-default">
-                                <input type="radio" name="InfeHospPrev" id="InfeHospPrev" value="2"> No
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                -->
             </div>
 
             <!-- UPC -->

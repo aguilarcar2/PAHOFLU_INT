@@ -272,14 +272,40 @@
         }
     }, self);
 
+    /*self.MyInusitadoAdulto = ko.computed(function (){
+        if (app.Views.Contact.IsInusitado() == true) {
+            if (app.Views.Contact.ShowOnlyAdult() == true) {
+                alert("TRUE_2");
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    }, self);*/
+
     self.IsTrabLaboratorio = ko.computed(function () {            //**** CAFQ
         if (self.TrabLaboratorio() == true) {
             return ($('#SurvInusual').is(':checked') == true) ? true : false;
         } else {
             return false;
         }
-        //return (self.TrabLaboratorio() == true) ? true : false;
     }, self);
+
+    self.IsInusitadoAdulto = ko.computed(function () {            //**** CAFQ
+        if (app.Views.Contact.IsInusitado() == true) {
+            if (app.Views.Contact.ShowOnlyAdult() == true) {
+                //alert("TRUE_1");
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }, self);
+
 
     self.RiskFactors.subscribe(function (NewRiskFactors) {
         if (NewRiskFactors == 0 || NewRiskFactors == "" || NewRiskFactors == 9 ) {

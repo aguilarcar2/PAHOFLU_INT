@@ -83,7 +83,6 @@ namespace Paho.Models
         public Decimal? CTSubType_2 { get; set; }
         public Decimal? CTRLSubType_2 { get; set; }
         public string TestResultID_VirusSubType_2 { get; set; }
-
         public int? InfB { get; set; }
         public int? VirusLineageID { get; set; }
         public Decimal? CTLineage { get; set; }
@@ -113,7 +112,6 @@ namespace Paho.Models
         public bool DisplayCountries { get; set; }
         public bool DisplayRegionals { get; set; }
         public bool DisplayHospitals { get; set; }
-
     }
 
     public class ExportarViewModel
@@ -457,7 +455,6 @@ namespace Paho.Models
 
     public class CatSampleNoProcessed
     {
-
         public int ID { get; set; }
         [Display(Name = "Descripción SPA:")]
         public string SPA { get; set; }
@@ -471,7 +468,6 @@ namespace Paho.Models
 
     public class CatTestType
     {
-
         public int ID { get; set; }
         [Display(Name = "Descripción:")]
         public string description { get; set; }
@@ -748,69 +744,68 @@ namespace Paho.Models
         public int? nativepeople { get;  set; }
         public int? nationality { get; set; }
 
-        public int? Ocupacion { get; set; }                  //#### CAFQ
-        public string TrabajoDirecc { get; set; }           //#### CAFQ
-        public string TrabajoEstablec { get; set; }         //#### CAFQ
-        public int? ContactoAnimVivos { get; set; }         //#### CAFQ
-        public int? OcupacMercAnimVivos { get; set; }         //#### CAFQ
-        public int? ViajePrevSintoma { get; set; }         //#### CAFQ
-        public string DestPrevSintoma1 { get; set; }         //#### CAFQ
-        public DateTime? DestFechaLlegada1 { get; set; }         //#### CAFQ
-        public DateTime? DestFechaSalida1 { get; set; }         //#### CAFQ
-        public string DestPrevSintoma2 { get; set; }         //#### CAFQ
-        public DateTime? DestFechaLlegada2 { get; set; }         //#### CAFQ
-        public DateTime? DestFechaSalida2 { get; set; }         //#### CAFQ
-        public string DestPrevSintoma3 { get; set; }         //#### CAFQ
-        public DateTime? DestFechaLlegada3 { get; set; }         //#### CAFQ
-        public DateTime? DestFechaSalida3 { get; set; }         //#### CAFQ
-        public int? ContacDirectoAnim { get; set; }         //#### CAFQ
-        public string AnimalNaturaContac { get; set; }         //#### CAFQ
-        public int? ExpuextoSimilSintoma { get; set; }         //#### CAFQ
-        public string NumeIdentContacto { get; set; }         //#### CAFQ
-        public int? InfluConfirContacto { get; set; }         //#### CAFQ
-        public string TipoRelaContacto { get; set; }         //#### CAFQ
-        public int? FamiDirecContacto { get; set; }         //#### CAFQ
-        public string TrabSaludRama { get; set; }         //#### CAFQ
-        public bool? TrabLaboratorio { get; set; }         //#### CAFQ
-        public string TrabLaboratorioRama { get; set; }         //#### CAFQ
-        public Decimal? Temperatura { get; set; }                       //#### CAFQ
-        //public bool? DolorCabeza { get; set; }                        //#### CAFQ                YA EXISTE (Cefalea)
-        //public bool? Mialgia { get; set; }                              //#### CAFQ
-        public bool? Erupcion { get; set; }                             //#### CAFQ
-        public string ErupcionLocaliz { get; set; }                     //#### CAFQ
-        //public bool? Dolor { get; set; }                                //#### CAFQ
-        public string DolorMuscularLocaliz { get; set; }                        //#### CAFQ
-        //public bool? Disnea { get; set; }                             //#### CAFQ
-        public bool? SintomHemorrag { get; set; }                       //#### CAFQ
-        public string SintomHemorragDesc { get; set; }                  //#### CAFQ
-        public bool? AlteracEstadoMental { get; set; }                       //#### CAFQ
-        public bool? Altralgia { get; set; }                       //#### CAFQ
-        public bool? Escalofrios { get; set; }                       //#### CAFQ
-        public bool? Conjuntivitis { get; set; }                       //#### CAFQ
-        public bool? Rinitis { get; set; }                       //#### CAFQ
-        public bool? DiarreaAguda { get; set; }                       //#### CAFQ
-        public bool? DiarreaCronica { get; set; }                       //#### CAFQ
-        public bool? Mareo { get; set; }                       //#### CAFQ
-        public bool? FalloDesarrollo { get; set; }                       //#### CAFQ
-        public bool? Hepatomegalea { get; set; }                       //#### CAFQ
-        public bool? Ictericia { get; set; }                       //#### CAFQ
-        public bool? Linfadenopatia { get; set; }                       //#### CAFQ
-        //public bool? MalestarGeneral { get; set; }                       //#### CAFQ
-        //public bool? Nausea { get; set; }                       //#### CAFQ
-        public bool? RigidezNuca { get; set; }                       //#### CAFQ
-        public bool? Paralisis { get; set; }                       //#### CAFQ
-        public bool? RespiratSuperior { get; set; }                       //#### CAFQ
-        public bool? RespiratInferior { get; set; }                       //#### CAFQ
-        public bool? DolorRetrorobitario { get; set; }                       //#### CAFQ
-        public bool? PerdidaPeso { get; set; }                       //#### CAFQ
-        public bool? Otro { get; set; }                       //#### CAFQ
-        public string OtroDesc { get; set; }                       //#### CAFQ
-        public bool? InfeccHospit { get; set; }                       //#### CAFQ
-        public DateTime? InfeccHospitFecha { get; set; }                       //#### CAFQ
+        public int? Ocupacion { get; set; }                         //#### CAFQ
+        public string TrabajoDirecc { get; set; }                   //#### CAFQ
+        public string TrabajoEstablec { get; set; }                 //#### CAFQ
+        public int? ContactoAnimVivos { get; set; }                 //#### CAFQ
+        public int? OcupacMercAnimVivos { get; set; }               //#### CAFQ
+        public int? ViajePrevSintoma { get; set; }                  //#### CAFQ
+        public string DestPrevSintoma1 { get; set; }                //#### CAFQ
+        public DateTime? DestFechaLlegada1 { get; set; }            //#### CAFQ
+        public DateTime? DestFechaSalida1 { get; set; }             //#### CAFQ
+        public string DestPrevSintoma2 { get; set; }                //#### CAFQ
+        public DateTime? DestFechaLlegada2 { get; set; }            //#### CAFQ
+        public DateTime? DestFechaSalida2 { get; set; }             //#### CAFQ
+        public string DestPrevSintoma3 { get; set; }                //#### CAFQ
+        public DateTime? DestFechaLlegada3 { get; set; }            //#### CAFQ
+        public DateTime? DestFechaSalida3 { get; set; }             //#### CAFQ
+        public int? ContacDirectoAnim { get; set; }                 //#### CAFQ
+        public string AnimalNaturaContac { get; set; }              //#### CAFQ
+        public int? ExpuextoSimilSintoma { get; set; }              //#### CAFQ
+        public string NumeIdentContacto { get; set; }               //#### CAFQ
+        public int? InfluConfirContacto { get; set; }               //#### CAFQ
+        public string TipoRelaContacto { get; set; }                //#### CAFQ
+        public int? FamiDirecContacto { get; set; }                 //#### CAFQ
+        public string TrabSaludRama { get; set; }                   //#### CAFQ
+        public bool? TrabLaboratorio { get; set; }                  //#### CAFQ
+        public string TrabLaboratorioRama { get; set; }             //#### CAFQ
+        public Decimal? Temperatura { get; set; }                   //#### CAFQ
+        //public bool? DolorCabeza { get; set; }                    //#### CAFQ                YA EXISTE (Cefalea)
+        public bool? Mialgia { get; set; }                          //#### CAFQ
+        public bool? Erupcion { get; set; }                         //#### CAFQ
+        public string ErupcionLocaliz { get; set; }                 //#### CAFQ
+        //public bool? Dolor { get; set; }                          //#### CAFQ
+        public string DolorMuscularLocaliz { get; set; }            //#### CAFQ
+        //public bool? Disnea { get; set; }                         //#### CAFQ
+        public bool? SintomHemorrag { get; set; }                   //#### CAFQ
+        public string SintomHemorragDesc { get; set; }              //#### CAFQ
+        public bool? AlteracEstadoMental { get; set; }              //#### CAFQ
+        public bool? Altralgia { get; set; }                        //#### CAFQ
+        public bool? Escalofrios { get; set; }                      //#### CAFQ
+        public bool? Conjuntivitis { get; set; }                    //#### CAFQ
+        public bool? Rinitis { get; set; }                          //#### CAFQ
+        public bool? DiarreaAguda { get; set; }                     //#### CAFQ
+        public bool? DiarreaCronica { get; set; }                   //#### CAFQ
+        public bool? Mareo { get; set; }                            //#### CAFQ
+        public bool? FalloDesarrollo { get; set; }                  //#### CAFQ
+        public bool? Hepatomegalea { get; set; }                    //#### CAFQ
+        public bool? Ictericia { get; set; }                        //#### CAFQ
+        public bool? Linfadenopatia { get; set; }                   //#### CAFQ
+        //public bool? MalestarGeneral { get; set; }                //#### CAFQ
+        //public bool? Nausea { get; set; }                         //#### CAFQ
+        public bool? RigidezNuca { get; set; }                      //#### CAFQ
+        public bool? Paralisis { get; set; }                        //#### CAFQ
+        public bool? RespiratSuperior { get; set; }                 //#### CAFQ
+        public bool? RespiratInferior { get; set; }                 //#### CAFQ
+        public bool? DolorRetrorobitario { get; set; }              //#### CAFQ
+        public bool? PerdidaPeso { get; set; }                      //#### CAFQ
+        public bool? Otro { get; set; }                             //#### CAFQ
+        public string OtroDesc { get; set; }                        //#### CAFQ
+        public int? InfeccHospit { get; set; }                      //#### CAFQ
+        public DateTime? InfeccHospitFecha { get; set; }            //#### CAFQ
 
         public int? flow { get; set; }
         public int? statement { get; set; }
-        //public int? statement { get; set; }
 
         //public class CaseGEO : CaseBase
         public int? CountryID { get; set; }
@@ -911,6 +906,7 @@ namespace Paho.Models
         public bool? ECMO { get; set; }
         public bool? VAFO { get; set; }
         public int? DiagEg { get; set; }
+        public string DiagEgOtro { get; set; }                      //#### CAFQ
         public bool? DifResp { get; set; }
         public bool? MedSatOxig { get; set; }
         public int? SatOxigPor { get; set; }
@@ -1078,10 +1074,8 @@ namespace Paho.Models
         ////[InverseProperty("value")]
         //public virtual CatTestResult CatTestResultSamples { get; set; }
         //public virtual TestResult TestResult { get; set; }
-
-
-
     }
+
     public class CatPopulationInstitution : CaseBase
     {
 
@@ -1399,8 +1393,6 @@ namespace Paho.Models
         public DbSet<ImportLog> ImportedFileList { get; set; }
         public DbSet<RecordHistory> RecordHistories { get; set; }
 
-
-
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -1553,6 +1545,7 @@ namespace Paho.Models
                    p.ECMO,
                    p.VAFO,
                    p.DiagEg,
+                   p.DiagEgOtro,            //#### CAFQ
                    p.DifResp,
                    p.MedSatOxig,
                    p.SatOxigPor,
@@ -1595,7 +1588,7 @@ namespace Paho.Models
                    p.Tiraje,
                    p.Odinofagia,
                    p.Temperatura,                          //#### CAFQ
-                   //p.Mialgia,                          //#### CAFQ
+                   p.Mialgia,                          //#### CAFQ
                    p.Erupcion,                          //#### CAFQ
                    p.ErupcionLocaliz,                          //#### CAFQ
                    //p.Dolor,                          //#### CAFQ

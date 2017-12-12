@@ -222,13 +222,8 @@ namespace Paho.Controllers
                     institutionsDisplay.Insert(0, all);
                 }
 
-
                 return Json(institutionsDisplay, JsonRequestBehavior.AllowGet);
             }
-
-
-
-
         }
 
         public ActionResult GetAreas(int CountryID)
@@ -779,11 +774,11 @@ namespace Paho.Controllers
             int? nativepeople,
             int? nationality,
             DateTime DateFeverDummy,
-            int? Ocupacion,                      //#### CAFQ
-            string TrabajoDirecc,               //#### CAFQ
-            string TrabajoEstablec,           //#### CAFQ
-            int? ContactoAnimVivos,           //#### CAFQ
-            int? OcupacMercAnimVivos           //#### CAFQ
+            int? Ocupacion,                         //#### CAFQ
+            string TrabajoDirecc,                   //#### CAFQ
+            string TrabajoEstablec,                 //#### CAFQ
+            int? ContactoAnimVivos,                 //#### CAFQ
+            int? OcupacMercAnimVivos                //#### CAFQ
             )
         {
             FluCase flucase;
@@ -1232,6 +1227,7 @@ namespace Paho.Controllers
                     ECMO = flucase.ECMO,
                     VAFO = flucase.VAFO,
                     DiagEgVal = flucase.DiagEg,
+                    DiagEgOtro = flucase.DiagEgOtro,        //#### CAFQ
                     IsSample = flucase.IsSample,
                     SampleDate = flucase.SampleDate,
                     SampleType = flucase.SampleType,
@@ -1256,40 +1252,40 @@ namespace Paho.Controllers
                     Estridor = flucase.Estridor,
                     Tos = flucase.Tos,
 
-                    Temperatura = flucase.Temperatura,                //#### CAFQ
+                    Temperatura = flucase.Temperatura,                                  //#### CAFQ
                     DolorCabeza = flucase.DolorCabeza,
-                    //Mialgia = flucase.Mialgia,                //#### CAFQ
-                    Erupcion = flucase.Erupcion,                //#### CAFQ
-                    ErupcionLocaliz = flucase.ErupcionLocaliz,                //#### CAFQ
+                    Mialgia = flucase.Mialgia,                                          //#### CAFQ
+                    Erupcion = flucase.Erupcion,                                        //#### CAFQ
+                    ErupcionLocaliz = flucase.ErupcionLocaliz,                          //#### CAFQ
                     DolorMuscular = flucase.DolorMuscular,
                     DolorMuscularLocaliz = flucase.DolorMuscularLocaliz,                //#### CAFQ
                     Disnea = flucase.Disnea,
-                    SintomHemorrag = flucase.SintomHemorrag,                //#### CAFQ
-                    SintomHemorragDesc = flucase.SintomHemorragDesc,                //#### CAFQ
-                    AlteracEstadoMental = flucase.AlteracEstadoMental,                //#### CAFQ
-                    Altralgia = flucase.Altralgia,                //#### CAFQ
-                    Escalofrios = flucase.Escalofrios,                //#### CAFQ
-                    Conjuntivitis = flucase.Conjuntivitis,                //#### CAFQ
-                    Rinitis = flucase.Rinitis,                //#### CAFQ
-                    DiarreaAguda = flucase.DiarreaAguda,                //#### CAFQ
-                    DiarreaCronica = flucase.DiarreaCronica,                //#### CAFQ
-                    Mareo = flucase.Mareo,                //#### CAFQ
-                    FalloDesarrollo = flucase.FalloDesarrollo,                //#### CAFQ
-                    Hepatomegalea = flucase.Hepatomegalea,                //#### CAFQ
-                    Ictericia = flucase.Ictericia,                //#### CAFQ
-                    Linfadenopatia = flucase.Linfadenopatia,                //#### CAFQ
+                    SintomHemorrag = flucase.SintomHemorrag,                            //#### CAFQ
+                    SintomHemorragDesc = flucase.SintomHemorragDesc,                    //#### CAFQ
+                    AlteracEstadoMental = flucase.AlteracEstadoMental,                  //#### CAFQ
+                    Altralgia = flucase.Altralgia,                                      //#### CAFQ
+                    Escalofrios = flucase.Escalofrios,                                  //#### CAFQ
+                    Conjuntivitis = flucase.Conjuntivitis,                              //#### CAFQ
+                    Rinitis = flucase.Rinitis,                                          //#### CAFQ
+                    DiarreaAguda = flucase.DiarreaAguda,                                //#### CAFQ
+                    DiarreaCronica = flucase.DiarreaCronica,                            //#### CAFQ
+                    Mareo = flucase.Mareo,                                              //#### CAFQ
+                    FalloDesarrollo = flucase.FalloDesarrollo,                          //#### CAFQ
+                    Hepatomegalea = flucase.Hepatomegalea,                              //#### CAFQ
+                    Ictericia = flucase.Ictericia,                                      //#### CAFQ
+                    Linfadenopatia = flucase.Linfadenopatia,                            //#### CAFQ
                     Malestar = flucase.Malestar,
                     Nauseas = flucase.Nauseas,
-                    RigidezNuca = flucase.RigidezNuca,                //#### CAFQ
-                    Paralisis = flucase.Paralisis,                //#### CAFQ
-                    RespiratSuperior = flucase.RespiratSuperior,                //#### CAFQ
-                    RespiratInferior = flucase.RespiratInferior,                //#### CAFQ
-                    DolorRetrorobitario = flucase.DolorRetrorobitario,                //#### CAFQ
-                    PerdidaPeso = flucase.PerdidaPeso,                //#### CAFQ
-                    Otro = flucase.Otro,                //#### CAFQ
-                    OtroDesc = flucase.OtroDesc,                //#### CAFQ
-                    InfeccHospit = flucase.InfeccHospit,                //#### CAFQ
-                    InfeccHospitFecha = flucase.InfeccHospitFecha,                //#### CAFQ
+                    RigidezNuca = flucase.RigidezNuca,                                  //#### CAFQ
+                    Paralisis = flucase.Paralisis,                                      //#### CAFQ
+                    RespiratSuperior = flucase.RespiratSuperior,                        //#### CAFQ
+                    RespiratInferior = flucase.RespiratInferior,                        //#### CAFQ
+                    DolorRetrorobitario = flucase.DolorRetrorobitario,                  //#### CAFQ
+                    PerdidaPeso = flucase.PerdidaPeso,                                  //#### CAFQ
+                    Otro = flucase.Otro,                                                //#### CAFQ
+                    OtroDesc = flucase.OtroDesc,                                        //#### CAFQ
+                    InfeccHospit = flucase.InfeccHospit,                                //#### CAFQ
+                    InfeccHospitFecha = flucase.InfeccHospitFecha,                      //#### CAFQ
 
                     DifResp = flucase.DifResp,
                     MedSatOxig = flucase.MedSatOxig,
@@ -1368,40 +1364,40 @@ namespace Paho.Controllers
                 //bool? DolorCabeza,
                 bool? Estridor,
                 bool? Tos,
-                Decimal? Temperatura,                      //#### CAFQ
-                bool? DolorCabeza,                      //#### CAFQ
-                //bool? Mialgia,                      //#### CAFQ
-                bool? Erupcion,                      //#### CAFQ
-                string ErupcionLocaliz,                      //#### CAFQ
-                bool? DolorMuscular,                      //#### CAFQ
-                string DolorMuscularLocaliz,                      //#### CAFQ
-                bool? Disnea,                      //#### CAFQ
-                bool? SintomHemorrag,                      //#### CAFQ
+                Decimal? Temperatura,                           //#### CAFQ
+                bool? DolorCabeza,                              //#### CAFQ
+                bool? Mialgia,                                  //#### CAFQ
+                bool? Erupcion,                                 //#### CAFQ
+                string ErupcionLocaliz,                         //#### CAFQ
+                bool? DolorMuscular,                            //#### CAFQ
+                string DolorMuscularLocaliz,                    //#### CAFQ
+                bool? Disnea,                                   //#### CAFQ
+                bool? SintomHemorrag,                           //#### CAFQ
                 string SintomHemorragDesc,                      //#### CAFQ
                 bool? AlteracEstadoMental,                      //#### CAFQ
-                bool? Altralgia,                      //#### CAFQ
-                bool? Escalofrios,                      //#### CAFQ
-                bool? Conjuntivitis,                      //#### CAFQ
-                bool? Rinitis,                      //#### CAFQ
-                bool? DiarreaAguda,                      //#### CAFQ
-                bool? DiarreaCronica,                      //#### CAFQ
-                bool? Mareo,                      //#### CAFQ
-                bool? FalloDesarrollo,                      //#### CAFQ
-                bool? Hepatomegalea,                      //#### CAFQ
-                bool? Ictericia,                      //#### CAFQ
-                bool? Linfadenopatia,                      //#### CAFQ
-                bool? Malestar,                      //#### CAFQ
-                bool? Nauseas,                      //#### CAFQ
-                bool? RigidezNuca,                      //#### CAFQ
-                bool? Paralisis,                      //#### CAFQ
-                bool? RespiratSuperior,                      //#### CAFQ
-                bool? RespiratInferior,                      //#### CAFQ
+                bool? Altralgia,                                //#### CAFQ
+                bool? Escalofrios,                              //#### CAFQ
+                bool? Conjuntivitis,                            //#### CAFQ
+                bool? Rinitis,                                  //#### CAFQ
+                bool? DiarreaAguda,                             //#### CAFQ
+                bool? DiarreaCronica,                           //#### CAFQ
+                bool? Mareo,                                    //#### CAFQ
+                bool? FalloDesarrollo,                          //#### CAFQ
+                bool? Hepatomegalea,                            //#### CAFQ
+                bool? Ictericia,                                //#### CAFQ
+                bool? Linfadenopatia,                           //#### CAFQ
+                bool? Malestar,                                 //#### CAFQ
+                bool? Nauseas,                                  //#### CAFQ
+                bool? RigidezNuca,                              //#### CAFQ
+                bool? Paralisis,                                //#### CAFQ
+                bool? RespiratSuperior,                         //#### CAFQ
+                bool? RespiratInferior,                         //#### CAFQ
                 bool? DolorRetrorobitario,                      //#### CAFQ
-                bool? PerdidaPeso,                      //#### CAFQ
-                bool? Otro,                      //#### CAFQ
-                string OtroDesc,                      //#### CAFQ
-                bool? InfeccHospit,                      //#### CAFQ
-                DateTime? InfeccHospitFecha,           //#### CAFQ
+                bool? PerdidaPeso,                              //#### CAFQ
+                bool? Otro,                                     //#### CAFQ
+                string OtroDesc,                                //#### CAFQ
+                int? InfeccHospit,                              //#### CAFQ
+                DateTime? InfeccHospitFecha,                    //#### CAFQ
                 bool? DifResp,
                 bool? MedSatOxig,
                 int? SatOxigPor,
@@ -1419,6 +1415,7 @@ namespace Paho.Controllers
                 bool? ECMO,
                 bool? VAFO,
                 int? DiagEgVal,
+                string DiagEgOtro,                              //#### CAFQ
                 bool? Tiraje,
                 bool? Odinofagia,
                 int? CaseStatus,
@@ -1488,40 +1485,40 @@ namespace Paho.Controllers
             //flucase.DolorCabeza = DolorCabeza;
             flucase.Estridor = Estridor;
             flucase.Tos = Tos;
-            flucase.Temperatura = Temperatura;                    //#### CAFQ
+            flucase.Temperatura = Temperatura;                      //#### CAFQ
             flucase.DolorCabeza = DolorCabeza;
-            //flucase.Mialgia = Mialgia;                    //#### CAFQ
-            flucase.Erupcion = Erupcion;                    //#### CAFQ
-            flucase.ErupcionLocaliz = ErupcionLocaliz;                    //#### CAFQ
-            flucase.DolorMuscular = DolorMuscular;                    //#### CAFQ
-            flucase.DolorMuscularLocaliz = DolorMuscularLocaliz;                    //#### CAFQ
+            flucase.Mialgia = Mialgia;                              //#### CAFQ
+            flucase.Erupcion = Erupcion;                            //#### CAFQ
+            flucase.ErupcionLocaliz = ErupcionLocaliz;              //#### CAFQ
+            flucase.DolorMuscular = DolorMuscular;                  //#### CAFQ
+            flucase.DolorMuscularLocaliz = DolorMuscularLocaliz;    //#### CAFQ
             flucase.Disnea = Disnea;                                //#### CAFQ
-            flucase.SintomHemorrag = SintomHemorrag;                    //#### CAFQ
-            flucase.SintomHemorragDesc = SintomHemorragDesc;                    //#### CAFQ
-            flucase.AlteracEstadoMental = AlteracEstadoMental;                    //#### CAFQ
-            flucase.Altralgia = Altralgia;                    //#### CAFQ
-            flucase.Escalofrios = Escalofrios;                    //#### CAFQ
-            flucase.Conjuntivitis = Conjuntivitis;                    //#### CAFQ
-            flucase.Rinitis = Rinitis;                    //#### CAFQ
+            flucase.SintomHemorrag = SintomHemorrag;                //#### CAFQ
+            flucase.SintomHemorragDesc = SintomHemorragDesc;        //#### CAFQ
+            flucase.AlteracEstadoMental = AlteracEstadoMental;      //#### CAFQ
+            flucase.Altralgia = Altralgia;                          //#### CAFQ
+            flucase.Escalofrios = Escalofrios;                      //#### CAFQ
+            flucase.Conjuntivitis = Conjuntivitis;                  //#### CAFQ
+            flucase.Rinitis = Rinitis;                              //#### CAFQ
             flucase.DiarreaAguda = DiarreaAguda;                    //#### CAFQ
-            flucase.DiarreaCronica = DiarreaCronica;                    //#### CAFQ
-            flucase.Mareo = Mareo;                    //#### CAFQ
-            flucase.FalloDesarrollo = FalloDesarrollo;                    //#### CAFQ
-            flucase.Hepatomegalea = Hepatomegalea;                    //#### CAFQ
-            flucase.Ictericia = Ictericia;                    //#### CAFQ
-            flucase.Linfadenopatia = Linfadenopatia;                    //#### CAFQ
-            flucase.Malestar = Malestar;                    //#### CAFQ
-            flucase.Nauseas = Nauseas;                    //#### CAFQ
-            flucase.RigidezNuca = RigidezNuca;                    //#### CAFQ
-            flucase.Paralisis = Paralisis;                    //#### CAFQ
-            flucase.RespiratSuperior = RespiratSuperior;                    //#### CAFQ
-            flucase.RespiratInferior = RespiratInferior;                    //#### CAFQ
-            flucase.DolorRetrorobitario = DolorRetrorobitario;                    //#### CAFQ
-            flucase.PerdidaPeso = PerdidaPeso;                    //#### CAFQ
-            flucase.Otro = Otro;                    //#### CAFQ
-            flucase.OtroDesc = OtroDesc;                    //#### CAFQ
+            flucase.DiarreaCronica = DiarreaCronica;                //#### CAFQ
+            flucase.Mareo = Mareo;                                  //#### CAFQ
+            flucase.FalloDesarrollo = FalloDesarrollo;              //#### CAFQ
+            flucase.Hepatomegalea = Hepatomegalea;                  //#### CAFQ
+            flucase.Ictericia = Ictericia;                          //#### CAFQ
+            flucase.Linfadenopatia = Linfadenopatia;                //#### CAFQ
+            flucase.Malestar = Malestar;                            //#### CAFQ
+            flucase.Nauseas = Nauseas;                              //#### CAFQ
+            flucase.RigidezNuca = RigidezNuca;                      //#### CAFQ
+            flucase.Paralisis = Paralisis;                          //#### CAFQ
+            flucase.RespiratSuperior = RespiratSuperior;            //#### CAFQ
+            flucase.RespiratInferior = RespiratInferior;            //#### CAFQ
+            flucase.DolorRetrorobitario = DolorRetrorobitario;      //#### CAFQ
+            flucase.PerdidaPeso = PerdidaPeso;                      //#### CAFQ
+            flucase.Otro = Otro;                                    //#### CAFQ
+            flucase.OtroDesc = OtroDesc;                            //#### CAFQ
             flucase.InfeccHospit = InfeccHospit;                    //#### CAFQ
-            flucase.InfeccHospitFecha = InfeccHospitFecha;                    //#### CAFQ
+            flucase.InfeccHospitFecha = InfeccHospitFecha;          //#### CAFQ
             flucase.DifResp = DifResp;
             flucase.MedSatOxig = MedSatOxig;
             flucase.SatOxigPor = SatOxigPor;
@@ -1537,6 +1534,7 @@ namespace Paho.Controllers
             flucase.ECMO = ECMO;
             flucase.VAFO = VAFO;
             flucase.DiagEg = DiagEgVal;
+            flucase.DiagEgOtro = DiagEgOtro;                        //#### CAFQ
             flucase.Tiraje = Tiraje;
             flucase.Odinofagia = Odinofagia;
             flucase.CaseStatus = CaseStatus;
@@ -2182,8 +2180,6 @@ namespace Paho.Controllers
 
             if (PCR_RecordHistory && PCR_Count == 0)
                 HistoryRecord(flucase.ID, 4, flucase.flow, 8);
-
-            
 
             return result;
         }

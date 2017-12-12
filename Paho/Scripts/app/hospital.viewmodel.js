@@ -199,12 +199,8 @@
                         self.FalleDate("");
                     }
                 }
-
             }
-            
         }
-
-
     });
 
     self.ViewFallecido = ko.computed(function () {
@@ -292,11 +288,8 @@
                                 alert(viewValidateDeathDateGtUCIExitDate);
                                 self.ICUExDate("");
                             }
-
                         }
-
                     }
-                    
                 }
             }
 //        }
@@ -326,6 +319,7 @@
     self.VAFO = ko.observable("");
     self.DiagEg = ko.observable("");
     self.DiagEgVal = ko.observable("");
+    self.DiagEgOtro = ko.observable("");                //#### CAFQ
 
     //self.CheckFeverDate = function (date_node) {
     //    var date_hospital_ = app.Views.Contact.HospitalDate();
@@ -357,11 +351,8 @@
                 alert(viewValidateDiagnosticDate);
                 self.DiagDate(null);
             }
-
         }
     };
-
- 
 
     self.CalculateEW = function (FieldDate, FieldAct, FieldActYear) {
         if ($("#" + FieldDate).val() != "") {
@@ -421,7 +412,6 @@
                         FieldAct(weekno);
                         FieldActYear(date_ew.getFullYear() + 1);
                     }
-
                 } else
                 {
                     FieldAct(weekno);
@@ -429,7 +419,6 @@
                         FieldActYear(date_ew.getFullYear());
                 }                          
             }
-
         }
     };
 
@@ -454,7 +443,6 @@
                     $("#tab-lab :input").prop('disabled', false);
                     $("#NotSample :input").prop('disabled', true);
                 }
-                
             }
 
             if (app.Views.Contact.SurvILI() == true && app.Views.Lab.FinalResult() && app.Views.Lab.CanConclude() == true) {
@@ -552,7 +540,6 @@
                 }
             }
         }
-
     });
     self.labs = ko.computed(function () {
           return app.Views.Home.labs();       
@@ -588,11 +575,9 @@
                             alert(viewValidateSample2DateLtOnsetDate);
                             self.SampleDate2("");
                         }
-
                     }
                 }
             }
-            
         });
     //}
     
@@ -614,14 +599,12 @@
                 }
             }
         }
-
     });
     self.LabId2 = ko.observable("");
 
     self.SampleDate3 = ko.observable("");
 
     self.SampleDate3.subscribe(function (newSampleDate3) {
-
         if (self.UsrCountry() == 7) {
             var current_value = typeof (newSampleDate3) == "object" ? newSampleDate3 : parseDate(newSampleDate3, date_format_);
             var date_sampledate_ = typeof (self.SampleDate()) == "object" ? self.SampleDate() : parseDate(self.SampleDate(), date_format_);
@@ -651,9 +634,6 @@
                         alert(viewValidateSample3DateLtOnsetDate);
                         self.SampleDate3("");
                     }
-
-
-
                 }
             }
         }
@@ -708,6 +688,7 @@
 
     self.Temperatura = ko.observable().extend({ numeric: 1 });                     //**** CAFQ
     self.DolorCabeza = ko.observable("");                                             //**** CAFQ
+    self.Mialgia = ko.observable("");                                             //**** CAFQ
     self.Erupcion = ko.observable("");                                             //**** CAFQ
     self.ErupcionLocaliz = ko.observable("");                                             //**** CAFQ
     self.DolorMuscular = ko.observable("");                                             //**** CAFQ
@@ -869,6 +850,7 @@
        self.VAFO("");
        self.DiagEg("");
        self.DiagEgVal("");
+       self.DiagEgOtro("");         //#### CAFQ
        self.IsSample("");
        self.SampleDate (null);
        self.SampleType("");
@@ -1153,7 +1135,7 @@
 
                 self.Temperatura(data.Temperatura);                         //#### CAFQ
                 self.DolorCabeza(data.DolorCabeza);                         //#### CAFQ
-                //self.Erupcion(data.Mialgia);                               //#### CAFQ
+                self.Mialgia(data.Mialgia);                               //#### CAFQ
                 self.Erupcion(data.Erupcion);                               //#### CAFQ
                 self.ErupcionLocaliz(data.ErupcionLocaliz);                 //#### CAFQ
                 self.DolorMuscular(data.DolorMuscular);                     //#### CAFQ
@@ -1206,7 +1188,10 @@
                         self.DiagEg("");
                     });
                 }
-                else  self.DiagEg("");
+                else 
+                    self.DiagEg("");
+                self.DiagEgOtro(data.DiagEgOtro);       //#### CAFQ
+
                 self.Tiraje(data.Tiraje);
                 self.Odinofagia(data.Odinofagia);
                 self.CaseStatus(data.CaseStatus);
@@ -1317,7 +1302,7 @@
                 Tos: self.Tos(),
                 Temperatura: self.Temperatura().toString().replace('.', ','),                  //#### CAFQ
                 DolorCabeza: self.DolorCabeza(),
-                //Mialgia: self.Mialgia(),                                  //#### CAFQ
+                Mialgia: self.Mialgia(),                                  //#### CAFQ
                 Erupcion: self.Erupcion(),                                  //#### CAFQ
                 ErupcionLocaliz: self.ErupcionLocaliz(),                    //#### CAFQ
                 DolorMuscular: self.DolorMuscular(),
@@ -1348,7 +1333,6 @@
                 Otro: self.Otro(),                  //#### CAFQ
                 OtroDesc: self.OtroDesc(),                  //#### CAFQ
                 InfeccHospit: self.InfeccHospit(),                  //#### CAFQ
-                //InfeccHospitFecha: self.InfeccHospitFecha(),                  //#### CAFQ
                 InfeccHospitFecha: $("#InfeccHospitFecha").val() == "" ? null : moment(date_InfeccHospitFecha).format(date_format_ISO),    //#### CAFQ
                 DifResp: self.DifResp(),
                 MedSatOxig: self.MedSatOxig(),
@@ -1365,13 +1349,13 @@
                 ECMO: self.ECMO(),
                 VAFO: self.VAFO(),
                 DiagEgVal: self.DiagEgVal(),
+                DiagEgOtro: self.DiagEgOtro() == null ? "" : self.DiagEgOtro().toLocaleUpperCase(),         //#### CAFQ
                 Tiraje: self.Tiraje(),
                 Odinofagia: self.Odinofagia(),
                 CaseStatus: self.CaseStatus(),
                 CloseDate: $("#CloseDate").val() == "" ? null : moment(date_close_case).format(date_format_ISO),
                 ObservationCase: self.ObservationCase() == null ? "" : self.ObservationCase().toLocaleUpperCase(),
                 DataStatement: 2
-                
             },
             function (data) {
                 if (nextStep) nextStep();
@@ -1383,7 +1367,6 @@
     };
 
     return self;
-
 };
 
 app.addViewModel({
