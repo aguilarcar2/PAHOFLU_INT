@@ -1368,7 +1368,7 @@
 
     return self;
 };
-
+ 
 app.addViewModel({
     name: "Hospital",
     bindingMemberName: "hospital",

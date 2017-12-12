@@ -283,7 +283,7 @@
         }else{
             return false;
         }
-    }, self);*/
+    }, self);*/ 
 
     self.IsTrabLaboratorio = ko.computed(function () {            //**** CAFQ
         if (self.TrabLaboratorio() == true) {

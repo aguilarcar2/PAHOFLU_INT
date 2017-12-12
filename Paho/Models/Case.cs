@@ -831,7 +831,7 @@ namespace Paho.Models
         public virtual Local Local { get; set; }
         public virtual Neighborhood Neighborhood { get; set; }
         //public class CaseRisk : CaseBase
-        public Vaccin? Vaccin { get; set; }
+        public Vaccin? Vaccin { get; set; } 
         public RiskFactor? RiskFactors { get; set; }
         public int? Comorbidities { get; set; }
         public bool? HDisease { get; set; }

@@ -25,7 +25,7 @@ namespace Paho.Controllers
         public void HistoryRecord(int? RecordId, int Action_history, int? flow, int? state)
         {
             RecordHistory history;
-            history = new RecordHistory();
+            history = new RecordHistory(); 
             history.Action = Action_history;
             history.Recordid = RecordId;
             history.Userid = User.Identity.GetUserId();
