@@ -189,10 +189,11 @@ namespace Paho.Controllers {
                         AppendDataToExcel(CountryID, Languaje_country_.Language.ToString(), RegionId, Year, HospitalID, WeekFrom, WeekTo, excelWorkBook, "FLUID_IRAG", 8, 4, false);
                         AppendDataToExcel(CountryID, Languaje_country_.Language.ToString(), RegionId, Year, HospitalID, WeekFrom, WeekTo, excelWorkBook, "FLUID_DEATHS_IRAG", 8, 6, false);
                         AppendDataToExcel(CountryID, Languaje_country_.Language.ToString(), RegionId, Year, HospitalID, WeekFrom, WeekTo, excelWorkBook, "FLUID_ETI", 8, 7, false);
+                        AppendDataToExcel(CountryID, Languaje_country_.Language.ToString(), RegionId, Year, HospitalID, WeekFrom, WeekTo, excelWorkBook, "FLUID_NATIONAL_VIRUSES", 6, 8, false);
                         //AppendDataToExcel(CountryID, Languaje_country_.Language.ToString(), Year, HospitalID, WeekFrom, WeekTo, excelWorkBook, "FluidIragExport", 33, "Fallecidos IRAG");
                         //if (CountryID == 7)
                         //{
-                           ConfigToExcel(CountryID, Languaje_country_.Language.ToString(), RegionId, Year, HospitalID, WeekFrom, WeekTo, excelWorkBook, "Leyendas", 1, 9, false);
+                        ConfigToExcel(CountryID, Languaje_country_.Language.ToString(), RegionId, Year, HospitalID, WeekFrom, WeekTo, excelWorkBook, "Leyendas", 1, 9, false);
                         //}
 
                         excelPackage.SaveAs(ms);
@@ -231,6 +232,10 @@ namespace Paho.Controllers {
                     command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
                     command.Parameters.Add("@weekFrom", SqlDbType.Int).Value = weekFrom;
                     command.Parameters.Add("@weekTo", SqlDbType.Int).Value = weekTo;
+                    if (sheet == 8)
+                    {
+                        command.Parameters.Add("@IRAG", SqlDbType.Int).Value = 2;
+                    }
 
                     con.Open();
                     using (var reader = command.ExecuteReader())

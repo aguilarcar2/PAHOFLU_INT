@@ -1290,18 +1290,18 @@
                 SampleType3: self.SampleType3(),
                 ShipDate3: $("#ShipDate3").val() == "" ? null : moment(date_ship3).format(date_format_ISO),
                 LabId3: self.LabId3(),
-                Adenopatia: self.Adenopatia(),
-                AntecedentesFiebre: self.AntecedentesFiebre(),
-                Rinorrea: self.Rinorrea(),
-                Malestar: self.Malestar(),
-                Nauseas: self.Nauseas(),
-                DolorMuscular: self.DolorMuscular(),
-                Disnea: self.Disnea(),
-                DolorCabeza: self.DolorCabeza(),
-                Estridor: self.Estridor(),
-                Tos: self.Tos(),
+                Adenopatia: self.Adenopatia() != true ? false : self.Adenopatia(),
+                AntecedentesFiebre: self.AntecedentesFiebre() != true ? false : self.AntecedentesFiebre(),
+                Rinorrea: self.Rinorrea() != true ? false : self.Rinorrea(),
+                Malestar: self.Malestar() != true ? false : self.Malestar(),
+                Nauseas: self.Nauseas() != true ? false : self.Nauseas(),
+                DolorMuscular: self.DolorMuscular() != true ? false : self.DolorMuscular(),
+                Disnea: self.Disnea() != true ? false : self.Disnea(),
+                DolorCabeza: self.DolorCabeza() != true ? false : self.DolorCabeza(),
+                Estridor: self.Estridor() != true ? false : self.Estridor(),
+                Tos: self.Tos() != true ? false : self.Tos(),
                 Temperatura: self.Temperatura().toString().replace('.', ','),                  //#### CAFQ
-                DolorCabeza: self.DolorCabeza(),
+                DolorCabeza: self.DolorCabeza() != true ? false : self.DolorCabeza(),
                 Mialgia: self.Mialgia(),                                  //#### CAFQ
                 Erupcion: self.Erupcion(),                                  //#### CAFQ
                 ErupcionLocaliz: self.ErupcionLocaliz(),                    //#### CAFQ
@@ -1334,7 +1334,7 @@
                 OtroDesc: self.OtroDesc(),                  //#### CAFQ
                 InfeccHospit: self.InfeccHospit(),                  //#### CAFQ
                 InfeccHospitFecha: $("#InfeccHospitFecha").val() == "" ? null : moment(date_InfeccHospitFecha).format(date_format_ISO),    //#### CAFQ
-                DifResp: self.DifResp(),
+                DifResp: self.DifResp() != true ? false : self.DifResp(),
                 MedSatOxig: self.MedSatOxig(),
                 SatOxigPor: self.SatOxigPor(),
                 SalonVal: self.SalonVal(),
