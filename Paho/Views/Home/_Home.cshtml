@@ -1599,13 +1599,24 @@
                             </div>
                         </div>
 
-                        <div class="row rowform">
-                            <div style="font-weight:bold; margin-left:10px;" data-toggle="collapse" data-target="#exposicion">
+                        if (ViewBag.UsrCtry == 3)
+                        {
+                        <button id="btnriesgo" type="button" class="btn btn-group-justified" ddata-toggle="collapse" ddata-target="#riesgo">
+                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsComorbiditiesLabel"))
+                            <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
+                        </button>}
+                        else
+                        {
+                            <div class="row rowform">
+                                <div style="font-weight:bold; margin-left:10px;" data-toggle="collapse" data-target="#exposicion">
                                     @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsComorbiditiesLabel"))
-                                <span class="glyphicon glyphicon-chevron-up span_arrow"></span><br />
-                                <hr style="margin-top:3px; margin-bottom:0px; border-width:1px  0  0; " />
+                                    <span class="glyphicon glyphicon-chevron-up span_arrow"></span><br />
+                                    <hr style="margin-top:3px; margin-bottom:0px; border-width:1px  0  0; " />
+                                </div>
                             </div>
-                        </div>
+                        }
+
+
                     }
 
                     @if (ViewBag.UsrCtry == 3)
@@ -1722,12 +1733,19 @@
                                 </span>
                                 <select id="combObesity" name="" class="form-control" data-bind="value: Obesity">
                                     <option value=""> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel"))</option>
-                                    @if (ViewBag.UsrCtry != 7)
+                                    @if (ViewBag.UsrCtry == 9)
                                     {
                                         <option value="5"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelObesityUnknown"))</option>
                                         <option value="6"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelObesityIMC3040"))</option>
                                         <option value="7"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelObesityIMC40"))</option>
                                         <option value="8"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelObesityNoData"))</option>
+                                    }
+                                    else if (ViewBag.UsrCtry != 7)
+                                    {
+                                        <option value="1"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelObesityUnknown"))</option>
+                                        <option value="2"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelObesityIMC3040"))</option>
+                                        <option value="3"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelObesityIMC40"))</option>
+                                        <option value="4"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelObesityNoData"))</option>
                                     }
                                     else
                                     {

@@ -748,7 +748,7 @@
                 Smoking: self.Smoking() != true ? false : self.Smoking(),
                 Alcohol: self.Alcohol() != true ? false : self.Alcohol(),
                 DownSyn: self.DownSyn() != true ? false : self.DownSyn(),
-                Obesity: self.Obesity() != true ? false : self.Obesity(),
+                Obesity: self.Obesity(),
                 OtherRisk: self.OtherRisk() == null ? "" : self.OtherRisk().toLocaleUpperCase(),
                 VacInfluenza: self.VacInfluenza(),
                 VacInfluenzaDateFirst: $("#VacInfluenzaDateFirst").val() == "" ? null : moment(date_influenza_1).format(date_format_ISO),
