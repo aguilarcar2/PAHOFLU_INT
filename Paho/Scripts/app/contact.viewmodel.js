@@ -432,7 +432,7 @@
         if (self.SurvInusual() == true) {
             // Desactivado por el momento requirimiento de RRR //29/Nov/2017
             //return true;
-            return false;
+            return true;
         } else {
             return false; 
         }
