@@ -686,21 +686,27 @@
     self.MedSatOxig = ko.observable("");
     self.SatOxigPor = ko.observable("");
 
-    self.Temperatura = ko.observable().extend({ numeric: 1 });                     //**** CAFQ
-    self.DolorCabeza = ko.observable("");                                             //**** CAFQ
-    self.Mialgia = ko.observable("");                                             //**** CAFQ
-    self.Erupcion = ko.observable("");                                             //**** CAFQ
-    self.ErupcionLocaliz = ko.observable("");                                             //**** CAFQ
-    self.DolorMuscular = ko.observable("");                                             //**** CAFQ
-    self.DolorMuscularLocaliz = ko.observable("");                                             //**** CAFQ
-    self.Disnea = ko.observable("");                                             //**** CAFQ
-    self.IsErupcion = ko.computed(function () {                         //**** CAFQ
+    self.IsInusitadoSintomatologia = ko.computed(function () {                         //**** CAFQ
+        if (self.UsrCountry() == 3) {                               // Bolivia
+            return (app.Views.Contact.IsInusitado() == true) ? true : false;
+        } else {
+            return true;
+        }
+    }, self);             //**** CAFQ
+    self.Temperatura = ko.observable().extend({ numeric: 1 });                      //**** CAFQ
+    self.DolorCabeza = ko.observable("");                                           //**** CAFQ
+    self.Mialgia = ko.observable("");                                               //**** CAFQ
+    self.Erupcion = ko.observable("");                                              //**** CAFQ
+    self.ErupcionLocaliz = ko.observable("");                                       //**** CAFQ
+    self.DolorMuscular = ko.observable("");                                         //**** CAFQ
+    self.DolorMuscularLocaliz = ko.observable("");                                  //**** CAFQ
+    self.Disnea = ko.observable("");                                                //**** CAFQ
+    self.IsErupcion = ko.computed(function () {                                     //**** CAFQ
         return (self.Erupcion() == true) ? true : false;
     }, self);                                             //**** CAFQ
     self.IsDolorMuscular = ko.computed(function () {                    //**** CAFQ
         return (self.DolorMuscular() == true) ? true : false;
     }, self);                                             //**** CAFQ
-
     self.SintomHemorrag = ko.observable("");                                             //**** CAFQ
     self.SintomHemorragDesc = ko.observable("");                                             //**** CAFQ
     self.AlteracEstadoMental = ko.observable("");                                             //**** CAFQ
@@ -708,27 +714,22 @@
     self.IsSintomaHemorragico = ko.computed(function () {               //**** CAFQ
         return (self.SintomHemorrag() == true) ? true : false;
     }, self);                     //**** CAFQ
-
     self.Escalofrios = ko.observable("");                                             //**** CAFQ
     self.Conjuntivitis = ko.observable("");                                             //**** CAFQ
     self.Rinitis = ko.observable("");                                             //**** CAFQ
     self.DiarreaAguda = ko.observable("");                                             //**** CAFQ
-
     self.DiarreaCronica = ko.observable("");                                             //**** CAFQ
     self.Mareo = ko.observable("");                                             //**** CAFQ
     self.FalloDesarrollo = ko.observable("");                                             //**** CAFQ
     self.Hepatomegalea = ko.observable("");                                             //**** CAFQ
-
     self.Ictericia = ko.observable("");                                             //**** CAFQ
     self.Linfadenopatia = ko.observable("");                                             //**** CAFQ
     self.Malestar = ko.observable("");                                             //**** CAFQ
     self.Nauseas = ko.observable("");                                             //**** CAFQ
-
     self.RigidezNuca = ko.observable("");                                             //**** CAFQ
     self.Paralisis = ko.observable("");                                             //**** CAFQ
     self.RespiratSuperior = ko.observable("");                                             //**** CAFQ
     self.RespiratInferior = ko.observable("");                                             //**** CAFQ
-
     self.DolorRetrorobitario = ko.observable("");                                             //**** CAFQ
     self.PerdidaPeso = ko.observable("");                                             //**** CAFQ
     self.Otro = ko.observable("");                                             //**** CAFQ
@@ -736,7 +737,6 @@
     self.IsOtro = ko.computed(function () {               //**** CAFQ
         return (self.Otro() == true) ? true : false;
     }, self);                                             //**** CAFQ
-
     self.InfeccHospitFecha = ko.observable("");                                             //**** CAFQ
     self.InfeccHospit = ko.observable("");                                          //**** CAFQ     Radiobutton
     self.IsInfeHospPrev = ko.computed(function () {               //**** CAFQ

@@ -1919,7 +1919,8 @@
             </div>
         }
 
-        <div class="row rowform" data-bind="visible:app.Views.Contact.NoActiveBOL">
+        <!-- <div class="row rowform" data-bind="visible:app.Views.Contact.NoActiveBOL"> -->
+        <div class="row rowform" data-bind="visible: IsInusitadoSintomatologia">
             <div class="col-md-12">
                 <button type="button" class="btn btn-group-justified" data-toggle="collapse" data-target="#sintomatologia">
                     @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSymptomatology"))
@@ -1929,7 +1930,8 @@
 
                 <!-- Sintomatologia -->
                 <div id="sintomatologia" class="collapse in">
-                    <div class="row rowform">
+                    <!-- <div class="row rowform"> -->
+                    <div class="row rowform" data-bind="visible:app.Views.Contact.NoActiveBOL">
                         <!-- Fiebre o historial de fiebre -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
@@ -1969,7 +1971,6 @@
                                 <input type="checkbox" name="DolorCabeza" id="DolorCabeza" value="1" data-bind="checked: DolorCabeza"> Cefalea
                             </label>
                         </div>
-
                         <!-- Erupción -->
                         <div class="col-md-3">
                             <div class="form-inline">
@@ -1982,7 +1983,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <!-- Dolor muscular -->
                         <div class="col-md-3">
                             <div class="form-inline">
@@ -1995,7 +1995,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <!-- Disnea -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
