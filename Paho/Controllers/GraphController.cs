@@ -1183,6 +1183,133 @@ namespace Paho.Controllers
             }
 
         }
+        public JsonResult GetMapDataTuned(string Report, int CountryID, int? RegionID, int? StateID, int? HospitalID, string Year, int? Month, int? SE, DateTime? StartDate, DateTime? EndDate, int? ReportCountry, string Graph, int? IRAG, int? ETI)
+        {
+            try
+            {
+                //var ms = new MemoryStream();
+                var user = UserManager.FindById(User.Identity.GetUserId());
+                //int CountryID_ = (CountryID >= 0) ? CountryID : (user.Institution.CountryID ?? 0);
+                int CountryID_ = CountryID;
+                //int? HospitalID_ = (user.Institution.Father_ID > 0 || user.Institution.Father_ID == null) ? HospitalID : Convert.ToInt32(user.Institution.ID);
+                int? HospitalID_ = HospitalID;
+                int? HospitalID_Cache = HospitalID;
+                //int? RegionID_ = (RegionID >= 0) ? RegionID : (user.Institution.cod_region_institucional ?? 0);
+                int? RegionID_ = RegionID;
+                //int? StateID_ = (StateID > 0) ? StateID : 0;
+                int? StateID_ = StateID;
+                string Languaje_ = user.Institution.Country.Language ?? "SPA";
+                int? ETI_ = ETI;
+                int? IRAG_ = IRAG;
+                
+               
+                string resultGetGraphData = "";
+                XmlDocument myXmlDoc0 = new XmlDocument();
+                List<ArrayList> mapVals = new List<ArrayList>();
+                
+                var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+                if (Year == "")
+                {
+                    DateTime fechaDefault = DateTime.Now;
+                    Year = fechaDefault.Year.ToString();
+                }
+
+                using (var con = new SqlConnection(consString))
+                {
+                    using (var command = new SqlCommand("GetMapData", con) { CommandType = CommandType.StoredProcedure })
+                    {
+                        command.Parameters.Clear();
+                        con.Open();
+                        command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = CountryID_;                        
+                        command.Parameters.Add("@Year", SqlDbType.Text).Value = Year;                       
+                        command.Parameters.Add("@IRAG", SqlDbType.Int).Value = IRAG_;
+                        command.Parameters.Add("@ETI", SqlDbType.Int).Value = ETI_;
+                        
+                        using (var reader = command.ExecuteReader())
+                        {
+                            myXmlDoc0.AppendChild(myXmlDoc0.CreateElement("map"));
+                            XmlNode myXmlNode0;
+                            myXmlNode0 = myXmlDoc0.CreateElement("mapTitle");
+                            myXmlNode0.InnerText = getMsg("viewSituationalGraph0Title");
+                            myXmlDoc0.DocumentElement.AppendChild(myXmlNode0);
+
+                            myXmlNode0 = myXmlDoc0.CreateElement("mapCountry");
+                            switch (CountryID)
+                            {
+                                case 3:
+                                    myXmlNode0.InnerText = "BO";
+                                    break;
+                                case 7:
+                                    myXmlNode0.InnerText = "CL";
+                                    break;
+                                case 9:
+                                    myXmlNode0.InnerText = "CR";
+                                    break;
+                                case 25:
+                                    myXmlNode0.InnerText = "SR";
+                                    break;
+                            }                            
+                            myXmlDoc0.DocumentElement.AppendChild(myXmlNode0);
+                            myXmlNode0 = myXmlDoc0.CreateElement("mapData");
+
+                            myXmlDoc0.DocumentElement.AppendChild(myXmlNode0);
+
+                            while (reader.Read())
+                            {
+                                ArrayList mapVal = new ArrayList();                                
+                                mapVal.Add(reader["AreaID"].ToString().Trim());                                
+                                mapVal.Add(reader["1"].ToString().Trim());
+                                mapVal.Add(reader["2"].ToString().Trim());
+                                mapVal.Add(reader["3"].ToString().Trim());
+                                mapVal.Add(reader["6"].ToString().Trim());
+                                mapVal.Add(reader["10"].ToString().Trim());
+                                mapVals.Add(mapVal);                                
+
+                                XmlNode auxXmlNode0;
+                                XmlNode anotherAuxXmlNode0;
+
+                                auxXmlNode0 = myXmlDoc0.CreateElement("areaData");
+                                myXmlNode0.AppendChild(auxXmlNode0);
+
+                                anotherAuxXmlNode0 = myXmlDoc0.CreateElement("area");
+                                anotherAuxXmlNode0.InnerText = reader["AreaID"].ToString().Trim();
+                                auxXmlNode0.AppendChild(anotherAuxXmlNode0);
+
+                                anotherAuxXmlNode0 = myXmlDoc0.CreateElement("infA");
+                                anotherAuxXmlNode0.InnerText = reader["1"].ToString().Trim();
+                                auxXmlNode0.AppendChild(anotherAuxXmlNode0);
+
+                                anotherAuxXmlNode0 = myXmlDoc0.CreateElement("infB");
+                                anotherAuxXmlNode0.InnerText = reader["2"].ToString().Trim();
+                                auxXmlNode0.AppendChild(anotherAuxXmlNode0);
+
+                                anotherAuxXmlNode0 = myXmlDoc0.CreateElement("vrs");
+                                anotherAuxXmlNode0.InnerText = reader["6"].ToString().Trim();
+                                auxXmlNode0.AppendChild(anotherAuxXmlNode0);
+
+                                anotherAuxXmlNode0 = myXmlDoc0.CreateElement("ah1n1");
+                                anotherAuxXmlNode0.InnerText = reader["3"].ToString().Trim();
+                                auxXmlNode0.AppendChild(anotherAuxXmlNode0);
+
+                                anotherAuxXmlNode0 = myXmlDoc0.CreateElement("ah3");
+                                anotherAuxXmlNode0.InnerText = reader["10"].ToString().Trim();
+                                auxXmlNode0.AppendChild(anotherAuxXmlNode0);
+                            }
+                        }
+                    }
+                }
+                //Fin de la revisión de si existen los datos para la gráfica
+                return Json(JsonConvert.SerializeXmlNode(myXmlDoc0));
+
+
+            }
+            catch (Exception e)
+            {
+                ViewBag.Message = "El reporte no se pudo generar, por favor intente de nuevo";
+            }
+            return null;
+        }
 
         public JsonResult GetGraphDataTuned(string Report, int CountryID, int? RegionID, int? StateID, int? HospitalID, string Year, int? Month, int? SE, DateTime? StartDate, DateTime? EndDate, int? ReportCountry, string Graph, int? IRAG, int? ETI)
         {
