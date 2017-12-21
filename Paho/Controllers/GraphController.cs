@@ -1231,7 +1231,7 @@ namespace Paho.Controllers
                             myXmlDoc0.AppendChild(myXmlDoc0.CreateElement("map"));
                             XmlNode myXmlNode0;
                             myXmlNode0 = myXmlDoc0.CreateElement("mapTitle");
-                            myXmlNode0.InnerText = getMsg("viewSituationalGraph0Title");
+                            myXmlNode0.InnerText = getMsg("viewSituationalMap1Title");
                             myXmlDoc0.DocumentElement.AppendChild(myXmlNode0);
 
                             myXmlNode0 = myXmlDoc0.CreateElement("mapCountry");
