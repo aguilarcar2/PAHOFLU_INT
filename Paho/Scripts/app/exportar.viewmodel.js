@@ -1,5 +1,4 @@
-﻿
-function ExportarViewModel(app, dataModel) {
+﻿function ExportarViewModel(app, dataModel) {
     var self = this;
     var date_format_moment = app.dataModel.date_format_ISO;
     self.UsrCountry = ko.observable(selcty);
@@ -46,6 +45,7 @@ function ExportarViewModel(app, dataModel) {
     self.SE =  ko.observable("");
     self.StartDate = ko.observable(null);
     self.EndDate = ko.observable(null);
+    self.SurvInusual = ko.observable();             //#### CAFQ
 
     self.validate = function (nextStep) {
         var msg = "";
@@ -84,7 +84,9 @@ function ExportarViewModel(app, dataModel) {
     };
 
     self.exportar = function () {
-        var namevalues = { Report: self.Report(), CountryID: self.selectedCountryId() ? self.selectedCountryId() : CountryID, HospitalID: self.selectedInstitutionId(), Year: self.Year(), Month: self.Month(), SE: self.SE(), StartDate: self.StartDate() ? moment(self.StartDate()).format(date_format_moment) : null, EndDate: self.EndDate() ? moment(self.EndDate()).format(date_format_moment) : null, ReportCountry:self.selectedReportCountryId(), RegionID:self.selectedRegionId(),YearFrom: self.YearFrom(),YearTo: self.YearTo() }
+        //var namevalues = { Report: self.Report(), CountryID: self.selectedCountryId() ? self.selectedCountryId() : CountryID, HospitalID: self.selectedInstitutionId(), Year: self.Year(), Month: self.Month(), SE: self.SE(), StartDate: self.StartDate() ? moment(self.StartDate()).format(date_format_moment) : null, EndDate: self.EndDate() ? moment(self.EndDate()).format(date_format_moment) : null, ReportCountry: self.selectedReportCountryId(), RegionID: self.selectedRegionId(), YearFrom: self.YearFrom(), YearTo: self.YearTo() }
+        //#### CAFQ
+        var namevalues = { Report: self.Report(), CountryID: self.selectedCountryId() ? self.selectedCountryId() : CountryID, HospitalID: self.selectedInstitutionId(), Year: self.Year(), Month: self.Month(), SE: self.SE(), StartDate: self.StartDate() ? moment(self.StartDate()).format(date_format_moment) : null, EndDate: self.EndDate() ? moment(self.EndDate()).format(date_format_moment) : null, ReportCountry: self.selectedReportCountryId(), RegionID: self.selectedRegionId(), YearFrom: self.YearFrom(), YearTo: self.YearTo(), Inusual: self.SurvInusual() }
         if(self.validate() == true)
             window.open(app.dataModel.getExportar + "?" + $.param(namevalues, true), "_blank");
     };

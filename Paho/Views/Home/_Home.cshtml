@@ -1558,30 +1558,23 @@
                                 </div>
 
                                 <!-- Especifique: Trabajador salud animal / Trabajador salud humana -->
-                                <div class="input-group col-md-1_5" data-bind="visible: IsTrabSalud">
+                                <div class="input-group col-md-3" data-bind="visible: IsTrabSalud">
                                     <span class="input-group-addon">
                                         Especifique:
                                     </span>
-                                    <select id="TrabSaludRama" class="form-control" style="width: 150px" data-bind="value: TrabSaludRama">
-                                        <option value=""> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel"))</option>
-                                        <option value="Salud animal"> Salud animal</option>
-                                        <option value="Salud humana"> Salud humana</option>
-                                    </select>
+                                    <select id="TrabSaludRama" class="form-control" data-bind="options: cattrabsaludrama,
+                                        optionsText: 'Name',
+                                        optionsValue: 'Id',
+                                        value: selectedTrabSaludRamaId,
+                                        optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel")) '"></select>
                                 </div>
                             }
                         </div>
-
-                        <!-- 
-                            self.IsInusitadoAdulto
-                            <div class="row rowform" data-bind="visible:(app.Views.Contact.ShowOnlyAdult && app.Views.Contact.IsInusitado)">
-                    <div class="row rowform" data-bind="visible: app.Views.Contact.IsInusitadoAdulto">
-                            -->
 
                         <div class="row rowform" data-bind="visible:IsInusitadoAdulto">
                             <!-- Trabajador de laboratorio -->
                             <div class="col-md-3">
                                 <label class="btn btn-default">
-                                    <!--<input type="checkbox" name="TrabSalud" id="TrabSalud" data-bind="checked:  TrabSalud" disabled>  @*(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLa<!--<input type="checkbox" name="TrabSalud" id="TrabSalud" data-bind="checked:  TrabSalud" disabled>  @*(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelHealthcareWorker"))*@-->
                                     <input type="checkbox" name="TrabLaboratorio" id="TrabLaboratorio" data-bind="checked: TrabLaboratorio" disabled> Trabajor de laboratorio
                                 </label>
                             </div>
@@ -1591,11 +1584,11 @@
                                 <span class="input-group-addon">
                                     Especifique:
                                 </span>
-                                <select id="TrabLaboratorioRama" class="form-control" style="width: 220px" data-bind="value: TrabLaboratorioRama">
-                                    <option value=""> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel"))</option>
-                                    <option value="Laboratorio salud animal"> Laboratorio salud animal</option>
-                                    <option value="Laboratorio salud humana"> Laboratorio salud humana</option>
-                                </select>
+                                <select id="TrabLaboratorioRama" class="form-control" data-bind="options: cattrablaborama,
+                                        optionsText: 'Name',
+                                        optionsValue: 'Id',
+                                        value: selectedTrabLaboratorioRamaId,
+                                        optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel")) '"></select>
                             </div>
                         </div>
 
@@ -4808,7 +4801,9 @@
     var CVS= @Html.Raw(Json.Encode(Model.CVS));
 
     var URle =  '@ViewBag.UR'  ;
-    var catoccupations = @Html.Raw(Json.Encode(Model.CatOccupations));         //**** CAFQ
+    var catoccupations = @Html.Raw(Json.Encode(Model.CatOccupations));                  //**** CAFQ
+    var cattrabsaludrama = @Html.Raw(Json.Encode(Model.CatTrabSaludRamas));             //**** CAFQ
+    var cattrablaborama = @Html.Raw(Json.Encode(Model.CatTrabLaboRamas));               //**** CAFQ
 
     $("button[data-toggle='collapse']").on('shown', function () {
         $(this).child.removeClass("glyphicon-chevron-down").addClass("glyphicon-chevron-up");

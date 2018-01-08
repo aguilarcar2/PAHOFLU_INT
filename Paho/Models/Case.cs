@@ -52,7 +52,9 @@ namespace Paho.Models
 
         public IEnumerable<LookupView<CatNativePeople>> CNP { get; set; }
         public IEnumerable<LookupView<CatVaccinSource>> CVS { get; set; }
-        public IEnumerable<LookupView<CatOccupation>> CatOccupations { get; set; }      //**** CAFQ
+        public IEnumerable<LookupView<CatOccupation>> CatOccupations { get; set; }              //**** CAFQ
+        public IEnumerable<LookupView<CatTrabSaludRama>> CatTrabSaludRamas { get; set; }        //**** CAFQ
+        public IEnumerable<LookupView<CatTrabLaboRama>> CatTrabLaboRamas { get; set; }          //**** CAFQ
 
         public object date_format_ { get; set; }
     }
@@ -766,9 +768,11 @@ namespace Paho.Models
         public int? InfluConfirContacto { get; set; }               //#### CAFQ
         public string TipoRelaContacto { get; set; }                //#### CAFQ
         public int? FamiDirecContacto { get; set; }                 //#### CAFQ
-        public string TrabSaludRama { get; set; }                   //#### CAFQ
+        //public string TrabSaludRama { get; set; }                   //#### CAFQ
+        public int? TrabSaludRama { get; set; }                     //#### CAFQ
         public bool? TrabLaboratorio { get; set; }                  //#### CAFQ
-        public string TrabLaboratorioRama { get; set; }             //#### CAFQ
+        //public string TrabLaboratorioRama { get; set; }             //#### CAFQ
+        public int? TrabLaboratorioRama { get; set; }               //#### CAFQ
         public Decimal? Temperatura { get; set; }                   //#### CAFQ
         //public bool? DolorCabeza { get; set; }                    //#### CAFQ                YA EXISTE (Cefalea)
         public bool? Mialgia { get; set; }                          //#### CAFQ
@@ -1226,6 +1230,20 @@ namespace Paho.Models
         public int CIUO_08 { get; set; }
     }
 
+    public class CatTrabSaludRama          //**** CAFQ
+    {
+        public int Id { get; set; }
+        public string Rama_SPA { get; set; }
+        public string Rama_ENG { get; set; }
+    }
+
+    public class CatTrabLaboRama          //**** CAFQ
+    {
+        public int Id { get; set; }
+        public string Rama_SPA { get; set; }
+        public string Rama_ENG { get; set; }
+    }
+
     public enum TestType
     {
         IFA = 1,
@@ -1365,8 +1383,10 @@ namespace Paho.Models
         public DbSet<FluCase> FluCases { get; set; }
         public DbSet<VirusType> VirusTypes { get; set; }
         public DbSet<TestResult> TestResults { get; set; }
-        public DbSet<CatDashboardLink> CatDashboarLinks { get; set; }        //#### CAFQ
-        public DbSet<CatOccupation> CatOccupations { get; set; }            //#### CAFQ
+        public DbSet<CatDashboardLink> CatDashboarLinks { get; set; }               //#### CAFQ
+        public DbSet<CatOccupation> CatOccupations { get; set; }                    //#### CAFQ
+        public DbSet<CatTrabSaludRama> CatTrabSaludRamas { get; set; }              //#### CAFQ
+        public DbSet<CatTrabLaboRama> CatTrabLaboRamas { get; set; }                //#### CAFQ
         //Catalogos
         public DbSet<CatSampleNoProcessed> CatSampleNoProcessed { get; set; }
         public DbSet<CatCaseStatus> CatCaseStatus { get; set; }

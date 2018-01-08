@@ -1049,9 +1049,9 @@ namespace Paho.Controllers
                 int? InfluConfirContacto,              //#### CAFQ
                 string TipoRelaContacto,             //#### CAFQ
                 int? FamiDirecContacto,              //#### CAFQ
-                string TrabSaludRama,             //#### CAFQ
-                bool? TrabLaboratorio,              //#### CAFQ
-                string TrabLaboratorioRama             //#### CAFQ
+                int? TrabSaludRama,                         //#### CAFQ
+                bool? TrabLaboratorio,                      //#### CAFQ
+                int? TrabLaboratorioRama                    //#### CAFQ
             )
         {
             FluCase flucase;
@@ -1140,9 +1140,9 @@ namespace Paho.Controllers
             flucase.InfluConfirContacto = InfluConfirContacto;        //#### CAFQ
             flucase.TipoRelaContacto = TipoRelaContacto;        //#### CAFQ
             flucase.FamiDirecContacto = FamiDirecContacto;        //#### CAFQ
-            flucase.TrabSaludRama = TrabSaludRama;        //#### CAFQ
-            flucase.TrabLaboratorio = TrabLaboratorio;        //#### CAFQ
-            flucase.TrabLaboratorioRama = TrabLaboratorioRama;        //#### CAFQ
+            flucase.TrabSaludRama = TrabSaludRama;                      //#### CAFQ
+            flucase.TrabLaboratorio = TrabLaboratorio;                  //#### CAFQ
+            flucase.TrabLaboratorioRama = TrabLaboratorioRama;          //#### CAFQ
 
             db.SaveChanges();
 

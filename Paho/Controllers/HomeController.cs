@@ -29,7 +29,9 @@ namespace Paho.Controllers
             IQueryable<CatNativePeople> CNP = null;
             IQueryable<CatVaccinSource> CVS = null;
 
-            IQueryable<CatOccupation> occupations = null;       //**** CAFQ
+            IQueryable<CatOccupation> occupations = null;                       //**** CAFQ
+            IQueryable<CatTrabSaludRama> trabsaludrama = null;                  //**** CAFQ
+            IQueryable<CatTrabLaboRama> trablaborama = null;                    //**** CAFQ
 
             var user = UserManager.FindById(User.Identity.GetUserId());
             var DoS = DateTime.Now.ToString("d", CultureInfo.CreateSpecificCulture("es-GT"));
@@ -258,6 +260,32 @@ namespace Paho.Controllers
                 orden = i.CIUO_08.ToString()
             }).ToList());
 
+            trabsaludrama = db.CatTrabSaludRamas.OrderBy(i => i.Rama_SPA);                 //#### CAFQ
+            var trabsaludramaDisplay = (user.Institution.Country.Language == "SPA" ? trabsaludrama.Select(i => new LookupView<CatTrabSaludRama>()
+            {
+                Id = i.Id.ToString(),
+                Name = i.Rama_SPA,
+                orden = "1"
+            }).ToList() : trabsaludrama.Select(i => new LookupView<CatTrabSaludRama>()
+            {
+                Id = i.Id.ToString(),
+                Name = i.Rama_ENG,
+                orden = "1"
+            }).ToList());
+
+            trablaborama = db.CatTrabLaboRamas.OrderBy(i => i.Rama_SPA);                 //#### CAFQ
+            var trablaboramaDisplay = (user.Institution.Country.Language == "SPA" ? trablaborama.Select(i => new LookupView<CatTrabLaboRama>()
+            {
+                Id = i.Id.ToString(),
+                Name = i.Rama_SPA,
+                orden = "1"
+            }).ToList() : trablaborama.Select(i => new LookupView<CatTrabLaboRama>()
+            {
+                Id = i.Id.ToString(),
+                Name = i.Rama_ENG,
+                orden = "1"
+            }).ToList());
+
             CVST = db.CatVirusSubType.OrderBy(i => i.orden);
             var CVSTDisplay = (user.Institution.Country.Language == "SPA" ? CVST.Select(i => new LookupView<CatVirusSubType>()
             {
@@ -346,7 +374,9 @@ namespace Paho.Controllers
 
             CaseViewModel.CNP = CNPDisplay;
             CaseViewModel.CVS = CVSDisplay;
-            CaseViewModel.CatOccupations = occupationsDisplay;          //**** CAFQ
+            CaseViewModel.CatOccupations = occupationsDisplay;                  //**** CAFQ
+            CaseViewModel.CatTrabSaludRamas = trabsaludramaDisplay;             //**** CAFQ
+            CaseViewModel.CatTrabLaboRamas = trablaboramaDisplay;               //**** CAFQ
 
             // Laboratorios de la ficha
             // *** DELETE ***

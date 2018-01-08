@@ -195,6 +195,27 @@
     </div>
 </div>
 
+<!-- Vigilancia -->
+<div class="row" style="margin-bottom:15px; margin-top:1em;">
+    <div class="col-md-6">
+        <div class='input-group'>
+            <span class="input-group-addon">
+                @*(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelSurv"))*@
+                Inusual
+            </span>
+
+            <label class="btn btn-default">
+                <input type="radio" name="SurvInusual" id="SurvInusual" value="1" data-bind="checked: SurvInusual"> Si
+                @*(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelSari"))*@
+            </label>
+            <label class="btn btn-default">
+                <input type="radio" name="SurvInusual" id="SurvInusual" value="0" data-bind="checked: SurvInusual"> No
+                @*(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelIli"))*@
+            </label>
+        </div>
+    </div>
+</div>
+
 <div class="row" style="margin-bottom:15px; margin-top:1em;">
     <div class="col-md-3">
         <div class='btn-group input-group'>

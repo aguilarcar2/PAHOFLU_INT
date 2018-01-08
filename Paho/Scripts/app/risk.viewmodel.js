@@ -36,6 +36,8 @@
     self.TrabSaludRama = ko.observable("");                                 //##### CAFQ
     self.TrabLaboratorio = ko.observable(false);                            //##### CAFQ
     self.TrabLaboratorioRama = ko.observable("");                           //##### CAFQ
+    self.selectedTrabSaludRamaId = ko.observable();                         //**** CAFQ
+    self.selectedTrabLaboratorioRamaId = ko.observable();                   //**** CAFQ
 
     self.IsViajePrevSintoma = ko.computed(function () {                     //##### CAFQ
         return (self.ViajePrevSintoma() == 1) ? true : false;
@@ -272,19 +274,6 @@
         }
     }, self);
 
-    /*self.MyInusitadoAdulto = ko.computed(function (){
-        if (app.Views.Contact.IsInusitado() == true) {
-            if (app.Views.Contact.ShowOnlyAdult() == true) {
-                alert("TRUE_2");
-                return true;
-            }else{
-                return false;
-            }
-        }else{
-            return false;
-        }
-    }, self);*/ 
-
     self.IsTrabLaboratorio = ko.computed(function () {            //**** CAFQ
         if (self.TrabLaboratorio() == true) {
             return ($('#SurvInusual').is(':checked') == true) ? true : false;
@@ -296,7 +285,6 @@
     self.IsInusitadoAdulto = ko.computed(function () {            //**** CAFQ
         if (app.Views.Contact.IsInusitado() == true) {
             if (app.Views.Contact.ShowOnlyAdult() == true) {
-                //alert("TRUE_1");
                 return true;
             } else {
                 return false;
@@ -534,9 +522,12 @@
                 self.InfluConfirContacto(data.InfluConfirContacto);           //#### CAFQ
                 self.TipoRelaContacto(data.TipoRelaContacto);           //#### CAFQ
                 self.FamiDirecContacto(data.FamiDirecContacto);           //#### CAFQ
-                self.TrabSaludRama(data.TrabSaludRama);           //#### CAFQ
-                self.TrabLaboratorio(data.TrabLaboratorio);           //#### CAFQ
-                self.TrabLaboratorioRama(data.TrabLaboratorioRama);           //#### CAFQ
+
+                //self.TrabSaludRama(data.TrabSaludRama);                         //#### CAFQ
+                self.selectedTrabSaludRamaId(data.TrabSaludRama);               //#### CAFQ
+                self.TrabLaboratorio(data.TrabLaboratorio);                     //#### CAFQ
+                //self.TrabLaboratorioRama(data.TrabLaboratorioRama);             //#### CAFQ
+                self.selectedTrabLaboratorioRamaId(data.TrabLaboratorioRama);   //#### CAFQ
 
                 self.hasReset(false);
 
@@ -791,9 +782,12 @@
                 InfluConfirContacto: self.InfluConfirContacto(),          //#### CAFQ
                 TipoRelaContacto: self.TipoRelaContacto(),          //#### CAFQ
                 FamiDirecContacto: self.FamiDirecContacto(),          //#### CAFQ
-                TrabSaludRama: self.TrabSaludRama(),          //#### CAFQ
+                /*TrabSaludRama: self.TrabSaludRama(),          //#### CAFQ
                 TrabLaboratorio: self.TrabLaboratorio(),          //#### CAFQ
-                TrabLaboratorioRama: self.TrabLaboratorioRama()          //#### CAFQ
+                TrabLaboratorioRama: self.TrabLaboratorioRama()          //#### CAFQ*/
+                TrabSaludRama: self.selectedTrabSaludRamaId(),                          //#### CAFQ
+                TrabLaboratorio: self.TrabLaboratorio(),                                //#### CAFQ
+                TrabLaboratorioRama: self.selectedTrabLaboratorioRamaId()               //#### CAFQ
             },
             function (data) {
                 if (nextStep) nextStep();
