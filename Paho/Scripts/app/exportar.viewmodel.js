@@ -45,7 +45,7 @@
     self.SE =  ko.observable("");
     self.StartDate = ko.observable(null);
     self.EndDate = ko.observable(null);
-    self.SurvInusual = ko.observable();             //#### CAFQ
+    self.SurvInusual = ko.observable("2");      // Todos        //#### CAFQ
 
     self.validate = function (nextStep) {
         var msg = "";

@@ -323,6 +323,7 @@ namespace Paho.Controllers
             try
             {
                 var ms = new MemoryStream();
+                if (Inusual == 2) { Inusual = null; }       // Inusitado: Todos
                 var user = UserManager.FindById(User.Identity.GetUserId());
                 int CountryID_ = (CountryID >= 0) ? CountryID : (user.Institution.CountryID ?? 0);
                 //int? HospitalID_ = (user.Institution.Father_ID > 0 || user.Institution.Father_ID == null) ? HospitalID : Convert.ToInt32(user.Institution.ID);
@@ -339,7 +340,6 @@ namespace Paho.Controllers
                 string reportTemplate = report.Template;//contiene el nombre del template, que luego se relacionará al archivo template de Excel
 
                 if (user.Institution.AccessLevel == AccessLevel.SelfOnly && HospitalID_ == 0) { HospitalID_ = Convert.ToInt32(user.Institution.ID); }
-
 
                 if (ReportCountry < 1)
                 {

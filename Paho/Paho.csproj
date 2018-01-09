@@ -2087,6 +2087,7 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
+    <None Include="Properties\PublishProfiles\AAA1.pubxml" />
     <None Include="Properties\PublishProfiles\INT_PUBLISH.pubxml" />
     <None Include="Properties\PublishProfiles\PAHO.pubxml" />
     <None Include="Properties\PublishProfiles\PAHO2.pubxml" />
