@@ -1714,6 +1714,12 @@ namespace Paho.Controllers
                 {
                      canConclude = flucase.CaseLabTests.Where(y => list_institution_conf.Contains(y.LabID)).Any();
                 }
+
+                if (flucase.CaseLabTests.Where(y => y.VirusTypeID == 2).Any())
+                {
+                    //db.InstitutionConfEndFlowByVirus
+                }
+                
             }
 
             if (institutionsConfiguration.Any()) {

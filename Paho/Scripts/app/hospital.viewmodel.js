@@ -79,13 +79,16 @@
 
     self.DiagOtroAdm = ko.observable("");
 
-    self.DiagDate = ko.observable("");
-    self.DiagDate.subscribe(function (newDiagDate) {
-        self.CalculateEW("DiagDate", self.DiagEW, "");
-    });
     self.DiagEW = ko.observable("");
+    self.DiagEY = ko.observable("");
+    self.DiagDate = ko.observable("");
+    //self.DiagDate.subscribe(function (newDiagDate) {
+    //    self.CalculateEW("DiagDate", self.DiagEW, "");
+    //});
 
 
+    self.HospEW = ko.observable("");
+    self.HospEY = ko.observable("");
     self.HospAmDate = ko.observable("");
     self.HospAmDate.subscribe(function (newHospAmDate) {
         self.CalculateEW("HospAmDate", self.HospEW, "");
@@ -115,7 +118,7 @@
 
     });
 
-    self.HospEW = ko.observable("");
+
     self.HospExDate = ko.observable("");
     self.HospExDate.subscribe(function (newHospExDate) {
 
@@ -253,6 +256,7 @@
     });
 
     self.ICUEW = ko.observable("");
+    self.ICUEY = ko.observable("");
     self.ICUExDate = ko.observable("");
     self.ICUExDate.subscribe(function (newICUAmDate) {
  //       if (self.UsrCountry() == 7 && self.UsrCountry() == 3) {
@@ -361,63 +365,71 @@
             var weekno = moment(date_ew).week();
             var weeknoISO = moment(date_ew).isoWeek();
 
-            if (fwky_date > 3) {
-                var month = 11, day = 31;
-                var end_date_year_ant = new Date(moment(date_ew).year() - 1, month, day--);
+            if (date_ew == null) {
 
-                if (weekno == 1 && moment(date_ew).month() == 0)
-                {
-                    var fwky_date_ant = new Date(moment(date_ew).year() - 1, 0, 1).getDay();
-                    var fwdoyant = moment(end_date_year_ant).isoWeek();
-                    if (fwky_date_ant > 3) {
+                FieldAct(null);
+                FieldActYear(null);
+
+            } else{
+
+                if (fwky_date > 3) {
+                    var month = 11, day = 31;
+                    var end_date_year_ant = new Date(moment(date_ew).year() - 1, month, day--);
+
+                    if (weekno == 1 && moment(date_ew).month() == 0)
+                    {
+                        var fwky_date_ant = new Date(moment(date_ew).year() - 1, 0, 1).getDay();
+                        var fwdoyant = moment(end_date_year_ant).isoWeek();
+                        if (fwky_date_ant > 3) {
                         
                             FieldAct(fwdoyant - 1);
 
-                    } else {
+                        } else {
 
-                        if (weekno == 1 && moment(date_ew).month() == 0 && fwky_date_ant <= 3) {
-                            FieldAct(53);
-                            fwdoyant = 53;
+                            if (weekno == 1 && moment(date_ew).month() == 0 && fwky_date_ant <= 3) {
+                                FieldAct(53);
+                                fwdoyant = 53;
+                            }
+                            else
+                                FieldAct(fwdoyant);
                         }
-                        else
-                            FieldAct(fwdoyant);
+                        if (FieldActYear != "")
+                            if (fwdoyant == 52 || fwdoyant == 53)
+                                FieldActYear(date_ew.getFullYear() - 1);
+                            else
+                                FieldActYear(date_ew.getFullYear());
                     }
-                    if (FieldActYear != "")
-                        if (fwdoyant == 52 || fwdoyant == 53)
-                            FieldActYear(date_ew.getFullYear() - 1);
-                        else
+                    else if (weekno == 1 && moment(date_ew).month() != 0) {
+                        FieldAct(moment(date_ew).isoWeek() - 1);
+                        if (FieldActYear != "")
                             FieldActYear(date_ew.getFullYear());
-                }
-                else if (weekno == 1 && moment(date_ew).month() != 0) {
-                    FieldAct(moment(date_ew).isoWeek() - 1);
-                    if (FieldActYear != "")
-                        FieldActYear(date_ew.getFullYear());
-                }
-                else
-                {
-                    FieldAct(weekno - 1);
-                    if (FieldActYear != "")
-                        FieldActYear(date_ew.getFullYear());
-                }  
-            } else {
-                if (weekno == 1 && moment(date_ew).month() == 11) {
-                    var fwky_date_prox = new Date(moment(date_ew).year() + 1, 0, 1).getDay();
-
-                    if (fwky_date_prox > 3)
+                    }
+                    else
                     {
-                        FieldAct(53);
-                        FieldActYear(date_ew.getFullYear());
+                        FieldAct(weekno - 1);
+                        if (FieldActYear != "")
+                            FieldActYear(date_ew.getFullYear());
+                    }  
+                } else {
+                    if (weekno == 1 && moment(date_ew).month() == 11) {
+                        var fwky_date_prox = new Date(moment(date_ew).year() + 1, 0, 1).getDay();
+
+                        if (fwky_date_prox > 3)
+                        {
+                            FieldAct(53);
+                            FieldActYear(date_ew.getFullYear());
+                        } else
+                        {
+                            FieldAct(weekno);
+                            FieldActYear(date_ew.getFullYear() + 1);
+                        }
                     } else
                     {
                         FieldAct(weekno);
-                        FieldActYear(date_ew.getFullYear() + 1);
-                    }
-                } else
-                {
-                    FieldAct(weekno);
-                    if (FieldActYear != "")
-                        FieldActYear(date_ew.getFullYear());
-                }                          
+                        if (FieldActYear != "")
+                            FieldActYear(date_ew.getFullYear());
+                    }                          
+                }
             }
         }
     };

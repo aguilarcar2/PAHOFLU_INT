@@ -755,7 +755,13 @@ namespace Paho.Controllers
                         {
                             j = j + 1;
                             AssignValueCell_value(fila_original_empieza, 10, excelWorksheet, flucase.RecDate.ToString(), "DateTime"); // Fecha de recepcion
-                            AssignValueCell_value(fila_original_empieza + 2, 10, excelWorksheet, Test.LabID.ToString(), "String"); // Fecha de recepcion
+                            if ((bool)flucase.Processed)
+                                { MarkCell(fila_original_empieza, 36, excelWorksheet); }
+                            else
+                                { MarkCell(fila_original_empieza, 40, excelWorksheet); }
+                            AssignValueCell_value(fila_original_empieza + 1, 10, excelWorksheet, flucase.NoProRen.ToString(), "String"); // Laboratorio que procesa
+                            AssignValueCell_value(fila_original_empieza + 2, 10, excelWorksheet, Test.LabID.ToString(), "String"); // Laboratorio que procesa
+                            
                         } //Still here? Column not found. 
 
 
