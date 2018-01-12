@@ -467,7 +467,14 @@
             self.Id = "";
         }
         self.Id(null);
-        self.IsSurv("");
+        if ($('input[name="IsSurv"][value="1"]').length > 0 && $('input[name="IsSurv"][value="2"]').length == 0) {
+            self.IsSurv("1");
+        } else if ($('input[name="IsSurv"][value="2"]').length > 0 && $('input[name="IsSurv"][value="1"]').length == 0) {
+            self.IsSurv("2");
+        } else {
+            self.IsSurv("");
+        }
+ 
         self.SurvInusual(false);
         self.Brote(false);
         self.hospitalName("");

@@ -1706,6 +1706,8 @@ namespace Paho.Controllers
             var flow_local_lab = 0;
             var flow_statement = flucase.statement ?? 1;
             var flow_open_always = false;
+            // Chequeo de muesta influenza B positivo
+            var list_institution_infb = flucase.CaseLabTests.Where(y => y.VirusTypeID == 2 && y.TestResultID == "P").Select(t => t.LabID).ToList();
 
             if (user.Institution is Hospital)
             {
@@ -1714,16 +1716,31 @@ namespace Paho.Controllers
                 {
                      canConclude = flucase.CaseLabTests.Where(y => list_institution_conf.Contains(y.LabID)).Any();
                 }
-
-                if (flucase.CaseLabTests.Where(y => y.VirusTypeID == 2).Any())
+                // Chequeo de muestra de influenza B positivo
+                
+                if (list_institution_infb.Any())
                 {
+                    var list_institution_conf_infb = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(i => list_institution_infb.Contains(i.InstitutionToID) && i.InstitutionParentID == flucase.HospitalID).Select(t => t.ID).ToList();
+                    var list_institution_conclude_infb= db.InstitutionConfEndFlowByVirus.Where(y => list_institution_conf_infb.Contains(y.id_InstCnf) && y.id_Cat_VirusType == 2);
+                    canConclude = list_institution_conclude_infb.Any();
+                    //if (list_institution_con
                     //db.InstitutionConfEndFlowByVirus
                 }
                 
             }
 
             if (institutionsConfiguration.Any()) {
-                canConclude = institutionsConfiguration.Count(x => x.Conclusion == true) > 0;
+                if (list_institution_infb.Any())
+                {
+                    var list_institution_conf_infb = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(i => list_institution_infb.Contains(i.InstitutionToID) && i.InstitutionParentID == flucase.HospitalID).Select(t => t.ID).ToList();
+                    var list_institution_conclude_infb = db.InstitutionConfEndFlowByVirus.Where(y => list_institution_conf_infb.Contains(y.id_InstCnf) && y.id_Cat_VirusType == 2);
+                    canConclude = list_institution_conclude_infb.Any();
+                }
+                else
+                {
+                    canConclude = institutionsConfiguration.Count(x => x.Conclusion == true) > 0;
+                }
+                
                 CanPCRLab = db.Institutions.OfType<Lab>().Where(i => i.ID == user.Institution.ID).First()?.PCR;
                 CanIFILab = db.Institutions.OfType<Lab>().Where(i => i.ID == user.Institution.ID).First()?.IFI;
                 flow_local_lab = institutionsConfiguration.First().Priority;

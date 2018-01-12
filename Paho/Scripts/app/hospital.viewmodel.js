@@ -91,7 +91,7 @@
     self.HospEY = ko.observable("");
     self.HospAmDate = ko.observable("");
     self.HospAmDate.subscribe(function (newHospAmDate) {
-        self.CalculateEW("HospAmDate", self.HospEW, "");
+        self.CalculateEW("HospAmDate", self.HospEW, self.HospEY);
 
         //if (self.UsrCountry() == 7 && self.UsrCountry() == 3) {
         var current_value = typeof (newHospAmDate) == "object" ? newHospAmDate : parseDate(newHospAmDate, date_format_);
@@ -227,7 +227,7 @@
 
     self.ICUAmDate = ko.observable("");
     self.ICUAmDate.subscribe(function (newICUAmDate) {
-        self.CalculateEW("ICUAmDate", self.ICUEW, "");
+        self.CalculateEW("ICUAmDate", self.ICUEW, self.ICUEY);
 
  //       if (self.UsrCountry() == 7 && self.UsrCountry() == 3) {
             var current_value = typeof (newICUAmDate) == "object" ? newICUAmDate : parseDate(newICUAmDate, date_format_);
@@ -1059,11 +1059,11 @@
                 if (data.DiagDate)
                     self.DiagDate(moment(data.DiagDate).format(date_format_moment));
                 else self.DiagDate(null);
-                self.CalculateEW("DiagDate", self.DiagEW, "");
+                self.CalculateEW("DiagDate", self.DiagEW, self.DiagEY);
                 if (data.HospAmDate)
                     self.HospAmDate(moment(data.HospAmDate).format(date_format_moment));
                 else self.HospAmDate(null)
-                self.CalculateEW("HospAmDate", self.HospEW, "");
+                self.CalculateEW("HospAmDate", self.HospEW, self.HospEY);
                 if (data.HospExDate)
                     self.HospExDate(moment(data.HospExDate).format(date_format_moment));
                 else self.HospExDate(null)
@@ -1072,7 +1072,7 @@
                     self.ICUAmDate(moment(data.ICUAmDate).format(date_format_moment));
                 else self.ICUAmDate(null)
                 if (data.ICUAmDate)
-                    self.CalculateEW("ICUAmDate", self.ICUEW, "");
+                    self.CalculateEW("ICUAmDate", self.ICUEW, self.ICUEY);
                 if (data.ICUExDate)
                     self.ICUExDate(moment(data.ICUExDate).format(date_format_moment));
                 else self.ICUExDate(null);

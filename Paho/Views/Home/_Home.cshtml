@@ -238,13 +238,13 @@
                 @if (ViewBag.SARI == true)
                 {
                     <label class="btn btn-default">
-                        <input type="radio" name="IsSurv" id="IsSurv" value="1" data-bind="checked: IsSurv" @((ViewBag.SARI == true && ViewBag.ILI == false ) ? "checked='checked'" : "" ) >  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelSari"))
+                        <input type="radio" name="IsSurv" id="IsSurv" value="1"  data-bind="checked: IsSurv" @((ViewBag.SARI == true && ViewBag.ILI == false ) ? "checked = checked" : "" ) />  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelSari"))
                     </label>
                 }
                 @if (ViewBag.ILI == true)
                 {
                 <label class="btn btn-default">
-                    <input type="radio" name="IsSurv" id="IsSurv" value="2" data-bind="checked: IsSurv" @((ViewBag.SARI == false && ViewBag.ILI == true) ? "checked='checked'" : "" )>  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelIli"))
+                    <input type="radio" name="IsSurv" id="IsSurv" value="2" data-bind="checked: IsSurv" @((ViewBag.SARI == false && ViewBag.ILI == true) ? "checked" : "" ) />  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelIli"))
                 </label>
                 }
                 <label class="btn btn-default">
@@ -1897,7 +1897,7 @@
                             @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelDiagnosisDate"))
                         </span>
                         <div>
-                            <input id="DiagDate" type='text' class="form-control " data-bind='datepicker:DiagDate , datepickerOptions: { maxDate:@Model.DatePickerConfig,  dateFormat:"@Model.DateFormatDP"}, event:{ change: CheckDiagDate}' />
+                            <input id="f" type='text' class="form-control " data-bind='datepicker:DiagDate , datepickerOptions: { maxDate:@Model.DatePickerConfig,  dateFormat:"@Model.DateFormatDP"}, event:{ change: CheckDiagDate}' />
                         </div>
                     </div>
                 </div>
