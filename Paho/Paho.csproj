@@ -285,6 +285,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\ResourcesM.cs" />
     <Compile Include="Controllers\DbResourceProvider.cs" />
+    <Compile Include="Controllers\TicketController.cs" />
     <Compile Include="Controllers\XmlResourceProvider.cs" />
     <Compile Include="Controllers\DiccionarioController.cs" />
     <Compile Include="Controllers\CasesController.cs" />
@@ -2066,6 +2067,7 @@
     <Content Include="Scripts\app\summary.viewmodel.js" />
     <Content Include="Scripts\app\lab.viewmodel.js" />
     <Content Include="Scripts\app\risk.viewmodel.js" />
+    <Content Include="Scripts\app\ticket.viewmodel.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
@@ -2346,6 +2348,8 @@
     <Content Include="Views\CatPopulationInstitutions\Delete.cshtml" />
     <Content Include="Views\CatPopulationInstitutions\Edit.cshtml" />
     <Content Include="Views\CatPopulationInstitutions\Index.cshtml" />
+    <Content Include="Views\Ticket\_Ticket.cshtml" />
+    <Content Include="Views\Ticket\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,111 @@
+﻿
+<style>
+    .col-md-10{
+        margin-top:10px;
+    }
+    #DescriptionTicket{
+        max-width:400px;
+        max-height:145px;
+        height:145px;
+    }
+    #SubjectTicket{
+        width:426px;
+        max-width:426px;
+    }
+</style>
+<!-- ko with: app.Views.Ticket -->
+<div class="row" style="margin-bottom:15px; margin-top:1em;">
+    <div class="col-md-10">
+        <!--Fecha-->
+        <div class='input-group'>
+            <span class="input-group-addon">
+                <!--Fecha:-->
+                @(((Paho.Controllers.TicketController)this.ViewContext.Controller).getMsg("msgTicketSubjectLabel"))
+            </span>
+            <input id="SubjectTicket" type='text' class="form-control" data-bind="value: ticketSubject" />
+        </div>        
+    </div>
+    <br/>
+    <div class="col-md-10">
+        <div class='input-group'>
+            <span class="input-group-addon">
+                <!--Fecha:-->
+                @(((Paho.Controllers.TicketController)this.ViewContext.Controller).getMsg("msgTicketDescriptionLabel"))
+            </span>
+            <textarea id="DescriptionTicket" class="form-control" data-bind="value: ticketMsg"></textarea>
+        </div>
+    </div>
+    <div class="col-md-10">
+        <div class="input-group">
+            <button id="cleanForm" type="button" class="btn btn-primary" onclick="CleanForm()">@(((Paho.Controllers.TicketController)this.ViewContext.Controller).getMsg("msgTicketCleanForm"))</button>
+            <button id="newTicket" type="button" class="btn btn-primary" data-bind="click: SendTicket">@(((Paho.Controllers.TicketController)this.ViewContext.Controller).getMsg("msgTicketNewTicketLabel"))</button>
+        </div>
+    </div>
+</div>
+<div class="container" style="margin-bottom:15px; margin-top:1em;">
+    <table id="TicketList" class="table table-hover table-responsive" style="width:550px; display:none;">
+        <thead>
+            <tr data-bind="attr:{'cursor':'pointer'},click: GetTicketList">
+                <th class="col-md-1">@(((Paho.Controllers.TicketController)this.ViewContext.Controller).getMsg("msgTicketTableID"))</th>
+                <th class="col-md-1">@(((Paho.Controllers.TicketController)this.ViewContext.Controller).getMsg("msgTicketTableSubject"))</th>                
+                <th class="col-md-1" style="text-align:center;">@(((Paho.Controllers.TicketController)this.ViewContext.Controller).getMsg("msgTicketTableDescription"))</th>
+                <th class="col-md-1" style="text-align:center;">@(((Paho.Controllers.TicketController)this.ViewContext.Controller).getMsg("msgTicketTableStatus"))</th>
+                <th class="col-md-1" style="text-align:center;">@(((Paho.Controllers.TicketController)this.ViewContext.Controller).getMsg("msgTicketTableDate"))</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+<script>
+    function CleanForm(){
+        $('#newTicket').prop('disabled', false);
+        $('#SubjectTicket').val("");
+        $('#DescriptionTicket').val("");
+    }
+    function GetTicketList() {
+        $(document).ready(function () {            
+            $.ajax({
+                type: 'POST',
+                url: '/ticket/GetTicket',
+                data: '{}',                
+                success: function (data) {
+                    console.log(data);
+                    $("#TicketList").show();
+                    var trHTML = '';
+                    $.each(data, function (i, item) {
+                        trHTML += '<tr donclick="loadTicket(this)"><td style="width:10%;">' + item.ID + '</td><td style="width:10%;">' + item.subject + '</td><td style="width:10%;">' + item.description + '</td><td style="width:10%;">' + item.status + '</td><td style="width:10%;">' + item.ticketDate + '</td></tr>';
+                    });
+                    $('#TicketList').append(trHTML);
+                },
+                contentType: "application/json",
+                dataType: 'json'
+            });
+        })           
+    };
+    GetTicketList();
+    function loadTicket(event){
+        console.log(event);
+        alert(event);
+        
+        alert(event.td);
+    }
+    $(document).ready(function() {
+
+        $('#TicketList').click(function(e) {
+            //alert("bla");
+            var clickedRow= $(e.target).closest("tr");
+            var subjectTicket = $(clickedRow).children(':nth-child(2)').text();
+            var descTicket = $(clickedRow).children(':nth-child(3)').text();
+            $('#SubjectTicket').val(subjectTicket);
+            $('#DescriptionTicket').val(descTicket);
+            $('#newTicket').prop('disabled', true);
+            
+        });
+
+    });
+</script>    
+<script type="text/javascript">
+    var selcty = @ViewBag.UsrCtry;
+    var msgTicketMissingValues = "@(Html.Raw(((Paho.Controllers.TicketController)this.ViewContext.Controller).getMsg("msgTicketMissingValues")))";
+</script>
+<!-- /ko -->

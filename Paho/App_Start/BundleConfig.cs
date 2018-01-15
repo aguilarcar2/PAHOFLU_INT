@@ -65,6 +65,16 @@ namespace Paho
                 "~/Scripts/app/summary.viewmodel.js",
                 "~/Scripts/app/_run.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/ticket").Include(
+                "~/Scripts/app/kotoolsfordate.js",
+                "~/Scripts/sammy-{version}.js",
+                "~/Scripts/date.js",
+                "~/Scripts/app/common.js",
+                "~/Scripts/app/app.datamodel.js",
+                "~/Scripts/app/app.viewmodel.js",
+                "~/Scripts/app/ticket.viewmodel.js",
+                "~/Scripts/app/_run.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/exportar").Include(
               "~/Scripts/date.js",
               "~/Scripts/app/kotoolsfordate.js",

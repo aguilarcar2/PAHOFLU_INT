@@ -35,6 +35,10 @@
     self.getFlucasesUrl = "/report/GetFluCases";
     self.deletetUrl = "/cases/DeleteCase";
 
+    //sistema de tickets
+    self.createTicketUrl = "/ticket/CreateTicket";
+    self.getTicketUrl = "/ticket/GetTicket";
+
     // Formato de fechas
     //self.date_format_ = "dd/mm/yyyy";
     self.date_format_ = "dd/mm/yyyy";
