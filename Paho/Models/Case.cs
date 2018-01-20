@@ -713,7 +713,10 @@ namespace Paho.Models
         public int? id_Cat_VirusType { get; set; }
         public int? id_Cat_Subtype { get; set; }
         public string value_Cat_TestResult { get; set; }
-        public TestType id_Cat_TestType { get; set; }
+        public int? id_Cat_TestType { get; set; }
+
+        [ForeignKey("id_InstCnf")]
+        public virtual InstitutionConfiguration InstitutionConfiguration { get; set; }
     }
 
     public class FluCase : CaseBase
@@ -1056,12 +1059,15 @@ namespace Paho.Models
         public decimal? RNP { get; set; }
         public decimal? CTRLRNP { get; set; }
         public decimal? CTRLNegative { get; set; }
-        public TestType TestType { get; set; }
+        public int? TestType { get; set; }
         public string TestResultID { get; set; }
         public DateTime? TestDate { get; set; }
         public DateTime? TestEndDate { get; set; }
         //public virtual FluCase FluCase { get; set; }
         //public virtual VirusType VirusType { get; set; }
+        [ForeignKey("TestType")]
+        public virtual CatTestType CatTestType { get; set; }
+
         [ForeignKey("VirusTypeID")]
         public virtual CatVirusType CatVirusType { get; set; }
         [ForeignKey("VirusSubTypeID")]
@@ -2698,14 +2704,14 @@ namespace Paho.Models
             DateTime? curentdate = DateTime.Today;
             var caselabtests = new List<CaseLabTest>
             {
-                new CaseLabTest {  FluCaseID = flucases.Single(s => s.Comments =="comments1").ID, TestDate = curentdate.Value.AddDays(30),  TestEndDate = curentdate.Value.AddDays(60), VirusTypeID = virusTypes.Single(s => s.Name == "Parainfluenza 1").ID, TestResultID = "I", TestType=TestType.IFA},
-                new CaseLabTest {  FluCaseID = flucases.Single(s => s.Comments =="comments1").ID, TestDate = curentdate.Value.AddDays(31),  TestEndDate = curentdate.Value.AddDays(60), VirusTypeID = virusTypes.Single(s => s.Name == "Parainfluenza 2").ID, TestResultID = "I", TestType=TestType.RT_PCR},
-                new CaseLabTest {  FluCaseID = flucases.Single(s => s.Comments =="comments1").ID, TestDate = curentdate.Value.AddDays(32),  TestEndDate = curentdate.Value.AddDays(60), VirusTypeID = virusTypes.Single(s => s.Name == "Parainfluenza 3").ID, TestResultID = "N", TestType=TestType.IFA},
-                new CaseLabTest {  FluCaseID = flucases.Single(s => s.Comments =="comments1").ID, TestDate = curentdate.Value.AddDays(33),  TestEndDate = curentdate.Value.AddDays(60), VirusTypeID = virusTypes.Single(s => s.Name == "Parainfluenza 1" ).ID,TestResultID ="P", TestType=TestType.IFA},
-                new CaseLabTest {  FluCaseID = flucases.Single(s => s.Comments =="comments2").ID, TestDate = curentdate.Value.AddDays(30),  TestEndDate = curentdate.Value.AddDays(60), VirusTypeID = virusTypes.Single(s => s.Name == "Parainfluenza 1").ID, TestResultID = "N", TestType=TestType.IFA},
-                new CaseLabTest {  FluCaseID = flucases.Single(s => s.Comments =="comments2").ID, TestDate = curentdate.Value.AddDays(31),  TestEndDate = curentdate.Value.AddDays(60), VirusTypeID = virusTypes.Single(s => s.Name == "Parainfluenza 2").ID, TestResultID = "N", TestType=TestType.IFA},
-                new CaseLabTest {  FluCaseID = flucases.Single(s => s.Comments =="comments2").ID, TestDate = curentdate.Value.AddDays(32),  TestEndDate = curentdate.Value.AddDays(60), VirusTypeID = virusTypes.Single(s => s.Name == "Parainfluenza 3").ID, TestResultID = "N", TestType=TestType.IFA},
-                new CaseLabTest {  FluCaseID = flucases.Single(s => s.Comments =="comments2").ID, TestDate = curentdate.Value.AddDays(33),  TestEndDate = curentdate.Value.AddDays(60), VirusTypeID = virusTypes.Single(s => s.Name == "Parainfluenza 1").ID, TestResultID = "N", TestType=TestType.IFA},
+                new CaseLabTest {  FluCaseID = flucases.Single(s => s.Comments =="comments1").ID, TestDate = curentdate.Value.AddDays(30),  TestEndDate = curentdate.Value.AddDays(60), VirusTypeID = virusTypes.Single(s => s.Name == "Parainfluenza 1").ID, TestResultID = "I", TestType=1},
+                new CaseLabTest {  FluCaseID = flucases.Single(s => s.Comments =="comments1").ID, TestDate = curentdate.Value.AddDays(31),  TestEndDate = curentdate.Value.AddDays(60), VirusTypeID = virusTypes.Single(s => s.Name == "Parainfluenza 2").ID, TestResultID = "I", TestType=2},
+                new CaseLabTest {  FluCaseID = flucases.Single(s => s.Comments =="comments1").ID, TestDate = curentdate.Value.AddDays(32),  TestEndDate = curentdate.Value.AddDays(60), VirusTypeID = virusTypes.Single(s => s.Name == "Parainfluenza 3").ID, TestResultID = "N", TestType=1},
+                new CaseLabTest {  FluCaseID = flucases.Single(s => s.Comments =="comments1").ID, TestDate = curentdate.Value.AddDays(33),  TestEndDate = curentdate.Value.AddDays(60), VirusTypeID = virusTypes.Single(s => s.Name == "Parainfluenza 1" ).ID,TestResultID ="P", TestType=1},
+                new CaseLabTest {  FluCaseID = flucases.Single(s => s.Comments =="comments2").ID, TestDate = curentdate.Value.AddDays(30),  TestEndDate = curentdate.Value.AddDays(60), VirusTypeID = virusTypes.Single(s => s.Name == "Parainfluenza 1").ID, TestResultID = "N", TestType=1},
+                new CaseLabTest {  FluCaseID = flucases.Single(s => s.Comments =="comments2").ID, TestDate = curentdate.Value.AddDays(31),  TestEndDate = curentdate.Value.AddDays(60), VirusTypeID = virusTypes.Single(s => s.Name == "Parainfluenza 2").ID, TestResultID = "N", TestType=1},
+                new CaseLabTest {  FluCaseID = flucases.Single(s => s.Comments =="comments2").ID, TestDate = curentdate.Value.AddDays(32),  TestEndDate = curentdate.Value.AddDays(60), VirusTypeID = virusTypes.Single(s => s.Name == "Parainfluenza 3").ID, TestResultID = "N", TestType=1},
+                new CaseLabTest {  FluCaseID = flucases.Single(s => s.Comments =="comments2").ID, TestDate = curentdate.Value.AddDays(33),  TestEndDate = curentdate.Value.AddDays(60), VirusTypeID = virusTypes.Single(s => s.Name == "Parainfluenza 1").ID, TestResultID = "N", TestType=1},
             };
 
             foreach (CaseLabTest caselabtest in caselabtests)

@@ -181,6 +181,7 @@
 
     self.EnableVirusSubTypeID = ko.computed(function () {
         //var result = (self.VirusTypeID() == "1" && self.TestResultID() == "P"); // modificacion solicitada por Rodrigo
+        //console.log("EnableVirusSubTypeID");
         var result = (self.VirusTypeID() == "1" && self.TestResultID() == "P");
         if (!result) {
             self.VirusSubTypeID("");
@@ -204,6 +205,7 @@
 
     self.EnableVirusSubTypeID_2 = ko.computed(function () {
         //var result = (self.VirusTypeID() == "1" && self.TestResultID() == "P"); // modificacion solicitada por Rodrigo
+        //console.log("EnableVirusSubTypeID_2");
         var result = (self.VirusTypeID() == "1" && self.UsrCountry() == 7 && self.TestResultID() == "P");
         if (!result) {
             self.VirusSubTypeID_2("");
@@ -1228,6 +1230,7 @@ function LabViewModel(app, dataModel) {
                         labtest.CanPCR((typeof data.LabTests[index].CanPCR === "undefined" ) ? false : data.LabTests[index].CanPCR );
                         labtest.CanIFI((typeof data.LabTests[index].CanIFI === "undefined") ? false : data.LabTests[index].CanIFI);
                         labtest.EndFlow(data.LabTests[index].EndFlow);
+                        console.log("Lab - Mue1 "+labtest.EndFlow());
                         labtest.ProcLab(data.LabTests[index].ProcLab.toString());
                         labtest.LabID(data.LabTests[index].ProcLab.toString());
                         labtest.ProcLabName(data.LabTests[index].ProcLabName.toString());

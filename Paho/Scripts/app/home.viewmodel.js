@@ -439,12 +439,17 @@
     };
 
     self.FlowDataHospital = function () {
-        console.log("FlowDataHospital");
+        //console.log("FlowDataHospital");
             $("#div_hospital :input").prop('disabled', false);
     };
 
     self.FlowDataCaseStatus = function () {
-        console.log("FlowCaseStatus");
+        //console.log("FlowCaseStatus");
+        var flow_check = $.grep(app.Views.Lab.LabTests(), function (x) {         
+            console.log("Home - FlowDataCaseStatus - EndFlow " + x.EndFlow());
+            return x.EndFlow() === "TRUE";
+        });
+        console.log("FlowDataCaseStatus_ " + flow_check.length);
         if (app.Views.Hospital.CaseStatus() == "3" && self.UserRole() != "adm") {
             console.log("aqui _ CaseStatus 3");
             $("#tabs :input").prop('disabled', true); // Modificacion para que se pueda modificar el registro aunque este cerrado el caso.
@@ -463,6 +468,13 @@
             $("#CaseStatus").attr("disabled", false);
             $("#tabs").tabs("refresh");
         }
+        //else if (flow_check.length > 0 && app.Views.Contact.DataStatement() == 2) {
+        //    console.log("aqui _  Flow_check");
+        //    $("a[href*='tab-case']").show();
+        //    $("#tab-case").show();
+        //    $("#CaseStatus").attr("disabled", false);
+        //    $("#tabs").tabs("refresh");
+        //}
         else if (app.Views.Contact.SurvSARI() == true && app.Views.Hospital.IsSample() === "true" && (app.Views.Lab.FinalResult() == "" || app.Views.Hospital.Destin() == "" || app.Views.Hospital.HospExDate() == "" || app.Views.Hospital.HospExDate() == null || app.Views.Lab.CanConclude() == false)) {
             console.log("aqui _ no processed 3");
             $("a[href*='tab-case']").hide();
@@ -477,7 +489,6 @@
             $("#CaseStatus").attr("disabled", false);
             $("#tabs").tabs("refresh");
         }
-
 
 
         else if ($("#ITy").val() == "1" && (app.Views.Hospital.CaseStatus() != "" && app.Views.Hospital.CaseStatus() != null)) {
@@ -497,9 +508,10 @@
     self.FlowDataLabAfter = function () {
 
         var flow_check = $.grep(app.Views.Lab.LabTests(), function (x) {         
-            //console.log("EndFlow " + x.EndFlow());
+            console.log("Home - FlowDataLabAfter - EndFlow " + x.EndFlow());
             return x.EndFlow() === "TRUE";
         });
+        //console.log(flow_check.length);
 
 
         if (($("#ITy").val() == "1" || $("#ITy").val() == "3") && flow_check.length > 0) {

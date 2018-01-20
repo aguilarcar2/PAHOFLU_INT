@@ -477,40 +477,7 @@ namespace Paho.Controllers
             //flucases = flucases.Skip(pageIndex * pageSize).Take(pageSize);
             var jsondata = new List<Object>();
 
-            //var Arrayrows = (from flucase in flucases
-            //                 select new
-            //                 {
-            //                     id_D = flucase.ID,
-            //                     H_D = flucase.HospitalDate,
-            //                     LN_D = flucase.LName1 + " " + flucase.LName2 ?? "",
-            //                     FN_D = flucase.FName1 + " " + flucase.FName2 ?? "",
-            //                     NE_D = flucase.NoExpediente ?? "",
-            //                     IS_D = flucase.IsSample,
-            //                     FR_D = flucase.FinalResult,
-            //                     D_D = flucase.Destin,
-            //                     FRVT_D = flucase.FinalResultVirusTypeID,
-            //                     P_D = flucase.Processed,
-            //                     CS_D = flucase.CaseStatus,
-            //                     //CLT_D = flucase.CaseLabTests.Where(z => z.LabID == 60).ToList()
-            //                 }).AsEnumerable()
-            //                    .Select(x => new
-            //                    {
-            //                        id = x.id_D.ToString(),
-            //                        cell = new string[]
-            //                        {
-            //                            x.id_D.ToString(),
-            //                            x.H_D.ToString("d", CultureInfo.CreateSpecificCulture("es-GT")),
-            //                            x.LN_D,
-            //                            x.FN_D,
-            //                            x.NE_D ?? "",
-            //                            (x.IS_D == true) ? BooleanType.Si.ToString() : (x.IS_D == false) ? BooleanType.No.ToString(): "",
-            //                            x.FR_D == "U" ? "No realizado" : x.FR_D == "N" ? "Negativo" : x.FR_D == "I" ? "Indeterminado": (x.FRVT_D == 1) ? "Influenza A" : (x.FRVT_D == 2) ? "Influenza B" : (x.FRVT_D == 3) ? "Parainfluenza I" : (x.FRVT_D == 4) ? "Parainfluenza II" : (x.FRVT_D == 5) ? "Parainfluenza III" : (x.FRVT_D == 6) ? "VSR" : (x.FRVT_D == 7) ? "Adenovirus" : (x.FRVT_D == 8) ? "Metapneumovirus" :  (x.FRVT_D == 9) ? "Otro" : (x.P_D == false) ? "No procesado" :""  ,
-            //                            x.D_D == "A" ? "Dado de Alta" : x.D_D == "D" ? "Fallecido" : x.D_D == "R" ? "Referido" : "",
-            //                            //x.CLT_D.Select(z => new { Id = z..ID.ToString(), x.Name }).ToList()
-            //                        }
-            //                    }).ToArray();
-            //if (UsrCtry >= 1)
-            //{
+ 
 
             var  Arrayrows = (from flucase in flucases
                                  select new
@@ -529,8 +496,8 @@ namespace Paho.Controllers
                                      P_D = flucase.Processed,
                                      CS_D = flucase.CaseStatus,
                                      CS_D_Cat = flucase.CatStatusCase,
-                                     VR_IF_D = flucase.CaseLabTests.Where(e => e.TestType == (TestType)1 && e.Processed != null).OrderBy(d => d.SampleNumber).ThenBy(u => u.TestDate).ThenBy(y => y.CatVirusType.orden).FirstOrDefault(),
-                                     VR_PCR_D = flucase.CaseLabTests.Where(e => e.TestType == (TestType)2 && e.Processed != null).OrderBy(d => d.SampleNumber).ThenBy(u => u.TestDate).ThenBy(y => y.CatVirusType.orden).FirstOrDefault(),
+                                     VR_IF_D = flucase.CaseLabTests.Where(e => e.TestType == 1 && e.Processed != null).OrderBy(d => d.SampleNumber).ThenBy(u => u.TestDate).ThenBy(y => y.CatVirusType.orden).FirstOrDefault(),
+                                     VR_PCR_D = flucase.CaseLabTests.Where(e => e.TestType == 2 && e.Processed != null).OrderBy(d => d.SampleNumber).ThenBy(u => u.TestDate).ThenBy(y => y.CatVirusType.orden).FirstOrDefault(),
                                      HEALTH_INST = flucase.Hospital.Name ?? ""
                                  }).AsEnumerable()
                                    .Select(x => new
@@ -553,7 +520,7 @@ namespace Paho.Controllers
                                          //x.CS_D == 1 ?  "<img src='/Content/themes/base/images/open.png' alt='En estudio'/>" + " Under study" : x.CS_D == 2 ? "<img src='/Content/themes/base/images/close.png' alt='Descartado'/>" + " Discarded" : x.CS_D == 3 ? "<img src='/Content/themes/base/images/close.png' alt='Cerrado'/>" + " Closed"  : "<img src='/Content/themes/base/images/open.png' alt='Sin estatus'/>" + " No status"
                                      }
                                    }).ToArray();
-            //}
+
 
                 jsondata.Add(new
                 {
@@ -1706,8 +1673,10 @@ namespace Paho.Controllers
             var flow_local_lab = 0;
             var flow_statement = flucase.statement ?? 1;
             var flow_open_always = false;
-            // Chequeo de muesta influenza B positivo
-            var list_institution_infb = flucase.CaseLabTests.Where(y => y.VirusTypeID == 2 && y.TestResultID == "P").Select(t => t.LabID).ToList();
+            // Chequeo de muestas segun configuracion de virus por flujo actual
+            // Revisar si existe alguna configuracion por virus en el flujo actual
+            var list_by_virus_endflow_byActualFlow = db.InstitutionConfEndFlowByVirus.Where(y=> y.id_InstCnf == institutionActualFlow.FirstOrDefault().ID);
+
 
             if (user.Institution is Hospital)
             {
@@ -1716,31 +1685,38 @@ namespace Paho.Controllers
                 {
                      canConclude = flucase.CaseLabTests.Where(y => list_institution_conf.Contains(y.LabID)).Any();
                 }
-                // Chequeo de muestra de influenza B positivo
-                
-                if (list_institution_infb.Any())
+                //// Chequeo de muestra de influenza B positivo
+
+                if (list_by_virus_endflow_byActualFlow.Any())
                 {
-                    var list_institution_conf_infb = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(i => list_institution_infb.Contains(i.InstitutionToID) && i.InstitutionParentID == flucase.HospitalID).Select(t => t.ID).ToList();
-                    var list_institution_conclude_infb= db.InstitutionConfEndFlowByVirus.Where(y => list_institution_conf_infb.Contains(y.id_InstCnf) && y.id_Cat_VirusType == 2);
-                    canConclude = list_institution_conclude_infb.Any();
-                    //if (list_institution_con
-                    //db.InstitutionConfEndFlowByVirus
+                    var list_test_record = flucase.CaseLabTests.OfType<CaseLabTest>();
+                    var Any_Test_EndFlow = false;
+                    var list_test_record_ordered = list_test_record ;
+
+                    if (list_test_record.Where(y => y.TestResultID == "P").Any() && list_test_record.Count() > 1)
+                    {
+                        list_test_record_ordered = list_test_record.OrderByDescending(v => v.CatTestType.orden).ThenBy(y => y.TestResultID).ThenByDescending(x => x.CatVirusType.orden).ThenBy(z => z.VirusSubTypeID).ThenBy(w => w.VirusLineageID);
+                    } else
+                    {
+                        list_test_record_ordered = list_test_record;
+                    }
+
+                    
+                    foreach (CaseLabTest test_Record in list_test_record_ordered)
+                    {
+
+                            Any_Test_EndFlow = list_by_virus_endflow_byActualFlow.Where(y => y.id_Cat_TestType == test_Record.TestType && y.value_Cat_TestResult == test_Record.TestResultID && y.id_Cat_VirusType == test_Record.VirusTypeID).Any();
+                            
+                    }
+
+                    canConclude = Any_Test_EndFlow && flucase.statement == 2;
                 }
-                
+
             }
 
             if (institutionsConfiguration.Any()) {
-                if (list_institution_infb.Any())
-                {
-                    var list_institution_conf_infb = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(i => list_institution_infb.Contains(i.InstitutionToID) && i.InstitutionParentID == flucase.HospitalID).Select(t => t.ID).ToList();
-                    var list_institution_conclude_infb = db.InstitutionConfEndFlowByVirus.Where(y => list_institution_conf_infb.Contains(y.id_InstCnf) && y.id_Cat_VirusType == 2);
-                    canConclude = list_institution_conclude_infb.Any();
-                }
-                else
-                {
-                    canConclude = institutionsConfiguration.Count(x => x.Conclusion == true) > 0;
-                }
-                
+
+                canConclude = institutionsConfiguration.Count(x => x.Conclusion == true) > 0;                
                 CanPCRLab = db.Institutions.OfType<Lab>().Where(i => i.ID == user.Institution.ID).First()?.PCR;
                 CanIFILab = db.Institutions.OfType<Lab>().Where(i => i.ID == user.Institution.ID).First()?.IFI;
                 flow_local_lab = institutionsConfiguration.First().Priority;
@@ -2051,8 +2027,8 @@ namespace Paho.Controllers
                 db.Entry(flucase).State = EntityState.Modified;
             }
 
-            IFI_Count = flucase.CaseLabTests.Where(e => e.FluCaseID == id && e.TestType == (TestType)1 && e.Processed != null).Count();
-            PCR_Count = flucase.CaseLabTests.Where(e => e.FluCaseID == id && e.TestType == (TestType)2 && e.Processed != null).Count();
+            IFI_Count = flucase.CaseLabTests.Where(e => e.FluCaseID == id && e.TestType == 1 && e.Processed != null).Count();
+            PCR_Count = flucase.CaseLabTests.Where(e => e.FluCaseID == id && e.TestType == 2 && e.Processed != null).Count();
 
             flucase.RecDate = RecDate;
             flucase.Processed = Processed;
@@ -2110,7 +2086,7 @@ namespace Paho.Controllers
                             TestDate = labTestViewModel.TestDate,
                             TestResultID = labTestViewModel.TestResultID,
                             TestEndDate = labTestViewModel.TestEndDate,
-                            TestType = (TestType)labTestViewModel.TestType,
+                            TestType = labTestViewModel.TestType,
                             VirusTypeID = labTestViewModel.VirusTypeID,
                             CTVirusType = labTestViewModel.CTVirusType,
                             CTRLVirusType = labTestViewModel.CTRLVirusType,

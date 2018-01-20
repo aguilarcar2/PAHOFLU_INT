@@ -299,9 +299,9 @@
 //        }
     });
     self.EnableICUDate = ko.computed(function () {
-        if (self.UsrCountry() != 7){
-            return true;
-        } else {
+        //if (self.UsrCountry() != 7){
+        //    return true;
+        //} else {
             if (self.ICU() == 1) {
                 return true;
             } else {
@@ -309,7 +309,7 @@
                 self.ICUExDate("");
                 return false;
             }
-        }
+        //}
     }, self);
 
     self.DestinICU = ko.observable("");
@@ -846,6 +846,7 @@
        self.DiagDate(null);
        self.HospAmDate(null);
        self.HospExDate(null);
+       self.ICU(null);
        self.ICUAmDate(null);
        self.ICUExDate(null);
        self.FalleDate(null);
