@@ -2159,6 +2159,7 @@
     <Content Include="Scripts\ammap\plugins\responsive\package.json" />
     <Content Include="Scripts\ammap\plugins\responsive\readme.md" />
     <Content Include="Scripts\ammap\plugins\responsive\responsive.min.js.map" />
+    <None Include="Properties\PublishProfiles\PAHO_PUBLISH.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\d3.js" />
     <Content Include="Scripts\date.js" />

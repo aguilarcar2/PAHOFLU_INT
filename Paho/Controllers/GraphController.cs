@@ -1188,6 +1188,7 @@ namespace Paho.Controllers
             try
             {
                 //var ms = new MemoryStream();
+                string GetMapDataSP = Graph;
                 var user = UserManager.FindById(User.Identity.GetUserId());
                 //int CountryID_ = (CountryID >= 0) ? CountryID : (user.Institution.CountryID ?? 0);
                 int CountryID_ = CountryID;
@@ -1217,7 +1218,7 @@ namespace Paho.Controllers
 
                 using (var con = new SqlConnection(consString))
                 {
-                    using (var command = new SqlCommand("GetMapData", con) { CommandType = CommandType.StoredProcedure })
+                    using (var command = new SqlCommand(GetMapDataSP, con) { CommandType = CommandType.StoredProcedure })
                     {
                         command.Parameters.Clear();
                         con.Open();
@@ -1225,15 +1226,22 @@ namespace Paho.Controllers
                         command.Parameters.Add("@Year", SqlDbType.Text).Value = Year;                       
                         command.Parameters.Add("@IRAG", SqlDbType.Int).Value = IRAG_;
                         command.Parameters.Add("@ETI", SqlDbType.Int).Value = ETI_;
-                        
+
                         using (var reader = command.ExecuteReader())
                         {
                             myXmlDoc0.AppendChild(myXmlDoc0.CreateElement("map"));
                             XmlNode myXmlNode0;
                             myXmlNode0 = myXmlDoc0.CreateElement("mapTitle");
-                            myXmlNode0.InnerText = getMsg("viewSituationalMap1Title");
+                            switch (GetMapDataSP)
+                            {
+                                case "GetMapData1":
+                                    myXmlNode0.InnerText = getMsg("viewSituationalMap1Title");
+                                    break;
+                                case "GetMapData2":
+                                    myXmlNode0.InnerText = getMsg("viewSituationalMap2Title");
+                                    break;                                    
+                            }
                             myXmlDoc0.DocumentElement.AppendChild(myXmlNode0);
-
                             myXmlNode0 = myXmlDoc0.CreateElement("mapCountry");
                             switch (CountryID)
                             {
@@ -1249,60 +1257,92 @@ namespace Paho.Controllers
                                 case 25:
                                     myXmlNode0.InnerText = "SR";
                                     break;
-                            }                            
+                            }
                             myXmlDoc0.DocumentElement.AppendChild(myXmlNode0);
                             myXmlNode0 = myXmlDoc0.CreateElement("mapData");
 
                             myXmlDoc0.DocumentElement.AppendChild(myXmlNode0);
 
-                            while (reader.Read())
+                            switch (GetMapDataSP)
                             {
-                                ArrayList mapVal = new ArrayList();                                
-                                mapVal.Add(reader["AreaID"].ToString().Trim());                                
-                                mapVal.Add(reader["1"].ToString().Trim());
-                                mapVal.Add(reader["2"].ToString().Trim());
-                                mapVal.Add(reader["3"].ToString().Trim());
-                                mapVal.Add(reader["6"].ToString().Trim());
-                                mapVal.Add(reader["10"].ToString().Trim());
-                                mapVals.Add(mapVal);                                
+                                case "GetMapData1":
+                                    while (reader.Read())
+                                    {
+                                        ArrayList mapVal = new ArrayList();
+                                        mapVal.Add(reader["AreaID"].ToString().Trim());
+                                        mapVal.Add(reader["1"].ToString().Trim());
+                                        mapVal.Add(reader["2"].ToString().Trim());
+                                        mapVal.Add(reader["3"].ToString().Trim());
+                                        mapVal.Add(reader["6"].ToString().Trim());
+                                        mapVal.Add(reader["10"].ToString().Trim());
+                                        mapVals.Add(mapVal);
 
-                                XmlNode auxXmlNode0;
-                                XmlNode anotherAuxXmlNode0;
+                                        XmlNode auxXmlNode0;
+                                        XmlNode anotherAuxXmlNode0;
 
-                                auxXmlNode0 = myXmlDoc0.CreateElement("areaData");
-                                myXmlNode0.AppendChild(auxXmlNode0);
+                                        auxXmlNode0 = myXmlDoc0.CreateElement("areaData");
+                                        myXmlNode0.AppendChild(auxXmlNode0);
 
-                                anotherAuxXmlNode0 = myXmlDoc0.CreateElement("area");
-                                anotherAuxXmlNode0.InnerText = reader["AreaID"].ToString().Trim();
-                                auxXmlNode0.AppendChild(anotherAuxXmlNode0);
+                                        anotherAuxXmlNode0 = myXmlDoc0.CreateElement("area");
+                                        anotherAuxXmlNode0.InnerText = reader["AreaID"].ToString().Trim();
+                                        auxXmlNode0.AppendChild(anotherAuxXmlNode0);
 
-                                anotherAuxXmlNode0 = myXmlDoc0.CreateElement("infA");
-                                anotherAuxXmlNode0.InnerText = reader["1"].ToString().Trim();
-                                auxXmlNode0.AppendChild(anotherAuxXmlNode0);
+                                        anotherAuxXmlNode0 = myXmlDoc0.CreateElement("infA");
+                                        anotherAuxXmlNode0.InnerText = reader["1"].ToString().Trim();
+                                        auxXmlNode0.AppendChild(anotherAuxXmlNode0);
 
-                                anotherAuxXmlNode0 = myXmlDoc0.CreateElement("infB");
-                                anotherAuxXmlNode0.InnerText = reader["2"].ToString().Trim();
-                                auxXmlNode0.AppendChild(anotherAuxXmlNode0);
+                                        anotherAuxXmlNode0 = myXmlDoc0.CreateElement("infB");
+                                        anotherAuxXmlNode0.InnerText = reader["2"].ToString().Trim();
+                                        auxXmlNode0.AppendChild(anotherAuxXmlNode0);
 
-                                anotherAuxXmlNode0 = myXmlDoc0.CreateElement("vrs");
-                                anotherAuxXmlNode0.InnerText = reader["6"].ToString().Trim();
-                                auxXmlNode0.AppendChild(anotherAuxXmlNode0);
+                                        anotherAuxXmlNode0 = myXmlDoc0.CreateElement("vrs");
+                                        anotherAuxXmlNode0.InnerText = reader["6"].ToString().Trim();
+                                        auxXmlNode0.AppendChild(anotherAuxXmlNode0);
 
-                                anotherAuxXmlNode0 = myXmlDoc0.CreateElement("ah1n1");
-                                anotherAuxXmlNode0.InnerText = reader["3"].ToString().Trim();
-                                auxXmlNode0.AppendChild(anotherAuxXmlNode0);
+                                        anotherAuxXmlNode0 = myXmlDoc0.CreateElement("ah1n1");
+                                        anotherAuxXmlNode0.InnerText = reader["3"].ToString().Trim();
+                                        auxXmlNode0.AppendChild(anotherAuxXmlNode0);
 
-                                anotherAuxXmlNode0 = myXmlDoc0.CreateElement("ah3");
-                                anotherAuxXmlNode0.InnerText = reader["10"].ToString().Trim();
-                                auxXmlNode0.AppendChild(anotherAuxXmlNode0);
+                                        anotherAuxXmlNode0 = myXmlDoc0.CreateElement("ah3");
+                                        anotherAuxXmlNode0.InnerText = reader["10"].ToString().Trim();
+                                        auxXmlNode0.AppendChild(anotherAuxXmlNode0);
+                                    }
+                                    break;
+                                case "GetMapData2":
+                                    while (reader.Read())
+                                    {
+                                        ArrayList mapVal = new ArrayList();
+                                        mapVal.Add(reader["AreaID"].ToString().Trim());
+                                        mapVal.Add(reader["3"].ToString().Trim());
+                                        mapVal.Add(reader["10"].ToString().Trim());
+                                        mapVals.Add(mapVal);
+
+                                        XmlNode auxXmlNode0;
+                                        XmlNode anotherAuxXmlNode0;
+
+                                        auxXmlNode0 = myXmlDoc0.CreateElement("areaData");
+                                        myXmlNode0.AppendChild(auxXmlNode0);
+
+                                        anotherAuxXmlNode0 = myXmlDoc0.CreateElement("area");
+                                        anotherAuxXmlNode0.InnerText = reader["AreaID"].ToString().Trim();
+                                        auxXmlNode0.AppendChild(anotherAuxXmlNode0);
+
+                                        anotherAuxXmlNode0 = myXmlDoc0.CreateElement("ah1n1");
+                                        anotherAuxXmlNode0.InnerText = reader["3"].ToString().Trim();
+                                        auxXmlNode0.AppendChild(anotherAuxXmlNode0);
+
+                                        anotherAuxXmlNode0 = myXmlDoc0.CreateElement("ah3");
+                                        anotherAuxXmlNode0.InnerText = reader["10"].ToString().Trim();
+                                        auxXmlNode0.AppendChild(anotherAuxXmlNode0);
+                                    }
+                                    break;
                             }
-                        }
+
+                        }                      
                     }
-                }
+                }                
                 //Fin de la revisión de si existen los datos para la gráfica
                 return Json(JsonConvert.SerializeXmlNode(myXmlDoc0));
-
-
             }
             catch (Exception e)
             {

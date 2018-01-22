@@ -155,14 +155,7 @@
 						<li dstyle="display:none;"> @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuNotImportedView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "NotImported", new { area = "" }, null) </li>
                         @*<li dstyle="display:none;"> @Html.ActionLink((((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelNotImportedList")), "Index", "NotImported", new { area = "" }, null) </li>*@
 
-                    }
-                    @if (ViewBag.UsrCtry > 0)
-                    {
-
-                        <li> @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuTicket", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Ticket", new { area = "" }, null) </li>
-                                            @*<li dstyle="display:none;"> @Html.ActionLink((((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelNotImportedList")), "Index", "NotImported", new { area = "" }, null) </li>*@
-
-                    }
+                    }                    
                     @*<li>@Html.ActionLink("Searches", "Index", "Report", new { area = "" }, null)</li>*@
 
                     <!--Dashboard-->

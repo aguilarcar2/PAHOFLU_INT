@@ -4960,6 +4960,7 @@
                 }
                 </script>
                 <script>GetDataYearsMap();</script>
+                <!--Mapa 1 Contenedor-->
                 <div id="containerMapControl0">
                     <div id="subcontainerMapControl0">
                         <input id="chkMapIrag" type="checkbox" value="irag"  />@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphSARICheckboxLabel"))
@@ -4982,7 +4983,7 @@
                         </div>
 
                         <input type="text" style="display:none;" id="mapanios" value="2017" />
-                        <div><button id="btnGetMapData1" onclick="GetMapData1()">@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphUpdateButton"))</button></div>
+                        <div><button id="btnGetMapData1" onclick="GetMapData1();GetMapData2();">@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphUpdateButton"))</button></div>
                         <!--div id="c_b" style="display:block;">
                     Años:
                         </div-->
@@ -5165,7 +5166,7 @@
                     $.ajax({
                             type: 'POST',
                             url: '/Graph/GetMapDataTuned',
-                            data: "{'CountryID':" + GraphCountryID +",'Year':'" + $("#mapanios").val() + "','Graph':'Map1', 'IRAG':'" + dataMapIrag + "', 'ETI':'" + dataMapEti + "'}",
+                            data: "{'CountryID':" + GraphCountryID +",'Year':'" + $("#mapanios").val() + "','Graph':'GetMapData1', 'IRAG':'" + dataMapIrag + "', 'ETI':'" + dataMapEti + "'}",
                             contentType: "application/json",
                             dataType: 'json',
                             async: true,
@@ -5277,21 +5278,306 @@
 
                         };
     </script>
+    
+    
+    <!---xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx MAPA 2 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx--->
+    <!-- Chart code -->
+    <script>
+            function GetMapData2() {
+                var dataMapIrag = 0;
+                var dataMapEti = 0;
+
+                if($("#chkMapIrag").is(':checked')){
+                    dataMapIrag = 1;
+                        }
+                if($("#chkMapEti").is(':checked')){
+                    dataMapEti = 1;
+                        }
+
+                            //Esta sección sirve para consolidar los años seleccionados en un string separado por comas
+                var allMapVals = [];
+                var yrsMap = "";
+                $('#map_c_b :checked').each(function() {
+                    allMapVals.push($(this).val());
+                        });
+                yrsMap = allMapVals.join();
+                $("#mapanios").val(yrsMap);
+
+                var defaultMap = "usaLow";
+                var countryMaps = {
+                    "AF": [ "afghanistanLow" ],
+                    "AL": [ "albaniaLow" ],
+                    "DZ": [ "algeriaLow" ],
+                    "AD": [ "andorraLow" ],
+                    "AO": [ "angolaLow" ],
+                    "AR": [ "argentinaLow" ],
+                    "AM": [ "armeniaLow" ],
+                    "AU": [ "australiaLow" ],
+                    "AT": [ "austriaLow" ],
+                    "AZ": [ "azerbaijanLow" ],
+                    "BS": [ "bahamasLow" ],
+                    "BH": [ "bahrainLow" ],
+                    "BD": [ "bangladeshLow" ],
+                    "BY": [ "belarusLow" ],
+                    "BE": [ "belgiumLow" ],
+                    "BZ": [ "belizeLow" ],
+                    "BT": [ "bhutanLow" ],
+                    "BO": [ "boliviaLow" ],
+                    "BA": [ "bosniaHerzegovinaCantonsLow" ],
+                    "BW": [ "botswanaLow" ],
+                    "BR": [ "brazilLow" ],
+                    "BN": [ "bruneiDarussalamLow" ],
+                    "BG": [ "bulgariaLow" ],
+                    "BF": [ "burkinaFasoLow" ],
+                    "BI": [ "burundiLow" ],
+                    "KH": [ "cambodiaLow" ],
+                    "CM": [ "cameroonLow" ],
+                    "CA": [ "canadaLow" ],
+                    "CV": [ "capeVerdeLow" ],
+                    "CF": [ "centralAfricanRepublicLow" ],
+                    "TD": [ "chadLow" ],
+                    "CL": [ "chileLow" ],
+                    "CN": [ "chinaLow" ],
+                    "CO": [ "colombiaLow" ],
+                    "CD": [ "congoDRLow" ],
+                    "CG": [ "congoLow" ],
+                    "CR": [ "costaRicaLow" ],
+                    "HR": [ "croatiaLow" ],
+                    "CU": [ "cubaLow" ],
+                    "CY": [ "cyprusLow" ],
+                    "UN": [ "cyprusNorthernCyprusLow" ],
+                    "GB": [ "unitedKingdomLow" ],
+                    "CZ": [ "czechRepublicLow" ],
+                    "DK": [ "denmarkLow" ],
+                    "DJ": [ "djiboutiLow" ],
+                    "DO": [ "dominicanRepublicLow" ],
+                    "EC": [ "ecuadorLow" ],
+                    "EG": [ "egyptLow" ],
+                    "SV": [ "elSalvadorLow" ],
+                    "EE": [ "estoniaLow" ],
+                    "FI": [ "finlandLow" ],
+                    "FR": [ "france2016Low" ],
+                    "GE": [ "georgiaLow" ],
+                    "DE": [ "germanyLow" ],
+                    "GR": [ "greeceLow" ],
+                    "GT": [ "guatemalaLow" ],
+                    "GN": [ "guineaLow" ],
+                    "GY": [ "guyanaLow" ],
+                    "HT": [ "haitiLow" ],
+                    "HN": [ "hondurasLow" ],
+                    "HK": [ "hongKongLow" ],
+                    "HU": [ "hungaryLow" ],
+                    "GL": [ "icelandLow" ],
+                    "IS": [ "icelandLow" ],
+                    "IN": [ "indiaLow" ],
+                    "ID": [ "indonesiaLow" ],
+                    "MY": [ "malaysiaLow" ],
+                    "IR": [ "iranLow" ],
+                    "IQ": [ "iraqLow" ],
+                    "IE": [ "irelandLow" ],
+                    "IL": [ "israelLow" ],
+                    "PS": [ "palestineLow" ],
+                    "VA": [ "italyLow" ],
+                    "SM": [ "sanMarinoLow" ],
+                    "MT": [ "italyLow" ],
+                    "IT": [ "italyLow" ],
+                    "JM": [ "jamaicaLow" ],
+                    "JP": [ "japanLow" ],
+                    "KZ": [ "kazakhstanLow" ],
+                    "KE": [ "kenyaLow" ],
+                    "XK": [ "kosovoLow" ],
+                    "KG": [ "kyrgyzstanLow" ],
+                    "LA": [ "laosLow" ],
+                    "LV": [ "latviaLow" ],
+                    "LT": [ "lithuaniaLow" ],
+                    "LU": [ "luxembourgLow" ],
+                    "MK": [ "macedoniaLow" ],
+                    "ML": [ "maliLow" ],
+                    "MX": [ "mexicoLow" ],
+                    "MD": [ "moldovaLow" ],
+                    "MN": [ "mongoliaLow" ],
+                    "ME": [ "montenegroLow" ],
+                    "MA": [ "moroccoLow" ],
+                    "MM": [ "myanmarLow" ],
+                    "NP": [ "nepalLow" ],
+                    "NL": [ "netherlandsLow" ],
+                    "NZ": [ "newZealandLow" ],
+                    "NI": [ "nicaraguaLow" ],
+                    "NG": [ "nigeriaLow" ],
+                    "NO": [ "norwayLow" ],
+                    "AE": [ "unitedArabEmiratesLow" ],
+                    "OM": [ "omanLow" ],
+                    "PK": [ "pakistanLow" ],
+                    "PA": [ "panamaLow" ],
+                    "PY": [ "paraguayLow" ],
+                    "PE": [ "peruLow" ],
+                    "PH": [ "philippinesLow" ],
+                    "PL": [ "polandLow" ],
+                    "PT": [ "portugalLow" ],
+                    "PR": [ "puertoRicoLow" ],
+                    "US": [ "usaLow" ],
+                    "QA": [ "qatarLow" ],
+                    "RO": [ "romaniaLow" ],
+                    "RW": [ "rwandaLow" ],
+                    "SA": [ "saudiArabiaLow" ],
+                    "RS": [ "serbiaLow" ],
+                    "SG": [ "singaporeLow" ],
+                    "SK": [ "slovakiaLow" ],
+                    "SI": [ "sloveniaLow" ],
+                    "LS": [ "southAfricaLow" ],
+                    "ZA": [ "southAfricaLow" ],
+                    "KR": [ "southKoreaLow" ],
+                    "ES": [ "spainLow" ],
+                    "LK": [ "sriLankaLow" ],
+                    "SR": [ "surinameLow" ],
+                    "SE": [ "swedenLow" ],
+                    "CH": [ "switzerlandLow" ],
+                    "SY": [ "syriaLow" ],
+                    "TW": [ "taiwanLow" ],
+                    "TJ": [ "tajikistanLow" ],
+                    "TH": [ "thailandLow" ],
+                    "TR": [ "turkeyLow" ],
+                    "UG": [ "ugandaLow" ],
+                    "UA": [ "ukraineLow" ],
+                    "GG": [ "unitedKingdomLow" ],
+                    "JE": [ "unitedKingdomLow" ],
+                    "IM": [ "unitedKingdomLow" ],
+                    "UY": [ "uruguayLow" ],
+                    "UZ": [ "uzbekistanLow" ],
+                    "VE": [ "venezuelaLow" ],
+                    "VN": [ "vietnamLow" ],
+                    "YE": [ "yemenLow" ]
+                        };
+
+
+
+                            //------------------------------------------------------------------------------
+                $(document).ready(function () {
+                    $.ajax({
+                            type: 'POST',
+                            url: '/Graph/GetMapDataTuned',
+                            data: "{'CountryID':" + GraphCountryID +",'Year':'" + $("#mapanios").val() + "','Graph':'GetMapData2', 'IRAG':'" + dataMapIrag + "', 'ETI':'" + dataMapEti + "'}",
+                            contentType: "application/json",
+                            dataType: 'json',
+                            async: true,
+                            success: function (data) {
+                            //console.log(data);
+                            var jsonX = JSON.parse(data);
+                            console.log(jsonX);
+                            var chartData = [];
+                            var chartTitle = jsonX.map.mapTitle;
+                            var chartCountry = jsonX.map.mapCountry;
+                            //alert(chartTitle);
+                            //alert(chartCountry);
+                            $.each(jsonX, function(index, element) {
+                            //alert(JSON.stringify(element.mapData));
+                                $.each(element.mapData.areaData, function(index2, element2) {
+                            //alert(JSON.stringify(element2));
+                                    chartData.push({
+                            area: element2.area,                            
+                            ah1n1: element2.ah1n1,
+                            ah3: element2.ah3,
+                            total: (parseInt(element2.ah1n1) + parseInt(element2.ah3))
+                        });
+                        });
+                        });
+                            console.log("chartData");
+                            console.log(chartData);
+                            // calculate which map to be used
+                            var currentMap = defaultMap;
+                            var titles = [];
+                            currentMap = countryMaps[ chartCountry ][ 0 ];
+                            titles.push( {
+                                "text": chartTitle
+                        } );
+                            //----------mapa--------------------
+                            var map = AmCharts.makeChart( "mapDivGraph2", {
+                                "type": "map",
+                                "theme": "light",
+                                "colorSteps": 10,
+                                "dataProvider": {
+                                    "mapURL": "/Scripts/ammap/maps/svg/" + currentMap + ".svg",
+                                    "getAreasFromMap": true,
+                                    "zoomLevel": 0.9,
+                                    "areas": []
+                        },
+                                "areasSettings": {
+                                    "autoZoom": true,
+                                    "balloonText": "[[title]]: <br/><strong>[[description]]</strong>",
+                            color: "#FFCC00",
+                            colorSolid: "#990000"
+                        },
+                                "valueLegend": {
+                                    "right": 10,
+                                    "minValue": "-",
+                                    "maxValue": "+"
+                        },
+                                "zoomControl": {
+                                    "minZoomLevel": 0.9
+                        },
+                                "titles": titles,
+                                "listeners": [ {
+                                    "event": "init",
+                                    "method": updateHeatmap
+                        } ]
+                        } );
+
+
+                            function updateHeatmap( event ) {
+                                var map = event.chart;
+                                if ( map.dataGenerated )
+                                    return;
+                            //alert(map.dataProvider.areas.length);
+                                if ( map.dataProvider.areas.length === 0 ) {
+                                    setTimeout( updateHeatmap, 100 );
+                                    return;
+                        }
+                                console.log(chartData);
+                                for ( var i = 0; i < map.dataProvider.areas.length; i++ ) {
+                            //alert(map.dataProvider.areas.length);
+                            //alert(chartData[i].area.valueOf());                                    
+                                    var AH1N1 = chartData[i].ah1n1.valueOf();
+                                    var AH3 = chartData[i].ah3.valueOf();
+                                    var total = chartData[i].total.valueOf();
+                                    map.dataProvider.areas[ i ].description = "AH1N1: " + AH1N1 + "<br/>AH3: " + AH3 + "<br/>Total: "+ total;//Math.round( Math.random() * 10000 );
+                                    map.dataProvider.areas[ i ].value = total;
+                        }
+                                map.dataGenerated = true;
+                                map.validateNow();
+                        }
+                            //----------fin mapa----------------
+                        }
+                        })
+                        })
+
+
+
+                            //"text": jsonX.graph.graphTitle,
+                            //"title":jsonX.graph.graphYAxisTitle
+                            //"label": "(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphExportPrintTitle"))",
+
+
+                            //------------------------------------------------------------------------------
+
+
+                        };
+    </script>
 
     <!-- HTML -->
     <script>
         addMapCheckbox($('#txtName').val());
         GetMapData1();
+        GetMapData2();
     </script>
     <style>
-        #mapContainerGraph1 {
+        #mapContainerGraph1, #mapContainerGraph2{
             border: solid #e4e4e4 1px;
             width: 48%;
             float: left;
             margin: 5px;
         }
 
-        #mapDivGraph1 {
+        #mapDivGraph1, #mapDivGraph2{
             display: block;
             width: 100%;
             height: 600px;
@@ -5302,6 +5588,12 @@
         <!--Gráfica Epidemiológica 1-->
         <!--div id="maploaderGraph1" class="loaderGraph"></div-->
         <div id="mapDivGraph1"></div>
+    </div>
+    <div id="mapContainerGraph2">
+        <!--Inicio de gráficas-->
+        <!--Gráfica Epidemiológica 1-->
+        <!--div id="maploaderGraph1" class="loaderGraph"></div-->
+        <div id="mapDivGraph2"></div>
     </div>
 
     <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx FIN MAPA 1 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->

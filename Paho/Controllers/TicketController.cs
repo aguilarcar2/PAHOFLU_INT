@@ -89,10 +89,32 @@ namespace Paho.Controllers
                     }
                 }
             }
+            //---------------extraccion de direcciones de correo----------
+            List<Dictionary<string, string>> emailList = new List<Dictionary<string, string>>();
+            using (var con = new SqlConnection(consString))
+            {
+                string jsonGraphData = "";
+
+                using (var command = new SqlCommand("GetNotifiableSupport", con) { CommandType = CommandType.StoredProcedure })
+                {
+                    command.Parameters.Clear();
+                    con.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Dictionary<string, string> emailItem = new Dictionary<string, string>();
+                            emailItem.Add("name", reader["name"].ToString().Trim());
+                            emailItem.Add("email", reader["email"].ToString().Trim());
+                            emailItem.Add("notification", reader["notification"].ToString().Trim());
+                            emailItem.Add("notificationType", reader["notificationType"].ToString().Trim());
+                            emailList.Add(emailItem);
+                        }
+                    }
+                }
+            }
             //--------------envio de correo----------------------
-            var mailSupport = ConfigurationManager.AppSettings["supportMail"]; 
-            var mailSupportCC1 = ConfigurationManager.AppSettings["supportMailCC1"];
-            var mailSupportCC2 = ConfigurationManager.AppSettings["supportMailCC2"];
+            
             SmtpClient client = new SmtpClient();
             client.Port = 587;
             client.Host = "smtp.gmail.com";
@@ -102,12 +124,32 @@ namespace Paho.Controllers
             client.UseDefaultCredentials = false;
             client.Credentials = new System.Net.NetworkCredential("pahoflu@gmail.com", "Chachas1");
 
-            MailMessage mm = new MailMessage("pahoflu@gmail.com", mailSupport, ticketSubject, ticketMsg);
-            mm.CC.Add(mailSupportCC1);
-            mm.CC.Add(mailSupportCC2);
+            //MailMessage mm = new MailMessage("pahoflu@gmail.com", mailSupport, ticketSubject, ticketMsg);
+            MailMessage mm = new MailMessage();
+            MailAddress fromMail = new MailAddress("pahoflu@gmail.com");
+            mm.From = fromMail;
+            mm.Subject = ticketSubject;
+            mm.Body = ticketMsg;
+            //------------------
+            foreach (var emailObject in emailList)
+            {
+                switch (emailObject["notificationType"])
+                {
+                    case "":
+                        mm.To.Add(emailObject["email"]);
+                        break;
+                    case "CC":
+                        mm.CC.Add(emailObject["email"]);
+                        break;
+                    case "BCC":
+                        mm.Bcc.Add(emailObject["email"]);
+                        break;
+                }
+            }
+            
+            //------------------
             mm.BodyEncoding = UTF8Encoding.UTF8;
             mm.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
-
             client.Send(mm);
             //--------------fin envio correo---------------------
 

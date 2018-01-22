@@ -46,11 +46,11 @@
     <table id="TicketList" class="table table-hover table-responsive" style="width:550px; display:none;">
         <thead>
             <tr data-bind="attr:{'cursor':'pointer'},click: GetTicketList">
+                <th class="col-md-1" style="text-align:center;">@(((Paho.Controllers.TicketController)this.ViewContext.Controller).getMsg("msgTicketTableDate"))</th>
                 <th class="col-md-1">@(((Paho.Controllers.TicketController)this.ViewContext.Controller).getMsg("msgTicketTableID"))</th>
                 <th class="col-md-1">@(((Paho.Controllers.TicketController)this.ViewContext.Controller).getMsg("msgTicketTableSubject"))</th>                
                 <th class="col-md-1" style="text-align:center;">@(((Paho.Controllers.TicketController)this.ViewContext.Controller).getMsg("msgTicketTableDescription"))</th>
-                <th class="col-md-1" style="text-align:center;">@(((Paho.Controllers.TicketController)this.ViewContext.Controller).getMsg("msgTicketTableStatus"))</th>
-                <th class="col-md-1" style="text-align:center;">@(((Paho.Controllers.TicketController)this.ViewContext.Controller).getMsg("msgTicketTableDate"))</th>
+                <th class="col-md-1" style="text-align:center;">@(((Paho.Controllers.TicketController)this.ViewContext.Controller).getMsg("msgTicketTableStatus"))</th>                
             </tr>
         </thead>
         <tbody></tbody>
@@ -73,7 +73,7 @@
                     $("#TicketList").show();
                     var trHTML = '';
                     $.each(data, function (i, item) {
-                        trHTML += '<tr donclick="loadTicket(this)"><td style="width:10%;">' + item.ID + '</td><td style="width:10%;">' + item.subject + '</td><td style="width:10%;">' + item.description + '</td><td style="width:10%;">' + item.status + '</td><td style="width:10%;">' + item.ticketDate + '</td></tr>';
+                        trHTML += '<tr donclick="loadTicket(this)"><td style="width:10%;">' + item.ticketDate + '</td><td style="width:10%;">' + item.ID + '</td><td style="width:10%;">' + item.subject + '</td><td style="width:10%;">' + item.description + '</td><td style="width:10%;">' + item.status + '</td></tr>';
                     });
                     $('#TicketList').append(trHTML);
                 },
