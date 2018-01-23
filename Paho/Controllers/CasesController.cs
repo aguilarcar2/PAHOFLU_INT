@@ -1820,10 +1820,14 @@ namespace Paho.Controllers
                               CanPCR = db.Institutions.OfType<Lab>().Where(i => i.ID == caselabtest.LabID).First()?.PCR,
                               CanIFI = db.Institutions.OfType<Lab>().Where(i => i.ID == caselabtest.LabID).First()?.IFI,
                               EndFlow = institutionActualFlow.Any() ? ((caselabtest.TestResultID == "N") ? db.InstitutionConfEndFlowByVirus.Where(j => j.id_InstCnf == institutionActualFlow.FirstOrDefault().ID && j.id_Cat_TestType == caselabtest.TestType && j.value_Cat_TestResult == caselabtest.TestResultID).Any().ToString().ToUpper() : db.InstitutionConfEndFlowByVirus.Where(j => j.id_InstCnf == institutionActualFlow.FirstOrDefault().ID && j.id_Cat_TestType == caselabtest.TestType && j.value_Cat_TestResult == caselabtest.TestResultID && j.id_Cat_VirusType == caselabtest.VirusTypeID).Any().ToString().ToUpper()) : "UNKNOWN"
+                              // Orden de muestra
+                              InstPriority = db.InstitutionsConfiguration.Where(i => i.InstitutionToID == caselabtest.LabID && i.InstitutionParentID == flucase.HospitalID).Any() ? db.InstitutionsConfiguration.Where(i=> i.InstitutionToID == caselabtest.LabID && i.InstitutionParentID == flucase.HospitalID).FirstOrDefault().ID : 0 ,
+                              OrderTestType = caselabtest.CatTestType.orden,
                           }
                       )
-                      .OrderBy(d => d.TestDate)
-                      .ThenBy(c=> c.ProcLab)
+                      .OrderBy(x => x.InstPriority)
+                      .ThenBy(d => d.OrderTestType)
+                      .ThenBy(c=> c.TestDate)
                       .ToArray(),
                     LabTests_Sample2 = (
                           from caselabtest in flucase.CaseLabTests
@@ -1868,10 +1872,14 @@ namespace Paho.Controllers
                               CanPCR = db.Institutions.OfType<Lab>().Where(i => i.ID == caselabtest.LabID).First()?.PCR,
                               CanIFI = db.Institutions.OfType<Lab>().Where(i => i.ID == caselabtest.LabID).First()?.IFI,
                               EndFlow = institutionActualFlow.Any() ? ((caselabtest.TestResultID == "N") ? db.InstitutionConfEndFlowByVirus.Where(j => j.id_InstCnf == institutionActualFlow.FirstOrDefault().ID && j.id_Cat_TestType == caselabtest.TestType && j.value_Cat_TestResult == caselabtest.TestResultID).Any().ToString().ToUpper() : db.InstitutionConfEndFlowByVirus.Where(j => j.id_InstCnf == institutionActualFlow.FirstOrDefault().ID && j.id_Cat_TestType == caselabtest.TestType && j.value_Cat_TestResult == caselabtest.TestResultID && j.id_Cat_VirusType == caselabtest.VirusTypeID).Any().ToString().ToUpper()) : "UNKNOWN"
+                              // Orden de muestra
+                              InstPriority = db.InstitutionsConfiguration.Where(i => i.InstitutionToID == caselabtest.LabID && i.InstitutionParentID == flucase.HospitalID).Any() ? db.InstitutionsConfiguration.Where(i => i.InstitutionToID == caselabtest.LabID && i.InstitutionParentID == flucase.HospitalID).FirstOrDefault().ID : 0,
+                              OrderTestType = caselabtest.CatTestType.orden,
                           }
                       )
-                      .OrderBy(c => c.ProcLab)
-                      .ThenBy(d => d.TestDate)
+                      .OrderBy(x => x.InstPriority)
+                      .ThenBy(d => d.OrderTestType)
+                      .ThenBy(c => c.TestDate)
                       .ToArray(),
                     LabTests_Sample3 = (
                           from caselabtest in flucase.CaseLabTests
@@ -1915,10 +1923,14 @@ namespace Paho.Controllers
                               CanPCR = db.Institutions.OfType<Lab>().Where(i => i.ID == caselabtest.LabID).First()?.PCR,
                               CanIFI = db.Institutions.OfType<Lab>().Where(i => i.ID == caselabtest.LabID).First()?.IFI,
                               EndFlow = institutionActualFlow.Any() ? ((caselabtest.TestResultID == "N") ? db.InstitutionConfEndFlowByVirus.Where(j => j.id_InstCnf == institutionActualFlow.FirstOrDefault().ID && j.id_Cat_TestType == caselabtest.TestType && j.value_Cat_TestResult == caselabtest.TestResultID).Any().ToString().ToUpper() : db.InstitutionConfEndFlowByVirus.Where(j => j.id_InstCnf == institutionActualFlow.FirstOrDefault().ID && j.id_Cat_TestType == caselabtest.TestType && j.value_Cat_TestResult == caselabtest.TestResultID && j.id_Cat_VirusType == caselabtest.VirusTypeID).Any().ToString().ToUpper()) : "UNKNOWN"
+                              // Orden de muestra
+                              InstPriority = db.InstitutionsConfiguration.Where(i => i.InstitutionToID == caselabtest.LabID && i.InstitutionParentID == flucase.HospitalID).Any() ? db.InstitutionsConfiguration.Where(i => i.InstitutionToID == caselabtest.LabID && i.InstitutionParentID == flucase.HospitalID).FirstOrDefault().ID : 0,
+                              OrderTestType = caselabtest.CatTestType.orden,
                           }
                       )
-                      .OrderBy(c => c.ProcLab)
-                      .ThenBy(d => d.TestDate)
+                      .OrderBy(x => x.InstPriority)
+                      .ThenBy(d => d.OrderTestType)
+                      .ThenBy(c => c.TestDate)
                       .ToArray(),
                     LabsResult = institutions.Select(x => new { Id = x.ID.ToString(), x.Name }).ToList(),
                     SubTypeByLabRes = GetSubTypebyLab(user.InstitutionID),

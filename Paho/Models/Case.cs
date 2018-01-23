@@ -689,7 +689,11 @@ namespace Paho.Models
     {
         public long ID { get; set; }
         public long? InstitutionFromID { get; set; }
+        //[Key]
+        //[Column(Order = 1)]
         public long? InstitutionToID { get; set; }
+        //[Key]
+        //[Column(Order = 2)]
         public long? InstitutionParentID { get; set; }
         [DisplayName("Flujo:")]
         public int Priority { get; set; }
@@ -1025,8 +1029,9 @@ namespace Paho.Models
     public class CaseLabTest : CaseBase
     {
         public int ID { get; set; }
-        public int FluCaseID { get; set; }
         public long? LabID { get; set; }
+        public int FluCaseID { get; set; }
+        //public long? LabID { get; set; }
         public bool? Processed { get; set; }
         public int? SampleNumber { get; set; }
         public int? VirusTypeID { get; set; }
@@ -1080,10 +1085,12 @@ namespace Paho.Models
 
         [ForeignKey("LabID")]
         public virtual Institution Institution { get; set; }
-        //[ForeignKey("TestResultID")]
-        ////[InverseProperty("value")]
-        //public virtual CatTestResult CatTestResultSamples { get; set; }
-        //public virtual TestResult TestResult { get; set; }
+
+        //[ForeignKey("InstitutionConfiguration")]
+        //[Column(Order = 3)]
+        //public long? HospitalID { get; set; }
+
+        //public InstitutionConfiguration InstitutionConfiguration { get; set; }
     }
 
     public class CatPopulationInstitution : CaseBase
