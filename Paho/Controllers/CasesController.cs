@@ -689,11 +689,11 @@ namespace Paho.Controllers
                      region_salud = region_salud.FirstOrDefault(),
                      region_pais = region_pais.FirstOrDefault(),
                      selectedServiceId = (db.Institutions.Where(j => j.ID == flucase.HospitalID).FirstOrDefault().AccessLevel == (AccessLevel)6) ? flucase.HospitalID : 0,
-                     Ocupacion = flucase.Ocupacion,                             //#### CAFQ
+                     /*Ocupacion = flucase.Ocupacion,                             //#### CAFQ
                      TrabajoDirecc = flucase.TrabajoDirecc,                     //#### CAFQ
                      TrabajoEstablec = flucase.TrabajoEstablec,                 //#### CAFQ
                      ContactoAnimVivos = flucase.ContactoAnimVivos,             //#### CAFQ
-                     OcupacMercAnimVivos = flucase.OcupacMercAnimVivos          //#### CAFQ
+                     OcupacMercAnimVivos = flucase.OcupacMercAnimVivos          //#### CAFQ*/
                  };
             return Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -740,12 +740,12 @@ namespace Paho.Controllers
             int HospitalId,
             int? nativepeople,
             int? nationality,
-            DateTime DateFeverDummy,
-            int? Ocupacion,                         //#### CAFQ
+            DateTime DateFeverDummy
+            /*int? Ocupacion,                         //#### CAFQ
             string TrabajoDirecc,                   //#### CAFQ
             string TrabajoEstablec,                 //#### CAFQ
             int? ContactoAnimVivos,                 //#### CAFQ
-            int? OcupacMercAnimVivos                //#### CAFQ
+            int? OcupacMercAnimVivos                //#### CAFQ*/
             )
         {
             FluCase flucase;
@@ -799,11 +799,11 @@ namespace Paho.Controllers
             flucase.RegDate = RegDate;
             flucase.nativepeople = nativepeople;
             flucase.nationality = nationality;
-            flucase.Ocupacion = Ocupacion;                                      //#### CAFQ 
+            /*flucase.Ocupacion = Ocupacion;                                      //#### CAFQ 
             flucase.TrabajoDirecc = TrabajoDirecc;                              //#### CAFQ 
             flucase.TrabajoEstablec = TrabajoEstablec;                          //#### CAFQ
             flucase.ContactoAnimVivos = ContactoAnimVivos;                      //#### CAFQ
-            flucase.OcupacMercAnimVivos = OcupacMercAnimVivos;                  //#### CAFQ
+            flucase.OcupacMercAnimVivos = OcupacMercAnimVivos;                  //#### CAFQ*/
             flucase.InsertDate = DateTime.Now;
             //flucase.UserID = User.Identity.Name;
             try
@@ -897,6 +897,16 @@ namespace Paho.Controllers
                     AntiViralType = flucase.AntiViralType,
                     OseltaDose = flucase.OseltaDose,
                     AntiViralDose = flucase.AntiViralDose,
+
+                    Ocupacion = flucase.Ocupacion,                             //#### CAFQ
+                    TrabajoDirecc = flucase.TrabajoDirecc,                     //#### CAFQ
+                    TrabajoEstablec = flucase.TrabajoEstablec,                 //#### CAFQ
+                    ContactoAnimVivos = flucase.ContactoAnimVivos,             //#### CAFQ
+                    OcupacMercAnimVivos = flucase.OcupacMercAnimVivos,          //#### CAFQ
+
+                    InfeccHospit = flucase.InfeccHospit,                                //#### CAFQ
+                    InfeccHospitFecha = flucase.InfeccHospitFecha,                      //#### CAFQ
+
                     ViajePrevSintoma = flucase.ViajePrevSintoma,                //#### CAFQ
                     DestPrevSintoma1 = flucase.DestPrevSintoma1,                //#### CAFQ
                     DestFechaLlegada1 = flucase.DestFechaLlegada1,                //#### CAFQ
@@ -999,6 +1009,16 @@ namespace Paho.Controllers
                 string AntiViralDose,
                 int? RiskFactors,
                 int? Comorbidities,
+
+                int? Ocupacion,                         //#### CAFQ
+                string TrabajoDirecc,                   //#### CAFQ
+                string TrabajoEstablec,                 //#### CAFQ
+                int? ContactoAnimVivos,                 //#### CAFQ
+                int? OcupacMercAnimVivos,                //#### CAFQ
+
+                int? InfeccHospit,                              //#### CAFQ
+                DateTime? InfeccHospitFecha,                    //#### CAFQ
+
                 int? ViajePrevSintoma,              //#### CAFQ
                 string DestPrevSintoma1,             //#### CAFQ
                 DateTime? DestFechaLlegada1,          //#### CAFQ
@@ -1088,6 +1108,15 @@ namespace Paho.Controllers
             flucase.AntiViralDose = AntiViralDose;
             if (AntiViral != null)  flucase.RiskFactors = (RiskFactor)Enum.Parse(typeof(RiskFactor), RiskFactors.ToString());
             flucase.Comorbidities = Comorbidities;
+
+            flucase.Ocupacion = Ocupacion;                                      //#### CAFQ 
+            flucase.TrabajoDirecc = TrabajoDirecc;                              //#### CAFQ 
+            flucase.TrabajoEstablec = TrabajoEstablec;                          //#### CAFQ
+            flucase.ContactoAnimVivos = ContactoAnimVivos;                      //#### CAFQ
+            flucase.OcupacMercAnimVivos = OcupacMercAnimVivos;                  //#### CAFQ
+
+            flucase.InfeccHospit = InfeccHospit;                    //#### CAFQ
+            flucase.InfeccHospitFecha = InfeccHospitFecha;          //#### CAFQ
 
             flucase.ViajePrevSintoma = ViajePrevSintoma;        //#### CAFQ
             flucase.DestPrevSintoma1 = DestPrevSintoma1;        //#### CAFQ
@@ -1251,8 +1280,8 @@ namespace Paho.Controllers
                     PerdidaPeso = flucase.PerdidaPeso,                                  //#### CAFQ
                     Otro = flucase.Otro,                                                //#### CAFQ
                     OtroDesc = flucase.OtroDesc,                                        //#### CAFQ
-                    InfeccHospit = flucase.InfeccHospit,                                //#### CAFQ
-                    InfeccHospitFecha = flucase.InfeccHospitFecha,                      //#### CAFQ
+                    /*InfeccHospit = flucase.InfeccHospit,                                //#### CAFQ
+                    InfeccHospitFecha = flucase.InfeccHospitFecha,                      //#### CAFQ*/
 
                     DifResp = flucase.DifResp,
                     MedSatOxig = flucase.MedSatOxig,
@@ -1363,8 +1392,8 @@ namespace Paho.Controllers
                 bool? PerdidaPeso,                              //#### CAFQ
                 bool? Otro,                                     //#### CAFQ
                 string OtroDesc,                                //#### CAFQ
-                int? InfeccHospit,                              //#### CAFQ
-                DateTime? InfeccHospitFecha,                    //#### CAFQ
+                /*int? InfeccHospit,                              //#### CAFQ
+                DateTime? InfeccHospitFecha,                    //#### CAFQ*/
                 bool? DifResp,
                 bool? MedSatOxig,
                 int? SatOxigPor,
@@ -1484,8 +1513,8 @@ namespace Paho.Controllers
             flucase.PerdidaPeso = PerdidaPeso;                      //#### CAFQ
             flucase.Otro = Otro;                                    //#### CAFQ
             flucase.OtroDesc = OtroDesc;                            //#### CAFQ
-            flucase.InfeccHospit = InfeccHospit;                    //#### CAFQ
-            flucase.InfeccHospitFecha = InfeccHospitFecha;          //#### CAFQ
+            /*flucase.InfeccHospit = InfeccHospit;                    //#### CAFQ
+            flucase.InfeccHospitFecha = InfeccHospitFecha;          //#### CAFQ*/
             flucase.DifResp = DifResp;
             flucase.MedSatOxig = MedSatOxig;
             flucase.SatOxigPor = SatOxigPor;

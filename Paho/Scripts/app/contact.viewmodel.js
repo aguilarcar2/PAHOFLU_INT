@@ -28,8 +28,14 @@
     self.flow_open_always = ko.observable(false); // Esta variable es solo para los laboratorios que estan marcados en la tabla de configuracion de flujo
 
     self.SavePrev_var = ko.observable(true);
-    self.IsSurv = ko.observable("");
-    self.SurvInusual = ko.observable(false);
+    self.IsSurv = ko.observable("");                                //#### CAFQ
+    self.SurvInusual = ko.observable(false);                        //#### CAFQ
+    self.SurvInusual.subscribe(function (inusualOK) {               //#### CAFQ
+        if (!inusualOK) {
+            app.Views.Risk.ResetRiskInusual();
+            app.Views.Hospital.ResetHospitalInusual();
+        }
+    });
     self.servicesArr = ko.observableArray(institutions);
     self.selectedServiceId = ko.observable("");
     self.Brote = ko.observable(false);
@@ -73,11 +79,11 @@
     self.selectedNationalityID = ko.observable("");
     self.selectedNativepeopleID = ko.observable("");
 
-    self.selectedOccupationId = ko.observable();            //**** CAFQ
+    /*self.selectedOccupationId = ko.observable();            //**** CAFQ
     self.TrabajoDirecc = ko.observable("");                 //**** CAFQ 
     self.TrabajoEstablec = ko.observable("");                 //**** CAFQ
     self.ContactoAnimVivos = ko.observable();                 //**** CAFQ
-    self.OcupacMercAnimVivos = ko.observable();                 //**** CAFQ
+    self.OcupacMercAnimVivos = ko.observable();                 //**** CAFQ*/
 
     self.ShowOnlyAdult = ko.computed(function () {
             return (self.AMeasure() == "Month" || self.AMeasure() == "Day" || (self.AMeasure() == "Year" && self.Age() < 15)) ? false : true;
@@ -726,11 +732,11 @@
                 $("button[id^='Siguiente']").attr("disabled", false);
                 $("button[id^='Atras']").attr("disabled", false);
                 
-                self.selectedOccupationId(data.Ocupacion);                         //#### CAFQ
+                /*self.selectedOccupationId(data.Ocupacion);                         //#### CAFQ
                 self.TrabajoDirecc(data.TrabajoDirecc);                         //#### CAFQ
                 self.TrabajoEstablec(data.TrabajoEstablec);                       //#### CAFQ
                 self.ContactoAnimVivos(data.ContactoAnimVivos);                       //#### CAFQ
-                self.OcupacMercAnimVivos(data.OcupacMercAnimVivos);                       //#### CAFQ
+                self.OcupacMercAnimVivos(data.OcupacMercAnimVivos);                       //#### CAFQ*/
 
             })
             .fail(function(jqXHR, textStatus, errorThrown) {
@@ -784,11 +790,11 @@
                 nationality: self.selectedNationalityID(),
                 NoExpediente: self.NoExpediente() == null ? "" : self.NoExpediente().toLocaleUpperCase(),
                 DateFeverDummy: moment(date_fever_dummy).format(date_format_ISO),
-                Ocupacion: self.selectedOccupationId(),                                //#### CAFQ 
+                /*Ocupacion: self.selectedOccupationId(),                                //#### CAFQ 
                 TrabajoDirecc: self.TrabajoDirecc(),                                //#### CAFQ 
                 TrabajoEstablec: self.TrabajoEstablec(),                                //#### CAFQ
                 ContactoAnimVivos: self.ContactoAnimVivos(),                        //#### CAFQ
-                OcupacMercAnimVivos: self.OcupacMercAnimVivos()                     //#### CAFQ
+                OcupacMercAnimVivos: self.OcupacMercAnimVivos()                     //#### CAFQ*/
             },
             function (data) {
                 if (typeof data != "number") {

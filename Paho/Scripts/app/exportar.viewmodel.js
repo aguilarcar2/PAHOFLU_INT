@@ -45,7 +45,9 @@
     self.SE =  ko.observable("");
     self.StartDate = ko.observable(null);
     self.EndDate = ko.observable(null);
-    self.SurvInusual = ko.observable("2");      // Todos        //#### CAFQ
+    self.Surv = ko.observable("");
+    self.SurvInusual = ko.observable(false);
+    //self.SurvInusual = ko.observable("2");      // Todos        //#### CAFQ
 
     self.validate = function (nextStep) {
         var msg = "";
@@ -86,7 +88,8 @@
     self.exportar = function () {
         //var namevalues = { Report: self.Report(), CountryID: self.selectedCountryId() ? self.selectedCountryId() : CountryID, HospitalID: self.selectedInstitutionId(), Year: self.Year(), Month: self.Month(), SE: self.SE(), StartDate: self.StartDate() ? moment(self.StartDate()).format(date_format_moment) : null, EndDate: self.EndDate() ? moment(self.EndDate()).format(date_format_moment) : null, ReportCountry: self.selectedReportCountryId(), RegionID: self.selectedRegionId(), YearFrom: self.YearFrom(), YearTo: self.YearTo() }
         //#### CAFQ
-        var namevalues = { Report: self.Report(), CountryID: self.selectedCountryId() ? self.selectedCountryId() : CountryID, HospitalID: self.selectedInstitutionId(), Year: self.Year(), Month: self.Month(), SE: self.SE(), StartDate: self.StartDate() ? moment(self.StartDate()).format(date_format_moment) : null, EndDate: self.EndDate() ? moment(self.EndDate()).format(date_format_moment) : null, ReportCountry: self.selectedReportCountryId(), RegionID: self.selectedRegionId(), YearFrom: self.YearFrom(), YearTo: self.YearTo(), Inusual: self.SurvInusual() }
+        var namevalues = { Report: self.Report(), CountryID: self.selectedCountryId() ? self.selectedCountryId() : CountryID, HospitalID: self.selectedInstitutionId(), Year: self.Year(), Month: self.Month(), SE: self.SE(), StartDate: self.StartDate() ? moment(self.StartDate()).format(date_format_moment) : null, EndDate: self.EndDate() ? moment(self.EndDate()).format(date_format_moment) : null, ReportCountry: self.selectedReportCountryId(), RegionID: self.selectedRegionId(), YearFrom: self.YearFrom(),
+            YearTo: self.YearTo(), Surv: self.Surv(), Inusual: self.SurvInusual() }            //#### CAFQ
         if(self.validate() == true)
             window.open(app.dataModel.getExportar + "?" + $.param(namevalues, true), "_blank");
     };

@@ -749,11 +749,11 @@
     self.IsOtro = ko.computed(function () {               //**** CAFQ
         return (self.Otro() == true) ? true : false;
     }, self);                                             //**** CAFQ
-    self.InfeccHospitFecha = ko.observable("");                                             //**** CAFQ
+    /*self.InfeccHospitFecha = ko.observable("");                                             //**** CAFQ
     self.InfeccHospit = ko.observable("");                                          //**** CAFQ     Radiobutton
     self.IsInfeHospPrev = ko.computed(function () {               //**** CAFQ
         return (self.InfeccHospit() == "1") ? true : false;
-    }, self);                                             //**** CAFQ
+    }, self);                                             //**** CAFQ*/
 
     self.CaseStatus = ko.observable("");
     self.CaseComply = ko.observable("");
@@ -899,8 +899,46 @@
        self.CaseComply("");
        self.CloseDate(null);
        self.ObservationCase("");
+       self.ResetHospitalInusual();         //#### CAFQ
        self.hasReset(false);
     };
+
+    self.ResetHospitalInusual = function () {
+        //alert('En ResetHospitalInusual3');
+        self.Temperatura("");                                           //**** CAFQ
+        self.Mialgia("");                                               //**** CAFQ
+        self.Erupcion("");                                              //**** CAFQ
+        self.ErupcionLocaliz("");                                       //**** CAFQ
+        self.DolorMuscular("");                                         //**** CAFQ
+        self.DolorMuscularLocaliz("");                                  //**** CAFQ
+        self.Disnea("");                                                //**** CAFQ
+        self.SintomHemorrag("");                                             //**** CAFQ
+        self.SintomHemorragDesc("");                                             //**** CAFQ
+        self.AlteracEstadoMental("");                                             //**** CAFQ
+        self.Altralgia("");                                             //**** CAFQ
+        self.Escalofrios("");                                             //**** CAFQ
+        self.Conjuntivitis("");                                             //**** CAFQ
+        self.Rinitis("");                                             //**** CAFQ
+        self.DiarreaAguda("");                                             //**** CAFQ
+        self.DiarreaCronica("");                                             //**** CAFQ
+        self.Mareo("");                                             //**** CAFQ
+        self.FalloDesarrollo("");                                             //**** CAFQ
+        self.Hepatomegalea("");                                             //**** CAFQ
+        self.Ictericia("");                                             //**** CAFQ
+        self.Linfadenopatia("");                                             //**** CAFQ
+        self.Malestar("");                                             //**** CAFQ
+        self.Nauseas("");                                             //**** CAFQ
+        self.RigidezNuca("");                                             //**** CAFQ
+        self.Paralisis("");                                             //**** CAFQ
+        self.RespiratSuperior("");                                             //**** CAFQ
+        self.RespiratInferior("");                                             //**** CAFQ
+        self.DolorRetrorobitario("");                                             //**** CAFQ
+        self.PerdidaPeso("");                                             //**** CAFQ
+        self.Otro("");                                             //**** CAFQ
+        self.OtroDesc("");                                             //**** CAFQ
+        /*self.InfeccHospitFecha("");                                             //**** CAFQ
+        self.InfeccHospit("");                                          //**** CAFQ     Radiobutton*/
+    }
 
     self.validate = function (nextStep) {
         var msg = "";
@@ -1178,8 +1216,8 @@
                 self.PerdidaPeso(data.PerdidaPeso);                    //#### CAFQ
                 self.Otro(data.Otro);                    //#### CAFQ
                 self.OtroDesc(data.OtroDesc);                    //#### CAFQ
-                self.InfeccHospit(data.InfeccHospit);                    //#### CAFQ
-                self.InfeccHospitFecha(data.InfeccHospitFecha);                    //#### CAFQ
+                /*self.InfeccHospit(data.InfeccHospit);                    //#### CAFQ
+                self.InfeccHospitFecha(data.InfeccHospitFecha);                    //#### CAFQ*/
 
                 self.DifResp(data.DifResp);
                 self.MedSatOxig(data.MedSatOxig);
@@ -1256,7 +1294,7 @@
         date_sample3 = parseDate($("#SampleDate3").val(), date_format_);
         date_ship3 = parseDate($("#ShipDate3").val(), date_format_);
         date_close_case = parseDate($("#CloseDate").val(), date_format_);
-        date_InfeccHospitFecha = parseDate($("#InfeccHospitFecha").val(), date_format_);        //#### CAFQ
+        //date_InfeccHospitFecha = parseDate($("#InfeccHospitFecha").val(), date_format_);        //#### CAFQ
 
         // falta la fecha de cierre de caso
 
@@ -1345,8 +1383,8 @@
                 PerdidaPeso: self.PerdidaPeso(),                  //#### CAFQ
                 Otro: self.Otro(),                  //#### CAFQ
                 OtroDesc: self.OtroDesc(),                  //#### CAFQ
-                InfeccHospit: self.InfeccHospit(),                  //#### CAFQ
-                InfeccHospitFecha: $("#InfeccHospitFecha").val() == "" ? null : moment(date_InfeccHospitFecha).format(date_format_ISO),    //#### CAFQ
+                /*InfeccHospit: self.InfeccHospit(),                  //#### CAFQ
+                InfeccHospitFecha: $("#InfeccHospitFecha").val() == "" ? null : moment(date_InfeccHospitFecha).format(date_format_ISO),    //#### CAFQ*/
                 DifResp: self.DifResp() != true ? false : self.DifResp(),
                 MedSatOxig: self.MedSatOxig(),
                 SatOxigPor: self.SatOxigPor(),

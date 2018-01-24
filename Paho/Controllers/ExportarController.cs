@@ -318,12 +318,12 @@ namespace Paho.Controllers
 
         [HttpGet]
         //public ActionResult GetExcel(string Report, int CountryID, int? RegionID, int? HospitalID, int? Year, int? Month, int? SE, DateTime? StartDate, DateTime? EndDate, int? ReportCountry, int? YearFrom, int? YearTo)
-        public ActionResult GetExcel(string Report, int CountryID, int? RegionID, int? HospitalID, int? Year, int? Month, int? SE, DateTime? StartDate, DateTime? EndDate, int? ReportCountry, int? YearFrom, int? YearTo, int? Inusual)        //#### CAFQ
+        public ActionResult GetExcel(string Report, int CountryID, int? RegionID, int? HospitalID, int? Year, int? Month, int? SE, DateTime? StartDate, DateTime? EndDate, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? Inusual)        //#### CAFQ
         {
             try
             {
                 var ms = new MemoryStream();
-                if (Inusual == 2) { Inusual = null; }       // Inusitado: Todos
+                //if (Inusual == 2) { Inusual = null; }       // Inusitado: Todos
                 var user = UserManager.FindById(User.Identity.GetUserId());
                 int CountryID_ = (CountryID >= 0) ? CountryID : (user.Institution.CountryID ?? 0);
                 //int? HospitalID_ = (user.Institution.Father_ID > 0 || user.Institution.Father_ID == null) ? HospitalID : Convert.ToInt32(user.Institution.ID);
@@ -361,6 +361,9 @@ namespace Paho.Controllers
                     case "I1":
                         templateToUse = "IndicadoresDesempenio";            //#### CAFQ en web.config crear la variable 
                         break;
+                    case "RE1":
+                        templateToUse = "REVELAC-i";                        //#### CAFQ en web.config crear la variable 
+                        break;
                     default:
                         templateToUse = "SariTemplate";
                         break;
@@ -397,10 +400,12 @@ namespace Paho.Controllers
 
                         if (reportTemplate == "I1")      //#### CAFQ
                             //AppendDataToExcel_IndDes(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo);
-                            AppendDataToExcel_IndDes(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Inusual);        //#### CAFQ
+                            AppendDataToExcel_IndDes(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual);        //#### CAFQ
+                        else if (reportTemplate == "RE1")
+                            AppendDataToExcel_REVELAC(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual);        //#### CAFQ
                         else
                             //AppendDataToExcel(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo);
-                            AppendDataToExcel(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Inusual);        //#### CAFQ
+                            AppendDataToExcel(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual);        //#### CAFQ
 
                         excelPackage.SaveAs(ms);
                     }
@@ -414,6 +419,8 @@ namespace Paho.Controllers
                  string nombFile = reportCountry.description == "" ? "Exportable_" : reportCountry.description.ToString().Replace("%", "_").Replace(" ", "_") + "_";            //#### CAFQ
                 if (reportTemplate == "I1")
                     nombFile = "IndicDesempenio_";
+                if (reportTemplate == "RE1")
+                    nombFile = "REVELAC-i_";
 
                 return new FileStreamResult(ms, "application/xlsx")
                 {
@@ -430,7 +437,7 @@ namespace Paho.Controllers
         }
 
         //private static void AppendDataToExcel(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo)
-        private static void AppendDataToExcel(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? SurvInusual)               //#### CAFQ
+        private static void AppendDataToExcel(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual)               //#### CAFQ
         {
             var excelWorksheet = excelWorkBook.Worksheets[sheet];
             var row = startRow;
@@ -475,6 +482,7 @@ namespace Paho.Controllers
                     command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
                     command.Parameters.Add("@yearFrom", SqlDbType.Int).Value = YearFrom;
                     command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
+                    command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;                        //#### CAFQ
                     command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;          //#### CAFQ
 
                     con.Open();
@@ -567,6 +575,7 @@ namespace Paho.Controllers
                             command.Parameters.Add("@Virus_type", SqlDbType.Int).Value = virustype;
                             command.Parameters.Add("@yearFrom", SqlDbType.Int).Value = YearFrom;
                             command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
+                            command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;                        //#### CAFQ
                             command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;          //#### CAFQ
                             var excelWorksheet2 = excelWorkBook.Worksheets[i];
 
@@ -703,6 +712,7 @@ namespace Paho.Controllers
                                 command2.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
                                 command.Parameters.Add("@yearFrom", SqlDbType.Int).Value = YearFrom;
                                 command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
+                                command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;                        //#### CAFQ
                                 command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;          //#### CAFQ
 
                                 var con2 = new SqlConnection(consString);
@@ -834,6 +844,7 @@ namespace Paho.Controllers
                         command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
                         command.Parameters.Add("@yearFrom", SqlDbType.Int).Value = YearFrom;
                         command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
+                        command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;                        //#### CAFQ
                         command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;          //#### CAFQ
                         con.Open();
 
@@ -1373,8 +1384,151 @@ namespace Paho.Controllers
             return Json(reportsPerCountry, JsonRequestBehavior.AllowGet);
         }*/
 
+        private static void AppendDataToExcel_REVELAC(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string reportTemplate, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual)         //#### CAFQ
+        {
+            ExcelWorksheet excelWorksheet1 = excelWorkBook.Worksheets["DatosReporte"];
+            var row = startRow;
+            var column = startColumn;
+            var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+            using (var con = new SqlConnection(consString))
+            {
+                using (var command = new SqlCommand("REVELAC_i", con) { CommandType = CommandType.StoredProcedure, CommandTimeout = 600 })
+                {
+                    command.Parameters.Clear();
+                    command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
+                    command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
+                    command.Parameters.Add("@Languaje", SqlDbType.Text).Value = languaje_;
+                    command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
+                    command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
+                    command.Parameters.Add("@Mes_", SqlDbType.Int).Value = month;
+                    command.Parameters.Add("@SE", SqlDbType.Int).Value = se;
+                    command.Parameters.Add("@yearFrom", SqlDbType.Int).Value = YearFrom;
+                    command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
+                    command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
+                    command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
+                    command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;
+                    command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;
+
+                    con.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        int nFila = 0;
+                        while (reader.Read())
+                        {
+
+                            excelWorksheet1.Cells[row + nFila, 1].Value = reader.GetValue(0);       // ID
+                            excelWorksheet1.Cells[row + nFila, 2].Value = reader.GetValue(5);       // Sexo
+                            excelWorksheet1.Cells[row + nFila, 3].Value = reader.GetValue(8);       // Edad en anios
+                            excelWorksheet1.Cells[row + nFila, 4].Value = reader.GetValue(9);       //
+                            excelWorksheet1.Cells[row + nFila, 5].Value = reader.GetValue(10);      //
+                            excelWorksheet1.Cells[row + nFila, 6].Value = reader.GetValue(11);      //
+                            excelWorksheet1.Cells[row + nFila, 7].Value = reader.GetValue(14);      //
+                            excelWorksheet1.Cells[row + nFila, 8].Value = reader.GetValue(15);      //
+                            excelWorksheet1.Cells[row + nFila, 9].Value = reader.GetValue(16);      //
+                            excelWorksheet1.Cells[row + nFila, 10].Value = reader.GetValue(17);     //
+                            excelWorksheet1.Cells[row + nFila, 11].Value = reader.GetValue(18);     //
+                            excelWorksheet1.Cells[row + nFila, 12].Value = reader.GetValue(19);     //
+                            excelWorksheet1.Cells[row + nFila, 13].Value = reader.GetValue(21);     // FechaTomaMuestra
+                            excelWorksheet1.Cells[row + nFila, 14].Value = reader.GetValue(24);     // ResultadoRT-PCR
+                            excelWorksheet1.Cells[row + nFila, 15].Value = reader.GetValue(25);     // Tipo Virus
+
+                            excelWorksheet1.Cells[row + nFila, 16].Value = reader.GetValue(26);     // Subtipo virus
+                            excelWorksheet1.Cells[row + nFila, 17].Value = reader.GetValue(27);     // Linaje virus
+                            excelWorksheet1.Cells[row + nFila, 18].Value = reader.GetValue(28);     // Embarazada
+                            excelWorksheet1.Cells[row + nFila, 19].Value = reader.GetValue(29);     // Semana embarazo
+                            excelWorksheet1.Cells[row + nFila, 20].Value = reader.GetValue(30);     // Trimestre vacunacion
+                            excelWorksheet1.Cells[row + nFila, 21].Value = reader.GetValue(31);     // Fecha ultima menstruac.
+                            excelWorksheet1.Cells[row + nFila, 22].Value = reader.GetValue(32);     // Estado
+                            excelWorksheet1.Cells[row + nFila, 23].Value = reader.GetValue(33);     // Region
+                            excelWorksheet1.Cells[row + nFila, 24].Value = reader.GetValue(34);     // Hospital
+                            excelWorksheet1.Cells[row + nFila, 25].Value = reader.GetValue(35);     // Tipo vigilancia
+                            excelWorksheet1.Cells[row + nFila, 26].Value = reader.GetValue(36);     // Tipo vacuna
+                            excelWorksheet1.Cells[row + nFila, 27].Value = reader.GetValue(37);     // Marca vacuna
+                            excelWorksheet1.Cells[row + nFila, 28].Value = reader.GetValue(38);     // Fecha ingreso
+                            excelWorksheet1.Cells[row + nFila, 29].Value = reader.GetValue(39);     // Fecha de egreso
+                            excelWorksheet1.Cells[row + nFila, 30].Value = reader.GetValue(40);     // UCI
+
+                            excelWorksheet1.Cells[row + nFila, 31].Value = reader.GetValue(41);     // Condicion de egreso
+                            excelWorksheet1.Cells[row + nFila, 32].Value = "AGREGAR_AL_SELECT";     // Tipo de antiviral
+                            excelWorksheet1.Cells[row + nFila, 33].Value = reader.GetValue(42);     // 1ra vacunacion niños 9 años
+                            excelWorksheet1.Cells[row + nFila, 34].Value = reader.GetValue(43);     // Vacunacion temporada previa
+                            excelWorksheet1.Cells[row + nFila, 35].Value = reader.GetValue(44);     // Vacunacion anterior temporada previa
+                            excelWorksheet1.Cells[row + nFila, 36].Value = reader.GetValue(45);     // Vacunacion neumococos
+                            excelWorksheet1.Cells[row + nFila, 37].Value = reader.GetValue(46);     // Otros virus
+                            excelWorksheet1.Cells[row + nFila, 38].Value = reader.GetValue(47);     // Otros virus tipo
+                            var xxx = reader.GetValue(48);
+                            if (reader.GetValue(48) != null && reader.GetValue(48) != DBNull.Value)
+                                excelWorksheet1.Cells[row + nFila, 39].Value = Convert.ToInt32(reader.GetValue(48));     // Fiebre
+                            xxx = reader.GetValue(49);
+                            if (reader.GetValue(49) != null && reader.GetValue(49) != DBNull.Value)
+                                excelWorksheet1.Cells[row + nFila, 40].Value = Convert.ToInt32(reader.GetValue(49));     // Tos
+                            xxx = reader.GetValue(50);
+                            if (reader.GetValue(50) != null && reader.GetValue(50) != DBNull.Value)
+                                excelWorksheet1.Cells[row + nFila, 41].Value = Convert.ToInt32(reader.GetValue(50));     // Dolor de garganta
+                            xxx = reader.GetValue(51);
+                            if (reader.GetValue(51) != null && reader.GetValue(51) != DBNull.Value)
+                                excelWorksheet1.Cells[row + nFila, 42].Value = Convert.ToInt32(reader.GetValue(51));     // Dificultatd respiratoria
+                            xxx = reader.GetValue(52);
+                            if (reader.GetValue(52) != null && reader.GetValue(52) != DBNull.Value)
+                                excelWorksheet1.Cells[row + nFila, 43].Value = Convert.ToInt32(reader.GetValue(52));     // Acortamiento de la respiracion
+                            excelWorksheet1.Cells[row + nFila, 44].Value = reader.GetValue(53);     // Diagnostico egreso
+                            excelWorksheet1.Cells[row + nFila, 45].Value = reader.GetValue(54);     // Diagnostico ingreso
+                            excelWorksheet1.Cells[row + nFila, 46].Value = "Calculado Asma + Bronquitis";     // Enfermedad Respiratoria (asma y/o Bronquitis cronica)
+                            if (reader.GetValue(55) != null && reader.GetValue(55) != DBNull.Value)
+                                excelWorksheet1.Cells[row + nFila, 47].Value = Convert.ToInt32(reader.GetValue(55));     // Asma
+                            if (reader.GetValue(56) != null && reader.GetValue(56) != DBNull.Value)
+                                excelWorksheet1.Cells[row + nFila, 48].Value = Convert.ToInt32(reader.GetValue(56));     // Bronquitis cronica o enfisema
+                            excelWorksheet1.Cells[row + nFila, 49].Value = reader.GetValue(57);     // Otras enfermedades respiratorias
+                            if (reader.GetValue(58) != null && reader.GetValue(58) != DBNull.Value)
+                                excelWorksheet1.Cells[row + nFila, 50].Value = Convert.ToInt32(reader.GetValue(58));     // Enfermedades cardiacas
+                            excelWorksheet1.Cells[row + nFila, 51].Value = reader.GetValue(59);     // Ateroesclerosis
+                            excelWorksheet1.Cells[row + nFila, 52].Value = reader.GetValue(60);     // Cardiomiopatia
+                            if (reader.GetValue(61) != null && reader.GetValue(61) != DBNull.Value)
+                                excelWorksheet1.Cells[row + nFila, 53].Value = Convert.ToInt32(reader.GetValue(61));     // Desordenes del neurodesarrollo
+                            if (reader.GetValue(62) != null && reader.GetValue(62) != DBNull.Value)
+                                excelWorksheet1.Cells[row + nFila, 54].Value = Convert.ToInt32(reader.GetValue(62));     // Paralisis cerebral
+                            excelWorksheet1.Cells[row + nFila, 55].Value = reader.GetValue(63);     // Distrofias musculares
+                            excelWorksheet1.Cells[row + nFila, 56].Value = reader.GetValue(64);     // Desordenes cogniticos
+                            excelWorksheet1.Cells[row + nFila, 57].Value = reader.GetValue(65);     // Desordenes metabolicos
+
+                            if (reader.GetValue(66) != null && reader.GetValue(66) != DBNull.Value)
+                                excelWorksheet1.Cells[row + nFila, 58].Value = Convert.ToInt32(reader.GetValue(66));     // Diabetes
+                            if (reader.GetValue(67) != null && reader.GetValue(67) != DBNull.Value)
+                                excelWorksheet1.Cells[row + nFila, 59].Value = Convert.ToInt32(reader.GetValue(67));     // Desordenes del sistema inmune
+                            excelWorksheet1.Cells[row + nFila, 60].Value = reader.GetValue(68);     // VIH/SIDA
+                            excelWorksheet1.Cells[row + nFila, 61].Value = reader.GetValue(69);     // Quimioterapia
+                            if (reader.GetValue(70) != null && reader.GetValue(70) != DBNull.Value)
+                                excelWorksheet1.Cells[row + nFila, 62].Value = Convert.ToInt32(reader.GetValue(70));     // Pacientes trasplantados tomando inmunosupresores
+                            excelWorksheet1.Cells[row + nFila, 63].Value = reader.GetValue(71);     // Uso cronico corticoesteroides
+                            if (reader.GetValue(72) != null && reader.GetValue(72) != DBNull.Value)
+                                excelWorksheet1.Cells[row + nFila, 64].Value = Convert.ToInt32(reader.GetValue(72));     // Insuficiencia renal cronica
+                            if (reader.GetValue(73) != null && reader.GetValue(73) != DBNull.Value)
+                                excelWorksheet1.Cells[row + nFila, 65].Value = Convert.ToInt32(reader.GetValue(73));     // Enfermedad hepatica cronica
+                            excelWorksheet1.Cells[row + nFila, 66].Value = reader.GetValue(74);     // Obesidad morbida
+                            excelWorksheet1.Cells[row + nFila, 67].Value = reader.GetValue(75);     // Enfermedad hematologica
+                            excelWorksheet1.Cells[row + nFila, 68].Value = reader.GetValue(76);     // Anemia falciforme
+                            excelWorksheet1.Cells[row + nFila, 69].Value = reader.GetValue(77);     // Talasemia mayor
+                            excelWorksheet1.Cells[row + nFila, 70].Value = reader.GetValue(78);     // Terapia cronica aspirina
+                            if (reader.GetValue(79) != null && reader.GetValue(79) != DBNull.Value)
+                                excelWorksheet1.Cells[row + nFila, 71].Value = Convert.ToInt32(reader.GetValue(79));     // Tabaquismo
+                            if (reader.GetValue(80) != null && reader.GetValue(80) != DBNull.Value)
+                                excelWorksheet1.Cells[row + nFila, 72].Value = Convert.ToInt32(reader.GetValue(80));     // Sindrome down
+                            if (reader.GetValue(81) != null && reader.GetValue(81) != DBNull.Value)
+                                excelWorksheet1.Cells[row + nFila, 73].Value = Convert.ToInt32(reader.GetValue(81));     // Indigena
+
+                            ++nFila;
+                        }
+                    }
+
+                    command.Parameters.Clear();
+                    con.Close();
+                }
+            }
+        }
+
         //private static void AppendDataToExcel_IndDes(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string reportTemplate, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo)
-        private static void AppendDataToExcel_IndDes(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string reportTemplate, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? SurvInusual)         //#### CAFQ
+        private static void AppendDataToExcel_IndDes(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string reportTemplate, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual)         //#### CAFQ
         {
             ExcelWorksheet excelWorksheet1 = excelWorkBook.Worksheets["DatosPie"];
             //var excelWorksheet = excelWorkBook.Worksheets[sheet];
@@ -1397,20 +1551,20 @@ namespace Paho.Controllers
             decimal[] nDato12 = new decimal[] { 0 };
             decimal[] nDato14 = new decimal[] { 0 };
 
-            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, 1, SurvInusual, 1, nDato1);
-            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, 1, SurvInusual, 2, nDato2);
-            //recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, 1, SurvInusual, 3, nDato1, aDato3);
-            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, 1, SurvInusual, 4, nDato4);
-            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, 1, SurvInusual, 5, nDato5);
-            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, 1, SurvInusual, 6, nDato6);
-            //recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, 1, SurvInusual, 7, nDato1, aDato7);
-            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, 1, SurvInusual, 8, nDato8);
+            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, 1, nDato1);
+            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, 2, nDato2);
+            //recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, 3, nDato1, aDato3);
+            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, 4, nDato4);
+            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, 5, nDato5);
+            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, 6, nDato6);
+            //recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, 7, nDato1, aDato7);
+            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, 8, nDato8);
 
-            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, 1, SurvInusual, 9, nDato9);
-            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, 1, SurvInusual, 10, nDato10);
-            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, 1, SurvInusual, 11, nDato11);
-            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, 1, SurvInusual, 12, nDato12);
-            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, 1, SurvInusual, 14, nDato14);
+            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, 9, nDato9);
+            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, 10, nDato10);
+            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, 11, nDato11);
+            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, 12, nDato12);
+            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, 14, nDato14);
             //****
             var excelWorksheet2 = excelWorkBook.Worksheets[1];
 
@@ -1521,7 +1675,7 @@ namespace Paho.Controllers
         }
 
         //private static void recuperarDatosIndDes(string consString, string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, int? YearFrom, int? YearTo, int IRAG, int opcion, decimal[] nResuOut, string[,] aResuOut = null)
-        private static void recuperarDatosIndDes(string consString, string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, int? YearFrom, int? YearTo, int IRAG, int? SurvInusual, int opcion, decimal[] nResuOut, string[,] aResuOut = null)         //#### CAFQ
+        private static void recuperarDatosIndDes(string consString, string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int opcion, decimal[] nResuOut, string[,] aResuOut = null)         //#### CAFQ
         {
             using (var con = new SqlConnection(consString))
             {
@@ -1539,7 +1693,7 @@ namespace Paho.Controllers
                     command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
                     command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
                     command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
-                    command.Parameters.Add("@IRAG", SqlDbType.Int).Value = IRAG;
+                    command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;
                     command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;      //#### CAFQ
                     command.Parameters.Add("@opcion", SqlDbType.Int).Value = opcion;
 

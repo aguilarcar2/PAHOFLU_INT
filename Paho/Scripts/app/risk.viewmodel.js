@@ -16,6 +16,18 @@
     self.Trimester = ko.observable();
     self.Vaccin = ko.observable(null);
 
+    self.selectedOccupationId = ko.observable();                    //**** CAFQ
+    self.TrabajoDirecc = ko.observable("");                         //**** CAFQ 
+    self.TrabajoEstablec = ko.observable("");                       //**** CAFQ
+    self.ContactoAnimVivos = ko.observable();                       //**** CAFQ
+    self.OcupacMercAnimVivos = ko.observable();                     //**** CAFQ
+
+    self.InfeccHospit = ko.observable("");                          //**** CAFQ     Radiobutton
+    self.InfeccHospitFecha = ko.observable("");                     //**** CAFQ
+    self.IsInfeHospPrev = ko.computed(function () {                 //**** CAFQ
+        return (self.InfeccHospit() == "1") ? true : false;
+    }, self);
+
     self.ViajePrevSintoma = ko.observable();              //#### CAFQ
     self.DestPrevSintoma1 = ko.observable();              //#### CAFQ
     self.DestFechaLlegada1 = ko.observable("");              //#### CAFQ
@@ -440,9 +452,46 @@
         self.AntiViralType("");
         self.OseltaDose("");
         self.AntiViralDose("");
+        self.ResetRiskInusual();                    //#### CAFQ
         self.hasReset(false);
-
     };
+
+    self.ResetRiskInusual = function () {           //#### CAFQ
+        //self.hasReset(true);
+        self.selectedOccupationId("");              //#### CAFQ
+        self.TrabajoDirecc("");                     //**** CAFQ 
+        self.TrabajoEstablec("");                   //**** CAFQ
+        self.ContactoAnimVivos("");                 //**** CAFQ
+        self.OcupacMercAnimVivos("");               //**** CAFQ
+
+        self.InfeccHospitFecha("");                 //**** CAFQ
+        self.InfeccHospit("");                      //**** CAFQ
+
+        self.ViajePrevSintoma("");              //#### CAFQ
+        self.DestPrevSintoma1("");              //#### CAFQ
+        self.DestFechaLlegada1("");              //#### CAFQ
+        self.DestFechaSalida1("");              //#### CAFQ
+        self.DestPrevSintoma2("");              //#### CAFQ
+        self.DestFechaLlegada2("");              //#### CAFQ
+        self.DestFechaSalida2("");               //#### CAFQ
+        self.DestPrevSintoma3("");              //#### CAFQ
+        self.DestFechaLlegada3("");              //#### CAFQ
+        self.DestFechaSalida3("");               //#### CAFQ
+
+        self.ContacDirectoAnim("");        //##### CAFQ
+        self.AnimalNaturaContac("");        //##### CAFQ
+        self.ExpuextoSimilSintoma("");        //##### CAFQ
+        self.NumeIdentContacto("");        //##### CAFQ
+        self.InfluConfirContacto("");        //##### CAFQ
+        self.TipoRelaContacto("");        //##### CAFQ
+        self.FamiDirecContacto("");        //##### CAFQ
+        self.TrabSaludRama("");                                 //##### CAFQ
+        self.TrabLaboratorio("");                            //##### CAFQ
+        self.TrabLaboratorioRama("");                           //##### CAFQ
+        self.selectedTrabSaludRamaId("");                         //**** CAFQ
+        self.selectedTrabLaboratorioRamaId("");                   //**** CAFQ
+        //self.hasReset(false);
+    }
 
     self.GetRisk = function (id) {
         self.Id = id;
@@ -504,6 +553,17 @@
                 self.AntiViralType(data.AntiViralType);
                 self.OseltaDose(data.OseltaDose);
                 self.AntiViralDose(data.AntiViralDose);
+
+                self.selectedOccupationId(data.Ocupacion);                         //#### CAFQ
+                self.TrabajoDirecc(data.TrabajoDirecc);                         //#### CAFQ
+                self.TrabajoEstablec(data.TrabajoEstablec);                       //#### CAFQ
+                self.ContactoAnimVivos(data.ContactoAnimVivos);                       //#### CAFQ
+                self.OcupacMercAnimVivos(data.OcupacMercAnimVivos);                       //#### CAFQ
+                
+                self.InfeccHospit(data.InfeccHospit);                    //#### CAFQ
+                if (data.InfeccHospitFecha)                    //#### CAFQ
+                    self.InfeccHospitFecha(moment(data.InfeccHospitFecha).format(date_format_moment));
+                else self.InfeccHospitFecha(null);
 
                 self.ViajePrevSintoma(data.ViajePrevSintoma);           //#### CAFQ
                 self.DestPrevSintoma1(data.DestPrevSintoma1);           //#### CAFQ
@@ -711,6 +771,8 @@
         date_DestFechaSalida2 = parseDate($("#DestFechaSalida2").val(), date_format_);            //#### CAFQ
         date_DestFechaSalida3 = parseDate($("#DestFechaSalida3").val(), date_format_);            //#### CAFQ
 
+        date_InfeccHospitFecha = parseDate($("#InfeccHospitFecha").val(), date_format_);        //#### CAFQ
+
          $.post(app.dataModel.saveRiskUrl,
             {
                 Id: self.Id,
@@ -764,6 +826,15 @@
                 AntiViralDose: self.AntiViralDose(),
                 RiskFactors: self.RiskFactors(),
                 Comorbidities: self.Comorbidities(),
+
+                Ocupacion: self.selectedOccupationId(),                                //#### CAFQ 
+                TrabajoDirecc: self.TrabajoDirecc(),                                //#### CAFQ 
+                TrabajoEstablec: self.TrabajoEstablec(),                                //#### CAFQ
+                ContactoAnimVivos: self.ContactoAnimVivos(),                        //#### CAFQ
+                OcupacMercAnimVivos: self.OcupacMercAnimVivos(),                     //#### CAFQ
+
+                InfeccHospit: self.InfeccHospit(),                  //#### CAFQ
+                InfeccHospitFecha: $("#InfeccHospitFecha").val() == "" ? null : moment(date_InfeccHospitFecha).format(date_format_ISO),    //#### CAFQ
 
                 ViajePrevSintoma: self.ViajePrevSintoma(),          //#### CAFQ
                 DestPrevSintoma1: self.DestPrevSintoma1(),          //#### CAFQ

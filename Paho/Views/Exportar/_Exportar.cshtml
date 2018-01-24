@@ -1,4 +1,5 @@
 ﻿@model Paho.Models.ExportarViewModel
+
 <!-- ko with: app.Views.Exportar -->
 <div class="row" style="margin-bottom:15px; margin-top:1em;">
 
@@ -28,11 +29,41 @@
     </div>
 </div-->
 
+<!-- Vigilancia -->
 <div class="row" style="margin-bottom: 15px; margin-top: 1em;">
     <div class="col-md-5">
         <div class='input-group'>
             <span class="input-group-addon">
-                <!--Reportes:-->
+                @(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelSurv"))
+            </span>
+            <select id="Surv" class="form-control" data-bind="value: Surv">
+                @if (ViewBag.SARI == true && ViewBag.ILI == false)
+                {
+                    <option value="1">@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelSari"))</option>
+                }
+                @if (ViewBag.ILI == true && ViewBag.SARI == false)
+                {
+                    <option value="2">@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelIli"))</option>
+                }
+                @if (ViewBag.ILI == true && ViewBag.SARI == true)
+                {
+                    <option value="0">@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarFieldSelect"))</option>
+                    <option value="1">@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelSari"))</option>
+                        <option value="2">@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelIli"))</option>
+                }
+            </select>
+            <label class="btn btn-default">
+                <input type="checkbox" name="SurvInusual" id="SurvInusual" data-bind="checked: SurvInusual">  @(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelUnusualCase"))
+            </label>
+        </div>
+    </div>
+</div>
+
+<!--Reportes:-->
+<div class="row" style="margin-bottom: 15px; margin-top: 1em;">
+    <div class="col-md-5">
+        <div class='input-group'>
+            <span class="input-group-addon">
                 @(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarLabelReports"))
             </span>
             <select id="Reports" class="form-control" data-bind="options: reportsCountries,
@@ -44,6 +75,8 @@
         </div>
     </div>
 </div>
+
+<!--País:-->
 @if (Model.DisplayCountries)
 {
     <div class="row" style="margin-bottom: 15px; margin-top: 1em;">
@@ -63,6 +96,8 @@
         </div>
     </div>
 }
+
+<!--Región:-->
 @if (Model.DisplayRegionals)
 {
     <!--div id="RegionalsGroup" class='input-group col-md-7' style="margin-top: 7px; display: block; float: left" data-bind="visible: displayFilters">
@@ -94,6 +129,8 @@
         </div>
     </div>
 }
+
+<!-- Establecimiento -->
 @if (Model.DisplayHospitals)
 {
     <div class="row" style="margin-bottom: 15px; margin-top: 1em;">
@@ -196,6 +233,7 @@
 </div>
 
 <!-- Vigilancia -->
+<!--
 <div class="row" style="margin-bottom:15px; margin-top:1em;">
     <div class="col-md-6">
         <div class='input-group'>
@@ -219,6 +257,7 @@
         </div>
     </div>
 </div>
+-->
 
 <div class="row" style="margin-bottom:15px; margin-top:1em;">
     <div class="col-md-3">

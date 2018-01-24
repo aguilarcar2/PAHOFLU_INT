@@ -555,81 +555,7 @@
                 </div>
             </div>
         </div>
-
-        <!-- Ocupación -->
-        <div class="row rowform" data-bind="visible:IsInusitado">
-            <div class="col-md-6">
-                <div class='input-group'>
-                    <span class='input-group-addon'>
-                        Ocupación:
-                    </span>
-                    <select id="Occupation" class="form-control" data-bind="options: catoccupations,
-                            optionsText: 'Name',
-                            optionsValue: 'Id',
-                            value: selectedOccupationId,
-                            optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel")) '"></select>
-                </div>
-            </div>
-        </div>
-
-        <!-- Dirección del trabajo o escuela/Establecimiento de trabajo -->
-        <div class="row rowform" data-bind="visible:IsInusitado">
-            <div class="col-md-6">
-                <div class='input-group'>
-                    <span class="input-group-addon">
-                        @*(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelAgeGroup"))*@
-                        Dirección del trabajo o escuela
-                    </span>
-                    <input id="IN_DireTrab" type='text' class="form-control case_letter" data-bind='value: TrabajoDirecc' />
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class='input-group'>
-                    <span class="input-group-addon">
-                        @*(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelAgeGroup"))*@
-                        Establecimiento de trabajo
-                    </span>
-                    <input id="IN_EstaTrab" type='text' class="form-control case_letter" data-bind='value: TrabajoEstablec' />
-                </div>
-            </div>
-        </div>
-
-        <!-- Paciente contacto con animales/Trabajo en un mercado de animales vivos? -->
-        <div class="row rowform" data-bind="visible:IsInusitado">
-            <div class="col-md-3">
-                <span>
-                    ¿El paciente tuvo contacto con animales vivos o productos de origen animal en su ocupacion/escuela u hogar?:
-                </span>
-            </div>
-
-            <div class="col-md-3">
-                <label class="btn btn-default">
-                    <input type="radio" name="IN_ContacAnima" id="IN_ContacAnima" value="1" data-bind='checked: ContactoAnimVivos'> Si
-                </label>
-
-                <label class="btn btn-default">
-                    <input type="radio" name="IN_ContacAnima" id="IN_ContacAnima" value="0" data-bind='checked: ContactoAnimVivos'> No
-                </label>
-            </div>
-
-            <div class="col-md-3">
-                <span>
-                    ¿La ocupación del paciente incluye trabajo en un mercado de animales vivos?:
-                </span>
-            </div>
-
-            <div class="col-md-3">
-                <label class="btn btn-default">
-                    <input type="radio" name="IN_TrabMerc" id="IN_TrabMerc" value="1" data-bind='checked: OcupacMercAnimVivos'> Si
-                </label>
-
-                <label class="btn btn-default">
-                    <input type="radio" name="IN_TrabMerc" id="IN_TrabMerc" value="0" data-bind='checked: OcupacMercAnimVivos'> No
-                </label>
-            </div>
-        </div>
-                
+     
         <div class="row rowform">
             <div class="col-md-12">
 
@@ -731,8 +657,8 @@
             <div class="row rowform" data-bind="visible:EnableCHI">
                 <div class="col-md-6">
                     <div class='input-group'>
-                        <span class='input-group-addon'> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelProcedenceCountry"))</span>
-                        <select id="CountryOrigin" class="form-control" data-bind="options: app.Views.Home.countries,
+                        <span class='input-group-addon'> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelOriginCountry"))</span>
+                        <select id="CountryOrigin" class="form-control" data-bind="options: app.Views.Home.countries, 
                     optionsText: 'Name',
                     optionsValue: 'Id',
                     value: selectedCountryOrigin,
@@ -951,220 +877,333 @@
             </div>
         </div>
 
-        <!-- Seccion: Exposicion -->
+        <!-- Seccion: Ocupación -->
         <div class="row rowform" data-bind="visible:app.Views.Contact.IsInusitado">
-        <div class="col-md-12">
-            <button type="button" class="btn btn-group-justified" data-toggle="collapse" data-target="#Exposicion">
-                Historia de exposición / Posible exposición
-                <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
-            </button>
+            <div class="col-md-12">
+                <button type="button" class="btn btn-group-justified" data-toggle="collapse" data-target="#Ocupacion">
+                    Ocupación
+                    <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
+                </button>
 
-            <div id="Exposicion" class="collapse in">
-                <!-- Viaje dias previos -->
-                <div class="row rowform">
-                    <div class="col-md-12">
-                        <span>
-                            ¿El paciente/Caso viajó nacional o internacionalmente en los 14 días previos a la aparición de lo sintomas?:
-                            <label class="btn btn-default">
-                                <input type="radio" name="IN_ViajDiPr" id="IN_ViajDiPr" value="1" data-bind='checked: ViajePrevSintoma'> Si
-                            </label>
-                            <label class="btn btn-default">
-                                <input type="radio" name="IN_ViajDiPr" id="IN_ViajDiPr" value="0" data-bind='checked: ViajePrevSintoma'> No
-                            </label>
-                            <label class="btn btn-default">
-                                <input type="radio" name="IN_ViajDiPr" id="IN_ViajDiPr" value="9" data-bind='checked: ViajePrevSintoma'> Desconocido
-                            </label>
-                        </span>
+                <div id="Ocupacion" class="collapse in">
+                    <!-- Ocupación -->
+                    <div class="row rowform">
+                        <div class="col-md-6">
+                            <div class='input-group'>
+                                <span class='input-group-addon'>
+                                    Ocupación:
+                                </span>
+                                <select id="Occupation" class="form-control" data-bind="options: catoccupations,
+                            optionsText: 'Name',
+                            optionsValue: 'Id',
+                            value: selectedOccupationId,
+                            optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel")) '"></select>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Destino 1 / Llegada 1 / Salida 1 -->
-                <div class="row rowform" data-bind="visible: IsViajePrevSintoma">
-                    <div class="col-md-4">
-                        <div class='input-group'>
-                            <span class="input-group-addon">
-                                Destino (Ciudad/región/país)
+                    <!-- Dirección del trabajo o escuela/Establecimiento de trabajo -->
+                    <div class="row rowform">
+                        <div class="col-md-6">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @*(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelAgeGroup"))*@
+                                    Dirección del trabajo o escuela
+                                </span>
+                                <input id="IN_DireTrab" type='text' class="form-control case_letter" data-bind='value: TrabajoDirecc' />
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @*(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelAgeGroup"))*@
+                                    Establecimiento de trabajo
+                                </span>
+                                <input id="IN_EstaTrab" type='text' class="form-control case_letter" data-bind='value: TrabajoEstablec' />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Paciente contacto con animales/Trabajo en un mercado de animales vivos? -->
+                    <div class="row rowform">
+                        <div class="col-md-3">
+                            <span>
+                                ¿El paciente tuvo contacto con animales vivos o productos de origen animal en su ocupación/escuela u hogar?:
                             </span>
-                            <input id="DestPrevSintoma1" type='text' class="form-control case_letter" data-bind="value: DestPrevSintoma1" />
                         </div>
-                    </div>
 
-                    <div class="col-md-2">
-                        <div class='input-group'>
-                            <span class="input-group-addon">Fecha Llegada</span>
-                            <input id="DestFechaLlegada1" type="text" class="form-control" data-bind='datepicker: DestFechaLlegada1, datepickerOptions: {maxDate:@Model.DatePickerConfig, dateFormat:"@Model.DateFormatDP"}' />
+                        <div class="col-md-3">
+                            <label class="btn btn-default">
+                                <input type="radio" name="IN_ContacAnima" id="IN_ContacAnima" value="1" data-bind='checked: ContactoAnimVivos'> Si
+                            </label>
+
+                            <label class="btn btn-default">
+                                <input type="radio" name="IN_ContacAnima" id="IN_ContacAnima" value="0" data-bind='checked: ContactoAnimVivos'> No
+                            </label>
                         </div>
-                    </div>
 
-                    <div class="col-md-2">
-                        <div class='input-group'>
-                            <span class="input-group-addon">Fecha Salida</span>
-                            <input id="DestFechaSalida1" type="text" class="form-control" data-bind='datepicker: DestFechaSalida1, datepickerOptions: {maxDate:@Model.DatePickerConfig, dateFormat:"@Model.DateFormatDP"}' />
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Destino2 / Llegada 2 / Salida 2 -->
-                <div class="row rowform" data-bind="visible: IsViajePrevSintoma">
-                    <div class="col-md-4">
-                        <div class='input-group'>
-                            <span class="input-group-addon">
-                                Destino (Ciudad/región/país)
+                        <div class="col-md-3">
+                            <span>
+                                ¿La ocupación del paciente incluye trabajo en un mercado de animales vivos?:
                             </span>
-                            <input id="DestPrevSintoma2" type='text' class="form-control case_letter" data-bind="value: DestPrevSintoma2" />
                         </div>
-                    </div>
 
-                    <div class="col-md-2">
-                        <div class='input-group'>
-                            <span class="input-group-addon">Fecha Llegada</span>
-                            <input id="DestFechaLlegada2" type="text" class="form-control" data-bind='datepicker: DestFechaLlegada2, datepickerOptions: {maxDate:@Model.DatePickerConfig, dateFormat:"@Model.DateFormatDP"}' />
+                        <div class="col-md-3">
+                            <label class="btn btn-default">
+                                <input type="radio" name="IN_TrabMerc" id="IN_TrabMerc" value="1" data-bind='checked: OcupacMercAnimVivos'> Si
+                            </label>
+
+                            <label class="btn btn-default">
+                                <input type="radio" name="IN_TrabMerc" id="IN_TrabMerc" value="0" data-bind='checked: OcupacMercAnimVivos'> No
+                            </label>
                         </div>
-                    </div>
-
-                    <div class="col-md-2">
-                        <div class='input-group'>
-                            <span class="input-group-addon">Fecha Salida</span>
-                            <input id="DestFechaSalida2" type="text" class="form-control" data-bind='datepicker: DestFechaSalida2, datepickerOptions: {maxDate:@Model.DatePickerConfig, dateFormat:"@Model.DateFormatDP"}' />
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Destino3 / Llegada 3 / Salida 3 -->
-                <div class="row rowform" data-bind="visible: IsViajePrevSintoma">
-                    <div class="col-md-4">
-                        <div class='input-group'>
-                            <span class="input-group-addon">
-                                Destino (Ciudad/región/país)
-                            </span>
-                            <input id="DestPrevSintoma3" type='text' class="form-control case_letter" data-bind="value: DestPrevSintoma3" />
-                        </div>
-                    </div>
-
-                    <div class="col-md-2">
-                        <div class='input-group'>
-                            <span class="input-group-addon">Fecha Llegada</span>
-                            <input id="DestFechaLlegada3" type="text" class="form-control" data-bind='datepicker: DestFechaLlegada3, datepickerOptions: {maxDate:@Model.DatePickerConfig, dateFormat:"@Model.DateFormatDP"}' />
-                        </div>
-                    </div>
-
-                    <div class="col-md-2">
-                        <div class='input-group'>
-                            <span class="input-group-addon">Fecha Salida</span>
-                            <input id="DestFechaSalida3" type="text" class="form-control" data-bind='datepicker: DestFechaSalida3, datepickerOptions: {maxDate:@Model.DatePickerConfig, dateFormat:"@Model.DateFormatDP"}' />
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Contacto directo o indirecto con animales / Especificar el contacto -->
-                <div class="row rowform">
-                    <div class="col-md-4">
-                        <span>
-                            ¿Tuvo el paciente contacto directo o indirecto con animales ( por ejemplo, nimales utilizados para caza(por ejmplo, perros, halcones), murciélagos, aves, ganado doméstico en las granjas o mercados, mascotas, roedores o animales silvestres) en los 14 dias previos a la inicio de los síntomas?:
-                        </span>
-                    </div>
-
-                    <div class="col-md-2">
-                        <span>
-                            <label class="btn btn-default">
-                                <input type="radio" name="ContacDirectoAnim" id="ContacDirectoAnim" value="1" data-bind="checked: ContacDirectoAnim"> Si
-                            </label>
-                            <label class="btn btn-default">
-                                <input type="radio" name="ContacDirectoAnim" id="ContacDirectoAnim" value="0" data-bind="checked: ContacDirectoAnim"> No
-                            </label>
-                            <label class="btn btn-default">
-                                <input type="radio" name="ContacDirectoAnim" id="ContacDirectoAnim" value="9" data-bind="checked: ContacDirectoAnim"> Desconocido
-                            </label>
-                        </span>
-                    </div>
-
-                    <div class="col-md-6" data-bind="visible: IsContacDirectoAnim">
-                        <div class='input-group'>
-                            <span class="input-group-addon">
-                                especificar el animal y la naturaleza del contacto.
-                            </span>
-                            <input id="AnimalNaturaContac" type='text' class="form-control case_letter" data-bind="value: AnimalNaturaContac" />
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Paciente expuesto a persona similar sintomatologia -->
-                <div class="row rowform">
-                    <div class="col-md-6">
-                        <span>
-                            En los 14 días previos a la aparición  de la enfermedad,¿El paciente se expuso a una persona con sintomatologia similar a su enfermedad?:
-                        </span>
-                    </div>
-
-                    <div class="col-md-6">
-                        <span>
-                            <label class="btn btn-default">
-                                <input type="radio" name="ExpuextoSimilSintoma" id="ExpuextoSimilSintoma" value="1" data-bind='checked: ExpuextoSimilSintoma'> Si
-                            </label>
-
-                            <label class="btn btn-default">
-                                <input type="radio" name="ExpuextoSimilSintoma" id="ExpuextoSimilSintoma" value="0" data-bind='checked: ExpuextoSimilSintoma'> No
-                            </label>
-
-                            <label class="btn btn-default">
-                                <input type="radio" name="ExpuextoSimilSintoma" id="ExpuextoSimilSintoma" value="9" data-bind='checked: ExpuextoSimilSintoma'> Desconocido
-                            </label>
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Nº de identificacion / Confirmado por influenza  -->
-                <div class="row rowform" data-bind="visible: IsExpuextoSimilSintoma">
-                    <div class="col-md-6">
-                        <div class='input-group'>
-                            <span class="input-group-addon">
-                                Número nacional de identificación del sospechoso o caso:
-                            </span>
-                            <input id="NumeIdentContacto" type='text' class="form-control case_letter" data-bind="value: NumeIdentContacto" />
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <span>
-                            Confirmado por influenza:
-                            <label class="btn btn-default">
-                                <input type="radio" name="InfluConfirContacto" id="InfluConfirContacto" value="1" data-bind='checked: InfluConfirContacto'> Si
-                            </label>
-
-                            <label class="btn btn-default">
-                                <input type="radio" name="InfluConfirContacto" id="InfluConfirContacto" value="0" data-bind='checked: InfluConfirContacto'> No
-                            </label>
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Tipo relacion con contacto / Familiar Directo -->
-                <div class="row rowform" data-bind="visible: IsExpuextoSimilSintoma">
-                    <div class="col-md-6">
-                        <div class='input-group'>
-                            <span class="input-group-addon">
-                                Tipo de relación con el contacto
-                            </span>
-                            <input id="TipoRelaContacto" type='text' class="form-control case_letter" data-bind="value: TipoRelaContacto" />
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <span>
-                            Familiar directo (por vínculo sanguíneo):
-                            <label class="btn btn-default">
-                                <input type="radio" name="FamiDirecContacto" id="FamiDirecContacto" value="1" data-bind='checked: FamiDirecContacto'> Si
-                            </label>
-
-                            <label class="btn btn-default">
-                                <input type="radio" name="FamiDirecContacto" id="FamiDirecContacto" value="0" data-bind='checked: FamiDirecContacto'> No
-                            </label>
-                        </span>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+
+
+        <!-- Seccion: Exposicion -->
+        <div class="row rowform" data-bind="visible:app.Views.Contact.IsInusitado">
+            <div class="col-md-12">
+                <button type="button" class="btn btn-group-justified" data-toggle="collapse" data-target="#Exposicion">
+                    Historia de exposición / Posible exposición
+                    <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
+                </button>
+
+                <div id="Exposicion" class="collapse in">
+                    <!--Infeccion adquirida durante hospitalización previa/Fecha -->
+                    <div class="row rowform" data-bind="visible:app.Views.Contact.IsInusitado">
+                        <div class="col-md-3">
+                            <span>¿Infección adquirida durante hospitalización previa?</span>
+                        </div>
+
+                        <div class="col-md-1">
+                            <label class="btn btn-default">
+                                <input type="radio" name="InfeccHospit" id="InfeccHospit" value="1" data-bind="checked: InfeccHospit"> Si
+                            </label>
+                            <label class="btn btn-default">
+                                <input type="radio" name="InfeccHospit" id="InfeccHospit" value="0" data-bind="checked: InfeccHospit"> No
+                            </label>
+                        </div>
+
+                        <div class="col-md-3" data-bind="visible: IsInfeHospPrev">
+                            <div class='input-group'>
+                                <span class="input-group-addon">Fecha</span>
+                                <input id="InfeccHospitFecha" type="text" class="form-control" data-bind='datepicker: InfeccHospitFecha, datepickerOptions: {maxDate:@Model.DatePickerConfig, dateFormat:"@Model.DateFormatDP"}' />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Viaje dias previos -->
+                    <div class="row rowform">
+                        <div class="col-md-12">
+                            <span>
+                                ¿El paciente viajó nacional o internacionalmente en los 14 días previos a la aparición de lo síntomas?:
+                                <label class="btn btn-default">
+                                    <input type="radio" name="IN_ViajDiPr" id="IN_ViajDiPr" value="1" data-bind='checked: ViajePrevSintoma'> Si
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type="radio" name="IN_ViajDiPr" id="IN_ViajDiPr" value="0" data-bind='checked: ViajePrevSintoma'> No
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type="radio" name="IN_ViajDiPr" id="IN_ViajDiPr" value="9" data-bind='checked: ViajePrevSintoma'> Desconocido
+                                </label>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Destino 1 / Llegada 1 / Salida 1 -->
+                    <div class="row rowform" data-bind="visible: IsViajePrevSintoma">
+                        <div class="col-md-4">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    Destino (Ciudad/Región/País)
+                                </span>
+                                <input id="DestPrevSintoma1" type='text' class="form-control case_letter" data-bind="value: DestPrevSintoma1" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class='input-group'>
+                                <span class="input-group-addon">Fecha Llegada</span>
+                                <input id="DestFechaLlegada1" type="text" class="form-control" data-bind='datepicker: DestFechaLlegada1, datepickerOptions: {maxDate:@Model.DatePickerConfig, dateFormat:"@Model.DateFormatDP"}' />
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class='input-group'>
+                                <span class="input-group-addon">Fecha Salida</span>
+                                <input id="DestFechaSalida1" type="text" class="form-control" data-bind='datepicker: DestFechaSalida1, datepickerOptions: {maxDate:@Model.DatePickerConfig, dateFormat:"@Model.DateFormatDP"}' />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Destino2 / Llegada 2 / Salida 2 -->
+                    <div class="row rowform" data-bind="visible: IsViajePrevSintoma">
+                        <div class="col-md-4">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    Destino (Ciudad/Región/País)
+                                </span>
+                                <input id="DestPrevSintoma2" type='text' class="form-control case_letter" data-bind="value: DestPrevSintoma2" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class='input-group'>
+                                <span class="input-group-addon">Fecha Llegada</span>
+                                <input id="DestFechaLlegada2" type="text" class="form-control" data-bind='datepicker: DestFechaLlegada2, datepickerOptions: {maxDate:@Model.DatePickerConfig, dateFormat:"@Model.DateFormatDP"}' />
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class='input-group'>
+                                <span class="input-group-addon">Fecha Salida</span>
+                                <input id="DestFechaSalida2" type="text" class="form-control" data-bind='datepicker: DestFechaSalida2, datepickerOptions: {maxDate:@Model.DatePickerConfig, dateFormat:"@Model.DateFormatDP"}' />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Destino3 / Llegada 3 / Salida 3 -->
+                    <div class="row rowform" data-bind="visible: IsViajePrevSintoma">
+                        <div class="col-md-4">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    Destino (Ciudad/Región/País)
+                                </span>
+                                <input id="DestPrevSintoma3" type='text' class="form-control case_letter" data-bind="value: DestPrevSintoma3" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class='input-group'>
+                                <span class="input-group-addon">Fecha Llegada</span>
+                                <input id="DestFechaLlegada3" type="text" class="form-control" data-bind='datepicker: DestFechaLlegada3, datepickerOptions: {maxDate:@Model.DatePickerConfig, dateFormat:"@Model.DateFormatDP"}' />
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class='input-group'>
+                                <span class="input-group-addon">Fecha Salida</span>
+                                <input id="DestFechaSalida3" type="text" class="form-control" data-bind='datepicker: DestFechaSalida3, datepickerOptions: {maxDate:@Model.DatePickerConfig, dateFormat:"@Model.DateFormatDP"}' />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contacto directo o indirecto con animales / Especificar el contacto -->
+                    <div class="row rowform">
+                        <div class="col-md-4">
+                            <span>
+                                ¿Tuvo el paciente contacto directo o indirecto con animales (por ejemplo, animales utilizados para caza(por ejemplo, perros, halcones), murciélagos, aves, ganado doméstico en las granjas o mercados, mascotas, roedores o animales silvestres) en los 14 dias previos a la inicio de los síntomas?:
+                            </span>
+                        </div>
+
+                        <div class="col-md-2">
+                            <span>
+                                <label class="btn btn-default">
+                                    <input type="radio" name="ContacDirectoAnim" id="ContacDirectoAnim" value="1" data-bind="checked: ContacDirectoAnim"> Si
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type="radio" name="ContacDirectoAnim" id="ContacDirectoAnim" value="0" data-bind="checked: ContacDirectoAnim"> No
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type="radio" name="ContacDirectoAnim" id="ContacDirectoAnim" value="9" data-bind="checked: ContacDirectoAnim"> Desconocido
+                                </label>
+                            </span>
+                        </div>
+
+                        <div class="col-md-6" data-bind="visible: IsContacDirectoAnim">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    Especificar el animal y la naturaleza del contacto.
+                                </span>
+                                <input id="AnimalNaturaContac" type='text' class="form-control case_letter" data-bind="value: AnimalNaturaContac" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Paciente expuesto a persona similar sintomatologia -->
+                    <div class="row rowform">
+                        <div class="col-md-6">
+                            <span>
+                                En los 14 días previos a la aparición de la enfermedad, ¿El paciente se expuso a una persona con sintomatología similar a su enfermedad?:
+                            </span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <span>
+                                <label class="btn btn-default">
+                                    <input type="radio" name="ExpuextoSimilSintoma" id="ExpuextoSimilSintoma" value="1" data-bind='checked: ExpuextoSimilSintoma'> Si
+                                </label>
+
+                                <label class="btn btn-default">
+                                    <input type="radio" name="ExpuextoSimilSintoma" id="ExpuextoSimilSintoma" value="0" data-bind='checked: ExpuextoSimilSintoma'> No
+                                </label>
+
+                                <label class="btn btn-default">
+                                    <input type="radio" name="ExpuextoSimilSintoma" id="ExpuextoSimilSintoma" value="9" data-bind='checked: ExpuextoSimilSintoma'> Desconocido
+                                </label>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Nº de identificacion / Confirmado por influenza  -->
+                    <div class="row rowform" data-bind="visible: IsExpuextoSimilSintoma">
+                        <div class="col-md-6">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    Número nacional de identificación del sospechoso:
+                                </span>
+                                <input id="NumeIdentContacto" type='text' class="form-control case_letter" data-bind="value: NumeIdentContacto" />
+                            </div>
+                        </div>
+
+                        <!--
+                        <div class="col-md-6">
+                            <span>
+                                Confirmado por influenza:
+                                <label class="btn btn-default">
+                                    <input type="radio" name="InfluConfirContacto" id="InfluConfirContacto" value="1" data-bind='checked: InfluConfirContacto'> Si
+                                </label>
+
+                                <label class="btn btn-default">
+                                    <input type="radio" name="InfluConfirContacto" id="InfluConfirContacto" value="0" data-bind='checked: InfluConfirContacto'> No
+                                </label>
+                            </span>
+                        </div>  
+                        -->
+                        <div class="col-md-6">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    Tipo de relación con el contacto
+                                </span>
+                                <input id="TipoRelaContacto" type='text' class="form-control case_letter" data-bind="value: TipoRelaContacto" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tipo relacion con contacto / Familiar Directo -->
+                    <!--
+                    <div class="row rowform" data-bind="visible: IsExpuextoSimilSintoma">
+                        <div class="col-md-6">
+                            <span>
+                                Familiar directo (por vínculo sanguíneo):
+                                <label class="btn btn-default">
+                                    <input type="radio" name="FamiDirecContacto" id="FamiDirecContacto" value="1" data-bind='checked: FamiDirecContacto'> Si
+                                </label>
+
+                                <label class="btn btn-default">
+                                    <input type="radio" name="FamiDirecContacto" id="FamiDirecContacto" value="0" data-bind='checked: FamiDirecContacto'> No
+                                </label>
+                            </span>
+                        </div>
+                    </div>
+                    -->
+                </div>
+            </div>
+        </div>
     
         <!-- Vacuna -->
         <div class="row rowform">
@@ -2020,7 +2059,7 @@
                         <!-- Altralgia -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
-                                <input type="checkbox" name="Altralgia" id="Altralgia" value="1" data-bind="checked: Altralgia"> Altralgia
+                                <input type="checkbox" name="Altralgia" id="Altralgia" value="1" data-bind="checked: Altralgia"> Artralgia
                             </label>
                         </div>
                     </div>
@@ -2080,7 +2119,7 @@
                         <!-- Hepatomegalea -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
-                                <input type="checkbox" name="Hepatomegalea" id="Hepatomegalea" value="1" data-bind="checked: Hepatomegalea"> Hepatomegalea
+                                <input type="checkbox" name="Hepatomegalea" id="Hepatomegalea" value="1" data-bind="checked: Hepatomegalea"> Hepatomegalia
                             </label>
                         </div>
                     </div>
@@ -2126,7 +2165,7 @@
                         <!-- Paralisis -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
-                                <input type="checkbox" name="Paralisis" id="Paralisis" value="1" data-bind="checked: Paralisis"> Paralisis
+                                <input type="checkbox" name="Paralisis" id="Paralisis" value="1" data-bind="checked: Paralisis"> Parálisis
                             </label>
                         </div>
 
@@ -2149,7 +2188,7 @@
                         <!-- Dolor retrorobitario -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
-                                <input type="checkbox" name="DolorRetrorobitario" id="DolorRetrorobitario" value="1" data-bind="checked: DolorRetrorobitario"> Dolor retrorobitario
+                                <input type="checkbox" name="DolorRetrorobitario" id="DolorRetrorobitario" value="1" data-bind="checked: DolorRetrorobitario"> Dolor retroorbitario
                             </label>
                         </div>
 
@@ -2359,29 +2398,6 @@
                 </div>
                 <div class="col-md-2 input-group" data-bind="visible:ViewRefer">
                     <input id="InstReferName" type='text' class="form-control " data-bind='value:InstReferName' />
-                </div>
-            </div>
-
-            <!--Infeccion adquirida durante hospitalización previa/Fecha -->
-            <div class="row rowform" data-bind="visible:app.Views.Contact.IsInusitado">
-                <div class="col-md-3">
-                    <span>¿Infección adquirida durante hospitalización previa?</span>
-                </div>
-
-                <div class="col-md-1">
-                    <label class="btn btn-default">
-                        <input type="radio" name="InfeccHospit" id="InfeccHospit" value="1" data-bind="checked: InfeccHospit"> Si
-                    </label>
-                    <label class="btn btn-default">
-                        <input type="radio" name="InfeccHospit" id="InfeccHospit" value="0" data-bind="checked: InfeccHospit"> No
-                    </label>
-                </div>
-
-                <div class="col-md-3" data-bind="visible: IsInfeHospPrev">
-                    <div class='input-group'>
-                        <span class="input-group-addon">Fecha</span>
-                        <input id="InfeccHospitFecha" type="text" class="form-control" data-bind='datepicker: InfeccHospitFecha, datepickerOptions: {maxDate:@Model.DatePickerConfig, dateFormat:"@Model.DateFormatDP"}' />
-                    </div>
                 </div>
             </div>
 

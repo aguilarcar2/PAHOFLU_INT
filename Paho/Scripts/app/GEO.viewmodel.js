@@ -76,6 +76,30 @@
         self.hasReset(false);
     };
 
+    self.ResetGEOInusual = function () {
+        //self.hasReset(true);
+        //self.Id = "";
+        //alert(app.Views.Home);
+        //self.selectedCountryId() ? self.selectedCountryId() : (CountryID > 0) ? CountryID : 0
+        /*self.selectedCountryId("");
+        self.selectedCountryId(app.Views.Home.UsrCountry());
+        self.selectedCountryOrigin("");
+        self.selectedAreaId("");
+        self.selectedStateId("");
+        self.selectedLocalId("");
+        self.selectedNeighborhoodId("");*/
+        self.UrbanRural(0);
+        /*self.selectedCountryId2weeks("");
+        self.selectedAreaId2weeks("");
+        self.selectedStateId2weeks("");
+        self.selectedNeighborhoodId2weeks("");
+        self.Address("");
+        self.PhoneNumber("");
+        self.Latitude("");
+        self.Longitude("");*/
+        //self.hasReset(false);
+    };
+
     self.GetGEO = function (id) {
         self.Id = id;
         $.getJSON(app.dataModel.getGEOUrl, { id: id }, function (data, status) {
