@@ -6,7 +6,7 @@
     var date_format_ISO = app.dataModel.date_format_ISO;
    
 
-    date_receive = (SampleNumber == 1) ?  parseDate($("#RecDate").val(), date_format_) : (SampleNumber == 2) ? parseDate($("#RecDate2").val(), date_format_) : (SampleNumber == 2) ? parseDate($("#RecDate3").val(), date_format_) : null ;
+    date_receive = (SampleNumber == 1) ? jQuery.type(app.Views.Lab.RecDate()) === 'date' ? app.Views.Lab.RecDate() : parseDate($("#RecDate").val(), date_format_) : (SampleNumber == 2) ? jQuery.type(app.Views.Lab.RecDate2()) === 'date' ? app.Views.Lab.RecDate2() : parseDate($("#RecDate2").val(), date_format_) : (SampleNumber == 3) ? jQuery.type(app.Views.Lab.RecDate3()) === 'date' ? app.Views.Lab.RecDate3() : parseDate($("#RecDate3").val(), date_format_) : null;
     
     self.OrderArray
     self.Id = "";
@@ -84,27 +84,28 @@
     }, self);
 
     self.TestDate.subscribe(function (newTestDate) {
-        var current_value = typeof (newTestDate) == "object" ? newTestDate : parseDate(newTestDate, date_format_);
-        date_receive = (SampleNumber == 1) ? parseDate($("#RecDate").val(), date_format_) : (SampleNumber == 2) ? parseDate($("#RecDate2").val(), date_format_) : (SampleNumber == 2) ? parseDate($("#RecDate3").val(), date_format_) : null;
+        var current_value = jQuery.type(newTestDate) === 'date' ? newTestDate : parseDate(newTestDate, date_format_);
+        //date_receive = (SampleNumber == 1) ? parseDate($("#RecDate").val(), date_format_) : (SampleNumber == 2) ? parseDate($("#RecDate2").val(), date_format_) : (SampleNumber == 2) ? parseDate($("#RecDate3").val(), date_format_) : null;
         //date_receive = typeof (date_receive) == "object" ? date_receive : parseDate(date_receive, date_format_);
+        date_receive = (SampleNumber == 1) ? jQuery.type(app.Views.Lab.RecDate()) === 'date' ? app.Views.Lab.RecDate() : parseDate($("#RecDate").val(), date_format_) : (SampleNumber == 2) ? jQuery.type(app.Views.Lab.RecDate2()) === 'date' ? app.Views.Lab.RecDate2() : parseDate($("#RecDate2").val(), date_format_) : (SampleNumber == 3) ? jQuery.type(app.Views.Lab.RecDate3()) === 'date' ? app.Views.Lab.RecDate3() : parseDate($("#RecDate3").val(), date_format_) : null;
 
         if (date_receive == null || date_receive == "") {
             //alert("Por favor ingrese antes la fecha de recepción de muestra de la Muestra 1");
             alert(msgValidationTestDateInvalidDate);
-            self.TestDate("");
+            self.TestDate(null);
         } else {
             if (moment(current_value).isBefore(moment(date_receive), "days")) {
                 //alert("La fecha de proceso de la Muestra 1 no puede ser menor a la fecha de recepción de muestra de la Muestra 1");
                 alert(msgValidationTestDateProcessAlert);
-                self.TestDate("");
+                self.TestDate(null);
             }
         }
         
     });
 
     self.TestEndDate.subscribe(function (newTestEndDate) {
-        var current_value = typeof (newTestEndDate) == "object" ? newTestEndDate : parseDate(newTestEndDate, date_format_);
-        var date_TestBeginDate = typeof (self.TestDate()) == "object" ? self.TestDate() : parseDate(self.TestDate(), date_format_);
+        var current_value = jQuery.type(newTestEndDate) === 'date' ? newTestEndDate : parseDate(newTestEndDate, date_format_);
+        var date_TestBeginDate = jQuery.type(self.TestDate()) === 'date' ? self.TestDate() : parseDate(self.TestDate(), date_format_);
 
         if (date_TestBeginDate == null || date_TestBeginDate == "") {
             //alert("Por favor ingrese antes la fecha de inicio del proceso");
@@ -133,7 +134,7 @@
 
     self.EnableVirusTypes = ko.computed(function () {
         //if (((self.TestResultID() != "U" && self.TestResultID() != "N" && self.EnableCHI()) || (self.TestResultID() != "U" && self.DisableCHI())) && self.TestResultID() != "" && typeof self.TestResultID() != "undefined") { // Desactivado por requerimiento de RRR y Suriname porque si les interesa ingresar cuando es negativo
-        if (self.TestResultID() != "U" && self.TestResultID() != "" && typeof self.TestResultID() != "undefined") {
+        if (self.TestResultID() != "NA" && self.TestResultID() != "NB" && self.TestResultID() != "I" && self.TestResultID() != "V" && self.TestResultID() != "U" && self.TestResultID() != "" && typeof self.TestResultID() != "undefined") {
             if (self.TestType() == 1 && self.TestResultID() == "N"){  
                 return false;
             } else {
@@ -456,6 +457,36 @@
 
     };
 
+    self.VisibleTestResultIFI = function (option, item) {
+        //console.log('item id = ');
+        //console.log(app.Views.Lab.CanIFILab());
+        //console.log(typeof (item));
+        //console.log(app.Views.Lab.LabTests().length);
+        if (typeof (item) != 'undefined' && app.Views.Home.UsrCountry() != 7)
+        {
+                if (item.Id == 'NA' || item.Id == 'NB') {
+                    ko.applyBindingsToNode(option, {
+                        attr: {
+                            'style': 'display:none'
+                        }
+                    }, item);
+                }
+        } else if (typeof (item) != 'undefined' && app.Views.Home.UsrCountry() == 7) {
+            if(app.Views.Lab.CanPCRLab() == true && app.Views.Lab.CanIFILab() == false)
+            {
+                if (item.Id == 'NA' || item.Id == 'NB') {
+                    ko.applyBindingsToNode(option, {
+                        attr: {
+                            'style': 'display:none'
+                        }
+                    }, item);
+                }
+            }
+        }
+        
+
+    };
+
 };
 
 function LabViewModel(app, dataModel) {
@@ -505,18 +536,18 @@ function LabViewModel(app, dataModel) {
     self.RecDate.subscribe(function (newRecDate) {
         if (self.hasReset() != true && newRecDate != "")
         {
-            var current_value = typeof (newRecDate) == "object" ? newRecDate : parseDate(newRecDate, date_format_);
-            var date_sample_date_ = typeof (app.Views.Hospital.SampleDate()) == "object" ? app.Views.Hospital.SampleDate() : parseDate(app.Views.Hospital.SampleDate(), date_format_);
+            var current_value = jQuery.type(newRecDate) === 'date' ? newRecDate : parseDate(newRecDate, date_format_);
+            var date_sample_date_ = jQuery.type(app.Views.Hospital.SampleDate()) === 'date' ? app.Views.Hospital.SampleDate() : parseDate(app.Views.Hospital.SampleDate(), date_format_);
 
             if ((date_sample_date_ == null || date_sample_date_ == "") && self.hasReset() != true) {
                 //alert("Por favor ingrese antes la fecha de toma muestra de la Muestra 1");
                 alert(msgValidationSampleDateS1);
-                    self.RecDate("");
+                    self.RecDate(null);
                 } else {
                     if (moment(current_value).isBefore(moment(date_sample_date_), "days")) {
                         //alert("La fecha de recepción de Muestra 1 no puede ser menor a la fecha de toma muestra de la Muestra 1");
                         alert(msgValidationSampleDateValidateS1);
-                        self.RecDate("");
+                        self.RecDate(null);
                     }
                   }
         }
@@ -525,18 +556,18 @@ function LabViewModel(app, dataModel) {
     self.RecDate2.subscribe(function (newRecDate2) {
         if (self.UsrCountry() == 7 || self.UsrCountry() == 3 || self.UsrCountry() == 25) {
             if (self.hasReset() != true && newRecDate2 != "") {
-                var current_value = typeof (newRecDate2) == "object" ? newRecDate2 : parseDate(newRecDate2, date_format_);
-                var date_sample_date_ = typeof (app.Views.Hospital.SampleDate2()) == "object" ? app.Views.Hospital.SampleDate2() : parseDate(app.Views.Hospital.SampleDate2(), date_format_);
+                var current_value = jQuery.type(newRecDate2) === 'date'  ? newRecDate2 : parseDate(newRecDate2, date_format_);
+                var date_sample_date_ = jQuery.type(app.Views.Hospital.SampleDate2()) === 'date'  ? app.Views.Hospital.SampleDate2() : parseDate(app.Views.Hospital.SampleDate2(), date_format_);
 
                 if (date_sample_date_ == null || date_sample_date_ == "") {
                     //alert("Por favor ingrese antes la fecha de toma muestra de la Muestra 2");
                     alert(msgValidationSampleDateS2);
-                    self.RecDate2("");
+                    self.RecDate2(null);
                 } else {
                     if (moment(current_value).isBefore(moment(date_sample_date_), "days")) {
                         //alert("La fecha de recepción de Muestra 2 no puede ser menor a la fecha de toma muestra de la Muestra 2");
                         alert(msgValidationSampleDateValidateS2);
-                        self.RecDate2("");
+                        self.RecDate2(null);
                     }
                 }
             }
@@ -547,19 +578,19 @@ function LabViewModel(app, dataModel) {
     self.RecDate3.subscribe(function (newRecDate3) {
         if (self.UsrCountry() == 7) {
             if (self.hasReset() != true && newRecDate3 != "") {
-                var current_value = typeof (newRecDate3) == "object" ? newRecDate3 : parseDate(newRecDate3, date_format_);
-                var date_sample_date_ = typeof (app.Views.Hospital.SampleDate3()) == "object" ? app.Views.Hospital.SampleDate3() : parseDate(app.Views.Hospital.SampleDate3(), date_format_);
+                var current_value = jQuery.type(newRecDate3) === 'date'  ? newRecDate3 : parseDate(newRecDate3, date_format_);
+                var date_sample_date_ = jQuery.type(app.Views.Hospital.SampleDate3()) === 'date' ? app.Views.Hospital.SampleDate3() : parseDate(app.Views.Hospital.SampleDate3(), date_format_);
                 if (self.UsrCountry() == 7) {
                     if (self.hasReset() != true && newRecDate3 != "") {
                         if (date_sample_date_ == null || date_sample_date_ == "") {
                             //alert("Por favor ingrese antes la fecha de toma muestra de la Muestra 3");
                             alert(msgValidationSampleDateS3);
-                            self.RecDate3("");
+                            self.RecDate3(null);
                         } else {
                             if (moment(current_value).isBefore(moment(date_sample_date_), "days")) {
                                 //alert("La fecha de recepción de Muestra 3 no puede ser menor a la fecha de toma muestra de la Muestra 3");
                                 alert(msgValidationSampleDateValidateS3);
-                                self.RecDate3("");
+                                self.RecDate3(null);
                             }
                         }
                     }
@@ -949,10 +980,10 @@ function LabViewModel(app, dataModel) {
 
     self.validate = function (nextStep) {
         var msg = "";
-        rec_date = parseDate($("#RecDate").val(), date_format_);
-        date_close_date_lab = parseDate($("#EndLabDate").val(), date_format_);
+        rec_date = jQuery.type(self.RecDate()) === 'date' ? self.RecDate() : parseDate($("#RecDate").val(), date_format_);
+        date_close_date_lab = jQuery.type(self.EndLabDate()) === 'date' ? self.EndLabDate() :  parseDate($("#EndLabDate").val(), date_format_);
         //var date_ShipDate = new Date();
-        date_ShipDate = parseDate($("#ShipDate").val(), date_format_);
+        date_ShipDate = jQuery.type(app.Views.Hospital.ShipDate()) === 'date' ? app.Views.Hospital.ShipDate() : parseDate($("#ShipDate").val(), date_format_);
 
         //if (app.Views.Hospital.IsSample() === "true" && $("#ITy").val() != 1 && $("#RecDate").val() !="") {
         if (app.Views.Hospital.IsSample() === "true" && $("#ITy").val() != 1 && self.Processed() == "true") {
@@ -1170,26 +1201,26 @@ function LabViewModel(app, dataModel) {
     self.GetLab = function (id) {
         self.Id = id;       
         $.getJSON(app.dataModel.getLabUrl, { id: id }, function (data, status) {
-                (data.RecDate) ? self.RecDate(moment(data.RecDate).format(date_format_moment)) : self.RecDate("");
+            (data.RecDate) ? self.RecDate(moment(data.RecDate).clone().toDate()) : self.RecDate(null);
                 self.Processed((data.Processed != null) ? data.Processed.toString() : "");
                 self.NoProRen(data.NoProRen);
                 self.NoProRenId(data.NoProRenId);
                 self.TempSample1(data.TempSample1);
                 self.hasGet(true);
 
-                (data.RecDate2) ? self.RecDate2(moment(data.RecDate2).format(date_format_moment)) : self.RecDate2("");
+                (data.RecDate2) ? self.RecDate2(moment(data.RecDate2).clone().toDate()) : self.RecDate2(null);
                 self.Processed2((data.Processed2 != null) ? data.Processed2.toString() : "");
                 self.NoProRen2(data.NoProRen2);
                 self.NoProRenId2(data.NoProRenId2);
                 self.TempSample2(data.TempSample2);
 
-                (data.RecDate3) ? self.RecDate3(moment(data.RecDate3).format(date_format_moment)) : self.RecDate3("");
+                (data.RecDate3) ? self.RecDate3(moment(data.RecDate3).clone().toDate()) : self.RecDate3(null);
                 self.Processed3((data.Processed3 != null) ? data.Processed3.toString() : "");
                 self.NoProRen3(data.NoProRen3);
                 self.NoProRenId3(data.NoProRenId3);
                 self.TempSample3(data.TempSample3);
 
-                 (data.EndLabDate) ? self.EndLabDate(moment(data.EndLabDate).format(date_format_moment)) : self.EndLabDate("");
+                (data.EndLabDate) ? self.EndLabDate(moment(data.EndLabDate).clone().toDate()) : self.EndLabDate(null);
                 self.FResult(data.FResult);
                 self.Comments(data.Comments);
                 self.FinalResult(data.FinalResult);
@@ -1230,7 +1261,6 @@ function LabViewModel(app, dataModel) {
                         labtest.CanPCR((typeof data.LabTests[index].CanPCR === "undefined" ) ? false : data.LabTests[index].CanPCR );
                         labtest.CanIFI((typeof data.LabTests[index].CanIFI === "undefined") ? false : data.LabTests[index].CanIFI);
                         labtest.EndFlow(data.LabTests[index].EndFlow);
-                        console.log("Lab - Mue1 "+labtest.EndFlow());
                         labtest.ProcLab(data.LabTests[index].ProcLab.toString());
                         labtest.LabID(data.LabTests[index].ProcLab.toString());
                         labtest.ProcLabName(data.LabTests[index].ProcLabName.toString());
@@ -1238,9 +1268,9 @@ function LabViewModel(app, dataModel) {
                         labtest.TestType(data.LabTests[index].TestType);
                         labtest.SampleNumber(1);
                         if (data.LabTests[index].TestDate)
-                            labtest.TestDate(moment(data.LabTests[index].TestDate).format(date_format_moment));
-                        labtest.TestResultID(data.LabTests[index].TestResultID);
-                        labtest.VirusTypeID(data.LabTests[index].VirusTypeID);
+                            labtest.TestDate(moment(data.LabTests[index].TestDate).clone().toDate());
+                        labtest.TestResultID((app.Views.Home.UsrCountry() == 7 && data.LabTests[index].TestType == 1 && data.LabTests[index].TestResultID == 'N' && data.LabTests[index].VirusTypeID == 1) ? 'NA' : (app.Views.Home.UsrCountry() == 7 && data.LabTests[index].TestType == 1 && data.LabTests[index].TestResultID == 'N' && data.LabTests[index].VirusTypeID == 2) ? 'NB' : data.LabTests[index].TestResultID);
+                        labtest.VirusTypeID((app.Views.Home.UsrCountry() == 7 && data.LabTests[index].TestType == 1  && data.LabTests[index].TestResultID == 'N') ? null : data.LabTests[index].VirusTypeID);
                         labtest.CTVirusType(data.LabTests[index].CTVirusType);
                         labtest.CTRLVirusType(data.LabTests[index].CTRLVirusType);
                         labtest.OtherVirusTypeID(data.LabTests[index].OtherVirusTypeID);
@@ -1271,7 +1301,7 @@ function LabViewModel(app, dataModel) {
                         labtest.CTRLRNP(data.LabTests[index].CTRLRNP);
                         labtest.CTRLNegative(data.LabTests[index].CTRLNegative);
                         if (data.LabTests[index].TestEndDate)
-                            labtest.TestEndDate(moment(data.LabTests[index].TestEndDate).format(date_format_moment));
+                            labtest.TestEndDate(moment(data.LabTests[index].TestEndDate).clone().toDate());
                         self.LabTests.push(labtest);
                     }
                 }
@@ -1292,9 +1322,11 @@ function LabViewModel(app, dataModel) {
                         labtest_s2.TestType(data.LabTests_Sample2[index].TestType);
                         labtest_s2.SampleNumber(2);
                         if (data.LabTests_Sample2[index].TestDate)
-                            labtest_s2.TestDate(moment(data.LabTests_Sample2[index].TestDate).format(date_format_moment));
-                        labtest_s2.TestResultID(data.LabTests_Sample2[index].TestResultID);
-                        labtest_s2.VirusTypeID(data.LabTests_Sample2[index].VirusTypeID);
+                            labtest_s2.TestDate(moment(data.LabTests_Sample2[index].TestDate).clone().toDate());
+                        //labtest_s2.TestResultID(data.LabTests_Sample2[index].TestResultID);
+                        //labtest_s2.VirusTypeID(data.LabTests_Sample2[index].VirusTypeID);
+                        labtest_s2.TestResultID((app.Views.Home.UsrCountry() == 7 && data.LabTests_Sample2[index].TestType == 1 && data.LabTests_Sample2[index].TestResultID == 'N' && data.LabTests_Sample2[index].VirusTypeID == 1) ? 'NA' : (app.Views.Home.UsrCountry() == 7 && data.LabTests_Sample2[index].TestType == 1 && data.LabTests_Sample2[index].TestResultID == 'N' && data.LabTests_Sample2[index].VirusTypeID == 2) ? 'NB' : data.LabTests_Sample2[index].TestResultID);
+                        labtest_s2.VirusTypeID((app.Views.Home.UsrCountry() == 7 && data.LabTests_Sample2[index].TestType == 1 && data.LabTests_Sample2[index].TestResultID == 'N') ? null : data.LabTests_Sample2[index].VirusTypeID);
                         labtest_s2.CTVirusType(data.LabTests_Sample2[index].CTVirusType);
                         labtest_s2.CTRLVirusType(data.LabTests_Sample2[index].CTRLVirusType);
                         labtest_s2.OtherVirusTypeID(data.LabTests_Sample2[index].OtherVirusTypeID);
@@ -1319,7 +1351,7 @@ function LabViewModel(app, dataModel) {
                         labtest_s2.CTRLRNP(data.LabTests_Sample2[index].CTRLRNP);
                         labtest_s2.CTRLNegative(data.LabTests_Sample2[index].CTRLNegative);
                         if (data.LabTests_Sample2[index].TestEndDate)
-                            labtest_s2.TestEndDate(moment(data.LabTests_Sample2[index].TestEndDate).format(date_format_moment));
+                            labtest_s2.TestEndDate(moment(data.LabTests_Sample2[index].TestEndDate).clone().toDate());
                         self.LabTests_Sample2.push(labtest_s2);
                     }
                 }
@@ -1340,9 +1372,11 @@ function LabViewModel(app, dataModel) {
                         labtest_s3.TestType(data.LabTests_Sample3[index].TestType);
                         labtest_s3.SampleNumber(3);
                         if (data.LabTests_Sample3[index].TestDate)
-                            labtest_s3.TestDate(moment(data.LabTests_Sample3[index].TestDate).format(date_format_moment));
-                        labtest_s3.TestResultID(data.LabTests_Sample3[index].TestResultID);
-                        labtest_s3.VirusTypeID(data.LabTests_Sample3[index].VirusTypeID);
+                            labtest_s3.TestDate(moment(data.LabTests_Sample3[index].TestDate).clone().toDate());
+                        //labtest_s3.TestResultID(data.LabTests_Sample3[index].TestResultID);
+                        //labtest_s3.VirusTypeID(data.LabTests_Sample3[index].VirusTypeID);
+                        labtest_s3.TestResultID((app.Views.Home.UsrCountry() == 7 && data.LabTests_Sample3[index].TestType == 1 && data.LabTests_Sample3[index].TestResultID == 'N' && data.LabTests_Sample3[index].VirusTypeID == 1) ? 'NA' : (app.Views.Home.UsrCountry() == 7 && data.LabTests_Sample3[index].TestType == 1 && data.LabTests_Sample3[index].TestResultID == 'N' && data.LabTests_Sample3[index].VirusTypeID == 2) ? 'NB' : data.LabTests_Sample3[index].TestResultID);
+                        labtest_s3.VirusTypeID((app.Views.Home.UsrCountry() == 7 && data.LabTests_Sample3[index].TestType == 1 && data.LabTests_Sample3[index].TestResultID == 'N') ? null : data.LabTests_Sample3[index].VirusTypeID);
                         labtest_s3.CTVirusType(data.LabTests_Sample3[index].CTVirusType);
                         labtest_s3.CTRLVirusType(data.LabTests_Sample3[index].CTRLVirusType);
                         labtest_s3.OtherVirusTypeID(data.LabTests_Sample3[index].OtherVirusTypeID);
@@ -1367,7 +1401,7 @@ function LabViewModel(app, dataModel) {
                         labtest_s3.CTRLRNP(data.LabTests_Sample3[index].CTRLRNP);
                         labtest_s3.CTRLNegative(data.LabTests_Sample3[index].CTRLNegative);
                         if (data.LabTests_Sample3[index].TestEndDate)
-                            labtest_s3.TestEndDate(moment(data.LabTests_Sample3[index].TestEndDate).format(date_format_moment));
+                            labtest_s3.TestEndDate(moment(data.LabTests_Sample3[index].TestEndDate).clone().toDate());
                         self.LabTests_Sample3.push(labtest_s3);
                     }
                 }
@@ -1407,28 +1441,22 @@ function LabViewModel(app, dataModel) {
             self.OrderDummy(self.OrderArrayFinalResult.sort(self.generateSortFn([{ name: 'OrdenTestResultID' }, { name: 'OrdenVirusTypeID' }, { name: 'OrdenTestResultID_VirusSubType' }, { name: 'OrdenTestResultID_VirusSubType_2' }, { name: 'OrdenSubTypeID' }, { name: 'OrdenLineageID' }, { name: 'OrdenTestType' }])));
 
             self.OrderArrayFinalResult([]);
-            //console.log(self.OrderDummy());
-
 
             self.OrderDummy().forEach(function (v, i) {
-                
+
                 if (i == 0) {
                     //console.log(v);
                     self.OrderArrayFinalResult.push(v);
-                } else if (self.OrderDummy()[i - 1].VirusTypeID() != v.VirusTypeID() && v.TestResultID() != "N" ) {
-                    //console.log("otro nodo " + self.OrderDummy()[i - 1].VirusTypeID() + " Virus ID " + v.VirusTypeID());
-                    //if (v.TestResultID_VirusSubType != "N" )
+                } else if (self.OrderDummy()[i - 1].VirusTypeID() != v.VirusTypeID() && v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB") {
                       self.OrderArrayFinalResult.push(v);
                 }
             });
 
-            //console.log(self.OrderArrayFinalResult());
-            self.OrderArrayFinalResult().forEach(function (v, i) {
-                
+            self.OrderArrayFinalResult().forEach(function (v, i) {                
                 if (i == 0) {
                     self.EndLabDate(v.TestEndDate());
-                    self.FinalResult(v.TestResultID());
-                    if (v.TestResultID() != "N" ) {
+                    self.FinalResult((v.TestResultID() == "NA" || v.TestResultID() == "NB") ? 'N' : v.TestResultID());
+                    if (v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB") {
                         self.FinalResultVirusTypeID(v.VirusTypeID());
                         if (v.TestResultID_VirusSubType() ==  "P")
                             self.FinalResultVirusSubTypeID(v.VirusSubTypeID());
@@ -1439,16 +1467,16 @@ function LabViewModel(app, dataModel) {
                     
                 }
                 if (i == 1) {
-                    self.FinalResult_2(v.TestResultID());
-                    if (v.TestResultID() != "N") {
+                    self.FinalResult_2((v.TestResultID() == "NA" || v.TestResultID() == "NB") ? 'N' : v.TestResultID());
+                    if (v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB") {
                         self.FinalResultVirusTypeID_2(v.VirusTypeID());
                         self.FinalResultVirusSubTypeID_2(v.VirusSubTypeID());
                         self.FinalResultVirusLineageID_2(v.VirusLineageID());
                     }
                 }
                 if (i == 2) {
-                    self.FinalResult_3(v.TestResultID());
-                    if (v.TestResultID() != "N") {
+                    self.FinalResult_3((v.TestResultID() == "NA" || v.TestResultID() == "NB") ? 'N' : v.TestResultID());
+                    if (v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB") {
                         self.FinalResultVirusTypeID_3(v.VirusTypeID());
                         self.FinalResultVirusSubTypeID_3(v.VirusSubTypeID());
                         self.FinalResultVirusLineageID_3(v.VirusLineageID());
@@ -1484,10 +1512,10 @@ function LabViewModel(app, dataModel) {
 
     self.SaveLab = function (nextStep) {
         var postData = [];
-        rec_date = parseDate($("#RecDate").val(), date_format_);
-        rec_date2 = parseDate($("#RecDate2").val(), date_format_);
-        rec_date3 = parseDate($("#RecDate3").val(), date_format_);
-        date_close_date_lab = parseDate($("#EndLabDate").val(), date_format_);
+        rec_date = jQuery.type(self.RecDate()) === 'date' ? self.RecDate() : parseDate($("#RecDate").val(), date_format_);
+        rec_date2 = jQuery.type(self.RecDate2()) === 'date' ? self.RecDate2() : parseDate($("#RecDate2").val(), date_format_);
+        rec_date3 = jQuery.type(self.RecDate3()) === 'date' ? self.RecDate3() : parseDate($("#RecDate3").val(), date_format_);
+        date_close_date_lab = jQuery.type(self.EndLabDate()) === 'date' ? self.EndLabDate() : parseDate($("#EndLabDate").val(), date_format_);
 
         //alert($("#o_S").val());
 
@@ -1508,7 +1536,7 @@ function LabViewModel(app, dataModel) {
                 LabID: newLabID,
                 Processed: self.LabTests()[index].ProcessLab(),
                 SampleNumber: self.LabTests()[index].SampleNumber(),
-                VirusTypeID: self.LabTests()[index].VirusTypeID(),
+                VirusTypeID: self.LabTests()[index].TestResultID() == 'NA' ? 1 : self.LabTests()[index].TestResultID() == 'NB' ? 2 : self.LabTests()[index].VirusTypeID(),
                 CTVirusType: self.LabTests()[index].CTVirusType(),
                 CTRLVirusType: self.LabTests()[index].CTRLVirusType(),
                 OtherVirusTypeID: self.LabTests()[index].OtherVirusTypeID(),
@@ -1537,7 +1565,7 @@ function LabViewModel(app, dataModel) {
                 RNP: self.LabTests()[index].RNP(),
                 CTRLRNP: self.LabTests()[index].CTRLRNP(),
                 CTRLNegative: self.LabTests()[index].CTRLNegative(),
-                TestResultID: self.LabTests()[index].TestResultID(),
+                TestResultID: self.LabTests()[index].TestResultID() == 'NA' || self.LabTests()[index].TestResultID() == 'NB' ? 'N' : self.LabTests()[index].TestResultID(),
                 TestType: self.LabTests()[index].TestType(),
                 TestDate: moment(date_test_start).format(date_format_ISO),
                 TestEndDate: moment(date_test_final).format(date_format_ISO)
@@ -1562,7 +1590,8 @@ function LabViewModel(app, dataModel) {
                 LabID: newLabID,
                 Processed: self.LabTests_Sample2()[index].ProcessLab(),
                 SampleNumber: self.LabTests_Sample2()[index].SampleNumber(),
-                VirusTypeID: self.LabTests_Sample2()[index].VirusTypeID(),
+                //VirusTypeID: self.LabTests_Sample2()[index].VirusTypeID(),
+                VirusTypeID: self.LabTests_Sample2()[index].TestResultID() == 'NA' ? 1 : self.LabTests_Sample2()[index].TestResultID() == 'NB' ? 2 : self.LabTests_Sample2()[index].VirusTypeID(),
                 CTVirusType: self.LabTests_Sample2()[index].CTVirusType(),
                 CTRLVirusType: self.LabTests_Sample2()[index].CTRLVirusType(),
                 OtherVirusTypeID: self.LabTests_Sample2()[index].OtherVirusTypeID(),
@@ -1586,7 +1615,8 @@ function LabViewModel(app, dataModel) {
                 RNP: self.LabTests_Sample2()[index].RNP(),
                 CTRLRNP: self.LabTests_Sample2()[index].CTRLRNP(),
                 CTRLNegative: self.LabTests_Sample2()[index].CTRLNegative(),
-                TestResultID: self.LabTests_Sample2()[index].TestResultID(),
+                //TestResultID: self.LabTests_Sample2()[index].TestResultID(),
+                TestResultID: self.LabTests_Sample2()[index].TestResultID() == 'NA' || self.LabTests_Sample2()[index].TestResultID() == 'NB' ? 'N' : self.LabTests_Sample2()[index].TestResultID(),  
                 TestType: self.LabTests_Sample2()[index].TestType(),
                 TestDate: moment(date_test_start).format(date_format_ISO),
                 TestEndDate: moment(date_test_final).format(date_format_ISO)
@@ -1611,7 +1641,8 @@ function LabViewModel(app, dataModel) {
                 LabID: newLabID,
                 Processed: self.LabTests_Sample3()[index].ProcessLab(),
                 SampleNumber: self.LabTests_Sample3()[index].SampleNumber(),
-                VirusTypeID: self.LabTests_Sample3()[index].VirusTypeID(),
+                //VirusTypeID: self.LabTests_Sample3()[index].VirusTypeID(),
+                VirusTypeID: self.LabTests_Sample3()[index].TestResultID() == 'NA' ? 1 : self.LabTests_Sample3()[index].TestResultID() == 'NB' ? 2 : self.LabTests_Sample3()[index].VirusTypeID(),
                 CTVirusType: self.LabTests_Sample3()[index].CTVirusType(),
                 CTRLVirusType: self.LabTests_Sample3()[index].CTRLVirusType(),
                 OtherVirusTypeID: self.LabTests_Sample3()[index].OtherVirusTypeID(),
@@ -1635,7 +1666,8 @@ function LabViewModel(app, dataModel) {
                 RNP: self.LabTests_Sample3()[index].RNP(),
                 CTRLRNP: self.LabTests_Sample3()[index].CTRLRNP(),
                 CTRLNegative: self.LabTests_Sample3()[index].CTRLNegative(),
-                TestResultID: self.LabTests_Sample3()[index].TestResultID(),
+                //TestResultID: self.LabTests_Sample3()[index].TestResultID(),
+                TestResultID: self.LabTests_Sample3()[index].TestResultID() == 'NA' || self.LabTests_Sample3()[index].TestResultID() == 'NB' ? 'N' : self.LabTests_Sample3()[index].TestResultID(),
                 TestType: self.LabTests_Sample3()[index].TestType(),
                 TestDate: moment(date_test_start).format(date_format_ISO),
                 TestEndDate: moment(date_test_final).format(date_format_ISO)

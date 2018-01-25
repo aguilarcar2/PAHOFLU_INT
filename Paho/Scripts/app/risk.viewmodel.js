@@ -64,22 +64,22 @@
     self.RiskFactors = ko.observable("");
     self.Comorbidities = ko.observable("");
     self.VacInfluenza = ko.observable("");
-    self.VacInfluenzaDateFirst = ko.observable("");
-    self.VacInfluenzaDateSecond = ko.observable("");
+    self.VacInfluenzaDateFirst = ko.observable(new Date());
+    self.VacInfluenzaDateSecond = ko.observable(new Date());
     self.VacBcg = ko.observable(null);
     self.VacBcgDosis = ko.observable(null);
-    self.VacBcgDate = ko.observable("");
+    self.VacBcgDate = ko.observable(new Date());
     self.VacNeumococo = ko.observable(null);
     self.VacNeumococoDosis = ko.observable(null);
-    self.VacNeumococoDate = ko.observable("");
+    self.VacNeumococoDate = ko.observable(new Date());
     self.VacTosFerina = ko.observable(null);
     self.VacTosFerinaDosis = ko.observable(null);
-    self.VacTosFerinaDate = ko.observable("");
+    self.VacTosFerinaDate = ko.observable(new Date());
     self.VacHaemophilus = ko.observable(null);
-    self.VacHaemophilusDate = ko.observable("");
+    self.VacHaemophilusDate = ko.observable(new Date());
     self.VaccinFuente = ko.observable(null);
     self.AntiViral = ko.observable("");
-    self.AntiViralDate = ko.observable("");
+    self.AntiViralDate = ko.observable(new Date());
 
     self.AntiViralDate.subscribe(function (newAntiviralDate) {
         var current_value = typeof (newAntiviralDate) == "object" ? newAntiviralDate : parseDate(newAntiviralDate, date_format_);
@@ -96,9 +96,9 @@
 
     });
 
-    self.AntiViralDateEnd = ko.observable("");
+    self.AntiViralDateEnd = ko.observable(new Date());
     self.AntiViralType = ko.observable(null);
-    self.AStartDate = ko.observable("");
+    self.AStartDate = ko.observable(new Date());
     self.OseltaDose = ko.observable("");
     self.AntiViralDose = ko.observable("");
 
@@ -245,8 +245,8 @@
         if ((app.Views.Contact.AMeasure() == "Month" && app.Views.Contact.Age() < 6) || app.Views.Contact.AMeasure() == "Day" ) {
             return false;
             self.VacInfluenza("");
-            self.VacInfluenzaDateFirst("");
-            self.VacInfluenzaDateSecond("");
+            self.VacInfluenzaDateFirst(null);
+            self.VacInfluenzaDateSecond(null);
         } else {
             return true;
         }
@@ -256,7 +256,7 @@
         if ( app.Views.Contact.AMeasure() == "Year" && app.Views.Contact.Age() > 5) {
             return true;
         } else {
-            self.VacInfluenzaDateFirst("");
+            self.VacInfluenzaDateFirst(null);
             return false;
         }
     }, self);
@@ -265,7 +265,7 @@
         if (app.Views.Contact.AMeasure() == "Month" || app.Views.Contact.AMeasure() == "Day" || (app.Views.Contact.AMeasure() == "Year" && app.Views.Contact.Age() <= 5)) {
             return true;
         } else {
-            self.VacInfluenzaDateSecond("");
+            self.VacInfluenzaDateSecond(null);
             return false;
         }
     }, self);
@@ -464,19 +464,19 @@
         self.ContactoAnimVivos("");                 //**** CAFQ
         self.OcupacMercAnimVivos("");               //**** CAFQ
 
-        self.InfeccHospitFecha("");                 //**** CAFQ
+        self.InfeccHospitFecha(null);                 //**** CAFQ
         self.InfeccHospit("");                      //**** CAFQ
 
         self.ViajePrevSintoma("");              //#### CAFQ
         self.DestPrevSintoma1("");              //#### CAFQ
-        self.DestFechaLlegada1("");              //#### CAFQ
-        self.DestFechaSalida1("");              //#### CAFQ
+        self.DestFechaLlegada1(null);              //#### CAFQ
+        self.DestFechaSalida1(null);              //#### CAFQ
         self.DestPrevSintoma2("");              //#### CAFQ
-        self.DestFechaLlegada2("");              //#### CAFQ
-        self.DestFechaSalida2("");               //#### CAFQ
+        self.DestFechaLlegada2(null);              //#### CAFQ
+        self.DestFechaSalida2(null);               //#### CAFQ
         self.DestPrevSintoma3("");              //#### CAFQ
-        self.DestFechaLlegada3("");              //#### CAFQ
-        self.DestFechaSalida3("");               //#### CAFQ
+        self.DestFechaLlegada3(null);              //#### CAFQ
+        self.DestFechaSalida3(null);               //#### CAFQ
 
         self.ContacDirectoAnim("");        //##### CAFQ
         self.AnimalNaturaContac("");        //##### CAFQ
@@ -531,24 +531,24 @@
 
 
                 if (data.VacInfluenza) self.VacInfluenza(data.VacInfluenza);
-                if (data.VacInfluenzaDateFirst) self.VacInfluenzaDateFirst(moment(data.VacInfluenzaDateFirst).format(date_format_moment)); else self.VacInfluenzaDateFirst(null);
-                if (data.VacInfluenzaDateSecond) self.VacInfluenzaDateSecond(moment(data.VacInfluenzaDateSecond).format(date_format_moment)); else self.VacInfluenzaDateSecond(null);
+                if (data.VacInfluenzaDateFirst) self.VacInfluenzaDateFirst(moment(data.VacInfluenzaDateFirst).clone().toDate()); else self.VacInfluenzaDateFirst(null);
+                if (data.VacInfluenzaDateSecond) self.VacInfluenzaDateSecond(moment(data.VacInfluenzaDateSecond).clone().toDate()); else self.VacInfluenzaDateSecond(null);
                 
                 self.VacBcg(data.VacBcg);
                 self.VacBcgDosis(data.VacBcgDosis);
-                if (data.VacBcgDate) self.VacBcgDate(moment(data.VacBcgDate).format(date_format_moment)); else self.VacBcgDate(null);
+                if (data.VacBcgDate) self.VacBcgDate(moment(data.VacBcgDate).clone().toDate()); else self.VacBcgDate(null);
                 self.VacNeumococo(data.VacNeumococo);
                 self.VacNeumococoDosis(data.VacNeumococoDosis);
-                if (data.VacNeumococoDate) self.VacNeumococoDate(moment(data.VacNeumococoDate).format(date_format_moment)); else self.VacNeumococoDate(null);
+                if (data.VacNeumococoDate) self.VacNeumococoDate(moment(data.VacNeumococoDate).clone().toDate()); else self.VacNeumococoDate(null);
                 self.VacTosFerina(data.VacTosFerina);
                 self.VacTosFerinaDosis(data.VacTosFerinaDosis);
-                if (data.VacTosFerinaDate) self.VacTosFerinaDate(moment(data.VacTosFerinaDate).format(date_format_moment)); else self.VacTosFerinaDate(null);
+                if (data.VacTosFerinaDate) self.VacTosFerinaDate(moment(data.VacTosFerinaDate).clone().toDate()); else self.VacTosFerinaDate(null);
                 self.VacHaemophilus(data.VacHaemophilus);
-                if (data.VacHaemophilusDate) self.VacHaemophilusDate(moment(data.VacHaemophilusDate).format(date_format_moment)); else self.VacHaemophilusDate(null);
+                if (data.VacHaemophilusDate) self.VacHaemophilusDate(moment(data.VacHaemophilusDate).clone().toDate()); else self.VacHaemophilusDate(null);
                 self.VaccinFuente(data.VaccinFuente);
                 self.AntiViral(data.AntiViral);
-                if (data.AntiViralDate) self.AntiViralDate(moment(data.AntiViralDate).format(date_format_moment)); else self.AntiViralDate(null);
-                if (data.AntiViralDateEnd) self.AntiViralDateEnd(moment(data.AntiViralDateEnd).format(date_format_moment)); else self.AntiViralDateEnd(null);
+                if (data.AntiViralDate) self.AntiViralDate(moment(data.AntiViralDate).clone().toDate()); else self.AntiViralDate(null);
+                if (data.AntiViralDateEnd) self.AntiViralDateEnd(moment(data.AntiViralDateEnd).clone().toDate()); else self.AntiViralDateEnd(null);
                 
                 self.AntiViralType(data.AntiViralType);
                 self.OseltaDose(data.OseltaDose);
@@ -562,19 +562,19 @@
                 
                 self.InfeccHospit(data.InfeccHospit);                    //#### CAFQ
                 if (data.InfeccHospitFecha)                    //#### CAFQ
-                    self.InfeccHospitFecha(moment(data.InfeccHospitFecha).format(date_format_moment));
+                    self.InfeccHospitFecha(moment(data.InfeccHospitFecha).clone().toDate());
                 else self.InfeccHospitFecha(null);
 
                 self.ViajePrevSintoma(data.ViajePrevSintoma);           //#### CAFQ
                 self.DestPrevSintoma1(data.DestPrevSintoma1);           //#### CAFQ
                 self.DestPrevSintoma2(data.DestPrevSintoma2);           //#### CAFQ
                 self.DestPrevSintoma3(data.DestPrevSintoma3);           //#### CAFQ
-                if (data.DestFechaLlegada1) self.DestFechaLlegada1(moment(data.DestFechaLlegada1).format(date_format_moment)); else self.DestFechaLlegada1(null);           //#### CAFQ
-                if (data.DestFechaLlegada2) self.DestFechaLlegada2(moment(data.DestFechaLlegada2).format(date_format_moment)); else self.DestFechaLlegada2(null);           //#### CAFQ
-                if (data.DestFechaLlegada3) self.DestFechaLlegada3(moment(data.DestFechaLlegada3).format(date_format_moment)); else self.DestFechaLlegada3(null);           //#### CAFQ
-                if (data.DestFechaSalida1) self.DestFechaSalida1(moment(data.DestFechaSalida1).format(date_format_moment)); else self.DestFechaSalida1(null);           //#### CAFQ
-                if (data.DestFechaSalida2) self.DestFechaSalida2(moment(data.DestFechaSalida2).format(date_format_moment)); else self.DestFechaSalida2(null);           //#### CAFQ
-                if (data.DestFechaSalida3) self.DestFechaSalida3(moment(data.DestFechaSalida3).format(date_format_moment)); else self.DestFechaSalida3(null);           //#### CAFQ
+                if (data.DestFechaLlegada1) self.DestFechaLlegada1(moment(data.DestFechaLlegada1).clone().toDate()); else self.DestFechaLlegada1(null);           //#### CAFQ
+                if (data.DestFechaLlegada2) self.DestFechaLlegada2(moment(data.DestFechaLlegada2).clone().toDate()); else self.DestFechaLlegada2(null);           //#### CAFQ
+                if (data.DestFechaLlegada3) self.DestFechaLlegada3(moment(data.DestFechaLlegada3).clone().toDate()); else self.DestFechaLlegada3(null);           //#### CAFQ
+                if (data.DestFechaSalida1) self.DestFechaSalida1(moment(data.DestFechaSalida1).clone().toDate()); else self.DestFechaSalida1(null);           //#### CAFQ
+                if (data.DestFechaSalida2) self.DestFechaSalida2(moment(data.DestFechaSalida2).clone().toDate()); else self.DestFechaSalida2(null);           //#### CAFQ
+                if (data.DestFechaSalida3) self.DestFechaSalida3(moment(data.DestFechaSalida3).clone().toDate()); else self.DestFechaSalida3(null);           //#### CAFQ
                 self.ContacDirectoAnim(data.ContacDirectoAnim);           //#### CAFQ
                 self.AnimalNaturaContac(data.AnimalNaturaContac);           //#### CAFQ
                 self.ExpuextoSimilSintoma(data.ExpuextoSimilSintoma);           //#### CAFQ
@@ -755,23 +755,23 @@
     };
 
     self.SaveRisk = function (nextStep) {
-        date_influenza_1 = parseDate($("#VacInfluenzaDateFirst").val(), date_format_);
-        date_influenza_2 = parseDate($("#VacInfluenzaDateSecond").val(), date_format_);
-        date_neumococo = parseDate($("#VacNeumococoDate").val(), date_format_);
-        date_tosferina = parseDate($("#VacTosFerinaDate").val(), date_format_);
-        date_haemophilus = parseDate($("#VacHaemophilusDate").val(), date_format_);
+        date_influenza_1 = jQuery.type(self.VacInfluenzaDateFirst()) === 'date' ? self.VacInfluenzaDateFirst() : parseDate($("#VacInfluenzaDateFirst").val(), date_format_);
+        date_influenza_2 = jQuery.type(self.VacInfluenzaDateSecond()) === 'date' ? self.VacInfluenzaDateSecond() : parseDate($("#VacInfluenzaDateSecond").val(), date_format_);
+        date_neumococo = jQuery.type(self.VacNeumococoDate()) === 'date' ? self.VacNeumococoDate() : parseDate($("#VacNeumococoDate").val(), date_format_);
+        date_tosferina = jQuery.type(self.VacTosFerinaDate()) === 'date' ? self.VacTosFerinaDate() : parseDate($("#VacTosFerinaDate").val(), date_format_);
+        date_haemophilus = jQuery.type(self.VacHaemophilusDate()) === 'date' ? self.VacHaemophilusDate() : parseDate($("#VacHaemophilusDate").val(), date_format_);
         
-        date_antiviral = parseDate($("#AntiViralDate").val(), date_format_);
-        date_antiviral_end = parseDate($("#AntiViralDateEnd").val(), date_format_);
+        date_antiviral = jQuery.type(self.AntiViralDate()) === 'date' ? self.AntiViralDate() : parseDate($("#AntiViralDate").val(), date_format_);
+        date_antiviral_end = jQuery.type(self.AntiViralDateEnd()) === 'date' ? self.AntiViralDateEnd() : parseDate($("#AntiViralDateEnd").val(), date_format_);
         
-        date_DestFechaLlegada1 = parseDate($("#DestFechaLlegada1").val(), date_format_);            //#### CAFQ
-        date_DestFechaLlegada2 = parseDate($("#DestFechaLlegada2").val(), date_format_);            //#### CAFQ
-        date_DestFechaLlegada3 = parseDate($("#DestFechaLlegada3").val(), date_format_);            //#### CAFQ
-        date_DestFechaSalida1 = parseDate($("#DestFechaSalida1").val(), date_format_);            //#### CAFQ
-        date_DestFechaSalida2 = parseDate($("#DestFechaSalida2").val(), date_format_);            //#### CAFQ
-        date_DestFechaSalida3 = parseDate($("#DestFechaSalida3").val(), date_format_);            //#### CAFQ
+        date_DestFechaLlegada1 = jQuery.type(self.DestFechaLlegada1()) === 'date' ? self.DestFechaLlegada1() : parseDate($("#DestFechaLlegada1").val(), date_format_);            //#### CAFQ
+        date_DestFechaLlegada2 = jQuery.type(self.DestFechaLlegada2()) === 'date' ? self.DestFechaLlegada2() : parseDate($("#DestFechaLlegada2").val(), date_format_);            //#### CAFQ
+        date_DestFechaLlegada3 = jQuery.type(self.DestFechaLlegada3()) === 'date' ? self.DestFechaLlegada3() : parseDate($("#DestFechaLlegada3").val(), date_format_);            //#### CAFQ
+        date_DestFechaSalida1 = jQuery.type(self.DestFechaSalida1()) === 'date' ? self.DestFechaSalida1() : parseDate($("#DestFechaSalida1").val(), date_format_);            //#### CAFQ
+        date_DestFechaSalida2 = jQuery.type(self.DestFechaSalida2()) === 'date' ? self.DestFechaSalida2() : parseDate($("#DestFechaSalida2").val(), date_format_);            //#### CAFQ
+        date_DestFechaSalida3 = jQuery.type(self.DestFechaSalida3()) === 'date' ? self.DestFechaSalida3() : parseDate($("#DestFechaSalida3").val(), date_format_);            //#### CAFQ
 
-        date_InfeccHospitFecha = parseDate($("#InfeccHospitFecha").val(), date_format_);        //#### CAFQ
+        date_InfeccHospitFecha = jQuery.type(self.InfeccHospitFecha()) === 'date' ? self.InfeccHospitFecha() : parseDate($("#InfeccHospitFecha").val(), date_format_);        //#### CAFQ
 
          $.post(app.dataModel.saveRiskUrl,
             {

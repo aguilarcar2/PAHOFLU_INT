@@ -61,8 +61,8 @@
     self.DocumentType = ko.observable("");
     self.NoExpediente = ko.observable("");
     self.NationalId = ko.observable("");
-    self.DOB = ko.observable(null);
-    self.DOB_dummy = ko.observable(null);
+    self.DOB = ko.observable(new Date());
+    self.DOB_dummy = ko.observable(new Date());
     self.Age = ko.observable("");
     self.AMeasure = ko.observable("");
     self.AMeasure.subscribe(function(newmeasure){
@@ -330,7 +330,7 @@
         }
     });
     self.Gender = ko.observable("");
-    self.HospitalDate = ko.observable("");
+    self.HospitalDate = ko.observable(new Date());
     self.RegDate = ko.observable(new Date());
     self.FullName = ko.computed(function () {
         return self.FName1() + " " + (self.FName2() || "") + " " + self.LName1() + " " + (self.LName2() || "");
@@ -706,8 +706,8 @@
                 self.NoExpediente(data.NoExpediente);
                 self.NationalId(data.NationalId);
                 if (data.DOB) {
-                    self.DOB(moment(data.DOB).format(date_format_moment));
-                    self.DOB_dummy(moment(data.DOB).format(date_format_moment));
+                    self.DOB(moment(data.DOB).clone().toDate());
+                    self.DOB_dummy(moment(data.DOB).clone().toDate());
                 } else {
                     self.DOB(null);
                     self.CalculateDOB();
@@ -716,9 +716,8 @@
                 self.AMeasure(data.AMeasure);
                 if (data.Gender)
                     self.Gender(data.Gender);
-                self.HospitalDate(moment(data.HospitalDate).format(date_format_moment));
-                self.RegDate(moment(data.RegDate).format(date_format_moment));
-                console.log(data.RegDate);
+                self.HospitalDate(moment(data.HospitalDate).clone().toDate());
+                self.RegDate(moment(data.RegDate).clone().toDate());
                 self.selectedNationalityID(data.nationality);
                 self.selectedNativepeopleID(data.nativepeople);
                 self.hasHospitalID(data.hospitalIDRecord);
@@ -760,10 +759,16 @@
     };
 
     self.SaveContact = function (nextStep) {
-        date_hospital = parseDate($("#HospitalDate").val(), date_format_);
-        date_reg_date = parseDate($("#RegDate").val(), date_format_);
-        date_DOB = parseDate($("#DOB").val(), date_format_);
-        date_fever_dummy = parseDate($("#FeverDate").val(), date_format_);
+        date_hospital = jQuery.type(self.HospitalDate()) === 'date' ? self.HospitalDate() : parseDate($("#HospitalDate").val(), date_format_);
+        date_reg_date = jQuery.type(self.RegDate()) === 'date' ? self.RegDate() : parseDate($("#RegDate").val(), date_format_);
+        date_DOB = jQuery.type(self.DOB()) === 'date' ? self.DOB() : parseDate($("#DOB").val(), date_format_);
+        date_fever_dummy = jQuery.type(app.Views.Hospital.FeverDate()) === 'date' ? app.Views.Hospital.FeverDate() : parseDate($("#FeverDate").val(), date_format_);
+        console.log("date_hospital " + date_hospital);
+        console.log("self.HospitalDate " + self.HospitalDate());
+        console.log("jquery.type self.HospitalDate " + jQuery.type(self.HospitalDate()));
+        console.log("date_reg_date " + date_reg_date);
+        console.log("self.RegDate " + self.RegDate());
+        console.log("typeof self.RegDate " + typeof (self.RegDate()));
         if (self.DocumentType() == "" && (self.UsrCountry() == 25 || self.UsrCountry() == 11 || self.UsrCountry() == 18)) {//sirve para que en el caso de Suriname, el DocumentType se llene con un valor predeterminado            
             self.DocumentType(8);
         }
@@ -783,6 +788,7 @@
                 Age: self.Age(),
                 AMeasure: self.AMeasure(),
                 Gender: self.Gender(),
+                //HospitalDate: moment(date_hospital).format(date_format_ISO),
                 HospitalDate: moment(date_hospital).format(date_format_ISO),
                 RegDate: moment(date_reg_date).format(date_format_ISO),
                 HospitalId: self.selectedServiceId() > 0 ? self.selectedServiceId() : app.Views.Home.selectedInstitutionId(),
