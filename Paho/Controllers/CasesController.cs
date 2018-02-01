@@ -674,7 +674,7 @@ namespace Paho.Controllers
                      Age = flucase.Age,
                      AMeasure = flucase.AMeasure.ToString(),
                      Gender = flucase.Gender.ToString(),
-                     HospitalDate = flucase.HospitalDate,
+                     HospitalDate = flucase.HospitalDate.ToUniversalTime(),
                      RegDate = flucase.RegDate,
                      nationality = flucase.nationality,
                      nativepeople = flucase.nativepeople,
@@ -1698,6 +1698,7 @@ namespace Paho.Controllers
             var CanIFILab = db.Institutions.Where(i => i.ID == user.Institution.ID).First()?.IFI;
 
             var institutionsConfiguration = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(i => i.InstitutionToID == user.Institution.ID && i.InstitutionParentID == flucase.HospitalID);
+            var institutionAnteriorFlow = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(i => i.Priority == flucase.flow - 1 && i.InstitutionParentID == flucase.HospitalID);
             var institutionActualFlow = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(i => i.Priority == flucase.flow && i.InstitutionParentID == flucase.HospitalID);
             var flow_local_lab = 0;
             var flow_statement = flucase.statement ?? 1;
@@ -1714,27 +1715,19 @@ namespace Paho.Controllers
                 {
                      canConclude = flucase.CaseLabTests.Where(y => list_institution_conf.Contains(y.LabID)).Any();
                 }
-                //// Chequeo de muestra de influenza B positivo
+                //// Chequeo de muestra de virus para terminar el flujo
 
                 if (list_by_virus_endflow_byActualFlow.Any())
                 {
                     var list_test_record = flucase.CaseLabTests.OfType<CaseLabTest>();
-                    var Any_Test_EndFlow = false;
-                    var list_test_record_ordered = list_test_record ;
-
-                    if (list_test_record.Where(y => y.TestResultID == "P").Any() && list_test_record.Count() > 1)
-                    {
-                        list_test_record_ordered = list_test_record.OrderByDescending(v => v.CatTestType.orden).ThenBy(y => y.TestResultID).ThenByDescending(x => x.CatVirusType.orden).ThenBy(z => z.VirusSubTypeID).ThenBy(w => w.VirusLineageID);
-                    } else
-                    {
-                        list_test_record_ordered = list_test_record;
-                    }
-
+                    List<EndFlowByVirus> respuesta = ProcedureExecute <EndFlowByVirus> ("EndFlowByVirus", "@RecordID", Id);
                     
-                    foreach (CaseLabTest test_Record in list_test_record_ordered)
+                    var Any_Test_EndFlow = false;
+                    
+                    foreach (EndFlowByVirus test_Record in respuesta)
                     {
 
-                            Any_Test_EndFlow = list_by_virus_endflow_byActualFlow.Where(y => y.id_Cat_TestType == test_Record.TestType && y.value_Cat_TestResult == test_Record.TestResultID && y.id_Cat_VirusType == test_Record.VirusTypeID).Any();
+                        Any_Test_EndFlow = test_Record.ICEFBVID != null;
                             
                     }
 
@@ -2278,6 +2271,42 @@ namespace Paho.Controllers
             searchedMsg = myR.getMessage(searchedMsg, countryID, countryLang);
             //searchedMsg = myR.getMessage(searchedMsg, 0, "ENG");
             return searchedMsg;
+        }
+
+        public List<T> ProcedureExecute<T>(string NameProcedure, string Parameter1, int ValuePar1) where T : new()
+        {
+            List<T> res = new List<T>();
+
+            var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+            using (var con = new SqlConnection(consString))
+            {
+                SqlCommand command = new SqlCommand(NameProcedure, con);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Clear();
+                command.Parameters.Add(Parameter1, SqlDbType.Int).Value = ValuePar1;
+                con.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        T t = new T();
+
+                        for (int inc = 0; inc < reader.FieldCount; inc++)
+                        {
+                            Type type = t.GetType();
+                            System.Reflection.PropertyInfo prop = type.GetProperty(reader.GetName(inc));
+                            prop.SetValue(t, reader.GetValue(inc) == DBNull.Value ? null : reader.GetValue(inc), null);
+                        }
+
+                        res.Add(t);
+                    }
+                }
+                con.Close();
+            }
+
+            return res;
+
         }
 
         [Authorize]

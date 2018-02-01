@@ -55,6 +55,7 @@ $(document).ready(function () {
 
     //var moment = require('moment-timezone');
     moment.tz.setDefault('UTC');
+    moment.locale('es-es');
     //var dec = moment("2014-12-01T00:00:00Z");
     ////console.log(moment.tz.names());
     //var s = dec.toLocaleString();

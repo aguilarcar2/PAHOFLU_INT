@@ -534,7 +534,7 @@ function LabViewModel(app, dataModel) {
     self.CanIFILab = ko.observable(true);
 
     self.RecDate.subscribe(function (newRecDate) {
-        if (self.hasReset() != true && newRecDate != "")
+        if (self.hasReset() != true && newRecDate != "" && newRecDate != null)
         {
             var current_value = jQuery.type(newRecDate) === 'date' ? newRecDate : parseDate(newRecDate, date_format_);
             var date_sample_date_ = jQuery.type(app.Views.Hospital.SampleDate()) === 'date' ? app.Views.Hospital.SampleDate() : parseDate(app.Views.Hospital.SampleDate(), date_format_);
@@ -940,7 +940,7 @@ function LabViewModel(app, dataModel) {
         self.CanIFILab(false);
         self.CanPCRLab(false);
         self.RecDate(null);
-        self.RecDate("");
+        //self.RecDate(null);
         self.Processed("");
         self.TempSample1("");
         self.RecDate2(null);
@@ -1245,6 +1245,7 @@ function LabViewModel(app, dataModel) {
                 self.LabsResult(data.LabsResult);
                 self.SubTypeByLabRes(data.SubTypeByLabRes);
                 self.CanConclude(data.CanConclude);
+                app.Views.Home.CanConclude(data.CanConclude);
                 //app.Views.Contact.flow_record(data.flow_record);
                 //app.Views.Contact.flow_institution(data.flow_institution);
                 //$("#o_S").val(data.DataStatement);

@@ -485,8 +485,8 @@ namespace Paho.Models
         public string description { get; set; }
         [Display(Name = "ENG:")]
         public string ENG { get; set; }
-        [Display(Name = "Valor:")]
         [Key]
+        [Column(Order = 1)]
         public string value { get; set; }
         public int? id_country { get; set; }
         [Display(Name = "Orden:")]
@@ -712,15 +712,48 @@ namespace Paho.Models
 
     public class InstitutionConfEndFlowByVirus
     {
+        
         public int ID { get; set; }
-        public long id_InstCnf { get; set; }
-        public int? id_Cat_VirusType { get; set; }
-        public int? id_Cat_Subtype { get; set; }
-        public string value_Cat_TestResult { get; set; }
+        public long id_Lab { get; set; }
         public int? id_Cat_TestType { get; set; }
+        public string value_Cat_TestResult { get; set; }
+        public int? id_Cat_VirusType { get; set; }
+        public int id_priority_flow { get; set; }
+        public long id_InstCnf { get; set; }
+        public int? id_Cat_Subtype { get; set; }
 
         [ForeignKey("id_InstCnf")]
         public virtual InstitutionConfiguration InstitutionConfiguration { get; set; }
+    }
+
+    public class EndFlowByVirus
+    {
+        public int ID { get; set; }
+        public int FluCaseID { get; set; }
+        public long LabID { get; set; }
+        public string InstitutionName { get; set; }
+        public bool Processed { get; set; }
+        public int SampleNumber { get; set; }
+        public int? VirusTypeID { get; set; }
+        public int? OrdenVirusType { get; set; }
+        public int? OtherVirusTypeID { get; set; }
+        public string OtherVirus { get; set; }
+        public int? TestType { get; set; }
+        public int? OrdenTestType { get; set; }
+        public int? VirusSubTypeID { get; set; }
+        public int? OrdenVirusSubType { get; set; }
+        public int? VirusLineageID { get; set; }
+        public int? OrdenVirusLinaje { get; set; }
+        public string TestResultID { get; set; }
+        public int? OrdenTestResult { get; set; }
+        public int? ICEFBVID { get; set; }
+        public long? id_InstCnf { get; set; }
+        public long? id_Lab { get; set; }
+        public int? id_priority_flow { get; set; }
+        public int? id_Cat_TestType { get; set; }
+        public string value_Cat_TestResult { get; set; }
+        public int? id_Cat_VirusType { get; set; }
+        public int? id_Cat_Subtype { get; set; }
     }
 
     public class FluCase : CaseBase
@@ -1065,6 +1098,7 @@ namespace Paho.Models
         public decimal? CTRLRNP { get; set; }
         public decimal? CTRLNegative { get; set; }
         public int? TestType { get; set; }
+
         public string TestResultID { get; set; }
         public DateTime? TestDate { get; set; }
         public DateTime? TestEndDate { get; set; }
@@ -1085,12 +1119,9 @@ namespace Paho.Models
 
         [ForeignKey("LabID")]
         public virtual Institution Institution { get; set; }
-
-        //[ForeignKey("InstitutionConfiguration")]
-        //[Column(Order = 3)]
-        //public long? HospitalID { get; set; }
-
-        //public InstitutionConfiguration InstitutionConfiguration { get; set; }
+        
+        [ForeignKey("TestResultID")]
+        public virtual CatTestResult CatTestResult { get; set; }
     }
 
     public class CatPopulationInstitution : CaseBase

@@ -433,7 +433,7 @@
     
 
     
-    self.IsSample = ko.observable("");
+    self.IsSample = ko.observable(false);
     $("#NotSample :input, #tab-lab :input").prop('disabled', true);
     self.IsSample.subscribe(function (NewIsSample) {
         if (self.IsSample() === "true") {
@@ -522,11 +522,11 @@
         if (self.hasReset() != true) {
             if (date_fever_ == null || date_fever_ == "") {
                 alert(viewValidateOnsetFeverDate);
-                self.SampleDate("");
+                self.SampleDate(null);
             } else {
                 if (moment(current_value).diff(date_fever_, 'days', false) < 0) {
                     alert(viewValidateSampleDateGtOnsetFeverDate);
-                    self.SampleDate("");
+                    self.SampleDate(null);
                 }
             }
         }
@@ -542,11 +542,11 @@
         if (self.hasReset() != true) {
             if (Sample1Date == null || Sample1Date == "") {
                 alert(msgValidationSampleDateS1);
-                self.ShipDate("");
+                self.ShipDate(null);
             } else {
                 if (moment(current_value).diff(Sample1Date, 'days', false) < 0) {
                     alert(viewValidateShipDateGtSampleDate);
-                    self.ShipDate("");
+                    self.ShipDate(null);
                 }
             }
         }
@@ -570,20 +570,20 @@
                 if (self.hasReset() != true && newSampleDate2 != "") {
                     if (date_fever_ == null || date_fever_ == "") {
                         alert(viewValidateOnsetFeverDate);
-                        self.SampleDate2("");
+                        self.SampleDate2(null);
                     } else {
                         if (moment(current_value).isBefore(moment(date_fever_))) {
                             alert(viewValidateSampleDateGtOnsetFeverDate);
-                            self.SampleDate2("");
+                            self.SampleDate2(null);
                         }
                         if (moment(current_value).diff(date_sampledate_, 'days', false) < 0) {
                             alert(viewValidateSample2DateGtSample1Date);
-                            self.SampleDate2("");
+                            self.SampleDate2(null);
                         }
 
                         if (moment(current_value).diff(date_fever_, 'days', false) > 15) {
                             alert(viewValidateSample2DateLtOnsetDate);
-                            self.SampleDate2("");
+                            self.SampleDate2(null);
                         }
                     }
                 }
@@ -601,11 +601,11 @@
         if (self.hasReset() != true) {
             if (Sample2Date == null || Sample2Date == "") {
                 alert(msgValidationSampleDateS1);
-                self.ShipDate("");
+                self.ShipDate2(null);
             } else {
                 if (moment(current_value).diff(Sample2Date, 'days', false) < 0) {
                     alert(viewValidateShipDateGtSampleDate);
-                    self.ShipDate("");
+                    self.ShipDate2(null);
                 }
             }
         }
@@ -625,24 +625,24 @@
             if (self.hasReset() != true && newSampleDate3 != "") {
                 if (date_fever_ == null || date_fever_ == "") {
                     alert(viewValidateOnsetFeverDate);
-                    self.SampleDate3("");
+                    self.SampleDate3(null);
                 } else {
                     if (moment(current_value).isBefore(moment(date_fever_))) {
                         alert(viewValidateSampleDateGtOnsetFeverDate);
-                        self.SampleDate3("");
+                        self.SampleDate3(null);
                     }
                     if (moment(current_value).diff(date_sampledate_, 'days', false) < 0) {
                         alert(viewValidateSample3DateGtSample1Date);
-                        self.SampleDate3("");
+                        self.SampleDate3(null);
                     }
                     if (moment(current_value).diff(date_sampledate2_, 'days', false) < 0) {
                         alert(viewValidateSample3DateGtSample2Date);
-                        self.SampleDate3("");
+                        self.SampleDate3(null);
                     }
 
                     if (moment(current_value).diff(date_fever_, 'days', false) > 15) {
                         alert(viewValidateSample3DateLtOnsetDate);
-                        self.SampleDate3("");
+                        self.SampleDate3(null);
                     }
                 }
             }
@@ -659,11 +659,11 @@
         if (self.hasReset() != true) {
             if (Sample3Date == null || Sample3Date == "") {
                 alert(msgValidationSampleDateS1);
-                self.ShipDate("");
+                self.ShipDate3(null);
             } else {
                 if (moment(current_value).diff(Sample3Date, 'days', false) < 0) {
                     alert(viewValidateShipDateGtSampleDate);
-                    self.ShipDate("");
+                    self.ShipDate3(null);
                 }
             }
         }
@@ -862,7 +862,7 @@
        self.DiagEg("");
        self.DiagEgVal("");
        self.DiagEgOtro("");         //#### CAFQ
-       self.IsSample("");
+       self.IsSample(false);
        self.SampleDate (null);
        self.SampleType("");
        self.ShipDate(null);

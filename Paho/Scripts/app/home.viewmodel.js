@@ -13,7 +13,7 @@
             return v.Active === true;
         });
     });
-    
+    self.CanConclude = ko.observable(false);
     // Catalogos de laboratorio
     self.CTT = ko.observableArray(CTT);
     self.CTR = ko.observableArray(CTR);
