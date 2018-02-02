@@ -1700,12 +1700,13 @@ namespace Paho.Controllers
             var institutionsConfiguration = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(i => i.InstitutionToID == user.Institution.ID && i.InstitutionParentID == flucase.HospitalID);
             var institutionAnteriorFlow = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(i => i.Priority == flucase.flow - 1 && i.InstitutionParentID == flucase.HospitalID);
             var institutionActualFlow = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(i => i.Priority == flucase.flow && i.InstitutionParentID == flucase.HospitalID);
+            var institucionActualAndPreviousFlow = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(i => i.Priority <= flucase.flow && i.InstitutionParentID == flucase.HospitalID).Select(d=> d.ID);
             var flow_local_lab = 0;
             var flow_statement = flucase.statement ?? 1;
             var flow_open_always = false;
             // Chequeo de muestas segun configuracion de virus por flujo actual
             // Revisar si existe alguna configuracion por virus en el flujo actual
-            var list_by_virus_endflow_byActualFlow = db.InstitutionConfEndFlowByVirus.Where(y=> y.id_InstCnf == institutionActualFlow.FirstOrDefault().ID);
+            var list_by_virus_endflow_byActualFlow = db.InstitutionConfEndFlowByVirus.Where(y=> institucionActualAndPreviousFlow.Contains(y.id_InstCnf));
 
 
             if (user.Institution is Hospital)
@@ -1726,11 +1727,8 @@ namespace Paho.Controllers
                     
                     foreach (EndFlowByVirus test_Record in respuesta)
                     {
-
-                        Any_Test_EndFlow = test_Record.ICEFBVID != null;
-                            
+                        Any_Test_EndFlow = test_Record.ICEFBVID != null;       
                     }
-
                     canConclude = Any_Test_EndFlow && flucase.statement == 2;
                 }
 
@@ -1738,7 +1736,23 @@ namespace Paho.Controllers
 
             if (institutionsConfiguration.Any()) {
 
-                canConclude = institutionsConfiguration.Count(x => x.Conclusion == true) > 0;                
+                if (list_by_virus_endflow_byActualFlow.Any())
+                {
+                    var list_test_record = flucase.CaseLabTests.OfType<CaseLabTest>();
+                    List<EndFlowByVirus> respuesta = ProcedureExecute<EndFlowByVirus>("EndFlowByVirus", "@RecordID", Id);
+                    var Any_Test_EndFlow = false;
+
+                    foreach (EndFlowByVirus test_Record in respuesta)
+                    {
+                        Any_Test_EndFlow = test_Record.ICEFBVID != null;
+                    }
+
+                    canConclude = Any_Test_EndFlow && flucase.statement == 2;
+                }else
+                {
+                    canConclude = institutionsConfiguration.Count(x => x.Conclusion == true) > 0;
+                }
+                                
                 CanPCRLab = db.Institutions.OfType<Lab>().Where(i => i.ID == user.Institution.ID).First()?.PCR;
                 CanIFILab = db.Institutions.OfType<Lab>().Where(i => i.ID == user.Institution.ID).First()?.IFI;
                 flow_local_lab = institutionsConfiguration.First().Priority;
