@@ -819,7 +819,7 @@
 
         <div class="row rowform" data-bind="visible: IsFemal">
             <div class="col-md-12">
-                <button type="button" class="btn btn-group-justified" data-toggle="collapse" data-target="#Embarazo">
+                <button type="button" style="background-color:#E6D7A8; color:#000000" class="btn btn-group-justified" data-toggle="collapse" data-target="#Embarazo">
                         @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelPregnancy"))
                     <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
                 </button>
@@ -880,7 +880,7 @@
         <!-- Seccion: Ocupación -->
         <div class="row rowform" data-bind="visible:app.Views.Contact.IsInusitado">
             <div class="col-md-12">
-                <button type="button" class="btn btn-group-justified" data-toggle="collapse" data-target="#Ocupacion">
+                <button type="button" style="background-color:#E6D7A8; color:#000000" class="btn btn-group-justified" data-toggle="collapse" data-target="#Ocupacion">
                     Ocupación
                     <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
                 </button>
@@ -925,35 +925,30 @@
                         </div>
                     </div>
 
-                    <!-- Paciente contacto con animales/Trabajo en un mercado de animales vivos? -->
+                    <!-- Paciente contacto con animales/Trabajo en un mercado de animales vivos -->
                     <div class="row rowform">
-                        <div class="col-md-3">
-                            <span>
+                        <div class='input-group col-md-12'>
+                            <span class="input-group-addon">
                                 ¿El paciente tuvo contacto con animales vivos o productos de origen animal en su ocupación/escuela u hogar?:
                             </span>
-                        </div>
-
-                        <div class="col-md-3">
                             <label class="btn btn-default">
                                 <input type="radio" name="IN_ContacAnima" id="IN_ContacAnima" value="1" data-bind='checked: ContactoAnimVivos'> Si
                             </label>
-
                             <label class="btn btn-default">
                                 <input type="radio" name="IN_ContacAnima" id="IN_ContacAnima" value="0" data-bind='checked: ContactoAnimVivos'> No
                             </label>
                         </div>
+                    </div>
 
-                        <div class="col-md-3">
-                            <span>
+                    <!-- La ocupación del paciente incluye trabajo en un mercado de animales vivos -->
+                    <div class="row rowform">
+                        <div class='input-group col-md-12'>
+                            <span class="input-group-addon">
                                 ¿La ocupación del paciente incluye trabajo en un mercado de animales vivos?:
                             </span>
-                        </div>
-
-                        <div class="col-md-3">
                             <label class="btn btn-default">
                                 <input type="radio" name="IN_TrabMerc" id="IN_TrabMerc" value="1" data-bind='checked: OcupacMercAnimVivos'> Si
                             </label>
-
                             <label class="btn btn-default">
                                 <input type="radio" name="IN_TrabMerc" id="IN_TrabMerc" value="0" data-bind='checked: OcupacMercAnimVivos'> No
                             </label>
@@ -963,23 +958,21 @@
             </div>
         </div>
 
-
         <!-- Seccion: Exposicion -->
         <div class="row rowform" data-bind="visible:app.Views.Contact.IsInusitado">
             <div class="col-md-12">
-                <button type="button" class="btn btn-group-justified" data-toggle="collapse" data-target="#Exposicion">
+                <button type="button" style="background-color:#E6D7A8; color:#000000" class="btn btn-group-justified" data-toggle="collapse" data-target="#Exposicion">
                     Historia de exposición / Posible exposición
                     <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
                 </button>
 
                 <div id="Exposicion" class="collapse in">
                     <!--Infeccion adquirida durante hospitalización previa/Fecha -->
-                    <div class="row rowform" data-bind="visible:app.Views.Contact.IsInusitado">
-                        <div class="col-md-3">
-                            <span>¿Infección adquirida durante hospitalización previa?</span>
-                        </div>
-
-                        <div class="col-md-1">
+                    <div class="row rowform">
+                        <div class='input-group col-md-4'>
+                            <span class="input-group-addon">
+                                ¿Infección adquirida durante hospitalización previa?
+                            </span>
                             <label class="btn btn-default">
                                 <input type="radio" name="InfeccHospit" id="InfeccHospit" value="1" data-bind="checked: InfeccHospit"> Si
                             </label>
@@ -998,19 +991,20 @@
 
                     <!-- Viaje dias previos -->
                     <div class="row rowform">
-                        <div class="col-md-12">
-                            <span>
+                        <div class='input-group col-md-12'>
+                            <span class="input-group-addon">
+                                <!-- <span>¿El paciente viajó nacional o internacionalmente en los 14 días previos a la aparición de lo síntomas?:</span> -->
                                 ¿El paciente viajó nacional o internacionalmente en los 14 días previos a la aparición de lo síntomas?:
-                                <label class="btn btn-default">
-                                    <input type="radio" name="IN_ViajDiPr" id="IN_ViajDiPr" value="1" data-bind='checked: ViajePrevSintoma'> Si
-                                </label>
-                                <label class="btn btn-default">
-                                    <input type="radio" name="IN_ViajDiPr" id="IN_ViajDiPr" value="0" data-bind='checked: ViajePrevSintoma'> No
-                                </label>
-                                <label class="btn btn-default">
-                                    <input type="radio" name="IN_ViajDiPr" id="IN_ViajDiPr" value="9" data-bind='checked: ViajePrevSintoma'> Desconocido
-                                </label>
                             </span>
+                            <label class="btn btn-default">
+                                <input type="radio" name="IN_ViajDiPr" id="IN_ViajDiPr" value="1" data-bind='checked: ViajePrevSintoma'> Si
+                            </label>
+                            <label class="btn btn-default">
+                                <input type="radio" name="IN_ViajDiPr" id="IN_ViajDiPr" value="0" data-bind='checked: ViajePrevSintoma'> No
+                            </label>
+                            <label class="btn btn-default">
+                                <input type="radio" name="IN_ViajDiPr" id="IN_ViajDiPr" value="9" data-bind='checked: ViajePrevSintoma'> Desconocido
+                            </label>
                         </div>
                     </div>
 
@@ -1094,24 +1088,19 @@
 
                     <!-- Contacto directo o indirecto con animales / Especificar el contacto -->
                     <div class="row rowform">
-                        <div class="col-md-4">
-                            <span>
-                                ¿Tuvo el paciente contacto directo o indirecto con animales (por ejemplo, animales utilizados para caza(por ejemplo, perros, halcones), murciélagos, aves, ganado doméstico en las granjas o mercados, mascotas, roedores o animales silvestres) en los 14 dias previos a la inicio de los síntomas?:
+                        <div class='input-group col-md-12'>
+                            <span class="input-group-addon">
+                                ¿Tuvo el paciente contacto directo o indirecto con animales (por ejemplo, animales utilizados para caza(por ejemplo, perros, halcones), murciélagos, aves, <br />ganado doméstico en las granjas o mercados, mascotas, roedores o animales silvestres) en los 14 dias previos a la inicio de los síntomas?:
                             </span>
-                        </div>
-
-                        <div class="col-md-2">
-                            <span>
-                                <label class="btn btn-default">
-                                    <input type="radio" name="ContacDirectoAnim" id="ContacDirectoAnim" value="1" data-bind="checked: ContacDirectoAnim"> Si
-                                </label>
-                                <label class="btn btn-default">
-                                    <input type="radio" name="ContacDirectoAnim" id="ContacDirectoAnim" value="0" data-bind="checked: ContacDirectoAnim"> No
-                                </label>
-                                <label class="btn btn-default">
-                                    <input type="radio" name="ContacDirectoAnim" id="ContacDirectoAnim" value="9" data-bind="checked: ContacDirectoAnim"> Desconocido
-                                </label>
-                            </span>
+                            <label class="btn btn-default">
+                                <input type="radio" name="ContacDirectoAnim" id="ContacDirectoAnim" value="1" data-bind="checked: ContacDirectoAnim"> Si
+                            </label>
+                            <label class="btn btn-default">
+                                <input type="radio" name="ContacDirectoAnim" id="ContacDirectoAnim" value="0" data-bind="checked: ContacDirectoAnim"> No
+                            </label>
+                            <label class="btn btn-default">
+                                <input type="radio" name="ContacDirectoAnim" id="ContacDirectoAnim" value="9" data-bind="checked: ContacDirectoAnim"> Desconocido
+                            </label>
                         </div>
 
                         <div class="col-md-6" data-bind="visible: IsContacDirectoAnim">
@@ -1126,26 +1115,19 @@
 
                     <!-- Paciente expuesto a persona similar sintomatologia -->
                     <div class="row rowform">
-                        <div class="col-md-6">
-                            <span>
+                        <div class='input-group col-md-12'>
+                            <span class="input-group-addon">
                                 En los 14 días previos a la aparición de la enfermedad, ¿El paciente se expuso a una persona con sintomatología similar a su enfermedad?:
                             </span>
-                        </div>
-
-                        <div class="col-md-6">
-                            <span>
-                                <label class="btn btn-default">
-                                    <input type="radio" name="ExpuextoSimilSintoma" id="ExpuextoSimilSintoma" value="1" data-bind='checked: ExpuextoSimilSintoma'> Si
-                                </label>
-
-                                <label class="btn btn-default">
-                                    <input type="radio" name="ExpuextoSimilSintoma" id="ExpuextoSimilSintoma" value="0" data-bind='checked: ExpuextoSimilSintoma'> No
-                                </label>
-
-                                <label class="btn btn-default">
-                                    <input type="radio" name="ExpuextoSimilSintoma" id="ExpuextoSimilSintoma" value="9" data-bind='checked: ExpuextoSimilSintoma'> Desconocido
-                                </label>
-                            </span>
+                            <label class="btn btn-default">
+                                <input type="radio" name="ExpuextoSimilSintoma" id="ExpuextoSimilSintoma" value="1" data-bind='checked: ExpuextoSimilSintoma'> Si
+                            </label>
+                            <label class="btn btn-default">
+                                <input type="radio" name="ExpuextoSimilSintoma" id="ExpuextoSimilSintoma" value="0" data-bind='checked: ExpuextoSimilSintoma'> No
+                            </label>
+                            <label class="btn btn-default">
+                                <input type="radio" name="ExpuextoSimilSintoma" id="ExpuextoSimilSintoma" value="9" data-bind='checked: ExpuextoSimilSintoma'> Desconocido
+                            </label>
                         </div>
                     </div>
 
@@ -1208,7 +1190,7 @@
         <!-- Vacuna -->
         <div class="row rowform">
             <div class="col-md-12">
-                <button type="button" class="btn btn-group-justified" data-toggle="collapse" data-target="#vacunacion">
+                <button type="button" style="background-color:#E6D7A8; color:#000000" class="btn btn-group-justified" data-toggle="collapse" data-target="#vacunacion">
                         @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelVaccine"))
                     <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
                 </button>
@@ -1442,7 +1424,7 @@
         <!-- Antiviral -->
         <div class="row rowform">
             <div class="col-md-12">
-            <button type="button" class="btn btn-group-justified" data-toggle="collapse" data-target="#antiviral">
+            <button type="button" style="background-color:#E6D7A8; color:#000000" class="btn btn-group-justified" data-toggle="collapse" data-target="#antiviral">
                     @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviral"))
                 <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
             </button>
@@ -1543,7 +1525,7 @@
         <!-- Factores de riesgo y otras comorbilidades -->
         <div class="row rowform">
             <div class="col-md-12">
-                <button id="btnriesgo" type="button" class="btn btn-group-justified" data-toggle="collapse" data-target="#riesgo">
+                <button id="btnriesgo" type="button" style="background-color:#E6D7A8; color:#000000" class="btn btn-group-justified" data-toggle="collapse" data-target="#riesgo">
                         @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsLabel"))
                     <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
                 </button>
