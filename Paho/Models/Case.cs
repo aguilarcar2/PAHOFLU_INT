@@ -59,7 +59,7 @@ namespace Paho.Models
         public object date_format_ { get; set; }
     }
 
-    public class LabTestViewModel
+    public class LabTestViewModel : CaseBase
     {
         public int ID { get; set; }
         public int? CaseLabID  { get; set; }
@@ -98,7 +98,11 @@ namespace Paho.Models
         public Decimal? RNP { get; set; }
         public Decimal? CTRLRNP { get; set; }
         public Decimal? CTRLNegative { get; set; }
-        public DateTime? TestEndDate { get; set; }  
+        public DateTime? TestEndDate { get; set; }
+
+        [ForeignKey("TestResultID")]
+        public virtual CatTestResult CatTestResult { get; set; }
+
     };
 
     public class PrincipalViewModel
@@ -480,13 +484,21 @@ namespace Paho.Models
 
     public class CatTestResult
     {
-        public int ID { get; set; }
+        //public int ID { get; set; }
+
+        //[Column("TestResultID")]
+        //[ForeignKey("TestResultID")]
+
+        //[DatabaseGenerated(PahoDbContext.Identity)]
+
+        //public string TestResultID { get; set; }
+
         [Display(Name = "Descripción:")]
         public string description { get; set; }
         [Display(Name = "ENG:")]
         public string ENG { get; set; }
         [Key]
-        [Column(Order = 1)]
+        public string TestResultID { get; set; }
         public string value { get; set; }
         public int? id_country { get; set; }
         [Display(Name = "Orden:")]
@@ -1099,11 +1111,21 @@ namespace Paho.Models
         public decimal? CTRLNegative { get; set; }
         public int? TestType { get; set; }
 
+        //[ForeignKey("CatTestResult")]
+        //[Column("value")]
         public string TestResultID { get; set; }
         public DateTime? TestDate { get; set; }
         public DateTime? TestEndDate { get; set; }
         //public virtual FluCase FluCase { get; set; }
         //public virtual VirusType VirusType { get; set; }
+        // Control de flujo de las muestras
+        public int? flow_test { get; set; }
+        public int? statement_test { get; set; }
+        public int? flow_flucase { get; set; }
+        public int? statement_flucase { get; set; }
+        public long? inst_cnf_orig { get; set; }
+        public int? inst_conf_end_flow_by_virus { get; set; }
+
         [ForeignKey("TestType")]
         public virtual CatTestType CatTestType { get; set; }
 
@@ -1119,7 +1141,7 @@ namespace Paho.Models
 
         [ForeignKey("LabID")]
         public virtual Institution Institution { get; set; }
-        
+
         [ForeignKey("TestResultID")]
         public virtual CatTestResult CatTestResult { get; set; }
     }

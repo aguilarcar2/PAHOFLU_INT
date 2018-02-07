@@ -398,12 +398,12 @@ namespace Paho.Controllers
                         //flucases = flucases.Where(h => (h.IsSample == true && h.Processed != false && (h.FinalResult == null || h.FinalResult != "N")) && ( ((h.flow == (institutionsConfiguration.Where(i=> i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j=> j.Priority).ToList().FirstOrDefault() - 1)) && (h.statement == 2 || h.statement == null) ) || ((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault())) && (h.statement == 1 || h.statement == null))) );
                         flucases = flucases.Where(h => (h.IsSample == true && h.Processed != false) && (((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault() - 1)) && (h.statement == 2 || h.statement == null)) || ((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault())) && (h.statement == 1 || h.statement == null))));
 
+                        flucases = flucases.Where(i => i.CaseLabTests.Where(x => x.inst_conf_end_flow_by_virus == 0 || x.inst_conf_end_flow_by_virus == null).Any());
                         //var ListCloseCase = db.InstitutionConfEndFlowByVirus.OfType<InstitutionConfEndFlowByVirus>()
                         //                .Where(i => institutionsConfiguration.Select(j => j.ID).ToList().Contains(i.id_InstCnf));
 
                         //if (ListCloseCase.Any())
                         //{
-
                         //}
                     }
                     else
@@ -1694,6 +1694,9 @@ namespace Paho.Controllers
             var institutionsIds = institutions.Select(x => (long?)x.ID).ToArray();
 
             var canConclude = true;
+            var SaveAndAdd_1 = true;
+            var SaveAndAdd_2 = true;
+            var SaveAndAdd_3 = true;
             var CanPCRLab = db.Institutions.Where(i => i.ID == user.Institution.ID).First()?.PCR;
             var CanIFILab = db.Institutions.Where(i => i.ID == user.Institution.ID).First()?.IFI;
 
@@ -1714,20 +1717,23 @@ namespace Paho.Controllers
                 var list_institution_conf = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(i => i.InstitutionParentID == flucase.HospitalID && i.Conclusion == true).Select(t => t.InstitutionToID).ToList();
                 if (list_institution_conf.Any())
                 {
-                     canConclude = flucase.CaseLabTests.Where(y => list_institution_conf.Contains(y.LabID)).Any();
+                     canConclude = flucase.CaseLabTests.Where(y => list_institution_conf.Contains(y.LabID)).Any() && flucase.statement==2;
                 }
                 //// Chequeo de muestra de virus para terminar el flujo
 
                 if (list_by_virus_endflow_byActualFlow.Any())
                 {
-                    var list_test_record = flucase.CaseLabTests.OfType<CaseLabTest>();
-                    List<EndFlowByVirus> respuesta = ProcedureExecute <EndFlowByVirus> ("EndFlowByVirus", "@RecordID", Id);
+                    var list_test_record = flucase.CaseLabTests.OfType<CaseLabTest>().OrderByDescending(d => d.CatTestType.orden)
+                                                                                     .ThenBy(e => e.CatTestResult != null ? e.CatTestResult.orden : 99)
+                                                                                     .ThenByDescending(f => f.CatVirusType != null ? f.CatVirusType.orden : 99);
+                    //List<EndFlowByVirus> response = ProcedureExecute <EndFlowByVirus> ("EndFlowByVirus", "@RecordID", Id);
                     
                     var Any_Test_EndFlow = false;
-                    
-                    foreach (EndFlowByVirus test_Record in respuesta)
+
+                    //foreach (EndFlowByVirus test_Record in response)
+                    foreach (CaseLabTest test_Record in list_test_record)
                     {
-                        Any_Test_EndFlow = test_Record.ICEFBVID != null;       
+                        Any_Test_EndFlow = test_Record.inst_conf_end_flow_by_virus > 0;       
                     }
                     canConclude = Any_Test_EndFlow && flucase.statement == 2;
                 }
@@ -1738,21 +1744,33 @@ namespace Paho.Controllers
 
                 if (list_by_virus_endflow_byActualFlow.Any())
                 {
-                    var list_test_record = flucase.CaseLabTests.OfType<CaseLabTest>();
-                    List<EndFlowByVirus> respuesta = ProcedureExecute<EndFlowByVirus>("EndFlowByVirus", "@RecordID", Id);
-                    var Any_Test_EndFlow = false;
+                    var list_test_record = flucase.CaseLabTests.OfType<CaseLabTest>().OrderBy(c => c.SampleNumber)
+                                                                                     .ThenByDescending(d => d.CatTestType.orden)
+                                                                                     .ThenBy(e => e.CatTestResult != null ? e.CatTestResult.orden : 99)
+                                                                                     .ThenByDescending(f => f.CatVirusType != null ? f.CatVirusType.orden : 99);
+                    //List<EndFlowByVirus> respuesta = ProcedureExecute<EndFlowByVirus>("EndFlowByVirus", "@RecordID", Id);
+                    var Any_Test_EndFlow_1 = false;
+                    var Any_Test_EndFlow_2 = false;
+                    var Any_Test_EndFlow_3 = false;
 
-                    foreach (EndFlowByVirus test_Record in respuesta)
+                    foreach (CaseLabTest test_Record in list_test_record)
                     {
-                        Any_Test_EndFlow = test_Record.ICEFBVID != null;
+                        Any_Test_EndFlow_1 = test_Record.inst_conf_end_flow_by_virus > 0  && test_Record.SampleNumber == 1;
+                        Any_Test_EndFlow_2 = test_Record.inst_conf_end_flow_by_virus > 0 && test_Record.SampleNumber == 2;
+                        Any_Test_EndFlow_3 = test_Record.inst_conf_end_flow_by_virus > 0 && test_Record.SampleNumber == 3;
                     }
 
-                    canConclude = Any_Test_EndFlow && flucase.statement == 2;
-                }else
-                {
-                    canConclude = institutionsConfiguration.Count(x => x.Conclusion == true) > 0;
+
+                    //SaveAndAdd_1 = !Any_Test_EndFlow_1 && flucase.statement == 2;
+                    SaveAndAdd_1 = !Any_Test_EndFlow_1 && flucase.statement == 2;
+                    SaveAndAdd_2 = !Any_Test_EndFlow_2 && flucase.statement == 2;
+                    SaveAndAdd_3 = !Any_Test_EndFlow_3 && flucase.statement == 2;
                 }
-                                
+                //else
+                //{
+                //    SaveAndAdd = 
+                //}
+                canConclude = institutionsConfiguration.Count(x => x.Conclusion == true) > 0 && flucase.statement == 2;
                 CanPCRLab = db.Institutions.OfType<Lab>().Where(i => i.ID == user.Institution.ID).First()?.PCR;
                 CanIFILab = db.Institutions.OfType<Lab>().Where(i => i.ID == user.Institution.ID).First()?.IFI;
                 flow_local_lab = institutionsConfiguration.First().Priority;
@@ -1970,7 +1988,10 @@ namespace Paho.Controllers
                       .ToArray(),
                     LabsResult = institutions.Select(x => new { Id = x.ID.ToString(), x.Name }).ToList(),
                     SubTypeByLabRes = GetSubTypebyLab(user.InstitutionID),
-                    CanConclude = canConclude
+                    CanConclude = canConclude,
+                    SaveAndAdd_1 = SaveAndAdd_1,
+                    SaveAndAdd_2 = SaveAndAdd_2,
+                    SaveAndAdd_3 = SaveAndAdd_3
 
                 }, JsonRequestBehavior.AllowGet);
             }
@@ -2118,12 +2139,24 @@ namespace Paho.Controllers
             db.CaseLabTests.RemoveRange(flucase.CaseLabTests);
             var existrecordlabtest = false;
             flucase.CaseLabTests = new List<CaseLabTest>();
+            
             if (LabTests != null) {
-                foreach (LabTestViewModel labTestViewModel in LabTests.OrderBy(x=>x.SampleNumber).ThenBy(z => z.TestDate).ThenBy(y=>y.LabID)) {
+                foreach (LabTestViewModel labTestViewModel in LabTests.OrderBy(x=>x.SampleNumber)
+                    //.ThenBy(x => x.InstPriority)
+                      .ThenBy(z => z.TestDate)
+                      //.ThenBy(d => d.CatTestType != null ? d.CatTestType.orden : null)
+                      .ThenBy(y=>y.LabID)) {
                     if (labTestViewModel.LabID == user.InstitutionID)
                         existrecordlabtest = true;
                     if (labTestViewModel.TestType == 1) IFI_RecordHistory = true;
                     if (labTestViewModel.TestType == 2) PCR_RecordHistory = true;
+                    // Campos para controlar el flujo de la muestra
+                    var Flow_Test = db.InstitutionsConfiguration.Where(i => i.InstitutionToID == labTestViewModel.LabID && i.InstitutionParentID == flucase.HospitalID).Any() ? db.InstitutionsConfiguration.Where(i => i.InstitutionToID == labTestViewModel.LabID && i.InstitutionParentID == flucase.HospitalID).FirstOrDefault().Priority : 0;
+                    var Statement_Test = (flucase.flow != 99) ? DataStatement : flucase.statement;
+                    var Flow_Flucase = flucase.flow;
+                    var Statement_Flucase = (flucase.flow != 99) ?  DataStatement : flucase.statement;
+                    var Institution_Conf_Original = db.InstitutionsConfiguration.Where(i => i.InstitutionToID == labTestViewModel.LabID && i.InstitutionParentID == flucase.HospitalID).Any() ? db.InstitutionsConfiguration.Where(i => i.InstitutionToID == labTestViewModel.LabID && i.InstitutionParentID == flucase.HospitalID).FirstOrDefault().ID : 0;
+                    var Inst_Conf_End_Flow_By_Virus = db.InstitutionConfEndFlowByVirus.Where(j => j.id_Lab == labTestViewModel.LabID && j.id_Cat_TestType == labTestViewModel.TestType && j.value_Cat_TestResult == labTestViewModel.TestResultID && j.id_Cat_VirusType == labTestViewModel.VirusTypeID ).Any() ? db.InstitutionConfEndFlowByVirus.Where(j => j.id_Lab == labTestViewModel.LabID && j.id_Cat_TestType == labTestViewModel.TestType && j.value_Cat_TestResult == labTestViewModel.TestResultID && j.id_Cat_VirusType == labTestViewModel.VirusTypeID).FirstOrDefault().ID : 0;
 
                     flucase.CaseLabTests.Add(
                         new CaseLabTest {
@@ -2162,6 +2195,14 @@ namespace Paho.Controllers
                             RNP = labTestViewModel.RNP,
                             CTRLRNP = labTestViewModel.CTRLRNP,
                             CTRLNegative = labTestViewModel.CTRLNegative,
+                            // Parte del flujo
+
+                            flow_test = Flow_Test,
+                            statement_test = Statement_Test,
+                            flow_flucase = Flow_Flucase,
+                            statement_flucase = Statement_Flucase,
+                            inst_cnf_orig = Institution_Conf_Original,
+                            inst_conf_end_flow_by_virus = Inst_Conf_End_Flow_By_Virus,
                             //RSV = labTestViewModel.RSV,
                             //Adenovirus = labTestViewModel.Adenovirus,
                             //Metapneumovirus = labTestViewModel.Metapneumovirus,

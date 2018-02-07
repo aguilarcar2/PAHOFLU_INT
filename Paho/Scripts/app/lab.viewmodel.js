@@ -723,8 +723,11 @@ function LabViewModel(app, dataModel) {
     self.LabsResult = ko.observableArray([]);
     self.SubTypeByLabRes = ko.observableArray([]);
     self.ArrayValidate = ko.observableArray([]);
-
-    self.CanConclude = ko.observable(true)
+    
+    //self.SaveAndAdd_1 = ko.observable(true);
+    //self.SaveAndAdd_2 = ko.observable(true);
+    //self.SaveAndAdd_3 = ko.observable(true);
+    self.CanConclude = ko.observable(true);
     self.FResult = ko.observable("");
 
     self.FinalResult.subscribe(function (newFinalResult) {
@@ -1245,7 +1248,10 @@ function LabViewModel(app, dataModel) {
                 self.LabsResult(data.LabsResult);
                 self.SubTypeByLabRes(data.SubTypeByLabRes);
                 self.CanConclude(data.CanConclude);
-                app.Views.Home.CanConclude(data.CanConclude);
+                //app.Views.Home.CanConclude(data.CanConclude);
+                app.Views.Home.SaveAndAdd_1(data.SaveAndAdd_1);
+                app.Views.Home.SaveAndAdd_2(data.SaveAndAdd_2);
+                app.Views.Home.SaveAndAdd_3(data.SaveAndAdd_3);
                 //app.Views.Contact.flow_record(data.flow_record);
                 //app.Views.Contact.flow_institution(data.flow_institution);
                 //$("#o_S").val(data.DataStatement);
