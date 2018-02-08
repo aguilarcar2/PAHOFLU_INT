@@ -830,9 +830,9 @@
     };
     // Revision del flujo si es epidemiologico o laboratorio
     self.Flow_Local_Institution_Lab = ko.computed(function () {
-        console.log("Flow Lab - SaveAndAdd_1");
-        console.log(app.Views.Home.SaveAndAdd_1());
-        console.log("Contact epi - frecord_lab -- " + self.flow_record() + ", finstitution_lab -- " + self.flow_institution() + ", dataStatement_lab -- " + self.DataStatement() + ", userRole " + app.Views.Home.UserRole() + ", Inst" + $("#ITy").val() + ", OpenAlways" + self.flow_open_always());
+        //console.log("Flow Lab - SaveAndAdd_1");
+        //console.log(app.Views.Home.SaveAndAdd_1());
+        //console.log("Contact epi - frecord_lab -- " + self.flow_record() + ", finstitution_lab -- " + self.flow_institution() + ", dataStatement_lab -- " + self.DataStatement() + ", userRole " + app.Views.Home.UserRole() + ", Inst" + $("#ITy").val() + ", OpenAlways" + self.flow_open_always());
         if ((self.flow_record() == (self.flow_institution() - 1) && (self.DataStatement() == 2 || self.DataStatement() == null || self.flow_open_always() == true) && app.Views.Home.SaveAndAdd_1() == true) || (self.flow_record() == self.flow_institution() && (self.DataStatement() == 1 || self.DataStatement() == null || self.flow_open_always() == true)) || (self.flow_close_case() == 99 && self.flow_open_always() == true)) {
             return true;
         }

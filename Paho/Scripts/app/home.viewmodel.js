@@ -500,7 +500,7 @@
             self.FlowDataHospital();
         }
 
-        if (self.CanConclude() == true) {
+        if (app.Views.Lab.CanConclude() == true && $("#ITy").val() == "1") {
             $("#HospExDate").attr("disabled", false);
             $("#Destin").attr("disabled", false)
         } else
