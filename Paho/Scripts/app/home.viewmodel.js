@@ -13,7 +13,7 @@
             return v.Active === true;
         });
     });
-    //self.CanConclude = ko.observable(false);
+    self.CanConclude = ko.observable(false);
     self.SaveAndAdd_1 = ko.observable(true);
     self.SaveAndAdd_2 = ko.observable(true);
     self.SaveAndAdd_3 = ko.observable(true);
@@ -499,6 +499,16 @@
             $("#tab-lab :input").prop('disabled', true);
             self.FlowDataHospital();
         }
+
+        if (self.CanConclude() == true) {
+            $("#HospExDate").attr("disabled", false);
+            $("#Destin").attr("disabled", false)
+        } else
+        {
+            $("#HospExDate").attr("disabled", true);
+            $("#Destin").attr("disabled", true)
+        }
+
     };
 
     self.FlowDataLab = function () {

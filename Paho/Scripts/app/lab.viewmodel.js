@@ -1248,7 +1248,7 @@ function LabViewModel(app, dataModel) {
                 self.LabsResult(data.LabsResult);
                 self.SubTypeByLabRes(data.SubTypeByLabRes);
                 self.CanConclude(data.CanConclude);
-                //app.Views.Home.CanConclude(data.CanConclude);
+                app.Views.Home.CanConclude(data.CanConclude);
                 app.Views.Home.SaveAndAdd_1(data.SaveAndAdd_1);
                 app.Views.Home.SaveAndAdd_2(data.SaveAndAdd_2);
                 app.Views.Home.SaveAndAdd_3(data.SaveAndAdd_3);
