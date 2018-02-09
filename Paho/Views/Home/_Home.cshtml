@@ -1936,7 +1936,7 @@
         <!-- <div class="row rowform" data-bind="visible:app.Views.Contact.NoActiveBOL"> -->
         <div class="row rowform" data-bind="visible: IsInusitadoSintomatologia">
             <div class="col-md-12">
-                <button type="button" class="btn btn-group-justified" data-toggle="collapse" data-target="#sintomatologia">
+                <button type="button" style="background-color:#B2BABB; color:#000000" class="btn btn-group-justified" data-toggle="collapse" data-target="#sintomatologia">
                     @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSymptomatology"))
                     <font color="#FF0000">@((ViewBag.UsrCtry == 7) ? "" : "*")</font>
                     <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
@@ -2259,7 +2259,7 @@
         <!-- Datos de hospitalizacion -->
         <div class="row rowform" id="Hospitalization_div" data-bind="visible: app.Views.Contact.NotShowHospitalization">
             <div class="col-md-12">
-        <button type="button" class="btn btn-group-justified" data-toggle="collapse" data-target="#Fechas">
+        <button type="button" style="background-color:#B2BABB; color:#000000" class="btn btn-group-justified" data-toggle="collapse" data-target="#Fechas">
             @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelHospitalizationInformation"))
             <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
         </button>
@@ -2512,7 +2512,7 @@
         <div class="row rowform">
 	        @if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 3 ){
             <div class="col-md-12">
-                <button type="button" class="btn btn-group-justified" data-toggle="collapse" data-target="#Toma">
+                <button type="button" style="background-color:#B2BABB; color:#000000" class="btn btn-group-justified" data-toggle="collapse" data-target="#Toma">
                     Muestra @( ViewBag.UsrCtry == 7 ? "(s)" : "")
                     <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
                 </button>
@@ -2777,7 +2777,7 @@
     <div id="tab-case" data-bind="with: app.Views.Hospital">
     <div class="row rowform">
         <div class="col-md-12">
-            <button type="button" class="btn btn-group-justified" data-toggle="collapse" data-target="#statuscaso">
+            <button type="button" style="background-color:#B2BABB; color:#000000" class="btn btn-group-justified" data-toggle="collapse" data-target="#statuscaso">
                 @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabCaseLabelCaseStatus")) 
                 <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
             </button>
@@ -4158,12 +4158,12 @@
     {*@
         <div class="row  rowform">
             <div class="col-md-12">
-                <button type="button" class="btn btn-group-justified" data-toggle="collapse" data-target="#resultadofinal">
+                <button type="button" style="background-color:#B2BABB; color:#000000" class="btn btn-group-justified" data-toggle="collapse" data-target="#resultadofinal">
                     @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelLabConclusion")) 
                     <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
                 </button>
-                <div id="resultadofinal" class="collapse in">
 
+                <div id="resultadofinal" class="collapse in">
                     <div class="row rowform">
                         <div class="col-md-4">
                             <div class='input-group'>
