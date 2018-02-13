@@ -1720,9 +1720,6 @@ namespace Paho.Controllers
                      canConclude = flucase.CaseLabTests.Where(y => list_institution_conf.Contains(y.LabID)).Any() && flucase.statement==2;
                 }
 
-
-
-
                 //// Chequeo de muestra de virus para terminar el flujo
 
                 if (list_by_virus_endflow_byActualFlow.Any())
