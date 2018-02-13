@@ -1719,24 +1719,44 @@ namespace Paho.Controllers
                 {
                      canConclude = flucase.CaseLabTests.Where(y => list_institution_conf.Contains(y.LabID)).Any() && flucase.statement==2;
                 }
+
+
+
+
                 //// Chequeo de muestra de virus para terminar el flujo
 
                 if (list_by_virus_endflow_byActualFlow.Any())
                 {
-                    var list_test_record = flucase.CaseLabTests.OfType<CaseLabTest>().OrderByDescending(d => d.CatTestType.orden)
+                    var list_test_record = flucase.CaseLabTests.OfType<CaseLabTest>().OrderBy(c => c.SampleNumber)
+                                                                                     .ThenByDescending(d => d.CatTestType.orden)
                                                                                      .ThenBy(e => e.CatTestResult != null ? e.CatTestResult.orden : 99)
                                                                                      .ThenByDescending(f => f.CatVirusType != null ? f.CatVirusType.orden : 99);
                     //List<EndFlowByVirus> response = ProcedureExecute <EndFlowByVirus> ("EndFlowByVirus", "@RecordID", Id);
                     
-                    var Any_Test_EndFlow = false;
-
-                    //foreach (EndFlowByVirus test_Record in response)
-                    foreach (CaseLabTest test_Record in list_test_record)
+                    if (list_test_record.Count() > 0 )
                     {
-                        Any_Test_EndFlow = test_Record.inst_conf_end_flow_by_virus > 0;       
+                        var Any_Test_EndFlow = false;
+                        //foreach (EndFlowByVirus test_Record in response)
+                        foreach (CaseLabTest test_Record in list_test_record)
+                        {
+                            Any_Test_EndFlow = test_Record.inst_conf_end_flow_by_virus > 0;
+                        }
+                        canConclude = Any_Test_EndFlow && flucase.statement == 2;
+                    } else if (((flucase.Processed == false || flucase.Processed == null) && (flucase.Processed2 == false || flucase.Processed2 == null) && (flucase.Processed3 == false || flucase.Processed3 == null) && flucase.IsSample != true) || flucase.IsSample == false )
+                    {
+                        canConclude = true;
                     }
-                    canConclude = Any_Test_EndFlow && flucase.statement == 2;
+
+
                 }
+
+                if ((flucase.Processed == false  && (flucase.Processed2 == false || flucase.Processed2 == null) && (flucase.Processed3 == false || flucase.Processed3 == null)) && flucase.IsSample == true)
+                {
+                    canConclude = true;
+                }
+
+                if (flucase.IsSample == false)
+                    canConclude = true;
 
             }
 
