@@ -1727,7 +1727,10 @@ namespace Paho.Controllers
                     var list_test_record = flucase.CaseLabTests.OfType<CaseLabTest>().OrderBy(c => c.SampleNumber)
                                                                                      .ThenByDescending(d => d.CatTestType.orden)
                                                                                      .ThenBy(e => e.CatTestResult != null ? e.CatTestResult.orden : 99)
-                                                                                     .ThenByDescending(f => f.CatVirusType != null ? f.CatVirusType.orden : 99);
+                                                                                     .ThenByDescending(f => f.CatVirusType != null ? f.CatVirusType.orden : 99)
+                                                                                     .ThenByDescending(g => g.CatVirusSubType != null ? g.CatVirusSubType.orden : 99)
+                                                                                     .ThenByDescending(h => h.CatVirusLinaje != null ? h.CatVirusLinaje.orden : 99);
+                                                                                     //.ThenBy(i => i.inst_conf_end_flow_by_virus);
                     //List<EndFlowByVirus> response = ProcedureExecute <EndFlowByVirus> ("EndFlowByVirus", "@RecordID", Id);
                     
                     if (list_test_record.Count() > 0 )
@@ -1762,7 +1765,7 @@ namespace Paho.Controllers
                 if (list_by_virus_endflow_byActualFlow.Any())
                 {
                     var list_test_record = flucase.CaseLabTests.OfType<CaseLabTest>().OrderBy(c => c.SampleNumber)
-                                                                                     .ThenByDescending(d => d.CatTestType.orden)
+                                                                                     .ThenByDescending(d => d.CatTestType != null ? d.CatTestType.orden : 99)
                                                                                      .ThenBy(e => e.CatTestResult != null ? e.CatTestResult.orden : 99)
                                                                                      .ThenByDescending(f => f.CatVirusType != null ? f.CatVirusType.orden : 99);
                     //List<EndFlowByVirus> respuesta = ProcedureExecute<EndFlowByVirus>("EndFlowByVirus", "@RecordID", Id);
@@ -1794,8 +1797,6 @@ namespace Paho.Controllers
                 flow_open_always = institutionsConfiguration.First().OpenAlways;
                 //canConclude = institutionsConfiguration.Count(x => x.Conclusion == 1) > 0; // Original - modificado por AM
             }
-
-
 
             if (flucase != null)
             {
@@ -1893,11 +1894,11 @@ namespace Paho.Controllers
                               EndFlow = institutionActualFlow.Any() ? ((caselabtest.TestResultID == "N") ? db.InstitutionConfEndFlowByVirus.Where(j => j.id_InstCnf == institutionActualFlow.FirstOrDefault().ID && j.id_Cat_TestType == caselabtest.TestType && j.value_Cat_TestResult == caselabtest.TestResultID).Any().ToString().ToUpper() : db.InstitutionConfEndFlowByVirus.Where(j => j.id_InstCnf == institutionActualFlow.FirstOrDefault().ID && j.id_Cat_TestType == caselabtest.TestType && j.value_Cat_TestResult == caselabtest.TestResultID && j.id_Cat_VirusType == caselabtest.VirusTypeID).Any().ToString().ToUpper()) : "UNKNOWN",
                               // Orden de muestra
                               InstPriority = db.InstitutionsConfiguration.Where(i => i.InstitutionToID == caselabtest.LabID && i.InstitutionParentID == flucase.HospitalID).Any() ? db.InstitutionsConfiguration.Where(i=> i.InstitutionToID == caselabtest.LabID && i.InstitutionParentID == flucase.HospitalID).FirstOrDefault().ID : 0 ,
-                              OrderTestType = caselabtest.CatTestType.orden
+                              OrderTestType = caselabtest.CatTestType != null ?  caselabtest.CatTestType.orden : 99
                           }
                       )
                       .OrderBy(x => x.InstPriority)
-                      .ThenBy(d => d.OrderTestType)
+                      .ThenByDescending(d => d.OrderTestType)
                       .ThenBy(c=> c.TestDate)
                       .ToArray(),
                     LabTests_Sample2 = (
@@ -1945,11 +1946,11 @@ namespace Paho.Controllers
                               EndFlow = institutionActualFlow.Any() ? ((caselabtest.TestResultID == "N") ? db.InstitutionConfEndFlowByVirus.Where(j => j.id_InstCnf == institutionActualFlow.FirstOrDefault().ID && j.id_Cat_TestType == caselabtest.TestType && j.value_Cat_TestResult == caselabtest.TestResultID).Any().ToString().ToUpper() : db.InstitutionConfEndFlowByVirus.Where(j => j.id_InstCnf == institutionActualFlow.FirstOrDefault().ID && j.id_Cat_TestType == caselabtest.TestType && j.value_Cat_TestResult == caselabtest.TestResultID && j.id_Cat_VirusType == caselabtest.VirusTypeID).Any().ToString().ToUpper()) : "UNKNOWN",
                               // Orden de muestra
                               InstPriority = db.InstitutionsConfiguration.Where(i => i.InstitutionToID == caselabtest.LabID && i.InstitutionParentID == flucase.HospitalID).Any() ? db.InstitutionsConfiguration.Where(i => i.InstitutionToID == caselabtest.LabID && i.InstitutionParentID == flucase.HospitalID).FirstOrDefault().ID : 0,
-                              OrderTestType = caselabtest.CatTestType.orden
+                              OrderTestType = caselabtest.CatTestType != null ? caselabtest.CatTestType.orden : 99
                           }
                       )
                       .OrderBy(x => x.InstPriority)
-                      .ThenBy(d => d.OrderTestType)
+                      .ThenByDescending(d => d.OrderTestType)
                       .ThenBy(c => c.TestDate)
                       .ToArray(),
                     LabTests_Sample3 = (
@@ -1996,11 +1997,11 @@ namespace Paho.Controllers
                               EndFlow = institutionActualFlow.Any() ? ((caselabtest.TestResultID == "N") ? db.InstitutionConfEndFlowByVirus.Where(j => j.id_InstCnf == institutionActualFlow.FirstOrDefault().ID && j.id_Cat_TestType == caselabtest.TestType && j.value_Cat_TestResult == caselabtest.TestResultID).Any().ToString().ToUpper() : db.InstitutionConfEndFlowByVirus.Where(j => j.id_InstCnf == institutionActualFlow.FirstOrDefault().ID && j.id_Cat_TestType == caselabtest.TestType && j.value_Cat_TestResult == caselabtest.TestResultID && j.id_Cat_VirusType == caselabtest.VirusTypeID).Any().ToString().ToUpper()) : "UNKNOWN",
                               // Orden de muestra
                               InstPriority = db.InstitutionsConfiguration.Where(i => i.InstitutionToID == caselabtest.LabID && i.InstitutionParentID == flucase.HospitalID).Any() ? db.InstitutionsConfiguration.Where(i => i.InstitutionToID == caselabtest.LabID && i.InstitutionParentID == flucase.HospitalID).FirstOrDefault().ID : 0,
-                              OrderTestType = caselabtest.CatTestType.orden
+                              OrderTestType = caselabtest.CatTestType != null ? caselabtest.CatTestType.orden : 99
                           }
                       )
                       .OrderBy(x => x.InstPriority)
-                      .ThenBy(d => d.OrderTestType)
+                      .ThenByDescending(d => d.OrderTestType)
                       .ThenBy(c => c.TestDate)
                       .ToArray(),
                     LabsResult = institutions.Select(x => new { Id = x.ID.ToString(), x.Name }).ToList(),

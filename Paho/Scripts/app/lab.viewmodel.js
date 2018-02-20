@@ -302,19 +302,13 @@
         return result;
     }, self);
 
-    self.ShowProcessedLab = ko.computed(function () {
-        return (self.ProcessLab() === "true")
-    }, self);
-    self.NotShowProcessedLab = ko.computed(function () {
-        return (self.ProcessLab() === "false")
-    }, self);
-
     self.ProcessLab.subscribe(function (process) {
-        
+        console.log("ProcessLab aqui")
         self.TestType(null);
+        self.TestEndDate(null);
         self.TestDate(null);
-        self.TestResultID("");
-        self.VirusTypeID("");
+        self.TestResultID(null);
+        self.VirusTypeID(null);
         self.CTVirusType("");
         self.CTRLVirusType("");
         self.VirusSubTypeID("");
@@ -330,7 +324,6 @@
         self.CTRLLineage("");
         self.RNP("");
         self.CTRLNegative("");
-        self.TestEndDate(null);
         self.InfA("");
         self.InfB("");
         self.ParaInfI("");
@@ -340,6 +333,14 @@
         self.Adenovirus("");
         self.Metapneumovirus("");
     });
+
+    self.ShowProcessedLab = ko.computed(function () {
+        
+        return (self.ProcessLab() === "true")
+    }, self);
+    self.NotShowProcessedLab = ko.computed(function () {
+        return (self.ProcessLab() === "false")
+    }, self);
 
 
     // Asignacion de resultado automaticamente
@@ -865,7 +866,7 @@ function LabViewModel(app, dataModel) {
             var labtests_check = $.grep(self.LabsResult(), function (v) {
                 return v.Id === "97";
             });
-            if (labtests_check.length >= 1)
+            if (labtests_check.length >= 1 || $("#ITy").val() == "1" || $("#ITy").val() == "3")
                 return true
             else
                 return false;
@@ -1123,22 +1124,24 @@ function LabViewModel(app, dataModel) {
                         //Insert the result of the process
                         //"Indique el resultado del proceso";
 
-                if ((self.ArrayValidate()[index].TestResultID() === "P" || self.ArrayValidate()[index].TestResultID() === "I") && (self.ArrayValidate()[index].VirusTypeID() === "" || self.ArrayValidate()[index].VirusTypeID() == undefined))
+                if ((self.ArrayValidate()[index].TestResultID() === "P" ) && (self.ArrayValidate()[index].VirusTypeID() === "" || self.ArrayValidate()[index].VirusTypeID() == undefined))
                 {
                     msg += "\n" + msgValidateProcessVirus;
                         //Insert the detected virus
                         //"Ingrese el virus detectado";
+                        //|| self.ArrayValidate()[index].TestResultID() === "I"
                 }
                 else {
                     if (self.ArrayValidate()[index].UsrCountry() == 7 && self.ArrayValidate()[index].CTVirusType() === "" && self.ArrayValidate()[index].VirusTypeID() != "" && self.ArrayValidate()[index].TestType() === "2")
                     { msg += "\n" + "Ingreso el CT de Virus"; }
                 }
 
-                if ((self.ArrayValidate()[index].TestResultID() === "P" || self.ArrayValidate()[index].TestResultID() === "I") && self.ArrayValidate()[index].VirusTypeID() === "9" && (self.ArrayValidate()[index].OtherVirusTypeID() === "" || self.ArrayValidate()[index].OtherVirusTypeID() == undefined) && self.ArrayValidate()[index].OtherVirus() === "")
+                if ((self.ArrayValidate()[index].TestResultID() === "P" ) && self.ArrayValidate()[index].VirusTypeID() === "9" && (self.ArrayValidate()[index].OtherVirusTypeID() === "" || self.ArrayValidate()[index].OtherVirusTypeID() == undefined) && self.ArrayValidate()[index].OtherVirus() === "")
                 {
                     msg += "\n" + msgValidateProcessOtherVirus;
                       //  Insert the other detected virus
-                      //"Indique el otro virus detectado";
+                    //"Indique el otro virus detectado";
+                    //|| self.ArrayValidate()[index].TestResultID() === "I"
                 }
                 else {
                     if (self.ArrayValidate()[index].UsrCountry() == 7 && self.ArrayValidate()[index].CTOtherVirusType() === "" && self.ArrayValidate()[index].VirusTypeID() === "9" && self.ArrayValidate()[index].TestType() === "2" && self.ArrayValidate()[index].OtherVirusTypeID() != "")

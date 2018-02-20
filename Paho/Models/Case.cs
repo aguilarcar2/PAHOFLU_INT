@@ -66,7 +66,7 @@ namespace Paho.Models
         public long? LabID { get; set; }
         public bool? Processed { get; set; }
         public int? SampleNumber { get; set; }
-        public int TestType  { get; set; }
+        public int? TestType  { get; set; }
         public DateTime? TestDate { get; set; }
         public string TestResultID { get; set; }
         public int? VirusTypeID { get; set; }
@@ -1136,7 +1136,7 @@ namespace Paho.Models
         [ForeignKey("VirusSubTypeID_2")]
         public virtual CatVirusSubType CatVirusSubType_2 { get; set; }
 
-        [ForeignKey("VirusSubTypeID_2")]
+        [ForeignKey("VirusLineageID")]
         public virtual CatVirusLinaje CatVirusLinaje { get; set; }
 
         [ForeignKey("LabID")]

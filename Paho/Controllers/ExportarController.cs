@@ -102,20 +102,30 @@ namespace Paho.Controllers
             else
             {
                 ExportarViewModel.DisplayHospitals = true;
+                var inst_by_lab = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(j => j.InstitutionToID == user.InstitutionID).Select(i => i.InstitutionToID).ToList();
                 if (user.Institution.AccessLevel == AccessLevel.Country)
                 {
-                    institutions = db.Institutions.OfType<Lab>()
-                                   .Where(i => i.CountryID == user.Institution.CountryID);
+                    institutions = db.Institutions.OfType<Hospital>()
+                                   .Where(i => i.CountryID == user.Institution.CountryID );
                 }
                 else if (user.Institution.AccessLevel == AccessLevel.Area)
                 {
-                    institutions = db.Institutions.OfType<Lab>()
+                    institutions = db.Institutions.OfType<Hospital>()
                                    .Where(i => i.AreaID == user.Institution.AreaID);
                 }
                 else
                 {
-                    institutions = db.Institutions.OfType<Lab>()
+                    if (inst_by_lab.Any())
+                    {
+                        institutions = db.Institutions.OfType<Hospital>()
+                                   .Where(i => inst_by_lab.Contains(i.ID) );
+                    }
+                    else
+                    {
+                        institutions = db.Institutions.OfType<Hospital>()
                                    .Where(i => i.ID == user.Institution.ID);
+                    }
+                    
                 }
             }
 
