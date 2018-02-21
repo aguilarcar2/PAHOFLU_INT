@@ -172,11 +172,11 @@ namespace Paho.Controllers
             {
                 var file_ = Request.Files[i];
                 fileName = Path.GetFileName(file_.FileName);
-                path = Path.Combine(Server.MapPath("~/App_Data/uploads"), fileName);
+                path = Path.Combine(ConfigurationManager.AppSettings["UploadDir"], fileName);
                 int counterFile = 0;
                 while (System.IO.File.Exists(path))
                 {
-                    path = Path.Combine(Server.MapPath("~/App_Data/uploads"), counterFile + fileName);
+                    path = Path.Combine(ConfigurationManager.AppSettings["UploadDir"], counterFile + fileName);
                     counterFile++;
                 }
                 file_.SaveAs(path);
