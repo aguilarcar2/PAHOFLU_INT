@@ -631,7 +631,9 @@ namespace Paho.Models
         public int? cod_region_pais { get; set; }
         [DisplayName("Código original país:")]
         public string orig_country { get; set; }
-		[NotMapped]
+        [DisplayName("Orden de prioridad para el resultado final por institución:")]
+        public int? OrdenPrioritybyLab { get; set; }
+        [NotMapped]
 		public InstitutionType InstType { get; set; }
     }    
 

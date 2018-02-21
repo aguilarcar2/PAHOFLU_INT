@@ -1724,15 +1724,17 @@ namespace Paho.Controllers
 
                 if (list_by_virus_endflow_byActualFlow.Any())
                 {
-                    var list_test_record = flucase.CaseLabTests.OfType<CaseLabTest>().OrderBy(c => c.SampleNumber)
-                                                                                     .ThenByDescending(d => d.CatTestType.orden)
+                    var list_test_record = flucase.CaseLabTests.OfType<CaseLabTest>().OrderByDescending(d => d.CatTestType.orden)
+                                                                                     .ThenBy(c => c.Institution.OrdenPrioritybyLab != null ? c.Institution.OrdenPrioritybyLab : 0)
                                                                                      .ThenBy(e => e.CatTestResult != null ? e.CatTestResult.orden : 99)
                                                                                      .ThenByDescending(f => f.CatVirusType != null ? f.CatVirusType.orden : 99)
                                                                                      .ThenByDescending(g => g.CatVirusSubType != null ? g.CatVirusSubType.orden : 99)
                                                                                      .ThenByDescending(h => h.CatVirusLinaje != null ? h.CatVirusLinaje.orden : 99);
+
+                    //.OrderBy(c => c.SampleNumber)
                                                                                      //.ThenBy(i => i.inst_conf_end_flow_by_virus);
-                    //List<EndFlowByVirus> response = ProcedureExecute <EndFlowByVirus> ("EndFlowByVirus", "@RecordID", Id);
-                    
+                                                                                     //List<EndFlowByVirus> response = ProcedureExecute <EndFlowByVirus> ("EndFlowByVirus", "@RecordID", Id);
+
                     if (list_test_record.Count() > 0 )
                     {
                         var Any_Test_EndFlow = false;
