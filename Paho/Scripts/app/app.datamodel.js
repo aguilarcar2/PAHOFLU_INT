@@ -38,6 +38,7 @@
     //sistema de tickets
     self.createTicketUrl = "/ticket/CreateTicket";
     self.getTicketUrl = "/ticket/GetTicket";
+    self.editTicketUrl = "/ticket/EditTicket";
 
     // Formato de fechas
     //self.date_format_ = "dd/mm/yyyy";

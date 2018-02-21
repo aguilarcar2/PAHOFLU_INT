@@ -7,11 +7,16 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using System.Security.Claims;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Data;
+using System.Data.Entity;
 using System.Net.Mail;
 using System.Text;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System.Net.Mime;
+using System.IO;
 
 namespace Paho.Controllers
 {
@@ -58,7 +63,7 @@ namespace Paho.Controllers
             return View(SummaryViewModel);
         }
 
-        public JsonResult CreateTicket(string UsrCountry, string ticketSubject, string ticketMsg)
+        public string CreateTicket(string UsrCountry, string ticketSubject, string ticketMsg, HttpPostedFileBase myfile)
         {
             string ticketResult="";
 
@@ -119,7 +124,7 @@ namespace Paho.Controllers
             client.Port = 587;
             client.Host = "smtp.gmail.com";
             client.EnableSsl = true;
-            client.Timeout = 10000;
+            client.Timeout = 180000;
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
             client.UseDefaultCredentials = false;
             client.Credentials = new System.Net.NetworkCredential("pahoflu@gmail.com", "Chachas1");
@@ -146,27 +151,150 @@ namespace Paho.Controllers
                         break;
                 }
             }
+            //------------Attachment---------------
+            /*var file_ = Request.Files[0];
+           
+                
+                var fileName = Path.GetFileName(file_.FileName);
+                var path = Path.Combine(Server.MapPath("~/App_Data/uploads"), fileName);
+                file_.SaveAs(path);
+                Attachment data = new Attachment(path, MediaTypeNames.Application.Octet);
+                // your path may look like Server.MapPath("~/file.ABC")
+                mm.Attachments.Add(data);*/
+
+
+            //------------------
+            //------------Attachment---------------
+            string fileName;
+            string path;
+            Attachment data;
+            for (int i=0; i< Request.Files.Count;i++)
+            {
+                var file_ = Request.Files[i];
+                fileName = Path.GetFileName(file_.FileName);
+                path = Path.Combine(Server.MapPath("~/App_Data/uploads"), fileName);
+                int counterFile = 0;
+                while (System.IO.File.Exists(path))
+                {
+                    path = Path.Combine(Server.MapPath("~/App_Data/uploads"), counterFile + fileName);
+                    counterFile++;
+                }
+                file_.SaveAs(path);
+                data = new Attachment(path, MediaTypeNames.Application.Octet);
+                // your path may look like Server.MapPath("~/file.ABC")
+                mm.Attachments.Add(data);
+                /*HttpPostedFileBase hpf = Request.Files[file__] as HttpPostedFileBase;
+                fileName = Path.GetFileName(hpf.FileName);
+                path = Path.Combine(Server.MapPath("~/App_Data/uploads"), fileName);
+                hpf.SaveAs(path);
+                data = new Attachment(path, MediaTypeNames.Application.Octet);
+                // your path may look like Server.MapPath("~/file.ABC")
+                mm.Attachments.Add(data);*/
+            }
             
+
             //------------------
             mm.BodyEncoding = UTF8Encoding.UTF8;
             mm.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
             client.Send(mm);
             //--------------fin envio correo---------------------
 
-            return Json(ticketResult, JsonRequestBehavior.AllowGet);
+            return (ticketResult);
         }
 
-        public JsonResult GetTicket()
+        public string EditTicket(string ticketID, string UsrCountry, string ticketSubject, string ticketMsg, string ticketStatus)
         {
+            string ticketResult = "";
+
             string userTicket = User.Identity.GetUserId();
-            List<Dictionary<string, string>> ticketList = new List<Dictionary<string, string>>();
+            //---------------------------Para setear los tickets en la base de datos---------------------------------
             var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (var con = new SqlConnection(consString))
             {
-                using (var command = new SqlCommand("GetTicket", con) { CommandType = CommandType.StoredProcedure })
+                string jsonGraphData = "";
+
+                using (var command = new SqlCommand("UpdateTicket", con) { CommandType = CommandType.StoredProcedure })
                 {
                     command.Parameters.Clear();
-                    command.Parameters.Add("@userTicket", SqlDbType.Text).Value = userTicket;                    
+                    command.Parameters.Add("@ID", SqlDbType.Int).Value = ticketID;                    
+                    command.Parameters.Add("@status", SqlDbType.Int).Value = ticketStatus;
+                    
+                    con.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            ticketResult = reader["ResultInsert"].ToString().Trim();
+
+                        }
+                    }
+                }
+            }            
+
+            return (ticketResult);
+        }
+        public JsonResult GetTicket()
+        {
+            IdentityDbContext context = new IdentityDbContext();
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+            string rol = "";
+            if (!roleManager.RoleExists("Support"))
+            {
+                rol = "creado";
+                // first we create Admin rool   
+                var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
+                role.Name = "Support";
+                roleManager.Create(role);
+            }
+            
+            /*bool x = _roleManager.RoleExistsAsync("Admin");
+            if (!x)
+            {
+
+                // first we create Admin rool    
+                var role = new IdentityRole();
+                role.Name = "Admin";
+                _roleManager.CreateAsync(role);
+            }*/
+
+            string userTicket = User.Identity.GetUserId();
+            //string usertTicketRole = "";
+            var roles = ((ClaimsIdentity)User.Identity).Claims
+                .Where(c => c.Type == ClaimTypes.Role)
+                .Select(c => c.Value);
+            string GetTicketSP = "";
+            string ticketRol = "";
+            if (User.Identity.IsAuthenticated)
+            {
+                if(User.IsInRole("Support")){
+                    GetTicketSP = "GetAllTicket";
+                    ticketRol = "Support";
+                }
+                else if (User.IsInRole("Admin"))
+                {
+                    GetTicketSP = "GetAllTicket";
+                    ticketRol = "Admin";
+                }
+                else
+                {
+                    GetTicketSP = "GetTicket";
+                    ticketRol = "User";
+                }
+            }
+            List<Dictionary<string, string>> ticketList = new List<Dictionary<string, string>>();
+            Dictionary<string, string> ticketInfo = new Dictionary<string, string>();
+            ticketInfo.Add("rol", ticketRol);            
+            ticketList.Add(ticketInfo);
+            var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            using (var con = new SqlConnection(consString))
+            {
+                using (var command = new SqlCommand(GetTicketSP, con) { CommandType = CommandType.StoredProcedure })
+                {
+                    if (GetTicketSP == "GetTicket")
+                    {
+                        command.Parameters.Clear();
+                        command.Parameters.Add("@userTicket", SqlDbType.Text).Value = userTicket;
+                    }                
                     con.Open();
                     using (var reader = command.ExecuteReader())
                     {

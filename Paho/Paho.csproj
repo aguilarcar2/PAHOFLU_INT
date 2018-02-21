@@ -356,8 +356,10 @@
     <Content Include="Content\themes\base\images\BlueHorizontalSPANISH.png" />
     <Content Include="Content\themes\base\images\blue_download.png" />
     <Content Include="Content\themes\base\images\close.png" />
+    <Content Include="Content\themes\base\images\CrossSmall.png" />
     <Content Include="Content\themes\base\images\download.png" />
     <Content Include="Content\themes\base\images\footer_logo-en.png" />
+    <Content Include="Content\themes\base\images\loader-1s-29px.gif" />
     <Content Include="Content\themes\base\images\Logo_MINSAL.png" />
     <Content Include="Content\themes\base\images\logo_pahowho_blue-en.png" />
     <Content Include="Content\themes\base\images\mundoparcial9106268.jpg" />
