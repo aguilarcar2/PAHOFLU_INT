@@ -447,7 +447,9 @@
     };
 
     self.FlowDataCaseStatus = function () {
-        //console.log("FlowCaseStatus");
+        console.log("FlowCaseStatus");
+        console.log("Is Sample en Hospital");
+        console.log(app.Views.Hospital.IsSample());
         var flow_check = $.grep(app.Views.Lab.LabTests(), function (x) {         
             //console.log("Home - FlowDataCaseStatus - EndFlow " + x.EndFlow());
             return x.EndFlow() === "TRUE";
@@ -477,7 +479,13 @@
         //    $("#tab-case").show();
         //    $("#CaseStatus").attr("disabled", false);
         //    $("#tabs").tabs("refresh");
-        //}
+            //}
+        else if (app.Views.Hospital.IsSample() === "false" && app.Views.Contact.IsSurv() == "2") {
+            $("a[href*='tab-case']").show();
+            $("#tab-case").show();
+            $("#CaseStatus").attr("disabled", false);
+            $("#tabs").tabs("refresh");
+        }
         else if (app.Views.Contact.SurvSARI() == true && app.Views.Hospital.IsSample() === "true" && (app.Views.Lab.FinalResult() == "" || app.Views.Hospital.Destin() == "" || app.Views.Hospital.HospExDate() == "" || app.Views.Hospital.HospExDate() == null || app.Views.Lab.CanConclude() == false)) {
             //console.log("aqui _ no processed 3");
             $("a[href*='tab-case']").hide();

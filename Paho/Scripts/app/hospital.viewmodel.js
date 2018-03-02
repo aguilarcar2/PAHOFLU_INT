@@ -758,7 +758,7 @@
     self.CloseDate = ko.observable(new Date());
     self.ObservationCase = ko.observable("");
     self.EnableCloseDate = ko.computed(function () {
-        var result = self.CaseStatus() == "3" || self.CaseStatus() == "2"; if (!result) self.CloseDate(null); return result;
+        var result = (self.UsrCountry() == 7) ? self.CaseStatus() == "3" || self.CaseStatus() == "2" : (self.UsrCountry() != 7) ? self.CaseStatus() == "1" ||  self.CaseStatus() == "3" || self.CaseStatus() == "2" : false; if (!result) self.CloseDate(null); return result;
     }, self);
 
     self.Destin.subscribe(function (NewDestin) {
@@ -1033,7 +1033,7 @@
         if (!self.IsSample())
             msg += "\n" + viewValidateSampleInfoRequired;
 
-        if (self.IsSample() == "true") {
+        if (self.IsSample() === "true") {
             if ($("#SampleDate").val() == "")
                 msg += "\n" + viewValidateSampleDateRequired;
             if ($("#SampleDate").val() != "" && !moment(moment(date_sample).format(date_format_moment), [date_format_moment], true).isValid())
@@ -1326,7 +1326,7 @@
                 Destin: self.Destin(),
                 FalleDate: $("#FalleDate").val() == "" ? null : moment(date_falle).format(date_format_ISO),
                 InstReferName: self.InstReferName(),
-                IsSample: self.IsSample() == "true" ? true : (self.IsSample() == "false" ? false : null),
+                IsSample: self.IsSample() === "true" ? true : (self.IsSample() === "false" ? false : null),
                 SampleDate: $("#SampleDate").val() == "" ? null : moment(date_sample).format(date_format_ISO),
                 SampleType: self.SampleType(),
                 ShipDate: $("#ShipDate").val() == "" ? null : moment(date_ship).format(date_format_ISO),
