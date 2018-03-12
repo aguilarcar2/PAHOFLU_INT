@@ -46,6 +46,9 @@
     #ticketStatus,#ticketStatusLabel{
         display:none;
     }
+    #ticketPriority,#ticketPriorityLabel{
+        display:none;
+    }
     #editTicket{
         display:none;
     }
@@ -95,6 +98,22 @@
                 <option value="4">PRUEBAS EN PRODUCCION</option>
                 <option value="5">FINALIZADO</option>
                 <option value="6">CERRADO</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-md-10">
+        <div class='input-group'>
+            <span id="ticketPriorityLabel" class="input-group-addon">
+                <!--Fecha:-->
+                @(((Paho.Controllers.TicketController)this.ViewContext.Controller).getMsg("msgTicketPriorityLabel"))
+            </span>
+            <select id="ticketPriority" class="form-control" data-bind="value: ticketPriority" disabled="disabled">
+                <option value="0" selected>0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>                
             </select>
         </div>
     </div>
@@ -266,7 +285,8 @@
                 <th class="col-md-1">@(((Paho.Controllers.TicketController)this.ViewContext.Controller).getMsg("msgTicketTableID"))</th>
                 <th class="col-md-1">@(((Paho.Controllers.TicketController)this.ViewContext.Controller).getMsg("msgTicketTableSubject"))</th>                
                 <th class="col-md-1" style="text-align:center;">@(((Paho.Controllers.TicketController)this.ViewContext.Controller).getMsg("msgTicketTableDescription"))</th>
-                <th class="col-md-1" style="text-align:center;">@(((Paho.Controllers.TicketController)this.ViewContext.Controller).getMsg("msgTicketTableStatus"))</th>                
+                <th class="col-md-1" style="text-align:center;">@(((Paho.Controllers.TicketController)this.ViewContext.Controller).getMsg("msgTicketTableStatus"))</th>
+                <th class="col-md-1" style="text-align:center;">@(((Paho.Controllers.TicketController)this.ViewContext.Controller).getMsg("msgTicketTablePriority"))</th>                
             </tr>
         </thead>
         <tbody></tbody>
@@ -276,8 +296,17 @@
     function CleanForm(){
 
         $('#newTicket').prop('disabled', false);
+        $('#SubjectTicket').prop('disabled', false);
+        $('#DescriptionTicket').prop('disabled', false);
+        $('#ticketStatus').prop('disabled', true);
+        $('#ticketPriority').prop('disabled', true);
+        $('#editTicket').prop('disabled', true);
+
         $('#SubjectTicket').val("").change();
         $('#DescriptionTicket').val("").change();
+        $('#ticketStatus').val("0").change();
+        $('#ticketPriority').val("0").change();
+        $('#IDTicket').val('').change();
         $('#ticketFile').val("").change();
         $('#ticketFile2').val("").change();
         $('#ticketFile3').val("").change();
@@ -286,19 +315,11 @@
         $('#fileSize3').text("");
         $('#fileSizeTotal').text("");
         $('#fileSizeTotal').css('color', 'blue');
-        $('#newTicket').prop('disabled', false);
-        //---------
-        $('#newTicket').prop('disabled', false);
-        $('#SubjectTicket').prop('disabled', false);
-        $('#DescriptionTicket').prop('disabled', false);
-        $('#ticketStatus').prop('disabled', true);
-        //------------
-        $('#editTicket').prop('disabled', true);
+               
         $('#clearButton1').css('display', 'none');
         $('#clearButton2').css('display', 'none');
         $('#clearButton3').css('display', 'none');
-        $('#ticketStatus').val("0").change();
-        //-----------------------------
+       
 
 
     }
@@ -320,6 +341,9 @@
                                 $('#ticketStatusLabel').css('display','table-cell');
                                 $('#ticketStatus').css('display','table-cell');
                                 $('#ticketStatus').prop('disabled', true);
+                                $('#ticketPriorityLabel').css('display','table-cell');
+                                $('#ticketPriority').css('display','table-cell');
+                                $('#ticketPriority').prop('disabled', true);
                                 $('#editTicket').css('display','none');
                                 $('#rolType').val('Admin').change();
                                 break;
@@ -327,16 +351,46 @@
                                 $('#ticketStatusLabel').css('display','table-cell');
                                 $('#ticketStatus').css('display','table-cell');
                                 $('#ticketStatus').prop('disabled', true);
+                                $('#ticketPriorityLabel').css('display','table-cell');
+                                $('#ticketPriority').css('display','table-cell');
+                                $('#ticketPriority').prop('disabled', true);
                                 $('#editTicket').css('display','table-cell');
                                 $('#rolType').val('Support').change();
                                 break;
                     }
                     $("#TicketList").show();
                     var trHTML = '';
+                    var statusText;
                     $("#TicketList > tbody").html("");
                     $.each(data, function (i, item) {
                         if(i>0){
-                            trHTML += '<tr donclick="dloadTicket(this)"><td style="width:10%;">' + item.ticketDate + '</td><td style="width:10%;">' + item.ID + '</td><td style="width:10%;">' + item.subject + '</td><td style="width:10%;">' + item.description + '</td><td style="width:10%;">' + item.status + '</td></tr>';
+                            //var statusText;
+                            //alert(item.status);  
+                            switch(item.status){
+                                case '0'://-
+                                    statusText = '-';
+                                    break;
+                                case '1'://Enviado
+                                    statusText = 'Enviado';
+                                    break;
+                                case '2'://En proceso
+                                    statusText = 'En proceso';
+                                    break;
+                                case '3'://Pruebas en desarrollo
+                                    statusText = 'Pruebas en desarrollo';
+                                    break;
+                                case '4'://Pruebas en produccion
+                                    statusText = 'Pruebas en produccion';
+                                    break;
+                                case '5'://Finalizado
+                                    statusText = 'Finalizado';
+                                    break;
+                                case '6'://Cerrado
+                                    statusText = 'Cerrado';
+                                    break;
+                            }
+                            //alert(statusText);
+                            trHTML += '<tr donclick="dloadTicket(this)"><td style="width:10%;">' + item.ticketDate + '</td><td style="width:10%;">' + item.ID + '</td><td style="width:10%;">' + item.subject + '</td><td style="width:10%;">' + item.description + '</td><td style="width:10%;">' + statusText + '</td><td style="width:10%;">' + item.priority + '</td></tr>';
                             
                         }
                     });
@@ -366,47 +420,25 @@
             var subjectTicket = $(clickedRow).children(':nth-child(3)').text();
             var descTicket = $(clickedRow).children(':nth-child(4)').text();
             var statusTicket = $(clickedRow).children(':nth-child(5)').text();
+            var priorityTicket = $(clickedRow).children(':nth-child(6)').text();
             var ticketID = $(clickedRow).children(':nth-child(2)').text();
-            /*alert('Valores sacados de la tabla');
-            alert('subjectTicket:'+subjectTicket);
-            alert('descTicket:'+descTicket);
-            alert('statusTicket:'+statusTicket);
-            alert('ticketID:'+ticketID);*/
+            
 
             var algo = $('#SubjectTicket').length;
 
-            $('#SubjectTicket').val(subjectTicket).change();
-            //$('#SubjectTicket').attr('value', subjectTicket);            
+            $('#SubjectTicket').val(subjectTicket).change();                     
             $('#DescriptionTicket').val(descTicket).change();
             $('#IDTicket').val(ticketID).change();
             $("#ticketStatus").val(statusTicket).change();
-            /*switch(statusTicket){
+            $("#ticketPriority").val(priorityTicket).change();
 
-                case "0": $("#ticketStatus").val("0").change();
-                        break;
-                case "1": $("#ticketStatus").val("1").change();
-                        break;
-                case "2": $("#ticketStatus").val("2").change();
-                        break;
-                case "3": $("#ticketStatus").val("3").change();
-                        break;
-                case "4": $("#ticketStatus").val("4").change();
-                        break;
-                case "5": $("#ticketStatus").val("5").change();
-                        break;
-                case "6": $("#ticketStatus").val("6").change();
-                        break;
-
-            }*/
-            
-            /*alert($('#SubjectTicket').val());
-            alert($('#DescriptionTicket').val());
-            alert($('#IDTicket').val());
-            alert($('#ticketStatus').val());*/
 
             $('#newTicket').prop('disabled', true);
             if($('#rolType').val()=='Support'){
                 $('#ticketStatus').prop('disabled', false);
+            }
+            if(($('#rolType').val()=='Support')||($('#rolType').val()=='Admin')){
+                $('#ticketPriority').prop('disabled', false);
             }
             $('#SubjectTicket').prop('disabled', true);
             $('#DescriptionTicket').prop('disabled', true);

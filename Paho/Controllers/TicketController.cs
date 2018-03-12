@@ -82,7 +82,8 @@ namespace Paho.Controllers
                     command.Parameters.Add("@status", SqlDbType.Int).Value = 0;
                     command.Parameters.Add("@ticketDate", SqlDbType.DateTime).Value = DateTime.Now;
                     command.Parameters.Add("@userTicket", SqlDbType.Text).Value = userTicket;
-                    
+                    command.Parameters.Add("@priority", SqlDbType.Int).Value = 0;
+
                     con.Open();
                     using (var reader = command.ExecuteReader())
                     {
@@ -202,7 +203,7 @@ namespace Paho.Controllers
             return (ticketResult);
         }
 
-        public string EditTicket(string ticketID, string UsrCountry, string ticketSubject, string ticketMsg, string ticketStatus)
+        public string EditTicket(string ticketID, string UsrCountry, string ticketSubject, string ticketMsg, string ticketStatus, string ticketPriority)
         {
             string ticketResult = "";
 
@@ -218,7 +219,8 @@ namespace Paho.Controllers
                     command.Parameters.Clear();
                     command.Parameters.Add("@ID", SqlDbType.Int).Value = ticketID;                    
                     command.Parameters.Add("@status", SqlDbType.Int).Value = ticketStatus;
-                    
+                    command.Parameters.Add("@priority", SqlDbType.Int).Value = ticketPriority;
+
                     con.Open();
                     using (var reader = command.ExecuteReader())
                     {
@@ -306,6 +308,7 @@ namespace Paho.Controllers
                             ticketItem.Add("description", reader["description"].ToString().Trim());
                             ticketItem.Add("status", reader["status"].ToString().Trim());
                             ticketItem.Add("ticketDate", reader["ticketDate"].ToString().Trim());
+                            ticketItem.Add("priority", reader["priority"].ToString().Trim());
                             ticketList.Add(ticketItem);
                         }
                     }
