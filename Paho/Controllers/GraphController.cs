@@ -1373,7 +1373,7 @@ namespace Paho.Controllers
                 int? IRAG_ = IRAG;
                 /*if (IRAG_ == 0 && ETI_ == 0)        //#### CAFQ: 180312
                     IRAG_ = 1;*/
-                IRAG_ = (IRAG_ == 0 && ETI_ == 0) ? 1 : IRAG_;          //#### CAFQ: 180312
+                IRAG_ = (IRAG_ == 0 && ETI_ == 0) ? 1 : IRAG_;          //#### CAFQ: 180312 
                 //################################################################# DESARROLLO
                 /*if (Graph == "Graph1" && CountryID == 25)
                 {
