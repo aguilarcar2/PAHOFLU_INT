@@ -957,6 +957,8 @@ namespace Paho.Controllers
                         command.Parameters.Add("@SE", SqlDbType.Int).Value = se;
                         command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
                         command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
+                        command.Parameters.Add("@IRAG", SqlDbType.Int).Value = irag_;
+                        command.Parameters.Add("@ETI", SqlDbType.Int).Value = eti_;
 
                         con.Open();
 
@@ -1369,6 +1371,9 @@ namespace Paho.Controllers
                 string Languaje_ = user.Institution.Country.Language ?? "SPA";
                 int? ETI_ = ETI;
                 int? IRAG_ = IRAG;
+                /*if (IRAG_ == 0 && ETI_ == 0)        //#### CAFQ: 180312
+                    IRAG_ = 1;*/
+                IRAG_ = (IRAG_ == 0 && ETI_ == 0) ? 1 : IRAG_;          //#### CAFQ: 180312
                 //################################################################# DESARROLLO
                 /*if (Graph == "Graph1" && CountryID == 25)
                 {
