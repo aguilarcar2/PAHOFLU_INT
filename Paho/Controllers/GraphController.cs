@@ -1371,8 +1371,6 @@ namespace Paho.Controllers
                 string Languaje_ = user.Institution.Country.Language ?? "SPA";
                 int? ETI_ = ETI;
                 int? IRAG_ = IRAG;
-                /*if (IRAG_ == 0 && ETI_ == 0)        //#### CAFQ: 180312
-                    IRAG_ = 1;*/
                 IRAG_ = (IRAG_ == 0 && ETI_ == 0) ? 1 : IRAG_;          //#### CAFQ: 180312 
                 //################################################################# DESARROLLO
                 /*if (Graph == "Graph1" && CountryID == 25)

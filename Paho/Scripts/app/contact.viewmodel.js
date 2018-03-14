@@ -68,13 +68,13 @@
     self.AMeasure.subscribe(function(newmeasure){
         //self.CalculateDOB();
     });
+
     self.ActiveBOL = ko.computed(function () {
         return (self.UsrCountry() == 3) ? true : false;
     }, self);
     self.NoActiveBOL = ko.computed(function () {
         return (self.UsrCountry() == 3) ? false : true;
     }, self);
-
 
     self.selectedNationalityID = ko.observable("");
     self.selectedNativepeopleID = ko.observable("");
@@ -443,7 +443,6 @@
             return false; 
         }
     }, self);
-
 
     self.AddFluCase = function () {
         app.Views.Home.ResetFluCase();
