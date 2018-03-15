@@ -30,7 +30,7 @@
                 </div>
             }
             @if (Model.DisplayHospitals)
-                    {
+            {
                 <div id="HospitalsGroup" class='input-group col-md-7' style="margin-top: 7px; display: none; float: left" data-bind="visible: displayFilters">
                     <span class="input-group-addon">
                          @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgHospitals"))
@@ -43,7 +43,7 @@
                 </div>
             }
             @if (Model.DisplayLabs)
-                    {
+            {
                 <div id = "LabsGroup" class='input-group col-md-7' style="margin-top: 7px; display: none; float: left" data-bind="visible: displayFilters">
                     <span class="input-group-addon">
                          @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgLabs"))
@@ -55,8 +55,8 @@
                             event:{ change: ReloadFluCases}"></select>
                 </div>
             }
-
         </div>
+
         <div class="row" style="margin-bottom:7px; margin-top:7px;" data-bind="visible: shouldcaselist">
             <div class="col-md-4">
                 <div class='input-group'>
@@ -94,10 +94,7 @@
 
 
              </div>
-
-
          </div>
-
 
          <div class="row" style="margin-bottom:7px; margin-top:7px;" data-bind="visible: shouldcaselist">
             <div class="col-md-4">
@@ -140,28 +137,27 @@
         </div>
 		}*@
         @if(ViewBag.UsrCtry != 7)
-                    {
-        <div class="row" style="margin-bottom:7px; margin-top:7px;" data-bind="visible: shouldcaselist">
-            <div class="col-md-4">
-                <div class='input-group'>
-                    <span class="input-group-addon">
-                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgSNStartDate"))
-                    </span>
-                    <input id = "SNStartDate" type='text' class="form-control" data-bind="datepicker: SNStartDate" />
+        {
+            <div class="row" style="margin-bottom:7px; margin-top:7px;" data-bind="visible: shouldcaselist">
+                <div class="col-md-4">
+                    <div class='input-group'>
+                        <span class="input-group-addon">
+                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgSNStartDate"))
+                        </span>
+                        <input id = "SNStartDate" type='text' class="form-control" data-bind="datepicker: SNStartDate" />
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class='input-group'>
+                        <span class="input-group-addon">
+                             @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgSNEndDate"))
+                        </span>
+                        <input id = "SNEndDate" type='text' class="form-control" data-bind="datepicker: SNEndDate" />
+                    </div>
                 </div>
             </div>
-            <div class="col-md-2">
-                <div class='input-group'>
-                    <span class="input-group-addon">
-                         @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgSNEndDate"))
-                    </span>
-                    <input id = "SNEndDate" type='text' class="form-control" data-bind="datepicker: SNEndDate" />
-                </div>
-            </div>
-
-
-        </div>
         }
+
         <div class="row" style="margin-bottom:7px; margin-top:7px;" data-bind="visible: shouldcaselist">
 
 			<div class="col-md-4">
@@ -182,7 +178,7 @@
 </div>
 
 @if(ViewBag.UserInstitutionType != 2)
-                {
+{
     <div class="row" style="margin-top:1em;" data-bind="visible: newButton">
         <div class="col-md-8">
             
@@ -217,7 +213,6 @@
 
 <div id = "tabs" data-bind="visible: shouldtabs" style="margin-top: 7px; display: none">
     <ul>
-
         <li><a href = "#tab-contact">  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContact")) </a></li>
         <li><a href="#tab-GEO"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeo"))</a></li>                
         <li><a href="#tab-risk"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRisk"))</a></li>
@@ -229,7 +224,6 @@
     </ul>
 
     <div id="tab-contact" data-bind="with: app.Views.Contact">
-
         <div class="row rowform">
             <div class="col-md-6">
                 <span>
@@ -243,19 +237,19 @@
                 }
                 @if (ViewBag.ILI == true)
                 {
-                <label class="btn btn-default">
-                    <input type="radio" name="IsSurv" id="IsSurv" value="2" data-bind="checked: IsSurv" @((ViewBag.SARI == false && ViewBag.ILI == true) ? "checked" : "" ) />  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelIli"))
-                </label>
+                    <label class="btn btn-default">
+                        <input type="radio" name="IsSurv" id="IsSurv" value="2" data-bind="checked: IsSurv" @((ViewBag.SARI == false && ViewBag.ILI == true) ? "checked" : "" ) />  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelIli"))
+                    </label>
                 }
                 <label class="btn btn-default">
                     <input type="checkbox" name="SurvInusual" id="SurvInusual" data-bind="checked: SurvInusual">  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelUnusualCase"))
                 </label>
-                @if (ViewBag.UsrCtry == 9) {
-                <label class="btn btn-default">
-                    <input type="checkbox" name="Brote" id="Brote" data-bind="checked: Brote">  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelOutbreak"))
-                </label>
+                @if (ViewBag.UsrCtry == 9)
+                {
+                    <label class="btn btn-default">
+                        <input type="checkbox" name="Brote" id="Brote" data-bind="checked: Brote">  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelOutbreak"))
+                    </label>
                 }
-
             </div>
 			@if (ViewBag.UsrCtry != 7 && ViewBag.UsrCtry != 9 && ViewBag.UsrCtry != 3 ){
 			<div class="col-md-6">
@@ -275,15 +269,14 @@
             @*Agregar aqui a todos los paises que deben mostrar la institución*@
 			@if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 3 ) 
             {
-            <div class="col-md-5" data-bind="visible:VisHopName">
-                <div class='input-group'>
-                    <span class="input-group-addon">
-                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelHospital"))
-                    </span>
-                    <span id="hospitalName" class="form-control" data-bind="text:hospitalName" disabled  />
+                <div class="col-md-5" data-bind="visible:VisHopName">
+                    <div class='input-group'>
+                        <span class="input-group-addon">
+                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelHospital"))
+                        </span>
+                        <span id="hospitalName" class="form-control" data-bind="text:hospitalName" disabled  />
+                    </div>
                 </div>
-
-            </div>
 			}
         </div>
         @*@if (ViewBag.UsrCtry == 9)
@@ -514,16 +507,15 @@
         </div>
 
         <!-- Nacionalidad/Pueblo originario -->
-        <div class="row rowform" data-bind="visible:SurvSARICHI">
+        <div class="row rowform" data-bind="visible: SurvSARICHI() || (ActiveBOL() && IsInusitado())">
             <div class="col-md-6">
                 <div class='input-group'>
                     <span class='input-group-addon'> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelNacionality"))</span>
                     <select id="nationality" class="form-control" data-bind="options: app.Views.Home.countries,
-                optionsText: 'Name',
-                optionsValue: 'Id',
-                value: selectedNationalityID,
-                optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel"))'"></select>
-
+                        optionsText: 'Name',
+                        optionsValue: 'Id',
+                        value: selectedNationalityID,
+                        optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel"))'"></select>
                 </div>
             </div>
             <div class="col-md-6" data-bind="visible:NacionalidadCHI">
@@ -556,25 +548,23 @@
             </div>
         </div>
      
+        <!-- Siguiente -->
         <div class="row rowform">
             <div class="col-md-12">
-
                 <!-- button id="save" type="button" class="btn btn-primary" data-bind="click: Save, visible:false">Guardar</button>
-    <span></span>
-    <button id="cancel" type="button" class="btn btn-primary" data-bind="click: Cancel, visible:false">Regresar</button>
-    @if (ViewBag.UserInstitutionType != 2)
-    {
-        <span></span>
-        <button id="Reset" type="button" class="btn btn-primary" data-bind="click: AddFluCase, visible:false">Nuevo registro</button>
-    }
-    <span></span>
-    <button id="Borrar" type="button" class="btn btn-primary" data-bind="click: Borrar, visible:false">Borrar</button>
-    <span></span -->
+                <span></span>
+                <button id="cancel" type="button" class="btn btn-primary" data-bind="click: Cancel, visible:false">Regresar</button>
+                @if (ViewBag.UserInstitutionType != 2)
+                {
+                    <span></span>
+                    <button id="Reset" type="button" class="btn btn-primary" data-bind="click: AddFluCase, visible:false">Nuevo registro</button>
+                }
+                <span></span>
+                <button id="Borrar" type="button" class="btn btn-primary" data-bind="click: Borrar, visible:false">Borrar</button>
+                <span></span -->
                 <button id="Siguiente" type="button" class="btn btn-primary btn-next " onclick="if (app.Views.Contact.validate() == true) $('#tabs').tabs({ active: 1 });"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelNextButton"))</button>
-
             </div>
         </div>
-
     </div>
 
     <div id="tab-GEO" data-bind="with: app.Views.GEO">
@@ -1878,7 +1868,6 @@
     </div>
 
     <div id="tab-hospital" data-bind="with: app.Views.Hospital">
-
         <div class="row rowform">
             <div class="col-md-5">
                 <div class='input-group'>
@@ -1976,6 +1965,18 @@
                             </label>
                         </div>
                         }
+                    </div>
+
+                    <div class="row rowform" data-bind="visible: app.Views.Contact.IsInusitado">
+                        <!-- Temperatura -->
+                        <div class="col-md-3" data-bind="visible: app.Views.Contact.ActiveBOL">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    Temperatura
+                                </span>
+                                <input id="Temperatura" type='text' class="form-control case_letter" style="max-width: 100px" data-bind="value: Temperatura" />
+                            </div>
+                        </div>
                     </div>
 
                     <div class="row rowform" data-bind="visible:app.Views.Contact.IsInusitado">
