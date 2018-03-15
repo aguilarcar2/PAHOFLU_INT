@@ -13,6 +13,7 @@
     self.people = ko.observableArray();
     self.hasGet = ko.observable(false);
     self.hasHospitalID = ko.observable("");
+    self.LabsFlow = ko.observableArray();
 
     self.FeverDateDummy = ko.observable("");
 
@@ -731,6 +732,7 @@
                 self.flow_institution(data.flow_institution);
                 self.flow_max(data.flow_max);
                 self.flow_open_always(data.flow_open_always);
+                self.LabsFlow(data.CLOrdDisplay);
                 $("#o_S").val(data.DataStatement);
                 
                 $("button[id^='Siguiente']").attr("disabled", false);
@@ -747,7 +749,8 @@
                 //alert(errorThrown);
                 console.log(errorThrown);
             });
-
+        console.log("Array contact -- LabsFlow")
+        console.log(self.LabsFlow);
         self.hasGet(false);
     };
 

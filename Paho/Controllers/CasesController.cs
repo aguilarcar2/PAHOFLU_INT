@@ -630,8 +630,8 @@ namespace Paho.Controllers
                 return HttpNotFound();
             }
 
-
             IQueryable<Institution> institutions = null;
+            IQueryable<Institution> CLOrd = null;
             var user = UserManager.FindById(User.Identity.GetUserId());
 
             institutions = db.Institutions.OfType<Hospital>().Where(i => i.ID == flucase.HospitalID);
@@ -642,6 +642,17 @@ namespace Paho.Controllers
             var region_pais = db.Regions.Where(d => d.CountryID == institutions.ToList().FirstOrDefault().CountryID && d.orig_country == institutions.ToList().FirstOrDefault().cod_region_pais && d.tipo_region == 3).Select(j => (string)j.Name).ToList();
             var institutionsConfiguration = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(i => i.InstitutionToID == user.Institution.ID && i.InstitutionParentID == flucase.HospitalID);
             var institutionsConfigurationMax = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(i => i.InstitutionParentID == flucase.HospitalID).OrderByDescending(j => j.Priority);
+            // Catalogo de las instituciones tipo laboratorio del flujo
+            var InstConfFlowLab = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>()
+                    .Where(i => i.InstitutionParentID == flucase.HospitalID).Select(j => j.InstitutionToID);
+            CLOrd = db.Institutions.OrderBy(i => i.OrdenPrioritybyLab).Where( z => InstConfFlowLab.Contains(z.ID));
+            var CLOrdDisplay =  CLOrd.Select(i => new LookupView<Institution>()
+            {
+                Id = i.ID.ToString(),
+                Name = i.Name,
+                orden = i.OrdenPrioritybyLab.ToString()
+            }).ToList();
+
             var flow_local_lab = 0;
             var flow_max = 1;
             var flow_open_always = false;
@@ -689,6 +700,7 @@ namespace Paho.Controllers
                      region_salud = region_salud.FirstOrDefault(),
                      region_pais = region_pais.FirstOrDefault(),
                      selectedServiceId = (db.Institutions.Where(j => j.ID == flucase.HospitalID).FirstOrDefault().AccessLevel == (AccessLevel)6) ? flucase.HospitalID : 0,
+                     LabsFlow = CLOrdDisplay,
                      /*Ocupacion = flucase.Ocupacion,                             //#### CAFQ
                      TrabajoDirecc = flucase.TrabajoDirecc,                     //#### CAFQ
                      TrabajoEstablec = flucase.TrabajoEstablec,                 //#### CAFQ
@@ -1150,7 +1162,7 @@ namespace Paho.Controllers
             if (institutionId == null) return Json(new { }, JsonRequestBehavior.AllowGet);
             return Json(new
             {
-                LabsHospital = GetLabsByInstitution(Convert.ToInt32(institutionId)).Select(x => new { Id = x.ID, x.Name }).ToList()
+                LabsHospital = GetLabsByInstitution(Convert.ToInt32(institutionId)).Select(x => new { Id = x.ID, x.Name , orden = x.OrdenPrioritybyLab }).ToList()
             }, JsonRequestBehavior.AllowGet);
         }
 
@@ -1852,7 +1864,9 @@ namespace Paho.Controllers
                               Id = caselabtest.ID,
                               CaseLabID = caselabtest.FluCaseID,
                               ProcLab = caselabtest.LabID.ToString(),
-                              ProcLabName = GetLabName(caselabtest.LabID),
+                              OrdenLabID = caselabtest.Institution.OrdenPrioritybyLab,
+                              //ProcLabName = GetLabName(caselabtest.LabID),
+                              ProcLabName = caselabtest.Institution.Name,
                               ProcessLab = caselabtest.Processed,
                               SampleNumber = caselabtest.SampleNumber,
                               TestType = caselabtest.TestType,

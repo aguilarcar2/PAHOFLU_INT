@@ -18,6 +18,7 @@ namespace Paho.Controllers
             IQueryable<Institution> institutions = null;
             IQueryable<Region> regions = null;
 
+            
             IQueryable<CatSampleNoProcessed> CSNP = null;
             IQueryable<CatTestType> CTT = null;
             IQueryable<CatTestResult> CTR = null;
@@ -198,7 +199,6 @@ namespace Paho.Controllers
                 CaseViewModel.reg_pais_usr = db.Regions.Where(j => j.CountryID == user.Institution.CountryID && j.tipo_region == 3 && j.orig_country == user.Institution.cod_region_pais).FirstOrDefault().Name.ToString();
 
             // Catalogos del laboratorio
-
 
             CSNP = db.CatSampleNoProcessed.OrderBy(i => i.orden).ThenBy(j => j.SPA);
             var CSNPDisplay = (user.Institution.Country.Language == "SPA" ? CSNP.Select(i => new LookupView<CatSampleNoProcessed>()

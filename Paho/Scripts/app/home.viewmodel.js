@@ -447,8 +447,8 @@
     };
 
     self.FlowDataCaseStatus = function () {
-        console.log("FlowCaseStatus");
-        console.log("Is Sample en Hospital");
+        //console.log("FlowCaseStatus");
+        //console.log("Is Sample en Hospital");
         console.log(app.Views.Hospital.IsSample());
         var flow_check = $.grep(app.Views.Lab.LabTests(), function (x) {         
             //console.log("Home - FlowDataCaseStatus - EndFlow " + x.EndFlow());

@@ -16,6 +16,7 @@
     self.LabDummy = ko.observable("");
     self.ProcLab = ko.observable("");
     self.LabID = ko.observable("");
+    self.OrdenLabID = 99;
     self.CanEdit = ko.observable(true);
     self.CanPCR = ko.observable(app.Views.Lab.CanPCRLab());
     self.CanIFI = ko.observable(app.Views.Lab.CanIFILab());
@@ -303,7 +304,6 @@
     }, self);
 
     self.ProcessLab.subscribe(function (process) {
-        console.log("ProcessLab aqui")
         self.TestType(null);
         self.TestEndDate(null);
         self.TestDate(null);
@@ -345,6 +345,7 @@
 
     // Asignacion de resultado automaticamente
     self.VirusTypeID.subscribe(function (new_virus) {
+        //console.log("VirusTypeID");
         if (new_virus != "" && new_virus != null) {
             var category = ko.utils.arrayFirst(app.Views.Home.CVT(), function (category) {
                 return category.Id === new_virus;
@@ -356,7 +357,24 @@
         
     });
 
+    self.ProcLab.subscribe(function (new_Lab_Select) {
+        //console.log("Lab_assign -- " + new_Lab_Select);
+        if (new_Lab_Select != "" && new_Lab_Select != null) {
+            console.log(app.Views.Contact.LabsFlow());
+            //var category = ko.utils.arrayFirst(app.Views.Contact.LabsFlow(), function (category) {
+            //    return category.Id === new_Lab_Select;
+            //});
+            console.log("Lab_assign -- " + new_Lab_Select);
+            //console.log("Lab_orden -- " + category);
+            //if (category != null && category != "undefined")
+            //    self.OrdenLabID = category.orden;
+            //app.Views.Lab.OrdenFinalResult();
+        }
+
+    });
+
     self.VirusSubTypeID.subscribe(function (new_subtype) {
+        //console.log("VirusSubTypeID");
         if (new_subtype != "" && new_subtype != null) {
 
             var category = ko.utils.arrayFirst(app.Views.Home.CVST(), function (category) {
@@ -370,11 +388,12 @@
     });
 
     self.VirusLineageID.subscribe(function (new_lineage) {
+        //console.log("VirusLineageID");
         if (new_lineage != "" && new_lineage != null) {
-
             var category = ko.utils.arrayFirst(app.Views.Home.CVL(), function (category) {
                 return category.Id === new_lineage;
             });
+
             if (category != null && category != "undefined")
             self.OrdenLineageID = category.orden;
             app.Views.Lab.OrdenFinalResult();
@@ -383,6 +402,7 @@
     });
 
     self.TestType.subscribe(function (new_test_type) {
+        //console.log("TestType");
         if (new_test_type != "" && new_test_type != null) {
 
             var category = ko.utils.arrayFirst(app.Views.Home.CTT(), function (category) {
@@ -396,6 +416,7 @@
     });
 
     self.TestResultID.subscribe(function (new_test_result) {
+        //console.log("TestResultID");
         if (new_test_result != "" && new_test_result != null) {
             //alert(new_test_result);
             var category = ko.utils.arrayFirst(app.Views.Home.CTR(), function (category) {
@@ -411,6 +432,7 @@
     });
 
     self.TestResultID_VirusSubType.subscribe(function (new_test_result_virussubtype) {
+        //console.log("TestResultID_VirusSubType");
         if (new_test_result_virussubtype != "" && new_test_result_virussubtype != null) {
             //alert(new_test_result);
             var category = ko.utils.arrayFirst(app.Views.Home.CTR(), function (category) {
@@ -426,6 +448,7 @@
     });
 
     self.TestResultID_VirusSubType_2.subscribe(function (new_test_result_virussubtype) {
+        //console.log("TestResultID_VirusSubType_2");
         if (new_test_result_virussubtype != "" && new_test_result_virussubtype != null) {
             //alert(new_test_result);
             var category = ko.utils.arrayFirst(app.Views.Home.CTR(), function (category) {
@@ -1448,6 +1471,7 @@ function LabViewModel(app, dataModel) {
             self.OrderDummy([]);
             self.resetFinalResult();
             self.OrderArrayFinalResult(self.LabTests().concat(self.LabTests_Sample2()).concat(self.LabTests_Sample3()));
+            console.log(self.OrderArrayFinalResult());
             self.OrderDummy(self.OrderArrayFinalResult.sort(self.generateSortFn([{ name: 'OrdenTestResultID' }, { name: 'OrdenVirusTypeID' }, { name: 'OrdenTestResultID_VirusSubType' }, { name: 'OrdenTestResultID_VirusSubType_2' }, { name: 'OrdenSubTypeID' }, { name: 'OrdenLineageID' }, { name: 'OrdenTestType' }])));
 
             self.OrderArrayFinalResult([]);
