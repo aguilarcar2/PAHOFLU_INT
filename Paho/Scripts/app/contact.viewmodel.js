@@ -437,9 +437,9 @@
  
     self.IsInusitado = ko.computed(function () {            //**** CAFQ
         if (self.SurvInusual() == true) {
-            // Desactivado por el momento requirimiento de RRR //29/Nov/2017
+            // Desactivado por el momento requirimiento de RRR //16/Marzo/2018
             //return true;
-            return true;
+            return false;
         } else {
             return false; 
         }
@@ -748,8 +748,8 @@
                 //alert(errorThrown);
                 console.log(errorThrown);
             });
-        console.log("Array contact -- LabsFlow")
-        console.log(self.LabsFlow);
+        //console.log("Array contact -- LabsFlow")
+        //console.log(self.LabsFlow);
         self.hasGet(false);
     };
 

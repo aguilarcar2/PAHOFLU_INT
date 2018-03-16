@@ -11,6 +11,7 @@ using Spire.Xls;
 using Microsoft.AspNet;
 using Microsoft.AspNet.Identity;
 using Paho.Models;
+using System.Linq;
 
 namespace Paho.Controllers
 {
@@ -426,7 +427,8 @@ namespace Paho.Controllers
                                 AssignValueCell(5, 30, excelWorksheet, reader, "region_CCSS"); // Region Institucional
                                 AssignValueCell(6, 9, excelWorksheet, reader, "Fecha_notificacion"); // Fecha de notificacion
                                 AssignValueCell(6, 30, excelWorksheet, reader, "Fecha_registro"); // Fecha registro
-                                AssignValueCell(7, 9, excelWorksheet, reader, "tipo_identificacion"); // Tipo de identificacion
+                                if (user.Institution.CountryID != 25 && user.Institution.CountryID != 18 && user.Institution.CountryID != 11)
+                                    AssignValueCell(7, 9, excelWorksheet, reader, "tipo_identificacion"); // Tipo de identificacion
                                 AssignValueCell(7, 31, excelWorksheet, reader, "Doc_identificacion"); // Numero de identificacion
                                 AssignValueCell(8, 31, excelWorksheet, reader, "Registro_hospital"); // Numero de identificacion ENG
                                 AssignValueCell(8, 9, excelWorksheet, reader, "Doc_identificacion"); // Numero de identificacion ENG
@@ -485,168 +487,168 @@ namespace Paho.Controllers
                                 AssignValueCell(29, 35, excelWorksheet, reader, "Trimestre"); // Trimestre de embarazo
 
                                 // Vacunas
-                                AssignValueCell(42, 12, excelWorksheet, reader, "Fuente_vacuna"); // Fuente de la vacuna
+                                AssignValueCell(43, 12, excelWorksheet, reader, "Fuente_vacuna"); // Fuente de la vacuna
 
                                 //Influenza
                                 if ((reader.GetSchemaTable().Select("ColumnName = 'Influenza'").Length > 0))
                                 {
                                     if (reader.GetValue(reader.GetOrdinal("Influenza")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("Influenza")).ToString().ToUpper() == "YES")
-                                    { MarkCell(43, 9, excelWorksheet); }
+                                    { MarkCell(44, 9, excelWorksheet); }
                                     else if (reader.GetValue(reader.GetOrdinal("Influenza")).ToString().ToUpper() == "NO")
-                                    { MarkCell(43, 11, excelWorksheet); }
+                                    { MarkCell(44, 11, excelWorksheet); }
                                     else if (reader.GetValue(reader.GetOrdinal("Influenza")).ToString().ToUpper() == "NO DATA" || reader.GetValue(reader.GetOrdinal("Influenza")).ToString().ToUpper() == "SIN INFORMACIÓN")
-                                    { MarkCell(43, 13, excelWorksheet); }
+                                    { MarkCell(44, 13, excelWorksheet); }
                                 }
-                                AssignValueCell(43, 27, excelWorksheet, reader, "Fecha_primera_dosis"); // Fecha de la primera dosis de influenza
-                                AssignValueCell(43, 41, excelWorksheet, reader, "Fecha_segunda_dosis"); // Fecha de la segunda dosis de influenza
+                                AssignValueCell(44, 27, excelWorksheet, reader, "Fecha_primera_dosis"); // Fecha de la primera dosis de influenza
+                                AssignValueCell(44, 41, excelWorksheet, reader, "Fecha_segunda_dosis"); // Fecha de la segunda dosis de influenza
 
                                 //Neumococo
                                 if ((reader.GetSchemaTable().Select("ColumnName = 'Neumococo'").Length > 0))
                                 {
                                     if (reader.GetValue(reader.GetOrdinal("Neumococo")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("Neumococo")).ToString().ToUpper() == "YES")
-                                    { MarkCell(43, 9, excelWorksheet); }
+                                    { MarkCell(45, 9, excelWorksheet); }
                                     else if (reader.GetValue(reader.GetOrdinal("Neumococo")).ToString().ToUpper() == "NO")
-                                    { MarkCell(43, 11, excelWorksheet); }
+                                    { MarkCell(45, 11, excelWorksheet); }
                                     else if (reader.GetValue(reader.GetOrdinal("Neumococo")).ToString().ToUpper() == "NO DATA" || reader.GetValue(reader.GetOrdinal("Neumococo")).ToString().ToUpper() == "SIN INFORMACIÓN")
-                                    { MarkCell(43, 13, excelWorksheet); }
+                                    { MarkCell(45, 13, excelWorksheet); }
                                 }
-                                AssignValueCell(43, 27, excelWorksheet, reader, "Neumococo_dosis"); // Fecha de la primera dosis de influenza
-                                AssignValueCell(43, 41, excelWorksheet, reader, "Neumococo_fecha"); // Fecha de la segunda dosis de influenza
+                                AssignValueCell(45, 27, excelWorksheet, reader, "Neumococo_dosis"); // Fecha de la primera dosis de influenza
+                                AssignValueCell(45, 41, excelWorksheet, reader, "Neumococo_fecha"); // Fecha de la segunda dosis de influenza
 
 
                                 // Antiviral
                                 if ((reader.GetSchemaTable().Select("ColumnName = 'AntiViral'").Length > 0))
                                 {
                                     if (reader.GetValue(reader.GetOrdinal("AntiViral")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("AntiViral")).ToString().ToUpper() == "YES")
-                                    { MarkCell(49, 9, excelWorksheet); }
+                                    { MarkCell(50, 9, excelWorksheet); }
                                     else if (reader.GetValue(reader.GetOrdinal("AntiViral")).ToString().ToUpper() == "NO")
-                                    { MarkCell(49, 11, excelWorksheet); }
+                                    { MarkCell(50, 11, excelWorksheet); }
                                     else if (reader.GetValue(reader.GetOrdinal("AntiViral")).ToString().ToUpper() == "NO DATA" || reader.GetValue(reader.GetOrdinal("AntiViral")).ToString().ToUpper() == "SIN INFORMACIÓN")
-                                    { MarkCell(49, 13, excelWorksheet); }
+                                    { MarkCell(50, 13, excelWorksheet); }
                                 }
-                                AssignValueCell(49, 27, excelWorksheet, reader, "Antiviral_fecha"); // Fecha de antiviral
-                                AssignValueCell(50, 9, excelWorksheet, reader, "Antiviral_tipo"); // Tipo de antiviral
+                                AssignValueCell(50, 27, excelWorksheet, reader, "Antiviral_fecha"); // Fecha de antiviral
+                                AssignValueCell(51, 9, excelWorksheet, reader, "Antiviral_tipo"); // Tipo de antiviral
                                                                                                   // Falta dosis de antiviral
 
                                 // Factores de riesgo
                                 if ((reader.GetSchemaTable().Select("ColumnName = 'Factores_riesgo'").Length > 0))
                                 {
                                     if (reader.GetValue(reader.GetOrdinal("Factores_riesgo")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("Factores_riesgo")).ToString().ToUpper() == "YES")
-                                    { MarkCell(52, 11, excelWorksheet); }
+                                    { MarkCell(53, 11, excelWorksheet); }
                                     else if (reader.GetValue(reader.GetOrdinal("Factores_riesgo")).ToString().ToUpper() == "NO")
-                                    { MarkCell(52, 15, excelWorksheet); }
+                                    { MarkCell(53, 15, excelWorksheet); }
                                     else if (reader.GetValue(reader.GetOrdinal("Factores_riesgo")).ToString().ToUpper() == "NO DATA" || reader.GetValue(reader.GetOrdinal("Factores_riesgo")).ToString().ToUpper() == "SIN INFORMACIÓN")
-                                    { MarkCell(52, 22, excelWorksheet); }
+                                    { MarkCell(53, 22, excelWorksheet); }
                                 }
 
                                 if ((reader.GetSchemaTable().Select("ColumnName = 'Tabaquismo'").Length > 0))
                                     if (reader.GetValue(reader.GetOrdinal("Tabaquismo")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("Tabaquismo")).ToString().ToUpper() == "YES")
-                                    { MarkCell(53, 11, excelWorksheet); } // Tabaquismo
+                                    { MarkCell(54, 11, excelWorksheet); } // Tabaquismo
 
                                 if ((reader.GetSchemaTable().Select("ColumnName = 'Alcoholismo'").Length > 0))
                                     if (reader.GetValue(reader.GetOrdinal("Alcoholismo")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("Alcoholismo")).ToString().ToUpper() == "YES")
-                                    { MarkCell(53, 11, excelWorksheet); } // Alcoholismo
+                                    { MarkCell(54, 11, excelWorksheet); } // Alcoholismo
 
                                 if ((reader.GetSchemaTable().Select("ColumnName = 'Trab_salud'").Length > 0))
                                     if (reader.GetValue(reader.GetOrdinal("Trab_salud")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("Trab_salud")).ToString().ToUpper() == "YES")
-                                    { MarkCell(53, 33, excelWorksheet); } // Trabajador de salud
+                                    { MarkCell(54, 33, excelWorksheet); } // Trabajador de salud
 
                                 if ((reader.GetSchemaTable().Select("ColumnName = 'Sindrome_down'").Length > 0))
                                     if (reader.GetValue(reader.GetOrdinal("Sindrome_down")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("Sindrome_down")).ToString().ToUpper() == "YES")
-                                    { MarkCell(53, 11, excelWorksheet); } // Sindrome_down
+                                    { MarkCell(54, 11, excelWorksheet); } // Sindrome_down
 
                                 // Comorbilidades
                                 if ((reader.GetSchemaTable().Select("ColumnName = 'Cardiopatia_cronica'").Length > 0))
                                     if (reader.GetValue(reader.GetOrdinal("Cardiopatia_cronica")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("Cardiopatia_cronica")).ToString().ToUpper() == "YES")
-                                    { MarkCell(57, 11, excelWorksheet); } // Cardiopatia_cronica
+                                    { MarkCell(58, 11, excelWorksheet); } // Cardiopatia_cronica
 
                                 if ((reader.GetSchemaTable().Select("ColumnName = 'Diabetes'").Length > 0))
                                     if (reader.GetValue(reader.GetOrdinal("Diabetes")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("Diabetes")).ToString().ToUpper() == "YES")
-                                    { MarkCell(57, 22, excelWorksheet); } // Diabetes
+                                    { MarkCell(58, 22, excelWorksheet); } // Diabetes
 
                                 if ((reader.GetSchemaTable().Select("ColumnName = 'Neurologica_cronica'").Length > 0))
                                     if (reader.GetValue(reader.GetOrdinal("Neurologica_cronica")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("Neurologica_cronica")).ToString().ToUpper() == "YES")
-                                    { MarkCell(57, 33, excelWorksheet); } // Neurologica_cronica
+                                    { MarkCell(58, 33, excelWorksheet); } // Neurologica_cronica
 
                                 if ((reader.GetSchemaTable().Select("ColumnName = 'Asma'").Length > 0))
                                     if (reader.GetValue(reader.GetOrdinal("Asma")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("Asma")).ToString().ToUpper() == "YES")
-                                    { MarkCell(57, 45, excelWorksheet); } // Asma
+                                    { MarkCell(58, 45, excelWorksheet); } // Asma
 
                                 if ((reader.GetSchemaTable().Select("ColumnName = 'Pulmonar_cronica'").Length > 0))
                                     if (reader.GetValue(reader.GetOrdinal("Pulmonar_cronica")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("Pulmonar_cronica")).ToString().ToUpper() == "YES")
-                                    { MarkCell(58, 11, excelWorksheet); } // Pulmonar_cronica
+                                    { MarkCell(59, 11, excelWorksheet); } // Pulmonar_cronica
 
                                 if ((reader.GetSchemaTable().Select("ColumnName = 'Hepatica_cronica'").Length > 0))
                                     if (reader.GetValue(reader.GetOrdinal("Hepatica_cronica")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("Hepatica_cronica")).ToString().ToUpper() == "YES")
-                                    { MarkCell(58, 22, excelWorksheet); } // Hepatica_cronica
+                                    { MarkCell(59, 22, excelWorksheet); } // Hepatica_cronica
 
                                 if ((reader.GetSchemaTable().Select("ColumnName = 'Renal_cronica'").Length > 0))
                                     if (reader.GetValue(reader.GetOrdinal("Renal_cronica")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("Renal_cronica")).ToString().ToUpper() == "YES")
-                                    { MarkCell(58, 33, excelWorksheet); } // Renal_cronica
+                                    { MarkCell(59, 33, excelWorksheet); } // Renal_cronica
 
                                 if ((reader.GetSchemaTable().Select("ColumnName = 'Inmuno_enf_trat'").Length > 0))
                                     if (reader.GetValue(reader.GetOrdinal("Inmuno_enf_trat")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("Inmuno_enf_trat")).ToString().ToUpper() == "YES")
-                                    { MarkCell(58, 45, excelWorksheet); } // Inmuno_enf_trat
+                                    { MarkCell(59, 45, excelWorksheet); } // Inmuno_enf_trat
 
                                 if ((reader.GetSchemaTable().Select("ColumnName = 'Paralisis_cerebral'").Length > 0))
                                     if (reader.GetValue(reader.GetOrdinal("Paralisis_cerebral")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("Paralisis_cerebral")).ToString().ToUpper() == "YES")
-                                    { MarkCell(58, 11, excelWorksheet); } // Paralisis_cerebral
+                                    { MarkCell(60, 11, excelWorksheet); } // Paralisis_cerebral
 
                                 if ((reader.GetSchemaTable().Select("ColumnName = 'Indigena'").Length > 0))
                                     if (reader.GetValue(reader.GetOrdinal("Indigena")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("Indigena")).ToString().ToUpper() == "YES")
-                                    { MarkCell(58, 22, excelWorksheet); } // Indigena
+                                    { MarkCell(60, 22, excelWorksheet); } // Indigena
 
-                                AssignValueCell(60, 11, excelWorksheet, reader, "Obesidad"); // Obesidad
+                                AssignValueCell(61, 11, excelWorksheet, reader, "Obesidad"); // Obesidad
 
-                                AssignValueCell(60, 33, excelWorksheet, reader, "Otros"); // Otra comorbilidad
+                                AssignValueCell(61, 33, excelWorksheet, reader, "Otros"); // Otra comorbilidad
 
                                 // Informacion clinica
 
-                                AssignValueCell(64, 9, excelWorksheet, reader, "Inicio_sintomas"); // Fecha de inicio de sintomas
-                                AssignValueCell(64, 31, excelWorksheet, reader, "SE_ini_sin"); // Semana de Fecha de inicio de sintomas
-                                AssignValueCell(64, 39, excelWorksheet, reader, "Year"); // Anio de Fecha de inicio de sintomas
+                                AssignValueCell(65, 9, excelWorksheet, reader, "Inicio_sintomas"); // Fecha de inicio de sintomas
+                                AssignValueCell(65, 31, excelWorksheet, reader, "SE_ini_sin"); // Semana de Fecha de inicio de sintomas
+                                AssignValueCell(65, 39, excelWorksheet, reader, "Year"); // Anio de Fecha de inicio de sintomas
 
-                                AssignValueCell(64, 9, excelWorksheet, reader, "Fecha_diag"); // Fecha de diagnostico
-                                AssignValueCell(64, 31, excelWorksheet, reader, "SE_diag"); // Semana de diagnostico
+                                AssignValueCell(66, 9, excelWorksheet, reader, "Fecha_diag"); // Fecha de diagnostico
+                                AssignValueCell(66, 31, excelWorksheet, reader, "SE_diag"); // Semana de diagnostico
                                                                                             // Sintomatologia
 
                                 if ((reader.GetSchemaTable().Select("ColumnName = 'Fiebre_Historiafiebre'").Length > 0))
                                     if (reader.GetValue(reader.GetOrdinal("Fiebre_Historiafiebre")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("Fiebre_Historiafiebre")).ToString().ToUpper() == "YES")
-                                    { MarkCell(67, 11, excelWorksheet); } // Fiebre_Historiafiebre
+                                    { MarkCell(68, 11, excelWorksheet); } // Fiebre_Historiafiebre
 
                                 // Falta temperatura
                                 if ((reader.GetSchemaTable().Select("ColumnName = 'Tos'").Length > 0))
                                     if (reader.GetValue(reader.GetOrdinal("Tos")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("Tos")).ToString().ToUpper() == "YES")
-                                    { MarkCell(67, 33, excelWorksheet); } // Tos
+                                    { MarkCell(68, 33, excelWorksheet); } // Tos
 
                                 if ((reader.GetSchemaTable().Select("ColumnName = 'Dif_resp'").Length > 0))
                                     if (reader.GetValue(reader.GetOrdinal("Dif_resp")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("Dif_resp")).ToString().ToUpper() == "YES")
-                                    { MarkCell(67, 45, excelWorksheet); } // Difucultad respiratoria
+                                    { MarkCell(68, 45, excelWorksheet); } // Difucultad respiratoria
 
                                 if ((reader.GetSchemaTable().Select("ColumnName = 'Med_Sat_Oxig'").Length > 0))
                                     if (reader.GetValue(reader.GetOrdinal("Med_Sat_Oxig")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("Med_Sat_Oxig")).ToString().ToUpper() == "YES")
-                                    { MarkCell(68, 11, excelWorksheet); } // Medicion de saturacion de oxigeno
+                                    { MarkCell(69, 11, excelWorksheet); } // Medicion de saturacion de oxigeno
 
-                                AssignValueCell(68, 22, excelWorksheet, reader, "Sat_Oxig_Porc"); // Porcentaje en numero de la saturacion de oxigeno
+                                AssignValueCell(69, 22, excelWorksheet, reader, "Sat_Oxig_Porc"); // Porcentaje en numero de la saturacion de oxigeno
 
                                 if ((reader.GetSchemaTable().Select("ColumnName = 'Odinofagia'").Length > 0))
                                     if (reader.GetValue(reader.GetOrdinal("Odinofagia")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("Odinofagia")).ToString().ToUpper() == "YES")
-                                    { MarkCell(68, 33, excelWorksheet); } // Odinofagia
+                                    { MarkCell(69, 33, excelWorksheet); } // Odinofagia
 
-                                AssignValueCell(64, 9, excelWorksheet, reader, "Salon"); // Servicio donde atienden al paciente
-                                AssignValueCell(64, 33, excelWorksheet, reader, "Diag_ing_CIE10"); // Diagnostico de ingreso
+                                AssignValueCell(76, 9, excelWorksheet, reader, "Salon"); // Servicio donde atienden al paciente
+                                AssignValueCell(76, 33, excelWorksheet, reader, "Diag_ing_CIE10"); // Diagnostico de ingreso
                                                                                                    //Falta otro diagnostico de egreso
-                                AssignValueCell(64, 33, excelWorksheet, reader, "Diag_egreso"); //Diagnostico de egreso rel. IRAG
+                                AssignValueCell(77, 33, excelWorksheet, reader, "Diag_egreso"); //Diagnostico de egreso rel. IRAG
 
                                 //Hospitalizacion
-                                AssignValueCell(78, 9, excelWorksheet, reader, "hosp_ing_fecha"); // Fecha de ingreso a hospitalizacion
-                                AssignValueCell(78, 30, excelWorksheet, reader, "Hosp_egre_fecha"); // Fecha de egreso de hospitalizacion
-                                AssignValueCell(79, 9, excelWorksheet, reader, "cond_egreso"); // Fecha de egreso de hospitalizacion
-                                AssignValueCell(79, 30, excelWorksheet, reader, "FalleDate"); // Fecha de egreso de hospitalizacion
+                                AssignValueCell(79, 9, excelWorksheet, reader, "hosp_ing_fecha"); // Fecha de ingreso a hospitalizacion
+                                AssignValueCell(79, 30, excelWorksheet, reader, "Hosp_egre_fecha"); // Fecha de egreso de hospitalizacion
+                                AssignValueCell(80, 9, excelWorksheet, reader, "cond_egreso"); // Fecha de egreso de hospitalizacion
+                                AssignValueCell(80, 30, excelWorksheet, reader, "FalleDate"); // Fecha de egreso de hospitalizacion
                                 
                                 // UCI
-                                AssignValueCell(81, 9, excelWorksheet, reader, "UCI_ing_fecha"); // Fecha de ingreso a hospitalizacion
-                                AssignValueCell(81, 30, excelWorksheet, reader, "UCI_egre_fecha"); // Fecha de egreso de hospitalizacion
+                                AssignValueCell(82, 9, excelWorksheet, reader, "UCI_ing_fecha"); // Fecha de ingreso a hospitalizacion
+                                AssignValueCell(82, 30, excelWorksheet, reader, "UCI_egre_fecha"); // Fecha de egreso de hospitalizacion
 
                                  
 
@@ -728,14 +730,14 @@ namespace Paho.Controllers
                     if ((storedProcedure == "Cases"))
                     {
                         FluCase flucase = db.FluCases.Find(recordID);
-                        var ListTest = flucase.CaseLabTests;
-                        var NumTest = ListTest.Count;
+                        var ListTest = flucase.CaseLabTests.OrderBy(x=> x.flow_test).ThenByDescending(z => z.CatTestType != null ? z.CatTestType.orden : 99).ThenBy(m => m.CatTestResult != null ? m.CatTestResult.orden : 99).ThenBy(z => z.TestDate != null ? z.TestDate : DateTime.Now);
+                        var NumTest = ListTest.Count();
                         var fila_original_empieza = 104;
-                        if (ListTest.Count > 1) {
+                        if (ListTest.Count() > 1) {
                             var fila_original_termina = 113;
                             var fila_copiar_empieza = 114;
                             var fila_copiar_termina = 121;
-                            for (var i = 1; i < ListTest.Count; i++)
+                            for (var i = 1; i < ListTest.Count(); i++)
                             {
 
                                 if (i > 1)
@@ -751,17 +753,74 @@ namespace Paho.Controllers
                         }
 
                         var j = 0;
+
                         foreach (CaseLabTest Test in ListTest)
                         {
                             j = j + 1;
+                            if (j > 1) fila_original_empieza = fila_original_empieza + 10;
                             AssignValueCell_value(fila_original_empieza, 10, excelWorksheet, flucase.RecDate.ToString(), "DateTime"); // Fecha de recepcion
                             if ((bool)flucase.Processed)
                                 { MarkCell(fila_original_empieza, 36, excelWorksheet); }
                             else
                                 { MarkCell(fila_original_empieza, 40, excelWorksheet); }
-                            AssignValueCell_value(fila_original_empieza + 1, 10, excelWorksheet, flucase.NoProRen.ToString(), "String"); // Laboratorio que procesa
-                            AssignValueCell_value(fila_original_empieza + 2, 10, excelWorksheet, Test.LabID.ToString(), "String"); // Laboratorio que procesa
-                            
+                            AssignValueCell_value(fila_original_empieza + 1, 10, excelWorksheet, flucase.NoProRen.ToString(), "String"); // Motivo de no procesado
+
+                            AssignValueCell_value(fila_original_empieza + 2, 10, excelWorksheet, Test.Institution.Name, "String"); // Laboratorio que procesa
+                            if (Test.Processed == true)
+                            { MarkCell(fila_original_empieza + 2, 22, excelWorksheet); }
+                            else if (Test.Processed == false)
+                            { MarkCell(fila_original_empieza + 2, 22, excelWorksheet); }
+
+                            AssignValueCell_value(fila_original_empieza + 3, 10, excelWorksheet, Test.TestDate.ToString(), "DateTime"); // Fecha de inicio de proceso
+                            AssignValueCell_value(fila_original_empieza + 3, 30, excelWorksheet, Test.TestEndDate.ToString(), "DateTime"); // Fecha de fin de  proceso
+
+                            if (Test.CatTestType != null)
+                            {   if (Test.CatTestType.description == "IF")
+                                { MarkCell(fila_original_empieza + 4, 4, excelWorksheet); }
+                                else if (Test.CatTestType.description == "PCR")
+                                { MarkCell(fila_original_empieza + 4, 8, excelWorksheet); }
+                                else if (Test.CatTestType.description == "Cultivo")
+                                { MarkCell(fila_original_empieza + 4, 13, excelWorksheet); }
+                            }
+
+                            if (Test.CatTestResult != null)
+                            {
+                                if (Test.CatTestResult.ENG == "Positive")
+                                { MarkCell(fila_original_empieza + 4, 23, excelWorksheet); }
+                                else if (Test.CatTestResult.ENG == "Negative")
+                                { MarkCell(fila_original_empieza + 4, 29, excelWorksheet); }
+                                else if (Test.CatTestResult.ENG == "Indeterminated")
+                                { MarkCell(fila_original_empieza + 4, 37, excelWorksheet); }
+                                else if (Test.CatTestResult.ENG == "Unrealized")
+                                { MarkCell(fila_original_empieza + 4, 44, excelWorksheet); }
+                            }
+
+
+                            AssignValueCell_value(fila_original_empieza + 5, 7, excelWorksheet, Test.CatVirusType != null ? user.Institution.Country.Language == "SPA" ? Test.CatVirusType.SPA.ToString() : Test.CatVirusType.ENG.ToString() : "", "String"); // Tipo de virus
+
+                            AssignValueCell_value(fila_original_empieza + 5, 32, excelWorksheet, Test.CTVirusType.ToString() , "String"); // CT Tipo de virus
+                            AssignValueCell_value(fila_original_empieza + 5, 41, excelWorksheet, Test.CTRLVirusType.ToString(), "String"); // CTRL Tipo de virus
+
+                            AssignValueCell_value(fila_original_empieza + 6, 7, excelWorksheet, Test.CatVirusSubType != null ? user.Institution.Country.Language == "SPA" ? Test.CatVirusSubType.SPA.ToString() : Test.CatVirusSubType.ENG.ToString() : "", "String"); // Sub Tipo de virus
+                            AssignValueCell_value(fila_original_empieza + 6, 22, excelWorksheet, Test.CatVirusSubType != null ? user.Institution.Country.Language == "SPA" ? Test.TestResultID_VirusSubType.ToString() : Test.TestResultID_VirusSubType.ToString() : "", "String"); // Resultado Sub Tipo de virus
+                            AssignValueCell_value(fila_original_empieza + 6, 32, excelWorksheet, Test.CTSubType.ToString(), "String"); // CT SubTipo de virus
+                            AssignValueCell_value(fila_original_empieza + 6, 41, excelWorksheet, Test.CTRLSubType.ToString(), "String"); // CTRL SubTipo de virus
+
+                            AssignValueCell_value(fila_original_empieza + 7, 7, excelWorksheet, Test.CatVirusSubType_2 != null ? user.Institution.Country.Language == "SPA" ? Test.CatVirusSubType.SPA.ToString() : Test.CatVirusSubType.ENG.ToString() : "", "String"); // Sub Tipo 2 de virus
+                            AssignValueCell_value(fila_original_empieza + 7, 22, excelWorksheet, Test.CatVirusSubType_2 != null ? user.Institution.Country.Language == "SPA" ? Test.TestResultID_VirusSubType.ToString() : Test.TestResultID_VirusSubType.ToString() : "", "String"); // Resultado Sub Tipo 2 de virus
+                            AssignValueCell_value(fila_original_empieza + 7, 32, excelWorksheet, Test.CTSubType_2.ToString(), "String"); // CT SubTipo 2 de virus
+                            AssignValueCell_value(fila_original_empieza + 7, 41, excelWorksheet, Test.CTRLSubType_2.ToString(), "String"); // CTRL SubTipo 2 de virus
+
+                            AssignValueCell_value(fila_original_empieza + 8, 7, excelWorksheet, Test.CatVirusLinaje != null ? user.Institution.Country.Language == "SPA" ? Test.CatVirusLinaje.SPA.ToString() : Test.CatVirusLinaje.ENG.ToString() : "", "String"); // Lineage de virus
+                            AssignValueCell_value(fila_original_empieza + 8, 32, excelWorksheet, Test.CTLineage.ToString(), "String"); // CT Lineage de virus
+                            AssignValueCell_value(fila_original_empieza + 8, 41, excelWorksheet, Test.CTRLLineage.ToString(), "String"); // CTRL Lineage de virus
+
+                            AssignValueCell_value(fila_original_empieza + 9, 7, excelWorksheet, Test.CTRLNegative.ToString(), "String"); // CTRL Negativo
+                            AssignValueCell_value(fila_original_empieza + 9, 13, excelWorksheet, Test.RNP.ToString(), "String"); // RNP
+                            AssignValueCell_value(fila_original_empieza + 9, 20, excelWorksheet, Test.CTRLRNP.ToString(), "String"); // CTRL RNP
+
+
+
                         } //Still here? Column not found. 
 
 
