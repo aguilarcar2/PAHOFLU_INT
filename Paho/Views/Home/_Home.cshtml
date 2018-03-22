@@ -445,39 +445,41 @@
             </div>
 
         </div>
-            <div class="row rowform">
-                <div class="col-md-6">
-                    <div class='input-group'>
-                        <span class="input-group-addon">
-                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelDOB")) <font color="#FF0000">*</font>
-                        </span>
-                        <input id="DOB" type='text' class="form-control" data-bind='valueUpdate:"change" , datepicker: DOB , datepickerOptions: { changeYear: true, yearRange: "-105:+0" , maxDate:@Model.DatePickerConfig,  dateFormat:"@Model.DateFormatDP"}' />
-                        <input id="DOB_dummy" type='text' class="form-control" data-bind='datepicker: DOB , datepickerOptions: { changeYear: true, maxDate:@Model.DatePickerConfig,  dateFormat:"@Model.DateFormatDP"}, visible:false' />
-                        <label class="date_format">dd/mm/yyyy</label>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class='input-group'>
-                        <span class="input-group-addon">
-                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelAge")) <font color="#FF0000">*</font>
-                        </span>
-                        <input id="Age" type='text' class="form-control" data-bind="value:Age" />
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class='input-group'>
-                        <span class="input-group-addon">
-                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelYMorD")) <font color="#FF0000">*</font>
-                        </span>
-                        <select id="AMeasure" class="form-control" data-bind="value:AMeasure, event:{ change: CalculateDOB}">
-                            <option value=""></option>
-                            <option value="Year"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelYear"))</option>
-                            <option value="Month"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelMonth"))</option>
-                            <option value="Day"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelDay"))</option>
-                        </select>
-                    </div>
+
+        <div class="row rowform">
+            <div class="col-md-6">
+                <div class='input-group'>
+                    <span class="input-group-addon">
+                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelDOB")) <font color="#FF0000">*</font>
+                    </span>
+                    <input id="DOB" type='text' class="form-control" data-bind='valueUpdate:"change" , datepicker: DOB , datepickerOptions: { changeYear: true, yearRange: "-105:+0" , maxDate:@Model.DatePickerConfig,  dateFormat:"@Model.DateFormatDP"}' />
+                    <input id="DOB_dummy" type='text' class="form-control" data-bind='datepicker: DOB , datepickerOptions: { changeYear: true, maxDate:@Model.DatePickerConfig,  dateFormat:"@Model.DateFormatDP"}, visible:false' />
+                    <label class="date_format">dd/mm/yyyy</label>
                 </div>
             </div>
+            <div class="col-md-2">
+                <div class='input-group'>
+                    <span class="input-group-addon">
+                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelAge")) <font color="#FF0000">*</font>
+                    </span>
+                    <input id="Age" type='text' class="form-control" data-bind="value:Age" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class='input-group'>
+                    <span class="input-group-addon">
+                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelYMorD")) <font color="#FF0000">*</font>
+                    </span>
+                    <select id="AMeasure" class="form-control" data-bind="value:AMeasure, event:{ change: CalculateDOB}">
+                        <option value=""></option>
+                        <option value="Year"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelYear"))</option>
+                        <option value="Month"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelMonth"))</option>
+                        <option value="Day"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelDay"))</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
         <div class="row rowform">
             <div class="col-md-6" data-bind="visible:app.Views.Contact.NoActiveBOL">
                 <div class='input-group'>
@@ -507,7 +509,8 @@
         </div>
 
         <!-- Nacionalidad/Pueblo originario -->
-        <div class="row rowform" data-bind="visible: SurvSARICHI() || (ActiveBOL() && IsInusitado())">
+        <div class="row rowform" data-bind="visible: SurvSARICHI() || (ActiveBOL() && IsInusitado()) || (ActiveSUR() && IsInusitado())">
+            <!--Nacionalidad-->
             <div class="col-md-6">
                 <div class='input-group'>
                     <span class='input-group-addon'> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelNacionality"))</span>
@@ -518,6 +521,7 @@
                         optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel"))'"></select>
                 </div>
             </div>
+            <!--Pueblo originario-->
             <div class="col-md-6" data-bind="visible:NacionalidadCHI">
                 <div class='input-group'>
                     <span class="input-group-addon">
@@ -682,6 +686,7 @@
         </div>
 
 		@if (@ViewBag.UsrCtry == 7 || @ViewBag.UsrCtry == 9 || @ViewBag.UsrCtry == 3 ){
+            <!--Latitude/Longitude-->
             <div class="row rowform">
                 <div class="col-md-6">
                     <div class='input-group'>
@@ -699,28 +704,26 @@
                         <input id="Longitude" type='text' class="form-control case_letter" data-bind='value: Longitude' />
                     </div>
                 </div>
-
-            </div>
-
-            <!-- Area: Rural/Urbana/Desconocida -->
-            <!-- <div class="row rowform" style="display:none;"> -->
-            <div class="row rowform" data-bind="visible:app.Views.Contact.IsInusitado">
-                <div class="col-md-8">
-                    <span>
-                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelArea"))
-                    </span>
-                    <label class="btn btn-default">
-                        <input type="radio" name="areaUrbano" id="areaUrbano" value="1" data-bind="checked: UrbanRural" />  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelUrban"))
-                    </label>
-                    <label class="btn btn-default">
-                        <input type="radio" name="areaRural" id="areaRural" value="2" data-bind="checked: UrbanRural" />  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelRural"))
-                    </label>
-                    <label class="btn btn-default">
-                        <input type="radio" name="areaDesconocido" id="areaDesconocido" value="0" data-bind="checked: UrbanRural" />  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelUnknown"))
-                    </label>
-                </div>
             </div>
         }
+
+        <!-- Area: Rural/Urbana/Desconocida -->
+        <div class="row rowform" data-bind="visible:app.Views.Contact.IsInusitado">
+            <div class="input-group col-md-8">
+                <span class="input-group-addon">
+                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelArea"))
+                </span>
+                <label class="btn btn-default">
+                    <input type="radio" name="areaUrbano" id="areaUrbano" value="1" data-bind="checked: UrbanRural" />  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelUrban"))
+                </label>
+                <label class="btn btn-default">
+                    <input type="radio" name="areaRural" id="areaRural" value="2" data-bind="checked: UrbanRural" />  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelRural"))
+                </label>
+                <label class="btn btn-default">
+                    <input type="radio" name="areaDesconocido" id="areaDesconocido" value="0" data-bind="checked: UrbanRural" />  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelUnknown"))
+                </label>
+            </div>
+        </div>
 
 		@if (@ViewBag.UsrCtry == 7 || @ViewBag.UsrCtry == 9 || @ViewBag.UsrCtry == 3 ){
             <div class="row rowform" data-bind="visible:app.Views.Contact.ActiveBOL">
@@ -871,7 +874,7 @@
         <div class="row rowform" data-bind="visible:app.Views.Contact.IsInusitado">
             <div class="col-md-12">
                 <button type="button" style="background-color:#B2BABB; color:#000000" class="btn btn-group-justified" data-toggle="collapse" data-target="#Ocupacion">
-                    Ocupación
+                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosOcupacion"))
                     <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
                 </button>
 
@@ -881,7 +884,7 @@
                         <div class="col-md-6">
                             <div class='input-group'>
                                 <span class='input-group-addon'>
-                                    Ocupación:
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosOcupacion"))
                                 </span>
                                 <select id="Occupation" class="form-control" data-bind="options: catoccupations,
                             optionsText: 'Name',
@@ -897,8 +900,7 @@
                         <div class="col-md-6">
                             <div class='input-group'>
                                 <span class="input-group-addon">
-                                    @*(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelAgeGroup"))*@
-                                    Dirección del trabajo o escuela
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosTrabajoDireccion"))
                                 </span>
                                 <input id="IN_DireTrab" type='text' class="form-control case_letter" data-bind='value: TrabajoDirecc' />
                             </div>
@@ -907,8 +909,7 @@
                         <div class="col-md-6">
                             <div class='input-group'>
                                 <span class="input-group-addon">
-                                    @*(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelAgeGroup"))*@
-                                    Establecimiento de trabajo
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosTrabajoEstablec"))
                                 </span>
                                 <input id="IN_EstaTrab" type='text' class="form-control case_letter" data-bind='value: TrabajoEstablec' />
                             </div>
@@ -919,13 +920,16 @@
                     <div class="row rowform">
                         <div class='input-group col-md-12'>
                             <span class="input-group-addon">
-                                ¿El paciente tuvo contacto con animales vivos o productos de origen animal en su ocupación/escuela u hogar?:
+                                <!--¿El paciente tuvo contacto con animales vivos o productos de origen animal en su ocupación/escuela u hogar?:-->
+                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosTrabajoContactoAnimalesVivos"))
                             </span>
                             <label class="btn btn-default">
-                                <input type="radio" name="IN_ContacAnima" id="IN_ContacAnima" value="1" data-bind='checked: ContactoAnimVivos'> Si
+                                <input type="radio" name="IN_ContacAnima" id="IN_ContacAnima" value="1" data-bind='checked: ContactoAnimVivos'> 
+                                   @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelYes"))  
                             </label>
                             <label class="btn btn-default">
-                                <input type="radio" name="IN_ContacAnima" id="IN_ContacAnima" value="0" data-bind='checked: ContactoAnimVivos'> No
+                                <input type="radio" name="IN_ContacAnima" id="IN_ContacAnima" value="0" data-bind='checked: ContactoAnimVivos'> 
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelNo"))   
                             </label>
                         </div>
                     </div>
@@ -934,13 +938,16 @@
                     <div class="row rowform">
                         <div class='input-group col-md-12'>
                             <span class="input-group-addon">
-                                ¿La ocupación del paciente incluye trabajo en un mercado de animales vivos?:
+                                <!--¿La ocupación del paciente incluye trabajo en un mercado de animales vivos?:-->
+                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosTrabajoMercadoAnimalesVivos"))
                             </span>
                             <label class="btn btn-default">
-                                <input type="radio" name="IN_TrabMerc" id="IN_TrabMerc" value="1" data-bind='checked: OcupacMercAnimVivos'> Si
+                                <input type="radio" name="IN_TrabMerc" id="IN_TrabMerc" value="1" data-bind='checked: OcupacMercAnimVivos'> 
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelYes"))  
                             </label>
                             <label class="btn btn-default">
-                                <input type="radio" name="IN_TrabMerc" id="IN_TrabMerc" value="0" data-bind='checked: OcupacMercAnimVivos'> No
+                                <input type="radio" name="IN_TrabMerc" id="IN_TrabMerc" value="0" data-bind='checked: OcupacMercAnimVivos'> 
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelNo")) 
                             </label>
                         </div>
                     </div>
@@ -952,7 +959,8 @@
         <div class="row rowform" data-bind="visible:app.Views.Contact.IsInusitado">
             <div class="col-md-12">
                 <button type="button" style="background-color:#B2BABB; color:#000000" class="btn btn-group-justified" data-toggle="collapse" data-target="#Exposicion">
-                    Historia de exposición / Posible exposición
+                    <!--Historia de exposición / Posible exposición-->
+                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosHistoriaExposicion"))
                     <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
                 </button>
 
@@ -961,19 +969,24 @@
                     <div class="row rowform">
                         <div class='input-group col-md-4'>
                             <span class="input-group-addon">
-                                ¿Infección adquirida durante hospitalización previa?
+                                <!--¿Infección adquirida durante hospitalización previa?-->
+                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosInfeccionHospitPrevia"))
                             </span>
                             <label class="btn btn-default">
-                                <input type="radio" name="InfeccHospit" id="InfeccHospit" value="1" data-bind="checked: InfeccHospit"> Si
+                                <input type="radio" name="InfeccHospit" id="InfeccHospit" value="1" data-bind="checked: InfeccHospit"> 
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelYes"))
                             </label>
                             <label class="btn btn-default">
-                                <input type="radio" name="InfeccHospit" id="InfeccHospit" value="0" data-bind="checked: InfeccHospit"> No
+                                <input type="radio" name="InfeccHospit" id="InfeccHospit" value="0" data-bind="checked: InfeccHospit"> 
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelNo"))  
                             </label>
                         </div>
 
                         <div class="col-md-3" data-bind="visible: IsInfeHospPrev">
                             <div class='input-group'>
-                                <span class="input-group-addon">Fecha</span>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosInfeccionHospitPreviaFecha")) 
+                                </span>
                                 <input id="InfeccHospitFecha" type="text" class="form-control" data-bind='datepicker: InfeccHospitFecha, datepickerOptions: {maxDate:@Model.DatePickerConfig, dateFormat:"@Model.DateFormatDP"}' />
                             </div>
                         </div>
@@ -983,17 +996,20 @@
                     <div class="row rowform">
                         <div class='input-group col-md-12'>
                             <span class="input-group-addon">
-                                <!-- <span>¿El paciente viajó nacional o internacionalmente en los 14 días previos a la aparición de lo síntomas?:</span> -->
-                                ¿El paciente viajó nacional o internacionalmente en los 14 días previos a la aparición de lo síntomas?:
+                                <!--¿El paciente viajó nacional o internacionalmente en los 14 días previos a la aparición de lo síntomas?:-->
+                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosPrevioSintomasViaje"))
                             </span>
                             <label class="btn btn-default">
-                                <input type="radio" name="IN_ViajDiPr" id="IN_ViajDiPr" value="1" data-bind='checked: ViajePrevSintoma'> Si
+                                <input type="radio" name="IN_ViajDiPr" id="IN_ViajDiPr" value="1" data-bind='checked: ViajePrevSintoma'> 
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelYes"))
                             </label>
                             <label class="btn btn-default">
-                                <input type="radio" name="IN_ViajDiPr" id="IN_ViajDiPr" value="0" data-bind='checked: ViajePrevSintoma'> No
+                                <input type="radio" name="IN_ViajDiPr" id="IN_ViajDiPr" value="0" data-bind='checked: ViajePrevSintoma'> 
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelNo"))
                             </label>
                             <label class="btn btn-default">
-                                <input type="radio" name="IN_ViajDiPr" id="IN_ViajDiPr" value="9" data-bind='checked: ViajePrevSintoma'> Desconocido
+                                <input type="radio" name="IN_ViajDiPr" id="IN_ViajDiPr" value="9" data-bind='checked: ViajePrevSintoma'> 
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelDesconocido"))
                             </label>
                         </div>
                     </div>
@@ -1003,7 +1019,8 @@
                         <div class="col-md-4">
                             <div class='input-group'>
                                 <span class="input-group-addon">
-                                    Destino (Ciudad/Región/País)
+                                    <!--Destino (Ciudad/Región/País)-->
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosPrevioSintomasViajeDestino"))
                                 </span>
                                 <input id="DestPrevSintoma1" type='text' class="form-control case_letter" data-bind="value: DestPrevSintoma1" />
                             </div>
@@ -1011,14 +1028,20 @@
 
                         <div class="col-md-2">
                             <div class='input-group'>
-                                <span class="input-group-addon">Fecha Llegada</span>
+                                <span class="input-group-addon">
+                                    <!--Fecha Llegada-->
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosPrevioSintomasViajeLlegada"))
+                                </span>
                                 <input id="DestFechaLlegada1" type="text" class="form-control" data-bind='datepicker: DestFechaLlegada1, datepickerOptions: {maxDate:@Model.DatePickerConfig, dateFormat:"@Model.DateFormatDP"}' />
                             </div>
                         </div>
 
                         <div class="col-md-2">
                             <div class='input-group'>
-                                <span class="input-group-addon">Fecha Salida</span>
+                                <span class="input-group-addon">
+                                    <!--Fecha Salida-->
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosPrevioSintomasViajeFechaSalida"))
+                                </span>
                                 <input id="DestFechaSalida1" type="text" class="form-control" data-bind='datepicker: DestFechaSalida1, datepickerOptions: {maxDate:@Model.DatePickerConfig, dateFormat:"@Model.DateFormatDP"}' />
                             </div>
                         </div>
@@ -1029,7 +1052,7 @@
                         <div class="col-md-4">
                             <div class='input-group'>
                                 <span class="input-group-addon">
-                                    Destino (Ciudad/Región/País)
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosPrevioSintomasViajeDestino"))
                                 </span>
                                 <input id="DestPrevSintoma2" type='text' class="form-control case_letter" data-bind="value: DestPrevSintoma2" />
                             </div>
@@ -1037,14 +1060,18 @@
 
                         <div class="col-md-2">
                             <div class='input-group'>
-                                <span class="input-group-addon">Fecha Llegada</span>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosPrevioSintomasViajeLlegada"))
+                                </span>
                                 <input id="DestFechaLlegada2" type="text" class="form-control" data-bind='datepicker: DestFechaLlegada2, datepickerOptions: {maxDate:@Model.DatePickerConfig, dateFormat:"@Model.DateFormatDP"}' />
                             </div>
                         </div>
 
                         <div class="col-md-2">
                             <div class='input-group'>
-                                <span class="input-group-addon">Fecha Salida</span>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosPrevioSintomasViajeFechaSalida"))
+                                </span>
                                 <input id="DestFechaSalida2" type="text" class="form-control" data-bind='datepicker: DestFechaSalida2, datepickerOptions: {maxDate:@Model.DatePickerConfig, dateFormat:"@Model.DateFormatDP"}' />
                             </div>
                         </div>
@@ -1055,7 +1082,7 @@
                         <div class="col-md-4">
                             <div class='input-group'>
                                 <span class="input-group-addon">
-                                    Destino (Ciudad/Región/País)
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosPrevioSintomasViajeDestino"))
                                 </span>
                                 <input id="DestPrevSintoma3" type='text' class="form-control case_letter" data-bind="value: DestPrevSintoma3" />
                             </div>
@@ -1063,14 +1090,18 @@
 
                         <div class="col-md-2">
                             <div class='input-group'>
-                                <span class="input-group-addon">Fecha Llegada</span>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosPrevioSintomasViajeLlegada"))
+                                </span>
                                 <input id="DestFechaLlegada3" type="text" class="form-control" data-bind='datepicker: DestFechaLlegada3, datepickerOptions: {maxDate:@Model.DatePickerConfig, dateFormat:"@Model.DateFormatDP"}' />
                             </div>
                         </div>
 
                         <div class="col-md-2">
                             <div class='input-group'>
-                                <span class="input-group-addon">Fecha Salida</span>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosPrevioSintomasViajeFechaSalida"))
+                                </span>
                                 <input id="DestFechaSalida3" type="text" class="form-control" data-bind='datepicker: DestFechaSalida3, datepickerOptions: {maxDate:@Model.DatePickerConfig, dateFormat:"@Model.DateFormatDP"}' />
                             </div>
                         </div>
@@ -1080,23 +1111,29 @@
                     <div class="row rowform">
                         <div class='input-group col-md-12'>
                             <span class="input-group-addon">
-                                ¿Tuvo el paciente contacto directo o indirecto con animales (por ejemplo, animales utilizados para caza(por ejemplo, perros, halcones), murciélagos, aves, <br />ganado doméstico en las granjas o mercados, mascotas, roedores o animales silvestres) en los 14 dias previos a la inicio de los síntomas?:
+                                <!--¿Tuvo el paciente contacto directo o indirecto con animales (por ejemplo, animales utilizados para caza(por ejemplo, perros, halcones), murciélagos, aves, <br />ganado doméstico en las granjas o mercados, mascotas, roedores o animales silvestres) en los 14 dias previos a la inicio de los síntomas?:-->
+                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosPrevioSintomasContactoAnimales")) <br />
+                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosPrevioSintomasContactoAnimales_a"))
                             </span>
                             <label class="btn btn-default">
-                                <input type="radio" name="ContacDirectoAnim" id="ContacDirectoAnim" value="1" data-bind="checked: ContacDirectoAnim"> Si
+                                <input type="radio" name="ContacDirectoAnim" id="ContacDirectoAnim" value="1" data-bind="checked: ContacDirectoAnim"> 
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelYes"))
                             </label>
                             <label class="btn btn-default">
-                                <input type="radio" name="ContacDirectoAnim" id="ContacDirectoAnim" value="0" data-bind="checked: ContacDirectoAnim"> No
+                                <input type="radio" name="ContacDirectoAnim" id="ContacDirectoAnim" value="0" data-bind="checked: ContacDirectoAnim"> 
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelNo"))
                             </label>
                             <label class="btn btn-default">
-                                <input type="radio" name="ContacDirectoAnim" id="ContacDirectoAnim" value="9" data-bind="checked: ContacDirectoAnim"> Desconocido
+                                <input type="radio" name="ContacDirectoAnim" id="ContacDirectoAnim" value="9" data-bind="checked: ContacDirectoAnim"> 
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelDesconocido"))
                             </label>
                         </div>
 
                         <div class="col-md-6" data-bind="visible: IsContacDirectoAnim">
                             <div class='input-group'>
                                 <span class="input-group-addon">
-                                    Especificar el animal y la naturaleza del contacto.
+                                    <!--Especificar el animal y la naturaleza del contacto.-->
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosPrevioSintomasAnimales"))
                                 </span>
                                 <input id="AnimalNaturaContac" type='text' class="form-control case_letter" data-bind="value: AnimalNaturaContac" />
                             </div>
@@ -1107,16 +1144,21 @@
                     <div class="row rowform">
                         <div class='input-group col-md-12'>
                             <span class="input-group-addon">
-                                En los 14 días previos a la aparición de la enfermedad, ¿El paciente se expuso a una persona con sintomatología similar a su enfermedad?:
+                                <!--En los 14 días previos a la aparición de la enfermedad, ¿El paciente se expuso a una persona con sintomatología similar a su enfermedad?:-->
+                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosPrevioSintomasExpuestoSimilarSintomatologia"))
                             </span>
                             <label class="btn btn-default">
-                                <input type="radio" name="ExpuextoSimilSintoma" id="ExpuextoSimilSintoma" value="1" data-bind='checked: ExpuextoSimilSintoma'> Si
+                                <input type="radio" name="ExpuextoSimilSintoma" id="ExpuextoSimilSintoma" value="1" data-bind='checked: ExpuextoSimilSintoma'> 
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelYes"))
+                                
                             </label>
                             <label class="btn btn-default">
-                                <input type="radio" name="ExpuextoSimilSintoma" id="ExpuextoSimilSintoma" value="0" data-bind='checked: ExpuextoSimilSintoma'> No
+                                <input type="radio" name="ExpuextoSimilSintoma" id="ExpuextoSimilSintoma" value="0" data-bind='checked: ExpuextoSimilSintoma'>  
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelNo"))
                             </label>
                             <label class="btn btn-default">
-                                <input type="radio" name="ExpuextoSimilSintoma" id="ExpuextoSimilSintoma" value="9" data-bind='checked: ExpuextoSimilSintoma'> Desconocido
+                                <input type="radio" name="ExpuextoSimilSintoma" id="ExpuextoSimilSintoma" value="9" data-bind='checked: ExpuextoSimilSintoma'> 
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelDesconocido"))
                             </label>
                         </div>
                     </div>
@@ -1126,7 +1168,8 @@
                         <div class="col-md-6">
                             <div class='input-group'>
                                 <span class="input-group-addon">
-                                    Número nacional de identificación del sospechoso:
+                                    <!--Número nacional de identificación del sospechoso:-->
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosPrevioSintomasSospechosoNumeroIdentificacion"))
                                 </span>
                                 <input id="NumeIdentContacto" type='text' class="form-control case_letter" data-bind="value: NumeIdentContacto" />
                             </div>
@@ -1149,7 +1192,8 @@
                         <div class="col-md-6">
                             <div class='input-group'>
                                 <span class="input-group-addon">
-                                    Tipo de relación con el contacto
+                                    <!--Tipo de relación con el contacto-->
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosPrevioSintomasSospechosoTipoRelacion"))
                                 </span>
                                 <input id="TipoRelaContacto" type='text' class="form-control case_letter" data-bind="value: TipoRelaContacto" />
                             </div>
@@ -1538,7 +1582,7 @@
                             El alcance de esta respuesta está acotado a los 8 ítems de abajo en este cuadro y no a los de la derecha
                         </div>
                     </div -->
-                    @if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry ==3)
+                    @if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3)
                     {
                         <div class="row rowform">
                             <div class="col-md-3" data-bind="visible:app.Views.Contact.ShowOnlyAdult">
@@ -1571,7 +1615,7 @@
                                 <!-- Especifique: Trabajador salud animal / Trabajador salud humana -->
                                 <div class="input-group col-md-3" data-bind="visible: IsTrabSalud">
                                     <span class="input-group-addon">
-                                        Especifique:
+                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelEspecifique"))
                                     </span>
                                     <select id="TrabSaludRama" class="form-control" data-bind="options: cattrabsaludrama,
                                         optionsText: 'Name',
@@ -1586,14 +1630,15 @@
                             <!-- Trabajador de laboratorio -->
                             <div class="col-md-3">
                                 <label class="btn btn-default">
-                                    <input type="checkbox" name="TrabLaboratorio" id="TrabLaboratorio" data-bind="checked: TrabLaboratorio" disabled> Trabajor de laboratorio
+                                    <input type="checkbox" name="TrabLaboratorio" id="TrabLaboratorio" data-bind="checked: TrabLaboratorio" disabled> 
+                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosTrabajadorLaboratorio"))
                                 </label>
                             </div>
 
                             <!-- Especifique: Trabajador laboratorio animal / Trabajador laboratorio humana -->
                             <div class="input-group col-md-3" data-bind="visible: IsTrabLaboratorio">
                                 <span class="input-group-addon">
-                                    Especifique:
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelEspecifique"))
                                 </span>
                                 <select id="TrabLaboratorioRama" class="form-control" data-bind="options: cattrablaborama,
                                         optionsText: 'Name',
@@ -1605,10 +1650,10 @@
 
                         if (ViewBag.UsrCtry == 3)
                         {
-                        <button id="btnriesgo" type="button" class="btn btn-group-justified" ddata-toggle="collapse" ddata-target="#riesgo">
-                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsComorbiditiesLabel"))
-                            <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
-                        </button>}
+                            <button id="btnriesgo" type="button" class="btn btn-group-justified" ddata-toggle="collapse" ddata-target="#riesgo">
+                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsComorbiditiesLabel"))
+                                <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
+                            </button>}
                         else
                         {
                             <div class="row rowform">
@@ -1619,27 +1664,24 @@
                                 </div>
                             </div>
                         }
-
-
                     }
 
                     @if (ViewBag.UsrCtry == 3)
                     {
-
-                    <div class="row rowform">
-                        <div class='input-group col-md-8'>
-                            <span class="input-group-addon">
-                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelComorbiditiesPresenceLabel")) <font color="#FF0000">*</font>
-                            </span>
-                            <select id="Comorbidities" class="form-control" data-bind="value: Comorbidities" style="width: 300px">
-                                <option value=""> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel"))</option>
-                                <option value="0"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelNo"))</option>
-                                <option value="1"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelYes"))</option>
-                                <option value="9"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelUnknown"))</option>
-                            </select>
+                        <div class="row rowform">
+                            <div class='input-group col-md-8'>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelComorbiditiesPresenceLabel")) <font color="#FF0000">*</font>
+                                </span>
+                                <select id="Comorbidities" class="form-control" data-bind="value: Comorbidities" style="width: 300px">
+                                    <option value=""> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel"))</option>
+                                    <option value="0"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelNo"))</option>
+                                    <option value="1"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelYes"))</option>
+                                    <option value="9"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelUnknown"))</option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                        }
+                    }
                     <div class="row rowform">
                         <div class='input-group col-md-4'>
                             <label class="btn btn-default">
@@ -1695,25 +1737,25 @@
 					
                     @if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 3){
                         <div class="row rowform">
-                        <div class="col-md-4" data-bind="visible:EnableCHI() && app.Views.Contact.NoActiveBOL()">
-                            <label class="btn btn-default">
-                                <input type="checkbox" name="ParaCerebral" id="ParaCerebral" data-bind="checked:  ParaCerebral" disabled>  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsComorbiditiesCerebralPalsy"))
-                            </label>
-                        </div>
-                        @if (ViewBag.UsrCtry == 7)
-                        {
-                            <div class="col-md-6">
+                            <div class="col-md-4" data-bind="visible:EnableCHI() && app.Views.Contact.NoActiveBOL()">
                                 <label class="btn btn-default">
-                                    <input type="checkbox" name="DownSyn" id="DownSyn" data-bind="checked: DownSyn" disabled>  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelDown"))
+                                    <input type="checkbox" name="ParaCerebral" id="ParaCerebral" data-bind="checked:  ParaCerebral" disabled>  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsComorbiditiesCerebralPalsy"))
                                 </label>
                             </div>
-                        }
-                        <div class="col-md-6" data-bind="visible:EnableCHI() && app.Views.Contact.NoActiveBOL()">
-                            <label class="btn btn-default">
-                                <input type="checkbox" name="Indigena" id="Indigena" data-bind="checked: Indigena" disabled>  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelNative"))
-                            </label>
+                            @if (ViewBag.UsrCtry == 7)
+                            {
+                                <div class="col-md-6">
+                                    <label class="btn btn-default">
+                                        <input type="checkbox" name="DownSyn" id="DownSyn" data-bind="checked: DownSyn" disabled>  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelDown"))
+                                    </label>
+                                </div>
+                            }
+                            <div class="col-md-6" data-bind="visible:EnableCHI() && app.Views.Contact.NoActiveBOL()">
+                                <label class="btn btn-default">
+                                    <input type="checkbox" name="Indigena" id="Indigena" data-bind="checked: Indigena" disabled>  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelNative"))
+                                </label>
+                            </div>
                         </div>
-                    </div>
 	                }
                     @*@if (ViewBag.UsrCtry != 7)
                     {
@@ -1945,7 +1987,7 @@
                         <div class="col-md-3" data-bind="visible:app.Views.Contact.IsInusitado">
                             <div class='input-group'>
                                 <span class="input-group-addon">
-                                    Temperatura
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosTemperatura"))
                                 </span>
                                 <input id="Temperatura" type='text' class="form-control case_letter" style="max-width: 100px" data-bind="value: Temperatura" />
                             </div>
@@ -1972,7 +2014,7 @@
                         <div class="col-md-3" data-bind="visible: app.Views.Contact.ActiveBOL">
                             <div class='input-group'>
                                 <span class="input-group-addon">
-                                    Temperatura
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosTemperatura"))
                                 </span>
                                 <input id="Temperatura" type='text' class="form-control case_letter" style="max-width: 100px" data-bind="value: Temperatura" />
                             </div>
@@ -1983,7 +2025,8 @@
                         <!-- Cefalea -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
-                                <input type="checkbox" name="DolorCabeza" id="DolorCabeza" value="1" data-bind="checked: DolorCabeza"> Cefalea
+                                <input type="checkbox" name="DolorCabeza" id="DolorCabeza" value="1" data-bind="checked: DolorCabeza"> 
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosCefalea"))
                             </label>
                         </div>
                         <!-- Erupción -->
@@ -1991,9 +2034,12 @@
                             <div class="form-inline">
                                 <div class="input-group">
                                     <label class="btn btn-default">
-                                        <input type="checkbox" name="Erupcion" id="Erupcion" value="1" data-bind="checked: Erupcion"> Erupción
+                                        <input type="checkbox" name="Erupcion" id="Erupcion" value="1" data-bind="checked: Erupcion"> 
+                                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosErupcion"))
                                     </label>
-                                    <span data-bind="visible: IsErupcion">&nbsp;&nbsp;Localización:</span>
+                                    <span data-bind="visible: IsErupcion">
+                                        &nbsp;&nbsp;@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelLocalizacion")):
+                                    </span>
                                     <input type='text' id="ErupcionLocaliz" class="form-control case_letter" style="max-width: 190px" data-bind="visible: IsErupcion, value: ErupcionLocaliz" />
                                 </div>
                             </div>
@@ -2003,9 +2049,12 @@
                             <div class="form-inline">
                                 <div class="input-group">
                                     <label class="btn btn-default">
-                                        <input type="checkbox" name="DolorMuscular" id="DolorMuscular" value="1" data-bind="checked: DolorMuscular"> Dolor muscular
+                                        <input type="checkbox" name="DolorMuscular" id="DolorMuscular" value="1" data-bind="checked: DolorMuscular"> 
+                                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelMusclePain"))
                                     </label>
-                                    <span data-bind="visible: IsDolorMuscular">&nbsp;&nbsp;Localización:</span>
+                                    <span data-bind="visible: IsDolorMuscular">
+                                        &nbsp;&nbsp;@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelLocalizacion")):
+                                    </span>
                                     <input type='text' id="DolorMuscularLocaliz" class="form-control case_letter" style="max-width: 170px" data-bind="visible: IsDolorMuscular, value: DolorMuscularLocaliz" />
                                 </div>
                             </div>
@@ -2024,9 +2073,12 @@
                             <div class="form-inline">
                                 <div class="input-group">
                                     <label class="btn btn-default">
-                                        <input type="checkbox" name="SintomHemorrag" id="SintomHemorrag" value="1" data-bind="checked: SintomHemorrag"> Síntomas hemorrágicos
+                                        <input type="checkbox" name="SintomHemorrag" id="SintomHemorrag" value="1" data-bind="checked: SintomHemorrag"> 
+                                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosSintomasHemorragicos"))
                                     </label>
-                                    <span data-bind="visible: IsSintomaHemorragico">&nbsp;&nbsp;Describir:</span>
+                                    <span data-bind="visible: IsSintomaHemorragico">
+                                        &nbsp;&nbsp;@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelDescribir")):
+                                    </span>
                                     <input type='text' id="SintomHemorragDesc" class="form-control case_letter" style="width: 190px" data-bind="visible: IsSintomaHemorragico, value: SintomHemorragDesc" />
                                 </div>
                             </div>
@@ -2035,14 +2087,16 @@
                         <!-- Alteración del estado mental -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
-                                <input type="checkbox" name="AlteracEstadoMental" id="AlteracEstadoMental" value="1" data-bind="checked: AlteracEstadoMental"> Alteración del estado mental
+                                <input type="checkbox" name="AlteracEstadoMental" id="AlteracEstadoMental" value="1" data-bind="checked: AlteracEstadoMental"> 
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosAlteraciónEstadoMental"))
                             </label>
                         </div>
 
                         <!-- Altralgia -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
-                                <input type="checkbox" name="Altralgia" id="Altralgia" value="1" data-bind="checked: Altralgia"> Artralgia
+                                <input type="checkbox" name="Altralgia" id="Altralgia" value="1" data-bind="checked: Altralgia"> 
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosAltralgia"))
                             </label>
                         </div>
                     </div>
@@ -2051,28 +2105,32 @@
                         <!-- Escalofríos -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
-                                <input type="checkbox" name="Escalofrios" id="Escalofrios" value="1" data-bind="checked: Escalofrios"> Escalofríos
+                                <input type="checkbox" name="Escalofrios" id="Escalofrios" value="1" data-bind="checked: Escalofrios"> 
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosEscalofrios"))
                             </label>
                         </div>
 
                         <!-- Conjuntivitis -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
-                                <input type="checkbox" name="Conjuntivitis" id="Conjuntivitis" value="1" data-bind="checked: Conjuntivitis"> Conjuntivitis
+                                <input type="checkbox" name="Conjuntivitis" id="Conjuntivitis" value="1" data-bind="checked: Conjuntivitis"> 
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosConjuntivitis"))
                             </label>
                         </div>
 
                         <!-- Rinitis -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
-                                <input type="checkbox" name="Rinitis" id="Rinitis" value="1" data-bind="checked: Rinitis"> Rinitis
+                                <input type="checkbox" name="Rinitis" id="Rinitis" value="1" data-bind="checked: Rinitis"> 
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosRinitis"))
                             </label>
                         </div>
 
                         <!-- Diarrea aguda -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
-                                <input type="checkbox" name="DiarreaAguda" id="DiarreaAguda" value="1" data-bind="checked: DiarreaAguda"> Diarrea aguda
+                                <input type="checkbox" name="DiarreaAguda" id="DiarreaAguda" value="1" data-bind="checked: DiarreaAguda"> 
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosDiarreaAguda"))
                             </label>
                         </div>
                     </div>
@@ -2081,28 +2139,32 @@
                         <!-- Diarrea crónica -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
-                                <input type="checkbox" name="DiarreaCronica" id="DiarreaCronica" value="1" data-bind="checked: DiarreaCronica"> Diarrea crónica
+                                <input type="checkbox" name="DiarreaCronica" id="DiarreaCronica" value="1" data-bind="checked: DiarreaCronica"> 
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosDiarreaCronica"))
                             </label>
                         </div>
 
                         <!-- Mareo -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
-                                <input type="checkbox" name="Mareo" id="Mareo" value="1" data-bind="checked: Mareo"> Mareo
+                                <input type="checkbox" name="Mareo" id="Mareo" value="1" data-bind="checked: Mareo"> 
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosMareo"))
                             </label>
                         </div>
 
                         <!-- Fallo en el desarrollo -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
-                                <input type="checkbox" name="FalloDesarrollo" id="FalloDesarrollo" value="1" data-bind="checked: FalloDesarrollo"> Fallo en el desarrollo
+                                <input type="checkbox" name="FalloDesarrollo" id="FalloDesarrollo" value="1" data-bind="checked: FalloDesarrollo"> 
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosFalloDesarrollo"))
                             </label>
                         </div>
 
                         <!-- Hepatomegalea -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
-                                <input type="checkbox" name="Hepatomegalea" id="Hepatomegalea" value="1" data-bind="checked: Hepatomegalea"> Hepatomegalia
+                                <input type="checkbox" name="Hepatomegalea" id="Hepatomegalea" value="1" data-bind="checked: Hepatomegalea"> 
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosHepatomegalea"))
                             </label>
                         </div>
                     </div>
@@ -2111,28 +2173,32 @@
                         <!-- Ictericia -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
-                                <input type="checkbox" name="Ictericia" id="Ictericia" value="1" data-bind="checked: Ictericia"> Ictericia
+                                <input type="checkbox" name="Ictericia" id="Ictericia" value="1" data-bind="checked: Ictericia"> 
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosIctericia"))
                             </label>
                         </div>
 
                         <!-- Linfadenopatía -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
-                                <input type="checkbox" name="Linfadenopatia" id="Linfadenopatia" value="1" data-bind="checked: Linfadenopatia"> Linfadenopatía
+                                <input type="checkbox" name="Linfadenopatia" id="Linfadenopatia" value="1" data-bind="checked: Linfadenopatia"> 
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosLinfadenopatia"))
                             </label>
                         </div>
 
                         <!-- Malestar general -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
-                                <input type="checkbox" name="Malestar" id="Malestar" value="1" data-bind="checked: Malestar"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelGeneralUnrest"))
+                                <input type="checkbox" name="Malestar" id="Malestar" value="1" data-bind="checked: Malestar"> 
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelGeneralUnrest"))
                             </label>
                         </div>
 
                         <!-- Nauseas -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
-                                <input type="checkbox" name="Nauseas" id="Nauseas" value="1" data-bind="checked: Nauseas"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNauseaVomiting"))
+                                <input type="checkbox" name="Nauseas" id="Nauseas" value="1" data-bind="checked: Nauseas"> 
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNauseaVomiting"))
                             </label>
                         </div>
                     </div>
@@ -2141,28 +2207,32 @@
                         <!-- Rigidez de nuca -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
-                                <input type="checkbox" name="RigidezNuca" id="RigidezNuca" value="1" data-bind="checked: RigidezNuca"> Rigidez de nuca
+                                <input type="checkbox" name="RigidezNuca" id="RigidezNuca" value="1" data-bind="checked: RigidezNuca"> 
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosRigidezNuca"))
                             </label>
                         </div>
 
                         <!-- Paralisis -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
-                                <input type="checkbox" name="Paralisis" id="Paralisis" value="1" data-bind="checked: Paralisis"> Parálisis
+                                <input type="checkbox" name="Paralisis" id="Paralisis" value="1" data-bind="checked: Paralisis"> 
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosParalisis"))
                             </label>
                         </div>
 
                         <!-- Respiratorio superior -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
-                                <input type="checkbox" name="RespiratSuperior" id="RespiratSuperior" value="1" data-bind="checked: RespiratSuperior"> Respiratorio superior
+                                <input type="checkbox" name="RespiratSuperior" id="RespiratSuperior" value="1" data-bind="checked: RespiratSuperior"> 
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosRespiratorioSuperior"))
                             </label>
                         </div>
 
                         <!-- Respiratorio inferior -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
-                                <input type="checkbox" name="RespiratInferior" id="RespiratInferior" value="1" data-bind="checked: RespiratInferior"> Respiratorio inferior
+                                <input type="checkbox" name="RespiratInferior" id="RespiratInferior" value="1" data-bind="checked: RespiratInferior"> 
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosRespiratorioInferior"))
                             </label>
                         </div>
                     </div>
@@ -2171,21 +2241,24 @@
                         <!-- Dolor retrorobitario -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
-                                <input type="checkbox" name="DolorRetrorobitario" id="DolorRetrorobitario" value="1" data-bind="checked: DolorRetrorobitario"> Dolor retroorbitario
+                                <input type="checkbox" name="DolorRetrorobitario" id="DolorRetrorobitario" value="1" data-bind="checked: DolorRetrorobitario"> 
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosDolorRetroOrbitario"))
                             </label>
                         </div>
 
                         <!-- Perdida de peso -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
-                                <input type="checkbox" name="PerdidaPeso" id="PerdidaPeso" value="1" data-bind="checked: PerdidaPeso"> Pérdida de peso
+                                <input type="checkbox" name="PerdidaPeso" id="PerdidaPeso" value="1" data-bind="checked: PerdidaPeso"> 
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosPerdidaPeso"))
                             </label>
                         </div>
 
                         <!-- Mialgia -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
-                                <input type="checkbox" name="Mialgia" id="Mialgia" value="1" data-bind="checked: Mialgia"> Mialgia
+                                <input type="checkbox" name="Mialgia" id="Mialgia" value="1" data-bind="checked: Mialgia"> 
+                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosMialgia"))
                             </label>
                         </div>
 
@@ -2194,9 +2267,12 @@
                             <div class="form-inline">
                                 <div class="input-group">
                                     <label class="btn btn-default">
-                                        <input type="checkbox" name="Otro" id="Otro" value="1" data-bind="checked: Otro"> Otro
+                                        <input type="checkbox" name="Otro" id="Otro" value="1" data-bind="checked: Otro"> 
+                                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosOtro"))
                                     </label>
-                                    <span data-bind="visible: IsOtro">&nbsp;&nbsp;Descripción otro:</span>
+                                    <span data-bind="visible: IsOtro">
+                                        &nbsp;&nbsp;@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosDescripcionOtro")):
+                                    </span>
                                     <input type='text' id="OtroDesc" style="width: 200px" class="form-control case_letter" data-bind="visible: IsOtro, value: OtroDesc" />
                                 </div>
                             </div>

@@ -76,6 +76,9 @@
     self.NoActiveBOL = ko.computed(function () {
         return (self.UsrCountry() == 3) ? false : true;
     }, self);
+    self.ActiveSUR = ko.computed(function () {
+        return (self.UsrCountry() == 25) ? true : false;
+    }, self);       //#### CAFQ
 
     self.selectedNationalityID = ko.observable("");
     self.selectedNativepeopleID = ko.observable("");
@@ -438,8 +441,8 @@
     self.IsInusitado = ko.computed(function () {            //**** CAFQ
         if (self.SurvInusual() == true) {
             // Desactivado por el momento requirimiento de RRR //16/Marzo/2018
-            //return true;
-            return false;
+            return true;
+            //return false;
         } else {
             return false; 
         }
