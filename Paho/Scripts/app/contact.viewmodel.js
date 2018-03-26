@@ -1,4 +1,11 @@
-﻿function ContactViewModel(app, dataModel) {
+﻿function InstitutionsFlow() {
+    var self = this;
+    self.LabID = "";
+    self.LabName = ko.observable("");
+    self.OPbyL = "";
+};
+
+function ContactViewModel(app, dataModel) {
     var self = this;
     var date_format_ = app.dataModel.date_format_;
     var date_format_moment = app.dataModel.date_format_moment;
@@ -13,7 +20,7 @@
     self.people = ko.observableArray();
     self.hasGet = ko.observable(false);
     self.hasHospitalID = ko.observable("");
-    self.LabsFlow = ko.observableArray();
+    self.IntsFlow = ko.observableArray();
 
     self.FeverDateDummy = ko.observable("");
 
@@ -734,7 +741,22 @@
                 self.flow_institution(data.flow_institution);
                 self.flow_max(data.flow_max);
                 self.flow_open_always(data.flow_open_always);
-                self.LabsFlow(data.CLOrdDisplay);
+                self.IntsFlow([]);
+                if (data.IntsFlow != "") {
+                    //console.log("Array de Instituciones ----- " + data.IntsFlow.length);
+                    //console.log(data.IntsFlow);
+                    for (index = 0; index < data.IntsFlow.length; ++index) {
+                        var instflow = new InstitutionsFlow();
+                        instflow.LabID = data.IntsFlow[index].Id;
+                        instflow.LabName(data.IntsFlow[index].Name);
+                        instflow.OPbyL = data.IntsFlow[index].orden;
+                        self.IntsFlow.push(instflow);
+                    }
+                    //console.log("Array de Instituciones local de contact ----- " );
+                    //console.log(self.IntsFlow());
+                }
+
+                //self.LabsFlow(data.CLOrdDisplay);  AM el array de instituciones
                 $("#o_S").val(data.DataStatement);
                 
                 $("button[id^='Siguiente']").attr("disabled", false);

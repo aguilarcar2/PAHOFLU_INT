@@ -633,6 +633,8 @@ namespace Paho.Models
         public string orig_country { get; set; }
         [DisplayName("Orden de prioridad para el resultado final por institución:")]
         public int? OrdenPrioritybyLab { get; set; }
+        [DisplayName("Laboratorio intermedio:")]
+        public bool? NPHL { get; set; }
         [NotMapped]
 		public InstitutionType InstType { get; set; }
     }    
@@ -1025,6 +1027,12 @@ namespace Paho.Models
         public string NoProRen3 { get; set; }
         public int? NoProRenId3 { get; set; }
         public Decimal? TempSample3 { get; set; }
+        // AM Laboratorio intermedio
+        public DateTime? Rec_Date_NPHL { get; set; }
+        public Decimal? Temp_NPHL { get; set; }
+        public string Observation_NPHL { get; set; }
+        public DateTime? Ship_Date_NPHL { get; set; }
+
         public DateTime? EndLabDate { get; set; }
         public string FResult { get; set; }
         public string Comments { get; set; }
@@ -1723,6 +1731,13 @@ namespace Paho.Models
                    p.NoProRenId3,
                    p.NoProRen3,
                    p.TempSample3,
+
+                   //AM Laboratorio intermedio
+                   p.Rec_Date_NPHL,
+                   p.Temp_NPHL,
+                   p.Observation_NPHL,
+                   p.Ship_Date_NPHL,
+
                    p.EndLabDate,
                    p.FResult,
                    p.Comments,

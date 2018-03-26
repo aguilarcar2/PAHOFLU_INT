@@ -360,15 +360,15 @@
     self.ProcLab.subscribe(function (new_Lab_Select) {
         //console.log("Lab_assign -- " + new_Lab_Select);
         if (new_Lab_Select != "" && new_Lab_Select != null) {
-            console.log(app.Views.Contact.LabsFlow());
-            //var category = ko.utils.arrayFirst(app.Views.Contact.LabsFlow(), function (category) {
-            //    return category.Id === new_Lab_Select;
-            //});
+            //console.log(app.Views.Contact.IntsFlow());
+            var category = ko.utils.arrayFirst(app.Views.Contact.IntsFlow(), function (category) {
+                return category.LabID === new_Lab_Select;
+            });
             console.log("Lab_assign -- " + new_Lab_Select);
-            //console.log("Lab_orden -- " + category);
-            //if (category != null && category != "undefined")
-            //    self.OrdenLabID = category.orden;
-            //app.Views.Lab.OrdenFinalResult();
+            console.log("Lab_orden -- " + category.OPbyL);
+            if (category != null && category != "undefined")
+                self.OrdenLabID = category.orden;
+            app.Views.Lab.OrdenFinalResult();
         }
 
     });
@@ -556,6 +556,11 @@ function LabViewModel(app, dataModel) {
 
     self.CanPCRLab = ko.observable(true);
     self.CanIFILab = ko.observable(true);
+
+    self.Rec_Date_NPHL = ko.observable(null);
+    self.Temp_NPHL = ko.observable("").extend({ numeric: 2 });
+    self.Observation_NPHL = ko.observable("");
+    self.Ship_Date_NPHL = ko.observable(null);
 
     self.RecDate.subscribe(function (newRecDate) {
         if (self.hasReset() != true && newRecDate != "" && newRecDate != null)
@@ -1002,6 +1007,11 @@ function LabViewModel(app, dataModel) {
         self.LabTests_Sample3([]);
         self.LabsResult([]);
         self.SubTypeByLabRes([]);
+        //Agregar laboratorio intermedio
+        self.Rec_Date_NPHL(null);
+        self.Temp_NPHL("");
+        self.Observation_NPHL("");
+        self.Ship_Date_NPHL(null);
         
     };
 
@@ -1249,6 +1259,10 @@ function LabViewModel(app, dataModel) {
                 self.NoProRenId3(data.NoProRenId3);
                 self.TempSample3(data.TempSample3);
 
+
+            // Laboratorio intermedio
+                (data.Rec_Date_NPHL) ? self.Rec_Date_NPHL(moment(data.Rec_Date_NPHL).clone().toDate()) : self.Rec_Date_NPHL(null);
+
                 (data.EndLabDate) ? self.EndLabDate(moment(data.EndLabDate).clone().toDate()) : self.EndLabDate(null);
                 self.FResult(data.FResult);
                 self.Comments(data.Comments);
@@ -1283,6 +1297,8 @@ function LabViewModel(app, dataModel) {
                 //$("#o_S").val(data.DataStatement);
                 self.CanIFILab(data.CanIFILab);
                 self.CanPCRLab(data.CanPCRLab);
+
+
                 self.LabTests([]);
                 if (data.LabTests != "") {                  
                     for (index = 0; index < data.LabTests.length; ++index) {
@@ -1472,7 +1488,7 @@ function LabViewModel(app, dataModel) {
             self.resetFinalResult();
             self.OrderArrayFinalResult(self.LabTests().concat(self.LabTests_Sample2()).concat(self.LabTests_Sample3()));
             console.log(self.OrderArrayFinalResult());
-            self.OrderDummy(self.OrderArrayFinalResult.sort(self.generateSortFn([{ name: 'OrdenTestResultID' }, { name: 'OrdenVirusTypeID' }, { name: 'OrdenTestResultID_VirusSubType' }, { name: 'OrdenTestResultID_VirusSubType_2' }, { name: 'OrdenSubTypeID' }, { name: 'OrdenLineageID' }, { name: 'OrdenTestType' }])));
+            self.OrderDummy(self.OrderArrayFinalResult.sort(self.generateSortFn([{ name: 'OrdenLabID' }, { name: 'OrdenTestResultID' }, { name: 'OrdenVirusTypeID' }, { name: 'OrdenTestResultID_VirusSubType' }, { name: 'OrdenTestResultID_VirusSubType_2' }, { name: 'OrdenSubTypeID' }, { name: 'OrdenLineageID' }, { name: 'OrdenTestType' }])));
 
             self.OrderArrayFinalResult([]);
 
@@ -1550,6 +1566,9 @@ function LabViewModel(app, dataModel) {
         rec_date2 = jQuery.type(self.RecDate2()) === 'date' ? self.RecDate2() : parseDate($("#RecDate2").val(), date_format_);
         rec_date3 = jQuery.type(self.RecDate3()) === 'date' ? self.RecDate3() : parseDate($("#RecDate3").val(), date_format_);
         date_close_date_lab = jQuery.type(self.EndLabDate()) === 'date' ? self.EndLabDate() : parseDate($("#EndLabDate").val(), date_format_);
+
+        rec_date_NPHL = jQuery.type(self.Rec_Date_NPHL()) === 'date' ? self.Rec_Date_NPHL() : parseDate($("#Rec_Date_NPHL").val(), date_format_);
+        ship_date_NPHL = jQuery.type(self.Ship_Date_NPHL()) === 'date' ? self.Ship_Date_NPHL() : parseDate($("#Ship_Date_NPHL").val(), date_format_);
 
         //alert($("#o_S").val());
 
@@ -1751,7 +1770,13 @@ function LabViewModel(app, dataModel) {
                 FinalResultVirusSubTypeID_3: self.FinalResultVirusSubTypeID_3(),
                 FinalResultVirusLineageID_3: self.FinalResultVirusLineageID_3(),
                 DataStatement: $("#o_S").val(),
-                LabTests: postData
+                LabTests: postData,
+
+                // Laboratorio intermedio
+                Rec_Date_NPHL: $("#Rec_Date_NPHL").val() == "" ? null : moment(rec_date_NPHL).format(date_format_ISO),
+                Observation_NPHL: self.Observation_NPHL() ? self.Observation_NPHL().toLocaleUpperCase() : "",
+                Temp_NPHL: self.Temp_NPHL(),
+                Rec_Date_NPHL: $("#Rec_Date_NPHL").val() == "" ? null : moment(rec_date_NPHL).format(date_format_ISO),
             }),
             async: false,
             contentType: "application/json; charset=utf-8",

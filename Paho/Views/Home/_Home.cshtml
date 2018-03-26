@@ -2914,29 +2914,76 @@
                         </div>
                     </div>
                 </div>
-
-
-                </div>
+            </div>
         </div>
     </div>
     <div class="row rowform">
         <div class="col-md-12">
-            @*<div class="btn-group">
-                <button id="saveCase" type="button" class="btn btn-primary" data-bind="click: Save, visible:false">Guardar</button>
-                <span></span>
-                <button id="cancelCase" type="button" class="btn btn-primary" data-bind="click: Cancel, visible:false">Regresar</button>
-            </div>*@
             <button id="Atras" type="button" class="btn btn-primary btn-back" onclick="$('#tabs').tabs({ active: 4 });">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabCaseBtnBack"))</button>
-            @* aqui caso *@
-            @*@if (ViewBag.UsrCtry != 7)
-            {
-            <button id="Siguiente" type="button" class="btn btn-primary btn-next" onclick="$('#tabs').tabs({ active: 5 }); $('#botones').hide();">Siguiente</button>
-            }*@
         </div>
     </div>
 </div>
 
     <div id="tab-lab" data-bind="with: app.Views.Lab">
+        @if (ViewBag.NPHL_exist == true)
+        {
+        <div class="row rowform">
+            <div class="col-md-12">
+                <button type="button" style="background-color:#B2BABB; color:#000000" class="btn btn-group-justified" data-toggle="collapse" data-target="#statuscaso">
+                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabInt"))
+                    <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
+                </button>
+                <div id="statuscaso" class="collapse in">
+
+                    <div class="row rowform">
+                        <div class="col-md-3_5">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabIntRecDate"))
+                                </span>
+                                <input id="Rec_Date_NPHL" name="Rec_Date_NPHL" type='text' class="form-control " data-bind='datepicker: Rec_Date_NPHL, datepickerOptions: { maxDate:@Model.DatePickerConfig,  dateFormat:"@Model.DateFormatDP"}' @(ViewBag.NPHL_exist ? "disabled ='disabled'" : "" )  />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigLabIntLabelTemp"))
+                                </span>
+                                <input id="Temp_NPHL" name="Temp_NPHL" type='text' class="form-control case_letter" data-bind="value: Temp_NPHL" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowform">
+                        <div class="col-md-4">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabIntShipDate"))
+                                </span>
+                                <input id="Ship_Date_NPHL" name="Ship_Date_NPHL" type='text' class="form-control " data-bind='datepicker: Ship_Date_NPHL, datepickerOptions: { maxDate:@Model.DatePickerConfig,  dateFormat:"@Model.DateFormatDP"}' />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowform">
+                        <div class="col-md-8">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabIntObservationsNPHL"))
+                                </span>
+                                <textarea class="form-control case_letter" rows="1" style="max-width: 900px;" id="Observation_NPHL" name="Observation_NPHL" data-bind="value: Observation_NPHL"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                @*
+                <hr style="margin-top:3px; margin-bottom:3px; border-width:1px  0  0; " />*@
+                <button type="button" style="background-color:#B2BABB; color:#000000" class="btn btn-group-justified" data-toggle="collapse" data-target="#statuscaso">
+                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabTest"))
+                    <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
+                </button>
+            </div>
+        </div>
+        }
         <div class="row rowform" data-bind="visible:DisableCHI">
             <div class="col-md-12">
                 <div style="font-weight:bold;font-size:11px">
@@ -2953,6 +3000,10 @@
             </div>
         </div>
         <div class="row rowform">
+            @* @if (ViewBag.NPHL_exist == true)
+            {
+
+            }*@
             <div class="col-md-3_5">
                 <div class='input-group'>
                     <span class="input-group-addon">
@@ -4567,7 +4618,7 @@
 
 </div>
 
-    <div id="tab-history">
+<div id="tab-history">
     <table class="table table-hover table-responsive" style="width:1000px;">
         <thead id="LabelBandeja">
             <tr>

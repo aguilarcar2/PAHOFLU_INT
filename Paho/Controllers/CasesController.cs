@@ -700,7 +700,7 @@ namespace Paho.Controllers
                      region_salud = region_salud.FirstOrDefault(),
                      region_pais = region_pais.FirstOrDefault(),
                      selectedServiceId = (db.Institutions.Where(j => j.ID == flucase.HospitalID).FirstOrDefault().AccessLevel == (AccessLevel)6) ? flucase.HospitalID : 0,
-                     LabsFlow = CLOrdDisplay,
+                     IntsFlow = CLOrdDisplay,
                      /*Ocupacion = flucase.Ocupacion,                             //#### CAFQ
                      TrabajoDirecc = flucase.TrabajoDirecc,                     //#### CAFQ
                      TrabajoEstablec = flucase.TrabajoEstablec,                 //#### CAFQ
@@ -1737,7 +1737,7 @@ namespace Paho.Controllers
                 if (list_by_virus_endflow_byActualFlow.Any())
                 {
                     var list_test_record = flucase.CaseLabTests.OfType<CaseLabTest>().OrderByDescending(d => d.CatTestType.orden)
-                                                                                     .ThenBy(c => c.Institution.OrdenPrioritybyLab != null ? c.Institution.OrdenPrioritybyLab : 0)
+                                                                                     .ThenBy(c => c.Institution.OrdenPrioritybyLab != null ? c.Institution.OrdenPrioritybyLab : 99)
                                                                                      .ThenBy(e => e.CatTestResult != null ? e.CatTestResult.orden : 99)
                                                                                      .ThenByDescending(f => f.CatVirusType != null ? f.CatVirusType.orden : 99)
                                                                                      .ThenByDescending(g => g.CatVirusSubType != null ? g.CatVirusSubType.orden : 99)
@@ -1836,6 +1836,12 @@ namespace Paho.Controllers
                     NoProRen3 = flucase.NoProRen3,
                     NoProRenId3 = flucase.NoProRenId3,
                     TempSample3 = flucase.TempSample3,
+
+                    // Laboratorio Intermedio
+                    Rec_Date_NPHL = flucase.Rec_Date_NPHL,
+                    Temp_NPHL = flucase.Temp_NPHL,
+                    Observation_NPHL = flucase.Observation_NPHL,
+                    Ship_Date_NPHL = flucase.Ship_Date_NPHL,
 
                     Comments = flucase.Comments,
                     FinalResult = flucase.FinalResult,
@@ -2111,6 +2117,11 @@ namespace Paho.Controllers
                 int? FinalResultVirusSubTypeID_3,
                 int? FinalResultVirusLineageID_3,
                 int? DataStatement,
+                //AM Laboratorio intermedio
+                DateTime? Rec_Date_NPHL,
+                Decimal? Temp_NPHL,
+                string Observation_NPHL,
+                DateTime? Ship_Date_NPHL,
                 List<LabTestViewModel> LabTests
             )
         {
@@ -2152,6 +2163,12 @@ namespace Paho.Controllers
             flucase.NoProRen3 = NoProRen3;
             flucase.NoProRenId3 = NoProRenId3;
             flucase.TempSample3 = TempSample3;
+
+            // Laboratorio de intermedio
+            flucase.Rec_Date_NPHL = Rec_Date_NPHL;
+            flucase.Temp_NPHL = Temp_NPHL;
+            flucase.Observation_NPHL = Observation_NPHL;
+            flucase.Ship_Date_NPHL = Ship_Date_NPHL;
 
             flucase.Comments = Comments;
             flucase.FinalResult = FinalResult;

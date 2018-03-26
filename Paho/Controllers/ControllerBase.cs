@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity;
 using Paho.Models;
 using System.Globalization;
 using System.Threading;
+using System.Linq;
 
 namespace Paho.Controllers
 {
@@ -62,6 +63,9 @@ namespace Paho.Controllers
                 ViewBag.UsrCtry = user.Institution.CountryID;
                 ViewBag.UsrCtryLang = user.Institution.Country.Language;
                 ViewBag.UsrInstID = user.InstitutionID;
+                ViewBag.UsrInstNPHL = user.Institution.NPHL;
+                ViewBag.NPHL_exist = (db.Institutions.OfType<Lab>()
+                                   .Where(x => x.NPHL == true && x.CountryID == user.Institution.CountryID).Count() > 0) ;
                 ViewBag.UR = (string) (User.IsInRole("Admin") ? "adm" : User.IsInRole("Staff") ? "stf" : User.IsInRole("Report") ? "rpt" : "");
             }
 

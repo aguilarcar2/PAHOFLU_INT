@@ -802,12 +802,12 @@ namespace Paho.Controllers
                             AssignValueCell_value(fila_original_empieza + 5, 41, excelWorksheet, Test.CTRLVirusType.ToString(), "String"); // CTRL Tipo de virus
 
                             AssignValueCell_value(fila_original_empieza + 6, 7, excelWorksheet, Test.CatVirusSubType != null ? user.Institution.Country.Language == "SPA" ? Test.CatVirusSubType.SPA.ToString() : Test.CatVirusSubType.ENG.ToString() : "", "String"); // Sub Tipo de virus
-                            AssignValueCell_value(fila_original_empieza + 6, 22, excelWorksheet, Test.CatVirusSubType != null ? user.Institution.Country.Language == "SPA" ? Test.TestResultID_VirusSubType.ToString() : Test.TestResultID_VirusSubType.ToString() : "", "String"); // Resultado Sub Tipo de virus
+                            AssignValueCell_value(fila_original_empieza + 6, 22, excelWorksheet, Test.TestResultID_VirusSubType != null ? user.Institution.Country.Language == "SPA" ? Test.TestResultID_VirusSubType.ToString() : Test.TestResultID_VirusSubType.ToString() : "", "String"); // Resultado Sub Tipo de virus
                             AssignValueCell_value(fila_original_empieza + 6, 32, excelWorksheet, Test.CTSubType.ToString(), "String"); // CT SubTipo de virus
                             AssignValueCell_value(fila_original_empieza + 6, 41, excelWorksheet, Test.CTRLSubType.ToString(), "String"); // CTRL SubTipo de virus
 
                             AssignValueCell_value(fila_original_empieza + 7, 7, excelWorksheet, Test.CatVirusSubType_2 != null ? user.Institution.Country.Language == "SPA" ? Test.CatVirusSubType.SPA.ToString() : Test.CatVirusSubType.ENG.ToString() : "", "String"); // Sub Tipo 2 de virus
-                            AssignValueCell_value(fila_original_empieza + 7, 22, excelWorksheet, Test.CatVirusSubType_2 != null ? user.Institution.Country.Language == "SPA" ? Test.TestResultID_VirusSubType.ToString() : Test.TestResultID_VirusSubType.ToString() : "", "String"); // Resultado Sub Tipo 2 de virus
+                            AssignValueCell_value(fila_original_empieza + 7, 22, excelWorksheet, Test.TestResultID_VirusSubType_2 != null ? user.Institution.Country.Language == "SPA" ? Test.TestResultID_VirusSubType.ToString() : Test.TestResultID_VirusSubType.ToString() : "", "String"); // Resultado Sub Tipo 2 de virus
                             AssignValueCell_value(fila_original_empieza + 7, 32, excelWorksheet, Test.CTSubType_2.ToString(), "String"); // CT SubTipo 2 de virus
                             AssignValueCell_value(fila_original_empieza + 7, 41, excelWorksheet, Test.CTRLSubType_2.ToString(), "String"); // CTRL SubTipo 2 de virus
 
