@@ -509,7 +509,8 @@
         </div>
 
         <!-- Nacionalidad/Pueblo originario -->
-        <div class="row rowform" data-bind="visible: SurvSARICHI() || (ActiveBOL() && IsInusitado()) || (ActiveSUR() && IsInusitado())">
+        <!--<div class="row rowform" data-bind="visible: SurvSARICHI() || (ActiveBOL() && IsInusitado()) || (ActiveSUR() && IsInusitado())">-->
+        <div class="row rowform" data-bind="visible: (SurvSARICHI() || IsInusitado())">
             <!--Nacionalidad-->
             <div class="col-md-6">
                 <div class='input-group'>
@@ -525,7 +526,7 @@
             <div class="col-md-6" data-bind="visible:NacionalidadCHI">
                 <div class='input-group'>
                     <span class="input-group-addon">
-                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelEthnicity"))
+                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelEthnicity"))
                     </span>
                     @*<select id="nativepeople" class="form-control" data-bind="value:selectedNativepeopleID">
                         <option value="">Seleccione...</option>
@@ -1605,46 +1606,50 @@
                             }
                             @if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3)
                             {
+                                
+                            }
+                        </div>
+
+                        <div class="row rowform">
+                            <div class="col-md-6">
                                 <!-- Trabajador de salud -->
-                                <div class="col-md-3" data-bind="visible:app.Views.Contact.ShowOnlyAdult">
+                                <div class="col-md-4" data-bind="visible:app.Views.Contact.ShowOnlyAdult">
                                     <label class="btn btn-default">
                                         <input type="checkbox" name="TrabSalud" id="TrabSalud" data-bind="checked:  TrabSalud" disabled>  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelHealthcareWorker"))
                                     </label>
                                 </div>
-
-                                <!-- Especifique: Trabajador salud animal / Trabajador salud humana -->
-                                <div class="input-group col-md-3" data-bind="visible: IsTrabSalud">
+                                <!-- Especifique: Trabajador salud animal / Trabajador salud humanastyle="width: 300px" -->
+                                <div class="input-group col-md-2" data-bind="visible: IsTrabSalud">
                                     <span class="input-group-addon">
                                         @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelEspecifique"))
                                     </span>
-                                    <select id="TrabSaludRama" class="form-control" data-bind="options: cattrabsaludrama,
+                                    <select id="TrabSaludRama" class="form-control" style="width: 150px" data-bind="options: cattrabsaludrama,
                                         optionsText: 'Name',
                                         optionsValue: 'Id',
                                         value: selectedTrabSaludRamaId,
                                         optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel")) '"></select>
                                 </div>
-                            }
-                        </div>
-
-                        <div class="row rowform" data-bind="visible:IsInusitadoAdulto">
-                            <!-- Trabajador de laboratorio -->
-                            <div class="col-md-3">
-                                <label class="btn btn-default">
-                                    <input type="checkbox" name="TrabLaboratorio" id="TrabLaboratorio" data-bind="checked: TrabLaboratorio" disabled> 
-                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosTrabajadorLaboratorio"))
-                                </label>
                             </div>
 
-                            <!-- Especifique: Trabajador laboratorio animal / Trabajador laboratorio humana -->
-                            <div class="input-group col-md-3" data-bind="visible: IsTrabLaboratorio">
-                                <span class="input-group-addon">
-                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelEspecifique"))
-                                </span>
-                                <select id="TrabLaboratorioRama" class="form-control" data-bind="options: cattrablaborama,
+                            <div class="col-md-6">
+                                <!-- Trabajador de laboratorio -->
+                                <div class="col-md-4" data-bind="visible:IsInusitadoAdulto">
+                                    <label class="btn btn-default">
+                                        <input type="checkbox" name="TrabLaboratorio" id="TrabLaboratorio" data-bind="checked: TrabLaboratorio" disabled>
+                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosTrabajadorLaboratorio"))
+                                    </label>
+                                </div>
+                                <!-- Especifique: Trabajador laboratorio animal / Trabajador laboratorio humana -->
+                                <div class="input-group col-md-2" data-bind="visible: IsInusitadoAdulto() && IsTrabLaboratorio()">
+                                    <span class="input-group-addon">
+                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelEspecifique"))
+                                    </span>
+                                    <select id="TrabLaboratorioRama" class="form-control" style="width: 250px" data-bind="options: cattrablaborama,
                                         optionsText: 'Name',
                                         optionsValue: 'Id',
                                         value: selectedTrabLaboratorioRamaId,
                                         optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel")) '"></select>
+                                </div>
                             </div>
                         </div>
 
@@ -1665,6 +1670,48 @@
                             </div>
                         }
                     }
+
+                    <!-- <div class="row rowform" data-bind="visible:IsInusitadoAdulto()">-->
+                    <div class="row rowform" data-bind="visible:IsInusitadoAdulto() && (app.Views.Contact.ActiveJAM() || app.Views.Contact.ActiveSUR())">
+                        <div class="col-md-6">
+                            <!-- Trabajador de salud -->
+                            <div class="col-md-3" data-bind="visible:app.Views.Contact.ShowOnlyAdult">
+                                <label class="btn btn-default">
+                                    <input type="checkbox" name="TrabSalud" id="TrabSalud" data-bind="checked:  TrabSalud" disabled>  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelHealthcareWorker"))
+                                </label>
+                            </div>
+                            <!-- Especifique: Trabajador salud animal / Trabajador salud humanastyle="width: 300px" -->
+                            <div class="input-group col-md-3" data-bind="visible: IsTrabSalud">
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelEspecifique"))
+                                </span>
+                                <select id="TrabSaludRama" style="width: 200px" class="form-control" data-bind="options: cattrabsaludrama,
+                                        optionsText: 'Name',
+                                        optionsValue: 'Id',
+                                        value: selectedTrabSaludRamaId,
+                                        optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel")) '"></select>
+                            </div>
+                        </div>
+
+                        <!-- Trabajador de laboratorio -->
+                        <div class="col-md-2">
+                            <label class="btn btn-default">
+                                <input type="checkbox" name="TrabLaboratorio" id="TrabLaboratorio" data-bind="checked: TrabLaboratorio" disabled>
+                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosTrabajadorLaboratorio"))
+                            </label>
+                        </div>
+                        <!-- Especifique: Trabajador laboratorio animal / Trabajador laboratorio humana -->
+                        <div class="input-group col-md-4" data-bind="visible: IsTrabLaboratorio">
+                            <span class="input-group-addon">
+                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelEspecifique"))
+                            </span>
+                            <select id="TrabLaboratorioRama" class="form-control" data-bind="options: cattrablaborama,
+                                        optionsText: 'Name',
+                                        optionsValue: 'Id',
+                                        value: selectedTrabLaboratorioRamaId,
+                                        optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel")) '"></select>
+                        </div>
+                    </div>
 
                     @if (ViewBag.UsrCtry == 3)
                     {
