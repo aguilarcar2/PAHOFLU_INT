@@ -500,8 +500,6 @@
             $("#CaseStatus").attr("disabled", false);
             $("#tabs").tabs("refresh");
         }
-
-
         else if ($("#ITy").val() == "1" && (app.Views.Hospital.CaseStatus() != "" && app.Views.Hospital.CaseStatus() != null)) {
             //console.log("aqui _ CaseStatus");
             $("#tab-lab :input").prop('disabled', true);
@@ -517,12 +515,21 @@
             $("#Destin").attr("disabled", true)
         }
 
+        if ($("#ITy").val() == "2" && app.Views.Lab.NPHL() == true) {
+            $("#tab-lab :input").prop('disabled', true);
+            $("#Rec_Date_NPHL").prop('disabled', false);
+            $("#Temp_NPHL").prop('disabled', false);
+            $("#Ship_Date_NPHL").prop('disabled', false);
+            $("#Observation_NPHL").prop('disabled', false);
+        }
+
     };
 
     self.FlowDataLab = function () {
         if ($("#ITy").val() == "2" && app.Views.Contact.Flow_Local_Institution_Lab() == true) {
             //console.log("aqui _ FlowDataLab");
             $("#tab-lab :input").prop('disabled', false);
+
         }
     };
 

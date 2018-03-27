@@ -982,6 +982,12 @@ function LabViewModel(app, dataModel) {
         self.RecDate3(null);
         self.Processed3("");
         self.TempSample3("");
+        //Agregar laboratorio intermedio
+        self.Rec_Date_NPHL(null);
+        self.Temp_NPHL("");
+        self.Observation_NPHL("");
+        self.Ship_Date_NPHL(null);
+
         self.EndLabDate(null);
         self.FResult("");
         self.Comments("");
@@ -1008,11 +1014,6 @@ function LabViewModel(app, dataModel) {
         self.LabTests_Sample3([]);
         self.LabsResult([]);
         self.SubTypeByLabRes([]);
-        //Agregar laboratorio intermedio
-        self.Rec_Date_NPHL(null);
-        self.Temp_NPHL("");
-        self.Observation_NPHL("");
-        self.Ship_Date_NPHL(null);
         
     };
 
@@ -1264,6 +1265,9 @@ function LabViewModel(app, dataModel) {
 
             // Laboratorio intermedio
                 (data.Rec_Date_NPHL) ? self.Rec_Date_NPHL(moment(data.Rec_Date_NPHL).clone().toDate()) : self.Rec_Date_NPHL(null);
+                self.Temp_NPHL(data.Temp_NPHL);
+                self.Observation_NPHL(data.Observation_NPHL);
+                (data.Ship_Date_NPHL) ? self.Ship_Date_NPHL(moment(data.Ship_Date_NPHL).clone().toDate()) : self.Ship_Date_NPHL(null);
 
                 (data.EndLabDate) ? self.EndLabDate(moment(data.EndLabDate).clone().toDate()) : self.EndLabDate(null);
                 self.FResult(data.FResult);
@@ -1469,17 +1473,12 @@ function LabViewModel(app, dataModel) {
                 $("#FinalResultVirusTypeID_3").prop('disabled', true);
                 $("#FinalResultVirusSubTypeID_3").prop('disabled', true);
                 $("#FinalResultVirusLineageID_3").prop('disabled', true);
-                console.log("NPHL ---- ");
-                console.log(self.NPHL());
-                console.log("NPHL fin ---- ");
                 if (self.NPHL() == true) {
-                    console.log("NPHL ---- true ");
                     $("#Rec_Date_NPHL").prop('disabled', false);
                     $("#Temp_NPHL").prop('disabled', false);
                     $("#Ship_Date_NPHL").prop('disabled', false);
                     $("#Observation_NPHL").prop('disabled', false);
                 } else {
-                    console.log("NPHL ---- false ");
                     $("#Rec_Date_NPHL").prop('disabled', true);
                     $("#Temp_NPHL").prop('disabled', true);
                     $("#Ship_Date_NPHL").prop('disabled', true);
@@ -1794,7 +1793,7 @@ function LabViewModel(app, dataModel) {
                 Rec_Date_NPHL: $("#Rec_Date_NPHL").val() == "" ? null : moment(rec_date_NPHL).format(date_format_ISO),
                 Observation_NPHL: self.Observation_NPHL() ? self.Observation_NPHL().toLocaleUpperCase() : "",
                 Temp_NPHL: self.Temp_NPHL(),
-                Rec_Date_NPHL: $("#Rec_Date_NPHL").val() == "" ? null : moment(rec_date_NPHL).format(date_format_ISO),
+                Ship_Date_NPHL: $("#Ship_Date_NPHL").val() == "" ? null : moment(ship_date_NPHL).format(date_format_ISO),
             }),
             async: false,
             contentType: "application/json; charset=utf-8",
