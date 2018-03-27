@@ -208,7 +208,11 @@ namespace Paho.Controllers
             string ticketResult = "";
 
             string userTicket = User.Identity.GetUserId();
+			if (User.Identity.IsAuthenticated)
+			{
             //---------------------------Para setear los tickets en la base de datos---------------------------------
+			if (User.IsInRole("Support"))//entran los de soporte porque tienen permisos
+            {
             var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (var con = new SqlConnection(consString))
             {
@@ -231,7 +235,9 @@ namespace Paho.Controllers
                         }
                     }
                 }
-            }            
+            }
+			}
+			}            
 
             return (ticketResult);
         }

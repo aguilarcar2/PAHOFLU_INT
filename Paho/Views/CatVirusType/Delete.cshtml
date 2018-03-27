@@ -1,10 +1,10 @@
 ﻿@model Paho.Models.CatVirusType
 
-<h2>Borrar</h2>
+<h2>@(Paho.Controllers.CatVirusTypeController.SgetMessage("msgViewCatPopulation_Borrar", ViewBag.UsrCtry, ViewBag.UsrCtryLang))</h2>
 <p class="error">@ViewBag.ErrorMessage</p>
-<h3>Esta seguro que desea borrar el registro?</h3>
+<h3>@(Paho.Controllers.CatVirusTypeController.SgetMessage("msgDeleteRecord", ViewBag.UsrCtry, ViewBag.UsrCtryLang))?</h3>
 <div>
-    <h4>Catalogo - Tipo de Virus</h4>
+    <h4>@(Paho.Controllers.CatVirusTypeController.SgetMessage("msgCatalog", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) - @(Paho.Controllers.CatVirusTypeController.SgetMessage("msgTypeOfVirus", ViewBag.UsrCtry, ViewBag.UsrCtryLang))</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -32,7 +32,8 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.orden)
+            <!--@Html.DisplayNameFor(model => model.orden)-->
+            @Html.DisplayName(((string)Paho.Controllers.ResourcesM.SgetMessage("msgOrder", ViewBag.UsrCtry, ViewBag.UsrCtryLang)))
         </dt>
 
         <dd>
@@ -46,8 +47,8 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Borrar" class="btn btn-default" /> |
-            @Html.ActionLink("Regresar a Listado", "Index")
+            <input type="submit" value=@(Paho.Controllers.CatVirusTypeController.SgetMessage("msgViewCatPopulation_Borrar", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) class="btn btn-default" /> |
+            @Html.ActionLink((string)Paho.Controllers.CatVirusTypeController.SgetMessage("msgReturnToList", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "CatVirusType", new { }, null)
         </div>
     }
 </div>

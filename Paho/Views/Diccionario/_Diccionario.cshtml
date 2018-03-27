@@ -2,12 +2,12 @@
 
     <div class='input-group'>
         <span class="input-group-addon">
-            <b>Diccionario de datos</b>
+            <b>@(((Paho.Controllers.DiccionarioController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelDataDictionary"))</b>
         </span>
     </div>
 
 </div>
 
-<p>Haga click en el siguiente link para descargar el diccionario de datos en un archivo de Excel.</p>
+<p>@(((Paho.Controllers.DiccionarioController)this.ViewContext.Controller).getMsg("msgClickToDownload"))</p>
 
-@Html.ActionLink("Descargar diccionario de datos", "GetDataDictionaryExcel", "exportar", new { area = "" }, null)
+@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgDownloadDataDictionary", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "GetDataDictionaryExcel", "exportar", new { area = "" }, null)

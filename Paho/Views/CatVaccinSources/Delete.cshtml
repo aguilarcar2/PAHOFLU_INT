@@ -1,13 +1,12 @@
 ﻿@model Paho.Models.CatVaccinSource
 
-
-    <h3> Desea borrar el registro?</h3>
+    <h3>@(Paho.Controllers.CatVirusTypeController.SgetMessage("msgDeleteRecord", ViewBag.UsrCtry, ViewBag.UsrCtryLang))?</h3>
     <div>
-        <h4>Borrar opción de vacunación</h4>
+        <h4>@(Paho.Controllers.CatVirusTypeController.SgetMessage("msgDeleteVaccineOption", ViewBag.UsrCtry, ViewBag.UsrCtryLang))?</h4>
         <hr />
         <dl class="dl-horizontal">
             <dt>
-                Descripción:
+                @((string)Paho.Controllers.ResourcesM.SgetMessage("msgDescription", ViewBag.UsrCtry, ViewBag.UsrCtryLang)):
             </dt>
     
             <dd>
@@ -15,7 +14,7 @@
             </dd>
     
             <dt>
-                Orden:
+                @Html.DisplayName(((string)Paho.Controllers.ResourcesM.SgetMessage("msgOrder", ViewBag.UsrCtry, ViewBag.UsrCtryLang))):
             </dt>
     
             <dd>
@@ -28,9 +27,8 @@
             @Html.AntiForgeryToken()
     
             <div class="form-actions no-color">
-                <input type="submit" value="Borrar" class="btn btn-default" />
-                
-            </div>
-            @Html.ActionLink("Regreso a la lista de opciones", "Index")
+                <input type="submit" value=@(Paho.Controllers.CatVirusTypeController.SgetMessage("msgViewCatPopulation_Borrar", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) class="btn btn-default" />  |
+                @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgReturnToList", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "CatVaccinSources", new { }, null)
+            </div>            
         }
     </div>

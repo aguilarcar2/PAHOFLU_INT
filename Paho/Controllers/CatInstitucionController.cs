@@ -270,11 +270,11 @@ namespace Paho.Controllers
             {
                 case "Lab":
                     var instQuery = db.Institutions.OfType<Hospital>().Where(x => x.CountryID == countryId).OrderBy(x => x.Name).ToList();
-                    instQuery.Insert(0, new Hospital { ID = 0, Name = "-- Seleccione -- " });
+                    instQuery.Insert(0, new Hospital { ID = 0, Name = "-- " + getMsg("msgSelect") + " -- " });
                     return Json(new SelectList(instQuery, "ID", "Name"));
                 default:
                     var hospQuery = db.Institutions.OfType<Hospital>().Where(x => x.CountryID == countryId && x.AccessLevel == AccessLevel.SelfOnly).OrderBy(x => x.Name).ToList();
-                    hospQuery.Insert(0, new Hospital { ID = 0, Name = "-- Seleccione -- " });
+                    hospQuery.Insert(0, new Hospital { ID = 0, Name = "-- " + getMsg("msgSelect") + " -- " });
                     return Json(new SelectList(hospQuery, "ID", "Name"));
             }
         }
@@ -301,26 +301,39 @@ namespace Paho.Controllers
             ViewBag.InstitutionType = new SelectList(tipoQuery, "Id", "Name", selectedTipo);
 
             var regInstQuery = (from d in db.Regions where (d.tipo_region == 1 || d.tipo_region == null) && d.CountryID == countryId orderby d.Name select d).ToList();
-            regInstQuery.Insert(0, new Region { ID = 0, Name = "-- Seleccione -- " });
+            regInstQuery.Insert(0, new Region { ID = 0, Name = "-- " + getMsg("msgSelect") + " -- " });
             ViewBag.cod_region_institucional = new SelectList(regInstQuery, "ID", "Name", selectedRegInst);
 
             var regSaludQuery = (from d in db.Regions where d.tipo_region == 2 && d.CountryID == countryId orderby d.Name select d).ToList();
-            regSaludQuery.Insert(0, new Region { ID = 0, Name = "-- Seleccione -- " });
+            regSaludQuery.Insert(0, new Region { ID = 0, Name = "-- " + getMsg("msgSelect") +" -- " });
             ViewBag.cod_region_salud = new SelectList(regSaludQuery, "ID", "Name", selectedRegSalud);
 
             var regPaisQuery = (from d in db.Regions where d.tipo_region == 3 && d.CountryID == countryId orderby d.Name select d).ToList();
-            regPaisQuery.Insert(0, new Region { ID = 0, Name = "-- Seleccione -- " });
+            regPaisQuery.Insert(0, new Region { ID = 0, Name = "-- " + getMsg("msgSelect") + " -- " });
             ViewBag.cod_region_pais = new SelectList(regPaisQuery, "ID", "Name", selectedRePais);
             
             if (instType == InstitutionType.Lab) {
                 var instQuery = db.Institutions.OfType<Hospital>().Where(x => x.CountryID == countryId).OrderBy(x => x.Name).ToList();
-                instQuery.Insert(0, new Hospital { ID = 0, Name = "-- Seleccione -- " });
+                instQuery.Insert(0, new Hospital { ID = 0, Name = "-- " + getMsg("msgSelect") + " -- " });
                 ViewBag.Father_ID = new SelectList(instQuery, "ID", "Name", selectedFather);
             } else {
                 var instQuery = db.Institutions.OfType<Hospital>().Where(x => x.CountryID == countryId && x.AccessLevel == AccessLevel.SelfOnly).OrderBy(x => x.Name).ToList();
-                instQuery.Insert(0, new Hospital { ID = 0, Name = "-- Seleccione -- " });
+                instQuery.Insert(0, new Hospital { ID = 0, Name = "-- " + getMsg("msgSelect") + " -- " });
                 ViewBag.Father_ID = new SelectList(instQuery, "ID", "Name", selectedFather);
             }
+        }
+
+        public string getMsg(string msgView)
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            string searchedMsg = msgView;
+            int? countryID = user.Institution.CountryID;
+            string countryLang = user.Institution.Country.Language;
+
+            ResourcesM myR = new ResourcesM();
+            searchedMsg = myR.getMessage(searchedMsg, countryID, countryLang);
+            //searchedMsg = myR.getMessage(searchedMsg, 0, "ENG");
+            return searchedMsg;
         }
     }
 }

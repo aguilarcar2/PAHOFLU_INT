@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
 using PagedList;
 using Paho.Models;
+using Resources.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
@@ -14,6 +15,7 @@ namespace Paho.Controllers
     [Authorize(Roles = "Admin")]
     public class CatVirusTypeController : ControllerBase
     {
+        private static IResourceProvider resourceProvider = new DbResourceProvider();
         private int _pageSize = 10;
 
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
@@ -204,6 +206,34 @@ namespace Paho.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+        public string getMsg(string msgView)
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            string searchedMsg = msgView;
+            int? countryID = user.Institution.CountryID;
+            string countryLang = user.Institution.Country.Language;
+
+            ResourcesM myR = new ResourcesM();
+            searchedMsg = myR.getMessage(searchedMsg, countryID, countryLang);
+            //searchedMsg = myR.getMessage(searchedMsg, 0, "ENG");
+            return searchedMsg;
+        }
+
+        public static string SgetMessage(string msg, int? countryID, string countryLang)
+        {
+            string dbMessage = msg;
+            string dbCountry = countryID.ToString();
+            string dbLang = countryLang;
+
+            //dbMessage = "Pepito";
+            dbMessage = resourceProvider.GetResource(dbMessage, dbCountry).ToString();
+            if (dbMessage == "")
+            {
+                dbMessage = msg;
+                dbMessage = resourceProvider.GetResource(dbMessage, dbLang).ToString();
+            }
+            return dbMessage;
         }
     }
 }

@@ -4,18 +4,18 @@
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @{
-    ViewBag.Title = "Catálogo - Subtipo de virus";
+    ViewBag.Title = (Paho.Controllers.CatVirusTypeController.SgetMessage("msgCatalog", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + " - " + (Paho.Controllers.CatVirusTypeController.SgetMessage("msgVirusSubtype", ViewBag.UsrCtry, ViewBag.UsrCtryLang));
 }
 
 
 <p>
-    @Html.ActionLink("Crear Nuevo", "Create")
+    @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgViewCatPopulation_CrearNuevo", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Create", "CatVirusSubTypes", new { area = "" }, null)
 </p>
-@using (Html.BeginForm("Index", "CatVirusType", FormMethod.Get))
+@using (Html.BeginForm("Index", "CatVirusSubTypes", FormMethod.Get))
 {
     <p>
-        Criterio de búsqueda: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
-        <input type="submit" value="Buscar" />
+        @(Paho.Controllers.ResourcesM.SgetMessage("msgSearchCriteria", ViewBag.UsrCtry, ViewBag.UsrCtryLang)): @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value=@(Paho.Controllers.ResourcesM.SgetMessage("viewHome_btnSearch", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) />        
     </p>
 }
 
@@ -28,7 +28,7 @@
                 @Html.ActionLink("ENG", "Index", new { sortOrder = ViewBag.EngSortParm, currentFilter = ViewBag.CurrentFilter })
             </th>
             <th>
-                @Html.ActionLink("Orden", "Index", new { sortOrder = ViewBag.OrdenSortParm, currentFilter = ViewBag.CurrentFilter })
+                @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgOrder", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "CatVirusSubTypes", new { sortOrder = ViewBag.SpaSortParm, currentFilter = ViewBag.CurrentFilter }, null)
             </th>
             <th>
 
@@ -48,14 +48,14 @@
                 @Html.DisplayFor(modelItem => item.orden)
             </td>
             <td>
-                @Html.ActionLink("Editar", "Edit", new { id=item.ID }) |
-                @Html.ActionLink("Borrar", "Delete", new { id=item.ID })
+                @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgViewCatPopulation_Editar", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Edit", "CatVirusSubTypes", new { id = item.ID }, null) |
+                @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgViewCatPopulation_Borrar", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Delete", "CatVirusSubTypes", new { id = item.ID }, null)
             </td>
         </tr>
     }
     
     </table>
-Pagina @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+@(Paho.Controllers.ResourcesM.SgetMessage("msgPage", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) @(Paho.Controllers.ResourcesM.SgetMessage("msgViewCatPopulation_De", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) @Model.PageCount
 
 @Html.PagedListPager(Model, page => Url.Action("Index",
     new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
