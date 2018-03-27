@@ -1705,6 +1705,7 @@ namespace Paho.Controllers
             institutions = db.Institutions.OfType<Lab>().Where(i => i.ID == user.Institution.ID);
             var institutionsIds = institutions.Select(x => (long?)x.ID).ToArray();
 
+            var InstFlow_NPHL = false;
             var canConclude = true;
             var SaveAndAdd_1 = true;
             var SaveAndAdd_2 = true;
@@ -1809,6 +1810,7 @@ namespace Paho.Controllers
                 CanIFILab = db.Institutions.OfType<Lab>().Where(i => i.ID == user.Institution.ID).First()?.IFI;
                 flow_local_lab = institutionsConfiguration.First().Priority;
                 flow_open_always = institutionsConfiguration.First().OpenAlways;
+                
                 //canConclude = institutionsConfiguration.Count(x => x.Conclusion == 1) > 0; // Original - modificado por AM
             }
 
@@ -1862,7 +1864,8 @@ namespace Paho.Controllers
                     DataStatement = flow_statement,
                     CanPCRLab = CanPCRLab,
                     CanIFILab = CanIFILab,
-                    LabTests = (
+                    InstFlow_NPHL = user.Institution.NPHL != null ? (bool)user.Institution.NPHL : false,
+                LabTests = (
                           from caselabtest in flucase.CaseLabTests
                           where caselabtest.SampleNumber == 1 || caselabtest.SampleNumber == null
                           select new

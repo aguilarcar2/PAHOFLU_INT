@@ -2934,14 +2934,13 @@
                     <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
                 </button>
                 <div id="statuscaso" class="collapse in">
-
                     <div class="row rowform">
                         <div class="col-md-3_5">
                             <div class='input-group'>
                                 <span class="input-group-addon">
                                     @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabIntRecDate"))
                                 </span>
-                                <input id="Rec_Date_NPHL" name="Rec_Date_NPHL" type='text' class="form-control " data-bind='datepicker: Rec_Date_NPHL, datepickerOptions: { maxDate:@Model.DatePickerConfig,  dateFormat:"@Model.DateFormatDP"}' @(ViewBag.NPHL_exist ? "disabled ='disabled'" : "" )  />
+                                <input id="Rec_Date_NPHL" name="Rec_Date_NPHL" type='text' class="form-control " data-bind='datepicker: Rec_Date_NPHL, datepickerOptions: { maxDate:@Model.DatePickerConfig,  dateFormat:"@Model.DateFormatDP"}' />
                             </div>
                         </div>
                         <div class="col-md-3">

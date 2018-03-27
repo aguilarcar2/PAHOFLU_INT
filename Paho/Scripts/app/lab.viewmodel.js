@@ -534,6 +534,7 @@ function LabViewModel(app, dataModel) {
     self.UsrCountry = ko.observable(app.Views.Home.UsrCountry()); // Pais del usuario logueado
     self.UsrInstID = ko.observable($('#IIDL').val()); // ID de la institucion del usuario
     self.ISPID = ko.observable(97);  //Es 97 porque es el ID de la tabla institución
+    self.NPHL = ko.observable(false);
     self.hasReset = ko.observable(false);
     self.hasGet = ko.observable(false);
     self.RecDate = ko.observable(null);
@@ -1241,6 +1242,7 @@ function LabViewModel(app, dataModel) {
         self.Id = id;       
         $.getJSON(app.dataModel.getLabUrl, { id: id }, function (data, status) {
             (data.RecDate) ? self.RecDate(moment(data.RecDate).clone().toDate()) : self.RecDate(null);
+                self.NPHL(data.InstFlow_NPHL);
                 self.Processed((data.Processed != null) ? data.Processed.toString() : "");
                 self.NoProRen(data.NoProRen);
                 self.NoProRenId(data.NoProRenId);
@@ -1467,6 +1469,22 @@ function LabViewModel(app, dataModel) {
                 $("#FinalResultVirusTypeID_3").prop('disabled', true);
                 $("#FinalResultVirusSubTypeID_3").prop('disabled', true);
                 $("#FinalResultVirusLineageID_3").prop('disabled', true);
+                console.log("NPHL ---- ");
+                console.log(self.NPHL());
+                console.log("NPHL fin ---- ");
+                if (self.NPHL() == true) {
+                    console.log("NPHL ---- true ");
+                    $("#Rec_Date_NPHL").prop('disabled', false);
+                    $("#Temp_NPHL").prop('disabled', false);
+                    $("#Ship_Date_NPHL").prop('disabled', false);
+                    $("#Observation_NPHL").prop('disabled', false);
+                } else {
+                    console.log("NPHL ---- false ");
+                    $("#Rec_Date_NPHL").prop('disabled', true);
+                    $("#Temp_NPHL").prop('disabled', true);
+                    $("#Ship_Date_NPHL").prop('disabled', true);
+                    $("#Observation_NPHL").prop('disabled', true);
+                }
 
                 self.hasGet(false);
                 if (self.FinalResult() == "") {
