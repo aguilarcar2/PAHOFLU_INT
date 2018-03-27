@@ -2938,6 +2938,12 @@ namespace Paho.Controllers
                 nSeIn = 1;
                 cTitu = "Baselines: Suriname Percentage Positivity for Influenza 2016 and SARI cases (%) (As Compare To 2010 - 2015) - EW 1 to EW52 2016";
             }
+            else if (countryId == 17)
+            {
+                sheet = "Jamaica";
+                nSeIn = 1;
+                cTitu = "Jamaica: Percentage of Hospital Admissions for Severe Acute Respiratory Illness (SARI 2018) (compared with 2011-2017)";
+            }
             else
             {
                 return "";
@@ -2950,7 +2956,7 @@ namespace Paho.Controllers
             string cSema, cPorc, cJS = "", cTemp = "";
             jsonTextLB = "";
 
-            if (countryId == 25)
+            if (countryId == 25 || countryId == 17)
             {
                 cSema = "Epidemiological Week";
                 cPorc = "Percentage";
@@ -3071,7 +3077,7 @@ namespace Paho.Controllers
             }
             cJS = "[" + cJS + "]";
 
-            if (countryId != 25)
+            if (countryId != 25 && countryId != 17)
             {
                 jsonTextLB = jsonTextLB + cJS + "},";
                 jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + "Curva epidémica promedio para porcentaje de positividad de influenza" + "\",";

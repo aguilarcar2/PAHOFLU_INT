@@ -86,6 +86,9 @@ function ContactViewModel(app, dataModel) {
     self.ActiveSUR = ko.computed(function () {
         return (self.UsrCountry() == 25) ? true : false;
     }, self);       //#### CAFQ
+    self.ActiveJAM = ko.computed(function () {
+        return (self.UsrCountry() == 17) ? true : false;
+    }, self);       //#### CAFQ
 
     self.selectedNationalityID = ko.observable("");
     self.selectedNativepeopleID = ko.observable("");
