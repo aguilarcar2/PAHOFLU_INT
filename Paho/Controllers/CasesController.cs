@@ -2266,7 +2266,7 @@ namespace Paho.Controllers
                 }
             }
 
-            if (user.Institution is Lab && existrecordlabtest == true)
+            if ((user.Institution is Lab && existrecordlabtest == true) || user.Institution.NPHL == true)
             {
                 var institutionsConfiguration = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(i => i.InstitutionToID == user.Institution.ID && i.InstitutionParentID == flucase.HospitalID);
                 if (institutionsConfiguration.Any())

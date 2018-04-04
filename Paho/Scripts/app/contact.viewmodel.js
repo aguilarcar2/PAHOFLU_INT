@@ -351,7 +351,7 @@ function ContactViewModel(app, dataModel) {
     });
     self.AgeGroup = ko.computed(function () {      
         if (!(self.Age() || self.DOB())) return "";
-         if (self.UsrCountry() == 25 || self.UsrCountry() == 11 || self.UsrCountry() == 18) {
+        if (self.UsrCountry() == 25 || self.UsrCountry() == 11 || self.UsrCountry() == 18 || self.UsrCountry() == 17) {
             if (self.AMeasure() === "Day" || (self.AMeasure() === "Month" && self.Age() <= 6)) return "child under 6 months"
             if (self.AMeasure() === "Month" && self.Age() >= 6 && self.Age() <= 12) return "6 to 11 months";
             if ((self.AMeasure() === "Month" && self.Age() >= 12 && self.Age() <= 24) || (self.AMeasure() === "Year" && self.Age() == 1)) return "12 to 23 months";
@@ -798,13 +798,13 @@ function ContactViewModel(app, dataModel) {
         date_reg_date = jQuery.type(self.RegDate()) === 'date' ? self.RegDate() : parseDate($("#RegDate").val(), date_format_);
         date_DOB = jQuery.type(self.DOB()) === 'date' ? self.DOB() : parseDate($("#DOB").val(), date_format_);
         date_fever_dummy = jQuery.type(app.Views.Hospital.FeverDate()) === 'date' ? app.Views.Hospital.FeverDate() : parseDate($("#FeverDate").val(), date_format_);
-        console.log("date_hospital " + date_hospital);
-        console.log("self.HospitalDate " + self.HospitalDate());
-        console.log("jquery.type self.HospitalDate " + jQuery.type(self.HospitalDate()));
-        console.log("date_reg_date " + date_reg_date);
-        console.log("self.RegDate " + self.RegDate());
-        console.log("typeof self.RegDate " + typeof (self.RegDate()));
-        if (self.DocumentType() == "" && (self.UsrCountry() == 25 || self.UsrCountry() == 11 || self.UsrCountry() == 18)) {//sirve para que en el caso de Suriname, el DocumentType se llene con un valor predeterminado            
+        //console.log("date_hospital " + date_hospital);
+        //console.log("self.HospitalDate " + self.HospitalDate());
+        //console.log("jquery.type self.HospitalDate " + jQuery.type(self.HospitalDate()));
+        //console.log("date_reg_date " + date_reg_date);
+        //console.log("self.RegDate " + self.RegDate());
+        //console.log("typeof self.RegDate " + typeof (self.RegDate()));
+        if (self.DocumentType() == "" && (self.UsrCountry() == 25 || self.UsrCountry() == 11 || self.UsrCountry() == 18 || self.UsrCountry() == 17)) {//sirve para que en el caso de Suriname, el DocumentType se llene con un valor predeterminado            
             self.DocumentType(8);
         }
          $.post(app.dataModel.saveContactUrl,

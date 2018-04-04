@@ -359,7 +359,7 @@
             </div>
 
             <div class="row rowform">
-                @if (ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 18)
+                @if (ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 18 && ViewBag.UsrCtry != 17)
                 {
                 <div class="col-md-6">
                     <div class='input-group'>
@@ -399,7 +399,7 @@
                             <span class="input-group-addon">  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelRUN")): <font color="#FF0000">*</font></span>
                         }
                         @*Hace que si el pais no es Suriname, tenga una propiedad onBlur el campo NoExpediente*@
-                        @if (ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 18 )
+                        @if (ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 18 && ViewBag.UsrCtry != 17)
                         {
                         <input id="NoExpediente" type='text' class="form-control case_letter" data-bind="value: NoExpediente, event: { blur: GetPatient }" />
                         }
@@ -410,7 +410,7 @@
                         @*<button id="DatosPaciente" type="button" class="btn btn-primary btn-next " data-bind="click: GetPatient, visible:EnableCR">Datos paciente</button>*@
                     </div>
                 </div>
-				@if (ViewBag.UsrCtry == 25 || ViewBag.UsrCtry == 11 || ViewBag.UsrCtry == 18)
+				@if (ViewBag.UsrCtry == 25 || ViewBag.UsrCtry == 11 || ViewBag.UsrCtry == 18 || ViewBag.UsrCtry == 17)
                 {
                 <div class="col-md-6">
                     <div class='input-group'>
@@ -630,7 +630,7 @@
                 optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel"))'"></select>
                 </div>
             </div>
-            @if (@ViewBag.UsrCtry != 25 && @ViewBag.UsrCtry != 11 && @ViewBag.UsrCtry != 18)
+            @if (@ViewBag.UsrCtry != 25 && @ViewBag.UsrCtry != 11 && @ViewBag.UsrCtry != 18 && @ViewBag.UsrCtry != 17)
             {
             <div class="col-md-6" ssdata-bind="visible:EnableCHI">
                 <div class='input-group'>                            
@@ -647,7 +647,7 @@
             }
         </div>
 
-        @if (@ViewBag.UsrCtry != 25 && @ViewBag.UsrCtry != 11 && @ViewBag.UsrCtry != 18)
+        @if (@ViewBag.UsrCtry != 25 && @ViewBag.UsrCtry != 11 && @ViewBag.UsrCtry != 18 && @ViewBag.UsrCtry != 17)
         {
             <div class="row rowform" data-bind="visible:EnableCHI">
                 <div class="col-md-6">
@@ -1336,7 +1336,7 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    @if (ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 18)
+                                    @if (ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 18 && ViewBag.UsrCtry != 17)
                                     {
                                     <tr align="center" data-bind="visible:NotShowChilds">
                                         <td>
@@ -1534,7 +1534,7 @@
                             <option value="5"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentTypeNoInfo"))</option>
                         </select>
                     </div>
-                    @if (ViewBag.UsrCtry != 7 && ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 18)
+                    @if (ViewBag.UsrCtry != 7 && ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 18 && ViewBag.UsrCtry != 17)
                     {
                     <div class='input-group col-md-5' id="DoseOseltamivir">
                         <span class="input-group-addon">
@@ -1900,7 +1900,7 @@
             </div>
         </div>
 
-        @if (ViewBag.UsrCtry != 7 && ViewBag.UsrCtry !=3 && ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 18)
+        @if (ViewBag.UsrCtry != 7 && ViewBag.UsrCtry !=3 && ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 18 && ViewBag.UsrCtry != 17)
         {
             <div class="row rowform">
                 <div class="col-md-12">
@@ -1987,7 +1987,7 @@
             </div>
         </div>
 
-        @if (ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 18)
+        @if (ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 18 && ViewBag.UsrCtry != 17)
         {
             <div class="row rowform" data-bind="visible:EnableCHI() && app.Views.Contact.NoActiveBOL()">
                 <div class="col-md-5">
@@ -2046,7 +2046,7 @@
                             </label>
                         </div>
                         <!-- Dificultad respiratoria -->
-                        @if (ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 18)
+                        @if (ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 18 && ViewBag.UsrCtry != 17)
                         {
                             <div class="col-md-3" data-bind="visible: app.Views.Contact.SurvSARI">
                             <label class="btn btn-default">
@@ -2423,7 +2423,7 @@
                     </div>
                 </div>
 			}
-            @if (ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 18)
+            @if (ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 18 && ViewBag.UsrCtry != 17)
             {
                 <!-- Diagnóstico egreso rel. IRAG / Otro diagnostico de egreso -->
                 <div class="row rowform" data-bind="visible:app.Views.Contact.NoActiveBOL">
