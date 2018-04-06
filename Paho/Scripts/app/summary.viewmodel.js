@@ -1,32 +1,32 @@
 ﻿
-var AgeGroupDescription = [
-    "Menores de 2 años",
-    "2 a 4 años",
-    "5 a 14 años",
-    "15 a 34 años",
-    "35 a 64 años",
-    "65 años y más"
-];
+//var AgeGroupDescription = [
+//    "Menores de 2 años",
+//    "2 a 4 años",
+//    "5 a 14 años",
+//    "15 a 34 años",
+//    "35 a 64 años",
+//    "65 años y más"
+//];
 
-var AgeGroupDescriptionSUR = [
-    "<6 months",
-    "6-11 months",
-    "12-23 months",
-    "2-4 years",
-    "5-14 years",
-    "15-49 years",
-    "50-64 years",
-    "65 years +"
-];
+//var AgeGroupDescriptionSUR = [
+//    "<6 months",
+//    "6-11 months",
+//    "12-23 months",
+//    "2-4 years",
+//    "5-14 years",
+//    "15-49 years",
+//    "50-64 years",
+//    "65 years +"
+//];
 
-var AgeGroupDescriptionCHI = [
-    "Menores de 2 años",
-    "2 a 4 años",
-    "5 a 19 años",
-    "20 a 39 años",
-    "40 a 59 años",
-    "60 años y más"
-];
+//var AgeGroupDescriptionCHI = [
+//    "Menores de 2 años",
+//    "2 a 4 años",
+//    "5 a 19 años",
+//    "20 a 39 años",
+//    "40 a 59 años",
+//    "60 años y más"
+//];
     
 function SummaryYearItem(data) {
     var self = this;
@@ -72,6 +72,14 @@ function SummaryYearItem(data) {
         return (self.UsrCountry() == 25) ? false : true;
     }, self);
 
+    self.ActiveJAM = ko.computed(function () {
+        return (self.UsrCountry() == 17) ? true : true;
+    }, self);
+
+    self.NoActiveJAM = ko.computed(function () {
+        return (self.UsrCountry() == 17) ? false : true;
+    }, self);
+
     self.ActiveCOS = ko.computed(function () {
         return (self.UsrCountry() == 9) ? true : false;
     }, self);
@@ -88,13 +96,16 @@ function SummayItem(data) {
     self.CaseSummaryId = data.CaseSummaryId;
     self.AgeGroup = data.AgeGroup;
 
-    if (self.UsrCountry() == 7 || self.UsrCountry() == 3) {
-        self.AgeGroupDescription = AgeGroupDescriptionCHI[parseInt(self.AgeGroup) - 1];
-    } else if (self.UsrCountry() == 25 || self.UsrCountry() == 11 || self.UsrCountry() == 18) {
-        self.AgeGroupDescription = AgeGroupDescriptionSUR[parseInt(self.AgeGroup) - 1];
-    } else {
-        self.AgeGroupDescription = AgeGroupDescription[parseInt(self.AgeGroup) - 1];
-    }
+    //if (self.UsrCountry() == 7 || self.UsrCountry() == 3) {
+    //    self.AgeGroupDescription = AgeGroupDescriptionCHI[parseInt(self.AgeGroup) - 1];
+    //} else if (self.UsrCountry() == 25 || self.UsrCountry() == 11 || self.UsrCountry() == 18) {
+    //    self.AgeGroupDescription = AgeGroupDescriptionSUR[parseInt(self.AgeGroup) - 1];
+    //} else {
+    //    self.AgeGroupDescription = AgeGroupDescription[parseInt(self.AgeGroup) - 1];
+    //}
+
+    self.AgeGroupDescription = CatAgeGroup[parseInt(self.AgeGroup) - 1].AgeGroup;
+    //console.log(CatAgeGroup[parseInt(self.AgeGroup) - 1]);
 
     self.EnableCHI = ko.computed(function () {
         return (self.UsrCountry() != 7) ? true : false;
@@ -118,6 +129,14 @@ function SummayItem(data) {
 
     self.NoActiveSUR = ko.computed(function () {
         return (self.UsrCountry() == 25) ? false : true;
+    }, self);
+
+    self.ActiveJAM = ko.computed(function () {
+        return (self.UsrCountry() == 17) ? true : true;
+    }, self);
+
+    self.NoActiveJAM = ko.computed(function () {
+        return (self.UsrCountry() == 17) ? false : true;
     }, self);
 
     self.ActiveCOS = ko.computed(function () {
@@ -291,6 +310,14 @@ function SummaryViewModel(app, dataModel) {
 
     self.NoActiveSUR = ko.computed(function () {
         return (self.UsrCountry() == 25) ? false : true;
+    }, self);
+
+    self.ActiveJAM = ko.computed(function () {
+        return (self.UsrCountry() == 17) ? true : true;
+    }, self);
+
+    self.NoActiveJAM = ko.computed(function () {
+        return (self.UsrCountry() == 17) ? false : true;
     }, self);
 
     self.ActiveCOS = ko.computed(function () {

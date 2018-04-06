@@ -238,7 +238,7 @@ function ContactViewModel(app, dataModel) {
     }, self);
 
     self.DocumentType.subscribe(function (NewRUN) {
-        if (self.UsrCountry() != 25 && self.UsrCountry() != 11 && self.UsrCountry() != 18) {//Solo ejecuta este subscribe si el país es diferente de Suriname
+        if (self.UsrCountry() != 25 && self.UsrCountry() != 11 && self.UsrCountry() != 18 && self.UsrCountry() != 17) {//Solo ejecuta este subscribe si el país es diferente de Suriname
             self.NoExpediente("");
         }
 
@@ -589,8 +589,8 @@ function ContactViewModel(app, dataModel) {
             msg += "\n" + msgValidationSurvType;
 
         
-        if (!self.DocumentType() && (self.UsrCountry() != 25 && self.UsrCountry() != 11 && self.UsrCountry() != 18))//agregado el 25 para que esta validación ignore SURINAME
-            msg += "\n" + msgValidationTypeOfDocument;
+        if (!self.DocumentType() && (self.UsrCountry() != 25 && self.UsrCountry() != 11 && self.UsrCountry() != 18 && self.UsrCountry() != 17))//agregado el 25 para que esta validación ignore SURINAME
+            msg += "\n" + msgValidationTypeOfDocument; // Este no esta en la base
 
         if (!self.NoExpediente()) {
             msg += "\n" + msgValidationDocumentIDRequired;
@@ -668,7 +668,7 @@ function ContactViewModel(app, dataModel) {
 
     self.GetPatient = function () {
 
-        if ((self.DocumentType() == "" && self.UsrCountry() != 25 && self.UsrCountry() != 11 && self.UsrCountry() != 18) || self.NoExpediente() == "")
+        if ((self.DocumentType() == "" && self.UsrCountry() != 25 && self.UsrCountry() != 11 && self.UsrCountry() != 18 && self.UsrCountry() != 17) || self.NoExpediente() == "")
         {
             alert(msgConfirmationDocumentTypeNumberRequired);
         } else {

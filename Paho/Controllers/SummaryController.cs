@@ -18,6 +18,7 @@ namespace Paho.Controllers
         {
             var SummaryViewModel = new SummaryViewModel();
             IQueryable<Institution> institutions = null;
+            IQueryable<CatAgeGroup> CatAgeGroupQuery = null;
             var user = UserManager.FindById(User.Identity.GetUserId());
             var DoS = DateTime.Now.ToString("d", CultureInfo.CreateSpecificCulture("es-GT"));
             SummaryViewModel.DatePickerConfig = DoS;
@@ -76,6 +77,12 @@ namespace Paho.Controllers
 
                 SummaryViewModel.Institutions = institutionsDisplay;
             };
+
+
+            var AgeGroupDisplay = db.CatAgeGroup.Where(y => y.id_country == user.Institution.CountryID).OrderBy(z => z.id_conf_country).ToList();
+            //.Select(x => x.AgeGroup)
+
+            SummaryViewModel.CatAgeGroup = AgeGroupDisplay;
 
             //**** Link Dashboard
             string dashbUrl = "", dashbTitle = "";

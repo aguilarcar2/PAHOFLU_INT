@@ -273,6 +273,7 @@ namespace Paho.Models
     {
         public IEnumerable<CountryView> Countries { get; set; }
         public IEnumerable<LookupView<Institution>> Institutions { get; set; }
+        public IEnumerable<CatAgeGroup> CatAgeGroup { get; set; }
         public bool DisplayCountries { get; set; }
         public bool DisplayRegionals { get; set; }
         public bool DisplayHospitals { get; set; }
