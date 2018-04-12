@@ -364,8 +364,8 @@
             var category = ko.utils.arrayFirst(app.Views.Contact.IntsFlow(), function (category) {
                 return category.LabID === new_Lab_Select;
             });
-            console.log("Lab_assign -- " + new_Lab_Select);
-            console.log("Lab_orden -- " + category.OPbyL);
+            //console.log("Lab_assign -- " + new_Lab_Select);
+            //console.log("Lab_orden -- " + category.OPbyL);
             if (category != null && category != "undefined")
                 self.OrdenLabID = category.orden;
             app.Views.Lab.OrdenFinalResult();
@@ -563,13 +563,87 @@ function LabViewModel(app, dataModel) {
     self.Observation_NPHL = ko.observable("");
     self.Ship_Date_NPHL = ko.observable(null);
 
+    self.Rec_Date_NPHL.subscribe(function (newRecDateNPHL) {
+        if (self.hasReset() != true && newRecDateNPHL != "" && newRecDateNPHL != null && self.NPHL() == true) {
+            var current_value = jQuery.type(newRecDateNPHL) === 'date' ? newRecDateNPHL : parseDate(newRecDateNPHL, date_format_);
+            var date_sample_date_ = jQuery.type(app.Views.Hospital.SampleDate()) === 'date' ? app.Views.Hospital.SampleDate() : parseDate(app.Views.Hospital.SampleDate(), date_format_);
+            var date_shipping_date = $("#ShipDate").val() == "" ? null : jQuery.type(app.Views.Hospital.ShipDate()) === 'date' ? app.Views.Hospital.ShipDate() : parseDate(app.Views.Hospital.ShipDate(), date_format_);
+
+
+            if ((date_shipping_date != null) && self.hasReset() != true) {
+
+                if (moment(current_value).isBefore(moment(date_shipping_date), "days")) {
+                    //alert("La fecha de recepción de Muestra 1 no puede ser menor a la fecha de envio de muestra de la Muestra 1");
+                    alert(msgValidationShippingDateValidateS1);
+                    self.Rec_Date_NPHL(null);
+                }
+
+            } else if ((date_sample_date_ == null || date_sample_date_ == "") && self.hasReset() != true) {
+                //alert("Por favor ingrese antes la fecha de toma muestra de la Muestra 1");
+                alert(msgValidationSampleDateS1);
+                self.Rec_Date_NPHL(null);
+            } else {
+                if (moment(current_value).isBefore(moment(date_sample_date_), "days")) {
+                    //alert("La fecha de recepción de Muestra 1 no puede ser menor a la fecha de toma muestra de la Muestra 1");
+                    alert(msgValidationSampleDateValidateS1);
+                    self.Rec_Date_NPHL(null);
+                }
+            }
+        }
+    });
+
+    self.Ship_Date_NPHL.subscribe(function (newShipDateNPHL) {
+        if (self.hasReset() != true && newShipDateNPHL != "" && newShipDateNPHL != null && self.NPHL() == true) {
+            var current_value = jQuery.type(newShipDateNPHL) === 'date' ? newShipDateNPHL : parseDate(newShipDateNPHL, date_format_);
+            var date_Rec_Date_NPHL = jQuery.type(self.Rec_Date_NPHL()) === 'date' ? self.Rec_Date_NPHL() : parseDate(self.Rec_Date_NPHL(), date_format_);
+
+            if ((date_Rec_Date_NPHL == null || date_Rec_Date_NPHL == "") && self.hasReset() != true) {
+                //alert("Por favor ingrese antes la fecha de toma muestra de la Muestra 1");
+                alert(msgValidationRecSampleNPHL);
+                self.Ship_Date_NPHL(null);
+            } else {
+                if (moment(current_value).isBefore(moment(date_Rec_Date_NPHL), "days")) {
+                    //alert("La fecha de envío de la Muestra  no puede ser menor a la fecha de recepción de la muestra en NPHL");
+                    alert(msgValidationShipDateNPHLValidateS1);
+                    self.Rec_Date_NPHL(null);
+                }
+            }
+        }
+    });
+
     self.RecDate.subscribe(function (newRecDate) {
         if (self.hasReset() != true && newRecDate != "" && newRecDate != null)
         {
             var current_value = jQuery.type(newRecDate) === 'date' ? newRecDate : parseDate(newRecDate, date_format_);
             var date_sample_date_ = jQuery.type(app.Views.Hospital.SampleDate()) === 'date' ? app.Views.Hospital.SampleDate() : parseDate(app.Views.Hospital.SampleDate(), date_format_);
+            var date_shipping_date = $("#ShipDate").val() == "" ? null : jQuery.type(app.Views.Hospital.ShipDate()) === 'date' ? app.Views.Hospital.ShipDate() : parseDate(app.Views.Hospital.ShipDate(), date_format_);
 
-            if ((date_sample_date_ == null || date_sample_date_ == "") && self.hasReset() != true) {
+
+            if ($("#Rec_Date_NPHL").length > 0) {
+
+                var date_Ship_Date_NPHL = jQuery.type(self.Ship_Date_NPHL()) === 'date' ? self.Ship_Date_NPHL() : parseDate(self.Ship_Date_NPHL(), date_format_);
+
+                if ((date_Ship_Date_NPHL == null || date_Ship_Date_NPHL == "") && self.hasReset() != true) {
+                    //alert("Por favor ingrese antes la fecha de toma muestra de la Muestra 1");
+                    alert(msgValidationRecSampleNPHL);
+                    //self.RecDate(null);
+                } else {
+                    if (moment(current_value).isBefore(moment(date_Ship_Date_NPHL), "days")) {
+                        //alert("La fecha de envío de la Muestra  no puede ser menor a la fecha de recepción de la muestra en NPHL");
+                        alert(msgValidationSampleDateNPHLValidateS1);
+                        //self.RecDate(null);
+                    }
+                }
+
+            } else if ((date_shipping_date != null) && self.hasReset() != true) {
+
+                if (moment(current_value).isBefore(moment(date_shipping_date), "days")) {
+                    //alert("La fecha de recepción de Muestra 1 no puede ser menor a la fecha de envio de muestra de la Muestra 1");
+                    alert(msgValidationShippingDateValidateS1);
+                    self.RecDate(null);
+                }
+
+            } else if ((date_sample_date_ == null || date_sample_date_ == "") && self.hasReset() != true) {
                 //alert("Por favor ingrese antes la fecha de toma muestra de la Muestra 1");
                 alert(msgValidationSampleDateS1);
                     self.RecDate(null);
@@ -587,9 +661,18 @@ function LabViewModel(app, dataModel) {
         if (self.UsrCountry() == 7 || self.UsrCountry() == 3 || self.UsrCountry() == 25) {
             if (self.hasReset() != true && newRecDate2 != "") {
                 var current_value = jQuery.type(newRecDate2) === 'date'  ? newRecDate2 : parseDate(newRecDate2, date_format_);
-                var date_sample_date_ = jQuery.type(app.Views.Hospital.SampleDate2()) === 'date'  ? app.Views.Hospital.SampleDate2() : parseDate(app.Views.Hospital.SampleDate2(), date_format_);
+                var date_sample_date_ = jQuery.type(app.Views.Hospital.SampleDate2()) === 'date' ? app.Views.Hospital.SampleDate2() : parseDate(app.Views.Hospital.SampleDate2(), date_format_);
+                var date_shipping_date = $("#ShipDate2").val() == "" ? null : jQuery.type(app.Views.Hospital.ShipDate2()) === 'date' ? app.Views.Hospital.ShipDate2() : parseDate(app.Views.Hospital.ShipDate2(), date_format_);
 
-                if (date_sample_date_ == null || date_sample_date_ == "") {
+                if ((date_shipping_date != null) && self.hasReset() != true) {
+
+                    if (moment(current_value).isBefore(moment(date_shipping_date), "days")) {
+                        //alert("La fecha de recepción de Muestra 2 no puede ser menor a la fecha de envio de muestra de la Muestra 2");
+                        alert(msgValidationShippingDateValidateS2);
+                        self.RecDate(null);
+                    }
+
+                } else if (date_sample_date_ == null || date_sample_date_ == "") {
                     //alert("Por favor ingrese antes la fecha de toma muestra de la Muestra 2");
                     alert(msgValidationSampleDateS2);
                     self.RecDate2(null);
@@ -1504,7 +1587,7 @@ function LabViewModel(app, dataModel) {
             self.OrderDummy([]);
             self.resetFinalResult();
             self.OrderArrayFinalResult(self.LabTests().concat(self.LabTests_Sample2()).concat(self.LabTests_Sample3()));
-            console.log(self.OrderArrayFinalResult());
+            //console.log(self.OrderArrayFinalResult());
             self.OrderDummy(self.OrderArrayFinalResult.sort(self.generateSortFn([{ name: 'OrdenLabID' }, { name: 'OrdenTestResultID' }, { name: 'OrdenVirusTypeID' }, { name: 'OrdenTestResultID_VirusSubType' }, { name: 'OrdenTestResultID_VirusSubType_2' }, { name: 'OrdenSubTypeID' }, { name: 'OrdenLineageID' }, { name: 'OrdenTestType' }])));
 
             self.OrderArrayFinalResult([]);

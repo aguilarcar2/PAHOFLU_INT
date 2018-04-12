@@ -24,11 +24,13 @@ using System.Data.Entity;
 using System.Globalization;
 using System.Collections;
 
+
 namespace Paho.Controllers
 {
     [Authorize(Roles = "Admin, Report")]
     public class ExportarController : ControllerBase
-    {
+    { 
+
         // GET:Exportar
         public ActionResult Index()
         {
@@ -39,6 +41,7 @@ namespace Paho.Controllers
             var user = UserManager.FindById(User.Identity.GetUserId());
             ExportarViewModel.CountryID = user.Institution.CountryID ?? 0;
             ReportsCountries = db.ReportsCountries.Where(i => i.CountryID == user.Institution.CountryID && i.active == true);
+
             if (user.Institution.AccessLevel == AccessLevel.All)
             {
                 ExportarViewModel.DisplayCountries = true;
@@ -202,84 +205,6 @@ namespace Paho.Controllers
             return View(ExportarViewModel);
         }
 
-        // POST: GetCasesInExcel
-        public CsvActionResult<FluCaseExportViewModel> GetExcelCases(int CountryID, int? HospitalID, int? Year, int? Month, int? SE, DateTime? StartDate, DateTime? EndDate)
-        {
-            var grid = new System.Web.UI.WebControls.GridView();
-            IQueryable<FluCase> query = GetQuery( CountryID, HospitalID, Year, Month, SE, StartDate, EndDate);
-            List<FluCaseExportViewModel> result = query.Select( f => new FluCaseExportViewModel(){
-        ID              = f.ID              ,
-        HospitalID      = f.Hospital.FullName,
-        HospitalDate    = f.HospitalDate    ,
-        RegDate         = f.RegDate         ,
-        FName1          = f.FName1          ,
-        FName2          = f.FName2          ,
-        LName1          = f.LName1          ,
-        LName2          = f.LName2          ,
-        NoExpediente    = f.NoExpediente    ,
-        NationalId      = f.NationalId      ,
-        DOB             = f.DOB             ,
-        Age             = f.Age             ,
-        AMeasure        = f.AMeasure.ToString()        ,
-        AgeGroup        = f.AgeGroup.ToString()        ,
-        Gender          = f.Gender.ToString()          ,
-        Country         = f.Country.Code         ,
-        Area            = f.Area.Name            ,
-        State           = f.State.Name           ,
-        Local           = f.Local.Code.ToString()           ,
-        Neighborhood    = f.Neighborhood.Code.ToString()    ,
-        UrbanRural      = f.UrbanRural.ToString()      ,
-        Address         = f.Address         ,
-        Vaccin          = f.Vaccin.ToString()          ,
-        RiskFactors     = f.RiskFactors.ToString()     ,
-        HDisease        = f.HDisease        ,
-        Diabetes        = f.Diabetes        ,
-        Neuro           = f.Neuro           ,
-        Asthma          = f.Asthma          ,
-        Pulmonary       = f.Pulmonary       ,
-        Liver           = f.Liver           ,
-        Renal           = f.Renal           ,
-        Immunsupp       = f.Immunsupp       ,
-        Pregnant        = f.Pregnant.ToString()        ,
-        Pperium         = f.Pperium         ,
-        Trimester       = f.Trimester.ToString()       ,
-        Smoking         = f.Smoking         ,
-        Alcohol         = f.Alcohol         ,
-        DownSyn         = f.DownSyn         ,
-        Obesity         = f.Obesity.ToString()         ,
-        OtherRisk       = f.OtherRisk       ,
-        CHNum           = f.CHNum           ,
-        FeverDate       = f.FeverDate       ,
-        FeverEW         = f.FeverEW         ,
-        AStartDate      = f.AStartDate      ,
-        HospAmDate      = f.HospAmDate      ,
-        HospEW          = f.HospEW          ,
-        HospExDate      = f.HospExDate      ,
-        ICUAmDate       = f.ICUAmDate       ,
-        ICUEW           = f.ICUEW           ,
-        ICUExDate       = f.ICUExDate       ,
-        Destin          = f.Destin          ,
-        IsSample        = f.IsSample        ,
-        SampleDate      = f.SampleDate      ,
-        SampleType      = f.SampleType      ,
-        ShipDate        = f.ShipDate        ,
-        Lab             = f.Lab.Name        ,
-        Processed       = f.Processed       ,
-        NoProRen        = f.NoProRen        ,
-        EndLabDate      = f.EndLabDate      ,
-        FResult         = f.FResult         ,
-        Comments        = f.Comments
-            }).ToList();
-             //We return the XML from the memory as a .xls file
-            //grid.DataSource = result;
-            //grid.DataBind();
-            //StringWriter sw = new StringWriter();
-            //HtmlTextWriter htw = new HtmlTextWriter(sw);
-            //grid.RenderControl(htw);
-            //return File(Encoding.GetBytes(sw.ToString), "application/ms-excel", "Marklist.xls");
-            return new CsvActionResult<FluCaseExportViewModel> (result, "FluCases.csv");
-        }
-
         private IQueryable<FluCase> GetQuery(int CountryID, int? HospitalID, int? Year, int? Month, int? SE, DateTime? StartDate, DateTime? EndDate)
         {
             IQueryable<FluCase> query = db.Set<FluCase>();
@@ -314,22 +239,9 @@ namespace Paho.Controllers
             return query;
         }
 
-        //private int GetWeek(DateTime date)
-        //{
-        //    DateTimeFormatInfo dfi = DateTimeFormatInfo.CurrentInfo;
-        //    Calendar cal = dfi.Calendar;
-        //    return cal.GetWeekOfYear(date, dfi.CalendarWeekRule,
-        //                                   dfi.FirstDayOfWeek);
-        //}
 
-        public CsvActionResult<Example> GetExcelExample(int CountryID, int HospitalID, int? Year, int? Month, int? SE, DateTime? StartDate, DateTime? EndDate) {
-            var query = new Example();
-            var result = db.Database.SqlQuery<Example>(query.Query()).ToList();
-            return new CsvActionResult<Example>(result, "example.csv");
-        }
 
         [HttpGet]
-        //public ActionResult GetExcel(string Report, int CountryID, int? RegionID, int? HospitalID, int? Year, int? Month, int? SE, DateTime? StartDate, DateTime? EndDate, int? ReportCountry, int? YearFrom, int? YearTo)
         public ActionResult GetExcel(string Report, int CountryID, int? RegionID, int? HospitalID, int? Year, int? Month, int? SE, DateTime? StartDate, DateTime? EndDate, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? Inusual)        //#### CAFQ
         {
             try

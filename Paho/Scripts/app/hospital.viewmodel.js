@@ -1059,7 +1059,7 @@
         }
 
         if (self.CaseStatus() == "3" || self.CaseStatus() == "2") {
-            console.log(" CloseDate " + self.CloseDate());
+            //console.log(" CloseDate " + self.CloseDate());
             if ((self.CloseDate() == "" || self.CloseDate() == "undefined" || self.CloseDate() == null)) {
                 if ($("#CloseDate").val() == "")
                     msg += "\n" + viewValidateCloseDateRequired;

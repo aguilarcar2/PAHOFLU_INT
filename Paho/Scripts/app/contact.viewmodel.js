@@ -233,7 +233,7 @@ function ContactViewModel(app, dataModel) {
     };  // Fin validacion es RUT
 
     self.displayService = ko.computed(function () {
-        console.log(self.servicesArr().length)
+        //console.log(self.servicesArr().length)
         return (self.servicesArr().length > 1) ? true : false;
     }, self);
 
@@ -318,8 +318,8 @@ function ContactViewModel(app, dataModel) {
         if ($("#DOB").prop("disabled")) return;
         if (self.hasGet() == true) return;
         if (self.DOB() && self.DOB() != "") {
-            console.log(self.DOB());
-            console.log(moment().diff(self.DOB(), 'years'));
+            //console.log(self.DOB());
+            //console.log(moment().diff(self.DOB(), 'years'));
             if (moment().diff(self.DOB(), 'years') > 0) {
                 self.Age(moment().diff(self.DOB(), 'years'));
                 self.AMeasure("Year");
@@ -399,6 +399,14 @@ function ContactViewModel(app, dataModel) {
         }
     }, self);
 
+    self.SurvILI = ko.computed(function () {
+        if (self.IsSurv() == "2") {
+            return true;
+        } else {
+            return false;
+        }
+    }, self);
+
     self.SurvSARICHI = ko.computed(function () {
         if (self.IsSurv() != "2" && self.UsrCountry() == 7) {
             return true;
@@ -465,7 +473,7 @@ function ContactViewModel(app, dataModel) {
     self.Borrar = function () {
         if (confirm(msgConfirmationDeleteRecord)) {
             $.getJSON(app.dataModel.deletetUrl, { id: self.Id() }, function(data, status) {
-                    console.log(data);
+                    //console.log(data);
                     app.Views.Home.CancelEdit();
                 })
                 .fail(function(jqXHR, textStatus, errorThrown) {
@@ -527,7 +535,7 @@ function ContactViewModel(app, dataModel) {
     self.FormatDateWrite = function (node_date) {
         //var self_date = node_date
         //console.log(self_date);
-        console.log(node_date);
+        //console.log(node_date);
 
     };
 

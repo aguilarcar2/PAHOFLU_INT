@@ -363,7 +363,7 @@
     });
 
     self.Comorbidities.subscribe(function (NewComorbidities) {
-        console.log(NewComorbidities);
+        //console.log(NewComorbidities);
         self.HDisease(null);
         self.Diabetes(null);
         self.Neuro(null);
@@ -388,7 +388,7 @@
     });
 
     self.Pregnant.subscribe(function (NewPregnant) {
-        console.log(NewPregnant);
+        //console.log(NewPregnant);
         if (NewPregnant != 1) {
             self.Pregnant(null);
             self.Pperium(null);
@@ -495,8 +495,8 @@
 
     self.GetRisk = function (id) {
         self.Id = id;
-        console.log("Getting ...");
-        console.log(self.Id);
+        //console.log("Getting ...");
+        //console.log(self.Id);
         $.getJSON(app.dataModel.getRiskUrl, { id: id }, function (data, status) {
             self.hasReset(true);
                 self.RiskFactors(data.RiskFactors);
