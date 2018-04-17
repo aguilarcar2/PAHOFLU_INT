@@ -815,7 +815,7 @@ namespace Paho.Controllers
             _storedProcedure = storedProcedure;
             if (storedProcedure == "R5")
             {
-                if (countryId == 25)
+                if (countryId == 25 || countryId == 17)
                 {
                     _storedProcedure = "R5_2";
                     nPosiTipo = 19;
@@ -874,7 +874,7 @@ namespace Paho.Controllers
                         formulas1[16] = "=Metapnemovirus!K{{toreplace}}";
                         formulas1[17] = "=D{{toreplace}}+E{{toreplace}}+F{{toreplace}}+G{{toreplace}}+H{{toreplace}}+I{{toreplace}}";
                         formulas1[18] = "=L{{toreplace}}+M{{toreplace}}+N{{toreplace}}+O{{toreplace}}+P{{toreplace}}+Q{{toreplace}}";*/
-                        if (countryId == 25)
+                        if (countryId == 25 || countryId == 17)
                         {
                             formulas1[9] = "=VRS!L{{toreplace}}";
                             formulas1[10] = "=VRS!M{{toreplace}}+Ad!M{{toreplace}}+Parainfluenza!M{{toreplace}}+'Inf A'!M{{toreplace}}+'Inf B'!M{{toreplace}}+Metapnemovirus!M{{toreplace}}";
@@ -1089,7 +1089,7 @@ namespace Paho.Controllers
                                 {
                                     //row = 212;
                                     int nAnDa = 0;
-                                    if (countryId == 25)
+                                    if (countryId == 25 || countryId == 17)
                                     {
                                         row = row - 1 + (9 * 3) + 15;
                                         nAnDa = 8 * 8;              // 8: Nº Age Group
@@ -1138,7 +1138,7 @@ namespace Paho.Controllers
                                 /*Termina llenado de Tabla2*/
                             }
                         }
-                        else
+                        else        // R1, R2, R3, R4 etc
                         {
                             using (var reader = command.ExecuteReader())
                             {
@@ -1255,14 +1255,11 @@ namespace Paho.Controllers
                                         row++;
                                     }
                                 }
-
-
                             }
                         }
 
                         command.Parameters.Clear();
                         con.Close();
-
                     }
                 }
             }
@@ -1286,6 +1283,7 @@ namespace Paho.Controllers
                             {
                                 int insertrow = (int)reader["row"];
                                 int insertcol = (int)reader["col"];
+                                int tab = Int32.Parse((string)reader["tab"]);           // Hoja
                                 /**************Inicia inserción de labels automáticos*******************/
                                 /*Si en la base de datos, el label se encierra dentro de dobles llaves {{parametro}}, el parámetro se cambiará por el parámetro correspondiente de búsqueda ingresado en el formulario*/
                                 /*Llenado parámetros que vienen del formulario*/
@@ -1335,11 +1333,13 @@ namespace Paho.Controllers
                                 }
                                 if (YearFrom > 0)
                                 {
-                                    labelYear += "Desde " + YearFrom + " ";
+                                    //labelYear += "Desde " + YearFrom + " ";
+                                    labelYear += SgetMsg("msgViewExportarLabelFromDesde", countryId, languaje_) + YearFrom + " ";
                                 }
                                 if (YearTo > 0)
                                 {
-                                    labelYear += "Hasta " + YearTo + " ";
+                                    //labelYear += "Hasta " + YearTo + " ";
+                                    labelYear += SgetMsg("msgViewExportarLabelToHasta", countryId, languaje_) + YearTo + " ";
                                 }
                                 if (se > 0)
                                 {
@@ -1362,38 +1362,78 @@ namespace Paho.Controllers
                                 string label = reader["label"].ToString();
                                 if (label != "")
                                 {
-                                    if (label.StartsWith("{{") && label.EndsWith("}}"))
+                                    //if (label.StartsWith("{{") && label.EndsWith("}}"))
+                                    string cOriginal = label;               //#### CAFQ: 
+                                    int nResu1 = label.IndexOf("{{");       //#### CAFQ: 180415
+                                    int nResu2 = label.IndexOf("}}");       //#### CAFQ: 180415
+                                    if (nResu1 >= 0 && nResu2 >= 0)         //#### CAFQ: 180415
                                     {
+                                        label = cOriginal.Substring(nResu1, nResu2 - nResu1 + 2);       //#### CAFQ: 180415
+                                        //string cMensa = getMsg("msgViewExportarLabelYear");
+                                        //string cMensa = SgetMsg("msgViewExportarLabelYear", countryId, languaje_);
+                                        //SgetMsg(string msgView, int? countryDisp, string langDisp)
+
                                         switch (label)
                                         {
                                             case "{{country}}":
-                                                label = (labelCountry != "" ? ("Pais:" + labelCountry) : "");
+                                                //label = (labelCountry != "" ? ("Pais:" + labelCountry) : "");
+                                                label = (labelCountry != "" ? (SgetMsg("msgViewExportarLabelCountry", countryId, languaje_) + ": " + labelCountry) : "");
                                                 break;
                                             case "{{institution}}":
-                                                label = (labelHospital != "" ? ("Inst:" + labelHospital) : "");
+                                                //label = (labelHospital != "" ? ("Inst:" + labelHospital) : "");
+                                                label = (labelHospital != "" ? (SgetMsg("msgViewExportarLabelInstitutionShort", countryId, languaje_) + ": " + labelHospital) : "");
                                                 break;
                                             case "{{year}}":
-                                                label = (labelYear != "" ? ("Año:" + labelYear) : "");
+                                                //label = (labelYear != "" ? ("Año: " + labelYear) : "");
+                                                //label = (labelYear != "" ? (SgetMsg("msgViewExportarLabelEpidemiologicalYear", countryId, languaje_) + ": " + labelYear) : "");
+                                                label = (labelYear != "" ? (SgetMsg("msgViewExportarLabelYear", countryId, languaje_) + ": " + labelYear) : "");
+                                                break;
+                                            case "{{onlyYear}}":
+                                                label = (labelYear != "" ? labelYear : "");
                                                 break;
                                             case "{{se}}":
-                                                label = (labelSE != "" ? ("SE:" + labelSE) : "");
+                                                //label = (labelSE != "" ? ("SE:" + labelSE) : "");
+                                                label = (labelSE != "" ? (SgetMsg("msgViewExportarLabelEW", countryId, languaje_) + ": " + labelSE) : "");
                                                 break;
                                             case "{{startDate}}":
-                                                label = (labelStartDate != "" ? ("Del:" + labelStartDate) : "");
+                                                //label = (labelStartDate != "" ? ("Del:" + labelStartDate) : "");
+                                                label = (labelStartDate != "" ? (SgetMsg("msgViewExportarLabelFrom", countryId, languaje_) + ": " + labelStartDate) : "");
                                                 break;
                                             case "{{endDate}}":
-                                                label = (labelEndDate != "" ? ("Al:" + labelEndDate) : "");
+                                                //label = (labelEndDate != "" ? ("Al:" + labelEndDate) : "");
+                                                label = (labelEndDate != "" ? (SgetMsg("msgViewExportarLabelTo", countryId, languaje_) + ": " + labelEndDate) : "");
                                                 break;
                                             case "{{fullinstitution}}":
-                                                label = (labelCountry!=""?("Pais:"+labelCountry):"") + " " + (labelHospital != "" ? ("Inst:" + labelHospital) : "");
+                                                //label = (labelCountry != "" ? ("Pais:" + labelCountry) : "") + " " + (labelHospital != "" ? ("Inst:" + labelHospital) : "");
+                                                label = (labelCountry != "" ? (SgetMsg("msgViewExportarLabelCountry", countryId, languaje_) + ": " + labelCountry) : "") + " " + (labelHospital != "" ? (SgetMsg("msgViewExportarLabelInstitutionShort", countryId, languaje_) + ": " + labelHospital) : "");
                                                 break;
                                             case "{{fulldate}}":
-                                                label = (labelYear != "" ? ("Año:" + labelYear) : "") + " " + (labelSE != "" ? ("SE:" + labelSE) : "") + " " + (labelStartDate != "" ? ("Del:" + labelStartDate) : "") + " " + (labelEndDate != "" ? ("Al:" + labelEndDate) : "");
+                                                //label = (labelYear != "" ? ("Año:" + labelYear) : "") + " " + (labelSE != "" ? ("SE:" + labelSE) : "") + " " + (labelStartDate != "" ? ("Del:" + labelStartDate) : "") + " " + (labelEndDate != "" ? ("Al:" + labelEndDate) : "");
+                                                label = (labelYear != "" ? (SgetMsg("msgViewExportarLabelEpidemiologicalYear", countryId, languaje_) + ": " + labelYear) : "") + " " + (labelSE != "" ? (SgetMsg("msgViewExportarLabelEW", countryId, languaje_) + ": " + labelSE) : "") + " " + (labelStartDate != "" ? (SgetMsg("msgViewExportarLabelFrom", countryId, languaje_) + ": " + labelStartDate) : "") + " " + (labelEndDate != "" ? (SgetMsg("msgViewExportarLabelTo", countryId, languaje_) + ": " + labelEndDate) : "");
                                                 break;
+                                            default:                    //#### CAFQ: 180415
+                                                label = "";             //#### CAFQ: 180415
+                                                break;                  //#### CAFQ: 180415
                                         }
-
                                     }
-                                    excelWorksheet.Cells[insertrow, insertcol].Value = label;
+                                    else
+                                        label = "";
+
+                                    var excelWs = excelWorksheet;
+                                    if (tab != 1)
+                                    {
+                                        excelWs = excelWorkBook.Worksheets[tab];
+                                    }/*else
+                                    {
+                                        var excelWs = excelWorksheet;
+                                    }*/
+                                    //excelWorksheet.Cells[insertrow, insertcol].Value = label;
+                                    if (label == "")
+                                        //excelWorksheet.Cells[insertrow, insertcol].Value = cOriginal;
+                                        excelWs.Cells[insertrow, insertcol].Value = cOriginal;
+                                    else
+                                        //excelWorksheet.Cells[insertrow, insertcol].Value = cOriginal.Substring(0, nResu1) + label + cOriginal.Substring(nResu2 + 2, cOriginal.Length - nResu2 - 2);
+                                        excelWs.Cells[insertrow, insertcol].Value = cOriginal.Substring(0, nResu1) + label + cOriginal.Substring(nResu2 + 2, cOriginal.Length - nResu2 - 2);
                                 }
                             }
                         }
@@ -2154,6 +2194,8 @@ namespace Paho.Controllers
                 nombPais = "Chile";
             else if (countryId == 25)
                 nombPais = "Suriname";
+            else if (countryId == 17)
+                nombPais = "Jamaica";
             else if (countryId == 3)
                 nombPais = "Bolivia";
             //**** Titulo
@@ -2393,7 +2435,7 @@ namespace Paho.Controllers
             if (_Unid == "D")
             {
                 cMeta = _Meta.ToString("##0", CultureInfo.InvariantCulture);
-                if (countryId == 25)
+                if (countryId == 25 || countryId == 17)
                     cForma = (_Meta == 1) ? cMeta + " Day" : cMeta + " Days";
                 else
                     cForma = (_Meta == 1) ? cMeta + " Día" : cMeta + " Días";
@@ -2402,7 +2444,7 @@ namespace Paho.Controllers
             if (_Unid == "H")
             {
                 cMeta = _Meta.ToString("##0", CultureInfo.InvariantCulture);
-                if (countryId == 25)
+                if (countryId == 25 || countryId == 17)
                     cForma = (_Meta == 1) ? cMeta + " Hour" : cMeta + " Hours";
                 else
                     cForma = (_Meta == 1) ? cMeta + " Hora" : cMeta + " Horas";
@@ -2453,6 +2495,12 @@ namespace Paho.Controllers
             //searchedMsg = myR.getMessage(searchedMsg, 0, "ENG");
             return searchedMsg;
         }
-         
+
+        private static string SgetMsg(string msgView, int? countryDisp, string langDisp)
+        {
+            string searchedMsg = ResourcesM.SgetMessage(msgView, countryDisp, langDisp);
+            //searchedMsg = myR.getMessage(searchedMsg, 0, "ENG");
+            return searchedMsg;
+        }
     }
 }
