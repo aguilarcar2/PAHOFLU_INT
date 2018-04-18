@@ -840,7 +840,7 @@ namespace Paho.Controllers
                                 {
                                     //row = 212;
                                     int nAnDa = 0;
-                                    if (countryId == 25)
+                                    if (countryId == 25 || countryId == 17)
                                     {
                                         row = row - 1 + (9 * 3) + 15;
                                         nAnDa = 8 * 8;              // 8: Nº Age Group
@@ -1185,6 +1185,7 @@ namespace Paho.Controllers
             }
 
         }
+
         public JsonResult GetMapDataTuned(string Report, int CountryID, int? RegionID, int? StateID, int? HospitalID, string Year, int? Month, int? SE, DateTime? StartDate, DateTime? EndDate, int? ReportCountry, string Graph, int? IRAG, int? ETI)
         {
             try
@@ -1361,6 +1362,7 @@ namespace Paho.Controllers
                 var user = UserManager.FindById(User.Identity.GetUserId());
                 //int CountryID_ = (CountryID >= 0) ? CountryID : (user.Institution.CountryID ?? 0);
                 int CountryID_ = CountryID;
+                string CountryName_ = user.Institution.Country.Name;
                 //int? HospitalID_ = (user.Institution.Father_ID > 0 || user.Institution.Father_ID == null) ? HospitalID : Convert.ToInt32(user.Institution.ID);
                 int? HospitalID_ = HospitalID;
                 int? HospitalID_Cache = HospitalID;
@@ -1372,13 +1374,13 @@ namespace Paho.Controllers
                 int? ETI_ = ETI;
                 int? IRAG_ = IRAG;
                 IRAG_ = (IRAG_ == 0 && ETI_ == 0) ? 1 : IRAG_;          //#### CAFQ: 180312 
-                //################################################################# DESARROLLO
-                /*if (Graph == "Graph1" && CountryID == 25)
+                /*/################################################################# DESARROLLO
+                if (Graph == "Graph1" && (CountryID == 25 || CountryID == 17))
                 {
                     string cGraph1JS = "";
                     return Json(cGraph1JS); ;
-                }*/
-                //################################################################# END DESARROLLO
+                }
+                //################################################################# END DESARROLLO*/
                 //variable para armar los datos en un XML
                 //cada xml corresponde a cada gráfica
                 //la idea es utilizar la generación del excel de una vez para generar los datos de las dema's graficas
@@ -1463,7 +1465,7 @@ namespace Paho.Controllers
 
                             List<String> datosID = new List<string>();
 
-                            graficoIndicadoreDesempenio(Languaje_, CountryID_, yrInt1, HospitalID_, null, null, datosID);
+                            graficoIndicadoreDesempenio(Languaje_, CountryID_, CountryName_, yrInt1, HospitalID_, null, null, datosID);
 
                             var jsonSerialiser = new JavaScriptSerializer();
                             var jsonIndicDesem = jsonSerialiser.Serialize(datosID);
@@ -2687,7 +2689,7 @@ namespace Paho.Controllers
             return null;
         }
 
-        private static string graficoIndicadoreDesempenio(string languaje_country, int countryId, int? year, int? hospitalId, int? weekFrom, int? weekTo, List<string> datosID)
+        private static string graficoIndicadoreDesempenio(string languaje_country, int countryId, string countryName, int? year, int? hospitalId, int? weekFrom, int? weekTo, List<string> datosID)
         {
             /*var user = UserManager.FindById(User.Identity.GetUserId());
             var nombPais = user.Institution.Country.Name;*/
@@ -2726,7 +2728,7 @@ namespace Paho.Controllers
             if (year != 0)
                 titulo = year.ToString();
 
-            string nombPais = "";
+            /*string nombPais = "";
             if (countryId == 9)
                 nombPais = "Costa Rica";
             else if (countryId == 7)
@@ -2734,9 +2736,10 @@ namespace Paho.Controllers
             else if (countryId == 25)
                 nombPais = "Suriname";
             else if (countryId == 3)
-                nombPais = "Bolivia";
+                nombPais = "Bolivia";*/
 
-            datosID.Add(nombPais + " - " + year.ToString());                  // Titulo
+            //datosID.Add(nombPais + " - " + year.ToString());                  // Titulo
+            datosID.Add(countryName + " - " + year.ToString());                  // Titulo
 
             if (nDato2[0] != 0)
                 datosID.Add((nDato1[0] / nDato2[0] * 100).ToString("#,##0", CultureInfo.InvariantCulture));
@@ -2851,6 +2854,8 @@ namespace Paho.Controllers
             string storedProcedure2 = "FLUID_IRAG_Total_Muestras_INF_A";
             var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             //****
+            ArrayList aParametros = new ArrayList();
+
             ArrayList aCEP1 = new ArrayList();
             ArrayList aCEP2 = new ArrayList();
             ArrayList aUA1 = new ArrayList();
@@ -2877,6 +2882,44 @@ namespace Paho.Controllers
                 aMuAnIA1.Add(0);
                 aMuAnIA2.Add(0);
             }
+            //**** 
+            int nSeIn = 0, nAnEv;                           // Semana inicio, Anio evaluacion
+            int nSeQu = 0;                                  // Semana quiebre
+            string cTitu, cAnEv;
+            string sheet = "";
+
+            if (countryId == 7)
+                sheet = "Chile";
+            else if (countryId == 9)
+                sheet = "Costa Rica";
+            else if (countryId == 3)
+                sheet = "BOLIVIA INLASA";
+            else if (countryId == 3.1)
+                sheet = "BOLIVIA INLASA";
+            else if (countryId == 3.2)
+                sheet = "BOLIVIA CENETROP";
+            else if (countryId == 25)
+                sheet = "Surinam";
+            else if (countryId == 17)
+                sheet = "Jamaica";
+            else
+                return "";
+
+            recuperarDatosExcel(countryId, aCEP1, aCEP2, aUA1, aUA2, aUE1, aUE2, sheet, aParametros);
+
+            cTitu = (string)aParametros[0];         // Titulo
+            cAnEv = (string)aParametros[1];         // Anio
+            bool isNumerical = int.TryParse(cAnEv, out nAnEv);
+            if (isNumerical)
+                year = nAnEv;
+            if (countryId == 9)
+                cAnEv = (year - 1).ToString() + "-" + cAnEv;
+
+            isNumerical = int.TryParse((string)aParametros[2], out nSeIn);     // Semana inicio periodo
+            if (!isNumerical)
+                nSeIn = 1;
+
+            nSeQu = 52 - nSeIn + 1;                 // Semana de quiebre
             //****
             recuperarDatos(consString, storedProcedure1, countryId, languaje_country, (int)year - 1, aMuAnTo1);
             recuperarDatos(consString, storedProcedure1, countryId, languaje_country, (int)year, aMuAnTo2);
@@ -2894,84 +2937,20 @@ namespace Paho.Controllers
                     aMuAnTo2[nI] = Convert.ToDecimal(aMuAnIA2[nI]) / Convert.ToDecimal(aMuAnTo2[nI]);
                 }
             }
-            //****
-            int nSeIn = 0;                                  // Semana inicio
-            int nSeQu = 0;                                  // Semana quiebre
-            string cTitu = "";
-            string sheet = "";
 
-            if (countryId == 7)
-            {
-                sheet = "Chile";
-                nSeIn = 1;
-                //cTitu = "Líneas de base: Chile, porcentaje de positividad para influenza durante 2016 en comparación al período 2010 -2015.  Semana epidemiológica 1 a 52";
-                cTitu = "Porcentaje de positividad para influenza - Vigilancia centinela de IRAG de Chile durante 2017. (En comparación al período 2011 - 2016. SE 1 a 52.";
-            }
-            else if (countryId == 9)
-            {
-                sheet = "Costa Rica";
-                nSeIn = 15;
-                cTitu = "Líneas de base: Costa Rica, porcentaje de positividad para influenza en 2016-2017 en comparación al período 2011-2015/2016. Semana epidemiológica 1 a 52";
-            }
-            else if (countryId == 3)
-            {
-                sheet = "BOLIVIA INLASA";
-                nSeIn = 1;
-                //cTitu = "Líneas de base: Bolivia, porcentaje de positividad para influenza para Bolivia (INLASA) durante 2016, en comparación al período 2010 -2015. Semana epidemiologica 1 a 52.";
-                cTitu = "Líneas de base: Bolivia, porcentaje de positividad para influenza durante 2016 en comparación al período 2010-2015. Semana epidemiologica 1 a 52.";
-            }
-            else if (countryId == 3.1)
-            {
-                sheet = "BOLIVIA CENETROP";
-                nSeIn = 1;
-                cTitu = "Líneas de base: porcentaje de positividad para influenza en Bolivia (INLASA) 2016, en comparación al período 2010-2015. Semana epidemiológica 1 a 52";
-            }
-            else if (countryId == 3.2)
-            {
-                sheet = "BOLIVIA CENETROP";
-                nSeIn = 1;
-                cTitu = "Líneas de base: porcentaje de positividad para influenza en Bolivia (CENETROP) 2016, en comparación al período 2010-2015. Semana epidemiológica 1 a 52";
-            }
-            else if (countryId == 25)
-            {
-                sheet = "Surinam";
-                nSeIn = 1;
-                cTitu = "Baselines: Suriname Percentage Positivity for Influenza 2016 and SARI cases (%) (As Compare To 2010 - 2015) - EW 1 to EW52 2016";
-            }
-            else if (countryId == 17)
-            {
-                sheet = "Jamaica";
-                nSeIn = 1;
-                cTitu = "Jamaica: Percentage of Hospital Admissions for Severe Acute Respiratory Illness (SARI 2018) (compared with 2011-2017)";
-            }
-            else
-            {
-                return "";
-            }
-
-            nSeQu = 52 - nSeIn + 1;
-            //**** 
-            recuperarDatosExcel(countryId, aCEP1, aCEP2, aUA1, aUA2, aUE1, aUE2, sheet);
             //**** Crear el JSON
             string cSema, cPorc, cJS = "", cTemp = "";
             jsonTextLB = "";
 
-            if (countryId == 25 || countryId == 17)
-            {
-                cSema = "Epidemiological Week";
-                cPorc = "Percentage";
-            }
-            else
-            {
-                cSema = "Semana Epidemiológica";
-                cPorc = "Porcentaje";
-            }
+            cSema = SgetMsg("msgLineasBasalesSemanaEpidemiologica", countryId, languaje_country);
+            cPorc = SgetMsg("msgLineasBasalesPorcentaje", countryId, languaje_country);
 
             jsonTextLB = "{\"" + "graph" + "\":";
             jsonTextLB = jsonTextLB + "{\"" + "graphTitle" + "\":\"" + cTitu + "\",";
             jsonTextLB = jsonTextLB + "\"" + "graphXAxisTitle" + "\":\"" + cSema + "\",";
             jsonTextLB = jsonTextLB + "\"" + "graphYAxisTitle" + "\":\"" + cPorc + "\",";
             jsonTextLB = jsonTextLB + "\"" + "graphData" + "\":{\"" + "graphDataItem" + "\":";
+
             //** Ultima semana con data
             int nSeFi = 0;
             if (countryId == 9)
@@ -3012,7 +2991,7 @@ namespace Paho.Controllers
             //**
             int nK = 0;
             decimal nTemp = 0;
-            //for (int nI = 1; nI <= 52; ++nI)
+
             for (int nI = 1; nI <= nSeFi; ++nI)
             {
                 if (nI > nSeQu)
@@ -3033,68 +3012,35 @@ namespace Paho.Controllers
                 else
                 {
                     nK = nI + nSeIn - 1;
-                    /*
-                    if (countryId == 3)                  //#### DESARROLLO: SOLO PARA PRUEBAS : ELIMINAR ####//
-                    {   //#### DESARROLLO: SOLO PARA PRUEBAS : ELIMINAR ####//
-                        cTemp = "{";
-                        cTemp = cTemp + "\"" + "semana" + "\":\"" + nK.ToString() + "\",";
-                        nTemp = Convert.ToDecimal(aCEP2[nK]) * 100;
-                        cTemp = cTemp + "\"" + "serie1" + "\":\"" + nTemp.ToString("##0.0", new CultureInfo("en-US")) + "\",";           // Curva Epidemica Promedio
-                        nTemp = Convert.ToDecimal(aUA2[nK]) * 100;
-                        cTemp = cTemp + "\"" + "serie2" + "\":\"" + nTemp.ToString("##0.0", new CultureInfo("en-US")) + "\",";             // Umbral de Alerta
-                        nTemp = Convert.ToDecimal(aUE2[nK]) * 100;
-                        cTemp = cTemp + "\"" + "serie3" + "\":\"" + nTemp.ToString("##0.0", new CultureInfo("en-US")) + "\",";             // Umbral Estacional
-                        nTemp = Convert.ToDecimal(aMuAnTo2[nK]) * 100;
-                        cTemp = cTemp + "\"" + "serie4" + "\":\"" + nTemp.ToString("##0.0", new CultureInfo("en-US")) + "\"";          // Porcentaje de Positividad
-                        cTemp = cTemp + "}";
-                    }
-                    else
-                    {*/
+
                     cTemp = "{";
                     cTemp = cTemp + "\"" + "semana" + "\":\"" + nK.ToString() + "\",";
 
                     nTemp = Convert.ToDecimal(aCEP1[nK]) * 100;
-                    //if (nI > nSeFi) { nTemp = 0; }
                     cTemp = cTemp + "\"" + "serie1" + "\":\"" + nTemp.ToString("##0.0", new CultureInfo("en-US")) + "\",";           // Curva Epidemica Promedio
 
                     nTemp = Convert.ToDecimal(aUA1[nK]) * 100;
-                    //if (nI > nSeFi) { nTemp = 0; }
                     cTemp = cTemp + "\"" + "serie2" + "\":\"" + nTemp.ToString("##0.0", new CultureInfo("en-US")) + "\",";             // Umbral de Alerta
 
                     nTemp = Convert.ToDecimal(aUE1[nK]) * 100;
-                    //if (nI > nSeFi) { nTemp = 0; }
                     cTemp = cTemp + "\"" + "serie3" + "\":\"" + nTemp.ToString("##0.0", new CultureInfo("en-US")) + "\",";             // Umbral Estacional
 
                     nTemp = Convert.ToDecimal(aMuAnTo1[nK]) * 100;
-                    //if (nI > nSeFi) { nTemp = 0; }
                     cTemp = cTemp + "\"" + "serie4" + "\":\"" + nTemp.ToString("##0.0", new CultureInfo("en-US")) + "\"";          // Porcentaje de Positividad
 
                     cTemp = cTemp + "}";
-                    //}
                 }
 
                 cJS = (nI == 1) ? cTemp : cJS + "," + cTemp;
             }
             cJS = "[" + cJS + "]";
 
-            if (countryId != 25 && countryId != 17)
-            {
-                jsonTextLB = jsonTextLB + cJS + "},";
-                jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + "Curva epidémica promedio para porcentaje de positividad de influenza" + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + "Umbral de alerta" + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphSeries3Label" + "\":\"" + "Umbral Estacional" + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphSeries4Label" + "\":\"" + "Porcentaje de positividad para influenza 2016" + "\"";
-                jsonTextLB = jsonTextLB + "}}";
-            }
-            else
-            {
-                jsonTextLB = jsonTextLB + cJS + "},";
-                jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + "Average epidemic curve for influenza positivity percentage" + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + "Alert threshold" + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphSeries3Label" + "\":\"" + "Seasonal threshold" + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphSeries4Label" + "\":\"" + "Positivity percentage for influenza year 2016" + "\"";
-                jsonTextLB = jsonTextLB + "}}";
-            }
+            jsonTextLB = jsonTextLB + cJS + "},";
+            jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + SgetMsg("msgLineasBasalesCurvaEpidemicaPromedio", countryId, languaje_country) + "\",";
+            jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + SgetMsg("msgLineasBasalesUmbralAlerta", countryId, languaje_country) + "\",";
+            jsonTextLB = jsonTextLB + "\"" + "graphSeries3Label" + "\":\"" + SgetMsg("msgLineasBasalesUmbralEstacional", countryId, languaje_country) + "\",";
+            jsonTextLB = jsonTextLB + "\"" + "graphSeries4Label" + "\":\"" + SgetMsg("msgLineasBasalesPorcentajePositividad", countryId, languaje_country) + " " + cAnEv + "\"";
+            jsonTextLB = jsonTextLB + "}}";
 
             return jsonTextLB;
         }
@@ -3139,7 +3085,7 @@ namespace Paho.Controllers
             }
         }
 
-        private static void recuperarDatosExcel(int CountryID, ArrayList aCEP1, ArrayList aCEP2, ArrayList aUA1, ArrayList aUA2, ArrayList aUE1, ArrayList aUE2, string sheet)
+        private static void recuperarDatosExcel(int CountryID, ArrayList aCEP1, ArrayList aCEP2, ArrayList aUA1, ArrayList aUA2, ArrayList aUE1, ArrayList aUE2, string sheet, ArrayList aParaLiBa)
         {
             string cPathPlan = "";
             cPathPlan = ConfigurationManager.AppSettings["GraphicsPath"];
@@ -3158,6 +3104,10 @@ namespace Paho.Controllers
                     int col = 1;
 
                     var excelWorksheet = excelWorkBook.Worksheets[sheet];
+
+                    aParaLiBa.Add(excelWorksheet.Cells[3, 10].Value);            // Titulo: J3
+                    aParaLiBa.Add(excelWorksheet.Cells[4, 10].Value);            // Anio evluacion: J4
+                    aParaLiBa.Add(excelWorksheet.Cells[5, 10].Value);            // Semana inicio anio: J5
 
                     for (int nI = 1; nI <= 52; ++nI)
                     {
