@@ -49,6 +49,7 @@
         <link rel="stylesheet" href="~/Scripts/amcharts/plugins/export/export.css" type="text/css" media="all" />
         
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGráfica 7 - Lineas Basalesxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+
         <script>
                 var jsonX;
 
@@ -253,276 +254,279 @@
             <div id="loaderGraph7" class="loaderGraph"></div>
             <div id="divGraph7"></div>
         </div>
+
         <!--<script>GetGraphData7();</script>-->
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxFIN Gráfica 7 - Lineas Basales xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
 
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGráfica 8 - Indicadores de Desempeño xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <script>
-                    var jsonX;
-                    cIndi3 = "Porcentaje de casos de IRAG con muestra de laboratorio.";     //Porcentaje de casos de IRAG con muestra de laboratorio.
-                    cIndi3_e = "SARI cases percentage with sample.";
-                    cIndi4 = "Porcentaje de pacientes con resultado virológico reportado.";     //Porcentaje de pacientes con resultado virológico reportado.
-                    cIndi4_e = "Pacients percentage with reported virological result.";
-                    cIndi5 = "Porcentaje de casos cerrados de IRAG medidos por la variable de condición de egreso del paciente.";       //Porcentaje de casos cerrados de IRAG medidos por la variable de condición de egreso del paciente.
-                    cIndi5_e = "SARI closed cases percentage, measured by patient destination.";
-                    cIndi6 = "Mediana entre la recolección de muestras y su recepción en laboratorio.";         // Mediana entre la recolección de muestras y su recepción en laboratorio.
-                    cIndi6_e = "Median between sample collecting and laboratory sample reception.";
-                    cIndi7 = "Mediana entre la recepcion de la muestra en laboratorio y la notificación de los resultados.";        //Mediana entre la recepcion de la muestra en laboratorio y la notificación de los resultados.
-                    cIndi7_e = "Median between laboratory sample reception and the results notification.";
-                    cIndi8 = "Mediana entre la fecha de hospitalizacion y la fecha de notificacion en el sistema de vigilancia.";       //Mediana entre la fecha de hospitalizacion y la fecha de notificacion en el sistema de vigilancia.
-                    cIndi8_e = "Median between hospitalization date and notification date in the surveillance system.";
-                    cIndi9 = "Mediana entre la fecha de inicio de sintomas y la fecha de inicio de tratamiento antiviral.";       //Mediana entre la fecha de hospitalizacion y la fecha de notificacion en el sistema de vigilancia.
-                    cIndi9_e = "Median between the date of onset of symptoms and the date of initiation of antiviral treatment.";
-                    cIndi10 = "Mediana entre la fecha de inicio de sintomas y la fecha de toma de muestras.";       //Mediana entre la fecha de hospitalizacion y la fecha de notificacion en el sistema de vigilancia.
-                    cIndi10_e = "Median between the date of onset of symptoms and the date of sampling.";
-                    cIndi = "Indicador";
-                    cIndi_e = "Indicator";
-                    cMeta = "Meta";
-                    cMeta_e = "Goal";
-                    cResu = "Resultado";
-                    cResu_e = "Result";
-                    cDia = "Día";                                       // Variables globales
-                    cDia_e = "Day";
-                    cDias = "Dias";
-                    cDias_e = "Days";
-                    cInDe = "Indicadores de desempeño";
-                    cInDe_e = "Performance Indicators";
-                    cHora = "Hora";
-                    cHora_e = "Hour";
-                    cHoras = "Horas";
-                    cHoras_e = "Hours";
+                var jsonX;
+                //cIndi3 = "Porcentaje de casos de IRAG con muestra de laboratorio.";
+                var cIndi3_e = "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("msgIndicaDesempenioCasosIRAGMuestraLaboratorio"))";
+                cIndi3_e = caracteresEspeciales(cIndi3_e);
 
-                    function GetGraphData8(){
-                        var dataRegion = 0;
-                        var dataHospital = 0;
-                        var dataIrag = 1;
-                        var dataEti = 0;
-                        //****
-                        /*$("#divGraph8").hide();
-                        $("#divTable8").hide();
-                        $("#loaderGraph8").show();*/
-                        //****
-                        var allVals = [];
-                        var yrs = (new Date).getFullYear();
+                //var cIndi4 = "Porcentaje de pacientes con resultado virológico reportado.";
+                var cIndi4_e = "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("msgIndicaDesempenioPorcePacieResultadoVirologico"))";
+                cIndi4_e = caracteresEspeciales(cIndi4_e);
 
-                        $(document).ready(function () {
-                            $.ajax({
-                                type: 'POST',
-                                url: '/Graph/GetGraphDataTuned',
-                                data: "{'CountryID':" + GraphCountryID +",'Year':'" + yrs.toString() + "','Graph':'Graph8','RegionID':'" + dataRegion + "', 'HospitalID':'" + dataHospital + "', 'IRAG':'" + dataIrag + "', 'ETI':'" + dataEti + "'}",
-                                contentType: "application/json",
-                                dataType: 'json',
-                                success: function (data){
-                                    /*$("#divGraph8").show();
-                                    $("#divTable8").show();
-                                    $("#loaderGraph8").hide();*/
-                                    //****
-                                    var json_obj = JSON.parse(data);
+                //var cIndi5 = "Porcentaje de casos cerrados de IRAG medidos por la variable de condición de egreso del paciente.";
+                var cIndi5_e = "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("msgIndicaDesempenioPorcCasosCerradosIRAG"))";
+                cIndi5_e = caracteresEspeciales(cIndi5_e);
 
-                                    if(GraphCountryID == 25){
-                                        $("#IDTitulo1").text(cInDe_e);
-                                        $("#indicador").text(cIndi_e);
-                                        $("#meta").text(cMeta_e);
-                                        $("#resultado").text(cResu_e);
-                                        $("#indicador3").text(cIndi3_e);
-                                        $("#indicador4").text(cIndi4_e);
-                                        $("#indicador5").text(cIndi5_e);
-                                        $("#indicador6").text(cIndi6_e);
-                                        $("#indicador7").text(cIndi7_e);
-                                        $("#indicador8").text(cIndi8_e);
-                                        $("#indicador9").text(cIndi9_e);
-                                        $("#indicador10").text(cIndi10_e);
-                                    }
-                                    else{
-                                        $("#IDTitulo1").text(cInDe);
-                                        $("#indicador").text(cIndi);
-                                        $("#meta").text(cMeta);
-                                        $("#resultado").text(cResu);
-                                        $("#indicador3").text(cIndi3);
-                                        $("#indicador4").text(cIndi4);
-                                        $("#indicador5").text(cIndi5);
-                                        $("#indicador6").text(cIndi6);
-                                        $("#indicador7").text(cIndi7);
-                                        $("#indicador8").text(cIndi8);
-                                        $("#indicador9").text(cIndi9);
-                                        $("#indicador10").text(cIndi10);
-                                    }
+                //var cIndi6 = "Mediana entre la recolección de muestras y su recepción en laboratorio.";
+                var cIndi6_e = "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("msgIndicaDesempenioMedianaRecoleccionMuestraRecepcionLaboratorio"))";
+                cIndi6_e = caracteresEspeciales(cIndi6_e);
 
-                                    $("#IDTitulo2").text(json_obj[0]);
+                //cIndi7 = "Mediana entre la recepcion de la muestra en laboratorio y la notificación de los resultados.";
+                var cIndi7_e = "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("msgIndicaDesempenioMedianaRecepcionMuestraNotificacionResultado"))";
+                cIndi7_e = caracteresEspeciales(cIndi7_e);
 
-                                    var t = FormatearMeta(json_obj[11]);
-                                    $("#IDMeta3").text(t[1]);
-                                    var nMeta3 = t[0];
-                                    var cUnid3 = t[2];
+                //cIndi8 = "Mediana entre la fecha de hospitalizacion y la fecha de notificacion en el sistema de vigilancia.";
+                var cIndi8_e = "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("msgIndicaDesempenioMedianaFechaHospitalizacionFechaNotificacion"))";
+                cIndi8_e = caracteresEspeciales(cIndi8_e);
 
-                                    var t = FormatearMeta(json_obj[12]);
-                                    $("#IDMeta4").text(t[1]);
-                                    var nMeta4 = t[0];
-                                    var cUnid4 = t[2];
+                //var cIndi9 = "Mediana entre la fecha de inicio de sintomas y la fecha de inicio de tratamiento antiviral.";
+                var cIndi9_e = "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("msgIndicaDesempenioMedianaInicioSintomasInicioTratamientoAntiviral"))";
+                cIndi9_e = caracteresEspeciales(cIndi9_e);
 
-                                    var t = FormatearMeta(json_obj[13]);
-                                    $("#IDMeta5").text(t[1]);
-                                    var nMeta5 = t[0];
-                                    var cUnid5 = t[2];
+                //var cIndi10 = "Mediana entre la fecha de inicio de sintomas y la fecha de toma de muestras.";
+                var cIndi10_e = "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("msgIndicaDesempenioMedianaInicioSintomasFechaTomaMuestra"))";
+                cIndi10_e = caracteresEspeciales(cIndi10_e);
 
-                                    var t = FormatearMeta(json_obj[14]);
-                                    $("#IDMeta6").text(t[1]);
-                                    var nMeta6 = t[0];
-                                    var cUnid6 = t[2];
+                var cIndi_e = "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("msgIndicaDesempenioIndicador"))";
+                var cMeta_e = "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("msgIndicaDesempenioMeta"))";
+                var cResu_e = "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("msgIndicaDesempenioResultado"))";
 
-                                    var t = FormatearMeta(json_obj[15]);
-                                    $("#IDMeta7").text(t[1]);
-                                    var nMeta7 = t[0];
-                                    var cUnid7 = t[2];
+                var cDia_e = "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("msgIndicaDesempenioDia"))";
+                cDia_e = caracteresEspeciales(cDia_e);
 
-                                    var t = FormatearMeta(json_obj[16]);
-                                    $("#IDMeta8").text(t[1]);
-                                    var nMeta8 = t[0];
-                                    var cUnid8 = t[2];
+                var cDias_e = "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("msgIndicaDesempenioDias"))";
 
-                                    var t = FormatearMeta(json_obj[17]);
-                                    $("#IDMeta9").text(t[1]);
-                                    var nMeta9 = t[0];
-                                    var cUnid9 = t[2];
-                                    if(cUnid9.trim() == "H."){
-                                        json_obj[9] = (json_obj[9] * 24).toString();          // Mediana F. inicio fiebre vs F. Inicio antiviral
-                                    }
+                var cInDe_e = "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("msgIndicaDesempenioIndicadoresDeDesempenio"))";
+                cInDe_e = caracteresEspeciales(cInDe_e);
 
-                                    var t = FormatearMeta(json_obj[18]);
-                                    $("#IDMeta10").text(t[1]);
-                                    var nMeta10 = t[0];
-                                    var cUnid10 = t[2];
-                                    //****
-                                    var rojo = "#FF0000"
-                                    var verde = "#548235"
+                var cHora_e = "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("msgIndicaDesempenioHora"))";
+                var cHoras_e = "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("msgIndicaDesempenioHoras"))";
 
-                                    var color3 = rojo;
-                                    var color4 = rojo;
-                                    var color5 = rojo;
-                                    var color6 = rojo;
-                                    var color7 = rojo;
-                                    var color8 = rojo;
-                                    var color9 = rojo;
-                                    var color10 = rojo;
+                function caracteresEspeciales(cadena){
+                    var aCaEn = new Array("&#225;", "&#233;", "&#237;", "&#243;", "&#250;", "&#241;");
+                    var aCaDe = new Array("á", "é", "í", "ó", "ú", "ñ");
 
-                                    if (parseFloat(json_obj[3]) >= nMeta3)
-                                        color3 = verde;
-                                    if (parseFloat(json_obj[4]) >= nMeta4)
-                                        color4 = verde;
-                                    if (parseFloat(json_obj[5]) >= nMeta5)
-                                        color5 = verde;
-                                    if (parseFloat(json_obj[6]) <= nMeta6)
-                                        color6 = verde;
-                                    if (parseFloat(json_obj[7]) <= nMeta7)
-                                        color7 = verde;
-                                    if (parseFloat(json_obj[8]) <= nMeta8)
-                                        color8 = verde;
-                                    if (parseFloat(json_obj[9]) <= nMeta9)
-                                        color9 = verde;
-                                    if (parseFloat(json_obj[10]) <= nMeta10)
-                                        color10 = verde;
-                                    //****
-                                    ConstruirPie("divGraph8_3", color3, String(json_obj[3]), cUnid3);
-                                    ConstruirPie("divGraph8_4", color4, String(json_obj[4]), cUnid4);
-                                    ConstruirPie("divGraph8_5", color5, String(json_obj[5]), cUnid5);
-                                    ConstruirPie("divGraph8_6", color6, String(json_obj[6]), cUnid6);
-                                    ConstruirPie("divGraph8_7", color7, String(json_obj[7]), cUnid7);
-                                    ConstruirPie("divGraph8_8", color8, String(json_obj[8]), cUnid8);
-                                    ConstruirPie("divGraph8_9", color9, String(json_obj[9]), cUnid9);
-                                    ConstruirPie("divGraph8_10", color10, String(json_obj[10]), cUnid10);
-                                }
-                            });
-                        })
-                    }
+                    for (i = 0; i < aCaEn.length; i++) {
+                        var pos = cadena.search(aCaEn[i]);
 
-                    function FormatearMeta(_Meta){
-                        var cMeta = _Meta.substring(0, _Meta.length-1);
-                        var nMeta = parseFloat(cMeta);
-                        var cUnid = "";
-
-                        if(_Meta.slice(-1)=="%"){
-                            cUnid = "%";
-                            cMeta = cMeta + "%";
-                        }else if(_Meta.slice(-1)=="D"){
-                            cUnid = " D.";
-                            if (nMeta==1)
-                                if(GraphCountryID == 25)
-                                    cMeta = cMeta + " " + cDia_e;
-                                else
-                                    cMeta = cMeta + " " + cDia;
-                            else
-                                if(GraphCountryID == 25)
-                                    cMeta = cMeta + " " + cDias_e;
-                                else
-                                    cMeta = cMeta + " " + cDias;
-                        }else if(_Meta.slice(-1)=="H"){
-                            cUnid = " H.";
-                            if (nMeta==1)
-                                if(GraphCountryID == 25)
-                                    cMeta = cMeta + " " + cHora_e;
-                                else
-                                    cMeta = cMeta + " " + cHora;
-                            else
-                                if(GraphCountryID == 25)
-                                    cMeta = cMeta + " " + cHoras_e;
-                                else
-                                    cMeta = cMeta + " " + cHoras;
+                        while (pos > -1) {
+                            cadena = cadena.replace(aCaEn[i], aCaDe[i]);
+                            pos = cadena.search(aCaEn[i]);
                         }
-                        return [nMeta, cMeta, cUnid]
                     }
 
-                    function ConstruirPie(_nombDiv, _color, _labeltext, _Unid){
-                        var labeltext = _labeltext.replace(".0", "") + _Unid
+                    return cadena;
+                }
 
-                        var chart = AmCharts.makeChart(_nombDiv, {
-                            "type": "pie",
-                            "hideCredits": true,
-                            "showBalloon": false,
-                            "fontSize": 12,
-                            "outlineAlpha": 1,
-                            "outlineColor": _color,
-                            "outlineThickness": 2,
-                            "labelRadius":-25,
-                            "labelText": labeltext,
-                            "colorField": _color,
-                            "labelsEnabled": true,
-                            "autoMargins": false,           // Ocupar todo el contenedor
-                            "marginTop": 1,
-                            "marginBottom": 1,
-                            "marginLeft": 1,
-                            "marginRight": 1,
-                            "pullOutRadius": 1,
-                            "dataProvider": [{
-                                "country": "Lithuania",
-                                "litres": 0,
-                                "color": _color,
-                                "labelColor": "#FFFFFF",
-                            },
-                            {
-                                "country": "",
-                                "litres": 100,
-                                "color": _color,
-                                "labelColor": "#FFFFFF",
-                            }],
-                            "valueField": "litres",
-                            "titleField": "country",
-                            "colorField": "color",
-                            "labelColorField": "labelColor",
-                            "balloon":{
-                                "fixedPosition":true
-                            },
-                            "export": {
-                                "enabled": false
+                function GetGraphData8(){
+                    var dataRegion = 0;
+                    var dataHospital = 0;
+                    var dataIrag = 1;
+                    var dataEti = 0;
+                    //****
+                    /*$("#divGraph8").hide();
+                    $("#divTable8").hide();
+                    $("#loaderGraph8").show();*/
+                    //****
+                    var allVals = [];
+                    var yrs = (new Date).getFullYear();
+
+                    $(document).ready(function () {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/Graph/GetGraphDataTuned',
+                            data: "{'CountryID':" + GraphCountryID +",'Year':'" + yrs.toString() + "','Graph':'Graph8','RegionID':'" + dataRegion + "', 'HospitalID':'" + dataHospital + "', 'IRAG':'" + dataIrag + "', 'ETI':'" + dataEti + "'}",
+                            contentType: "application/json",
+                            dataType: 'json',
+                            success: function (data){
+                                /*$("#divGraph8").show();
+                                $("#divTable8").show();
+                                $("#loaderGraph8").hide();*/
+                                //****
+                                var json_obj = JSON.parse(data);
+
+                                $("#IDTitulo1").text(cInDe_e);
+                                $("#indicador").text(cIndi_e);
+                                $("#meta").text(cMeta_e);
+                                $("#resultado").text(cResu_e);
+                                $("#indicador3").text(cIndi3_e);
+                                $("#indicador4").text(cIndi4_e);
+                                $("#indicador5").text(cIndi5_e);
+                                $("#indicador6").text(cIndi6_e);
+                                $("#indicador7").text(cIndi7_e);
+                                $("#indicador8").text(cIndi8_e);
+                                $("#indicador9").text(cIndi9_e);
+                                $("#indicador10").text(cIndi10_e);
+                                $("#IDTitulo2").text(json_obj[0]);
+
+                                var t = FormatearMeta(json_obj[11]);
+                                $("#IDMeta3").text(t[1]);
+                                var nMeta3 = t[0];
+                                var cUnid3 = t[2];
+
+                                var t = FormatearMeta(json_obj[12]);
+                                $("#IDMeta4").text(t[1]);
+                                var nMeta4 = t[0];
+                                var cUnid4 = t[2];
+
+                                var t = FormatearMeta(json_obj[13]);
+                                $("#IDMeta5").text(t[1]);
+                                var nMeta5 = t[0];
+                                var cUnid5 = t[2];
+
+                                var t = FormatearMeta(json_obj[14]);
+                                $("#IDMeta6").text(t[1]);
+                                var nMeta6 = t[0];
+                                var cUnid6 = t[2];
+
+                                var t = FormatearMeta(json_obj[15]);
+                                $("#IDMeta7").text(t[1]);
+                                var nMeta7 = t[0];
+                                var cUnid7 = t[2];
+
+                                var t = FormatearMeta(json_obj[16]);
+                                $("#IDMeta8").text(t[1]);
+                                var nMeta8 = t[0];
+                                var cUnid8 = t[2];
+
+                                var t = FormatearMeta(json_obj[17]);
+                                $("#IDMeta9").text(t[1]);
+                                var nMeta9 = t[0];
+                                var cUnid9 = t[2];
+                                if(cUnid9.trim() == "H."){
+                                    json_obj[9] = (json_obj[9] * 24).toString();          // Mediana F. inicio fiebre vs F. Inicio antiviral
+                                }
+
+                                var t = FormatearMeta(json_obj[18]);
+                                $("#IDMeta10").text(t[1]);
+                                var nMeta10 = t[0];
+                                var cUnid10 = t[2];
+                                //****
+                                var rojo = "#FF0000"
+                                var verde = "#548235"
+
+                                var color3 = rojo;
+                                var color4 = rojo;
+                                var color5 = rojo;
+                                var color6 = rojo;
+                                var color7 = rojo;
+                                var color8 = rojo;
+                                var color9 = rojo;
+                                var color10 = rojo;
+
+                                if (parseFloat(json_obj[3]) >= nMeta3)
+                                    color3 = verde;
+                                if (parseFloat(json_obj[4]) >= nMeta4)
+                                    color4 = verde;
+                                if (parseFloat(json_obj[5]) >= nMeta5)
+                                    color5 = verde;
+                                if (parseFloat(json_obj[6]) <= nMeta6)
+                                    color6 = verde;
+                                if (parseFloat(json_obj[7]) <= nMeta7)
+                                    color7 = verde;
+                                if (parseFloat(json_obj[8]) <= nMeta8)
+                                    color8 = verde;
+                                if (parseFloat(json_obj[9]) <= nMeta9)
+                                    color9 = verde;
+                                if (parseFloat(json_obj[10]) <= nMeta10)
+                                    color10 = verde;
+                                //****
+                                ConstruirPie("divGraph8_3", color3, String(json_obj[3]), cUnid3);
+                                ConstruirPie("divGraph8_4", color4, String(json_obj[4]), cUnid4);
+                                ConstruirPie("divGraph8_5", color5, String(json_obj[5]), cUnid5);
+                                ConstruirPie("divGraph8_6", color6, String(json_obj[6]), cUnid6);
+                                ConstruirPie("divGraph8_7", color7, String(json_obj[7]), cUnid7);
+                                ConstruirPie("divGraph8_8", color8, String(json_obj[8]), cUnid8);
+                                ConstruirPie("divGraph8_9", color9, String(json_obj[9]), cUnid9);
+                                ConstruirPie("divGraph8_10", color10, String(json_obj[10]), cUnid10);
                             }
-                        } );
+                        });
+                    })
+                }
+
+                function FormatearMeta(_Meta){
+                    var cMeta = _Meta.substring(0, _Meta.length-1);
+                    var nMeta = parseFloat(cMeta);
+                    var cUnid = "";
+
+                    if(_Meta.slice(-1)=="%"){
+                        cUnid = "%";
+                        cMeta = cMeta + "%";
+                    }else if(_Meta.slice(-1)=="D"){
+                        cUnid = " D.";
+                        if (nMeta==1)
+                                cMeta = cMeta + " " + cDia_e;
+                        else
+                                cMeta = cMeta + " " + cDias_e;
+                    }else if(_Meta.slice(-1)=="H"){
+                        cUnid = " H.";
+                        if (nMeta==1)
+                                cMeta = cMeta + " " + cHora_e;
+                        else
+                                cMeta = cMeta + " " + cHoras_e;
                     }
+                    return [nMeta, cMeta, cUnid]
+                }
+
+                function ConstruirPie(_nombDiv, _color, _labeltext, _Unid){
+                    var labeltext = _labeltext.replace(".0", "") + _Unid
+
+                    var chart = AmCharts.makeChart(_nombDiv, {
+                        "type": "pie",
+                        "hideCredits": true,
+                        "showBalloon": false,
+                        "fontSize": 12,
+                        "outlineAlpha": 1,
+                        "outlineColor": _color,
+                        "outlineThickness": 2,
+                        "labelRadius":-25,
+                        "labelText": labeltext,
+                        "colorField": _color,
+                        "labelsEnabled": true,
+                        "autoMargins": false,           // Ocupar todo el contenedor
+                        "marginTop": 1,
+                        "marginBottom": 1,
+                        "marginLeft": 1,
+                        "marginRight": 1,
+                        "pullOutRadius": 1,
+                        "dataProvider": [{
+                            "country": "Lithuania",
+                            "litres": 0,
+                            "color": _color,
+                            "labelColor": "#FFFFFF",
+                        },
+                        {
+                            "country": "",
+                            "litres": 100,
+                            "color": _color,
+                            "labelColor": "#FFFFFF",
+                        }],
+                        "valueField": "litres",
+                        "titleField": "country",
+                        "colorField": "color",
+                        "labelColorField": "labelColor",
+                        "balloon":{
+                            "fixedPosition":true
+                        },
+                        "export": {
+                            "enabled": false
+                        }
+                    } );
+                }
+
         </script>
-        
+
         <style>
             .divGraph8_Pies {
                 margin: auto;
                 /*width: 68px;
-                    height: 68px;*/
+                        height: 68px;*/
                 width: 50px;
                 height: 50px;
                 border: 0px solid;
@@ -592,140 +596,140 @@
                 margin: 5px;
             }
         </style>
-        
+
         <div id="containerGraph8">
-                <!--
-                <div id="divTable8">
-                    <table id="ind_tabla">
-                        <tr>
-                            <td id="ind_tablafila1" colspan="3">
-                                <p id="IDTitulo1" class="ind_titulo"></p>
-                                <p id="IDTitulo2" class="ind_titulo"></p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="ind_titulo3" width="55%"><P class="ind_datostyle">Indicador</P></td>
-                            <td class="ind_titulo3" width="15%"><P class="ind_datostyle">Meta</P></td>
-                            <td class="ind_titulo3" width="30%"><P class="ind_datostyle">Resultado</P></td>
-                        </tr>
-                        <tr>
-                            <td class="ind_titulo3"><p class="ind_datotitulostyle">Porcentaje de casos de IRAG con muestra de laboratorio.</p></td>
-                            <td><p id="IDMeta3" class="ind_datostyle">Meta 3</p></td>
-                            <td>
-                                <div id="divGraph8_3" class="divGraph8_Pies"></div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="ind_titulo3"><p class="ind_datotitulostyle">Porcentaje de pacientes con resultado virológico reportado.</p></td>
-                            <td><p id="IDMeta4" class="ind_datostyle">Meta 4</p></td>
-                            <td>
-                                <div id="divGraph8_4" class="divGraph8_Pies"></div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="ind_titulo3"><p class="ind_datotitulostyle">Porcentaje de casos cerrados de IRAG medidos por la variable de condición de egreso del paciente.</p></td>
-                            <td><p id="IDMeta5" class="ind_datostyle">Meta 5</p></td>
-                            <td><div id="divGraph8_5" class="divGraph8_Pies"></div>
-                        </tr>
-                        <tr>
-                            <td class="ind_titulo3"><p class="ind_datotitulostyle">Mediana entre la recolección de muestras y su recepción en laboratorio.</p></td>
-                            <td><p id="IDMeta6" class="ind_datostyle">Meta 6</p></td>
-                            <td><div id="divGraph8_6" class="divGraph8_Pies"></div>
-                        </tr>
-                        <tr>
-                            <td class="ind_titulo3"><p class="ind_datotitulostyle">Mediana entre la recepcion de la muestra en laboratorio y la notificación de los resultados.</p></td>
-                            <td><p id="IDMeta7" class="ind_datostyle">Meta 7</p></td>
-                            <td><div id="divGraph8_7" class="divGraph8_Pies"></div>
-                        </tr>
-                        <tr>
-                            <td class="ind_titulo3"><p class="ind_datotitulostyle">Mediana entre la fecha de hospitalizacion y la fecha de notificacion en el sistema de vigilancia.</p></td>
-                            <td><p id="IDMeta8" class="ind_datostyle">Meta 8</p></td>
-                            <td><div id="divGraph8_8" class="divGraph8_Pies"></div>
-                        </tr>
-                    </table>
-                </div>
-                -->
-                <div id="loaderGraph8" class="loaderGraph"><!-- Place at bottom of page --></div>
-                <div id="divGraph8">
-                    <p id="IDTitulo1" class="ind_titulo" style="padding-top:12px"></p>
-                    <p id="IDTitulo2" class="ind_titulo"></p>
-                    <table id="ind_tabla">
-                        <tr>
-                            <td class="ind_titulo3" width="55%"><P id="indicador" class="ind_datostyle">...</P></td>
-                            <td class="ind_titulo3" width="15%"><P id="meta" class="ind_datostyle">...</P></td>
-                            <td class="ind_titulo3" width="30%"><P id="resultado" class="ind_datostyle">...</P></td>
-                        </tr>
-                        <!--
-                        <tr>
-                            <td class="ind_titulo3"><P class="ind_datotitulostyle">Cobertura de captación de casos IRAG en la unidad centinela.</P></td>
-                            <td colspan="6"><p id="IDDato1" class="ind_datostyle"></p></td>
-                        </tr>
-                        <tr>
-                            <td class="ind_titulo3" rowspan="2">
-                                <p class="ind_datotitulostyle">Cobertura de captación de casos IRAG en la unidad centinela por grupos poblacionales.</p>
-                            </td>
-                            <td class="ind_titulo3"><p class="ind_datostyle">Menor de 2 años</p></td>
-                            <td class="ind_titulo3"><p class="ind_datostyle">2 < 5 años</p></td>
-                            <td class="ind_titulo3"><p class="ind_datostyle">5 a 19 años</p></td>
-                            <td class="ind_titulo3"><p class="ind_datostyle">20 a 39 años</p></td>
-                            <td class="ind_titulo3"><p class="ind_datostyle">40 a 59 años</p></td>
-                            <td class="ind_titulo3"><p class="ind_datostyle">60 o más años</p></td>
-                        </tr>
-                        <tr>
-                            <td><p id="IDDato2a" class="ind_datostyle"></p></td>
-                            <td><p id="IDDato2b" class="ind_datostyle"></p></td>
-                            <td><p id="IDDato2c" class="ind_datostyle"></p></td>
-                            <td><p id="IDDato2d" class="ind_datostyle"></p></td>
-                            <td><p id="IDDato2e" class="ind_datostyle"></p></td>
-                            <td><p id="IDDato2f" class="ind_datostyle"></p></td>
-                        </tr> -->
-                        <tr>
-                            <td class="ind_titulo3"><p id="indicador3" class="ind_datotitulostyle">...</p></td>
-                            <td><p id="IDMeta3" class="ind_datostyle">...</p></td>
-                            <td>
-                                <div id="divGraph8_3" class="divGraph8_Pies"></div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="ind_titulo3"><p id="indicador4" class="ind_datotitulostyle">...</p></td>
-                            <td><p id="IDMeta4" class="ind_datostyle">...</p></td>
-                            <td>
-                                <div id="divGraph8_4" class="divGraph8_Pies"></div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="ind_titulo3"><p id="indicador5" class="ind_datotitulostyle">...</p></td>
-                            <td><p id="IDMeta5" class="ind_datostyle">...</p></td>
-                            <td><div id="divGraph8_5" class="divGraph8_Pies"></div>
-                        </tr>
-                        <tr>
-                            <td class="ind_titulo3"><p id="indicador6" class="ind_datotitulostyle">...</p></td>
-                            <td><p id="IDMeta6" class="ind_datostyle">...</p></td>
-                            <td><div id="divGraph8_6" class="divGraph8_Pies"></div>
-                        </tr>
-                        <tr>
-                            <td class="ind_titulo3"><p id="indicador7" class="ind_datotitulostyle">...</p></td>
-                            <td><p id="IDMeta7" class="ind_datostyle">...</p></td>
-                            <td><div id="divGraph8_7" class="divGraph8_Pies"></div>
-                        </tr>
-                        <tr>
-                            <td class="ind_titulo3"><p id="indicador8" class="ind_datotitulostyle">...</p></td>
-                            <td><p id="IDMeta8" class="ind_datostyle">...</p></td>
-                            <td><div id="divGraph8_8" class="divGraph8_Pies"></div>
-                        </tr>
-                        <tr>
-                            <td class="ind_titulo3"><p id="indicador9" class="ind_datotitulostyle">...</p></td>
-                            <td><p id="IDMeta9" class="ind_datostyle">...</p></td>
-                            <td><div id="divGraph8_9" class="divGraph8_Pies"></div>
-                        </tr>
-                        <tr>
-                            <td class="ind_titulo3"><p id="indicador10" class="ind_datotitulostyle">...</p></td>
-                            <td><p id="IDMeta10" class="ind_datostyle">...</p></td>
-                            <td><div id="divGraph8_10" class="divGraph8_Pies"></div>
-                        </tr>
-                    </table>
-                </div>
+            <!--
+            <div id="divTable8">
+                <table id="ind_tabla">
+                    <tr>
+                        <td id="ind_tablafila1" colspan="3">
+                            <p id="IDTitulo1" class="ind_titulo"></p>
+                            <p id="IDTitulo2" class="ind_titulo"></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="ind_titulo3" width="55%"><P class="ind_datostyle">Indicador</P></td>
+                        <td class="ind_titulo3" width="15%"><P class="ind_datostyle">Meta</P></td>
+                        <td class="ind_titulo3" width="30%"><P class="ind_datostyle">Resultado</P></td>
+                    </tr>
+                    <tr>
+                        <td class="ind_titulo3"><p class="ind_datotitulostyle">Porcentaje de casos de IRAG con muestra de laboratorio.</p></td>
+                        <td><p id="IDMeta3" class="ind_datostyle">Meta 3</p></td>
+                        <td>
+                            <div id="divGraph8_3" class="divGraph8_Pies"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="ind_titulo3"><p class="ind_datotitulostyle">Porcentaje de pacientes con resultado virológico reportado.</p></td>
+                        <td><p id="IDMeta4" class="ind_datostyle">Meta 4</p></td>
+                        <td>
+                            <div id="divGraph8_4" class="divGraph8_Pies"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="ind_titulo3"><p class="ind_datotitulostyle">Porcentaje de casos cerrados de IRAG medidos por la variable de condición de egreso del paciente.</p></td>
+                        <td><p id="IDMeta5" class="ind_datostyle">Meta 5</p></td>
+                        <td><div id="divGraph8_5" class="divGraph8_Pies"></div>
+                    </tr>
+                    <tr>
+                        <td class="ind_titulo3"><p class="ind_datotitulostyle">Mediana entre la recolección de muestras y su recepción en laboratorio.</p></td>
+                        <td><p id="IDMeta6" class="ind_datostyle">Meta 6</p></td>
+                        <td><div id="divGraph8_6" class="divGraph8_Pies"></div>
+                    </tr>
+                    <tr>
+                        <td class="ind_titulo3"><p class="ind_datotitulostyle">Mediana entre la recepcion de la muestra en laboratorio y la notificación de los resultados.</p></td>
+                        <td><p id="IDMeta7" class="ind_datostyle">Meta 7</p></td>
+                        <td><div id="divGraph8_7" class="divGraph8_Pies"></div>
+                    </tr>
+                    <tr>
+                        <td class="ind_titulo3"><p class="ind_datotitulostyle">Mediana entre la fecha de hospitalizacion y la fecha de notificacion en el sistema de vigilancia.</p></td>
+                        <td><p id="IDMeta8" class="ind_datostyle">Meta 8</p></td>
+                        <td><div id="divGraph8_8" class="divGraph8_Pies"></div>
+                    </tr>
+                </table>
             </div>
+            -->
+            <div id="loaderGraph8" class="loaderGraph"><!-- Place at bottom of page --></div>
+            <div id="divGraph8">
+                <p id="IDTitulo1" class="ind_titulo" style="padding-top:12px"></p>
+                <p id="IDTitulo2" class="ind_titulo"></p>
+                <table id="ind_tabla">
+                    <tr>
+                        <td class="ind_titulo3" width="55%"><P id="indicador" class="ind_datostyle">...</P></td>
+                        <td class="ind_titulo3" width="15%"><P id="meta" class="ind_datostyle">...</P></td>
+                        <td class="ind_titulo3" width="30%"><P id="resultado" class="ind_datostyle">...</P></td>
+                    </tr>
+                    <!--
+                    <tr>
+                        <td class="ind_titulo3"><P class="ind_datotitulostyle">Cobertura de captación de casos IRAG en la unidad centinela.</P></td>
+                        <td colspan="6"><p id="IDDato1" class="ind_datostyle"></p></td>
+                    </tr>
+                    <tr>
+                        <td class="ind_titulo3" rowspan="2">
+                            <p class="ind_datotitulostyle">Cobertura de captación de casos IRAG en la unidad centinela por grupos poblacionales.</p>
+                        </td>
+                        <td class="ind_titulo3"><p class="ind_datostyle">Menor de 2 años</p></td>
+                        <td class="ind_titulo3"><p class="ind_datostyle">2 < 5 años</p></td>
+                        <td class="ind_titulo3"><p class="ind_datostyle">5 a 19 años</p></td>
+                        <td class="ind_titulo3"><p class="ind_datostyle">20 a 39 años</p></td>
+                        <td class="ind_titulo3"><p class="ind_datostyle">40 a 59 años</p></td>
+                        <td class="ind_titulo3"><p class="ind_datostyle">60 o más años</p></td>
+                    </tr>
+                    <tr>
+                        <td><p id="IDDato2a" class="ind_datostyle"></p></td>
+                        <td><p id="IDDato2b" class="ind_datostyle"></p></td>
+                        <td><p id="IDDato2c" class="ind_datostyle"></p></td>
+                        <td><p id="IDDato2d" class="ind_datostyle"></p></td>
+                        <td><p id="IDDato2e" class="ind_datostyle"></p></td>
+                        <td><p id="IDDato2f" class="ind_datostyle"></p></td>
+                    </tr> -->
+                    <tr>
+                        <td class="ind_titulo3"><p id="indicador3" class="ind_datotitulostyle">...</p></td>
+                        <td><p id="IDMeta3" class="ind_datostyle">...</p></td>
+                        <td>
+                            <div id="divGraph8_3" class="divGraph8_Pies"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="ind_titulo3"><p id="indicador4" class="ind_datotitulostyle">...</p></td>
+                        <td><p id="IDMeta4" class="ind_datostyle">...</p></td>
+                        <td>
+                            <div id="divGraph8_4" class="divGraph8_Pies"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="ind_titulo3"><p id="indicador5" class="ind_datotitulostyle">...</p></td>
+                        <td><p id="IDMeta5" class="ind_datostyle">...</p></td>
+                        <td><div id="divGraph8_5" class="divGraph8_Pies"></div>
+                    </tr>
+                    <tr>
+                        <td class="ind_titulo3"><p id="indicador6" class="ind_datotitulostyle">...</p></td>
+                        <td><p id="IDMeta6" class="ind_datostyle">...</p></td>
+                        <td><div id="divGraph8_6" class="divGraph8_Pies"></div>
+                    </tr>
+                    <tr>
+                        <td class="ind_titulo3"><p id="indicador7" class="ind_datotitulostyle">...</p></td>
+                        <td><p id="IDMeta7" class="ind_datostyle">...</p></td>
+                        <td><div id="divGraph8_7" class="divGraph8_Pies"></div>
+                    </tr>
+                    <tr>
+                        <td class="ind_titulo3"><p id="indicador8" class="ind_datotitulostyle">...</p></td>
+                        <td><p id="IDMeta8" class="ind_datostyle">...</p></td>
+                        <td><div id="divGraph8_8" class="divGraph8_Pies"></div>
+                    </tr>
+                    <tr>
+                        <td class="ind_titulo3"><p id="indicador9" class="ind_datotitulostyle">...</p></td>
+                        <td><p id="IDMeta9" class="ind_datostyle">...</p></td>
+                        <td><div id="divGraph8_9" class="divGraph8_Pies"></div>
+                    </tr>
+                    <tr>
+                        <td class="ind_titulo3"><p id="indicador10" class="ind_datotitulostyle">...</p></td>
+                        <td><p id="IDMeta10" class="ind_datostyle">...</p></td>
+                        <td><div id="divGraph8_10" class="divGraph8_Pies"></div>
+                    </tr>
+                </table>
+            </div>
+        </div>
         <!--<script>GetGraphData8();</script>-->
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxFIN Gráfica 8 - Indicadores de Desempeño xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
 
@@ -901,8 +905,8 @@
                             $("#loaderGraph8").hide(0);
                         },
                         success: function (data) {
-                            /*################################################################# DESARROLLO
-                            if(GraphCountryID == 25){
+                            /*/################################################################# DESARROLLO
+                            if(GraphCountryID == 17){
                                 GetGraphData11();
                                 GetGraphData12();
                                 GetGraphData9();

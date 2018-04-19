@@ -217,12 +217,30 @@ namespace Paho.Controllers
             db.SaveChanges();
             return Json("Datos guardados");
         }
-   
+                        
         public JsonResult GetSummaryForYear(int hospitalId)
         {
             var epiYear = DateTime.Now.Year.ToString();
             int intEpiYear = Int32.Parse(epiYear);
             List<Dictionary<string, int>> summaryPerYear = new List<Dictionary<string, int>>();
+            DateTime dFech = fechaInicioPrimeraSemanaEpidemiologica(DateTime.UtcNow.Year);
+
+            //#### Fecha fin de SE del dia de hoy
+            DateTime dSEHoy;
+            DateTime dHoy = DateTime.Now.Date;
+            dSEHoy = dHoy;
+
+            for (int i = 52; i >= 1; i--)
+            {
+                DateTime vSeIn = dFech.AddDays(7 * (i - 1));
+                DateTime vSeFi = vSeIn.AddDays(6);
+                if (dHoy >= vSeIn && dHoy <= vSeFi)
+                {
+                    dSEHoy = vSeFi;
+                    break;
+                }
+            }
+            //#### 
 
             //for (int i = 1; i <= 52; i++)
             for (int i = 52; i >= 1; i--)
@@ -238,26 +256,39 @@ namespace Paho.Controllers
                 var ColVentTST = 0;
                 DateTime StartDateOfWeek = DateTime.UtcNow;
 
+                var casesummary = db.CaseSummaries.FirstOrDefault(s => s.HosiptalId == hospitalId && s.EW == i && s.EpiYear == intEpiYear);
+                if (casesummary == null)
+                {
+                    DateTime vFeIn = dFech.AddDays(7 * (i - 1));
+                    DateTime vFeFi = vFeIn.AddDays(6);
 
-                var casesummary =  db.CaseSummaries.FirstOrDefault(s=>s.HosiptalId == hospitalId && s.EW == i && s.EpiYear == intEpiYear);
-                if (casesummary == null){
-                    
+                    if (StartDateOfWeek >= vFeIn && StartDateOfWeek <= vFeFi)
+                        StartDateOfWeek = vFeFi;
+                    else
+                    {
+                        if (vFeFi < StartDateOfWeek)
+                            StartDateOfWeek = dFech.AddDays(7 * (i - 1) + 6);
+                        else
+                            StartDateOfWeek = dSEHoy;
+                    }
                 }
-                else{
+                else
+                {
                     var casesummaryDetails = casesummary.CaseSummaryDetails.ToArray();
                     StartDateOfWeek = casesummary.StartDateOfWeek;
-                    foreach (CaseSummaryDetail casesummaryDetail in casesummaryDetails){//casesummaryDetails
+                    foreach (CaseSummaryDetail casesummaryDetail in casesummaryDetails)
+                    {//casesummaryDetails
                         ColHospTST += casesummaryDetail.HospST;
                         ColUCITST += casesummaryDetail.UCIST;
                         ColFalleTST += casesummaryDetail.DefST;
                         ColETINumST += casesummaryDetail.ETINumST;
                         ColETIDenoST += casesummaryDetail.ETIDenoST;
                         ColETINumEmerST += casesummaryDetail.ETINumEmerST;
-                        ColNeuTST += casesummaryDetail.NeuST.HasValue ? casesummaryDetail.NeuST.Value : 0;          
+                        ColNeuTST += casesummaryDetail.NeuST.HasValue ? casesummaryDetail.NeuST.Value : 0;
                         ColVentTST += casesummaryDetail.VentST.HasValue ? casesummaryDetail.VentST.Value : 0;
                         //ColNeuTST += casesummaryDetail.NeuST;
                         //ColVentTST += casesummaryDetail.VentST;
-                    }    
+                    }
                 }
                 dictionary.Add("EpiWeek", i);
                 dictionary.Add("ColHospTST", ColHospTST);
@@ -275,7 +306,25 @@ namespace Paho.Controllers
             }
             return Json(summaryPerYear, JsonRequestBehavior.AllowGet);
         }
+        
+        private DateTime fechaInicioPrimeraSemanaEpidemiologica(int nYear)
+        {
+            DateTime vFeIn, vTemp, vSaba;
+            //****
+            //vTemp = new DateTime(DateTime.Now.Year, 1, 1);
+            vTemp = new DateTime(nYear, 1, 1);                  // 1er día del anio
+            int nWeDa = (int)vTemp.DayOfWeek + 1;               // Domingo 1er día   
+            vSaba = vTemp.AddDays(7 - nWeDa);                   // 1er sábado
 
+            int nDife = (int)vSaba.Subtract(vTemp).TotalDays;
+            if (nDife >= 3)
+                vFeIn = vSaba.AddDays(-(7 - 1));
+            else
+                vFeIn = vSaba.AddDays(1);
+            //****
+            return vFeIn;
+        }
+        
         public string getMsg(string msgView)
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
