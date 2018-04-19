@@ -282,7 +282,7 @@ namespace Paho.Controllers
 
                 string templateToUse;
 
-                switch (reportTemplate)
+                switch (reportTemplate.ToUpper())
                 {
                     case "D1":
                         templateToUse = "DenominadoresTemplate";
@@ -295,6 +295,9 @@ namespace Paho.Controllers
                         break;
                     case "RE1":
                         templateToUse = "REVELAC-i";                        //#### CAFQ en web.config crear la variable 
+                        break;
+                    case "FLUID":
+                        templateToUse = "FluIDTemplate";
                         break;
                     default:
                         templateToUse = "SariTemplate";
