@@ -283,6 +283,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\RegionsController.cs" />
     <Compile Include="Controllers\ResourcesM.cs" />
     <Compile Include="Controllers\DbResourceProvider.cs" />
     <Compile Include="Controllers\TicketController.cs" />
@@ -2355,6 +2356,10 @@
     <Content Include="Views\CatPopulationInstitutions\Index.cshtml" />
     <Content Include="Views\Ticket\_Ticket.cshtml" />
     <Content Include="Views\Ticket\Index.cshtml" />
+    <Content Include="Views\Regions\Create.cshtml" />
+    <Content Include="Views\Regions\Delete.cshtml" />
+    <Content Include="Views\Regions\Edit.cshtml" />
+    <Content Include="Views\Regions\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

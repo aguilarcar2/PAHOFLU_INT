@@ -352,14 +352,27 @@ namespace Paho.Models
         public virtual ICollection<Area> Areas { get; set; }
         public string Language { get; set; }
     }
+    public class CatRegionType
+    {
+        public int ID { get; set; }
+        public string SPA { get; set; }
+        public string ENG { get; set; }
+        public int? orden { get; set; }
+    }
+
     public class Region
     {
         public int ID { get; set; }
         public int? CountryID { get; set; }
-        [Display(Name = "Region")]
         public String Name { get; set; }
         public int? orig_country { get; set; }
         public int? tipo_region { get; set; }
+        [ForeignKey("tipo_region")]
+        public virtual CatRegionType CatRegionType { get; set; }
+
+        [ForeignKey("CountryID")]
+        public virtual Country Cat_Country { get; set; }
+
     }
 
     // Catalogos
@@ -1465,6 +1478,7 @@ namespace Paho.Models
         public DbSet<CatTrabSaludRama> CatTrabSaludRamas { get; set; }              //#### CAFQ
         public DbSet<CatTrabLaboRama> CatTrabLaboRamas { get; set; }                //#### CAFQ
         //Catalogos
+        public DbSet<CatRegionType> CatRegionType { get; set; }
         public DbSet<CatSampleNoProcessed> CatSampleNoProcessed { get; set; }
         public DbSet<CatCaseStatus> CatCaseStatus { get; set; }
         public DbSet<CatTestType> CatTestType { get; set; }

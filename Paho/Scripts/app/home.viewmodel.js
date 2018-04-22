@@ -516,6 +516,7 @@
                 $("a[href*='tab-case']").show();
                 $("#tab-case").show();
                 $("#CaseStatus").attr("disabled", false);
+                $("#tabs").tabs("refresh");
             }
 
         } else
