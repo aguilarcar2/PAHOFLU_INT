@@ -4,10 +4,10 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details.</h2>
+<h2>@(Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminDetails", ViewBag.UsrCtry, ViewBag.UsrCtryLang))</h2>
 
 <div>
-    <h4>User</h4>
+    <h4>@(Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminDetailsUser", ViewBag.UsrCtry, ViewBag.UsrCtryLang))</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -36,11 +36,11 @@
         </dd>
     </dl>
 </div>
-<h4>List of roles for this user</h4>
+<h4>@(Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminDetailsListOfRolesUser", ViewBag.UsrCtry, ViewBag.UsrCtryLang))</h4>
 @if (ViewBag.RoleNames.Count == 0)
 {
     <hr />
-    <p>No roles found for this user.</p>
+    <p>@(Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminDetailsRolesNotFound", ViewBag.UsrCtry, ViewBag.UsrCtryLang))</p>
 }
 
 <table class="table">

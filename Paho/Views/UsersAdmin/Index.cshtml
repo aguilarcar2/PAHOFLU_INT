@@ -4,21 +4,21 @@
     ViewBag.Title = "Listado de usuarios";
 }
 
-<h2>Listado de usuarios</h2>
+<h2>@(Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminUserList", ViewBag.UsrCtry, ViewBag.UsrCtryLang))</h2>
 
 <p>
-    @Html.ActionLink("Crear nuevo", "Create")
+    @Html.ActionLink(((string)Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminIndexCreateUser", ViewBag.UsrCtry, ViewBag.UsrCtryLang)), "Create")
 </p>
 <table class="table">
     <tr>
         <th>
-            Id de usuario
+            @(Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminIndexUserId", ViewBag.UsrCtry, ViewBag.UsrCtryLang))
         </th>
         <th>
-            Institución
+            @(Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminIndexInstitution", ViewBag.UsrCtry, ViewBag.UsrCtryLang))
         </th>
         <th>
-            País
+            @(Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminIndexCountry", ViewBag.UsrCtry, ViewBag.UsrCtryLang))
         </th>
         <th>
 
@@ -38,8 +38,8 @@
                 @Html.DisplayFor(modelItem => item.Institution.Country.Name)
             </td>
             <td>
-                @Html.ActionLink("Editar", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Eliminar", "Delete", new { id = item.Id })
+                @Html.ActionLink(((string)Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminIndexEdit", ViewBag.UsrCtry, ViewBag.UsrCtryLang)), "Edit", new { id = item.Id }) |
+                @Html.ActionLink(((string)Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminIndexDelete", ViewBag.UsrCtry, ViewBag.UsrCtryLang)), "Delete", new { id = item.Id })
             </td>
         </tr>
     }

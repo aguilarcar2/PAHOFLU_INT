@@ -1,6 +1,6 @@
 ﻿@model Paho.Models.RegisterViewModel
 @{
-    ViewBag.Title = "Creación usuarios";
+    ViewBag.Title = ((string)Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminCreateNew", ViewBag.UsrCtry, ViewBag.UsrCtryLang));
 }
 
 <h2>@ViewBag.Title.</h2>
@@ -8,72 +8,72 @@
 @using (Html.BeginForm("Create", "UsersAdmin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
-    <h4>Creación de una nueva cuenta.</h4>
+    <h4>@(Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminNewAccountCreation", ViewBag.UsrCtry, ViewBag.UsrCtryLang))</h4>
     <hr />
     @Html.ValidationSummary("", new { @class = "text-error" })
     <div class="form-group">
-        @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
+        @Html.LabelFor(m => m.UserName, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminUserName", ViewBag.UsrCtry, ViewBag.UsrCtryLang)), new { @class = "col-md-2 control-label" })
         <div class="col-md-5">
             @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+        @Html.LabelFor(m => m.Email, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminEmail", ViewBag.UsrCtry, ViewBag.UsrCtryLang)), new { @class = "col-md-2 control-label" })
         <div class="col-md-5">
             @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+        @Html.LabelFor(m => m.Password, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminPassword", ViewBag.UsrCtry, ViewBag.UsrCtryLang)), new { @class = "col-md-2 control-label" })
         <div class="col-md-5">
             @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
+        @Html.LabelFor(m => m.ConfirmPassword, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminPasswordConfirmation", ViewBag.UsrCtry, ViewBag.UsrCtryLang)), new { @class = "col-md-2 control-label" })
         <div class="col-md-5">
             @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.Hometown, new { @class = "col-md-2 control-label" })
+        @Html.LabelFor(m => m.Hometown, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminHometown", ViewBag.UsrCtry, ViewBag.UsrCtryLang)), new { @class = "col-md-2 control-label" })
         <div class="col-md-5">
             @Html.TextBoxFor(m => m.Hometown, new { @class = "form-control" })
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.FirstName1, new { @class = "col-md-2 control-label" })
+        @Html.LabelFor(m => m.FirstName1, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminFirstName", ViewBag.UsrCtry, ViewBag.UsrCtryLang)), new { @class = "col-md-2 control-label" })
         <div class="col-md-7">
             @Html.TextBoxFor(m => m.FirstName1, new { @class = "form-control" })
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.FirstName2, new { @class = "col-md-2 control-label" })
+        @Html.LabelFor(m => m.FirstName2, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminMiddleName", ViewBag.UsrCtry, ViewBag.UsrCtryLang)), new { @class = "col-md-2 control-label" })
         <div class="col-md-7">
             @Html.TextBoxFor(m => m.FirstName2, new { @class = "form-control" })
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.LastName1, new { @class = "col-md-2 control-label" })
+        @Html.LabelFor(m => m.LastName1, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminLastName", ViewBag.UsrCtry, ViewBag.UsrCtryLang)), new { @class = "col-md-2 control-label" })
         <div class="col-md-7">
             @Html.TextBoxFor(m => m.LastName1, new { @class = "form-control" })
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.LastName2, new { @class = "col-md-2 control-label" })
+        @Html.LabelFor(m => m.LastName2, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminLastName2", ViewBag.UsrCtry, ViewBag.UsrCtryLang)), new { @class = "col-md-2 control-label" })
         <div class="col-md-7">
             @Html.TextBoxFor(m => m.LastName2, new { @class = "form-control" })
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.InstitutionID, new { @class = "col-md-2 control-label" })
+        @Html.LabelFor(m => m.InstitutionID, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminInstitution", ViewBag.UsrCtry, ViewBag.UsrCtryLang)), new { @class = "col-md-2 control-label" })
         <div class="col-md-7">
             @Html.DropDownListFor(m => m.InstitutionID, Model.Institutions, new { @class = "form-control institutionname" })
         </div>
     </div>
     <div class="form-group">
         <label class="col-md-2 control-label">
-            Selecciones un Rol
+            @(Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminSelectRole", ViewBag.UsrCtry, ViewBag.UsrCtryLang))
         </label>
         <div class="col-md-7">
           @foreach (var item in Model.RolesList)
@@ -85,9 +85,12 @@
     </div>
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Crear" />
+            <input type="submit" class="btn btn-default" value='@(Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminButtonCreate", ViewBag.UsrCtry, ViewBag.UsrCtryLang))' />
         </div>
     </div>
+    <br />
+
+    @Html.ActionLink(((string)Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminDeleteAccountButtonReturnToList", ViewBag.UsrCtry, ViewBag.UsrCtryLang)), "Index")
 }
 
 @section Scripts {
