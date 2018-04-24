@@ -1584,8 +1584,10 @@
     <Content Include="Scripts\ammap\maps\svg\italyLow.svg" />
     <Content Include="Scripts\ammap\maps\svg\ivoryCoastHigh.svg" />
     <Content Include="Scripts\ammap\maps\svg\ivoryCoastLow.svg" />
+    <Content Include="Scripts\ammap\maps\svg\jamaicaCONDLow.svg" />
     <Content Include="Scripts\ammap\maps\svg\jamaicaHigh.svg" />
     <Content Include="Scripts\ammap\maps\svg\jamaicaLow.svg" />
+    <Content Include="Scripts\ammap\maps\svg\jamaicaPARRLow.svg" />
     <Content Include="Scripts\ammap\maps\svg\japanHigh.svg" />
     <Content Include="Scripts\ammap\maps\svg\japanLow.svg" />
     <Content Include="Scripts\ammap\maps\svg\jerseyHigh.svg" />
@@ -2092,6 +2094,7 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
+    <None Include="Properties\PublishProfiles\aaa.pubxml" />
     <None Include="Properties\PublishProfiles\AAA1.pubxml" />
     <None Include="Properties\PublishProfiles\aaaa.pubxml" />
     <None Include="Properties\PublishProfiles\INTERNATIONAL.pubxml" />

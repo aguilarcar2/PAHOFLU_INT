@@ -1206,8 +1206,7 @@ namespace Paho.Controllers
                 int? ETI_ = ETI;
                 int? IRAG_ = IRAG;
                 
-               
-                string resultGetGraphData = "";
+                //string resultGetGraphData = "";
                 XmlDocument myXmlDoc0 = new XmlDocument();
                 List<ArrayList> mapVals = new List<ArrayList>();
                 
@@ -1259,6 +1258,9 @@ namespace Paho.Controllers
                                     break;
                                 case 25:
                                     myXmlNode0.InnerText = "SR";
+                                    break;
+                                case 17:
+                                    myXmlNode0.InnerText = "JM";
                                     break;
                             }
                             myXmlDoc0.DocumentElement.AppendChild(myXmlNode0);
