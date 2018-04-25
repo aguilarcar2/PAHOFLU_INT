@@ -9,6 +9,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
+
 namespace Paho.Controllers
 {
     [Authorize(Roles = "Admin")]
@@ -108,8 +109,8 @@ namespace Paho.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(
-            [Bind(Include = 
-            "AreaID, FullName, Name, AccessLevel, InstID, Father_ID, SARI, ILI, PCR, IFI, Active, orig_country, cod_region_institucional, cod_region_salud, cod_region_pais, InstType")]
+            [Bind(Include =
+            "AreaID, FullName, Name, AccessLevel, InstID, Father_ID, centinel, SARI, ILI, PCR, IFI, Active, orig_country, cod_region_institucional, cod_region_salud, cod_region_pais, InstType, OrdenPrioritybyLab, NPHL")]
             Hospital catalog)
         {
             try
@@ -180,7 +181,7 @@ namespace Paho.Controllers
             var catalog = db.Institutions.Find(id);
             if (TryUpdateModel(catalog, "",
                new string[] { "AreaID", "FullName", "Name", "AccessLevel", "InstID", "Father_ID", "SARI", "ILI", "PCR", "IFI",
-                   "Active", "orig_country","cod_region_institucional","cod_region_salud","cod_region_pais","InstType" }))
+                   "Active", "orig_country","cod_region_institucional","cod_region_salud","cod_region_pais","InstType", "OrdenPrioritybyLab", "NPHL" }))
             {
                 try
                 {

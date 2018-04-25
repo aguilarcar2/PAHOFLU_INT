@@ -11,41 +11,48 @@
         
         <div class="form-group vertical-align" id="div-father">
             <label class="col-md-1_5 text_right">@(Paho.Controllers.ResourcesM.SgetMessage("msgInstitutionFrom", ViewBag.UsrCtry, ViewBag.UsrCtryLang)):</label>
-            <div class="col-md-10">
+            <div class="col-md-7">
                 @Html.DropDownList("InstitutionFromID", null, htmlAttributes: new { @class = "form-control" })
             </div>
         </div>
 
         <div class="form-group vertical-align" id="div-father">
             <label class="col-md-1_5 text_right">@(Paho.Controllers.ResourcesM.SgetMessage("msgInstitutionToward", ViewBag.UsrCtry, ViewBag.UsrCtryLang)):</label>
-            <div class="col-md-10">
+            <div class="col-md-7">
                 @Html.DropDownList("InstitutionToID", null, htmlAttributes: new { @class = "form-control" })
             </div>
         </div>
 
         <div class="form-group vertical-align" id="div-father">
             <label class="col-md-1_5 text_right">@(Paho.Controllers.ResourcesM.SgetMessage("msgFatherInstitution", ViewBag.UsrCtry, ViewBag.UsrCtryLang)):</label>
-            <div class="col-md-10">
+            <div class="col-md-7">
                 @Html.DropDownList("InstitutionParentID", null, htmlAttributes: new { @class = "form-control" })
             </div>
         </div>
 
         <div class="form-group vertical-align">
             @Html.LabelFor(model => model.Priority,((string)Paho.Controllers.ResourcesM.SgetMessage("msgFlow", ViewBag.UsrCtry, ViewBag.UsrCtryLang))+":", htmlAttributes: new { @class = "col-md-1_5 text_right" })
-            <div class="col-md-10">
+            <div class="col-md-7">
                 @Html.EditorFor(model => model.Priority, new { htmlAttributes = new { @class = "form-control", @min="1" } })
             </div>
         </div>
 
         <div class="form-group vertical-align">
             @Html.LabelFor(model => model.Conclusion, ((string)Paho.Controllers.ResourcesM.SgetMessage("viewHome_msgConclusion", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + ":", htmlAttributes: new { @class = "col-md-1_5 text_right" })
-            <div class="col-md-10">
+            <div class="col-md-7">
                 @Html.EditorFor(model => model.Conclusion, new { htmlAttributes = new { @class = "form-control" } })
             </div>
         </div>
 
         <div class="form-group vertical-align">
-            <div class="col-md-offset-2 col-md-10">
+            @Html.LabelFor(model => model.OpenAlways, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgOpenAlways", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + ":", htmlAttributes: new { @class = "col-md-1_5 text_right" })
+            <div class="col-md-7">
+                @Html.EditorFor(model => model.OpenAlways, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group vertical-align">
+            <div class="col-md-offset-2 col-md-7">
                 <input type="submit" value=@(Paho.Controllers.CatVirusTypeController.SgetMessage("msgViewCatPopulation_Crear", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) class="btn btn-default" />
             </div>
         </div>

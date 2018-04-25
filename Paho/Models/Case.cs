@@ -648,7 +648,7 @@ namespace Paho.Models
         [DisplayName("Orden de prioridad para el resultado final por institución:")]
         public int? OrdenPrioritybyLab { get; set; }
         [DisplayName("Laboratorio intermedio:")]
-        public bool? NPHL { get; set; }
+        public bool NPHL { get; set; }
         [NotMapped]
 		public InstitutionType InstType { get; set; }
     }    

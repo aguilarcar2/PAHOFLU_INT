@@ -10,7 +10,7 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         <div class="form-group vertical-align">
-            <label class="col-md-1_5 text-right" for="AreaID">Area:</label>
+            <label class="col-md-1_5 text-right" for="AreaID">@((string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelArea", ViewBag.UsrCtry, ViewBag.UsrCtryLang))</label>
             <div class="col-md-10">
                 @Html.DropDownList("AreaID", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.AreaID, "", new { @class = "text-danger" })
@@ -105,6 +105,14 @@
         </div>
 
         <div class="form-group vertical-align">
+            @Html.LabelFor(model => model.OrdenPrioritybyLab, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgOrdenPrioritybyLab", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.OrdenPrioritybyLab, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.OrdenPrioritybyLab, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group vertical-align">
             @Html.LabelFor(model => model.orig_country, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgOriginalCountryCode", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.orig_country, new { htmlAttributes = new { @class = "form-control" } })
@@ -112,7 +120,7 @@
             </div>
         </div>
 
-        <div class="form-group vertical-align" id="RegionInstitucionalGroup">
+        <div class="form-group vertical-align" id="RegionInstitucionalGroup" >
             @Html.LabelFor(model => model.cod_region_institucional, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgInstitutionalRegion", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
             <div class="col-md-10">
                 @Html.DropDownList("cod_region_institucional", null, htmlAttributes: new { @class = "form-control" })
@@ -150,6 +158,7 @@
 </div>
 
 @section Scripts {
+    @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/knockout")
     @Scripts.Render("~/bundles/catalog-institution")

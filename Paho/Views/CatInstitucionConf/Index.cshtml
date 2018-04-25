@@ -33,6 +33,9 @@
         <th>
             @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgFlow", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "CatInstitucionConf", new { sortOrder = ViewBag.SpaSortParm, currentFilter = ViewBag.CurrentFilter }, null)
         </th>
+        <th>
+            @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgOpenAlways", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "CatInstitucionConf", new { sortOrder = ViewBag.SpaSortParm, currentFilter = ViewBag.CurrentFilter }, null)
+        </th>
         <th></th>
     </tr>
 
@@ -51,6 +54,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Priority)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OpenAlways)
             </td>
             <td>
                 @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgViewCatPopulation_Editar", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Edit", "CatInstitucionConf", new { id = item.ID }, null) |

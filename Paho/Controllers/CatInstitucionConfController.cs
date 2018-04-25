@@ -108,7 +108,7 @@ namespace Paho.Controllers
 
         // POST: CatInstitucionConf/Create
         [HttpPost]
-        public ActionResult Create([Bind(Include = "InstitutionFromID, InstitutionToID, InstitutionParentID, Priority, Conclusion")] InstitutionConfiguration catalog)
+        public ActionResult Create([Bind(Include = "InstitutionFromID, InstitutionToID, InstitutionParentID, Priority, Conclusion, OpenAlways")] InstitutionConfiguration catalog)
         {
             try
             {
@@ -156,7 +156,7 @@ namespace Paho.Controllers
             }
             var catalog = db.InstitutionsConfiguration.Find(id);
             if (TryUpdateModel(catalog, "",
-               new string[] { "InstitutionFromID","InstitutionToID","InstitutionParentID","Priority","Conclusion" }))
+               new string[] { "InstitutionFromID","InstitutionToID","InstitutionParentID","Priority","Conclusion", "OpenAlways" }))
             {
                 try
                 {
