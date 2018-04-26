@@ -126,6 +126,8 @@
                             @if (@ViewBag.UserInstitutionType == 3)
                             {
 								<li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuDiccionarioView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Diccionario", new { area = "" }, null) </li>
+                                <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelArea", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Area", new { area = "" }, null)</li>
+                                <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgRegion", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Regions", new { area = "" }, null)</li>         
                                 <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatVirusTypeView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "CatVirusType", new { area = "" }, null)</li>
                                 <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatVirusSubTypeView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "CatVirusSubTypes", new { area = "" }, null)</li>
                                 <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatAgeGroupView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "CatAgeGroup", new { area = "" }, null)</li>

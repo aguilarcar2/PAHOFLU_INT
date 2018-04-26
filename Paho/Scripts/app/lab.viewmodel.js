@@ -1325,7 +1325,14 @@ function LabViewModel(app, dataModel) {
     self.GetLab = function (id) {
         self.Id = id;       
         $.getJSON(app.dataModel.getLabUrl, { id: id }, function (data, status) {
-            (data.RecDate) ? self.RecDate(moment(data.RecDate).clone().toDate()) : self.RecDate(null);
+
+                // Laboratorio intermedio
+                (data.Rec_Date_NPHL) ? self.Rec_Date_NPHL(moment(data.Rec_Date_NPHL).clone().toDate()) : self.Rec_Date_NPHL(null);
+                self.Temp_NPHL(data.Temp_NPHL);
+                self.Observation_NPHL(data.Observation_NPHL);
+                (data.Ship_Date_NPHL) ? self.Ship_Date_NPHL(moment(data.Ship_Date_NPHL).clone().toDate()) : self.Ship_Date_NPHL(null);
+                        
+                (data.RecDate) ? self.RecDate(moment(data.RecDate).clone().toDate()) : self.RecDate(null);
                 self.NPHL(data.InstFlow_NPHL);
                 self.Processed((data.Processed != null) ? data.Processed.toString() : "");
                 self.NoProRen(data.NoProRen);
@@ -1346,11 +1353,7 @@ function LabViewModel(app, dataModel) {
                 self.TempSample3(data.TempSample3);
 
 
-            // Laboratorio intermedio
-                (data.Rec_Date_NPHL) ? self.Rec_Date_NPHL(moment(data.Rec_Date_NPHL).clone().toDate()) : self.Rec_Date_NPHL(null);
-                self.Temp_NPHL(data.Temp_NPHL);
-                self.Observation_NPHL(data.Observation_NPHL);
-                (data.Ship_Date_NPHL) ? self.Ship_Date_NPHL(moment(data.Ship_Date_NPHL).clone().toDate()) : self.Ship_Date_NPHL(null);
+
 
                 (data.EndLabDate) ? self.EndLabDate(moment(data.EndLabDate).clone().toDate()) : self.EndLabDate(null);
                 self.FResult(data.FResult);

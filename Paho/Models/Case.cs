@@ -577,6 +577,7 @@ namespace Paho.Models
         public int ID { get; set; }
         public int CountryID { get; set; }
         public string Name { get; set; }
+        public string orig_country { get; set; }
         public virtual Country Country { get; set; }
         public virtual ICollection<State> States { get; set; }
     }

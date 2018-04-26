@@ -47,7 +47,7 @@
             </div>
         </div>
 
-        <div class="form-group vertical-align">
+        <div class="form-group vertical-align" style="display:none">
             @Html.LabelFor(model => model.InstID, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgPersonalizeInstitutionId", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.InstID, new { htmlAttributes = new { @class = "form-control" } })
@@ -62,7 +62,7 @@
             </div>
         </div>
 
-        <div class="form-group vertical-align">
+        <div class="form-group vertical-align" >
             @Html.LabelFor(model => model.SARI, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgIrag", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
             <div class="col-md-1">
                 @Html.EditorFor(model => model.SARI, new { htmlAttributes = new { @class = "form-control" } })
@@ -76,14 +76,14 @@
             </div>
         </div>
 
-        <div class="form-group vertical-align">
+        <div class="form-group vertical-align" id="div-PCR">
             @Html.LabelFor(model => model.PCR, htmlAttributes: new { @class = "col-md-1_5 text-right" })
             <div class="col-md-1">
                 @Html.EditorFor(model => model.PCR, new { htmlAttributes = new { @class = "form-control" } })
             </div>
         </div>
 
-        <div class="form-group vertical-align">
+        <div class="form-group vertical-align" id="div-IFI">
             @Html.LabelFor(model => model.IFI, htmlAttributes: new { @class = "col-md-1_5 text-right" })
             <div class="col-md-1">
                 @Html.EditorFor(model => model.IFI, new { htmlAttributes = new { @class = "form-control" } })
@@ -97,14 +97,14 @@
             </div>
         </div>
 
-        <div class="form-group vertical-align">
+        <div class="form-group vertical-align" id="div-NPHL">
             @Html.LabelFor(model => model.NPHL, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgNPHL", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
             <div class="col-md-1">
                 @Html.EditorFor(model => model.NPHL, new { htmlAttributes = new { @class = "form-control" } })
             </div>
         </div>
 
-        <div class="form-group vertical-align">
+        <div class="form-group vertical-align"  id="div-OPbL">
             @Html.LabelFor(model => model.OrdenPrioritybyLab, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgOrdenPrioritybyLab", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.OrdenPrioritybyLab, new { htmlAttributes = new { @class = "form-control" } })

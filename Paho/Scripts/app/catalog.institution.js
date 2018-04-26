@@ -9,6 +9,11 @@
         $("#RegionInstitucionalGroup").hide();
         $("#RegionSaludGroup").hide();
         $("#RegionPaisGroup").hide();
+        $("#div-PCR").hide();
+        $("#div-IFI").hide();
+        $("#div-NPHL").hide();
+        $("#div-OPbL").hide();
+        
 
         if ($("#cod_region_institucional").children().length > 1)
             $("#RegionInstitucionalGroup").show();
@@ -19,24 +24,40 @@
         if ($("#cod_region_pais").children().length > 1)
             $("#RegionPaisGroup").show();
 
-        $("#OrdenPrioritybyLab").ForceNumericOnly();
-        $('input[name="number"]').keyup(function (e) {
-            if (/\D/g.test(this.value)) {
-                // Filter non-digits from input value.
-                this.value = this.value.replace(/\D/g, '');
-            }
-        });
+        //$("#OrdenPrioritybyLab").ForceNumericOnly();
+        //$('#OrdenPrioritybyLab').keyup(function (e) {
+        //    if (/\D/g.test(this.value)) {
+        //        // Filter non-digits from input value.
+        //        this.value = this.value.replace(/\D/g, '');
+        //    }
+        //});
 
     }
 
     function toggleAccessLevel(isEdit) {
         accessLevel = $("#AccessLevel").val();
-        if (accessLevel == "Country" || accessLevel == "Area" || accessLevel == "Regional") {
-            $("#div-father").hide();            
-        } else {
+        if (accessLevel == "Service") {
             $("#div-father").show();
             if (isEdit) return;
             loadFatherInst();
+        } else {
+            $("#div-father").hide();
+
+        }
+    }
+
+    function toggleInstitutionType() {
+        accessLevel = $("#InstitutionType").val();
+        if (accessLevel == "Lab") {
+            $("#div-PCR").show();
+            $("#div-IFI").show();
+            $("#div-NPHL").show();
+            $("#div-OPbL").show();     
+        } else {
+            $("#div-PCR").hide();
+            $("#div-IFI").hide();
+            $("#div-NPHL").hide();
+            $("#div-OPbL").hide();
         }
     }
 
@@ -45,7 +66,7 @@
     });
 
     $("#InstitutionType").change(function () {
-        toggleAccessLevel();
+        toggleInstitutionType();
     });
 
     $("#cod_region_institucional").change(function () {
@@ -89,38 +110,6 @@
 		regInstGroup = $("#RegionInstitucionalGroup");
 		regSaludGroup = $("#RegionSaludGroup");
 		regPaisGroup = $("#RegionPaisGroup");
-
-		//regInstGroup.hide();
-
-		//console.log(regInstGroup.length);
-		//if (regInstGroup.length > 1)
-		//    regInstGroup.show();
-
-
-		
-		//if (regInst.val() != 0){
-		//	regSalud.val(0);
-		//	regPais.val(0);
-		//	regInstGroup.show();
-		//	regSaludGroup.hide();
-		//	regPaisGroup.hide();
-		//} else if (regSalud.val() != 0){
-		//	regInst.val(0);
-		//	regPais.val(0);
-		//	regInstGroup.hide();
-		//	regSaludGroup.show();
-		//	regPaisGroup.hide();
-		//} else if (regPais.val() != 0){
-		//	regInst.val(0);
-		//	regSalud.val(0);
-		//	regInstGroup.hide();
-		//	regSaludGroup.hide();
-		//	regPaisGroup.show();
-		//} else {
-		//    regInstGroup.show();
-		//    regSaludGroup.show();
-		//    regPaisGroup.show();
-		//}
 	}
 	
     $('form').on('submit', function (e) { 

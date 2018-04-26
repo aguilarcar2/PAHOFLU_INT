@@ -507,7 +507,8 @@ namespace Paho.Controllers
                                      {
                                          "<img src='/Content/themes/base/images/" + x.surv_ID.ToString() + "_" + user.Institution.Country.Language.ToString() + ".png' alt='"+ (x.surv_ID == 1 ? "SARI":"ILI") + "'/>",
                                          x.id_D.ToString(),
-                                         x.H_D.ToString("d", CultureInfo.CreateSpecificCulture("es-GT")),
+                                         //x.H_D.ToString("d", CultureInfo.CreateSpecificCulture("es-GT")),
+                                         x.H_D.ToString((user.Institution.CountryID==17) ? "yyyy/MM/dd": "dd/MM/yyyy" ),
                                          x.LN_D,
                                          x.FN_D,
                                          x.NE_D ?? "",

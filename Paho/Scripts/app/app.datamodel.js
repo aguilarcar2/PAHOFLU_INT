@@ -42,8 +42,8 @@
 
     // Formato de fechas
     //self.date_format_ = "dd/mm/yyyy";
-    self.date_format_ = "dd/mm/yyyy";
-    self.date_format_moment = "DD/MM/YYYY";
+    self.date_format_ = "dd/mm/yy";
+    self.date_format_moment = "YYYY/MM/DD";
     self.date_format_ISO = "YYYY-MM-DD";
 
     //self.getFluCasesUrl = "/cases/GetFluCases";
