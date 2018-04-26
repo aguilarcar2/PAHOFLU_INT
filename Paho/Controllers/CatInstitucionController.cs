@@ -303,15 +303,15 @@ namespace Paho.Controllers
 
             var regInstQuery = (from d in db.Regions where (d.tipo_region == 1 || d.tipo_region == null) && d.CountryID == countryId orderby d.Name select d).ToList();
             regInstQuery.Insert(0, new Region { ID = 0, Name = "-- " + getMsg("msgSelect") + " -- " });
-            ViewBag.cod_region_institucional = new SelectList(regInstQuery, "ID", "Name", selectedRegInst);
+            ViewBag.cod_region_institucional = new SelectList(regInstQuery, "orig_country", "Name", selectedRegInst);
 
             var regSaludQuery = (from d in db.Regions where d.tipo_region == 2 && d.CountryID == countryId orderby d.Name select d).ToList();
             regSaludQuery.Insert(0, new Region { ID = 0, Name = "-- " + getMsg("msgSelect") +" -- " });
-            ViewBag.cod_region_salud = new SelectList(regSaludQuery, "ID", "Name", selectedRegSalud);
+            ViewBag.cod_region_salud = new SelectList(regSaludQuery, "orig_country", "Name", selectedRegSalud);
 
             var regPaisQuery = (from d in db.Regions where d.tipo_region == 3 && d.CountryID == countryId orderby d.Name select d).ToList();
             regPaisQuery.Insert(0, new Region { ID = 0, Name = "-- " + getMsg("msgSelect") + " -- " });
-            ViewBag.cod_region_pais = new SelectList(regPaisQuery, "ID", "Name", selectedRePais);
+            ViewBag.cod_region_pais = new SelectList(regPaisQuery, "orig_country", "Name", selectedRePais);
             
             if (instType == InstitutionType.Lab) {
                 var instQuery = db.Institutions.OfType<Hospital>().Where(x => x.CountryID == countryId).OrderBy(x => x.Name).ToList();
