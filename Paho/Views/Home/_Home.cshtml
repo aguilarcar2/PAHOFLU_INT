@@ -4723,7 +4723,6 @@
                         <span></span>
                         if (ViewBag.UserInstitutionType == 1)
                         {
-
                             <button id="saveGeneral_2" type="button" class="btn btn-primary" data-bind="click: Save.bind($data,0), visible:app.Views.Contact.Flow_Local_Institution_Epi()">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigGeneralSaveAndNew"))</button>
                             <span></span>
                         }
@@ -4738,8 +4737,8 @@
                     {
                         if (User.IsInRole("Admin") || User.IsInRole("Staff"))
                         {
-                        <span></span>
-                        <button id="Reset" type="button" class="btn btn-primary" data-bind="click: AddFluCase , visible: false">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigGeneralNewRecord"))</button>
+                            <span></span>
+                            <button id="Reset" type="button" class="btn btn-primary" data-bind="click: AddFluCase , visible: false">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigGeneralNewRecord"))</button>
                         }
                     }
                     <span></span>

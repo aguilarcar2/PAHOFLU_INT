@@ -840,15 +840,23 @@ namespace Paho.Controllers
                                 {
                                     //row = 212;
                                     int nAnDa = 0;
-                                    if (countryId == 25 || countryId == 17)
+                                    if (countryId == 25)
                                     {
-                                        row = row - 1 + (9 * 3) + 15;
-                                        nAnDa = 8 * 8;              // 8: Nº Age Group
+                                        row = row - 1 + (9 * 3) + 15;               // Inicio tabla 2
+                                        nAnDa = 8 * 8;                              // 8: Nº Age Group
                                     }
                                     else
                                     {
-                                        row = 212;
-                                        nAnDa = 6 * 8;              // 6: Nº Age Group
+                                        if (countryId == 17)
+                                        {
+                                            row = row - 1 + (9 * 3) + 15;           // Inicio tabla 2
+                                            nAnDa = 9 * 8;                          // 9: Nº Age Group
+                                        }
+                                        else
+                                        {
+                                            row = 212;                  // Inicio tabla 2
+                                            nAnDa = 6 * 8;              // 6: Nº Age Group
+                                        }
                                     }
                                     column = 6;
 
@@ -1909,20 +1917,32 @@ namespace Paho.Controllers
                                             int qtyRowsGrupoEdad = 27;
                                             int indiceInicial = 0;
                                             int indiceInicial2 = 0;
-                                            if (CountryID_==3 || CountryID_ == 7 || CountryID_ == 9)
+
+                                            if (CountryID_ == 3 || CountryID_ == 7 || CountryID_ == 9)
                                             {
                                                 qtyGruposEdad = 6;
-                                                filaInicialTabla2 = 208;
-                                                indiceInicial = 886;
+                                                filaInicialTabla2 = 208;        // Vigilancia de Influenza y otros Virus Respiratorios 
+                                                indiceInicial = 886;            // Positivos para otros virus respiratorios\Other
                                                 indiceInicial2 = 887;
                                             }
                                             else
                                             {
-                                                qtyGruposEdad = 8;
-                                                filaInicialTabla2 = 262;
-                                                indiceInicial = 1156;
-                                                indiceInicial2 = 1157;
+                                                if (CountryID_ == 17)
+                                                {
+                                                    qtyGruposEdad = 9;
+                                                    filaInicialTabla2 = 289;    // Vigilancia de Influenza y otros Virus Respiratorios 
+                                                    indiceInicial = 1291;       // Other
+                                                    indiceInicial2 = 1292;
+                                                }
+                                                else
+                                                {
+                                                    qtyGruposEdad = 8;
+                                                    filaInicialTabla2 = 262;    // Vigilancia de Influenza y otros Virus Respiratorios 
+                                                    indiceInicial = 1156;       // Other
+                                                    indiceInicial2 = 1157;
+                                                }
                                             }
+
                                             /*--------------Fin Parámetros dependiendo del país del gráficos-----------*/
 
                                             for (int i = 0; i < 53; i++)
@@ -2176,11 +2196,11 @@ namespace Paho.Controllers
                                                 //anotherAuxXmlNode4.InnerText = ep.Workbook.Worksheets[1].Cells["BJ" + i.ToString()].Value.ToString();
                                                 if (CountryID_ == 3 || CountryID_ == 7 || CountryID_ == 9)
                                                 {
-                                                    anotherAuxXmlNode4.InnerText = ep.Workbook.Worksheets[1].Cells["BJ" + i.ToString()].Value.ToString();
+                                                    anotherAuxXmlNode4.InnerText = ep.Workbook.Worksheets[1].Cells["BJ" + i.ToString()].Value.ToString();       //BJ: Columna con los grupos de edad en hoja tablas
                                                 }
                                                 else
                                                 {
-                                                    anotherAuxXmlNode4.InnerText = ep.Workbook.Worksheets[1].Cells["BK" + i.ToString()].Value.ToString();
+                                                    anotherAuxXmlNode4.InnerText = ep.Workbook.Worksheets[1].Cells["BK" + i.ToString()].Value.ToString();       //BK: Columna con los grupos de edad en hoja tablas
                                                 }
                                                 auxXmlNode4.AppendChild(anotherAuxXmlNode4);
 
@@ -2378,17 +2398,27 @@ namespace Paho.Controllers
                                         int indiceInicial3 = 0;
                                         int indiceInicial4 = 0;
                                         int altoGrupo = 0;
+
                                         if (CountryID_ == 3 || CountryID_ == 7 || CountryID_ == 9)
                                         {
-                                            indiceInicial3 = 583;
-                                            indiceInicial4 = 883;
-                                            altoGrupo = 75;
+                                            indiceInicial3 = 583;       // Influenza B
+                                            indiceInicial4 = 883;       // Virus Otros
+                                            altoGrupo = 75;             // Tamaño virus otros
                                         }
                                         else
                                         {
-                                            indiceInicial3 = 757;
-                                            indiceInicial4 = 1153;
-                                            altoGrupo = 99;
+                                            if (CountryID_ == 17)
+                                            {
+                                                indiceInicial3 = 844;       // Influenza B
+                                                indiceInicial4 = 1288;      // Virus Otros
+                                                altoGrupo = 111;            // Tamaño virus otros
+                                            }
+                                            else
+                                            {
+                                                indiceInicial3 = 757;       // Influenza B
+                                                indiceInicial4 = 1153;      // Virus Otros
+                                                altoGrupo = 99;             // Tamaño virus otros
+                                            }
                                         }
 
                                         myXmlNode2 = myXmlDoc2.CreateElement("graphSeries1Label");
@@ -2730,17 +2760,6 @@ namespace Paho.Controllers
             if (year != 0)
                 titulo = year.ToString();
 
-            /*string nombPais = "";
-            if (countryId == 9)
-                nombPais = "Costa Rica";
-            else if (countryId == 7)
-                nombPais = "Chile";
-            else if (countryId == 25)
-                nombPais = "Suriname";
-            else if (countryId == 3)
-                nombPais = "Bolivia";*/
-
-            //datosID.Add(nombPais + " - " + year.ToString());                  // Titulo
             datosID.Add(countryName + " - " + year.ToString());                  // Titulo
 
             if (nDato2[0] != 0)
@@ -2771,15 +2790,6 @@ namespace Paho.Controllers
             datosID.Add((nDato12[0]).ToString("#,##0", CultureInfo.InvariantCulture));
             datosID.Add((nDato14[0]).ToString("#,##0", CultureInfo.InvariantCulture));
 
-            /*decimal nTemp = 0;
-            for (int nI = 0; nI <= 5; ++nI)
-            {
-                nTemp = Convert.ToDecimal(aDato3[nI, 1], new CultureInfo("en-US"));
-                if (nTemp != 0)
-                    datosID.Add((Convert.ToDecimal(aDato7[nI, 1], new CultureInfo("en-US")) / nTemp * 100).ToString("#,##0.0", CultureInfo.InvariantCulture));
-                else
-                    datosID.Add("0");
-            }*/
             //**** metas
             string cMetas = ConfigurationManager.AppSettings["IndicadoresDesempenioMetas_" + countryId.ToString()];
             if (cMetas == null)
@@ -2830,14 +2840,6 @@ namespace Paho.Controllers
                             }
                             else
                             {
-                                /*if (reader.GetValue(0).ToString() == "")
-                                {
-                                    nResuOut[0] = Convert.ToDecimal(0);
-                                }
-                                else
-                                {
-                                    nResuOut[0] = Convert.ToDecimal(reader.GetValue(0));
-                                }*/
                                 nResuOut[0] = (reader.GetValue(0).ToString() == "") ? Convert.ToDecimal(0) : Convert.ToDecimal(reader.GetValue(0));
                             }
                         }
@@ -3155,7 +3157,7 @@ namespace Paho.Controllers
                 string cTitu, cSeEp, cNuCa, cPoCa, cCaEt, cPoEC, cJS = "", cTemp = "";
                 jsonTextLB = "";
 
-                if (countryId == 25)
+                if (countryId == 25 || countryId == 17)
                 {
                     cTitu = "Number of ILI cases per epidemiological week - " + string.Join(",", years);
                     cSeEp = "Epidemiological Week";
@@ -3289,7 +3291,7 @@ namespace Paho.Controllers
                 string cTitu, cSeEp, cNuCa, cPoCa, cInPo, cPoEP, cJS = "", cTemp = "";
                 jsonTextLB = "";
 
-                if (countryId == 25)
+                if (countryId == 25 || countryId == 17)
                 {
                     cTitu = "Number of influenza positive ILI cases per epidemiological week - " + string.Join(",", years) + " (percentage of influenza positive cases in all ILI cases)";
                     cSeEp = "Epidemiological Week";
@@ -3414,7 +3416,7 @@ namespace Paho.Controllers
                 string cTitu, cSeEp, cNuCa, cJS = "", cTemp = "";
                 jsonTextLB = "";
 
-                if (countryId == 25)
+                if (countryId == 25 || countryId == 17)
                 {
                     cTitu = "Distribution of SARI deaths by age groups per epidemiological week - " + string.Join(",", years);
                     cSeEp = "Epidemiological Week";
@@ -3454,6 +3456,13 @@ namespace Paho.Controllers
                         cTemp = cTemp + "\"" + "serie8" + "\":\"" + aDaSe[9] + "\",";               //
                         cTemp = cTemp + "\"" + "serie9" + "\":\"" + aDaSe[10] + "\"";               //
                     }
+                    if (countryId == 17)
+                    {
+                        cTemp = cTemp + ",";
+                        cTemp = cTemp + "\"" + "serie8" + "\":\"" + aDaSe[9] + "\",";               //
+                        cTemp = cTemp + "\"" + "serie9" + "\":\"" + aDaSe[10] + "\",";               //
+                        cTemp = cTemp + "\"" + "serie10" + "\":\"" + aDaSe[11] + "\"";               //
+                    }
 
                     cTemp = cTemp + "}";
 
@@ -3478,14 +3487,31 @@ namespace Paho.Controllers
                 }
                 else
                 {
-                    jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + "0 a <2 años" + "\",";
-                    jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + "2 a <5 años" + "\",";
-                    jsonTextLB = jsonTextLB + "\"" + "graphSeries3Label" + "\":\"" + "5 a 19 años" + "\",";
-                    jsonTextLB = jsonTextLB + "\"" + "graphSeries4Label" + "\":\"" + "20 a 39 años" + "\",";
-                    jsonTextLB = jsonTextLB + "\"" + "graphSeries5Label" + "\":\"" + "40 a 59 años" + "\",";
-                    jsonTextLB = jsonTextLB + "\"" + "graphSeries6Label" + "\":\"" + "60 años y +" + "\",";
-                    jsonTextLB = jsonTextLB + "\"" + "graphSeries7Label" + "\":\"" + "Edad desconocida" + "\"";
-                    jsonTextLB = jsonTextLB + "}}";
+                    if (countryId == 17)
+                    {
+                        jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + "Under 6 months" + "\",";
+                        jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + "6 to 11 months" + "\",";
+                        jsonTextLB = jsonTextLB + "\"" + "graphSeries3Label" + "\":\"" + "12 to 23 months" + "\",";
+                        jsonTextLB = jsonTextLB + "\"" + "graphSeries4Label" + "\":\"" + "2 to 4 years" + "\",";
+                        jsonTextLB = jsonTextLB + "\"" + "graphSeries5Label" + "\":\"" + "5 to 14 years" + "\",";
+                        jsonTextLB = jsonTextLB + "\"" + "graphSeries6Label" + "\":\"" + "15 to 49 years" + "\",";
+                        jsonTextLB = jsonTextLB + "\"" + "graphSeries7Label" + "\":\"" + "50 to 59 years" + "\",";
+                        jsonTextLB = jsonTextLB + "\"" + "graphSeries8Label" + "\":\"" + "60 to 64 years" + "\",";
+                        jsonTextLB = jsonTextLB + "\"" + "graphSeries9Label" + "\":\"" + "65 years +" + "\",";
+                        jsonTextLB = jsonTextLB + "\"" + "graphSeries10Label" + "\":\"" + "Age unknown" + "\"";
+                        jsonTextLB = jsonTextLB + "}}";
+                    }
+                    else
+                    {
+                        jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + "0 a <2 años" + "\",";
+                        jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + "2 a <5 años" + "\",";
+                        jsonTextLB = jsonTextLB + "\"" + "graphSeries3Label" + "\":\"" + "5 a 19 años" + "\",";
+                        jsonTextLB = jsonTextLB + "\"" + "graphSeries4Label" + "\":\"" + "20 a 39 años" + "\",";
+                        jsonTextLB = jsonTextLB + "\"" + "graphSeries5Label" + "\":\"" + "40 a 59 años" + "\",";
+                        jsonTextLB = jsonTextLB + "\"" + "graphSeries6Label" + "\":\"" + "60 años y +" + "\",";
+                        jsonTextLB = jsonTextLB + "\"" + "graphSeries7Label" + "\":\"" + "Edad desconocida" + "\"";
+                        jsonTextLB = jsonTextLB + "}}";
+                    }
                 }
             }
             catch (Exception e)
@@ -3499,7 +3525,6 @@ namespace Paho.Controllers
 
         private static void recuperarDatosIRAGFallecidosxGE(string consString, string storProc, int countryId, int? hospitalId, int? year, ArrayList aData)
         {
-            //System.Diagnostics.Debug.WriteLine("recuperarDatosIRAGFallecidosxGE->START");
             try
             {
                 using (var con = new SqlConnection(consString))
@@ -3518,13 +3543,11 @@ namespace Paho.Controllers
                         command.Parameters.Add("@weekFrom", SqlDbType.Int).Value = 0;
                         command.Parameters.Add("@weekTo", SqlDbType.Int).Value = 0;
 
-                        //System.Threading.Thread.Sleep(1000);         // Stop de 2 segundos
                         con.Open();
-
                         using (var reader = command.ExecuteReader())
                         {
                             string cAnio, cSema;
-                            string cGE1, cGE2, cGE3, cGE4, cGE5, cGE6, cGE7, cGE8, cGE9;
+                            string cGE1, cGE2, cGE3, cGE4, cGE5, cGE6, cGE7, cGE8, cGE9, cGE10;
 
                             while (reader.Read())
                             {
@@ -3537,6 +3560,7 @@ namespace Paho.Controllers
                                 cGE5 = ((int)reader.GetValue(7)).ToString();
                                 cGE6 = ((int)reader.GetValue(8)).ToString();
                                 cGE7 = ((int)reader.GetValue(9)).ToString();
+
                                 if (countryId == 25)
                                 {
                                     cGE8 = ((int)reader.GetValue(10)).ToString();
@@ -3545,7 +3569,17 @@ namespace Paho.Controllers
                                 }
                                 else
                                 {
-                                    aData.Add(new string[] { cAnio, cSema, cGE1, cGE2, cGE3, cGE4, cGE5, cGE6, cGE7 });
+                                    if (countryId == 17)
+                                    {
+                                        cGE8 = ((int)reader.GetValue(10)).ToString();
+                                        cGE9 = ((int)reader.GetValue(11)).ToString();
+                                        cGE10 = ((int)reader.GetValue(12)).ToString();
+                                        aData.Add(new string[] { cAnio, cSema, cGE1, cGE2, cGE3, cGE4, cGE5, cGE6, cGE7, cGE8, cGE9, cGE10 });
+                                    }
+                                    else
+                                    {
+                                        aData.Add(new string[] { cAnio, cSema, cGE1, cGE2, cGE3, cGE4, cGE5, cGE6, cGE7 });
+                                    }
                                 }
                             }
                         }
@@ -3554,7 +3588,6 @@ namespace Paho.Controllers
                         con.Close();
                     }
                 }
-                //System.Diagnostics.Debug.WriteLine("recuperarDatosIRAGFallecidosxGE->END");
             }
             catch (Exception e)
             {
@@ -3581,7 +3614,7 @@ namespace Paho.Controllers
 
                 jsonTextLB = "";
 
-                if (countryId == 25)
+                if (countryId == 25 || countryId == 17)
                 {
                     cTitu = "Distribution of total SARI cases by age group and epidemiological week - " + string.Join(",", years);
                     cSeEp = "Epidemiological Week";
@@ -3619,6 +3652,13 @@ namespace Paho.Controllers
                         cTemp = cTemp + "\"" + "serie7" + "\":\"" + aDaSe[8] + "\",";               //
                         cTemp = cTemp + "\"" + "serie8" + "\":\"" + aDaSe[9] + "\"";               //
                     }
+                    if (countryId == 17)
+                    {
+                        cTemp = cTemp + ",";
+                        cTemp = cTemp + "\"" + "serie7" + "\":\"" + aDaSe[8] + "\",";               //
+                        cTemp = cTemp + "\"" + "serie8" + "\":\"" + aDaSe[9] + "\",";               //
+                        cTemp = cTemp + "\"" + "serie9" + "\":\"" + aDaSe[10] + "\"";               //
+                    }
 
                     cTemp = cTemp + "}";
 
@@ -3627,7 +3667,7 @@ namespace Paho.Controllers
 
                 cJS = "[" + cJS + "]";
                 jsonTextLB = jsonTextLB + cJS + "},";
-
+                               
                 if (countryId == 25)
                 {
                     jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + "Under 6 months" + "\",";
@@ -3641,12 +3681,27 @@ namespace Paho.Controllers
                 }
                 else
                 {
-                    jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + "0 a <2 años" + "\",";
-                    jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + "2 a <5 años" + "\",";
-                    jsonTextLB = jsonTextLB + "\"" + "graphSeries3Label" + "\":\"" + "5 a 19 años" + "\",";
-                    jsonTextLB = jsonTextLB + "\"" + "graphSeries4Label" + "\":\"" + "20 a 39 años" + "\",";
-                    jsonTextLB = jsonTextLB + "\"" + "graphSeries5Label" + "\":\"" + "40 a 59 años" + "\",";
-                    jsonTextLB = jsonTextLB + "\"" + "graphSeries6Label" + "\":\"" + "60 años y +" + "\"";
+                    if (countryId == 17)
+                    {
+                        jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + "Under 6 months" + "\",";
+                        jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + "6 to 11 months" + "\",";
+                        jsonTextLB = jsonTextLB + "\"" + "graphSeries3Label" + "\":\"" + "12 to 23 months" + "\",";
+                        jsonTextLB = jsonTextLB + "\"" + "graphSeries4Label" + "\":\"" + "2 to 4 years" + "\",";
+                        jsonTextLB = jsonTextLB + "\"" + "graphSeries5Label" + "\":\"" + "5 to 14 years" + "\",";
+                        jsonTextLB = jsonTextLB + "\"" + "graphSeries6Label" + "\":\"" + "15 to 49 years" + "\",";
+                        jsonTextLB = jsonTextLB + "\"" + "graphSeries7Label" + "\":\"" + "50 to 59 years" + "\",";
+                        jsonTextLB = jsonTextLB + "\"" + "graphSeries8Label" + "\":\"" + "60 to 64 years" + "\",";
+                        jsonTextLB = jsonTextLB + "\"" + "graphSeries9Label" + "\":\"" + "65 years +" + "\"";
+                    }
+                    else
+                    {
+                        jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + "0 a <2 años" + "\",";
+                        jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + "2 a <5 años" + "\",";
+                        jsonTextLB = jsonTextLB + "\"" + "graphSeries3Label" + "\":\"" + "5 a 19 años" + "\",";
+                        jsonTextLB = jsonTextLB + "\"" + "graphSeries4Label" + "\":\"" + "20 a 39 años" + "\",";
+                        jsonTextLB = jsonTextLB + "\"" + "graphSeries5Label" + "\":\"" + "40 a 59 años" + "\",";
+                        jsonTextLB = jsonTextLB + "\"" + "graphSeries6Label" + "\":\"" + "60 años y +" + "\"";
+                    }
                 }
 
                 jsonTextLB = jsonTextLB + "}}";
@@ -3686,7 +3741,7 @@ namespace Paho.Controllers
                         using (var reader = command.ExecuteReader())
                         {
                             string cAnio, cSema;
-                            string cGE1, cGE2, cGE3, cGE4, cGE5, cGE6, cGE7, cGE8;
+                            string cGE1, cGE2, cGE3, cGE4, cGE5, cGE6, cGE7, cGE8, cGE9;
 
                             while (reader.Read())
                             {
@@ -3698,6 +3753,7 @@ namespace Paho.Controllers
                                 cGE4 = ((int)reader.GetValue(14)).ToString();
                                 cGE5 = ((int)reader.GetValue(15)).ToString();
                                 cGE6 = ((int)reader.GetValue(16)).ToString();
+
                                 if (countryId == 25)
                                 {
                                     cGE7 = ((int)reader.GetValue(17)).ToString();
@@ -3706,7 +3762,17 @@ namespace Paho.Controllers
                                 }
                                 else
                                 {
-                                    aData.Add(new string[] { cAnio, cSema, cGE1, cGE2, cGE3, cGE4, cGE5, cGE6 });
+                                    if (countryId == 17)
+                                    {
+                                        cGE7 = ((int)reader.GetValue(17)).ToString();
+                                        cGE8 = ((int)reader.GetValue(18)).ToString();
+                                        cGE9 = ((int)reader.GetValue(19)).ToString();
+                                        aData.Add(new string[] { cAnio, cSema, cGE1, cGE2, cGE3, cGE4, cGE5, cGE6, cGE7, cGE8, cGE9 });
+                                    }
+                                    else
+                                    {
+                                        aData.Add(new string[] { cAnio, cSema, cGE1, cGE2, cGE3, cGE4, cGE5, cGE6 });
+                                    }
                                 }
                             }
                         }
