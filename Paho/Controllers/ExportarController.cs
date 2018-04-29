@@ -816,7 +816,7 @@ namespace Paho.Controllers
             _storedProcedure = storedProcedure;
             if (storedProcedure == "R5")
             {
-                if (countryId == 25 || countryId == 17)
+                /*if (countryId == 25 || countryId == 17)
                 {
                     _storedProcedure = "R5_2";
                     nPosiTipo = 19;
@@ -828,6 +828,29 @@ namespace Paho.Controllers
                     nPosiTipo = 15;
                     nInicTip2 = 8;                  //Inicio hospitalizados
                     nPoSuViGr = 10;                 // Posic. Ecel Sumatoria
+                }*/
+                if (countryId == 17)
+                {
+                    _storedProcedure = "R5_JM";
+                    nPosiTipo = 21;                 // Posic. columna "Tipo" (tabla retornada x SP)
+                    nInicTip2 = 11;                 // Inicio hospitalizados (tabla retornada x SP)
+                    nPoSuViGr = 13;                 // Posic. Excel Sumatoria (Columna "Total hospitalized cases")
+                }
+                else
+                {
+                    if (countryId == 25)
+                    {
+                        _storedProcedure = "R5_2";
+                        nPosiTipo = 19;                 // Posic. columna "Tipo" (tabla retornada x SP)
+                        nInicTip2 = 10;                 // Inicio hospitalizados (tabla retornada x SP)
+                        nPoSuViGr = 12;                 // Posic. Excel Sumatoria (Columna "Total hospitalized cases")
+                    }
+                    else
+                    {
+                        nPosiTipo = 15;                 // Posic. columna "Tipo" (tabla retornada x SP)
+                        nInicTip2 = 8;                  // Inicio hospitalizados (tabla retornada x SP)
+                        nPoSuViGr = 10;                 // Posic. Excel Sumatoria (Columna "Total hospitalized cases")
+                    }
                 }
             }
 
@@ -865,17 +888,8 @@ namespace Paho.Controllers
                         formulas1[6] = "='Inf A'!C{{toreplace}}";
                         formulas1[7] = "='Inf B'!C{{toreplace}}";
                         formulas1[8] = "=Metapnemovirus!C{{toreplace}}";
-                        /*formulas1[9] = "=VRS!J{{toreplace}}";
-                        formulas1[10] = "=VRS!K{{toreplace}}+Ad!K{{toreplace}}+Parainfluenza!K{{toreplace}}+'Inf A'!K{{toreplace}}+'Inf B'!K{{toreplace}}+Metapnemovirus!K{{toreplace}}";
-                        formulas1[11] = "=VRS!K{{toreplace}}";
-                        formulas1[12] = "=Ad!K{{toreplace}}";
-                        formulas1[13] = "=Parainfluenza!K{{toreplace}}";
-                        formulas1[14] = "='Inf A'!K{{toreplace}}";
-                        formulas1[15] = "='Inf B'!K{{toreplace}}";
-                        formulas1[16] = "=Metapnemovirus!K{{toreplace}}";
-                        formulas1[17] = "=D{{toreplace}}+E{{toreplace}}+F{{toreplace}}+G{{toreplace}}+H{{toreplace}}+I{{toreplace}}";
-                        formulas1[18] = "=L{{toreplace}}+M{{toreplace}}+N{{toreplace}}+O{{toreplace}}+P{{toreplace}}+Q{{toreplace}}";*/
-                        if (countryId == 25 || countryId == 17)
+
+                        /*if (countryId == 25 || countryId == 17)
                         {
                             formulas1[9] = "=VRS!L{{toreplace}}";
                             formulas1[10] = "=VRS!M{{toreplace}}+Ad!M{{toreplace}}+Parainfluenza!M{{toreplace}}+'Inf A'!M{{toreplace}}+'Inf B'!M{{toreplace}}+Metapnemovirus!M{{toreplace}}";
@@ -904,6 +918,54 @@ namespace Paho.Controllers
 
                             formulas1[17] = "=D{{toreplace}}+E{{toreplace}}+F{{toreplace}}+G{{toreplace}}+H{{toreplace}}+I{{toreplace}}";
                             formulas1[18] = "=L{{toreplace}}+M{{toreplace}}+N{{toreplace}}+O{{toreplace}}+P{{toreplace}}+Q{{toreplace}}";
+                        }*/
+                        if (countryId == 17)
+                        {
+                            formulas1[9] = "=VRS!L{{toreplace}}";
+                            formulas1[10] = "=VRS!M{{toreplace}}+Ad!M{{toreplace}}+Parainfluenza!M{{toreplace}}+'Inf A'!M{{toreplace}}+'Inf B'!M{{toreplace}}+Metapnemovirus!M{{toreplace}}";
+
+                            formulas1[11] = "=VRS!M{{toreplace}}";
+                            formulas1[12] = "=Ad!M{{toreplace}}";
+                            formulas1[13] = "=Parainfluenza!M{{toreplace}}";
+                            formulas1[14] = "='Inf A'!M{{toreplace}}";
+                            formulas1[15] = "='Inf B'!M{{toreplace}}";
+                            formulas1[16] = "=Metapnemovirus!M{{toreplace}}";
+
+                            formulas1[17] = "=D{{toreplace}}+E{{toreplace}}+F{{toreplace}}+G{{toreplace}}+H{{toreplace}}+I{{toreplace}}+J{{toreplace}}+K{{toreplace}}+L{{toreplace}}";
+                            formulas1[18] = "=O{{toreplace}}+P{{toreplace}}+Q{{toreplace}}+R{{toreplace}}+S{{toreplace}}+T{{toreplace}}+U{{toreplace}}+V{{toreplace}}+W{{toreplace}}";
+                        }
+                        else
+                        {
+                            if (countryId == 25)
+                            {
+                                formulas1[9] = "=VRS!L{{toreplace}}";
+                                formulas1[10] = "=VRS!M{{toreplace}}+Ad!M{{toreplace}}+Parainfluenza!M{{toreplace}}+'Inf A'!M{{toreplace}}+'Inf B'!M{{toreplace}}+Metapnemovirus!M{{toreplace}}";
+
+                                formulas1[11] = "=VRS!M{{toreplace}}";
+                                formulas1[12] = "=Ad!M{{toreplace}}";
+                                formulas1[13] = "=Parainfluenza!M{{toreplace}}";
+                                formulas1[14] = "='Inf A'!M{{toreplace}}";
+                                formulas1[15] = "='Inf B'!M{{toreplace}}";
+                                formulas1[16] = "=Metapnemovirus!M{{toreplace}}";
+
+                                formulas1[17] = "=D{{toreplace}}+E{{toreplace}}+F{{toreplace}}+G{{toreplace}}+H{{toreplace}}+I{{toreplace}}+J{{toreplace}}+K{{toreplace}}";
+                                formulas1[18] = "=N{{toreplace}}+O{{toreplace}}+P{{toreplace}}+Q{{toreplace}}+R{{toreplace}}+S{{toreplace}}+T{{toreplace}}+U{{toreplace}}";
+                            }
+                            else
+                            {
+                                formulas1[9] = "=VRS!J{{toreplace}}";
+                                formulas1[10] = "=VRS!K{{toreplace}}+Ad!K{{toreplace}}+Parainfluenza!K{{toreplace}}+'Inf A'!K{{toreplace}}+'Inf B'!K{{toreplace}}+Metapnemovirus!K{{toreplace}}";
+
+                                formulas1[11] = "=VRS!K{{toreplace}}";
+                                formulas1[12] = "=Ad!K{{toreplace}}";
+                                formulas1[13] = "=Parainfluenza!K{{toreplace}}";
+                                formulas1[14] = "='Inf A'!K{{toreplace}}";
+                                formulas1[15] = "='Inf B'!K{{toreplace}}";
+                                formulas1[16] = "=Metapnemovirus!K{{toreplace}}";
+
+                                formulas1[17] = "=D{{toreplace}}+E{{toreplace}}+F{{toreplace}}+G{{toreplace}}+H{{toreplace}}+I{{toreplace}}";
+                                formulas1[18] = "=L{{toreplace}}+M{{toreplace}}+N{{toreplace}}+O{{toreplace}}+P{{toreplace}}+Q{{toreplace}}";
+                            }
                         }
 
                         for (int i = 1; i <= 7; i++)            // i: Hoja
@@ -1090,7 +1152,7 @@ namespace Paho.Controllers
                                 {
                                     //row = 212;
                                     int nAnDa = 0;
-                                    if (countryId == 25 || countryId == 17)
+                                    /*if (countryId == 25 || countryId == 17)
                                     {
                                         row = row - 1 + (9 * 3) + 15;
                                         nAnDa = 8 * 8;              // 8: Nº Age Group
@@ -1099,6 +1161,24 @@ namespace Paho.Controllers
                                     {
                                         row = 212;
                                         nAnDa = 6 * 8;              // 6: Nº Age Group
+                                    }*/
+                                    if (countryId == 25)
+                                    {
+                                        row = row - 1 + (9 * 3) + 15;
+                                        nAnDa = 8 * 8;                  // 8: Nº Age Group
+                                    }
+                                    else
+                                    {
+                                        if (countryId == 17)
+                                        {
+                                            row = row - 1 + (9 * 3) + 15;
+                                            nAnDa = 9 * 8;              // 9: Nº Age Group
+                                        }
+                                        else
+                                        {
+                                            row = 212;
+                                            nAnDa = 6 * 8;              // 6: Nº Age Group
+                                        }
                                     }
                                     column = 6;
 
