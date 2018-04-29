@@ -3,6 +3,7 @@
     var date_format_ = app.dataModel.date_format_;
     var date_format_moment = app.dataModel.date_format_moment;
     var date_format_ISO = app.dataModel.date_format_ISO;
+    var date_format_DatePicker = app.dataModel.date_format_DatePicker;
     var date_hospital = new Date();
     var date_fever = new Date();
     var date_diagnostic = new Date();
@@ -41,7 +42,7 @@
 
     self.CalculateEW = function (FieldDate, FieldAct, FieldActYear) {
         if ($("#" + FieldDate).val() != "") {
-            var date_ew = parseDate($("#" + FieldDate).val(), date_format_);
+            var date_ew = moment(date_format_moment, $("#" + FieldDate).val()).toDate();
             var fwky_date = new Date(moment(date_ew).year(), 0, 1).getDay();
             var weekno = moment(date_ew).week();
             var weeknoISO = moment(date_ew).isoWeek();
@@ -91,7 +92,7 @@
                     }
                 } else {
                     if (weekno == 1 && moment(date_ew).month() == 11) {
-                        var fwky_date_prox = new Date(moment(date_ew).year() + 1, 0, 1).getDay();
+                        var fwky_date_prox = new Date(moment(date_ew).getFullYear() + 1, 0, 1).getDay();
 
                         if (fwky_date_prox > 3) {
                             FieldAct(53);

@@ -136,6 +136,9 @@ namespace Paho.Models
         public bool DisplayCountries { get; set; }
         public bool DisplayRegionals { get; set; }
         public bool DisplayHospitals { get; set; }
+        public string DatePickerConfig { get; set; }
+        public string DateFormatDP { get; set; }
+
     }
 
     public class ExportarLabViewModel
@@ -278,6 +281,7 @@ namespace Paho.Models
         public bool DisplayRegionals { get; set; }
         public bool DisplayHospitals { get; set; }
         public string DatePickerConfig { get; set; }
+        public string DateFormatDP { get; set; }
         //public int? UsrCtry { get; set; }
     }
 

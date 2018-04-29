@@ -45,7 +45,7 @@
                 <!--Fecha:-->
                 @(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelDate"))
             </span>
-            <input id="HospitalDate" type='text' class="form-control" data-bind="datepicker: HospitalDate, datepickerOptions: { changeYear: true, beforeShowDay: PickLastDay, dateFormat:'dd/mm/yy', maxDate:@Model.DatePickerConfig}" />
+            <input id="HospitalDate" type='text' class="form-control" data-bind='datepicker: HospitalDate, datepickerOptions: { beforeShowDay: PickLastDay, maxDate:@Model.DatePickerConfig, dateFormat:"@Model.DateFormatDP"}' />
         </div>
     </div>
     <div class="col-md-2">
@@ -562,5 +562,9 @@
     //var aaa1 = Model.AgeGroupLang;
     //alert(aaaaa);
     //var xyz = @**@ResourcesM.ResourcesM.msgViewSummaryLabelUnder2YearOld;
+    var PAHOFLU_date_format = "@(Html.Raw(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgDateFormat")))";
+    var moment_date_format = "@(Html.Raw(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgDateFormatMoment")))";
+    var ISO_date_format = "@(Html.Raw(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgDateFormatISO")))";
+    var DatePicker_date_format = "@(Html.Raw(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgDateFormatDP")))";
 </script>
 <!-- /ko -->

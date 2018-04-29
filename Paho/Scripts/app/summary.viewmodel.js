@@ -250,6 +250,7 @@ function SummaryViewModel(app, dataModel) {
     alert(self.Grupos1());
     //AgeGroupDescriptionSUR[0] = self.Grupos1()*/
 
+    var date_format_moment = app.dataModel.date_format_moment;
     var date_format_ISO = app.dataModel.date_format_ISO;
     var date_format_ = app.dataModel.date_format_;
 
@@ -268,7 +269,7 @@ function SummaryViewModel(app, dataModel) {
     });
 
     self.hospitals = ko.observableArray(institutions);
-    self.HospitalDate = ko.observable("");
+    self.HospitalDate = ko.observable(null);
     self.HospitalEW = ko.observable("");
     self.HospitalYE = ko.observable("");
 
@@ -278,6 +279,86 @@ function SummaryViewModel(app, dataModel) {
 
     self.ColETIFST = ko.observable("");
     self.ColETIMST = ko.observable("");
+
+    self.CalculateEW = function (FieldDate, FieldAct, FieldActYear) {
+        if ($("#" + FieldDate).val() != "") {
+            var date_ew = moment(date_format_moment, $("#" + FieldDate).val()).toDate();
+            var fwky_date = new Date(moment(date_ew).year(), 0, 1).getDay();
+            var weekno = moment(date_ew).week();
+            var weeknoISO = moment(date_ew).isoWeek();
+
+            console.log("----");
+            console.log($("#" + FieldDate).val());
+            console.log(date_format_moment);
+            console.log(date_ew);
+            console.log(moment(date_format_moment, $("#" + FieldDate).val()).toDate());
+            console.log(weekno);
+            console.log(weeknoISO);
+            console.log("+++");
+
+            if (date_ew == null) {
+
+                FieldAct(null);
+                FieldActYear(null);
+
+            } else {
+
+                if (fwky_date > 3) {
+                    var month = 11, day = 31;
+                    var end_date_year_ant = new Date(moment(date_ew).year() - 1, month, day--);
+
+                    if (weekno == 1 && moment(date_ew).month() == 0) {
+                        var fwky_date_ant = new Date(moment(date_ew).year() - 1, 0, 1).getDay();
+                        var fwdoyant = moment(end_date_year_ant).isoWeek();
+                        if (fwky_date_ant > 3) {
+
+                            FieldAct(fwdoyant - 1);
+
+                        } else {
+
+                            if (weekno == 1 && moment(date_ew).month() == 0 && fwky_date_ant <= 3) {
+                                FieldAct(53);
+                                fwdoyant = 53;
+                            }
+                            else
+                                FieldAct(fwdoyant);
+                        }
+                        if (FieldActYear != "")
+                            if (fwdoyant == 52 || fwdoyant == 53)
+                                FieldActYear(date_ew.getFullYear() - 1);
+                            else
+                                FieldActYear(date_ew.getFullYear());
+                    }
+                    else if (weekno == 1 && moment(date_ew).month() != 0) {
+                        FieldAct(moment(date_ew).isoWeek() - 1);
+                        if (FieldActYear != "")
+                            FieldActYear(date_ew.getFullYear());
+                    }
+                    else {
+                        FieldAct(weekno - 1);
+                        if (FieldActYear != "")
+                            FieldActYear(date_ew.getFullYear());
+                    }
+                } else {
+                    if (weekno == 1 && moment(date_ew).month() == 11) {
+                        var fwky_date_prox = new Date(moment(date_ew).getFullYear() + 1, 0, 1).getDay();
+
+                        if (fwky_date_prox > 3) {
+                            FieldAct(53);
+                            FieldActYear(date_ew.getFullYear());
+                        } else {
+                            FieldAct(weekno);
+                            FieldActYear(date_ew.getFullYear() + 1);
+                        }
+                    } else {
+                        FieldAct(weekno);
+                        if (FieldActYear != "")
+                            FieldActYear(date_ew.getFullYear());
+                    }
+                }
+            }
+        }
+    };
 
     self.HospitalDate.subscribe(function (HospitalDate) {
         self.ChangeHospitalAndDate();
@@ -523,71 +604,73 @@ function SummaryViewModel(app, dataModel) {
         $("#ButtonSummary").hide();
     };
 
-    self.CalculateEW = function (FieldDate, FieldAct, FieldActYear) {
-        if ($("#" + FieldDate).val() != "") {
-            var date_ew = parseDate($("#" + FieldDate).val(), date_format_);
-            var fwky_date = new Date(moment(date_ew).year(), 0, 1).getDay();
-            var weekno = moment(date_ew).week();
-            var weeknoISO = moment(date_ew).isoWeek();
+    //self.CalculateEW = function (FieldDate, FieldAct, FieldActYear) {
+    //    if ($("#" + FieldDate).val() != "") {
+    //        var date_ew = moment(date_format_moment, $("#" + FieldDate).val()).toDate();
+    //        var fwky_date = new Date(moment(date_ew).year(), 0, 1).getDay();
+    //        var weekno = moment(date_ew).week();
+    //        var weeknoISO = moment(date_ew).isoWeek();
 
-            if (fwky_date > 3) {
-                var month = 11, day = 31;
-                var end_date_year_ant = new Date(moment(date_ew).year() - 1, month, day--);
+    //        if (fwky_date > 3) {
+    //            var month = 11, day = 31;
+    //            var end_date_year_ant = new Date(moment(date_ew).year() - 1, month, day--);
 
-                if (weekno == 1 && moment(date_ew).month() == 0) {
-                    var fwky_date_ant = new Date(moment(date_ew).year() - 1, 0, 1).getDay();
-                    var fwdoyant = moment(end_date_year_ant).isoWeek();
-                    if (fwky_date_ant > 3) {
+    //            if (weekno == 1 && moment(date_ew).month() == 0) {
+    //                var fwky_date_ant = new Date(moment(date_ew).year() - 1, 0, 1).getDay();
+    //                var fwdoyant = moment(end_date_year_ant).isoWeek();
+    //                if (fwky_date_ant > 3) {
 
-                        FieldAct(fwdoyant - 1);
+    //                    FieldAct(fwdoyant - 1);
 
-                    } else {
+    //                } else {
 
-                        if (weekno == 1 && moment(date_ew).month() == 0 && fwky_date_ant <= 3) {
-                            FieldAct(53);
-                            fwdoyant = 53;
-                        }
-                        else
-                            FieldAct(fwdoyant);
-                    }
-                    if (FieldActYear != "")
-                        if (fwdoyant == 52 || fwdoyant == 53)
-                            FieldActYear(date_ew.getFullYear() - 1);
-                        else
-                            FieldActYear(date_ew.getFullYear());
-                }
-                else if (weekno == 1 && moment(date_ew).month() != 0) {
-                    FieldAct(moment(date_ew).isoWeek() - 1);
-                    if (FieldActYear != "")
-                        FieldActYear(date_ew.getFullYear());
-                }
-                else {
-                    FieldAct(weekno - 1);
-                    if (FieldActYear != "")
-                        FieldActYear(date_ew.getFullYear());
-                }
-            } else {
-                console.log("aqui " + weekno);
-                if (weekno == 1 && moment(date_ew).month() == 11) {
-                    var fwky_date_prox = new Date(moment(date_ew).year() + 1, 0, 1).getDay();
+    //                    if (weekno == 1 && moment(date_ew).month() == 0 && fwky_date_ant <= 3) {
+    //                        FieldAct(53);
+    //                        fwdoyant = 53;
+    //                    }
+    //                    else
+    //                        FieldAct(fwdoyant);
+    //                }
+    //                if (FieldActYear != "")
+    //                    if (fwdoyant == 52 || fwdoyant == 53)
+    //                        FieldActYear(date_ew.getFullYear() - 1);
+    //                    else
+    //                        FieldActYear(date_ew.getFullYear());
+    //            }
+    //            else if (weekno == 1 && moment(date_ew).month() != 0) {
+    //                FieldAct(moment(date_ew).isoWeek() - 1);
+    //                if (FieldActYear != "")
+    //                    FieldActYear(date_ew.getFullYear());
+    //            }
+    //            else {
+    //                FieldAct(weekno - 1);
+    //                if (FieldActYear != "")
+    //                    FieldActYear(date_ew.getFullYear());
+    //            }
+    //        } else {
+    //            console.log("aqui " + weekno);
+    //            if (weekno == 1 && moment(date_ew).month() == 11) {
+    //                var fwky_date_prox = new Date(moment(date_ew).year() + 1, 0, 1).getDay();
 
-                    if (fwky_date_prox > 3) {
-                        FieldAct(53);
-                        FieldActYear(date_ew.getFullYear());
-                    } else {
-                        FieldAct(weekno);
-                        FieldActYear(date_ew.getFullYear() + 1);
-                    }
+    //                if (fwky_date_prox > 3) {
+    //                    FieldAct(53);
+    //                    FieldActYear(date_ew.getFullYear());
+    //                } else {
+    //                    FieldAct(weekno);
+    //                    FieldActYear(date_ew.getFullYear() + 1);
+    //                }
 
-                } else {
-                    FieldAct(weekno);
-                    if (FieldActYear != "")
-                        FieldActYear(date_ew.getFullYear());
-                }
-            }
+    //            } else {
+    //                FieldAct(weekno);
+    //                if (FieldActYear != "")
+    //                    FieldActYear(date_ew.getFullYear());
+    //            }
+    //        }
 
-        }
-    };
+    //    }
+    //};
+
+    
 
     self.GetYearSummaryForYearItems = function () {
         if ((typeof self.selectedHospitalId() != "undefined") && self.selectedHospitalId() != "") {
@@ -617,7 +700,7 @@ function SummaryViewModel(app, dataModel) {
         } else {
             if ((typeof self.selectedHospitalId() == "undefined") || self.selectedHospitalId() == "") {
                 //alert("Seleccionar un establecimiento es requerido");
-                if ((self.UsrCountry() == 25))
+                if ((self.UsrCountry() == 25) || (self.UsrCountry() == 17))
                     alert("Hospital is required");
                 else
                     alert("Seleccionar un establecimiento es requerido");
@@ -625,7 +708,7 @@ function SummaryViewModel(app, dataModel) {
 
             if ((typeof self.HospitalDate() == "undefined") || self.HospitalDate() == "") {
                 //alert("La fecha es requeridaxxxx");
-                if ((self.UsrCountry() == 25))
+                if ((self.UsrCountry() == 25) || (self.UsrCountry() == 17))
                     alert("Date is required");
                 else
                     alert("La fecha es requerida");
@@ -649,14 +732,14 @@ function SummaryViewModel(app, dataModel) {
             })
         } else {
             if ((typeof self.selectedHospitalId() == "undefined") || self.selectedHospitalId() == "") {
-                if (self.UsrCountry() == 25)
+                if (self.UsrCountry() == 25 || (self.UsrCountry() == 17))
                     alert("Hospital is required");
                 else
                     alert("Seleccionar un establecimiento es requerido");
             }
 
             if ((typeof self.HospitalDate() == "undefined") || self.HospitalDate() == "") {
-                if (self.UsrCountry() == 25)
+                if (self.UsrCountry() == 25 || (self.UsrCountry() == 17))
                     alert("Date is required");
                 else
                     alert("La fecha es requerida");
@@ -696,7 +779,7 @@ app.addViewModel({
 /** Bandeja de denominadores **/
 function showEpiWeek(data, event) {
     console.log(data.StartDateOfWeek);
-    var date = moment.unix(data.StartDateOfWeek).utc().format('DD/MM/YYYY');
+    var date = moment.unix(data.StartDateOfWeek).utc().format(date_format_moment);
     console.log(date);
     $("#HospitalDate").val(date);
     $("#HospitalDate").change();

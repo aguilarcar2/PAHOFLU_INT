@@ -63,19 +63,19 @@
 
         if ($("#Report").val() == "R1" || $("#Report").val() == "R2" || $("#Report").val() == "R3" || $("#Report").val() == "R4" ){
             if ( self.Year() == "" )
-                if (self.selectedCountryId() == 25)
+                if (self.selectedCountryId() == 25 || self.selectedCountryId() == 17)
                     msg += "\n" + " - Enter year of report generation";
                 else
                     msg += "\n" + " - Ingrese el año de generación del reporte";
             if (self.Month() == "" && self.SE() == "" && self.StartDate() == "" && self.EndDate() == "" && self.Year() == "")
-                if (self.selectedCountryId() == 25)
+                if (self.selectedCountryId() == 25 || self.selectedCountryId() == 17)
                     msg += "\n" + " - Enter any restriction criteria for the report (Year, Month, WE, Start Date and End Date) "
                 else
                     msg += "\n" + " - Ingrese algún critero de restricción del reporte (Año, Mes, SE, Fecha inicio y Fecha fin) "
         }
 
         if (msg !== "") {
-            if (self.selectedCountryId() == 25)
+            if (self.selectedCountryId() == 25 || self.selectedCountryId() == 17)
                 alert('Reports:' + msg);
             else
                 alert('Reportes:' + msg);

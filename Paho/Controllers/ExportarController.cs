@@ -132,6 +132,13 @@ namespace Paho.Controllers
                 }
             }
 
+            var DoS = DateTime.Now.ToString(getMsg("msgDatePickerConfig"));
+            var date_format = getMsg("msgDateFormatDP");
+
+            //CaseViewModel.UsrCtry = user.Institution.CountryID;
+            ExportarViewModel.DatePickerConfig = DoS;
+            ExportarViewModel.DateFormatDP = date_format;
+
             ExportarViewModel.Countries = db.Countries
                     .Select(c => new CountryView()
                     {

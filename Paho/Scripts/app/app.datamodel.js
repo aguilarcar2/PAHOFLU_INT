@@ -46,6 +46,7 @@
     self.date_format_ = PAHOFLU_date_format;
     self.date_format_moment = moment_date_format;
     self.date_format_ISO = ISO_date_format;
+    self.date_format_DatePicker = DatePicker_date_format;
 
     //self.getFluCasesUrl = "/cases/GetFluCases";
 

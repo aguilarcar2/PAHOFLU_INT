@@ -20,8 +20,12 @@ namespace Paho.Controllers
             IQueryable<Institution> institutions = null;
             IQueryable<CatAgeGroup> CatAgeGroupQuery = null;
             var user = UserManager.FindById(User.Identity.GetUserId());
-            var DoS = DateTime.Now.ToString("d", CultureInfo.CreateSpecificCulture("es-GT"));
+            var DoS = DateTime.Now.ToString(getMsg("msgDatePickerConfig"));
+            var date_format = getMsg("msgDateFormatDP");
+
+            //CaseViewModel.UsrCtry = user.Institution.CountryID;
             SummaryViewModel.DatePickerConfig = DoS;
+            SummaryViewModel.DateFormatDP = date_format;
             //SummaryViewModel.UsrCtry = user.Institution.CountryID;
 
             if (user.Institution.AccessLevel == AccessLevel.All)

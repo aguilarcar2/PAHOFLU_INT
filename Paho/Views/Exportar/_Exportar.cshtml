@@ -221,7 +221,8 @@
                 <!--Fecha inicio:-->
                 @(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarLabelStartDate"))
             </span>
-            <input id="StartDate" type='text' class="form-control" data-bind="datepicker: StartDate" />
+            <input id="StartDate" type='text' class="form-control" data-bind='datepicker: StartDate, datepickerOptions: { maxDate:@Model.DatePickerConfig,  dateFormat:"@Model.DateFormatDP"}' />
+            <label class="date_format">@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgDateFormat"))</label>
         </div>
     </div>
     <div class="col-md-3">
@@ -230,7 +231,8 @@
                 <!--Fecha fin:-->
                 @(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarLabelEndDate"))
             </span>
-            <input id="EndDate" type='text' class="form-control" data-bind="datepicker: EndDate" />
+            <input id="EndDate" type='text' class="form-control" data-bind='datepicker: EndDate, datepickerOptions: { maxDate:@Model.DatePickerConfig,  dateFormat:"@Model.DateFormatDP"}' />
+            <label class="date_format">@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgDateFormat"))</label>
         </div>
     </div>
 </div>
@@ -279,5 +281,9 @@
     var reportsCountries = @Html.Raw(Json.Encode(Model.ReportsCountries));
     var CountryID = @Html.Raw(Model.CountryID);
     var selcty = @ViewBag.UsrCtry;
+    var PAHOFLU_date_format = "@(Html.Raw(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgDateFormat")))";
+    var moment_date_format = "@(Html.Raw(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgDateFormatMoment")))";
+    var ISO_date_format = "@(Html.Raw(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgDateFormatISO")))";
+    var DatePicker_date_format = "@(Html.Raw(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgDateFormatDP")))";
 </script>
 <!-- /ko -->
