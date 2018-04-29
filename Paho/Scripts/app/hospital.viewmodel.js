@@ -940,20 +940,32 @@
 
     self.validate = function (nextStep) {
         var msg = "";
-        date_notification = parseDate($("#HospDate").val(), date_format_);
-        date_fever = parseDate($("#FeverDate").val(), date_format_);
-        date_diagnostic = parseDate($("#DiagDate").val(), date_format_);
-        date_hosp_adm =  parseDate($("#HospAmDate").val(), date_format_);
-        date_hosp_disc =   parseDate($("#HospExDate").val(), date_format_);
-        date_ICU_adm =  parseDate($("#ICUAmDate").val(), date_format_);
-        date_ICU_disc = parseDate($("#ICUExDate").val(), date_format_);
-        date_falle = parseDate($("#FalleDate").val(), date_format_);
-        date_hospital = parseDate($("#HospDate").val(), date_format_);
-        date_sample =  parseDate($("#SampleDate").val(), date_format_);
-        date_ship = parseDate($("#ShipDate").val(), date_format_);
-        date_close_case = parseDate($("#CloseDate").val(), date_format_);
-        
+        //date_notification = parseDate($("#HospDate").val(), date_format_);
+        //date_fever = parseDate($("#FeverDate").val(), date_format_);
+        //date_diagnostic = parseDate($("#DiagDate").val(), date_format_);
+        //date_hosp_adm =  parseDate($("#HospAmDate").val(), date_format_);
+        //date_hosp_disc =   parseDate($("#HospExDate").val(), date_format_);
+        //date_ICU_adm =  parseDate($("#ICUAmDate").val(), date_format_);
+        //date_ICU_disc = parseDate($("#ICUExDate").val(), date_format_);
+        //date_falle = parseDate($("#FalleDate").val(), date_format_);
+        //date_hospital = parseDate($("#HospDate").val(), date_format_);
+        //date_sample =  parseDate($("#SampleDate").val(), date_format_);
+        //date_ship = parseDate($("#ShipDate").val(), date_format_);
+        //date_close_case = parseDate($("#CloseDate").val(), date_format_);
 
+        date_fever = jQuery.type(self.FeverDate()) === 'date' ? self.FeverDate() : parseDate($("#FeverDate").val(), date_format_);
+        date_notification = jQuery.type(app.Views.Contact.HospitalDate()) === 'date' ? app.Views.Contact.HospitalDate() : parseDate($("#HospDate").val(), date_format_);
+        date_hospital = jQuery.type(app.Views.Contact.HospitalDate()) === 'date' ? app.Views.Contact.HospitalDate() : parseDate($("#HospDate").val(), date_format_);
+        date_diagnostic = jQuery.type(self.DiagDate()) === 'date' ? self.DiagDate() : parseDate($("#DiagDate").val(), date_format_);
+        date_hosp_adm = jQuery.type(self.HospAmDate()) === 'date' ? self.HospAmDate() : parseDate($("#HospAmDate").val(), date_format_);
+        date_hosp_disc = jQuery.type(self.HospExDate()) === 'date' ? self.HospExDate() : parseDate($("#HospExDate").val(), date_format_);
+        date_ICU_adm = jQuery.type(self.ICUAmDate()) === 'date' ? self.ICUAmDate() : parseDate($("#ICUAmDate").val(), date_format_);
+        date_ICU_disc = jQuery.type(self.ICUExDate()) === 'date' ? self.ICUExDate() : parseDate($("#ICUExDate").val(), date_format_);
+        date_falle = jQuery.type(self.FalleDate()) === 'date' ? self.FalleDate() : parseDate($("#FalleDate").val(), date_format_);
+        date_sample = jQuery.type(self.SampleDate()) === 'date' ? self.SampleDate() : parseDate($("#SampleDate").val(), date_format_);
+        date_ship = jQuery.type(self.ShipDate()) === 'date' ? self.ShipDate() : parseDate($("#ShipDate").val(), date_format_);
+        date_close_case = jQuery.type(self.CloseDate()) === 'date' ? self.CloseDate() : parseDate($("#CloseDate").val(), date_format_);
+        
         if ($("#FeverDate").val() == "")
             msg += "\n" + msgValidationOnsetOnFever;
         if ($("#FeverDate").val() != "" && !moment(moment(date_fever).format(date_format_moment), [date_format_moment], true).isValid())
@@ -963,7 +975,6 @@
             $("#FeverDate").focus();
         }
             
-
         if (date_diagnostic != null && date_fever != null && moment(date_diagnostic).isBefore(moment(date_fever))) {
             msg += "\n" + viewValidateDiagnosticDateGtOnsetFeverDate;
             $("#DiagDate").focus();

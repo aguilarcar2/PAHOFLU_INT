@@ -272,7 +272,7 @@
                 msg += "\n" + msgValidationAreaRequired;
             }
                 
-            if (!self.selectedStateId() || self.selectedStateId() == "") {
+            if (!self.selectedStateId() || self.selectedStateId() == "" && self.UsrCountry() != 17) {
                 msg += "\n" + msgValidationStateRequired;
             }
                 

@@ -599,13 +599,31 @@
 
     self.validate = function (nextStep) {
         var msg = "";
-        date_influenza_1 = parseDate($("#VacInfluenzaDateFirst").val(), date_format_);
-        date_influenza_2 = parseDate($("#VacInfluenzaDateSecond").val(), date_format_); 
-        date_antiviral = parseDate($("#AntiViralDate").val(), date_format_);
-        date_antiviral_end = parseDate($("#AntiViralDateEnd").val(), date_format_);
-        date_neumococo = parseDate($("#VacNeumococoDate").val(), date_format_);
-        date_DOB_dummy = parseDate($("#DOB_dummy").val(), date_format_);
-        date_fever_risk = parseDate($("#FeverDate").val(), date_format_);
+        //date_influenza_1 = parseDate($("#VacInfluenzaDateFirst").val(), date_format_);
+        //date_influenza_2 = parseDate($("#VacInfluenzaDateSecond").val(), date_format_); 
+        //date_antiviral = parseDate($("#AntiViralDate").val(), date_format_);
+        //date_antiviral_end = parseDate($("#AntiViralDateEnd").val(), date_format_);
+        //date_neumococo = parseDate($("#VacNeumococoDate").val(), date_format_);
+        date_DOB_dummy = jQuery.type(app.Views.Contact.DOB_dummy()) === 'date' ? app.Views.Contact.DOB_dummy() : parseDate($("#DOB_dummy").val(), date_format_);
+        date_fever_risk = jQuery.type(app.Views.Hospital.FeverDate()) === 'date' ? app.Views.Hospital.FeverDate() : parseDate($("#FeverDate").val(), date_format_);
+
+        date_influenza_1 = jQuery.type(self.VacInfluenzaDateFirst()) === 'date' ? self.VacInfluenzaDateFirst() : parseDate($("#VacInfluenzaDateFirst").val(), date_format_);
+        date_influenza_2 = jQuery.type(self.VacInfluenzaDateSecond()) === 'date' ? self.VacInfluenzaDateSecond() : parseDate($("#VacInfluenzaDateSecond").val(), date_format_);
+        date_neumococo = jQuery.type(self.VacNeumococoDate()) === 'date' ? self.VacNeumococoDate() : parseDate($("#VacNeumococoDate").val(), date_format_);
+        date_tosferina = jQuery.type(self.VacTosFerinaDate()) === 'date' ? self.VacTosFerinaDate() : parseDate($("#VacTosFerinaDate").val(), date_format_);
+        date_haemophilus = jQuery.type(self.VacHaemophilusDate()) === 'date' ? self.VacHaemophilusDate() : parseDate($("#VacHaemophilusDate").val(), date_format_);
+
+        date_antiviral = jQuery.type(self.AntiViralDate()) === 'date' ? self.AntiViralDate() : parseDate($("#AntiViralDate").val(), date_format_);
+        date_antiviral_end = jQuery.type(self.AntiViralDateEnd()) === 'date' ? self.AntiViralDateEnd() : parseDate($("#AntiViralDateEnd").val(), date_format_);
+
+        date_DestFechaLlegada1 = jQuery.type(self.DestFechaLlegada1()) === 'date' ? self.DestFechaLlegada1() : parseDate($("#DestFechaLlegada1").val(), date_format_);            //#### CAFQ
+        date_DestFechaLlegada2 = jQuery.type(self.DestFechaLlegada2()) === 'date' ? self.DestFechaLlegada2() : parseDate($("#DestFechaLlegada2").val(), date_format_);            //#### CAFQ
+        date_DestFechaLlegada3 = jQuery.type(self.DestFechaLlegada3()) === 'date' ? self.DestFechaLlegada3() : parseDate($("#DestFechaLlegada3").val(), date_format_);            //#### CAFQ
+        date_DestFechaSalida1 = jQuery.type(self.DestFechaSalida1()) === 'date' ? self.DestFechaSalida1() : parseDate($("#DestFechaSalida1").val(), date_format_);            //#### CAFQ
+        date_DestFechaSalida2 = jQuery.type(self.DestFechaSalida2()) === 'date' ? self.DestFechaSalida2() : parseDate($("#DestFechaSalida2").val(), date_format_);            //#### CAFQ
+        date_DestFechaSalida3 = jQuery.type(self.DestFechaSalida3()) === 'date' ? self.DestFechaSalida3() : parseDate($("#DestFechaSalida3").val(), date_format_);            //#### CAFQ
+
+        date_InfeccHospitFecha = jQuery.type(self.InfeccHospitFecha()) === 'date' ? self.InfeccHospitFecha() : parseDate($("#InfeccHospitFecha").val(), date_format_);        //#### CAFQ
         
         //alert($("#AntiViralDate").val());
         //alert(date_antiviral);
@@ -634,21 +652,21 @@
 
         if ((app.Views.Contact.AMeasure() == "Month" && app.Views.Contact.Age() > 5) && app.Views.Contact.AMeasure() != "Day") {
 
-            if (!self.VacInfluenza() && !self.UsrCountry() == 7)
+            if (!self.VacInfluenza() && !self.UsrCountry() == 7 && !self.UsrCountry() != 17)
                 msg += "\n" + "Información de la vacuna de Influenza es requerida";
 
-            if (date_influenza_1 != null && self.VacInfluenza() == "1")
+            if (date_influenza_1 != null && self.VacInfluenza() == "1" && !self.UsrCountry() != 17)
                 if (moment(date_influenza_1).isBefore(moment(date_DOB_dummy))) {
                     msg += "\n" + "La fecha de la vacuna de Influenza no puede ser menor a fecha de nacimiento";
                     $("#VacInfluenzaDateFirst").focus();
                 }
 
-            if (date_influenza_1 != null && date_influenza_2 != null) {
+            if (date_influenza_1 != null && date_influenza_2 != null && !self.UsrCountry() != 17) {
                 if (moment(date_influenza_2).isBefore(moment(date_DOB_dummy))) {
                     msg += "\n" + "La fecha de la vacuna de segunda dosis de Influenza no puede ser menor a fecha de nacimiento";
                     $("#VacInfluenzaDateSecond").focus();
                 }
-                if (moment(date_influenza_2).isBefore(moment(date_influenza_1))) {
+                if (moment(date_influenza_2).isBefore(moment(date_influenza_1)) && !self.UsrCountry() != 17) {
                     msg += "\n" + "La fecha de la vacuna de segunda dosis de Influenza no puede ser menor a fecha de la primera dosis de Influenza";
                     $("#VacInfluenzaDateSecond").focus();
                 }

@@ -189,24 +189,30 @@ namespace Paho.Controllers {
                     using (var excelPackage = new ExcelPackage(fs)) {
                         var excelWorkBook = excelPackage.Workbook;
 
-                        
+                        var contador = 0;
+                        var YearBegin = 0;
+                        var YearEnd = 0;
+
+                        if (YearFrom != null && YearTo != null)
+                        {
+                            YearBegin = (int)YearFrom;
+                            YearEnd = (int)YearTo;
+
+                        }
+                        else if (Year != null && YearTo != null)
+                        {
+                            contador = (int)Year - (int)YearFrom;
+                        }
+
                         AppendDataToExcelFLUID(Languaje_country_.Language.ToString(), CountryID, RegionID, Year, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_NATIONAL_VIRUSES", 6, 1, 2, false, ReportCountry, YearFrom, YearTo, Surv, Inusual);
                         AppendDataToExcelFLUID(Languaje_country_.Language.ToString(), CountryID, RegionID, Year, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_IRAG", 8, 1, 4, false, ReportCountry, YearFrom, YearTo, Surv, Inusual);
                         AppendDataToExcelFLUID(Languaje_country_.Language.ToString(), CountryID, RegionID, Year, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_DEATHS_IRAG", 8, 1, 6, false, ReportCountry, YearFrom, YearTo, Surv, Inusual);
                         AppendDataToExcelFLUID(Languaje_country_.Language.ToString(), CountryID, RegionID, Year, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_ETI", 8, 1, 6, false, ReportCountry, YearFrom, YearTo, Surv, Inusual);
                         AppendDataToExcelFLUID(Languaje_country_.Language.ToString(), CountryID, RegionID, Year, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_NATIONAL_VIRUSES", 6, 1, 8, false, ReportCountry, YearFrom, YearTo, Surv, Inusual);
 
-                        //AppendDataToExcelFLUID(CountryID, Languaje_country_.Language.ToString(), RegionID, Year, HospitalID, excelWorkBook, "FLUID_NATIONAL_VIRUSES", 6, 2,false);
-                        //AppendDataToExcelFLUID(CountryID, Languaje_country_.Language.ToString(), RegionID, Year, HospitalID, excelWorkBook, "FLUID_IRAG", 8, 4, false);
-                        //AppendDataToExcelFLUID(CountryID, Languaje_country_.Language.ToString(), RegionID, Year, HospitalID, excelWorkBook, "FLUID_DEATHS_IRAG", 8, 6, false);
-                        //AppendDataToExcelFLUID(CountryID, Languaje_country_.Language.ToString(), RegionID, Year, HospitalID, excelWorkBook, "FLUID_ETI", 8, 7, false);
-                        //AppendDataToExcelFLUID(CountryID, Languaje_country_.Language.ToString(), RegionID, Year, HospitalID, excelWorkBook, "FLUID_NATIONAL_VIRUSES", 6, 8, false);
-                        ////AppendDataToExcel(CountryID, Languaje_country_.Language.ToString(), Year, HospitalID, WeekFrom, WeekTo, excelWorkBook, "FluidIragExport", 33, "Fallecidos IRAG");
-                        //if (CountryID == 7)
-                        //{
+                        // Leyendas
                         var excelWs_Leyendas = excelWorkBook.Worksheets["Leyendas"];
                         ConfigToExcel(CountryID, Languaje_country_.Language.ToString(), RegionID, Year, HospitalID,  excelWorkBook, "Leyendas", 1, excelWs_Leyendas.Index, false);
-                        //}
 
                         // Manejo de graficas 
                         var excelWs_Graph_IRAG = excelWorkBook.Worksheets["SARI Graphs"];
@@ -255,14 +261,14 @@ namespace Paho.Controllers {
                     command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
                     command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
                     command.Parameters.Add("@Languaje", SqlDbType.Text).Value = languaje_;
-                    command.Parameters.Add("@Year_case", SqlDbType.Int).Value = null; //year
+                    command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
                     command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
                     command.Parameters.Add("@Mes_", SqlDbType.Int).Value = month;
                     command.Parameters.Add("@SE", SqlDbType.Int).Value = se;
                     command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
                     command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
-                    command.Parameters.Add("@yearFrom", SqlDbType.Int).Value = 2014; //YearFrom
-                    command.Parameters.Add("@yearTo", SqlDbType.Int).Value = 2018; // YearTo
+                    command.Parameters.Add("@yearFrom", SqlDbType.Int).Value = YearFrom;
+                    command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
                     command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;
                     if (sheet == 8)
                     {

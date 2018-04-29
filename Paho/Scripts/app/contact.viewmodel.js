@@ -351,7 +351,7 @@ function ContactViewModel(app, dataModel) {
     });
     self.AgeGroup = ko.computed(function () {      
         if (!(self.Age() || self.DOB())) return "";
-        if (self.UsrCountry() == 25 || self.UsrCountry() == 11 || self.UsrCountry() == 18 || self.UsrCountry() == 17) {
+        if (self.UsrCountry() == 25 || self.UsrCountry() == 11 || self.UsrCountry() == 18) {
             if (self.AMeasure() === "Day" || (self.AMeasure() === "Month" && self.Age() <= 6)) return "child under 6 months"
             if (self.AMeasure() === "Month" && self.Age() >= 6 && self.Age() <= 12) return "6 to 11 months";
             if ((self.AMeasure() === "Month" && self.Age() >= 12 && self.Age() <= 24) || (self.AMeasure() === "Year" && self.Age() == 1)) return "12 to 23 months";
@@ -359,6 +359,16 @@ function ContactViewModel(app, dataModel) {
             if (self.Age() < 15) return "5 to 14 years";
             if (self.Age() < 50) return "15 to 49 years";
             if (self.Age() < 65) return "50 to 64 years";
+            return "65 years and over";
+        } else if (self.UsrCountry() == 17) {
+            if (self.AMeasure() === "Day" || (self.AMeasure() === "Month" && self.Age() <= 6)) return "child under 6 months"
+            if (self.AMeasure() === "Month" && self.Age() >= 6 && self.Age() <= 12) return "6 to 11 months";
+            if ((self.AMeasure() === "Month" && self.Age() >= 12 && self.Age() <= 24) || (self.AMeasure() === "Year" && self.Age() == 1)) return "12 to 23 months";
+            if (self.Age() < 5) return "2 to 4 years";
+            if (self.Age() < 15) return "5 to 14 years";
+            if (self.Age() < 50) return "15 to 49 years";
+            if (self.Age() < 60) return "50 to 59 years";
+            if (self.Age() < 65) return "60 to 64 years";
             return "65 years and over";
         } else if (self.UsrCountry() != 7) {
             if (self.AMeasure() == "Day" || (self.AMeasure() == "Month" && self.Age() <= 12)) return "Niños menores de 2 años"
@@ -581,10 +591,15 @@ function ContactViewModel(app, dataModel) {
     self.validate = function (nextStep) {
         var msg = "";
 
-        date_hospital = parseDate($("#HospitalDate").val(), date_format_);
-        date_reg_date = parseDate($("#RegDate").val(), date_format_);
-        date_inicio_sintomas = parseDate($("#FeverDate").val(), date_format_);
-        date_DOB = typeof (self.DOB()) == "object" ? self.DOB() : parseDate(self.DOB(), date_format_);
+        //date_hospital = parseDate($("#HospitalDate").val(), date_format_);
+        //date_reg_date = parseDate($("#RegDate").val(), date_format_);
+        //date_inicio_sintomas = parseDate($("#FeverDate").val(), date_format_);
+
+
+        date_hospital = jQuery.type(self.HospitalDate()) === 'date' ? self.HospitalDate() : parseDate($("#HospitalDate").val(), date_format_);
+        date_reg_date = jQuery.type(self.RegDate()) === 'date' ? self.RegDate() : parseDate($("#RegDate").val(), date_format_);
+        date_inicio_sintomas = jQuery.type(app.Views.Hospital.FeverDate()) === 'date' ? app.Views.Hospital.FeverDate() : parseDate($("#FeverDate").val(), date_format_);
+        date_DOB = jQuery.type(self.DOB()) === 'date' ? self.DOB() : parseDate(self.DOB(), date_format_);
 
         if (date_inicio_sintomas != null)
             if (moment(date_hospital).isBefore(moment(date_inicio_sintomas))) {

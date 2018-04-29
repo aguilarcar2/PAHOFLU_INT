@@ -42,9 +42,10 @@
 
     // Formato de fechas
     //self.date_format_ = "dd/mm/yyyy";
-    self.date_format_ = "dd/mm/yy";
-    self.date_format_moment = "YYYY/MM/DD";
-    self.date_format_ISO = "YYYY-MM-DD";
+    //self.date_format_ = "dd/mm/yyyy";
+    self.date_format_ = PAHOFLU_date_format;
+    self.date_format_moment = moment_date_format;
+    self.date_format_ISO = ISO_date_format;
 
     //self.getFluCasesUrl = "/cases/GetFluCases";
 

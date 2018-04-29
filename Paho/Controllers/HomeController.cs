@@ -35,8 +35,9 @@ namespace Paho.Controllers
             IQueryable<CatTrabLaboRama> trablaborama = null;                    //**** CAFQ
 
             var user = UserManager.FindById(User.Identity.GetUserId());
-            var DoS = ( user.Institution.CountryID == 17) ? DateTime.Now.ToString("d", CultureInfo.CreateSpecificCulture("es-GT")) : DateTime.Now.ToString("yy/mm/dd") ;
-            var date_format = (user.Institution.CountryID == 17) ? "yy/mm/dd" : "dd/mm/yy";
+            //var DoS = ( user.Institution.CountryID == 17) ? DateTime.Now.ToString("d", CultureInfo.CreateSpecificCulture("es-GT")) : DateTime.Now.ToString("yy/mm/dd") ;
+            var DoS = DateTime.Now.ToString(getMsg("msgDatePickerConfig"));
+            var date_format = getMsg("msgDateFormatDP");
 
             //CaseViewModel.UsrCtry = user.Institution.CountryID;
             CaseViewModel.DatePickerConfig = DoS;

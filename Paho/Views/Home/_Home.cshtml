@@ -251,7 +251,8 @@
                     </label>
                 }
             </div>
-			@if (ViewBag.UsrCtry != 7 && ViewBag.UsrCtry != 9 && ViewBag.UsrCtry != 3 ){
+			@if (ViewBag.UsrCtry != 7 && ViewBag.UsrCtry != 9 && ViewBag.UsrCtry != 3 && ViewBag.UsrCtry != 17)
+            {
 			<div class="col-md-6">
                 <div id="ServicesGroup" class='input-group' data-bind="visible: displayService">
                     <span class="input-group-addon">
@@ -267,7 +268,7 @@
             </div>
             }
             @*Agregar aqui a todos los paises que deben mostrar la institución*@
-			@if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 3 ) 
+			@if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 17)
             {
                 <div class="col-md-5" data-bind="visible:VisHopName">
                     <div class='input-group'>
@@ -344,7 +345,7 @@
                             @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelDateOfDetection"))<font color="#FF0000">*</font>
                         </span>
                         <input id="HospitalDate" type="text" class="form-control " data-bind='datepicker: HospitalDate, datepickerOptions: { maxDate:@Model.DatePickerConfig,  dateFormat:"@Model.DateFormatDP", autoHide:false}' />
-                        <label class="date_format">dd/mm/yyyy</label>
+                        <label class="date_format">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgDateFormat"))</label>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -353,7 +354,7 @@
                                 @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelRecordDate"))
                         </span>
                         <input id="RegDate" type='text' class="form-control " data-bind='datepicker: RegDate, datepickerOptions: { maxDate:@Model.DatePickerConfig,  dateFormat:"@Model.DateFormatDP"}'  readonly />
-                        <label class="date_format">dd/mm/yyyy</label>
+                        <label class="date_format">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgDateFormat"))</label>
                     </div>
                 </div>
             </div>
@@ -410,7 +411,7 @@
                         @*<button id="DatosPaciente" type="button" class="btn btn-primary btn-next " data-bind="click: GetPatient, visible:EnableCR">Datos paciente</button>*@
                     </div>
                 </div>
-				@if (ViewBag.UsrCtry == 25 || ViewBag.UsrCtry == 11 || ViewBag.UsrCtry == 18 || ViewBag.UsrCtry == 17)
+				@if (ViewBag.UsrCtry == 25 || ViewBag.UsrCtry == 11 || ViewBag.UsrCtry == 18)
                 {
                 <div class="col-md-6">
                     <div class='input-group'>
@@ -454,7 +455,7 @@
                     </span>
                     <input id="DOB" type='text' class="form-control" data-bind='valueUpdate:"change" , datepicker: DOB , datepickerOptions: { changeYear: true, yearRange: "-105:+0" , maxDate:@Model.DatePickerConfig,  dateFormat:"@Model.DateFormatDP"}' />
                     <input id="DOB_dummy" type='text' class="form-control" data-bind='datepicker: DOB , datepickerOptions: { changeYear: true, maxDate:@Model.DatePickerConfig,  dateFormat:"@Model.DateFormatDP"}, visible:false' />
-                    <label class="date_format">dd/mm/yyyy</label>
+                    <label class="date_format">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgDateFormat"))</label>
                 </div>
             </div>
             <div class="col-md-2">
@@ -609,7 +610,7 @@
             <div class="col-md-6">
                 <div class='input-group'>
                         @*<span class="input-group-addon"> @(ViewBag.UsrCtry != 7 ? ViewBag.UsrCtry == 3 ?  (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceMunicipio")) :  (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceCanton")) :  (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceProvince"))) <font color="#FF0000" id="mandatory_canton">*</font></span>*@
-						<span class="input-group-addon">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceState"))<font color="#FF0000" id="mandatory_canton">*</font></span>
+                    <span class="input-group-addon">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceState")) @((ViewBag.UsrCtry == 17) ? "" : "<font color='#FF0000' id='mandatory_canton'>*</font>")</span>
                     <select id="provincia" class="form-control" data-bind="options: States,
                 optionsText: 'Name',
                 optionsValue: 'Id',
@@ -4776,6 +4777,7 @@
 </div>
 
 <script type="text/javascript">
+    // Configuration and Catalogs
     var countries = @Html.Raw(Json.Encode(Model.Countries));
     var regions= @Html.Raw(Json.Encode(Model.Regions));
     var labs = @Html.Raw(Json.Encode(Model.Labs));
@@ -4784,6 +4786,9 @@
     var reg_inst_usr = @Html.Raw(Json.Encode(Model.reg_inst_usr));
     var reg_salu_usr = @Html.Raw(Json.Encode(Model.reg_salu_usr));
     var reg_pais_usr = @Html.Raw(Json.Encode(Model.reg_pais_usr));
+    var PAHOFLU_date_format = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgDateFormat")))";
+    var moment_date_format = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgDateFormatMoment")))";
+    var ISO_date_format = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgDateFormatISO")))";
 
     /*   Mensajes de alerta de validaciones    */
     var msgValidationSurvData = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationSurvData")))";
