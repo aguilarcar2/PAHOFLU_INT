@@ -2635,14 +2635,14 @@
         </div>
 
         <div class="row rowform">
-	        @if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 3 ){
+	        @*@if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 3 ){*@
             <div class="col-md-12">
                 <button type="button" style="background-color:#B2BABB; color:#000000" class="btn btn-group-justified" data-toggle="collapse" data-target="#Toma">
-                    Muestra @( ViewBag.UsrCtry == 7 ? "(s)" : "")
+                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSample")) @( ViewBag.UsrCtry == 7 ? "(s)" : "")
                     <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
                 </button>
             </div>
-	        }
+	        @*}*@
             <div class="col-md-5">
                 <span>
                     @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSampleTaking")) <font color="#FF0000">*</font>
