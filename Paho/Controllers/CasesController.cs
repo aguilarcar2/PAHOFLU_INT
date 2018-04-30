@@ -1862,9 +1862,13 @@ namespace Paho.Controllers
 
                     // Laboratorio Intermedio
                     Rec_Date_NPHL = flucase.Rec_Date_NPHL,
+                    Rec_Date_NPHL_2 = flucase.Rec_Date_NPHL_2,
                     Temp_NPHL = flucase.Temp_NPHL,
+                    Temp_NPHL_2 = flucase.Temp_NPHL_2,
                     Observation_NPHL = flucase.Observation_NPHL,
+                    Observation_NPHL_2 = flucase.Observation_NPHL_2,
                     Ship_Date_NPHL = flucase.Ship_Date_NPHL,
+                    Ship_Date_NPHL_2 = flucase.Ship_Date_NPHL_2,
 
                     Comments = flucase.Comments,
                     FinalResult = flucase.FinalResult,
@@ -2143,9 +2147,13 @@ namespace Paho.Controllers
                 int? DataStatement,
                 //AM Laboratorio intermedio
                 DateTime? Rec_Date_NPHL,
+                DateTime? Rec_Date_NPHL_2,
                 Decimal? Temp_NPHL,
+                Decimal? Temp_NPHL_2,
                 string Observation_NPHL,
+                string Observation_NPHL_2,
                 DateTime? Ship_Date_NPHL,
+                DateTime? Ship_Date_NPHL_2,
                 List<LabTestViewModel> LabTests
             )
         {
@@ -2190,9 +2198,13 @@ namespace Paho.Controllers
 
             // Laboratorio de intermedio
             flucase.Rec_Date_NPHL = Rec_Date_NPHL;
+            flucase.Rec_Date_NPHL_2 = Rec_Date_NPHL_2;
             flucase.Temp_NPHL = Temp_NPHL;
+            flucase.Temp_NPHL_2 = Temp_NPHL_2;
             flucase.Observation_NPHL = Observation_NPHL;
+            flucase.Observation_NPHL_2 = Observation_NPHL_2;
             flucase.Ship_Date_NPHL = Ship_Date_NPHL;
+            flucase.Ship_Date_NPHL_2 = Ship_Date_NPHL_2;
 
             flucase.Comments = Comments;
             flucase.FinalResult = FinalResult;

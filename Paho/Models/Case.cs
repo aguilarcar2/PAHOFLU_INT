@@ -1058,9 +1058,13 @@ namespace Paho.Models
         public Decimal? TempSample3 { get; set; }
         // AM Laboratorio intermedio
         public DateTime? Rec_Date_NPHL { get; set; }
+        public DateTime? Rec_Date_NPHL_2 { get; set; }
         public Decimal? Temp_NPHL { get; set; }
+        public Decimal? Temp_NPHL_2 { get; set; }
         public string Observation_NPHL { get; set; }
+        public string Observation_NPHL_2 { get; set; }
         public DateTime? Ship_Date_NPHL { get; set; }
+        public DateTime? Ship_Date_NPHL_2 { get; set; }
 
         public DateTime? EndLabDate { get; set; }
         public string FResult { get; set; }
@@ -1766,9 +1770,13 @@ namespace Paho.Models
 
                    //AM Laboratorio intermedio
                    p.Rec_Date_NPHL,
+                   p.Rec_Date_NPHL_2,
                    p.Temp_NPHL,
+                   p.Temp_NPHL_2,
                    p.Observation_NPHL,
+                   p.Observation_NPHL_2,
                    p.Ship_Date_NPHL,
+                   p.Ship_Date_NPHL_2,
 
                    p.EndLabDate,
                    p.FResult,
