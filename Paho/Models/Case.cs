@@ -596,6 +596,15 @@ namespace Paho.Models
         public virtual ICollection<Neighborhood> Neighborhoods { get; set; }
     }
 
+    public class CatParishPostOfficeJM
+    {
+        public int ID { get; set; }
+        public int AreaID { get; set; }
+        public string PostOffice_PostalAgency { get; set; }
+        public string orig_country { get; set; }
+        public virtual Area Area { get; set; }
+    }
+
     public class Local
     {
         public int ID { get; set; }
@@ -890,6 +899,7 @@ namespace Paho.Models
         public int? CountryID { get; set; }
         public int? AreaID { get; set; }
         public int? StateID { get; set; }
+        public int? ParishPostOfficeIDJMID { get; set;}
         public int? LocalID { get; set; }
         public int? NeighborhoodID { get; set; }
         public UrbanRural UrbanRural { get; set; }
@@ -1469,6 +1479,7 @@ namespace Paho.Models
         public DbSet<Region> Regions { get; set; }
         public DbSet<Local> Locals { get; set; }
         public DbSet<State> States { get; set; }
+        public DbSet<CatParishPostOfficeJM> CatParishPostOfficeJM { get; set; }
         public DbSet<Neighborhood> Neighborhoods { get; set; }
         public DbSet<Institution> Institutions { get; set; }
         public DbSet<InstitutionConfiguration> InstitutionsConfiguration { get; set; }
@@ -1562,6 +1573,7 @@ namespace Paho.Models
                    p.CountryID,
                    p.AreaID,
                    p.StateID,
+                   p.ParishPostOfficeIDJMID,
                    p.LocalID,
                    p.NeighborhoodID,
                    p.UrbanRural,

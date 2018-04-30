@@ -469,8 +469,8 @@ function ContactViewModel(app, dataModel) {
     self.IsInusitado = ko.computed(function () {            //**** CAFQ
         if (self.SurvInusual() == true) {
             // Desactivado por el momento requirimiento de RRR //16/Marzo/2018
-            return true;
-            //return false;
+            //return true;
+            return false;
         } else {
             return false; 
         }

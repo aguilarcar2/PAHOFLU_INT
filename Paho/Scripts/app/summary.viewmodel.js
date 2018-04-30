@@ -253,6 +253,7 @@ function SummaryViewModel(app, dataModel) {
     var date_format_moment = app.dataModel.date_format_moment;
     var date_format_ISO = app.dataModel.date_format_ISO;
     var date_format_ = app.dataModel.date_format_;
+    var date_format_DatePicker = app.dataModel.date_format_DatePicker;
 
     self.Id = "";
     self.UsrCountry = ko.observable(selcty); // Pais del usuario logueado
@@ -772,7 +773,7 @@ app.addViewModel({
 /** Bandeja de denominadores **/
 function showEpiWeek(data, event) {
     console.log(data.StartDateOfWeek);
-    var date = moment.unix(data.StartDateOfWeek).utc().format(date_format_moment);
+    var date = moment.unix(data.StartDateOfWeek).utc().format(moment_date_format);
     console.log(date);
     $("#HospitalDate").val(date);
     $("#HospitalDate").change();

@@ -4,6 +4,7 @@
     self.userInfoUrl = "/api/Me";
     self.siteUrl = "/";
     self.getStatesUrl = "/cases/GetStates";
+    self.getParishPostOfficeUrl = "/cases/GetParishPostOffice";
     self.getNeighborhoodsUrl = "/cases/GetNeighborhoods";
     self.getLocalsUrl = "/cases/GetNeighborhoods";
     self.getAreasUrl = "/cases/GetAreas"; 

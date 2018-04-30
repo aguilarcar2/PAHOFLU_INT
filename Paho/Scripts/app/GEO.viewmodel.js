@@ -23,12 +23,14 @@
     self.selectedCountryOrigin = ko.observable();
     self.selectedAreaId = ko.observable();
     self.selectedStateId = ko.observable();
+    self.selectedParishPostOfficeJMId = ko.observable();
     self.selectedLocalId = ko.observable();
     self.selectedNeighborhoodId = ko.observable();
     self.UrbanRural = ko.observable(0);
     self.Address = ko.observable("");
     self.Areas = ko.observableArray();
     self.States = ko.observableArray();
+    self.ParishPostOfficeJM = ko.observableArray();
     self.Areas2weeks = ko.observableArray();
     self.States2weeks = ko.observableArray();
     self.selectedCountryId2weeks = ko.observable();
@@ -52,6 +54,11 @@
         
     }, self);
 
+    self.EnableJAM = ko.computed(function () {
+        return (self.UsrCountry() == 17) ? true : false;
+
+    }, self);
+
     self.ResetGEO = function () {
         self.hasReset(true);
         self.Id = "";
@@ -61,6 +68,7 @@
         self.selectedCountryId(app.Views.Home.UsrCountry());
         self.selectedCountryOrigin("");
         self.selectedAreaId("");
+        self.selectedParishPostOfficeJMId("");
         self.selectedStateId("");
         self.selectedLocalId("");
         self.selectedNeighborhoodId("");
@@ -114,6 +122,9 @@
                     self.selectedAreaId(data.AreaID);
                     self.ReloadStates(function () {
                         self.selectedStateId(data.StateID);
+                        if (self.UsrCountry() == 17) {
+                            self.selectedParishPostOfficeJMId(data.ParishPostOfficeJMID);
+                        }
                         self.ReloadNeighborhoods(function () {
                             self.selectedNeighborhoodId(data.NeighborhoodID);
                         });
@@ -178,6 +189,24 @@
         }
         $.getJSON(app.dataModel.getStatesUrl, { AreaID: self.selectedAreaId() }, function (data, status) {
             self.States(data);
+            if ($.isFunction(select)) select();
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            alert(errorThrown);
+        })
+
+        if (self.UsrCountry() == 17) {
+            self.ReloadParishPostOffice();
+        }
+    };
+
+    self.ReloadParishPostOffice = function (select) {
+        if (typeof self.selectedAreaId() === "undefined") {
+            self.ParishPostOfficeJM("");
+            return;
+        }
+        $.getJSON(app.dataModel.getParishPostOfficeUrl, { AreaID: self.selectedAreaId() }, function (data, status) {
+            self.ParishPostOfficeJM(data);
             if ($.isFunction(select)) select();
         })
         .fail(function (jqXHR, textStatus, errorThrown) {
@@ -309,6 +338,7 @@
                 CountryId: self.selectedCountryId(),
                 AreaId: self.selectedAreaId(),
                 StateId: self.selectedStateId(),
+                ParishPostOfficeJMId: self.selectedParishPostOfficeJMId(),
                 LocalId: self.selectedLocalId(),
                 NeighborhoodId: self.selectedNeighborhoodId(),
                 UrbanRural: self.UrbanRural(),

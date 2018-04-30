@@ -259,6 +259,23 @@ namespace Paho.Controllers
             return Json(states, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult GetParishPostOffice(int AreaID)
+        {
+            var ParisPostOffice =
+                   (
+                    from PPOff in db.CatParishPostOfficeJM as IQueryable<CatParishPostOfficeJM>
+                    where PPOff.AreaID == AreaID
+                    select new
+                    {
+                        Id = PPOff.ID,
+                        Name = PPOff.PostOffice_PostalAgency + " - " + PPOff.orig_country
+                    })
+                    .OrderBy(c => c.Name)
+                    .ToArray();
+
+            return Json(ParisPostOffice, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult GetLocals(int StateID)
         {
             var locals =
@@ -1603,6 +1620,7 @@ namespace Paho.Controllers
                     AreaID = flucase.AreaID,
                     LocalID = flucase.LocalID,
                     StateID = flucase.StateID,
+                    ParishPostOfficeJMID = flucase.ParishPostOfficeIDJMID,
                     NeighborhoodID = flucase.NeighborhoodID,
                     UrbanRural = flucase.UrbanRural,
                     CountryID2weeks = flucase.CountryID2weeks,
@@ -1640,6 +1658,7 @@ namespace Paho.Controllers
                 int? CountryId,
                 int? AreaId,
                 int? StateId,
+                int? ParishPostOfficeJMId,
                 int? LocalId,
                 int? NeighborhoodId,
                 UrbanRural UrbanRural,
@@ -1670,6 +1689,7 @@ namespace Paho.Controllers
             flucase.CountryID = CountryId;
             flucase.AreaID = AreaId;
             flucase.StateID = StateId;
+            flucase.ParishPostOfficeIDJMID = ParishPostOfficeJMId;
             flucase.LocalID = LocalId;
             flucase.NeighborhoodID = NeighborhoodId;
             flucase.UrbanRural = UrbanRural;

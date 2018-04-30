@@ -241,7 +241,7 @@
                         <input type="radio" name="IsSurv" id="IsSurv" value="2" data-bind="checked: IsSurv" @((ViewBag.SARI == false && ViewBag.ILI == true) ? "checked" : "" ) />  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelIli"))
                     </label>
                 }
-                <label class="btn btn-default">
+                <label class="btn btn-default" data-bind="visible:false">
                     <input type="checkbox" name="SurvInusual" id="SurvInusual" data-bind="checked: SurvInusual">  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelUnusualCase"))
                 </label>
                 @if (ViewBag.UsrCtry == 9)
@@ -631,6 +631,18 @@
                 optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel"))'"></select>
                 </div>
             </div>
+            <div class="col-md-6" data-bind="visible:EnableJAM">
+                <div class='input-group'>
+                    <span class="input-group-addon">
+                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceParishPostOffice"))
+                    </span>
+                    <select id="ParishPostOfficeJM" class="form-control" data-bind="options: ParishPostOfficeJM,
+                optionsText: 'Name',
+                optionsValue: 'Id',
+                value: selectedParishPostOfficeJMId,
+                optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel"))'"></select>
+                </div>
+            </div>
             @if (@ViewBag.UsrCtry != 25 && @ViewBag.UsrCtry != 11 && @ViewBag.UsrCtry != 18 && @ViewBag.UsrCtry != 17)
             {
             <div class="col-md-6" ssdata-bind="visible:EnableCHI">
@@ -643,7 +655,7 @@
                 optionsValue: 'Id',
                 value: selectedNeighborhoodId,
                 optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel"))'"></select>
-</div>
+                </div>
             </div>
             }
         </div>
@@ -2379,6 +2391,9 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Mensaje para Jamaica de definicion de caso-->
+
         </div>
 
         <!-- Datos de hospitalizacion -->
