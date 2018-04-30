@@ -91,5 +91,9 @@
     var institutions = @Html.Raw(Json.Encode(Model.Institutions));
     var CountryID = @Html.Raw(Model.CountryID);
     var msgValidateInstitution = "@(Html.Raw(((Paho.Controllers.FluidController)this.ViewContext.Controller).getMsg("msgValidateInstitution")))";
+    var PAHOFLU_date_format = "@(Html.Raw(((Paho.Controllers.FluidController)this.ViewContext.Controller).getMsg("msgDateFormat")))";
+    var moment_date_format = "@(Html.Raw(((Paho.Controllers.FluidController)this.ViewContext.Controller).getMsg("msgDateFormatMoment")))";
+    var ISO_date_format = "@(Html.Raw(((Paho.Controllers.FluidController)this.ViewContext.Controller).getMsg("msgDateFormatISO")))";
+    var DatePicker_date_format = "@(Html.Raw(((Paho.Controllers.FluidController)this.ViewContext.Controller).getMsg("msgDateFormatDP")))";
 </script>
 <!-- /ko -->
