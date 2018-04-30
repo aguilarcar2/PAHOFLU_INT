@@ -57,7 +57,7 @@ namespace Paho.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Usuario o password inválido.");
+                    ModelState.AddModelError("", "The user or password is incorrect.");
                 }
             }
 
