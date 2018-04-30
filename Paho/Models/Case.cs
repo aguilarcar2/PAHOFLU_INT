@@ -1065,7 +1065,10 @@ namespace Paho.Models
         public string Observation_NPHL_2 { get; set; }
         public DateTime? Ship_Date_NPHL { get; set; }
         public DateTime? Ship_Date_NPHL_2 { get; set; }
-
+        public bool? NPHL_Processed { get; set; }
+        public int? NPHL_NoProRenId { get; set; }
+        public string NPHL_NoProRen { get; set; }
+        
         public DateTime? EndLabDate { get; set; }
         public string FResult { get; set; }
         public string Comments { get; set; }
@@ -1777,6 +1780,9 @@ namespace Paho.Models
                    p.Observation_NPHL_2,
                    p.Ship_Date_NPHL,
                    p.Ship_Date_NPHL_2,
+                   p.NPHL_Processed,
+                   p.NPHL_NoProRenId,
+                   p.NPHL_NoProRen,
 
                    p.EndLabDate,
                    p.FResult,

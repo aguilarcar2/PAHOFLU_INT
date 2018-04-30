@@ -1870,6 +1870,10 @@ namespace Paho.Controllers
                     Ship_Date_NPHL = flucase.Ship_Date_NPHL,
                     Ship_Date_NPHL_2 = flucase.Ship_Date_NPHL_2,
 
+                    NPHL_Processed = flucase.NPHL_Processed,
+                    NPHL_NoProRenId = flucase.NPHL_NoProRenId,
+                    NPHL_NoProRen = flucase.NPHL_NoProRen,
+
                     Comments = flucase.Comments,
                     FinalResult = flucase.FinalResult,
                     FinalResultVirusTypeID = flucase.FinalResultVirusTypeID,
@@ -2154,6 +2158,9 @@ namespace Paho.Controllers
                 string Observation_NPHL_2,
                 DateTime? Ship_Date_NPHL,
                 DateTime? Ship_Date_NPHL_2,
+                bool? NPHL_Processed,
+                int? NPHL_NoProRenId,
+                string NPHL_NoProRen,
                 List<LabTestViewModel> LabTests
             )
         {
@@ -2205,6 +2212,10 @@ namespace Paho.Controllers
             flucase.Observation_NPHL_2 = Observation_NPHL_2;
             flucase.Ship_Date_NPHL = Ship_Date_NPHL;
             flucase.Ship_Date_NPHL_2 = Ship_Date_NPHL_2;
+
+            flucase.NPHL_Processed = NPHL_Processed;
+            flucase.NPHL_NoProRenId = NPHL_NoProRenId;
+            flucase.NPHL_NoProRen = NPHL_NoProRen;
 
             flucase.Comments = Comments;
             flucase.FinalResult = FinalResult;

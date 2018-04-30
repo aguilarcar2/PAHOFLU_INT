@@ -533,6 +533,11 @@
             $("#Temp_NPHL").prop('disabled', false);
             $("#Ship_Date_NPHL").prop('disabled', false);
             $("#Observation_NPHL").prop('disabled', false);
+            $("input[id*='NPHL_Processed']").prop('disabled', false);
+            $("#NPHL_NoProRenId").prop('disabled', false);
+            $("#NPHL_NoReason").prop('disabled', false);
+            
+            
         }
 
     };

@@ -342,7 +342,6 @@
         return (self.ProcessLab() === "false")
     }, self);
 
-
     // Asignacion de resultado automaticamente
     self.VirusTypeID.subscribe(function (new_virus) {
         //console.log("VirusTypeID");
@@ -566,6 +565,13 @@ function LabViewModel(app, dataModel) {
     self.Observation_NPHL_2 = ko.observable("");
     self.Ship_Date_NPHL = ko.observable(null);
     self.Ship_Date_NPHL_2 = ko.observable(null);
+
+    // nuevos campos
+    self.NPHL_Processed = ko.observable(null);
+    self.NPHL_NoProRenId = ko.observable(null);
+    self.NPHL_NoProRen = ko.observable(null);
+    
+    
 
     self.Rec_Date_NPHL.subscribe(function (newRecDateNPHL) {
         if (self.hasReset() != true && newRecDateNPHL != "" && newRecDateNPHL != null && self.NPHL() == true) {
@@ -832,6 +838,21 @@ function LabViewModel(app, dataModel) {
 
     };
 
+
+    self.ShowProcessedNPHL = ko.computed(function () {
+        self.NPHL_NoProRen("");
+        self.NPHL_NoProRenId("");
+        self.resetFinalResult();
+        return (self.Processed() === "true")
+    }, self);
+
+    self.NotShowNPHL_Processed = ko.computed(function () {
+        return (self.NPHL_Processed() === "false")
+    }, self);
+
+    self.NotShowNPHL_ProcessedOther = ko.computed(function () {
+        return (self.NPHL_NoProRenId() === "5")
+    }, self);
 
     self.ShowProcessed = ko.computed(function () {
         self.NoProRen("");
@@ -1127,6 +1148,10 @@ function LabViewModel(app, dataModel) {
         self.Ship_Date_NPHL(null);
         self.Ship_Date_NPHL_2(null);
 
+        self.NPHL_NoProRen("");
+        self.NPHL_NoProRenId("");
+        self.NPHL_Processed("");
+
         self.EndLabDate(null);
         self.FResult("");
         self.Comments("");
@@ -1389,6 +1414,9 @@ function LabViewModel(app, dataModel) {
                 self.Temp_NPHL_2(data.Temp_NPHL_2);
                 self.Observation_NPHL(data.Observation_NPHL);
                 self.Observation_NPHL_2(data.Observation_NPHL_2);
+                self.NPHL_Processed((data.NPHL_Processed != null) ? data.NPHL_Processed.toString() : "");
+                self.NPHL_NoProRenId(data.NPHL_NoProRenId);
+                self.NPHL_NoProRen(data.NPHL_NoProRen);
                 (data.Ship_Date_NPHL) ? self.Ship_Date_NPHL(moment(data.Ship_Date_NPHL).clone().toDate()) : self.Ship_Date_NPHL(null);
                 (data.Ship_Date_NPHL_2) ? self.Ship_Date_NPHL_2(moment(data.Ship_Date_NPHL_2).clone().toDate()) : self.Ship_Date_NPHL_2(null);
 				(data.RecDate) ? self.RecDate(moment(data.RecDate).clone().toDate()) : self.RecDate(null);
@@ -1410,9 +1438,6 @@ function LabViewModel(app, dataModel) {
                 self.NoProRen3(data.NoProRen3);
                 self.NoProRenId3(data.NoProRenId3);
                 self.TempSample3(data.TempSample3);
-
-
-
 
                 (data.EndLabDate) ? self.EndLabDate(moment(data.EndLabDate).clone().toDate()) : self.EndLabDate(null);
                 self.FResult(data.FResult);
@@ -1627,6 +1652,10 @@ function LabViewModel(app, dataModel) {
                     $("#Ship_Date_NPHL_2").prop('disabled', false);
                     $("#Observation_NPHL").prop('disabled', false);
                     $("#Observation_NPHL_2").prop('disabled', false);
+
+                    $("input[id*='NPHL_Processed']").prop('disabled', false);
+                    $("#NPHL_NoProRenId").prop('disabled', false);
+                    $("#NPHL_NoReason").prop('disabled', false);
                 } else {
                     $("#Rec_Date_NPHL").prop('disabled', true);
                     $("#Rec_Date_NPHL_2").prop('disabled', true);
@@ -1636,6 +1665,10 @@ function LabViewModel(app, dataModel) {
                     $("#Ship_Date_NPHL_2").prop('disabled', true);
                     $("#Observation_NPHL").prop('disabled', true);
                     $("#Observation_NPHL_2").prop('disabled', true);
+
+                    $("input[id*='NPHL_Processed']").prop('disabled', true);
+                    $("#NPHL_NoProRenId").prop('disabled', true);
+                    $("#NPHL_NoReason").prop('disabled', true);
                 }
 
                 self.hasGet(false);
@@ -1953,6 +1986,11 @@ function LabViewModel(app, dataModel) {
                 Temp_NPHL_2: self.Temp_NPHL_2(),
                 Ship_Date_NPHL: $("#Ship_Date_NPHL").val() == "" ? null : moment(ship_date_NPHL).format(date_format_ISO),
                 Ship_Date_NPHL_2: $("#Ship_Date_NPHL_2").val() == "" ? null : moment(ship_date_NPHL_2).format(date_format_ISO),
+
+                NPHL_Processed: self.NPHL_Processed(),
+                NPHL_NoProRenId: self.NPHL_NoProRenId(),
+                NPHL_NoProRen: self.NPHL_NoProRen(),
+
             }),
             async: false,
             contentType: "application/json; charset=utf-8",
