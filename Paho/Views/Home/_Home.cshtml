@@ -2340,33 +2340,45 @@
                     </div>
 
                     <div class="row rowform">
+                        <!-- NO ACTIVO: Rinorrea -->
+                        <div class="col-md-3" data-bind="visible:true">
+                            <label class="btn btn-default">
+                                <input type="checkbox" name="Rinorrea" id="Rinorrea" value="1" data-bind="checked: Rinorrea"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelRhinorrhoea"))
+                            </label>
+                        </div>
+
+                        @if (ViewBag.UsrCtry == 17)
+                        {<!-- Disnea solo para Jamaica -->
+                            <div class="col-md-3" data-bind="visible:true">
+                                <label class="btn btn-default">
+                                    <input type="checkbox" name="Disnea" id="Disnea" value="1" data-bind="checked: Disnea"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelDyspnoea"))
+                                </label>
+                            </div>
+                        }
                         <!-- Odinofagia -->
-                        <div class="col-md-4" data-bind="visible:app.Views.Contact.SurvSARICR">
+                        <div class="col-md-3" data-bind="visible:app.Views.Contact.SurvSARICR">
                             <label class="btn btn-default">
                                 <input type="checkbox" name="Odinofagia" id="Odinofagia" value="1" data-bind="checked: Odinofagia"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOdynophagia"))
                             </label>
                         </div>
 
                         <!-- NO ACTIVO: Adenopatia -->
-                        <div class="col-md-4" style="display:none">
+                        <div class="col-md-3" data-bind="visible:true">
                             <label class="btn btn-default">
-                                <input type="checkbox" name="Adenopatia" id="Adenopatia" value="1" data-bind="checked: Adenopatia"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelAdenopathy"))
+                                @*<input type="checkbox" name="Adenopatia" id="Adenopatia" value="1" data-bind="checked: Adenopatia"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelAdenopathy"))*@
+                                <input type="checkbox" name="Adenopatia" id="Adenopatia" value="1" data-bind="checked: Adenopatia"> Wheezing
                             </label>
                         </div>
-                        <!-- NO ACTIVO: Rinorrea -->
-                        <div class="col-md-4" style="display:none">
-                            <label class="btn btn-default">
-                                <input type="checkbox" name="Rinorrea" id="Rinorrea" value="1" data-bind="checked: Rinorrea"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelRhinorrhoea"))
-                            </label>
-                        </div>
+
+
                         <!-- NO ACTIVO: Estridor -->
-                        <div class="col-md-4" style="display:none">
+                        <div class="col-md-3" data-bind="visible:false">
                             <label class="btn btn-default">
                                 <input type="checkbox" name="Estridor" id="Estridor" value="1" data-bind="checked: Estridor"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelLaryngealStridor"))
                             </label>
                         </div>
                         <!-- NO ACTIVO: Tiraje -->
-                        <div class="col-md-4" style="display:none">
+                        <div class="col-md-4" data-bind="visible:false">
                             <label class="btn btn-default">
                                 <input type="checkbox" name="Tiraje" id="Tiraje" value="1" data-bind="checked: Tiraje"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelPullingSkin"))
                             </label>
