@@ -1589,6 +1589,7 @@
     <Content Include="Scripts\ammap\maps\svg\jamaicaHigh.svg" />
     <Content Include="Scripts\ammap\maps\svg\jamaicaLow.svg" />
     <Content Include="Scripts\ammap\maps\svg\jamaicaPARRLow.svg" />
+    <Content Include="Scripts\ammap\maps\svg\jamaicaREGILow.svg" />
     <Content Include="Scripts\ammap\maps\svg\japanHigh.svg" />
     <Content Include="Scripts\ammap\maps\svg\japanLow.svg" />
     <Content Include="Scripts\ammap\maps\svg\jerseyHigh.svg" />
@@ -2428,7 +2429,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>4168</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

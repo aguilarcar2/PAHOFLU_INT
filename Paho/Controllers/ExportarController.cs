@@ -928,7 +928,7 @@ namespace Paho.Controllers
                         }*/
                         if (countryId == 17)
                         {
-                            formulas1[9] = "=VRS!L{{toreplace}}";
+                            /*formulas1[9] = "=VRS!L{{toreplace}}";
                             formulas1[10] = "=VRS!M{{toreplace}}+Ad!M{{toreplace}}+Parainfluenza!M{{toreplace}}+'Inf A'!M{{toreplace}}+'Inf B'!M{{toreplace}}+Metapnemovirus!M{{toreplace}}";
 
                             formulas1[11] = "=VRS!M{{toreplace}}";
@@ -937,6 +937,19 @@ namespace Paho.Controllers
                             formulas1[14] = "='Inf A'!M{{toreplace}}";
                             formulas1[15] = "='Inf B'!M{{toreplace}}";
                             formulas1[16] = "=Metapnemovirus!M{{toreplace}}";
+
+                            formulas1[17] = "=D{{toreplace}}+E{{toreplace}}+F{{toreplace}}+G{{toreplace}}+H{{toreplace}}+I{{toreplace}}+J{{toreplace}}+K{{toreplace}}+L{{toreplace}}";
+                            formulas1[18] = "=O{{toreplace}}+P{{toreplace}}+Q{{toreplace}}+R{{toreplace}}+S{{toreplace}}+T{{toreplace}}+U{{toreplace}}+V{{toreplace}}+W{{toreplace}}";
+                            */
+                            formulas1[9] = "=VRS!M{{toreplace}}";
+                            formulas1[10] = "=VRS!N{{toreplace}}+Ad!N{{toreplace}}+Parainfluenza!N{{toreplace}}+'Inf A'!N{{toreplace}}+'Inf B'!N{{toreplace}}+Metapnemovirus!N{{toreplace}}";
+
+                            formulas1[11] = "=VRS!N{{toreplace}}";
+                            formulas1[12] = "=Ad!N{{toreplace}}";
+                            formulas1[13] = "=Parainfluenza!N{{toreplace}}";
+                            formulas1[14] = "='Inf A'!N{{toreplace}}";
+                            formulas1[15] = "='Inf B'!N{{toreplace}}";
+                            formulas1[16] = "=Metapnemovirus!N{{toreplace}}";
 
                             formulas1[17] = "=D{{toreplace}}+E{{toreplace}}+F{{toreplace}}+G{{toreplace}}+H{{toreplace}}+I{{toreplace}}+J{{toreplace}}+K{{toreplace}}+L{{toreplace}}";
                             formulas1[18] = "=O{{toreplace}}+P{{toreplace}}+Q{{toreplace}}+R{{toreplace}}+S{{toreplace}}+T{{toreplace}}+U{{toreplace}}+V{{toreplace}}+W{{toreplace}}";

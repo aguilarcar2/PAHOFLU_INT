@@ -3747,26 +3747,74 @@ namespace Paho.Controllers
                             {
                                 cAnio = reader.GetValue(1).ToString();
                                 cSema = reader.GetValue(2).ToString();
-                                cGE1 = ((int)reader.GetValue(11)).ToString();
+                                //var vTemp = reader.GetValue(11);
+                                /*cGE1 = ((int)reader.GetValue(11)).ToString();
                                 cGE2 = ((int)reader.GetValue(12)).ToString();
                                 cGE3 = ((int)reader.GetValue(13)).ToString();
                                 cGE4 = ((int)reader.GetValue(14)).ToString();
                                 cGE5 = ((int)reader.GetValue(15)).ToString();
-                                cGE6 = ((int)reader.GetValue(16)).ToString();
+                                cGE6 = ((int)reader.GetValue(16)).ToString();*/
+
+                                if (reader.GetValue(11) != System.DBNull.Value)
+                                    cGE1 = ((int)reader.GetValue(11)).ToString();
+                                else
+                                    cGE1 = "0";
+                                if (reader.GetValue(12) != System.DBNull.Value)
+                                    cGE2 = ((int)reader.GetValue(12)).ToString();
+                                else
+                                    cGE2 = "0";
+                                if (reader.GetValue(13) != System.DBNull.Value)
+                                    cGE3 = ((int)reader.GetValue(13)).ToString();
+                                else
+                                    cGE3 = "0";
+                                if (reader.GetValue(14) != System.DBNull.Value)
+                                    cGE4 = ((int)reader.GetValue(14)).ToString();
+                                else
+                                    cGE4 = "0";
+                                if (reader.GetValue(15) != System.DBNull.Value)
+                                    cGE5 = ((int)reader.GetValue(15)).ToString();
+                                else
+                                    cGE5 = "0";
+                                if (reader.GetValue(16) != System.DBNull.Value)
+                                    cGE6 = ((int)reader.GetValue(16)).ToString();
+                                else
+                                    cGE6 = "0";
 
                                 if (countryId == 25)
                                 {
-                                    cGE7 = ((int)reader.GetValue(17)).ToString();
-                                    cGE8 = ((int)reader.GetValue(18)).ToString();
+                                    /*cGE7 = ((int)reader.GetValue(17)).ToString();
+                                    cGE8 = ((int)reader.GetValue(18)).ToString();*/
+                                    if (reader.GetValue(17) != System.DBNull.Value)
+                                        cGE7 = ((int)reader.GetValue(17)).ToString();
+                                    else
+                                        cGE7 = "0";
+                                    if (reader.GetValue(18) != System.DBNull.Value)
+                                        cGE8 = ((int)reader.GetValue(18)).ToString();
+                                    else
+                                        cGE8 = "0";
+
                                     aData.Add(new string[] { cAnio, cSema, cGE1, cGE2, cGE3, cGE4, cGE5, cGE6, cGE7, cGE8 });
                                 }
                                 else
                                 {
                                     if (countryId == 17)
                                     {
-                                        cGE7 = ((int)reader.GetValue(17)).ToString();
+                                        /*cGE7 = ((int)reader.GetValue(17)).ToString();
                                         cGE8 = ((int)reader.GetValue(18)).ToString();
-                                        cGE9 = ((int)reader.GetValue(19)).ToString();
+                                        cGE9 = ((int)reader.GetValue(19)).ToString();*/
+                                        if (reader.GetValue(17) != System.DBNull.Value)
+                                            cGE7 = ((int)reader.GetValue(17)).ToString();
+                                        else
+                                            cGE7 = "0";
+                                        if (reader.GetValue(18) != System.DBNull.Value)
+                                            cGE8 = ((int)reader.GetValue(18)).ToString();
+                                        else
+                                            cGE8 = "0";
+                                        if (reader.GetValue(19) != System.DBNull.Value)
+                                            cGE9 = ((int)reader.GetValue(19)).ToString();
+                                        else
+                                            cGE9 = "0";
+
                                         aData.Add(new string[] { cAnio, cSema, cGE1, cGE2, cGE3, cGE4, cGE5, cGE6, cGE7, cGE8, cGE9 });
                                     }
                                     else
