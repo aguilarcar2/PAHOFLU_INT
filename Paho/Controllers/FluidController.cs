@@ -177,11 +177,11 @@ namespace Paho.Controllers {
                 var ms = new MemoryStream();
                 var Languaje_country_ = db.Countries.Find(CountryID);
                 var surv = Surv;
+                var user = UserManager.FindById(User.Identity.GetUserId());
+                var SARI = user.Institution.SARI;
 
                 if (surv == null)
                 {
-                    var user = UserManager.FindById(User.Identity.GetUserId());
-                    var SARI = user.Institution.SARI;
                     surv = SARI != null ? 1 :  2;
                 }
 
@@ -216,8 +216,18 @@ namespace Paho.Controllers {
                         ConfigToExcel(CountryID, Languaje_country_.Language.ToString(), RegionID, Year, HospitalID,  excelWorkBook, "Leyendas", 1, excelWs_Leyendas.Index, false);
 
                         // Manejo de graficas 
-                        var excelWs_Graph_IRAG = excelWorkBook.Worksheets["SARI Graphs"];
-                        ConfigGraph(Year, YearFrom, YearTo,  excelWorkBook, excelWs_Graph_IRAG.Index);
+
+                        contador = YearEnd - YearBegin;
+                        if (contador > 0)
+                        {
+                            var excelWs_Graph_IRAG = excelWorkBook.Worksheets[ (user.Institution.Country.Language == "ENG") ? "SARI Graphs" : "Gráficos IRAG"];
+                            for (int i = contador; i >= 0; i--)
+                            {
+                                ConfigGraph(YearEnd - contador, excelWorkBook, excelWs_Graph_IRAG.Index);
+                            }
+                            
+                        }
+
 
 
                         excelPackage.SaveAs(ms);
@@ -365,26 +375,14 @@ namespace Paho.Controllers {
             return searchedMsg;
         }
 
-        private void ConfigGraph(int? year, int? YearFrom, int? YearTo, ExcelWorkbook excelWorkBook, int sheet)
+        private void ConfigGraph(int? year, ExcelWorkbook excelWorkBook, int sheet)
         {
             var excelWorksheet = excelWorkBook.Worksheets[sheet];
-            var contador = 0 ;
-            var YearBegin = 0;
-            var YearEnd = 0;
-
-            if (YearFrom != null && YearTo !=null)
-            {
-                YearBegin = (int)YearFrom;
-                YearEnd = (int)YearTo;
-
-            } else if (year != null && YearTo != null)
-            {
-                contador = (int)year - (int)YearFrom;
-            }
-            
 
             var LineChart = excelWorksheet.Drawings["GS1"] as ExcelLineChart;
             var series = LineChart.Series[0];
+
+            series.Header = year.ToString();
 
             //var seriesCC = LineChart.Series.Add(ExcelRange.GetAddress(7, nCol, 59, nCol), ExcelRange.GetAddress(7, 2, 59, 2));
 
