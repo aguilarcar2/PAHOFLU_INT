@@ -5935,54 +5935,53 @@
                                     "getAreasFromMap": true,
                                     "zoomLevel": 0.9,
                                     "areas": []
-                        },
+                                },
                                 "areasSettings": {
                                     "autoZoom": true,
                                     "balloonText": "[[title]]: <br/><strong>[[description]]</strong>",
-                            color: "#FFCC00",
-                            colorSolid: "#990000"
-                        },
+                                    color: "#FFCC00",
+                                    colorSolid: "#990000"
+                                },
                                 "valueLegend": {
                                     "right": 10,
                                     "minValue": "-",
                                     "maxValue": "+"
-                        },
+                                },
                                 "zoomControl": {
                                     "minZoomLevel": 0.9
-                        },
+                                },
                                 "titles": titles,
                                 "listeners": [ {
                                     "event": "init",
                                     "method": updateHeatmap
-                        } ]
-                        } );
-
+                                } ]
+                            } );
 
                             function updateHeatmap( event ) {
                                 var map = event.chart;
                                 if ( map.dataGenerated )
                                     return;
-                            //alert(map.dataProvider.areas.length);
+
                                 if ( map.dataProvider.areas.length === 0 ) {
                                     setTimeout( updateHeatmap, 100 );
                                     return;
-                        }
+                                }
                                 console.log(chartData);
                                 for ( var i = 0; i < map.dataProvider.areas.length; i++ ) {
-                            //alert(map.dataProvider.areas.length);
-                            //alert(chartData[i].area.valueOf());
-                                    var A = chartData[i].infA.valueOf(); 
+                                    var A = chartData[i].infA.valueOf();
                                     var B = chartData[i].infB.valueOf();
                                     var VRS = chartData[i].vrs.valueOf();
                                     //var AH1N1 = chartData[i].ah1n1.valueOf();
                                     var other = chartData[i].other.valueOf();
                                     var total = chartData[i].total.valueOf();
-                                    map.dataProvider.areas[ i ].description = "Influenza A: " + A + "<br/>Influenza B: " + B + "<br/>VRS: " + VRS + "<br/>OTHER: " + other + "<br/>Total: "+ total;//Math.round( Math.random() * 10000 );
+                                    //map.dataProvider.areas[ i ].description = "Influenza A: " + A + "<br/>Influenza B: " + B + "<br/>" + "VRS" + ": " + VRS + "<br/>OTHER: " + other + "<br/>Total: "+ total;//Math.round( Math.random() * 10000 );
+                                    map.dataProvider.areas[ i ].description = "Influenza A: " + A + "<br/>Influenza B: " + B + "<br/>" + "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalRSV"))" + ": " + VRS + "<br/>" + "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalOther"))" + ": " + other + "<br/>Total: "+ total;//Math.round( Math.random() * 10000 );
+
                                     map.dataProvider.areas[ i ].value = total;
-                        }
+                                }
                                 map.dataGenerated = true;
                                 map.validateNow();
-                        }
+                            }
                             //----------fin mapa----------------
                         }
                         })
