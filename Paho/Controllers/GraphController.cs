@@ -1213,7 +1213,7 @@ namespace Paho.Controllers
                 string Languaje_ = user.Institution.Country.Language ?? "SPA";
                 int? ETI_ = ETI;
                 int? IRAG_ = IRAG;
-                
+                // ESTA ES UNA TT8725 FR JULIO
                 //string resultGetGraphData = "";
                 XmlDocument myXmlDoc0 = new XmlDocument();
                 List<ArrayList> mapVals = new List<ArrayList>();
@@ -1285,9 +1285,9 @@ namespace Paho.Controllers
                                         mapVal.Add(reader["AreaID"].ToString().Trim());
                                         mapVal.Add(reader["1"].ToString().Trim());
                                         mapVal.Add(reader["2"].ToString().Trim());
-                                        mapVal.Add(reader["3"].ToString().Trim());
+                                        //mapVal.Add(reader["3"].ToString().Trim());
                                         mapVal.Add(reader["6"].ToString().Trim());
-                                        mapVal.Add(reader["10"].ToString().Trim());
+                                        mapVal.Add(reader["9"].ToString().Trim());
                                         mapVals.Add(mapVal);
 
                                         XmlNode auxXmlNode0;
@@ -1312,12 +1312,12 @@ namespace Paho.Controllers
                                         anotherAuxXmlNode0.InnerText = reader["6"].ToString().Trim();
                                         auxXmlNode0.AppendChild(anotherAuxXmlNode0);
 
-                                        anotherAuxXmlNode0 = myXmlDoc0.CreateElement("ah1n1");
+                                        /*anotherAuxXmlNode0 = myXmlDoc0.CreateElement("ah1n1");
                                         anotherAuxXmlNode0.InnerText = reader["3"].ToString().Trim();
-                                        auxXmlNode0.AppendChild(anotherAuxXmlNode0);
+                                        auxXmlNode0.AppendChild(anotherAuxXmlNode0);*/
 
-                                        anotherAuxXmlNode0 = myXmlDoc0.CreateElement("ah3");
-                                        anotherAuxXmlNode0.InnerText = reader["10"].ToString().Trim();
+                                        anotherAuxXmlNode0 = myXmlDoc0.CreateElement("other");
+                                        anotherAuxXmlNode0.InnerText = reader["9"].ToString().Trim();
                                         auxXmlNode0.AppendChild(anotherAuxXmlNode0);
                                     }
                                     break;
@@ -1785,7 +1785,8 @@ namespace Paho.Controllers
                                             yearXmlNode0.AppendChild(myAuxXmlNode0);
                                             
                                             auxXmlNode0 = myXmlDoc0.CreateElement("subheader");
-                                            auxXmlNode0.InnerText = "Total de casos";
+                                            //auxXmlNode0.InnerText = "Total de casos";
+                                            auxXmlNode0.InnerText = getMsg("viewSituationalTotalCases");
                                             myAuxXmlNode0.AppendChild(auxXmlNode0);
 
                                             auxXmlNode0 = myXmlDoc0.CreateElement("subheader");

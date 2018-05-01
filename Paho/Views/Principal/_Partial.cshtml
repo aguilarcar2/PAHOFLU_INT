@@ -1386,24 +1386,24 @@
 
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGráfica 0 - Epidemiológico 1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <script>
-                $(document).mouseup(function(e) 
+                $(document).mouseup(function(e)
                 {
                     //var container = $("#c_b");
                     var subcontainer = $("#c_b");
                     var subcontainer2 = $("#map_c_b");
                     // if the target of the click isn't the container nor a descendant of the container
-                    if (!subcontainer.is(e.target) && subcontainer.has(e.target).length === 0  ) 
+                    if (!subcontainer.is(e.target) && subcontainer.has(e.target).length === 0  )
                     {
                         subcontainer.hide();
                         expanded = false;
                     }
-                    if (!subcontainer2.is(e.target) && subcontainer2.has(e.target).length === 0  ) 
+                    if (!subcontainer2.is(e.target) && subcontainer2.has(e.target).length === 0  )
                     {
                         subcontainer2.hide();
                         expandedMap = false;
                     }
                 });
-        
+
                 var jsonX;
                 function GetGraphData0() {
                     var dataRegion = 0;
@@ -1462,7 +1462,7 @@
                                         var colspanThis = 1;
                                         if(index2>0){
                                             colspanThis = 2;
-                                        }                                    
+                                        }
                                         $('<td />', {id:'tdheaders',colspan:colspanThis, class:'table-td-own', text:element2 }).appendTo(container);
                                     });
                                     var container = $('#tableAntecedentes');
@@ -1472,7 +1472,7 @@
                                         $('<td />', {id:'tdsubheaders',class:'table-subtd-own', text:element2 }).appendTo(container);
                                     });
 
-                                    var container = $('#tableAntecedentes');                               
+                                    var container = $('#tableAntecedentes');
                                     $.each(element.row, function(index2, element2) {
                                         var clase = "";
 
@@ -1481,18 +1481,19 @@
                                         }
                                         if(index2 == 7){
                                             clase = clase + " gray-background";
-                                        }                                    
+                                        }
                                         if(index2 == 8 || index2 == 9 || index2 == 10 ){
-                                            clase = clase + " lgray-background";                                        
+                                            clase = clase + " lgray-background";
                                         }
                                         if(index2==14){
                                             clase = clase + " bold";
                                             clase = clase + " gray-background";
                                         }
-                                        if(index2==15){                                        
+                                        if(index2==15){
                                             $('<tr />', {id:'trdata'+index2+'_1',class:'table-trdata-own gray-background bold'}).appendTo(container);
                                             var tempContainer = $('#'+'trdata'+index2+'_1');
-                                            $('<td />', {id:'tddata',class:'table-tddata-own', text:"Otros aspectos" }).appendTo(tempContainer);
+                                            //$('<td />', {id:'tddata',class:'table-tddata-own', text:"Otros aspectos" }).appendTo(tempContainer);
+                                            $('<td />', {id:'tddata',class:'table-tddata-own', text:"@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalOtherAspects"))" }).appendTo(tempContainer);
                                             $('<td />', {id:'tddata',class:'table-tddata-own'}).appendTo(tempContainer);
                                             $('<td />', {id:'tddata',class:'table-tddata-own'}).appendTo(tempContainer);
                                             $('<td />', {id:'tddata',class:'table-tddata-own'}).appendTo(tempContainer);
@@ -1503,7 +1504,7 @@
                                         $('<tr />', {id:'trdata'+index2,class:'table-trdata-own '+clase }).appendTo(container);
                                         var container2 = $('#trdata'+index2);
                                         $.each(element2.col, function(index3, element3) {
-                                            $('<td />', {id:'tddata',class:'table-tddata-own', text:element3 }).appendTo(container2);                                        
+                                            $('<td />', {id:'tddata',class:'table-tddata-own', text:element3 }).appendTo(container2);
                                             //alert (JSON.stringify(element2));
                                         });
                                     });
@@ -5902,14 +5903,16 @@
                             //alert(JSON.stringify(element.mapData));
                                 $.each(element.mapData.areaData, function(index2, element2) {
                             //alert(JSON.stringify(element2));
-                                    chartData.push({
+                            chartData.push({
                             area: element2.area,
                             infA: element2.infA,
                             infB: element2.infB,
                             vrs: element2.vrs,
-                            ah1n1: element2.ah1n1,
-                            ah3: element2.ah3,
-                            total: (parseInt(element2.infA) + parseInt(element2.infB) + parseInt(element2.vrs) + parseInt(element2.ah1n1) + parseInt(element2.ah3))
+                            //ah1n1: element2.ah1n1,
+                            //ah3: element2.ah3,
+                            other: element2.other,
+                            //total: (parseInt(element2.infA) + parseInt(element2.infB) + parseInt(element2.vrs) + parseInt(element2.ah1n1) + parseInt(element2.ah3))
+                            total: (parseInt(element2.infA) + parseInt(element2.infB) + parseInt(element2.vrs) + parseInt(element2.other)) //+ parseInt(element2.ah3))
                         });
                         });
                         });
@@ -5971,10 +5974,10 @@
                                     var A = chartData[i].infA.valueOf();
                                     var B = chartData[i].infB.valueOf();
                                     var VRS = chartData[i].vrs.valueOf();
-                                    var AH1N1 = chartData[i].ah1n1.valueOf();
-                                    var AH3 = chartData[i].ah3.valueOf();
+                                    //var AH1N1 = chartData[i].ah1n1.valueOf();
+                                    var other = chartData[i].other.valueOf();
                                     var total = chartData[i].total.valueOf();
-                                    map.dataProvider.areas[ i ].description = "Influenza A: " + A + "<br/>Influenza B: " + B + "<br/>VRS: " + VRS + "<br/>AH1N1: " + AH1N1 + "<br/>AH3: " + AH3 + "<br/>Total: "+ total;//Math.round( Math.random() * 10000 );
+                                    map.dataProvider.areas[ i ].description = "Influenza A: " + A + "<br/>Influenza B: " + B + "<br/>VRS: " + VRS + "<br/>OTHER: " + other + "<br/>Total: "+ total;//Math.round( Math.random() * 10000 );
                                     map.dataProvider.areas[ i ].value = total;
                         }
                                 map.dataGenerated = true;
