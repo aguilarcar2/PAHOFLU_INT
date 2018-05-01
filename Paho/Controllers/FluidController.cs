@@ -199,16 +199,17 @@ namespace Paho.Controllers {
                             YearEnd = (int)YearTo;
 
                         }
-                        else if (Year != null && YearTo != null)
+                        else if (Year != null)
                         {
-                            contador = (int)Year - (int)YearFrom;
+                            YearBegin = (int)Year;
+                            YearEnd = (int)Year;
                         }
 
-                        AppendDataToExcelFLUID(Languaje_country_.Language.ToString(), CountryID, RegionID, Year, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_NATIONAL_VIRUSES", 6, 1, 2, false, ReportCountry, YearFrom, YearTo, Surv, Inusual);
-                        AppendDataToExcelFLUID(Languaje_country_.Language.ToString(), CountryID, RegionID, Year, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_IRAG", 8, 1, 4, false, ReportCountry, YearFrom, YearTo, Surv, Inusual);
-                        AppendDataToExcelFLUID(Languaje_country_.Language.ToString(), CountryID, RegionID, Year, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_DEATHS_IRAG", 8, 1, 6, false, ReportCountry, YearFrom, YearTo, Surv, Inusual);
-                        AppendDataToExcelFLUID(Languaje_country_.Language.ToString(), CountryID, RegionID, Year, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_ETI", 8, 1, 6, false, ReportCountry, YearFrom, YearTo, Surv, Inusual);
-                        AppendDataToExcelFLUID(Languaje_country_.Language.ToString(), CountryID, RegionID, Year, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_NATIONAL_VIRUSES", 6, 1, 8, false, ReportCountry, YearFrom, YearTo, Surv, Inusual);
+                        AppendDataToExcelFLUID(Languaje_country_.Language.ToString(), CountryID, RegionID, null, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_NATIONAL_VIRUSES", 6, 1, 2, false, ReportCountry, YearEnd, YearEnd, Surv, Inusual);
+                        AppendDataToExcelFLUID(Languaje_country_.Language.ToString(), CountryID, RegionID, null, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_IRAG", 8, 1, 4, false, ReportCountry, YearBegin, YearEnd, Surv, Inusual);
+                        AppendDataToExcelFLUID(Languaje_country_.Language.ToString(), CountryID, RegionID, null, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_DEATHS_IRAG", 8, 1, 6, false, ReportCountry, YearEnd, YearEnd, Surv, Inusual);
+                        AppendDataToExcelFLUID(Languaje_country_.Language.ToString(), CountryID, RegionID, null, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_ETI", 8, 1, 6, false, ReportCountry, YearBegin, YearEnd, Surv, Inusual);
+                        AppendDataToExcelFLUID(Languaje_country_.Language.ToString(), CountryID, RegionID, null, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_NATIONAL_VIRUSES", 6, 1, 8, false, ReportCountry, YearEnd, YearEnd, Surv, Inusual);
 
                         // Leyendas
                         var excelWs_Leyendas = excelWorkBook.Worksheets["Leyendas"];

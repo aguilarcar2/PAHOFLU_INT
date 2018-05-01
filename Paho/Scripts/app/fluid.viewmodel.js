@@ -32,6 +32,9 @@ function FluidViewModel(app, dataModel) {
     self.StartDate = ko.observable(null);
     self.EndDate = ko.observable(null);
 
+    self.YearFrom = ko.observable(null);
+    self.YearTo = ko.observable(null);
+
     self.validate = function (nextStep) {
         var msg = "";
         var selectCountryUsr = self.selectedCountryId() ? self.selectedCountryId() : CountryID
@@ -39,8 +42,14 @@ function FluidViewModel(app, dataModel) {
         if ($("#Hospitals").children().length == 2 && self.selectedInstitutionId() == null)
             msg += "\n" + msgValidationInstitutionRequired;
 
-        if (self.Year() == "")
+        if (self.Year() == "" && self.YearFrom() == "" && self.YearTo() == "")
             msg += "\n" + msgValidationFluidDate
+
+        if (self.YearFrom() == "" && self.YearTo() != "")
+            msg += "\n" + msgValidationFluidYearFrom
+
+        if (self.YearFrom() != "" && self.YearTo() == "")
+            msg += "\n" + msgValidationFluidYearTo
 
         if (msg !== "") { alert('Report FLUID:' + msg); return false; }
 
@@ -50,7 +59,7 @@ function FluidViewModel(app, dataModel) {
     self.exportar = function () {
 
         //if (self.selectedInstitutionId() > 0) {
-            var namevalues = { CountryID: self.selectedCountryId() ? self.selectedCountryId() : CountryID, HospitalID: self.selectedInstitutionId(), Year: self.Year(), WeekFrom: self.WeekFrom(), WeekTo: self.WeekTo() }
+        var namevalues = { CountryID: self.selectedCountryId() ? self.selectedCountryId() : CountryID, HospitalID: self.selectedInstitutionId(), Year: self.Year(), WeekFrom: self.WeekFrom(), WeekTo: self.WeekTo(), YearFrom: self.YearFrom(), YearTo: self.YearTo() }
             if (self.validate() == true)
                 window.open(app.dataModel.getFluid + "?" + $.param(namevalues, true), "_blank");
         //} else {
@@ -61,7 +70,7 @@ function FluidViewModel(app, dataModel) {
     };
 
     self.url = ko.computed(function () {
-        var namevalues = { CountryID: self.selectedCountryId() ? self.selectedCountryId() : CountryID, HospitalID: self.selectedInstitutionId(), Year: self.Year(), WeekFrom: self.WeekFrom(), WeekTo: self.WeekTo()}
+        var namevalues = { CountryID: self.selectedCountryId() ? self.selectedCountryId() : CountryID, HospitalID: self.selectedInstitutionId(), Year: self.Year(), WeekFrom: self.WeekFrom(), WeekTo: self.WeekTo(), YearFrom: self.YearFrom(), YearTo: self.YearTo() }
         return app.dataModel.getFluid + "?" + $.param(namevalues, true);
     });
  };
