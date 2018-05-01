@@ -2402,8 +2402,8 @@ namespace Paho.Controllers
                             userRecord.Add("actionDesc", reader["actionDesc"].ToString());
                             userRecord.Add("userOperator", reader["userOperator"].ToString());
                             userRecord.Add("healthUnit", reader["healthUnit"].ToString());
-                            userRecord.Add("stateRecord", (user_lang == "ENG") ? reader["stateRecord_ENG"].ToString() : reader["stateRecord"].ToString());
-                            userRecord.Add("operationDate", reader["operationDate"].ToString());
+                            //userRecord.Add("stateRecord", (user_lang == "ENG") ? reader["stateRecord_ENG"].ToString() : reader["stateRecord"].ToString());
+                            userRecord.Add("operationDate", reader["DateAction"].ToString());
                             logsPerUser.Add(userRecord);
 
                         }
