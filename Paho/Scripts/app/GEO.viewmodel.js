@@ -24,6 +24,10 @@
     self.selectedAreaId = ko.observable();
     self.selectedStateId = ko.observable();
     self.selectedParishPostOfficeJMId = ko.observable();
+    self.StreetNo = ko.observable();
+    self.StreetName = ko.observable();
+    self.ApartmentSuiteLot = ko.observable();
+    self.Address2 = ko.observable();
     self.selectedLocalId = ko.observable();
     self.selectedNeighborhoodId = ko.observable();
     self.UrbanRural = ko.observable(0);
@@ -69,6 +73,10 @@
         self.selectedCountryOrigin("");
         self.selectedAreaId("");
         self.selectedParishPostOfficeJMId("");
+        self.StreetNo("");
+        self.StreetName("");
+        self.ApartmentSuiteLot("");
+        self.Address2("");
         self.selectedStateId("");
         self.selectedLocalId("");
         self.selectedNeighborhoodId("");
@@ -124,6 +132,11 @@
                         self.selectedStateId(data.StateID);
                         if (self.UsrCountry() == 17) {
                             self.selectedParishPostOfficeJMId(data.ParishPostOfficeJMID);
+                            self.StreetNo(data.StreetNo);
+                            self.StreetName(data.StreetName);
+                            self.ApartmentSuiteLot(data.ApartmentSuiteLot);
+                            self.Address2(data.Address2);
+
                         }
                         self.ReloadNeighborhoods(function () {
                             self.selectedNeighborhoodId(data.NeighborhoodID);
@@ -301,7 +314,7 @@
                 msg += "\n" + msgValidationAreaRequired;
             }
                 
-            if (!self.selectedStateId() || self.selectedStateId() == "" && self.UsrCountry() != 17) {
+            if ((!self.selectedStateId() || self.selectedStateId() == "") && self.UsrCountry() != 17) {
                 msg += "\n" + msgValidationStateRequired;
             }
                 
@@ -339,6 +352,10 @@
                 AreaId: self.selectedAreaId(),
                 StateId: self.selectedStateId(),
                 ParishPostOfficeJMId: self.selectedParishPostOfficeJMId(),
+                StreetNo: self.StreetNo(),
+                StreetName: self.StreetName(),
+                ApartmentSuiteLot: self.ApartmentSuiteLot(),
+                Address2: self.Address2(),
                 LocalId: self.selectedLocalId(),
                 NeighborhoodId: self.selectedNeighborhoodId(),
                 UrbanRural: self.UrbanRural(),

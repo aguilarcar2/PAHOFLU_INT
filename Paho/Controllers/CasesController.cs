@@ -1621,6 +1621,10 @@ namespace Paho.Controllers
                     LocalID = flucase.LocalID,
                     StateID = flucase.StateID,
                     ParishPostOfficeJMID = flucase.ParishPostOfficeIDJMID,
+                    StreetNo = flucase.StreetNo,
+                    StreetName = flucase.StreetName,
+                    ApartmentSuiteLot = flucase.ApartmentSuiteLot,
+                    Address2 = flucase.Address2,
                     NeighborhoodID = flucase.NeighborhoodID,
                     UrbanRural = flucase.UrbanRural,
                     CountryID2weeks = flucase.CountryID2weeks,
@@ -1644,6 +1648,10 @@ namespace Paho.Controllers
                 NeighborhoodID = "",
                 UrbanRural = UrbanRural.Unknow,
                 Address = "",
+                StreetNo = "",
+                StreetName = "",
+                ApartmentSuiteLot = "",
+                Address2 = "",
                 CountryOrigin = ""
             },
             JsonRequestBehavior.AllowGet);
@@ -1659,6 +1667,10 @@ namespace Paho.Controllers
                 int? AreaId,
                 int? StateId,
                 int? ParishPostOfficeJMId,
+                string StreetNo,
+                string StreetName,
+                string ApartmentSuiteLot,
+                string Address2,
                 int? LocalId,
                 int? NeighborhoodId,
                 UrbanRural UrbanRural,
@@ -1690,6 +1702,10 @@ namespace Paho.Controllers
             flucase.AreaID = AreaId;
             flucase.StateID = StateId;
             flucase.ParishPostOfficeIDJMID = ParishPostOfficeJMId;
+            flucase.StreetNo = StreetNo;
+            flucase.StreetName = StreetName;
+            flucase.ApartmentSuiteLot = ApartmentSuiteLot;
+            flucase.Address2 = Address2;
             flucase.LocalID = LocalId;
             flucase.NeighborhoodID = NeighborhoodId;
             flucase.UrbanRural = UrbanRural;
@@ -1861,18 +1877,29 @@ namespace Paho.Controllers
                     TempSample3 = flucase.TempSample3,
 
                     // Laboratorio Intermedio
-                    Rec_Date_NPHL = flucase.Rec_Date_NPHL,
-                    Rec_Date_NPHL_2 = flucase.Rec_Date_NPHL_2,
-                    Temp_NPHL = flucase.Temp_NPHL,
-                    Temp_NPHL_2 = flucase.Temp_NPHL_2,
-                    Observation_NPHL = flucase.Observation_NPHL,
-                    Observation_NPHL_2 = flucase.Observation_NPHL_2,
+                    Rec_Date_NPHL = flucase.Rec_Date_NPHL,                    
+                    Temp_NPHL = flucase.Temp_NPHL,                    
+                    Observation_NPHL = flucase.Observation_NPHL,                    
                     Ship_Date_NPHL = flucase.Ship_Date_NPHL,
-                    Ship_Date_NPHL_2 = flucase.Ship_Date_NPHL_2,
-
                     NPHL_Processed = flucase.NPHL_Processed,
                     NPHL_NoProRenId = flucase.NPHL_NoProRenId,
                     NPHL_NoProRen = flucase.NPHL_NoProRen,
+
+                    Rec_Date_NPHL_2 = flucase.Rec_Date_NPHL_2,
+                    Temp_NPHL_2 = flucase.Temp_NPHL_2,
+                    Observation_NPHL_2 = flucase.Observation_NPHL_2,
+                    Ship_Date_NPHL_2 = flucase.Ship_Date_NPHL_2,
+                    NPHL_Processed_2 = flucase.NPHL_Processed_2,
+                    NPHL_NoProRenId_2 = flucase.NPHL_NoProRenId_2,
+                    NPHL_NoProRen_2 = flucase.NPHL_NoProRen_2,
+
+                    Rec_Date_NPHL_3 = flucase.Rec_Date_NPHL_3,
+                    Temp_NPHL_3 = flucase.Temp_NPHL_3,
+                    Observation_NPHL_3 = flucase.Observation_NPHL_3,
+                    Ship_Date_NPHL_3 = flucase.Ship_Date_NPHL_3,
+                    NPHL_Processed_3 = flucase.NPHL_Processed_3,
+                    NPHL_NoProRenId_3 = flucase.NPHL_NoProRenId_3,
+                    NPHL_NoProRen_3 = flucase.NPHL_NoProRen_3,
 
                     Comments = flucase.Comments,
                     FinalResult = flucase.FinalResult,
@@ -2151,16 +2178,26 @@ namespace Paho.Controllers
                 int? DataStatement,
                 //AM Laboratorio intermedio
                 DateTime? Rec_Date_NPHL,
-                DateTime? Rec_Date_NPHL_2,
                 Decimal? Temp_NPHL,
-                Decimal? Temp_NPHL_2,
                 string Observation_NPHL,
-                string Observation_NPHL_2,
                 DateTime? Ship_Date_NPHL,
-                DateTime? Ship_Date_NPHL_2,
                 bool? NPHL_Processed,
                 int? NPHL_NoProRenId,
                 string NPHL_NoProRen,
+                DateTime? Rec_Date_NPHL_2,
+                Decimal? Temp_NPHL_2,
+                string Observation_NPHL_2,
+                DateTime? Ship_Date_NPHL_2,
+                bool? NPHL_Processed_2,
+                int? NPHL_NoProRenId_2,
+                string NPHL_NoProRen_2,
+                DateTime? Rec_Date_NPHL_3,
+                Decimal? Temp_NPHL_3,
+                string Observation_NPHL_3,
+                DateTime? Ship_Date_NPHL_3,
+                bool? NPHL_Processed_3,
+                int? NPHL_NoProRenId_3,
+                string NPHL_NoProRen_3,
                 List<LabTestViewModel> LabTests
             )
         {
@@ -2205,17 +2242,28 @@ namespace Paho.Controllers
 
             // Laboratorio de intermedio
             flucase.Rec_Date_NPHL = Rec_Date_NPHL;
-            flucase.Rec_Date_NPHL_2 = Rec_Date_NPHL_2;
             flucase.Temp_NPHL = Temp_NPHL;
-            flucase.Temp_NPHL_2 = Temp_NPHL_2;
             flucase.Observation_NPHL = Observation_NPHL;
-            flucase.Observation_NPHL_2 = Observation_NPHL_2;
             flucase.Ship_Date_NPHL = Ship_Date_NPHL;
-            flucase.Ship_Date_NPHL_2 = Ship_Date_NPHL_2;
-
             flucase.NPHL_Processed = NPHL_Processed;
             flucase.NPHL_NoProRenId = NPHL_NoProRenId;
             flucase.NPHL_NoProRen = NPHL_NoProRen;
+
+            flucase.Rec_Date_NPHL_2 = Rec_Date_NPHL_2;
+            flucase.Temp_NPHL_2 = Temp_NPHL_2;
+            flucase.Observation_NPHL_2 = Observation_NPHL_2;
+            flucase.Ship_Date_NPHL_2 = Ship_Date_NPHL_2;
+            flucase.NPHL_Processed_2 = NPHL_Processed_2;
+            flucase.NPHL_NoProRenId_2 = NPHL_NoProRenId_2;
+            flucase.NPHL_NoProRen_2 = NPHL_NoProRen_2;
+
+            flucase.Rec_Date_NPHL_3 = Rec_Date_NPHL_3;
+            flucase.Temp_NPHL_3 = Temp_NPHL_3;
+            flucase.Observation_NPHL_3 = Observation_NPHL_3;
+            flucase.Ship_Date_NPHL_3 = Ship_Date_NPHL_3;
+            flucase.NPHL_Processed_3 = NPHL_Processed_3;
+            flucase.NPHL_NoProRenId_3 = NPHL_NoProRenId_3;
+            flucase.NPHL_NoProRen_3 = NPHL_NoProRen_3;
 
             flucase.Comments = Comments;
             flucase.FinalResult = FinalResult;

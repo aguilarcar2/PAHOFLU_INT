@@ -558,18 +558,32 @@ function LabViewModel(app, dataModel) {
     self.CanIFILab = ko.observable(true);
 
     self.Rec_Date_NPHL = ko.observable(null);
-    self.Rec_Date_NPHL_2 = ko.observable(null);
-    self.Temp_NPHL = ko.observable("").extend({ numeric: 2 });
-    self.Temp_NPHL_2 = ko.observable("").extend({ numeric: 2 });
-    self.Observation_NPHL = ko.observable("");
-    self.Observation_NPHL_2 = ko.observable("");
-    self.Ship_Date_NPHL = ko.observable(null);
-    self.Ship_Date_NPHL_2 = ko.observable(null);
+    self.Temp_NPHL = ko.observable("").extend({ numeric: 2 });    
+    self.Observation_NPHL = ko.observable("");    
+    self.Ship_Date_NPHL = ko.observable(null);    
 
     // nuevos campos
     self.NPHL_Processed = ko.observable(null);
     self.NPHL_NoProRenId = ko.observable(null);
     self.NPHL_NoProRen = ko.observable(null);
+
+    self.Rec_Date_NPHL_2 = ko.observable(null);
+    self.Temp_NPHL_2 = ko.observable("").extend({ numeric: 2 });
+    self.Observation_NPHL_2 = ko.observable("");
+    self.Ship_Date_NPHL_2 = ko.observable(null);
+
+    self.NPHL_Processed_2 = ko.observable(null);
+    self.NPHL_NoProRenId_2 = ko.observable(null);
+    self.NPHL_NoProRen_2 = ko.observable(null);
+
+    self.Rec_Date_NPHL_3 = ko.observable(null);
+    self.Temp_NPHL_3 = ko.observable("").extend({ numeric: 2 });
+    self.Observation_NPHL_3 = ko.observable("");
+    self.Ship_Date_NPHL_3 = ko.observable(null);
+
+    self.NPHL_Processed_3 = ko.observable(null);
+    self.NPHL_NoProRenId_3 = ko.observable(null);
+    self.NPHL_NoProRen_3 = ko.observable(null);
     
     
 
@@ -605,27 +619,56 @@ function LabViewModel(app, dataModel) {
     self.Rec_Date_NPHL_2.subscribe(function (newRecDateNPHL) {
         if (self.hasReset() != true && newRecDateNPHL != "" && newRecDateNPHL != null && self.NPHL() == true) {
             var current_value = jQuery.type(newRecDateNPHL) === 'date' ? newRecDateNPHL : parseDate(newRecDateNPHL, date_format_);
-            var date_sample_date_ = jQuery.type(app.Views.Hospital.SampleDate()) === 'date' ? app.Views.Hospital.SampleDate() : parseDate(app.Views.Hospital.SampleDate(), date_format_);
-            var date_shipping_date = $("#ShipDate").val() == "" ? null : jQuery.type(app.Views.Hospital.ShipDate()) === 'date' ? app.Views.Hospital.ShipDate() : parseDate(app.Views.Hospital.ShipDate(), date_format_);
+            var date_sample_date_ = jQuery.type(app.Views.Hospital.SampleDate2()) === 'date' ? app.Views.Hospital.SampleDate2() : parseDate(app.Views.Hospital.SampleDate2(), date_format_);
+            var date_shipping_date = $("#ShipDate2").val() == "" ? null : jQuery.type(app.Views.Hospital.ShipDate2()) === 'date' ? app.Views.Hospital.ShipDate2() : parseDate(app.Views.Hospital.ShipDate2(), date_format_);
 
 
             if ((date_shipping_date != null) && self.hasReset() != true) {
 
                 if (moment(current_value).isBefore(moment(date_shipping_date), "days")) {
                     //alert("La fecha de recepción de Muestra 1 no puede ser menor a la fecha de envio de muestra de la Muestra 1");
-                    alert(msgValidationShippingDateValidateS1);
+                    alert(msgValidationShippingDateValidateS2);
                     self.Rec_Date_NPHL_2(null);
                 }
 
             } else if ((date_sample_date_ == null || date_sample_date_ == "") && self.hasReset() != true) {
                 //alert("Por favor ingrese antes la fecha de toma muestra de la Muestra 1");
-                alert(msgValidationSampleDateS1);
+                alert(msgValidationSampleDateS2);
                 self.Rec_Date_NPHL_2(null);
             } else {
                 if (moment(current_value).isBefore(moment(date_sample_date_), "days")) {
                     //alert("La fecha de recepción de Muestra 1 no puede ser menor a la fecha de toma muestra de la Muestra 1");
-                    alert(msgValidationSampleDateValidateS1);
+                    alert(msgValidationSampleDateValidateS2);
                     self.Rec_Date_NPHL_2(null);
+                }
+            }
+        }
+    });
+
+    self.Rec_Date_NPHL_3.subscribe(function (newRecDateNPHL) {
+        if (self.hasReset() != true && newRecDateNPHL != "" && newRecDateNPHL != null && self.NPHL() == true) {
+            var current_value = jQuery.type(newRecDateNPHL) === 'date' ? newRecDateNPHL : parseDate(newRecDateNPHL, date_format_);
+            var date_sample_date_ = jQuery.type(app.Views.Hospital.SampleDate3()) === 'date' ? app.Views.Hospital.SampleDate3() : parseDate(app.Views.Hospital.SampleDate3(), date_format_);
+            var date_shipping_date = $("#ShipDate3").val() == "" ? null : jQuery.type(app.Views.Hospital.ShipDate3()) === 'date' ? app.Views.Hospital.ShipDate3() : parseDate(app.Views.Hospital.ShipDate3(), date_format_);
+
+
+            if ((date_shipping_date != null) && self.hasReset() != true) {
+
+                if (moment(current_value).isBefore(moment(date_shipping_date), "days")) {
+                    //alert("La fecha de recepción de Muestra 1 no puede ser menor a la fecha de envio de muestra de la Muestra 1");
+                    alert(msgValidationShippingDateValidateS3);
+                    self.Rec_Date_NPHL_3(null);
+                }
+
+            } else if ((date_sample_date_ == null || date_sample_date_ == "") && self.hasReset() != true) {
+                //alert("Por favor ingrese antes la fecha de toma muestra de la Muestra 1");
+                alert(msgValidationSampleDateS3);
+                self.Rec_Date_NPHL_3(null);
+            } else {
+                if (moment(current_value).isBefore(moment(date_sample_date_), "days")) {
+                    //alert("La fecha de recepción de Muestra 1 no puede ser menor a la fecha de toma muestra de la Muestra 1");
+                    alert(msgValidationSampleDateValidateS3);
+                    self.Rec_Date_NPHL_3(null);
                 }
             }
         }
@@ -662,8 +705,27 @@ function LabViewModel(app, dataModel) {
             } else {
                 if (moment(current_value).isBefore(moment(date_Rec_Date_NPHL_2), "days")) {
                     //alert("La fecha de envío de la Muestra  no puede ser menor a la fecha de recepción de la muestra en NPHL");
-                    alert(msgValidationShipDateNPHLValidateS1);
+                    alert(msgValidationShipDateNPHLValidateS2);
                     self.Rec_Date_NPHL_2(null);
+                }
+            }
+        }
+    });
+
+    self.Ship_Date_NPHL_3.subscribe(function (newShipDateNPHL) {
+        if (self.hasReset() != true && newShipDateNPHL != "" && newShipDateNPHL != null && self.NPHL() == true) {
+            var current_value = jQuery.type(newShipDateNPHL) === 'date' ? newShipDateNPHL : parseDate(newShipDateNPHL, date_format_);
+            var date_Rec_Date_NPHL_3 = jQuery.type(self.Rec_Date_NPHL_3()) === 'date' ? self.Rec_Date_NPHL_3() : parseDate(self.Rec_Date_NPHL_3(), date_format_);
+
+            if ((date_Rec_Date_NPHL_3 == null || date_Rec_Date_NPHL_3 == "") && self.hasReset() != true) {
+                //alert("Por favor ingrese antes la fecha de toma muestra de la Muestra 1");
+                alert(msgValidationRecSampleNPHL);
+                self.Ship_Date_NPHL_3(null);
+            } else {
+                if (moment(current_value).isBefore(moment(date_Rec_Date_NPHL_3), "days")) {
+                    //alert("La fecha de envío de la Muestra  no puede ser menor a la fecha de recepción de la muestra en NPHL");
+                    alert(msgValidationShipDateNPHLValidateS3);
+                    self.Rec_Date_NPHL_3(null);
                 }
             }
         }
@@ -722,7 +784,23 @@ function LabViewModel(app, dataModel) {
                 var date_sample_date_ = jQuery.type(app.Views.Hospital.SampleDate2()) === 'date' ? app.Views.Hospital.SampleDate2() : parseDate(app.Views.Hospital.SampleDate2(), date_format_);
                 var date_shipping_date = $("#ShipDate2").val() == "" ? null : jQuery.type(app.Views.Hospital.ShipDate2()) === 'date' ? app.Views.Hospital.ShipDate2() : parseDate(app.Views.Hospital.ShipDate2(), date_format_);
 
-                if ((date_shipping_date != null) && self.hasReset() != true) {
+                if ($("#Rec_Date_NPHL_2").length > 0) {
+
+                    var date_Ship_Date_NPHL = jQuery.type(self.Ship_Date_NPHL_2()) === 'date' ? self.Ship_Date_NPHL_2() : parseDate(self.Ship_Date_NPHL_2(), date_format_);
+
+                    if ((date_Ship_Date_NPHL == null || date_Ship_Date_NPHL == "") && self.hasReset() != true) {
+                        //alert("Por favor ingrese antes la fecha de toma muestra de la Muestra 1");
+                        alert(msgValidationRecSampleNPHL);
+                        //self.RecDate(null);
+                    } else {
+                        if (moment(current_value).isBefore(moment(date_Ship_Date_NPHL), "days")) {
+                            //alert("La fecha de envío de la Muestra  no puede ser menor a la fecha de recepción de la muestra en NPHL");
+                            alert(msgValidationSampleDateNPHLValidateS1);
+                            //self.RecDate(null);
+                        }
+                    }
+
+                } else if ((date_shipping_date != null) && self.hasReset() != true) {
 
                     if (moment(current_value).isBefore(moment(date_shipping_date), "days")) {
                         //alert("La fecha de recepción de Muestra 2 no puede ser menor a la fecha de envio de muestra de la Muestra 2");
@@ -746,7 +824,54 @@ function LabViewModel(app, dataModel) {
 
     });
 
+
     self.RecDate3.subscribe(function (newRecDate3) {
+        if (self.UsrCountry() == 7 || self.UsrCountry() == 3 || self.UsrCountry() == 25) {
+            if (self.hasReset() != true && newRecDate3 != "") {
+                var current_value = jQuery.type(newRecDate3) === 'date' ? newRecDate3 : parseDate(newRecDate3, date_format_);
+                var date_sample_date_ = jQuery.type(app.Views.Hospital.SampleDate3()) === 'date' ? app.Views.Hospital.SampleDate3() : parseDate(app.Views.Hospital.SampleDate3(), date_format_);
+                var date_shipping_date = $("#ShipDate3").val() == "" ? null : jQuery.type(app.Views.Hospital.ShipDate3()) === 'date' ? app.Views.Hospital.ShipDate3() : parseDate(app.Views.Hospital.ShipDate3(), date_format_);
+
+                if ($("#Rec_Date_NPHL_3").length > 0) {
+
+                    var date_Ship_Date_NPHL = jQuery.type(self.Ship_Date_NPHL_3()) === 'date' ? self.Ship_Date_NPHL_3() : parseDate(self.Ship_Date_NPHL_3(), date_format_);
+
+                    if ((date_Ship_Date_NPHL == null || date_Ship_Date_NPHL == "") && self.hasReset() != true) {
+                        //alert("Por favor ingrese antes la fecha de toma muestra de la Muestra 1");
+                        alert(msgValidationRecSampleNPHL);
+                        //self.RecDate(null);
+                    } else {
+                        if (moment(current_value).isBefore(moment(date_Ship_Date_NPHL), "days")) {
+                            //alert("La fecha de envío de la Muestra  no puede ser menor a la fecha de recepción de la muestra en NPHL");
+                            alert(msgValidationSampleDateNPHLValidateS1);
+                            //self.RecDate(null);
+                        }
+                    }
+
+                } else if ((date_shipping_date != null) && self.hasReset() != true) {
+
+                    if (moment(current_value).isBefore(moment(date_shipping_date), "days")) {
+                        //alert("La fecha de recepción de Muestra 3 no puede ser menor a la fecha de envio de muestra de la Muestra 3");
+                        alert(msgValidationShippingDateValidateS3);
+                        self.RecDate(null);
+                    }
+
+                } else if (date_sample_date_ == null || date_sample_date_ == "") {
+                    //alert("Por favor ingrese antes la fecha de toma muestra de la Muestra 3");
+                    alert(msgValidationSampleDateS3);
+                    self.RecDate3(null);
+                } else {
+                    if (moment(current_value).isBefore(moment(date_sample_date_), "days")) {
+                        //alert("La fecha de recepción de Muestra 3 no puede ser menor a la fecha de toma muestra de la Muestra 3");
+                        alert(msgValidationSampleDateValidateS3);
+                        self.RecDate3(null);
+                    }
+                }
+            }
+        }
+
+    });
+    /*self.RecDate3.subscribe(function (newRecDate3) {
         if (self.UsrCountry() == 7) {
             if (self.hasReset() != true && newRecDate3 != "") {
                 var current_value = jQuery.type(newRecDate3) === 'date'  ? newRecDate3 : parseDate(newRecDate3, date_format_);
@@ -769,7 +894,7 @@ function LabViewModel(app, dataModel) {
             }
         }
         
-    });
+    });*/
 
     self.EnableCHI = ko.computed(function () {
         return (self.UsrCountry() != 7) ? true : false;
@@ -852,6 +977,36 @@ function LabViewModel(app, dataModel) {
 
     self.NotShowNPHL_ProcessedOther = ko.computed(function () {
         return (self.NPHL_NoProRenId() === "5")
+    }, self);
+
+    self.ShowProcessedNPHL_2 = ko.computed(function () {
+        self.NPHL_NoProRen_2("");
+        self.NPHL_NoProRenId_2("");
+        self.resetFinalResult();
+        return (self.Processed2() === "true")
+    }, self);
+
+    self.NotShowNPHL_Processed_2 = ko.computed(function () {
+        return (self.NPHL_Processed_2() === "false")
+    }, self);
+
+    self.NotShowNPHL_ProcessedOther_2 = ko.computed(function () {
+        return (self.NPHL_NoProRenId_2() === "5")
+    }, self);
+
+    self.ShowProcessedNPHL_3 = ko.computed(function () {
+        self.NPHL_NoProRen_3("");
+        self.NPHL_NoProRenId_3("");
+        self.resetFinalResult();
+        return (self.Processed3() === "true")
+    }, self);
+
+    self.NotShowNPHL_Processed_3 = ko.computed(function () {
+        return (self.NPHL_Processed_3() === "false")
+    }, self);
+
+    self.NotShowNPHL_ProcessedOther_3 = ko.computed(function () {
+        return (self.NPHL_NoProRenId_3() === "5")
     }, self);
 
     self.ShowProcessed = ko.computed(function () {
@@ -1139,18 +1294,29 @@ function LabViewModel(app, dataModel) {
         self.Processed3("");
         self.TempSample3("");
         //Agregar laboratorio intermedio
-        self.Rec_Date_NPHL(null);
-        self.Rec_Date_NPHL_2(null);
-        self.Temp_NPHL("");
-        self.Temp_NPHL_2("");
-        self.Observation_NPHL("");
-        self.Observation_NPHL_2("");
+        self.Rec_Date_NPHL(null);        
+        self.Temp_NPHL("");        
+        self.Observation_NPHL("");        
         self.Ship_Date_NPHL(null);
-        self.Ship_Date_NPHL_2(null);
-
         self.NPHL_NoProRen("");
         self.NPHL_NoProRenId("");
         self.NPHL_Processed("");
+
+        self.Rec_Date_NPHL_2(null);
+        self.Temp_NPHL_2("");
+        self.Observation_NPHL_2("");
+        self.Ship_Date_NPHL_2(null);
+        self.NPHL_NoProRen_2("");
+        self.NPHL_NoProRenId_2("");
+        self.NPHL_Processed_2("");
+
+        self.Rec_Date_NPHL_3(null);
+        self.Temp_NPHL_3("");
+        self.Observation_NPHL_3("");
+        self.Ship_Date_NPHL_3(null);
+        self.NPHL_NoProRen_3("");
+        self.NPHL_NoProRenId_3("");
+        self.NPHL_Processed_3("");
 
         self.EndLabDate(null);
         self.FResult("");
@@ -1409,16 +1575,29 @@ function LabViewModel(app, dataModel) {
 
                 // Laboratorio intermedio
                 (data.Rec_Date_NPHL) ? self.Rec_Date_NPHL(moment(data.Rec_Date_NPHL).clone().toDate()) : self.Rec_Date_NPHL(null);
-                (data.Rec_Date_NPHL_2) ? self.Rec_Date_NPHL_2(moment(data.Rec_Date_NPHL_2).clone().toDate()) : self.Rec_Date_NPHL_2(null);
                 self.Temp_NPHL(data.Temp_NPHL);
-                self.Temp_NPHL_2(data.Temp_NPHL_2);
                 self.Observation_NPHL(data.Observation_NPHL);
-                self.Observation_NPHL_2(data.Observation_NPHL_2);
                 self.NPHL_Processed((data.NPHL_Processed != null) ? data.NPHL_Processed.toString() : "");
                 self.NPHL_NoProRenId(data.NPHL_NoProRenId);
                 self.NPHL_NoProRen(data.NPHL_NoProRen);
                 (data.Ship_Date_NPHL) ? self.Ship_Date_NPHL(moment(data.Ship_Date_NPHL).clone().toDate()) : self.Ship_Date_NPHL(null);
+
+                (data.Rec_Date_NPHL_2) ? self.Rec_Date_NPHL_2(moment(data.Rec_Date_NPHL_2).clone().toDate()) : self.Rec_Date_NPHL_2(null);                
+                self.Temp_NPHL_2(data.Temp_NPHL_2);                
+                self.Observation_NPHL_2(data.Observation_NPHL_2);
+                self.NPHL_Processed_2((data.NPHL_Processed_2 != null) ? data.NPHL_Processed_2.toString() : "");
+                self.NPHL_NoProRenId_2(data.NPHL_NoProRenId_2);
+                self.NPHL_NoProRen_2(data.NPHL_NoProRen_2);
                 (data.Ship_Date_NPHL_2) ? self.Ship_Date_NPHL_2(moment(data.Ship_Date_NPHL_2).clone().toDate()) : self.Ship_Date_NPHL_2(null);
+
+                (data.Rec_Date_NPHL_3) ? self.Rec_Date_NPHL_3(moment(data.Rec_Date_NPHL_3).clone().toDate()) : self.Rec_Date_NPHL_3(null);
+                self.Temp_NPHL_3(data.Temp_NPHL_3);
+                self.Observation_NPHL_3(data.Observation_NPHL_3);
+                self.NPHL_Processed_3((data.NPHL_Processed_3 != null) ? data.NPHL_Processed_3.toString() : "");
+                self.NPHL_NoProRenId_3(data.NPHL_NoProRenId_3);
+                self.NPHL_NoProRen_3(data.NPHL_NoProRen_3);
+                (data.Ship_Date_NPHL_3) ? self.Ship_Date_NPHL_3(moment(data.Ship_Date_NPHL_3).clone().toDate()) : self.Ship_Date_NPHL_3(null);
+
 				(data.RecDate) ? self.RecDate(moment(data.RecDate).clone().toDate()) : self.RecDate(null);
                 self.NPHL(data.InstFlow_NPHL);
                 self.Processed((data.Processed != null) ? data.Processed.toString() : "");
@@ -1644,31 +1823,54 @@ function LabViewModel(app, dataModel) {
                 $("#FinalResultVirusSubTypeID_3").prop('disabled', true);
                 $("#FinalResultVirusLineageID_3").prop('disabled', true);
                 if (self.NPHL() == true) {
-                    $("#Rec_Date_NPHL").prop('disabled', false);
-                    $("#Rec_Date_NPHL_2").prop('disabled', false);
-                    $("#Temp_NPHL").prop('disabled', false);
-                    $("#Temp_NPHL_2").prop('disabled', false);
-                    $("#Ship_Date_NPHL").prop('disabled', false);
-                    $("#Ship_Date_NPHL_2").prop('disabled', false);
+                    $("#Rec_Date_NPHL").prop('disabled', false);                    
+                    $("#Temp_NPHL").prop('disabled', false);                    
+                    $("#Ship_Date_NPHL").prop('disabled', false);                    
                     $("#Observation_NPHL").prop('disabled', false);
-                    $("#Observation_NPHL_2").prop('disabled', false);
-
                     $("input[id*='NPHL_Processed']").prop('disabled', false);
                     $("#NPHL_NoProRenId").prop('disabled', false);
                     $("#NPHL_NoReason").prop('disabled', false);
-                } else {
-                    $("#Rec_Date_NPHL").prop('disabled', true);
-                    $("#Rec_Date_NPHL_2").prop('disabled', true);
-                    $("#Temp_NPHL").prop('disabled', true);
-                    $("#Temp_NPHL_2").prop('disabled', true);
-                    $("#Ship_Date_NPHL").prop('disabled', true);
-                    $("#Ship_Date_NPHL_2").prop('disabled', true);
-                    $("#Observation_NPHL").prop('disabled', true);
-                    $("#Observation_NPHL_2").prop('disabled', true);
 
+                    $("#Rec_Date_NPHL_2").prop('disabled', false);
+                    $("#Temp_NPHL_2").prop('disabled', false);
+                    $("#Ship_Date_NPHL_2").prop('disabled', false);
+                    $("#Observation_NPHL_2").prop('disabled', false);
+                    $("input[id*='NPHL_Processed_2']").prop('disabled', false);
+                    $("#NPHL_NoProRenId_2").prop('disabled', false);
+                    $("#NPHL_NoReason_2").prop('disabled', false);
+
+                    $("#Rec_Date_NPHL_3").prop('disabled', false);
+                    $("#Temp_NPHL_3").prop('disabled', false);
+                    $("#Ship_Date_NPHL_3").prop('disabled', false);
+                    $("#Observation_NPHL_3").prop('disabled', false);
+                    $("input[id*='NPHL_Processed_3']").prop('disabled', false);
+                    $("#NPHL_NoProRenId_3").prop('disabled', false);
+                    $("#NPHL_NoReason_3").prop('disabled', false);
+                } else {
+                    $("#Rec_Date_NPHL").prop('disabled', true);                    
+                    $("#Temp_NPHL").prop('disabled', true);
+                    $("#Ship_Date_NPHL").prop('disabled', true);
+                    $("#Observation_NPHL").prop('disabled', true);
                     $("input[id*='NPHL_Processed']").prop('disabled', true);
                     $("#NPHL_NoProRenId").prop('disabled', true);
                     $("#NPHL_NoReason").prop('disabled', true);
+
+                    $("#Rec_Date_NPHL_2").prop('disabled', true);
+                    $("#Temp_NPHL_2").prop('disabled', true);                    
+                    $("#Ship_Date_NPHL_2").prop('disabled', true);                    
+                    $("#Observation_NPHL_2").prop('disabled', true);
+                    $("input[id*='NPHL_Processed_2']").prop('disabled', true);
+                    $("#NPHL_NoProRenId_2").prop('disabled', true);
+                    $("#NPHL_NoReason_2").prop('disabled', true);
+
+                    $("#Rec_Date_NPHL_3").prop('disabled', true);
+                    $("#Temp_NPHL_3").prop('disabled', true);
+                    $("#Ship_Date_NPHL_3").prop('disabled', true);
+                    $("#Observation_NPHL_3").prop('disabled', true);
+                    $("input[id*='NPHL_Processed_3']").prop('disabled', true);
+                    $("#NPHL_NoProRenId_3").prop('disabled', true);
+                    $("#NPHL_NoReason_3").prop('disabled', true);
+                    
                 }
 
                 self.hasGet(false);
@@ -1771,9 +1973,11 @@ function LabViewModel(app, dataModel) {
         date_close_date_lab = jQuery.type(self.EndLabDate()) === 'date' ? self.EndLabDate() : parseDate($("#EndLabDate").val(), date_format_);
 
         rec_date_NPHL = jQuery.type(self.Rec_Date_NPHL()) === 'date' ? self.Rec_Date_NPHL() : parseDate($("#Rec_Date_NPHL").val(), date_format_);
-        rec_date_NPHL_2 = jQuery.type(self.Rec_Date_NPHL_2()) === 'date' ? self.Rec_Date_NPHL_2() : parseDate($("#Rec_Date_NPHL_2").val(), date_format_);
         ship_date_NPHL = jQuery.type(self.Ship_Date_NPHL()) === 'date' ? self.Ship_Date_NPHL() : parseDate($("#Ship_Date_NPHL").val(), date_format_);
+        rec_date_NPHL_2 = jQuery.type(self.Rec_Date_NPHL_2()) === 'date' ? self.Rec_Date_NPHL_2() : parseDate($("#Rec_Date_NPHL_2").val(), date_format_);
         ship_date_NPHL_2 = jQuery.type(self.Ship_Date_NPHL_2()) === 'date' ? self.Ship_Date_NPHL_2() : parseDate($("#Ship_Date_NPHL_2").val(), date_format_);
+        rec_date_NPHL_3 = jQuery.type(self.Rec_Date_NPHL_3()) === 'date' ? self.Rec_Date_NPHL_3() : parseDate($("#Rec_Date_NPHL_3").val(), date_format_);
+        ship_date_NPHL_3 = jQuery.type(self.Ship_Date_NPHL_3()) === 'date' ? self.Ship_Date_NPHL_3() : parseDate($("#Ship_Date_NPHL_3").val(), date_format_);
 
         //alert($("#o_S").val());
 
@@ -1979,17 +2183,28 @@ function LabViewModel(app, dataModel) {
 
                 // Laboratorio intermedio
                 Rec_Date_NPHL: $("#Rec_Date_NPHL").val() == "" ? null : moment(rec_date_NPHL).format(date_format_ISO),
-                Rec_Date_NPHL_2: $("#Rec_Date_NPHL_2").val() == "" ? null : moment(rec_date_NPHL_2).format(date_format_ISO),
                 Observation_NPHL: self.Observation_NPHL() ? self.Observation_NPHL().toLocaleUpperCase() : "",
-                Observation_NPHL_2: self.Observation_NPHL_2() ? self.Observation_NPHL_2().toLocaleUpperCase() : "",
                 Temp_NPHL: self.Temp_NPHL(),
-                Temp_NPHL_2: self.Temp_NPHL_2(),
                 Ship_Date_NPHL: $("#Ship_Date_NPHL").val() == "" ? null : moment(ship_date_NPHL).format(date_format_ISO),
-                Ship_Date_NPHL_2: $("#Ship_Date_NPHL_2").val() == "" ? null : moment(ship_date_NPHL_2).format(date_format_ISO),
-
                 NPHL_Processed: self.NPHL_Processed(),
                 NPHL_NoProRenId: self.NPHL_NoProRenId(),
                 NPHL_NoProRen: self.NPHL_NoProRen(),
+                
+                Rec_Date_NPHL_2: $("#Rec_Date_NPHL_2").val() == "" ? null : moment(rec_date_NPHL_2).format(date_format_ISO),
+                Temp_NPHL_2: self.Temp_NPHL_2(),
+                Ship_Date_NPHL_2: $("#Ship_Date_NPHL_2").val() == "" ? null : moment(ship_date_NPHL_2).format(date_format_ISO),
+                Observation_NPHL_2: self.Observation_NPHL_2() ? self.Observation_NPHL_2().toLocaleUpperCase() : "",
+                NPHL_Processed_2: self.NPHL_Processed_2(),
+                NPHL_NoProRenId_2: self.NPHL_NoProRenId_2(),
+                NPHL_NoProRen_2: self.NPHL_NoProRen_2(),
+
+                Rec_Date_NPHL_3: $("#Rec_Date_NPHL_3").val() == "" ? null : moment(rec_date_NPHL_3).format(date_format_ISO),
+                Temp_NPHL_3: self.Temp_NPHL_3(),
+                Ship_Date_NPHL_3: $("#Ship_Date_NPHL_3").val() == "" ? null : moment(ship_date_NPHL_3).format(date_format_ISO),
+                Observation_NPHL_3: self.Observation_NPHL_3() ? self.Observation_NPHL_3().toLocaleUpperCase() : "",
+                NPHL_Processed_3: self.NPHL_Processed_3(),
+                NPHL_NoProRenId_3: self.NPHL_NoProRenId_3(),
+                NPHL_NoProRen_3: self.NPHL_NoProRen_3(),
 
             }),
             async: false,

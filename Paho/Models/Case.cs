@@ -900,6 +900,10 @@ namespace Paho.Models
         public int? AreaID { get; set; }
         public int? StateID { get; set; }
         public int? ParishPostOfficeIDJMID { get; set;}
+        public string StreetNo { get; set; }
+        public string StreetName { get; set; }
+        public string ApartmentSuiteLot { get; set; }
+        public string Address2 { get; set; }
         public int? LocalID { get; set; }
         public int? NeighborhoodID { get; set; }
         public UrbanRural UrbanRural { get; set; }
@@ -1058,17 +1062,29 @@ namespace Paho.Models
         public Decimal? TempSample3 { get; set; }
         // AM Laboratorio intermedio
         public DateTime? Rec_Date_NPHL { get; set; }
-        public DateTime? Rec_Date_NPHL_2 { get; set; }
         public Decimal? Temp_NPHL { get; set; }
-        public Decimal? Temp_NPHL_2 { get; set; }
         public string Observation_NPHL { get; set; }
-        public string Observation_NPHL_2 { get; set; }
         public DateTime? Ship_Date_NPHL { get; set; }
-        public DateTime? Ship_Date_NPHL_2 { get; set; }
         public bool? NPHL_Processed { get; set; }
         public int? NPHL_NoProRenId { get; set; }
         public string NPHL_NoProRen { get; set; }
-        
+
+        public DateTime? Rec_Date_NPHL_2 { get; set; }
+        public Decimal? Temp_NPHL_2 { get; set; }
+        public string Observation_NPHL_2 { get; set; }
+        public DateTime? Ship_Date_NPHL_2 { get; set; }
+        public bool? NPHL_Processed_2 { get; set; }
+        public int? NPHL_NoProRenId_2 { get; set; }
+        public string NPHL_NoProRen_2 { get; set; }
+
+        public DateTime? Rec_Date_NPHL_3 { get; set; }
+        public Decimal? Temp_NPHL_3 { get; set; }
+        public string Observation_NPHL_3 { get; set; }
+        public DateTime? Ship_Date_NPHL_3 { get; set; }
+        public bool? NPHL_Processed_3 { get; set; }
+        public int? NPHL_NoProRenId_3 { get; set; }
+        public string NPHL_NoProRen_3 { get; set; }
+
         public DateTime? EndLabDate { get; set; }
         public string FResult { get; set; }
         public string Comments { get; set; }
@@ -1581,6 +1597,10 @@ namespace Paho.Models
                    p.AreaID,
                    p.StateID,
                    p.ParishPostOfficeIDJMID,
+                   p.StreetNo,
+                   p.StreetName,
+                   p.ApartmentSuiteLot,
+                   p.Address2,
                    p.LocalID,
                    p.NeighborhoodID,
                    p.UrbanRural,
@@ -1772,17 +1792,29 @@ namespace Paho.Models
                    p.TempSample3,
 
                    //AM Laboratorio intermedio
-                   p.Rec_Date_NPHL,
-                   p.Rec_Date_NPHL_2,
-                   p.Temp_NPHL,
-                   p.Temp_NPHL_2,
-                   p.Observation_NPHL,
-                   p.Observation_NPHL_2,
-                   p.Ship_Date_NPHL,
-                   p.Ship_Date_NPHL_2,
+                   p.Rec_Date_NPHL,                   
+                   p.Temp_NPHL,                   
+                   p.Observation_NPHL,                   
+                   p.Ship_Date_NPHL,                   
                    p.NPHL_Processed,
                    p.NPHL_NoProRenId,
                    p.NPHL_NoProRen,
+
+                   p.Rec_Date_NPHL_2,
+                   p.Temp_NPHL_2,
+                   p.Observation_NPHL_2,
+                   p.Ship_Date_NPHL_2,
+                   p.NPHL_Processed_2,
+                   p.NPHL_NoProRenId_2,
+                   p.NPHL_NoProRen_2,
+
+                   p.Rec_Date_NPHL_3,
+                   p.Temp_NPHL_3,
+                   p.Observation_NPHL_3,
+                   p.Ship_Date_NPHL_3,
+                   p.NPHL_Processed_3,
+                   p.NPHL_NoProRenId_3,
+                   p.NPHL_NoProRen_3,
 
                    p.EndLabDate,
                    p.FResult,

@@ -660,6 +660,38 @@
             }
         </div>
 
+        <div class="row rowform">
+            <div class="col-md-6">
+                <div class='input-group'>                    
+                    <span class="input-group-addon">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceStreetNo")) @((ViewBag.UsrCtry == 17) ? "" : "<font color='#FF0000' id='mandatory_canton'>*</font>")</span>
+                    <input id="StreetNo" type='text' class="form-control case_letter" data-bind="value: StreetNo" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class='input-group'>
+                    <span class="input-group-addon">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceStreetName")) @((ViewBag.UsrCtry == 17) ? "" : "<font color='#FF0000' id='mandatory_canton'>*</font>")</span>
+                    <input id="StreetName" type='text' class="form-control case_letter" data-bind="value: StreetName" />
+                </div>
+            </div>           
+        </div>
+
+        <div class="row rowform">
+            <div class="col-md-6">
+                <div class='input-group'>
+                    <span class="input-group-addon">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceApartmentSuiteLot")) @((ViewBag.UsrCtry == 17) ? "" : "<font color='#FF0000' id='mandatory_canton'>*</font>")</span>
+                    <input id="ApartmentSuiteLot" type='text' class="form-control case_letter" data-bind="value: ApartmentSuiteLot" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class='input-group'>
+                    <span class="input-group-addon">
+                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelAddress2"))
+                    </span>
+                    <textarea class="form-control case_letter" cols="8" rows="4" style="max-width: 360px;" id="dirección2" data-bind="value: Address2"></textarea>
+                </div>
+            </div>
+        </div>
+
         @if (@ViewBag.UsrCtry != 25 && @ViewBag.UsrCtry != 11 && @ViewBag.UsrCtry != 18 && @ViewBag.UsrCtry != 17)
         {
             <div class="row rowform" data-bind="visible:EnableCHI">
@@ -676,7 +708,8 @@
                 </div>
             </div>
         }
-                    
+        @if (@ViewBag.UsrCtry != 25 && @ViewBag.UsrCtry != 11 && @ViewBag.UsrCtry != 18 && @ViewBag.UsrCtry != 17)
+        {
         <div class="row rowform">
             <div class="col-md-6">
                 <div class='input-group'>
@@ -687,7 +720,8 @@
                 </div>
             </div>
 
-			@if (@ViewBag.UsrCtry == 7 || @ViewBag.UsrCtry == 9 || @ViewBag.UsrCtry == 3 ){
+			@if (@ViewBag.UsrCtry == 7 || @ViewBag.UsrCtry == 9 || @ViewBag.UsrCtry == 3)
+            {
                 <div class="col-md-6">
                     <div class='input-group'>
                         <span class="input-group-addon">
@@ -696,8 +730,9 @@
                         <input id="PhoneNumber" type='text' class="form-control case_letter" data-bind='value: PhoneNumber' />
                     </div>
                 </div>
-			}
+            }
         </div>
+        }
 
 		@if (@ViewBag.UsrCtry == 7 || @ViewBag.UsrCtry == 9 || @ViewBag.UsrCtry == 3 ){
             <!--Latitude/Longitude-->
@@ -3070,6 +3105,144 @@
                                     @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabIntObservationsNPHL"))
                                 </span>
                                 <textarea class="form-control case_letter" rows="1" style="max-width: 900px;" id="Observation_NPHL" name="Observation_NPHL" data-bind="value: Observation_NPHL"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <br />
+
+                <div id="statuscaso2" class="collapse in">
+                    <div class="row rowform">
+                        <div class="col-md-3_5">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabIntRecDate_2"))
+                                </span>
+                                <input id="Rec_Date_NPHL_2" name="Rec_Date_NPHL_2" type='text' class="form-control " data-bind='datepicker: Rec_Date_NPHL_2, datepickerOptions: { maxDate:@Model.DatePickerConfig,  dateFormat:"@Model.DateFormatDP"}' />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigLabIntLabelTemp_2"))
+                                </span>
+                                <input id="Temp_NPHL_2" name="Temp_NPHL_2" type='text' class="form-control case_letter" data-bind="value: Temp_NPHL_2" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowform">
+                        <div class="col-md-5">
+                            <span>
+                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabNPHLLabelProcessed_2"))
+                            </span>
+                            <label class="btn btn-default">
+                                <input type="radio" name="NPHL_Processed_2" id="NPHL_Processed_2" value="true" data-bind="checked: NPHL_Processed_2"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabNPHLLabelYes_2"))
+                            </label>
+                            <label class="btn btn-default">
+                                <input type="radio" name="NPHL_Processed_2" id="NPHL_Processed_2" value="false" checked data-bind="checked: NPHL_Processed_2"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabNPHLLabelNo_2"))
+                            </label>
+                        </div>
+                        <div class="col-md-5" data-bind="visible:NotShowNPHL_Processed_2">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabNPHLLabelCauseNotProcessed_2"))
+                                </span>
+                                <select id="NPHL_NoProRenId_2" class="form-control" data-bind="options: CSNP,
+                        optionsText: 'Name',
+                        optionsValue: 'Id',
+                        optionsCaption: 'Select...',
+                        value: NPHL_NoProRenId_2"></select>
+                                <input id="NPHL_NoReason_2" type='text' class="form-control case_letter" data-bind="value: NPHL_NoProRen_2 , visible:NotShowNPHL_ProcessedOther_2" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowform">
+                        <div class="col-md-4">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabIntShipDate_2"))
+                                </span>
+                                <input id="Ship_Date_NPHL_2" name="Ship_Date_NPHL_2" type='text' class="form-control " data-bind='datepicker: Ship_Date_NPHL_2, datepickerOptions: { maxDate:@Model.DatePickerConfig,  dateFormat:"@Model.DateFormatDP"}' />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowform">
+                        <div class="col-md-8">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabIntObservationsNPHL_2"))
+                                </span>
+                                <textarea class="form-control case_letter" rows="1" style="max-width: 900px;" id="Observation_NPHL_2" name="Observation_NPHL_2" data-bind="value: Observation_NPHL_2"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <br/>
+
+                <div id="statuscaso3" class="collapse in">
+                    <div class="row rowform">
+                        <div class="col-md-3_5">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabIntRecDate_3"))
+                                </span>
+                                <input id="Rec_Date_NPHL_3" name="Rec_Date_NPHL_3" type='text' class="form-control " data-bind='datepicker: Rec_Date_NPHL_3, datepickerOptions: { maxDate:@Model.DatePickerConfig,  dateFormat:"@Model.DateFormatDP"}' />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigLabIntLabelTemp_3"))
+                                </span>
+                                <input id="Temp_NPHL_3" name="Temp_NPHL_3" type='text' class="form-control case_letter" data-bind="value: Temp_NPHL_3" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowform">
+                        <div class="col-md-5">
+                            <span>
+                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabNPHLLabelProcessed_3"))
+                            </span>
+                            <label class="btn btn-default">
+                                <input type="radio" name="NPHL_Processed_3" id="NPHL_Processed_3" value="true" data-bind="checked: NPHL_Processed_3"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabNPHLLabelYes_3"))
+                            </label>
+                            <label class="btn btn-default">
+                                <input type="radio" name="NPHL_Processed_3" id="NPHL_Processed_3" value="false" checked data-bind="checked: NPHL_Processed_3"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabNPHLLabelNo_3"))
+                            </label>
+                        </div>
+                        <div class="col-md-5" data-bind="visible:NotShowNPHL_Processed_3">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabNPHLLabelCauseNotProcessed_3"))
+                                </span>
+                                <select id="NPHL_NoProRenId_3" class="form-control" data-bind="options: CSNP,
+                        optionsText: 'Name',
+                        optionsValue: 'Id',
+                        optionsCaption: 'Select...',
+                        value: NPHL_NoProRenId_3"></select>
+                                <input id="NPHL_NoReason_3" type='text' class="form-control case_letter" data-bind="value: NPHL_NoProRen_3 , visible:NotShowNPHL_ProcessedOther_3" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowform">
+                        <div class="col-md-4">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabIntShipDate_3"))
+                                </span>
+                                <input id="Ship_Date_NPHL_3" name="Ship_Date_NPHL_3" type='text' class="form-control " data-bind='datepicker: Ship_Date_NPHL_3, datepickerOptions: { maxDate:@Model.DatePickerConfig,  dateFormat:"@Model.DateFormatDP"}' />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowform">
+                        <div class="col-md-8">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabIntObservationsNPHL_3"))
+                                </span>
+                                <textarea class="form-control case_letter" rows="1" style="max-width: 900px;" id="Observation_NPHL_3" name="Observation_NPHL_3" data-bind="value: Observation_NPHL_3"></textarea>
                             </div>
                         </div>
                     </div>

@@ -536,6 +536,22 @@
             $("input[id*='NPHL_Processed']").prop('disabled', false);
             $("#NPHL_NoProRenId").prop('disabled', false);
             $("#NPHL_NoReason").prop('disabled', false);
+
+            $("#Rec_Date_NPHL_2").prop('disabled', false);
+            $("#Temp_NPHL_2").prop('disabled', false);
+            $("#Ship_Date_NPHL_2").prop('disabled', false);
+            $("#Observation_NPHL_2").prop('disabled', false);
+            $("input[id*='NPHL_Processed_2']").prop('disabled', false);
+            $("#NPHL_NoProRenId_2").prop('disabled', false);
+            $("#NPHL_NoReason_2").prop('disabled', false);
+
+            $("#Rec_Date_NPHL_3").prop('disabled', false);
+            $("#Temp_NPHL_3").prop('disabled', false);
+            $("#Ship_Date_NPHL_3").prop('disabled', false);
+            $("#Observation_NPHL_3").prop('disabled', false);
+            $("input[id*='NPHL_Processed_3']").prop('disabled', false);
+            $("#NPHL_NoProRenId_3").prop('disabled', false);
+            $("#NPHL_NoReason_3").prop('disabled', false);
             
             
         }
