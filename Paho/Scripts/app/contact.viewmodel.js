@@ -470,7 +470,7 @@ function ContactViewModel(app, dataModel) {
         if (self.SurvInusual() == true) {
             // Desactivado por el momento requirimiento de RRR //16/Marzo/2018
             //return true;
-            return false;
+            return true;
         } else {
             return false; 
         }

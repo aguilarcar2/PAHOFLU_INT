@@ -103,7 +103,7 @@ $(document).ready(function () {
                 // do whatever you want to when the item is found
             }
             else {
-                alert("Seleccione una opción valida");
+                alert("Select a valid option");
                 $('#DiagPrinAdm').val("");
             }
 
@@ -133,7 +133,7 @@ $(document).ready(function () {
             $.ajax({
                 url: "/cases/GetCIE10",
                 type: "GET",
-                data: { term: $('#DiagEg').val(), max: 15, code: "-J" },
+                data: { term: $('#DiagEg').val(), max: 15, code: "" },
                 dataType: "json",
                 async: true,
                 success: function (data) {
@@ -151,7 +151,7 @@ $(document).ready(function () {
                 // do whatever you want to when the item is found
             }
             else {
-                alert("Seleccione una opción valida");
+                alert("Select a valid option");
                 $('#DiagEg').val("");
             }
 
@@ -200,7 +200,7 @@ $(document).ready(function () {
             }
             else {
                 // do whatever you want to when the item is not found
-                alert("Seleccione una opción valida");
+                alert("Select a valid option");
                 $('#Salon').val("");
             }
 

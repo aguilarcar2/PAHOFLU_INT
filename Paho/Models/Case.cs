@@ -424,6 +424,9 @@ namespace Paho.Models
     {
         public int ID { get; set; }
         public string Diag { get; set; }
+        public string ENG { get; set; }
+        public string SPA { get; set; }
+        public string code { get; set; }
     }
 
 
@@ -644,6 +647,7 @@ namespace Paho.Models
         public bool SARI { get; set; }
         [DisplayName("ETI:")]
         public bool ILI { get; set; }
+        public bool surv_unusual { get; set; }
         [DisplayName("PCR:")]
         public bool PCR { get; set; }
         [DisplayName("IFI:")]
@@ -935,6 +939,7 @@ namespace Paho.Models
         public bool? Liver { get; set; }
         public bool? Renal { get; set; }
         public bool? Immunsupp { get; set; }
+        public bool? SickleCellDisease { get; set; }
 
         public bool? ParaCerebral { get; set; }
         public bool? Indigena { get; set; }
@@ -1018,17 +1023,17 @@ namespace Paho.Models
         public DateTime? FalleDate { get; set; }
         public bool? IsSample { get; set; }
         public DateTime? SampleDate { get; set; }
-        [MaxLength(1)]
+        [MaxLength(2)]
         public string SampleType { get; set; }
         public DateTime? ShipDate { get; set; }
         public long? LabID { get; set; }
         public DateTime? SampleDate2 { get; set; }
-        [MaxLength(1)]
+        [MaxLength(2)]
         public string SampleType2 { get; set; }
         public DateTime? ShipDate2 { get; set; }
         public long? LabID2 { get; set; }
         public DateTime? SampleDate3 { get; set; }
-        [MaxLength(1)]
+        [MaxLength(2)]
         public string SampleType3 { get; set; }
         public DateTime? ShipDate3 { get; set; }
         public long? LabID3 { get; set; }
@@ -1046,44 +1051,53 @@ namespace Paho.Models
         public bool? Odinofagia { get; set; }
        //public class CaseLab : CaseBase
         public DateTime? RecDate { get; set; }
+        public string Identification_Test { get; set; }
         public bool? Processed { get; set; }
         public int? NoProRenId { get; set; }
         public string NoProRen { get; set; }
         public Decimal? TempSample1 { get; set; }
         public DateTime? RecDate2 { get; set; }
+        public string Identification_Test2 { get; set; }
         public bool? Processed2 { get; set; }
         public string NoProRen2 { get; set; }
         public int? NoProRenId2 { get; set; }
         public Decimal? TempSample2 { get; set; }
         public DateTime? RecDate3 { get; set; }
+        public string Identification_Test3 { get; set; }
         public bool? Processed3 { get; set; }
         public string NoProRen3 { get; set; }
         public int? NoProRenId3 { get; set; }
         public Decimal? TempSample3 { get; set; }
         // AM Laboratorio intermedio
         public DateTime? Rec_Date_NPHL { get; set; }
+        public string Identification_Test_NPHL { get; set; }
         public Decimal? Temp_NPHL { get; set; }
         public string Observation_NPHL { get; set; }
         public DateTime? Ship_Date_NPHL { get; set; }
         public bool? NPHL_Processed { get; set; }
         public int? NPHL_NoProRenId { get; set; }
         public string NPHL_NoProRen { get; set; }
+        public string NPHL_Conclusion { get; set; }
 
         public DateTime? Rec_Date_NPHL_2 { get; set; }
+        public string Identification_Test_NPHL_2 { get; set; }
         public Decimal? Temp_NPHL_2 { get; set; }
         public string Observation_NPHL_2 { get; set; }
         public DateTime? Ship_Date_NPHL_2 { get; set; }
         public bool? NPHL_Processed_2 { get; set; }
         public int? NPHL_NoProRenId_2 { get; set; }
         public string NPHL_NoProRen_2 { get; set; }
+        public string NPHL_Conclusion_2 { get; set; }
 
         public DateTime? Rec_Date_NPHL_3 { get; set; }
+        public string Identification_Test_NPHL_3 { get; set; }
         public Decimal? Temp_NPHL_3 { get; set; }
         public string Observation_NPHL_3 { get; set; }
         public DateTime? Ship_Date_NPHL_3 { get; set; }
         public bool? NPHL_Processed_3 { get; set; }
         public int? NPHL_NoProRenId_3 { get; set; }
         public string NPHL_NoProRen_3 { get; set; }
+        public string NPHL_Conclusion_3 { get; set; }
 
         public DateTime? EndLabDate { get; set; }
         public string FResult { get; set; }
@@ -1682,6 +1696,7 @@ namespace Paho.Models
                    p.TrabSaludRama,             //#### CAFQ
                    p.TrabLaboratorio,             //#### CAFQ
                    p.TrabLaboratorioRama,             //#### CAFQ
+                   p.SickleCellDisease,
                    // CaseHospital
                    p.CHNum,
                    p.FeverDate,
@@ -1776,45 +1791,56 @@ namespace Paho.Models
                    p.InfeccHospitFecha,                          //#### CAFQ
                    // CaseLab
                    p.RecDate,
+                   p.Identification_Test,
                    p.Processed,
                    p.NoProRen,
                    p.NoProRenId,
                    p.TempSample1,
+
                    p.RecDate2,
+                   p.Identification_Test2,
                    p.Processed2,
                    p.NoProRenId2,
                    p.NoProRen2,
                    p.TempSample2,
+
                    p.RecDate3,
+                   p.Identification_Test3,
                    p.Processed3,
                    p.NoProRenId3,
                    p.NoProRen3,
                    p.TempSample3,
 
                    //AM Laboratorio intermedio
-                   p.Rec_Date_NPHL,                   
+                   p.Rec_Date_NPHL, 
+                   p.Identification_Test_NPHL,
                    p.Temp_NPHL,                   
                    p.Observation_NPHL,                   
                    p.Ship_Date_NPHL,                   
                    p.NPHL_Processed,
                    p.NPHL_NoProRenId,
                    p.NPHL_NoProRen,
+                   p.NPHL_Conclusion,
 
                    p.Rec_Date_NPHL_2,
+                   p.Identification_Test_NPHL_2,
                    p.Temp_NPHL_2,
                    p.Observation_NPHL_2,
                    p.Ship_Date_NPHL_2,
                    p.NPHL_Processed_2,
                    p.NPHL_NoProRenId_2,
                    p.NPHL_NoProRen_2,
+                   p.NPHL_Conclusion_2,
 
                    p.Rec_Date_NPHL_3,
+                   p.Identification_Test_NPHL_3,
                    p.Temp_NPHL_3,
                    p.Observation_NPHL_3,
                    p.Ship_Date_NPHL_3,
                    p.NPHL_Processed_3,
                    p.NPHL_NoProRenId_3,
                    p.NPHL_NoProRen_3,
+                   p.NPHL_Conclusion_3,
 
                    p.EndLabDate,
                    p.FResult,

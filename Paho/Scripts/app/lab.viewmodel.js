@@ -536,19 +536,23 @@ function LabViewModel(app, dataModel) {
     self.NPHL = ko.observable(false);
     self.hasReset = ko.observable(false);
     self.hasGet = ko.observable(false);
+
     self.RecDate = ko.observable(null);
+    self.Identification_Test = ko.observable("");
     self.TempSample1 = ko.observable("").extend({ numeric: 2 });
     self.Processed = ko.observable("");
     self.NoProRen = ko.observable("");
     self.NoProRenId = ko.observable("");
 
     self.RecDate2 = ko.observable(null);
+    self.Identification_Test2 = ko.observable("");
     self.TempSample2 = ko.observable("").extend({ numeric: 2 });
     self.Processed2 = ko.observable("");
     self.NoProRen2 = ko.observable("");
     self.NoProRenId2 = ko.observable("");
 
     self.RecDate3 = ko.observable(null);
+    self.Identification_Test3 = ko.observable("");
     self.TempSample3 = ko.observable("").extend({ numeric: 2 });
     self.Processed3 = ko.observable("");
     self.NoProRen3 = ko.observable("");
@@ -557,17 +561,20 @@ function LabViewModel(app, dataModel) {
     self.CanPCRLab = ko.observable(true);
     self.CanIFILab = ko.observable(true);
 
+        // nuevos campos
     self.Rec_Date_NPHL = ko.observable(null);
+    self.Identification_Test_NPHL = ko.observable("");
     self.Temp_NPHL = ko.observable("").extend({ numeric: 2 });    
     self.Observation_NPHL = ko.observable("");    
     self.Ship_Date_NPHL = ko.observable(null);    
 
-    // nuevos campos
     self.NPHL_Processed = ko.observable(null);
     self.NPHL_NoProRenId = ko.observable(null);
     self.NPHL_NoProRen = ko.observable(null);
+    self.NPHL_Conclusion = ko.observable("");
 
     self.Rec_Date_NPHL_2 = ko.observable(null);
+    self.Identification_Test_NPHL_2 = ko.observable("");
     self.Temp_NPHL_2 = ko.observable("").extend({ numeric: 2 });
     self.Observation_NPHL_2 = ko.observable("");
     self.Ship_Date_NPHL_2 = ko.observable(null);
@@ -575,8 +582,10 @@ function LabViewModel(app, dataModel) {
     self.NPHL_Processed_2 = ko.observable(null);
     self.NPHL_NoProRenId_2 = ko.observable(null);
     self.NPHL_NoProRen_2 = ko.observable(null);
+    self.NPHL_Conclusion_2 = ko.observable("");
 
     self.Rec_Date_NPHL_3 = ko.observable(null);
+    self.Identification_Test_NPHL_3 = ko.observable("");
     self.Temp_NPHL_3 = ko.observable("").extend({ numeric: 2 });
     self.Observation_NPHL_3 = ko.observable("");
     self.Ship_Date_NPHL_3 = ko.observable(null);
@@ -584,6 +593,7 @@ function LabViewModel(app, dataModel) {
     self.NPHL_Processed_3 = ko.observable(null);
     self.NPHL_NoProRenId_3 = ko.observable(null);
     self.NPHL_NoProRen_3 = ko.observable(null);
+    self.NPHL_Conclusion_3 = ko.observable("");
     
     
 
@@ -687,7 +697,7 @@ function LabViewModel(app, dataModel) {
                 if (moment(current_value).isBefore(moment(date_Rec_Date_NPHL), "days")) {
                     //alert("La fecha de envío de la Muestra  no puede ser menor a la fecha de recepción de la muestra en NPHL");
                     alert(msgValidationShipDateNPHLValidateS1);
-                    self.Rec_Date_NPHL(null);
+                    self.Ship_Date_NPHL(null);
                 }
             }
         }
@@ -706,7 +716,7 @@ function LabViewModel(app, dataModel) {
                 if (moment(current_value).isBefore(moment(date_Rec_Date_NPHL_2), "days")) {
                     //alert("La fecha de envío de la Muestra  no puede ser menor a la fecha de recepción de la muestra en NPHL");
                     alert(msgValidationShipDateNPHLValidateS2);
-                    self.Rec_Date_NPHL_2(null);
+                    self.Ship_Date_NPHL_2(null);
                 }
             }
         }
@@ -725,7 +735,7 @@ function LabViewModel(app, dataModel) {
                 if (moment(current_value).isBefore(moment(date_Rec_Date_NPHL_3), "days")) {
                     //alert("La fecha de envío de la Muestra  no puede ser menor a la fecha de recepción de la muestra en NPHL");
                     alert(msgValidationShipDateNPHLValidateS3);
-                    self.Rec_Date_NPHL_3(null);
+                    self.Ship_Date_NPHL_3(null);
                 }
             }
         }
@@ -922,7 +932,7 @@ function LabViewModel(app, dataModel) {
     //}, self);
 
     self.VisibleMuestraRec2 = ko.computed(function () {
-        return ((self.UsrCountry() == 7 || self.UsrCountry() == 3 ) && app.Views.Hospital.SampleDate2() != null) ? true : false;
+        return ((self.UsrCountry() == 7 || self.UsrCountry() == 3 || self.UsrCountry() == 17) && app.Views.Hospital.SampleDate2() != null) ? true : false;
 
     }, self);
 
@@ -967,8 +977,8 @@ function LabViewModel(app, dataModel) {
     self.ShowProcessedNPHL = ko.computed(function () {
         self.NPHL_NoProRen("");
         self.NPHL_NoProRenId("");
-        self.resetFinalResult();
-        return (self.Processed() === "true")
+        self.Ship_Date_NPHL("");
+        return (self.NPHL_Processed() === "true")
     }, self);
 
     self.NotShowNPHL_Processed = ko.computed(function () {
@@ -982,8 +992,8 @@ function LabViewModel(app, dataModel) {
     self.ShowProcessedNPHL_2 = ko.computed(function () {
         self.NPHL_NoProRen_2("");
         self.NPHL_NoProRenId_2("");
-        self.resetFinalResult();
-        return (self.Processed2() === "true")
+        self.Ship_Date_NPHL_2("");
+        return (self.NPHL_Processed_2() === "true")
     }, self);
 
     self.NotShowNPHL_Processed_2 = ko.computed(function () {
@@ -998,7 +1008,7 @@ function LabViewModel(app, dataModel) {
         self.NPHL_NoProRen_3("");
         self.NPHL_NoProRenId_3("");
         self.resetFinalResult();
-        return (self.Processed3() === "true")
+        return (self.NPHL_Processed_3() === "true")
     }, self);
 
     self.NotShowNPHL_Processed_3 = ko.computed(function () {
@@ -1294,7 +1304,8 @@ function LabViewModel(app, dataModel) {
         self.Processed3("");
         self.TempSample3("");
         //Agregar laboratorio intermedio
-        self.Rec_Date_NPHL(null);        
+        self.Rec_Date_NPHL(null);
+        self.Identification_Test_NPHL("");
         self.Temp_NPHL("");        
         self.Observation_NPHL("");        
         self.Ship_Date_NPHL(null);
@@ -1303,6 +1314,7 @@ function LabViewModel(app, dataModel) {
         self.NPHL_Processed("");
 
         self.Rec_Date_NPHL_2(null);
+        self.Identification_Test_NPHL_2("");
         self.Temp_NPHL_2("");
         self.Observation_NPHL_2("");
         self.Ship_Date_NPHL_2(null);
@@ -1311,6 +1323,7 @@ function LabViewModel(app, dataModel) {
         self.NPHL_Processed_2("");
 
         self.Rec_Date_NPHL_3(null);
+        self.Identification_Test_NPHL_3("");
         self.Temp_NPHL_3("");
         self.Observation_NPHL_3("");
         self.Ship_Date_NPHL_3(null);
@@ -1575,6 +1588,7 @@ function LabViewModel(app, dataModel) {
 
                 // Laboratorio intermedio
                 (data.Rec_Date_NPHL) ? self.Rec_Date_NPHL(moment(data.Rec_Date_NPHL).clone().toDate()) : self.Rec_Date_NPHL(null);
+                self.Identification_Test_NPHL(data.Identification_Test_NPHL);
                 self.Temp_NPHL(data.Temp_NPHL);
                 self.Observation_NPHL(data.Observation_NPHL);
                 self.NPHL_Processed((data.NPHL_Processed != null) ? data.NPHL_Processed.toString() : "");
@@ -1582,7 +1596,8 @@ function LabViewModel(app, dataModel) {
                 self.NPHL_NoProRen(data.NPHL_NoProRen);
                 (data.Ship_Date_NPHL) ? self.Ship_Date_NPHL(moment(data.Ship_Date_NPHL).clone().toDate()) : self.Ship_Date_NPHL(null);
 
-                (data.Rec_Date_NPHL_2) ? self.Rec_Date_NPHL_2(moment(data.Rec_Date_NPHL_2).clone().toDate()) : self.Rec_Date_NPHL_2(null);                
+                (data.Rec_Date_NPHL_2) ? self.Rec_Date_NPHL_2(moment(data.Rec_Date_NPHL_2).clone().toDate()) : self.Rec_Date_NPHL_2(null);
+                self.Identification_Test_NPHL_2(data.Identification_Test_NPHL_2);
                 self.Temp_NPHL_2(data.Temp_NPHL_2);                
                 self.Observation_NPHL_2(data.Observation_NPHL_2);
                 self.NPHL_Processed_2((data.NPHL_Processed_2 != null) ? data.NPHL_Processed_2.toString() : "");
@@ -1591,6 +1606,7 @@ function LabViewModel(app, dataModel) {
                 (data.Ship_Date_NPHL_2) ? self.Ship_Date_NPHL_2(moment(data.Ship_Date_NPHL_2).clone().toDate()) : self.Ship_Date_NPHL_2(null);
 
                 (data.Rec_Date_NPHL_3) ? self.Rec_Date_NPHL_3(moment(data.Rec_Date_NPHL_3).clone().toDate()) : self.Rec_Date_NPHL_3(null);
+                self.Identification_Test_NPHL_3(data.Identification_Test_NPHL_3);
                 self.Temp_NPHL_3(data.Temp_NPHL_3);
                 self.Observation_NPHL_3(data.Observation_NPHL_3);
                 self.NPHL_Processed_3((data.NPHL_Processed_3 != null) ? data.NPHL_Processed_3.toString() : "");
@@ -1598,8 +1614,10 @@ function LabViewModel(app, dataModel) {
                 self.NPHL_NoProRen_3(data.NPHL_NoProRen_3);
                 (data.Ship_Date_NPHL_3) ? self.Ship_Date_NPHL_3(moment(data.Ship_Date_NPHL_3).clone().toDate()) : self.Ship_Date_NPHL_3(null);
 
-				(data.RecDate) ? self.RecDate(moment(data.RecDate).clone().toDate()) : self.RecDate(null);
                 self.NPHL(data.InstFlow_NPHL);
+
+                (data.RecDate) ? self.RecDate(moment(data.RecDate).clone().toDate()) : self.RecDate(null);
+                self.Identification_Test(data.Identification_Test);
                 self.Processed((data.Processed != null) ? data.Processed.toString() : "");
                 self.NoProRen(data.NoProRen);
                 self.NoProRenId(data.NoProRenId);
@@ -1607,12 +1625,14 @@ function LabViewModel(app, dataModel) {
                 self.hasGet(true);
 
                 (data.RecDate2) ? self.RecDate2(moment(data.RecDate2).clone().toDate()) : self.RecDate2(null);
+                self.Identification_Test2(data.Identification_Test2);
                 self.Processed2((data.Processed2 != null) ? data.Processed2.toString() : "");
                 self.NoProRen2(data.NoProRen2);
                 self.NoProRenId2(data.NoProRenId2);
                 self.TempSample2(data.TempSample2);
 
                 (data.RecDate3) ? self.RecDate3(moment(data.RecDate3).clone().toDate()) : self.RecDate3(null);
+                self.Identification_Test3(data.Identification_Test3);
                 self.Processed3((data.Processed3 != null) ? data.Processed3.toString() : "");
                 self.NoProRen3(data.NoProRen3);
                 self.NoProRenId3(data.NoProRenId3);
@@ -1824,7 +1844,8 @@ function LabViewModel(app, dataModel) {
                 $("#FinalResultVirusLineageID_3").prop('disabled', true);
                 if (self.NPHL() == true) {
                     $("#Rec_Date_NPHL").prop('disabled', false);                    
-                    $("#Temp_NPHL").prop('disabled', false);                    
+                    $("#Temp_NPHL").prop('disabled', false);
+                    $("#Identification_Test_NPHL").prop('disabled', false);
                     $("#Ship_Date_NPHL").prop('disabled', false);                    
                     $("#Observation_NPHL").prop('disabled', false);
                     $("input[id*='NPHL_Processed']").prop('disabled', false);
@@ -1833,6 +1854,7 @@ function LabViewModel(app, dataModel) {
 
                     $("#Rec_Date_NPHL_2").prop('disabled', false);
                     $("#Temp_NPHL_2").prop('disabled', false);
+                    $("#Identification_Test_NPHL_2").prop('disabled', false);
                     $("#Ship_Date_NPHL_2").prop('disabled', false);
                     $("#Observation_NPHL_2").prop('disabled', false);
                     $("input[id*='NPHL_Processed_2']").prop('disabled', false);
@@ -1841,6 +1863,7 @@ function LabViewModel(app, dataModel) {
 
                     $("#Rec_Date_NPHL_3").prop('disabled', false);
                     $("#Temp_NPHL_3").prop('disabled', false);
+                    $("#Identification_Test_NPHL_3").prop('disabled', false);
                     $("#Ship_Date_NPHL_3").prop('disabled', false);
                     $("#Observation_NPHL_3").prop('disabled', false);
                     $("input[id*='NPHL_Processed_3']").prop('disabled', false);
@@ -1849,6 +1872,7 @@ function LabViewModel(app, dataModel) {
                 } else {
                     $("#Rec_Date_NPHL").prop('disabled', true);                    
                     $("#Temp_NPHL").prop('disabled', true);
+                    $("#Identification_Test_NPHL").prop('disabled', true);
                     $("#Ship_Date_NPHL").prop('disabled', true);
                     $("#Observation_NPHL").prop('disabled', true);
                     $("input[id*='NPHL_Processed']").prop('disabled', true);
@@ -1856,7 +1880,8 @@ function LabViewModel(app, dataModel) {
                     $("#NPHL_NoReason").prop('disabled', true);
 
                     $("#Rec_Date_NPHL_2").prop('disabled', true);
-                    $("#Temp_NPHL_2").prop('disabled', true);                    
+                    $("#Temp_NPHL_2").prop('disabled', true);     
+                    $("#Identification_Test_NPHL_2").prop('disabled', true);
                     $("#Ship_Date_NPHL_2").prop('disabled', true);                    
                     $("#Observation_NPHL_2").prop('disabled', true);
                     $("input[id*='NPHL_Processed_2']").prop('disabled', true);
@@ -1865,6 +1890,7 @@ function LabViewModel(app, dataModel) {
 
                     $("#Rec_Date_NPHL_3").prop('disabled', true);
                     $("#Temp_NPHL_3").prop('disabled', true);
+                    $("#Identification_Test_NPHL_3").prop('disabled', true);
                     $("#Ship_Date_NPHL_3").prop('disabled', true);
                     $("#Observation_NPHL_3").prop('disabled', true);
                     $("input[id*='NPHL_Processed_3']").prop('disabled', true);
@@ -2146,18 +2172,21 @@ function LabViewModel(app, dataModel) {
             data: JSON.stringify({
                 id: self.Id,
                 RecDate: $("#RecDate").val() == "" ? null : moment(rec_date).format(date_format_ISO),
+                Identification_Test: self.Identification_Test() ? self.Identification_Test().toLocaleUpperCase() : "",
                 Processed: self.Processed() === "true" ? true : self.Processed() === "false" ? false : null,
                 NoProRen: self.NoProRen() ? self.NoProRen().toLocaleUpperCase() : "",
                 NoProRenId: self.NoProRenId(),
                 TempSample1: self.TempSample1(),
 
                 RecDate2: $("#RecDate2").val() == "" ? null : moment(rec_date2).format(date_format_ISO),
+                Identification_Test2: self.Identification_Test2() ? self.Identification_Test2().toLocaleUpperCase() : "",
                 Processed2: self.Processed2() === "true" ? true : self.Processed2() === "false" ? false : null,
                 NoProRen2: self.NoProRen2() ? self.NoProRen2().toLocaleUpperCase() : "",
                 NoProRenId2: self.NoProRenId2(),
                 TempSample2: self.TempSample2(),
 
                 RecDate3: $("#RecDate3").val() == "" ? null : moment(rec_date3).format(date_format_ISO),
+                Identification_Test3: self.Identification_Test3() ? self.Identification_Test3().toLocaleUpperCase() : "",
                 Processed3: self.Processed3() === "true" ? true : self.Processed3() === "false" ? false : null,
                 NoProRen3: self.NoProRen3() ? self.NoProRen3().toLocaleUpperCase() : "",
                 NoProRenId3: self.NoProRenId3(),
@@ -2183,28 +2212,34 @@ function LabViewModel(app, dataModel) {
 
                 // Laboratorio intermedio
                 Rec_Date_NPHL: $("#Rec_Date_NPHL").val() == "" ? null : moment(rec_date_NPHL).format(date_format_ISO),
+                Identification_Test_NPHL: self.Identification_Test_NPHL() ? self.Identification_Test_NPHL().toLocaleUpperCase() : "",
                 Observation_NPHL: self.Observation_NPHL() ? self.Observation_NPHL().toLocaleUpperCase() : "",
                 Temp_NPHL: self.Temp_NPHL(),
                 Ship_Date_NPHL: $("#Ship_Date_NPHL").val() == "" ? null : moment(ship_date_NPHL).format(date_format_ISO),
                 NPHL_Processed: self.NPHL_Processed(),
                 NPHL_NoProRenId: self.NPHL_NoProRenId(),
                 NPHL_NoProRen: self.NPHL_NoProRen(),
+                NPHL_Conclusion: self.NPHL_Conclusion(),
                 
                 Rec_Date_NPHL_2: $("#Rec_Date_NPHL_2").val() == "" ? null : moment(rec_date_NPHL_2).format(date_format_ISO),
+                Identification_Test_NPHL_2: self.Identification_Test_NPHL_2() ? self.Identification_Test_NPHL_2().toLocaleUpperCase() : "",
                 Temp_NPHL_2: self.Temp_NPHL_2(),
                 Ship_Date_NPHL_2: $("#Ship_Date_NPHL_2").val() == "" ? null : moment(ship_date_NPHL_2).format(date_format_ISO),
                 Observation_NPHL_2: self.Observation_NPHL_2() ? self.Observation_NPHL_2().toLocaleUpperCase() : "",
                 NPHL_Processed_2: self.NPHL_Processed_2(),
                 NPHL_NoProRenId_2: self.NPHL_NoProRenId_2(),
                 NPHL_NoProRen_2: self.NPHL_NoProRen_2(),
+                NPHL_Conclusion_2: self.NPHL_Conclusion_2(),
 
                 Rec_Date_NPHL_3: $("#Rec_Date_NPHL_3").val() == "" ? null : moment(rec_date_NPHL_3).format(date_format_ISO),
+                Identification_Test_NPHL_3: self.Identification_Test_NPHL_3() ? self.Identification_Test_NPHL_3().toLocaleUpperCase() : "",
                 Temp_NPHL_3: self.Temp_NPHL_3(),
                 Ship_Date_NPHL_3: $("#Ship_Date_NPHL_3").val() == "" ? null : moment(ship_date_NPHL_3).format(date_format_ISO),
                 Observation_NPHL_3: self.Observation_NPHL_3() ? self.Observation_NPHL_3().toLocaleUpperCase() : "",
                 NPHL_Processed_3: self.NPHL_Processed_3(),
                 NPHL_NoProRenId_3: self.NPHL_NoProRenId_3(),
                 NPHL_NoProRen_3: self.NPHL_NoProRen_3(),
+                NPHL_Conclusion_3: self.NPHL_Conclusion_3(),
 
             }),
             async: false,

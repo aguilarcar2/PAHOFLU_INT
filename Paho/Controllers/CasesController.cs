@@ -413,7 +413,7 @@ namespace Paho.Controllers
                     if (institutionsConfiguration.Any())
                     {
                         //flucases = flucases.Where(h => (h.IsSample == true && h.Processed != false && (h.FinalResult == null || h.FinalResult != "N")) && ( ((h.flow == (institutionsConfiguration.Where(i=> i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j=> j.Priority).ToList().FirstOrDefault() - 1)) && (h.statement == 2 || h.statement == null) ) || ((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault())) && (h.statement == 1 || h.statement == null))) );
-                        flucases = flucases.Where(h => (h.IsSample == true && h.Processed != false) && (((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault() - 1)) && (h.statement == 2 || h.statement == null)) || ((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault())) && (h.statement == 1 || h.statement == null))));
+                        flucases = flucases.Where(h => (h.IsSample == true && (h.Processed != false) || h.NPHL_Processed != false) && (((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault() - 1)) && (h.statement == 2 || h.statement == null)) || ((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault())) && (h.statement == 1 || h.statement == null))));
 
                         flucases = flucases.Where(i => i.CaseLabTests.Where(x => (x.inst_conf_end_flow_by_virus == 0 || x.inst_conf_end_flow_by_virus == null) || x.statement_test == 1).Any() || i.CaseLabTests.Count == 0);
                         //var ListCloseCase = db.InstitutionConfEndFlowByVirus.OfType<InstitutionConfEndFlowByVirus>()
@@ -425,7 +425,7 @@ namespace Paho.Controllers
                     }
                     else
                     {
-                        flucases = flucases.Where(f => f.IsSample == true && f.Processed != false && f.FinalResult == null);
+                        flucases = flucases.Where(f => f.IsSample == true && (f.Processed != false || f.NPHL_Processed != false) && f.FinalResult == null);
                         flucases = flucases.Where(h => h.flow == 0);
                     }
 
@@ -513,8 +513,8 @@ namespace Paho.Controllers
                                      P_D = flucase.Processed,
                                      CS_D = flucase.CaseStatus,
                                      CS_D_Cat = flucase.CatStatusCase,
-                                     VR_IF_D = flucase.CaseLabTests.Where(e => e.TestType == 1 && e.Processed != null).OrderBy(d => d.SampleNumber).ThenBy(u => u.TestDate).ThenBy(y => y.CatVirusType.orden).FirstOrDefault(),
-                                     VR_PCR_D = flucase.CaseLabTests.Where(e => e.TestType == 2 && e.Processed != null).OrderBy(d => d.SampleNumber).ThenBy(u => u.TestDate).ThenBy(y => y.CatVirusType.orden).FirstOrDefault(),
+                                     VR_IF_D = flucase.CaseLabTests.Where(e => e.TestType == 1 && e.Processed != null).OrderBy(y => y.CatVirusType.orden).ThenBy(d => d.SampleNumber).ThenBy(u => u.TestDate).FirstOrDefault(),
+                                     VR_PCR_D = flucase.CaseLabTests.Where(e => e.TestType == 2 && e.Processed != null).OrderBy(y => y.CatVirusType.orden).ThenBy(d => d.SampleNumber).ThenBy(u => u.TestDate).FirstOrDefault(),
                                      HEALTH_INST = flucase.Hospital.Name ?? ""
                                  }).AsEnumerable()
                                    .Select(x => new
@@ -557,11 +557,31 @@ namespace Paho.Controllers
 
             if (search == "" || search == null) search = "-A";
 
-            var diags = ( db.CIE10.Where(f => f.Diag.Contains(search)) as IQueryable<CatDiag>);
+            IQueryable<CatDiag> diags = null;
+            var user = UserManager.FindById(User.Identity.GetUserId());
+
+            if (user.Institution.Country.Language == "SPA")
+            {
+                diags = (db.CIE10.Where(f => f.SPA.Contains(search)) as IQueryable<CatDiag>);
+            }
+            else if (user.Institution.Country.Language == "ENG") {
+                diags = (db.CIE10.Where(f => f.ENG.Contains(search)) as IQueryable<CatDiag>);
+            }
+            
 
             if (code != "" && code!= null)
             {
-                diags = diags.Where(h => h.Diag.Contains(code));
+                //diags = diags.Where(h => h.Diag.Contains(code));
+                    //diags = (db.CIE10.Where(f => f.code.Contains(search)) as IQueryable<CatDiag>);
+
+                if (user.Institution.Country.Language == "SPA")
+                {
+                    diags = (db.CIE10.Where(f => f.SPA.Contains(search)) as IQueryable<CatDiag>);
+                }
+                else if (user.Institution.Country.Language == "ENG")
+                {
+                    diags = (db.CIE10.Where(f => f.ENG.Contains(search)) as IQueryable<CatDiag>);
+                }
             }
 
             diags = diags.Take(10);
@@ -571,7 +591,7 @@ namespace Paho.Controllers
                     select new
                     {
                         value = diags_list.ID,
-                        label = diags_list.Diag
+                        label = (user.Institution.Country.Language == "SPA") ? diags_list.SPA : diags_list.ENG
                     }).ToArray();
 
 
@@ -622,6 +642,7 @@ namespace Paho.Controllers
 
         public ActionResult GetCIE10ID( int ID)
         {
+            var user = UserManager.FindById(User.Identity.GetUserId());
             CatDiag diag = db.CIE10.Find(ID);
             if (diag == null)
             {
@@ -632,8 +653,8 @@ namespace Paho.Controllers
                  new
                   {
                       value = diag.ID.ToString(),
-                      label = diag.Diag
-                  };
+                      label = (user.Institution.Country.Language == "SPA") ? diag.SPA : diag.ENG
+                 };
 
             return Json(result, JsonRequestBehavior.AllowGet);
 
@@ -881,6 +902,7 @@ namespace Paho.Controllers
                     id = flucase.ID.ToString(),
                     Vaccin = flucase.Vaccin,
                     HDisease = flucase.HDisease,
+                    SickleCellDisease = flucase.SickleCellDisease,
                     Diabetes = flucase.Diabetes,
                     Neuro = flucase.Neuro,
                     Asthma = flucase.Asthma,
@@ -965,6 +987,7 @@ namespace Paho.Controllers
                      id = "",
                      Vaccin = 9,
                      HDisease = false,
+                     SickleCellDisease = false,
                      Diabetes = false,
                      Neuro = false,
                      Asthma = false,
@@ -993,6 +1016,7 @@ namespace Paho.Controllers
                 int Id,
                 Vaccin? Vaccin,
                 bool? HDisease,
+                bool? SickleCellDisease,
                 bool? Diabetes,
                 bool? Neuro,
                 bool? Asthma,
@@ -1085,6 +1109,7 @@ namespace Paho.Controllers
             }
             flucase.Vaccin = Vaccin;
             flucase.HDisease = HDisease;
+            flucase.SickleCellDisease = SickleCellDisease;
             flucase.Diabetes = Diabetes;
             flucase.Neuro = Neuro;
             flucase.Asthma = Asthma;
@@ -1794,7 +1819,12 @@ namespace Paho.Controllers
                             Any_Test_EndFlow = test_Record.inst_conf_end_flow_by_virus > 0;
                         }
                         canConclude = Any_Test_EndFlow && flucase.statement == 2;
-                    } else if (((flucase.Processed == false || flucase.Processed == null) && (flucase.Processed2 == false || flucase.Processed2 == null) && (flucase.Processed3 == false || flucase.Processed3 == null) && flucase.IsSample != true) || flucase.IsSample == false )
+                    }
+                    else if (((flucase.NPHL_Processed == false || flucase.NPHL_Processed == null) && (flucase.NPHL_Processed_2 == false || flucase.NPHL_Processed_2 == null) && (flucase.NPHL_Processed_3 == false || flucase.NPHL_Processed_3 == null) && flucase.IsSample != true) || flucase.IsSample == false)
+                    {
+                        canConclude = true;
+                    }
+                    else if (((flucase.Processed == false || flucase.Processed == null) && (flucase.Processed2 == false || flucase.Processed2 == null) && (flucase.Processed3 == false || flucase.Processed3 == null) && flucase.IsSample != true) || flucase.IsSample == false )
                     {
                         canConclude = true;
                     }
@@ -1802,7 +1832,10 @@ namespace Paho.Controllers
 
                 }
 
-                if ((flucase.Processed == false  && (flucase.Processed2 == false || flucase.Processed2 == null) && (flucase.Processed3 == false || flucase.Processed3 == null)) && flucase.IsSample == true)
+                if ((flucase.NPHL_Processed == false && (flucase.NPHL_Processed_2 == false || flucase.NPHL_Processed_2 == null) && (flucase.NPHL_Processed_3 == false || flucase.NPHL_Processed_3 == null)) && flucase.IsSample == true)
+                {
+                    canConclude = true;
+                } else if ((flucase.Processed == false  && (flucase.Processed2 == false || flucase.Processed2 == null) && (flucase.Processed3 == false || flucase.Processed3 == null)) && flucase.IsSample == true)
                 {
                     canConclude = true;
                 }
@@ -1857,10 +1890,13 @@ namespace Paho.Controllers
                 {
                     id = flucase.ID.ToString(),
                     RecDate = flucase.RecDate,
+                    Identification_Test = flucase.Identification_Test,
                     Processed = flucase.Processed,
                     RecDate2 = flucase.RecDate2,
+                    Identification_Test2 = flucase.Identification_Test2,
                     Processed2 = flucase.Processed2,
                     RecDate3 = flucase.RecDate3,
+                    Identification_Test3 = flucase.Identification_Test3,
                     Processed3 = flucase.Processed3,
                     EndLabDate = flucase.EndLabDate,
                     FResult = flucase.FResult,
@@ -1878,7 +1914,8 @@ namespace Paho.Controllers
 
                     // Laboratorio Intermedio
                     Rec_Date_NPHL = flucase.Rec_Date_NPHL,                    
-                    Temp_NPHL = flucase.Temp_NPHL,                    
+                    Temp_NPHL = flucase.Temp_NPHL,
+                    Identification_Test_NPHL = flucase.Identification_Test_NPHL,
                     Observation_NPHL = flucase.Observation_NPHL,                    
                     Ship_Date_NPHL = flucase.Ship_Date_NPHL,
                     NPHL_Processed = flucase.NPHL_Processed,
@@ -1887,6 +1924,7 @@ namespace Paho.Controllers
 
                     Rec_Date_NPHL_2 = flucase.Rec_Date_NPHL_2,
                     Temp_NPHL_2 = flucase.Temp_NPHL_2,
+                    Identification_Test_NPHL_2 = flucase.Identification_Test_NPHL_2,
                     Observation_NPHL_2 = flucase.Observation_NPHL_2,
                     Ship_Date_NPHL_2 = flucase.Ship_Date_NPHL_2,
                     NPHL_Processed_2 = flucase.NPHL_Processed_2,
@@ -1895,6 +1933,7 @@ namespace Paho.Controllers
 
                     Rec_Date_NPHL_3 = flucase.Rec_Date_NPHL_3,
                     Temp_NPHL_3 = flucase.Temp_NPHL_3,
+                    Identification_Test_NPHL_3 = flucase.Identification_Test_NPHL_3,
                     Observation_NPHL_3 = flucase.Observation_NPHL_3,
                     Ship_Date_NPHL_3 = flucase.Ship_Date_NPHL_3,
                     NPHL_Processed_3 = flucase.NPHL_Processed_3,
@@ -2146,10 +2185,13 @@ namespace Paho.Controllers
         public JsonResult SaveLab(
                 int id,
                 DateTime? RecDate,
+                string Identification_Test,
                 bool? Processed,
                 DateTime? RecDate2,
+                string Identification_Test2,
                 bool? Processed2,
                 DateTime? RecDate3,
+                string Identification_Test3,
                 bool? Processed3,
                 DateTime? EndLabDate,
                 string FResult,
@@ -2179,6 +2221,7 @@ namespace Paho.Controllers
                 //AM Laboratorio intermedio
                 DateTime? Rec_Date_NPHL,
                 Decimal? Temp_NPHL,
+                string Identification_Test_NPHL,
                 string Observation_NPHL,
                 DateTime? Ship_Date_NPHL,
                 bool? NPHL_Processed,
@@ -2186,6 +2229,7 @@ namespace Paho.Controllers
                 string NPHL_NoProRen,
                 DateTime? Rec_Date_NPHL_2,
                 Decimal? Temp_NPHL_2,
+                string Identification_Test_NPHL_2,
                 string Observation_NPHL_2,
                 DateTime? Ship_Date_NPHL_2,
                 bool? NPHL_Processed_2,
@@ -2193,6 +2237,7 @@ namespace Paho.Controllers
                 string NPHL_NoProRen_2,
                 DateTime? Rec_Date_NPHL_3,
                 Decimal? Temp_NPHL_3,
+                string Identification_Test_NPHL_3,
                 string Observation_NPHL_3,
                 DateTime? Ship_Date_NPHL_3,
                 bool? NPHL_Processed_3,
@@ -2221,14 +2266,18 @@ namespace Paho.Controllers
             PCR_Count = flucase.CaseLabTests.Where(e => e.FluCaseID == id && e.TestType == 2 && e.Processed != null).Count();
 
             flucase.RecDate = RecDate;
+            flucase.Identification_Test = Identification_Test;
             flucase.Processed = Processed;
             flucase.RecDate2 = RecDate2;
+            flucase.Identification_Test2 = Identification_Test2;
             flucase.Processed2 = Processed2;
             flucase.RecDate3 = RecDate3;
+            flucase.Identification_Test3 = Identification_Test3;
             flucase.Processed3 = Processed3;
             flucase.EndLabDate = EndLabDate;
             flucase.FResult = FResult;
             flucase.NoProRen = NoProRen;
+
             flucase.NoProRenId = NoProRenId;
             flucase.TempSample1 = TempSample1;
 
@@ -2242,6 +2291,7 @@ namespace Paho.Controllers
 
             // Laboratorio de intermedio
             flucase.Rec_Date_NPHL = Rec_Date_NPHL;
+            flucase.Identification_Test_NPHL = Identification_Test_NPHL;
             flucase.Temp_NPHL = Temp_NPHL;
             flucase.Observation_NPHL = Observation_NPHL;
             flucase.Ship_Date_NPHL = Ship_Date_NPHL;
@@ -2251,6 +2301,7 @@ namespace Paho.Controllers
 
             flucase.Rec_Date_NPHL_2 = Rec_Date_NPHL_2;
             flucase.Temp_NPHL_2 = Temp_NPHL_2;
+            flucase.Identification_Test_NPHL_2 = Identification_Test_NPHL_2;
             flucase.Observation_NPHL_2 = Observation_NPHL_2;
             flucase.Ship_Date_NPHL_2 = Ship_Date_NPHL_2;
             flucase.NPHL_Processed_2 = NPHL_Processed_2;
@@ -2259,6 +2310,7 @@ namespace Paho.Controllers
 
             flucase.Rec_Date_NPHL_3 = Rec_Date_NPHL_3;
             flucase.Temp_NPHL_3 = Temp_NPHL_3;
+            flucase.Identification_Test_NPHL_3 = Identification_Test_NPHL_3;
             flucase.Observation_NPHL_3 = Observation_NPHL_3;
             flucase.Ship_Date_NPHL_3 = Ship_Date_NPHL_3;
             flucase.NPHL_Processed_3 = NPHL_Processed_3;
@@ -2451,7 +2503,7 @@ namespace Paho.Controllers
                             userRecord.Add("userOperator", reader["userOperator"].ToString());
                             userRecord.Add("healthUnit", reader["healthUnit"].ToString());
                             //userRecord.Add("stateRecord", (user_lang == "ENG") ? reader["stateRecord_ENG"].ToString() : reader["stateRecord"].ToString());
-                            userRecord.Add("operationDate", reader["DateAction"].ToString());
+                            userRecord.Add("operationDate", reader["operationDate"].ToString());
                             logsPerUser.Add(userRecord);
 
                         }

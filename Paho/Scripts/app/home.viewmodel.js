@@ -221,7 +221,7 @@
     self.NewFluCase = function () {
         //self.ResetFluCase();
         //self.EditFluCase();
-        $("#RecordNumber").text("Nuevo");
+        $("#RecordNumber").text(msgviewHome_btnNew);
         if ($("#ITy").val() == "1") {
             $("#tab-contact :input, #tab-GEO :input, #tab-hospital :input, #tab-risk :input, #tab-case :input").attr('disabled', false);
             $("#RegDate").attr('disabled', true);
@@ -494,7 +494,7 @@
             $("#CaseStatus").attr("disabled", false);
             $("#tabs").tabs("refresh");
         }
-        else if ($("#ITy").val() == "1" && (app.Views.Hospital.IsSample() === "true" && app.Views.Lab.Processed() === "false")) {
+        else if ($("#ITy").val() == "1" && ((app.Views.Hospital.IsSample() === "true" && app.Views.Lab.Processed() === "false") || (app.Views.Lab.NPHL() == true && app.Views.Hospital.IsSample() === "true" && app.Views.Lab.NPHL_Processed() === "false"))) {
             console.log("aqui _  Flow status no processed");
             $("a[href*='tab-case']").show();
             $("#tab-case").show();
@@ -531,6 +531,7 @@
             $("#tab-lab :input").prop('disabled', true);
             $("#Rec_Date_NPHL").prop('disabled', false);
             $("#Temp_NPHL").prop('disabled', false);
+            $("#Identification_Test_NPHL").prop('disabled', false);
             $("#Ship_Date_NPHL").prop('disabled', false);
             $("#Observation_NPHL").prop('disabled', false);
             $("input[id*='NPHL_Processed']").prop('disabled', false);
@@ -539,6 +540,7 @@
 
             $("#Rec_Date_NPHL_2").prop('disabled', false);
             $("#Temp_NPHL_2").prop('disabled', false);
+            $("#Identification_Test_NPHL_2").prop('disabled', false);
             $("#Ship_Date_NPHL_2").prop('disabled', false);
             $("#Observation_NPHL_2").prop('disabled', false);
             $("input[id*='NPHL_Processed_2']").prop('disabled', false);
@@ -547,6 +549,7 @@
 
             $("#Rec_Date_NPHL_3").prop('disabled', false);
             $("#Temp_NPHL_3").prop('disabled', false);
+            $("#Identification_Test_NPHL_3").prop('disabled', false);
             $("#Ship_Date_NPHL_3").prop('disabled', false);
             $("#Observation_NPHL_3").prop('disabled', false);
             $("input[id*='NPHL_Processed_3']").prop('disabled', false);

@@ -675,11 +675,11 @@
     self.LabId3 = ko.observable("");
 
     self.VisibleMuestra2 = ko.computed(function () {
-        return ((self.UsrCountry() == 7 || self.UsrCountry() == 3 || self.UsrCountry() == 17) && self.SampleDate() && app.Views.Contact.IsSurv() == 1) ? true : false;
+        return (((self.UsrCountry() == 7 || self.UsrCountry() == 3 ) && self.SampleDate() && app.Views.Contact.IsSurv() == 1 ) || (self.UsrCountry() == 17 && self.SampleDate())) ? true : false;
 
     }, self);
     self.VisibleMuestra3 = ko.computed(function () {
-        return ((self.UsrCountry() == 7 || self.UsrCountry() == 17) && self.SampleDate2() && app.Views.Contact.IsSurv() == 1) ? true : false;
+        return ((self.UsrCountry() == 7) && self.SampleDate2() && app.Views.Contact.IsSurv() == 1) ? true : false;
 
     }, self);
 
@@ -698,6 +698,24 @@
     self.DifResp = ko.observable("");
     self.MedSatOxig = ko.observable("");
     self.SatOxigPor = ko.observable("");
+
+    self.Tos.subscribe(function (NewTos) {
+
+        if (NewTos === true && self.AntecedentesFiebre() === true) {
+            $("#casedefinitionwarning").hide();
+        } else {
+            $("#casedefinitionwarning").show();
+        }
+    });
+
+    self.AntecedentesFiebre.subscribe(function (NewAntecedentesFiebre) {
+
+        if (NewAntecedentesFiebre === true && self.Tos() === true) {
+            $("#casedefinitionwarning").hide();
+        } else {
+            $("#casedefinitionwarning").show();
+        }
+    });
 
     self.IsInusitadoSintomatologia = ko.computed(function () {                         //**** CAFQ
         if (self.UsrCountry() == 3) {                               // Bolivia
@@ -792,7 +810,15 @@
                 $("#tab-case").show();
                 $("#tabs").tabs("refresh");
                 if (self.UsrCountry() == 9 && NewDestin == 'D') { self.FalleDate(self.HospExDate()); }
-            } else if (self.IsSample() === "true" && app.Views.Lab.Processed() === "false" ) {  // preguntar a Rodrigo
+             }
+             else if (self.IsSample() === "true" && app.Views.Lab.NPHL_Processed() === "false") {  // preguntar a Rodrigo
+                 $("a[href*='tab-case']").show();
+                 $("#tab-case").show();
+                 $("#CaseStatus").attr("disabled", false);
+                 $("#tabs").tabs("refresh");
+                 if (self.UsrCountry() == 9 && NewDestin == 'D') { self.FalleDate(self.HospExDate()); }
+             }
+             else if (self.IsSample() === "true" && app.Views.Lab.Processed() === "false") {  // preguntar a Rodrigo
                     $("a[href*='tab-case']").show();
                     $("#tab-case").show();
                     $("#CaseStatus").attr("disabled", false);

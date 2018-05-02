@@ -219,7 +219,7 @@ namespace Paho.Controllers
 
             }
             db.SaveChanges();
-            return Json("Datos guardados");
+            return Json(getMsg("viewValidateSavedRecordSummary"));
         }
                         
         public JsonResult GetSummaryForYear(int hospitalId)
