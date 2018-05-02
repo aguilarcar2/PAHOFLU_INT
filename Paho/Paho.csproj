@@ -2098,6 +2098,7 @@
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
     <None Include="Properties\PublishProfiles\aaa.pubxml" />
     <None Include="Properties\PublishProfiles\AAA1.pubxml" />
+    <None Include="Properties\PublishProfiles\aaa2.pubxml" />
     <None Include="Properties\PublishProfiles\aaaa.pubxml" />
     <None Include="Properties\PublishProfiles\INTERNATIONAL.pubxml" />
     <None Include="Properties\PublishProfiles\INT_PUBLISH.pubxml" />
