@@ -393,7 +393,7 @@ function ContactViewModel(app, dataModel) {
     });
 
     self.NotShowHospitalization = ko.computed(function () {
-        if (self.IsSurv() == "1")
+        if (self.IsSurv() == "1" || (self.SurvInusual() == true && self.UsrCountry() == 17))
         {
             return true;
         } else {
