@@ -608,8 +608,13 @@ function ContactViewModel(app, dataModel) {
             }
                 
 
-        if (self.IsSurv() == "")  
-            msg += "\n" + msgValidationSurvType;
+        if (self.IsSurv() == "")
+        {
+            if (self.UsrCountry() != 17 && self.IsInusitado() != true)
+                msg += "\n" + msgValidationSurvType;
+
+        }
+            
 
         
         if (!self.DocumentType() && (self.UsrCountry() != 25 && self.UsrCountry() != 11 && self.UsrCountry() != 18 && self.UsrCountry() != 17))//agregado el 25 para que esta validación ignore SURINAME
