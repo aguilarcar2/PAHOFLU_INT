@@ -886,65 +886,26 @@ namespace Paho.Controllers
                     con.Open();
                     if ((storedProcedure == "R5"))
                     {
+                        string VRS;
+                        //VRS = (countryId == 25 || countryId == 17) ? "RSV" : "VRS";
+                        VRS = (languaje_ == "ENG") ? "RSV" : "VRS";
+
                         IDictionary<int, string> formulas1 = new Dictionary<int, string>();
-                        formulas1[1] = "=VRS!B{{toreplace}}";
-                        formulas1[2] = "=VRS!C{{toreplace}} + Ad!C{{toreplace}} + Parainfluenza!C{{toreplace}} + 'Inf A'!C{{toreplace}} + 'Inf B'!C{{toreplace}} + Metapnemovirus!C{{toreplace}}";
-                        formulas1[3] = "=VRS!C{{toreplace}}";
+                        formulas1[1] = "=" + VRS + "!B{{toreplace}}";
+                        formulas1[2] = "=" + VRS + "!C{{toreplace}} + Ad!C{{toreplace}} + Parainfluenza!C{{toreplace}} + 'Inf A'!C{{toreplace}} + 'Inf B'!C{{toreplace}} + Metapnemovirus!C{{toreplace}}";
+                        formulas1[3] = "=" + VRS + "!C{{toreplace}}";
                         formulas1[4] = "=Ad!C{{toreplace}}";
                         formulas1[5] = "=Parainfluenza!C{{toreplace}}";
                         formulas1[6] = "='Inf A'!C{{toreplace}}";
                         formulas1[7] = "='Inf B'!C{{toreplace}}";
                         formulas1[8] = "=Metapnemovirus!C{{toreplace}}";
 
-                        /*if (countryId == 25 || countryId == 17)
-                        {
-                            formulas1[9] = "=VRS!L{{toreplace}}";
-                            formulas1[10] = "=VRS!M{{toreplace}}+Ad!M{{toreplace}}+Parainfluenza!M{{toreplace}}+'Inf A'!M{{toreplace}}+'Inf B'!M{{toreplace}}+Metapnemovirus!M{{toreplace}}";
-
-                            formulas1[11] = "=VRS!M{{toreplace}}";
-                            formulas1[12] = "=Ad!M{{toreplace}}";
-                            formulas1[13] = "=Parainfluenza!M{{toreplace}}";
-                            formulas1[14] = "='Inf A'!M{{toreplace}}";
-                            formulas1[15] = "='Inf B'!M{{toreplace}}";
-                            formulas1[16] = "=Metapnemovirus!M{{toreplace}}";
-
-                            formulas1[17] = "=D{{toreplace}}+E{{toreplace}}+F{{toreplace}}+G{{toreplace}}+H{{toreplace}}+I{{toreplace}}+J{{toreplace}}+K{{toreplace}}";
-                            formulas1[18] = "=N{{toreplace}}+O{{toreplace}}+P{{toreplace}}+Q{{toreplace}}+R{{toreplace}}+S{{toreplace}}+T{{toreplace}}+U{{toreplace}}";
-                        }
-                        else
-                        {
-                            formulas1[9] = "=VRS!J{{toreplace}}";
-                            formulas1[10] = "=VRS!K{{toreplace}}+Ad!K{{toreplace}}+Parainfluenza!K{{toreplace}}+'Inf A'!K{{toreplace}}+'Inf B'!K{{toreplace}}+Metapnemovirus!K{{toreplace}}";
-
-                            formulas1[11] = "=VRS!K{{toreplace}}";
-                            formulas1[12] = "=Ad!K{{toreplace}}";
-                            formulas1[13] = "=Parainfluenza!K{{toreplace}}";
-                            formulas1[14] = "='Inf A'!K{{toreplace}}";
-                            formulas1[15] = "='Inf B'!K{{toreplace}}";
-                            formulas1[16] = "=Metapnemovirus!K{{toreplace}}";
-
-                            formulas1[17] = "=D{{toreplace}}+E{{toreplace}}+F{{toreplace}}+G{{toreplace}}+H{{toreplace}}+I{{toreplace}}";
-                            formulas1[18] = "=L{{toreplace}}+M{{toreplace}}+N{{toreplace}}+O{{toreplace}}+P{{toreplace}}+Q{{toreplace}}";
-                        }*/
                         if (countryId == 17)
                         {
-                            /*formulas1[9] = "=VRS!L{{toreplace}}";
-                            formulas1[10] = "=VRS!M{{toreplace}}+Ad!M{{toreplace}}+Parainfluenza!M{{toreplace}}+'Inf A'!M{{toreplace}}+'Inf B'!M{{toreplace}}+Metapnemovirus!M{{toreplace}}";
+                            formulas1[9] = "=" + VRS + "!M{{toreplace}}";
+                            formulas1[10] = "=" + VRS + "!N{{toreplace}}+Ad!N{{toreplace}}+Parainfluenza!N{{toreplace}}+'Inf A'!N{{toreplace}}+'Inf B'!N{{toreplace}}+Metapnemovirus!N{{toreplace}}";
 
-                            formulas1[11] = "=VRS!M{{toreplace}}";
-                            formulas1[12] = "=Ad!M{{toreplace}}";
-                            formulas1[13] = "=Parainfluenza!M{{toreplace}}";
-                            formulas1[14] = "='Inf A'!M{{toreplace}}";
-                            formulas1[15] = "='Inf B'!M{{toreplace}}";
-                            formulas1[16] = "=Metapnemovirus!M{{toreplace}}";
-
-                            formulas1[17] = "=D{{toreplace}}+E{{toreplace}}+F{{toreplace}}+G{{toreplace}}+H{{toreplace}}+I{{toreplace}}+J{{toreplace}}+K{{toreplace}}+L{{toreplace}}";
-                            formulas1[18] = "=O{{toreplace}}+P{{toreplace}}+Q{{toreplace}}+R{{toreplace}}+S{{toreplace}}+T{{toreplace}}+U{{toreplace}}+V{{toreplace}}+W{{toreplace}}";
-                            */
-                            formulas1[9] = "=VRS!M{{toreplace}}";
-                            formulas1[10] = "=VRS!N{{toreplace}}+Ad!N{{toreplace}}+Parainfluenza!N{{toreplace}}+'Inf A'!N{{toreplace}}+'Inf B'!N{{toreplace}}+Metapnemovirus!N{{toreplace}}";
-
-                            formulas1[11] = "=VRS!N{{toreplace}}";
+                            formulas1[11] = "=" + VRS + "!N{{toreplace}}";
                             formulas1[12] = "=Ad!N{{toreplace}}";
                             formulas1[13] = "=Parainfluenza!N{{toreplace}}";
                             formulas1[14] = "='Inf A'!N{{toreplace}}";
@@ -958,10 +919,10 @@ namespace Paho.Controllers
                         {
                             if (countryId == 25)
                             {
-                                formulas1[9] = "=VRS!L{{toreplace}}";
-                                formulas1[10] = "=VRS!M{{toreplace}}+Ad!M{{toreplace}}+Parainfluenza!M{{toreplace}}+'Inf A'!M{{toreplace}}+'Inf B'!M{{toreplace}}+Metapnemovirus!M{{toreplace}}";
+                                formulas1[9] = "=" + VRS + "!L{{toreplace}}";
+                                formulas1[10] = "=" + VRS + "!M{{toreplace}}+Ad!M{{toreplace}}+Parainfluenza!M{{toreplace}}+'Inf A'!M{{toreplace}}+'Inf B'!M{{toreplace}}+Metapnemovirus!M{{toreplace}}";
 
-                                formulas1[11] = "=VRS!M{{toreplace}}";
+                                formulas1[11] = "=" + VRS + "!M{{toreplace}}";
                                 formulas1[12] = "=Ad!M{{toreplace}}";
                                 formulas1[13] = "=Parainfluenza!M{{toreplace}}";
                                 formulas1[14] = "='Inf A'!M{{toreplace}}";
@@ -973,10 +934,10 @@ namespace Paho.Controllers
                             }
                             else
                             {
-                                formulas1[9] = "=VRS!J{{toreplace}}";
-                                formulas1[10] = "=VRS!K{{toreplace}}+Ad!K{{toreplace}}+Parainfluenza!K{{toreplace}}+'Inf A'!K{{toreplace}}+'Inf B'!K{{toreplace}}+Metapnemovirus!K{{toreplace}}";
+                                formulas1[9] = "=" + VRS + "!J{{toreplace}}";
+                                formulas1[10] = "=" + VRS + "!K{{toreplace}}+Ad!K{{toreplace}}+Parainfluenza!K{{toreplace}}+'Inf A'!K{{toreplace}}+'Inf B'!K{{toreplace}}+Metapnemovirus!K{{toreplace}}";
 
-                                formulas1[11] = "=VRS!K{{toreplace}}";
+                                formulas1[11] = "=" + VRS + "!K{{toreplace}}";
                                 formulas1[12] = "=Ad!K{{toreplace}}";
                                 formulas1[13] = "=Parainfluenza!K{{toreplace}}";
                                 formulas1[14] = "='Inf A'!K{{toreplace}}";
