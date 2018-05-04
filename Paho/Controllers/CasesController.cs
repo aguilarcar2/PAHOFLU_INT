@@ -415,7 +415,15 @@ namespace Paho.Controllers
                         //&& (h.Hospital.NPHL == true && h.NPHL_Processed != false)
                         //flucases = flucases.Where(h => (h.IsSample == true && h.Processed != false && (h.FinalResult == null || h.FinalResult != "N")) && ( ((h.flow == (institutionsConfiguration.Where(i=> i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j=> j.Priority).ToList().FirstOrDefault() - 1)) && (h.statement == 2 || h.statement == null) ) || ((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault())) && (h.statement == 1 || h.statement == null))) );
 
-                        flucases = flucases.Where(h => (h.IsSample == true && (h.Processed != false || (h.flow > 1 && h.NPHL_Processed != false) )) && (((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault() - 1)) && (h.statement == 2 || h.statement == null)) || ((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault())) && (h.statement == 1 || h.statement == null))));
+                        //flucases = flucases.Where(h => (h.IsSample == true && (h.Processed != false || (h.flow > 1 && h.NPHL_Processed != false))) && (((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault() - 1)) && (h.statement == 2 || h.statement == null)) || ((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault())) && (h.statement == 1 || h.statement == null)))); //BK 20180504_1626
+
+                        if (institutionsConfiguration.Where(c => c.InstitutionToID == user.InstitutionID && c.InstitutionFrom.NPHL == true).Any())
+                        {
+                            flucases = flucases.Where(d => d.IsSample == true && ((d.SampleDate != null && d.NPHL_Processed != false) || (d.SampleDate2 != null && d.NPHL_Processed_2 != false)));
+                        }
+
+                        flucases = flucases.Where(h => (h.IsSample == true && h.Processed != false) && (((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault() - 1)) && (h.statement == 2 || h.statement == null)) || ((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault())) && (h.statement == 1 || h.statement == null))));
+
 
                         flucases = flucases.Where(i => i.CaseLabTests.Where(x => (x.inst_conf_end_flow_by_virus == 0 || x.inst_conf_end_flow_by_virus == null) || x.statement_test == 1).Any() || i.CaseLabTests.Count == 0);
                         //var ListCloseCase = db.InstitutionConfEndFlowByVirus.OfType<InstitutionConfEndFlowByVirus>()
