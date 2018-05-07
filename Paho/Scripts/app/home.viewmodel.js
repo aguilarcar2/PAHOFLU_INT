@@ -288,7 +288,7 @@
         //$("#cancelLab").attr("disabled", false);
         $("#cancelGeneral").attr("disabled", false);
         //$("#BorrarGeneral").attr("disabled", false);
-        $("#RecordNumber").text("Nuevo");
+        $("#RecordNumber").text(msgviewHome_btnNew);
     };
 
     self.SaveAll = function (option_Save) {
