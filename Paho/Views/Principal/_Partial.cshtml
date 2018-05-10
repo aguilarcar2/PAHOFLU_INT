@@ -297,6 +297,7 @@
                 cDia_e = caracteresEspeciales(cDia_e);
 
                 var cDias_e = "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("msgIndicaDesempenioDias"))";
+                cDias_e = caracteresEspeciales(cDias_e);
 
                 var cInDe_e = "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("msgIndicaDesempenioIndicadoresDeDesempenio"))";
                 cInDe_e = caracteresEspeciales(cInDe_e);
@@ -5877,7 +5878,7 @@
                     "VE": [ "venezuelaLow" ],
                     "VN": [ "vietnamLow" ],
                     "YE": [ "yemenLow" ]
-                        };
+                };
 
 
 
@@ -6000,190 +6001,187 @@
                         };
     </script>
     
-    
         <!---xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx MAPA 2 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx--->
         <!-- Chart code -->
         <script>
-                function GetMapData2() {
-                    var dataMapIrag = 0;
-                    var dataMapEti = 0;
+            function GetMapData2() {
+                var dataMapIrag = 0;
+                var dataMapEti = 0;
 
-                    if($("#chkMapIrag").is(':checked')){
-                        dataMapIrag = 1;
-                            }
-                    if($("#chkMapEti").is(':checked')){
-                        dataMapEti = 1;
-                            }
+                if($("#chkMapIrag").is(':checked')){
+                    dataMapIrag = 1;
+                }
+                if($("#chkMapEti").is(':checked')){
+                    dataMapEti = 1;
+                }
 
-                                //Esta sección sirve para consolidar los años seleccionados en un string separado por comas
-                    var allMapVals = [];
-                    var yrsMap = "";
-                    $('#map_c_b :checked').each(function() {
-                        allMapVals.push($(this).val());
-                            });
-                    yrsMap = allMapVals.join();
-                    $("#mapanios").val(yrsMap);
+                //Esta sección sirve para consolidar los años seleccionados en un string separado por comas
+                var allMapVals = [];
+                var yrsMap = "";
+                $('#map_c_b :checked').each(function() {
+                    allMapVals.push($(this).val());
+                });
+                yrsMap = allMapVals.join();
+                $("#mapanios").val(yrsMap);
 
-                    var defaultMap = "usaLow";
-                    var countryMaps = {
-                        "AF": [ "afghanistanLow" ],
-                        "AL": [ "albaniaLow" ],
-                        "DZ": [ "algeriaLow" ],
-                        "AD": [ "andorraLow" ],
-                        "AO": [ "angolaLow" ],
-                        "AR": [ "argentinaLow" ],
-                        "AM": [ "armeniaLow" ],
-                        "AU": [ "australiaLow" ],
-                        "AT": [ "austriaLow" ],
-                        "AZ": [ "azerbaijanLow" ],
-                        "BS": [ "bahamasLow" ],
-                        "BH": [ "bahrainLow" ],
-                        "BD": [ "bangladeshLow" ],
-                        "BY": [ "belarusLow" ],
-                        "BE": [ "belgiumLow" ],
-                        "BZ": [ "belizeLow" ],
-                        "BT": [ "bhutanLow" ],
-                        "BO": [ "boliviaLow" ],
-                        "BA": [ "bosniaHerzegovinaCantonsLow" ],
-                        "BW": [ "botswanaLow" ],
-                        "BR": [ "brazilLow" ],
-                        "BN": [ "bruneiDarussalamLow" ],
-                        "BG": [ "bulgariaLow" ],
-                        "BF": [ "burkinaFasoLow" ],
-                        "BI": [ "burundiLow" ],
-                        "KH": [ "cambodiaLow" ],
-                        "CM": [ "cameroonLow" ],
-                        "CA": [ "canadaLow" ],
-                        "CV": [ "capeVerdeLow" ],
-                        "CF": [ "centralAfricanRepublicLow" ],
-                        "TD": [ "chadLow" ],
-                        "CL": [ "chileLow" ],
-                        "CN": [ "chinaLow" ],
-                        "CO": [ "colombiaLow" ],
-                        "CD": [ "congoDRLow" ],
-                        "CG": [ "congoLow" ],
-                        "CR": [ "costaRicaLow" ],
-                        "HR": [ "croatiaLow" ],
-                        "CU": [ "cubaLow" ],
-                        "CY": [ "cyprusLow" ],
-                        "UN": [ "cyprusNorthernCyprusLow" ],
-                        "GB": [ "unitedKingdomLow" ],
-                        "CZ": [ "czechRepublicLow" ],
-                        "DK": [ "denmarkLow" ],
-                        "DJ": [ "djiboutiLow" ],
-                        "DO": [ "dominicanRepublicLow" ],
-                        "EC": [ "ecuadorLow" ],
-                        "EG": [ "egyptLow" ],
-                        "SV": [ "elSalvadorLow" ],
-                        "EE": [ "estoniaLow" ],
-                        "FI": [ "finlandLow" ],
-                        "FR": [ "france2016Low" ],
-                        "GE": [ "georgiaLow" ],
-                        "DE": [ "germanyLow" ],
-                        "GR": [ "greeceLow" ],
-                        "GT": [ "guatemalaLow" ],
-                        "GN": [ "guineaLow" ],
-                        "GY": [ "guyanaLow" ],
-                        "HT": [ "haitiLow" ],
-                        "HN": [ "hondurasLow" ],
-                        "HK": [ "hongKongLow" ],
-                        "HU": [ "hungaryLow" ],
-                        "GL": [ "icelandLow" ],
-                        "IS": [ "icelandLow" ],
-                        "IN": [ "indiaLow" ],
-                        "ID": [ "indonesiaLow" ],
-                        "MY": [ "malaysiaLow" ],
-                        "IR": [ "iranLow" ],
-                        "IQ": [ "iraqLow" ],
-                        "IE": [ "irelandLow" ],
-                        "IL": [ "israelLow" ],
-                        "PS": [ "palestineLow" ],
-                        "VA": [ "italyLow" ],
-                        "SM": [ "sanMarinoLow" ],
-                        "MT": [ "italyLow" ],
-                        "IT": [ "italyLow" ],
-                        //"JM": [ "jamaicaLow" ],
-                        //"JM": [ "jamaicaCONDLow" ],
-                        "JM": [ "jamaicaREGILow" ],
-                        "JP": [ "japanLow" ],
-                        "KZ": [ "kazakhstanLow" ],
-                        "KE": [ "kenyaLow" ],
-                        "XK": [ "kosovoLow" ],
-                        "KG": [ "kyrgyzstanLow" ],
-                        "LA": [ "laosLow" ],
-                        "LV": [ "latviaLow" ],
-                        "LT": [ "lithuaniaLow" ],
-                        "LU": [ "luxembourgLow" ],
-                        "MK": [ "macedoniaLow" ],
-                        "ML": [ "maliLow" ],
-                        "MX": [ "mexicoLow" ],
-                        "MD": [ "moldovaLow" ],
-                        "MN": [ "mongoliaLow" ],
-                        "ME": [ "montenegroLow" ],
-                        "MA": [ "moroccoLow" ],
-                        "MM": [ "myanmarLow" ],
-                        "NP": [ "nepalLow" ],
-                        "NL": [ "netherlandsLow" ],
-                        "NZ": [ "newZealandLow" ],
-                        "NI": [ "nicaraguaLow" ],
-                        "NG": [ "nigeriaLow" ],
-                        "NO": [ "norwayLow" ],
-                        "AE": [ "unitedArabEmiratesLow" ],
-                        "OM": [ "omanLow" ],
-                        "PK": [ "pakistanLow" ],
-                        "PA": [ "panamaLow" ],
-                        "PY": [ "paraguayLow" ],
-                        "PE": [ "peruLow" ],
-                        "PH": [ "philippinesLow" ],
-                        "PL": [ "polandLow" ],
-                        "PT": [ "portugalLow" ],
-                        "PR": [ "puertoRicoLow" ],
-                        "US": [ "usaLow" ],
-                        "QA": [ "qatarLow" ],
-                        "RO": [ "romaniaLow" ],
-                        "RW": [ "rwandaLow" ],
-                        "SA": [ "saudiArabiaLow" ],
-                        "RS": [ "serbiaLow" ],
-                        "SG": [ "singaporeLow" ],
-                        "SK": [ "slovakiaLow" ],
-                        "SI": [ "sloveniaLow" ],
-                        "LS": [ "southAfricaLow" ],
-                        "ZA": [ "southAfricaLow" ],
-                        "KR": [ "southKoreaLow" ],
-                        "ES": [ "spainLow" ],
-                        "LK": [ "sriLankaLow" ],
-                        "SR": [ "surinameLow" ],
-                        "SE": [ "swedenLow" ],
-                        "CH": [ "switzerlandLow" ],
-                        "SY": [ "syriaLow" ],
-                        "TW": [ "taiwanLow" ],
-                        "TJ": [ "tajikistanLow" ],
-                        "TH": [ "thailandLow" ],
-                        "TR": [ "turkeyLow" ],
-                        "UG": [ "ugandaLow" ],
-                        "UA": [ "ukraineLow" ],
-                        "GG": [ "unitedKingdomLow" ],
-                        "JE": [ "unitedKingdomLow" ],
-                        "IM": [ "unitedKingdomLow" ],
-                        "UY": [ "uruguayLow" ],
-                        "UZ": [ "uzbekistanLow" ],
-                        "VE": [ "venezuelaLow" ],
-                        "VN": [ "vietnamLow" ],
-                        "YE": [ "yemenLow" ]
-                            };
+                var defaultMap = "usaLow";
+                var countryMaps = {
+                    "AF": [ "afghanistanLow" ],
+                    "AL": [ "albaniaLow" ],
+                    "DZ": [ "algeriaLow" ],
+                    "AD": [ "andorraLow" ],
+                    "AO": [ "angolaLow" ],
+                    "AR": [ "argentinaLow" ],
+                    "AM": [ "armeniaLow" ],
+                    "AU": [ "australiaLow" ],
+                    "AT": [ "austriaLow" ],
+                    "AZ": [ "azerbaijanLow" ],
+                    "BS": [ "bahamasLow" ],
+                    "BH": [ "bahrainLow" ],
+                    "BD": [ "bangladeshLow" ],
+                    "BY": [ "belarusLow" ],
+                    "BE": [ "belgiumLow" ],
+                    "BZ": [ "belizeLow" ],
+                    "BT": [ "bhutanLow" ],
+                    "BO": [ "boliviaLow" ],
+                    "BA": [ "bosniaHerzegovinaCantonsLow" ],
+                    "BW": [ "botswanaLow" ],
+                    "BR": [ "brazilLow" ],
+                    "BN": [ "bruneiDarussalamLow" ],
+                    "BG": [ "bulgariaLow" ],
+                    "BF": [ "burkinaFasoLow" ],
+                    "BI": [ "burundiLow" ],
+                    "KH": [ "cambodiaLow" ],
+                    "CM": [ "cameroonLow" ],
+                    "CA": [ "canadaLow" ],
+                    "CV": [ "capeVerdeLow" ],
+                    "CF": [ "centralAfricanRepublicLow" ],
+                    "TD": [ "chadLow" ],
+                    "CL": [ "chileLow" ],
+                    "CN": [ "chinaLow" ],
+                    "CO": [ "colombiaLow" ],
+                    "CD": [ "congoDRLow" ],
+                    "CG": [ "congoLow" ],
+                    "CR": [ "costaRicaLow" ],
+                    "HR": [ "croatiaLow" ],
+                    "CU": [ "cubaLow" ],
+                    "CY": [ "cyprusLow" ],
+                    "UN": [ "cyprusNorthernCyprusLow" ],
+                    "GB": [ "unitedKingdomLow" ],
+                    "CZ": [ "czechRepublicLow" ],
+                    "DK": [ "denmarkLow" ],
+                    "DJ": [ "djiboutiLow" ],
+                    "DO": [ "dominicanRepublicLow" ],
+                    "EC": [ "ecuadorLow" ],
+                    "EG": [ "egyptLow" ],
+                    "SV": [ "elSalvadorLow" ],
+                    "EE": [ "estoniaLow" ],
+                    "FI": [ "finlandLow" ],
+                    "FR": [ "france2016Low" ],
+                    "GE": [ "georgiaLow" ],
+                    "DE": [ "germanyLow" ],
+                    "GR": [ "greeceLow" ],
+                    "GT": [ "guatemalaLow" ],
+                    "GN": [ "guineaLow" ],
+                    "GY": [ "guyanaLow" ],
+                    "HT": [ "haitiLow" ],
+                    "HN": [ "hondurasLow" ],
+                    "HK": [ "hongKongLow" ],
+                    "HU": [ "hungaryLow" ],
+                    "GL": [ "icelandLow" ],
+                    "IS": [ "icelandLow" ],
+                    "IN": [ "indiaLow" ],
+                    "ID": [ "indonesiaLow" ],
+                    "MY": [ "malaysiaLow" ],
+                    "IR": [ "iranLow" ],
+                    "IQ": [ "iraqLow" ],
+                    "IE": [ "irelandLow" ],
+                    "IL": [ "israelLow" ],
+                    "PS": [ "palestineLow" ],
+                    "VA": [ "italyLow" ],
+                    "SM": [ "sanMarinoLow" ],
+                    "MT": [ "italyLow" ],
+                    "IT": [ "italyLow" ],
+                    //"JM": [ "jamaicaLow" ],
+                    //"JM": [ "jamaicaCONDLow" ],
+                    "JM": [ "jamaicaREGILow" ],
+                    "JP": [ "japanLow" ],
+                    "KZ": [ "kazakhstanLow" ],
+                    "KE": [ "kenyaLow" ],
+                    "XK": [ "kosovoLow" ],
+                    "KG": [ "kyrgyzstanLow" ],
+                    "LA": [ "laosLow" ],
+                    "LV": [ "latviaLow" ],
+                    "LT": [ "lithuaniaLow" ],
+                    "LU": [ "luxembourgLow" ],
+                    "MK": [ "macedoniaLow" ],
+                    "ML": [ "maliLow" ],
+                    "MX": [ "mexicoLow" ],
+                    "MD": [ "moldovaLow" ],
+                    "MN": [ "mongoliaLow" ],
+                    "ME": [ "montenegroLow" ],
+                    "MA": [ "moroccoLow" ],
+                    "MM": [ "myanmarLow" ],
+                    "NP": [ "nepalLow" ],
+                    "NL": [ "netherlandsLow" ],
+                    "NZ": [ "newZealandLow" ],
+                    "NI": [ "nicaraguaLow" ],
+                    "NG": [ "nigeriaLow" ],
+                    "NO": [ "norwayLow" ],
+                    "AE": [ "unitedArabEmiratesLow" ],
+                    "OM": [ "omanLow" ],
+                    "PK": [ "pakistanLow" ],
+                    "PA": [ "panamaLow" ],
+                    "PY": [ "paraguayLow" ],
+                    "PE": [ "peruLow" ],
+                    "PH": [ "philippinesLow" ],
+                    "PL": [ "polandLow" ],
+                    "PT": [ "portugalLow" ],
+                    "PR": [ "puertoRicoLow" ],
+                    "US": [ "usaLow" ],
+                    "QA": [ "qatarLow" ],
+                    "RO": [ "romaniaLow" ],
+                    "RW": [ "rwandaLow" ],
+                    "SA": [ "saudiArabiaLow" ],
+                    "RS": [ "serbiaLow" ],
+                    "SG": [ "singaporeLow" ],
+                    "SK": [ "slovakiaLow" ],
+                    "SI": [ "sloveniaLow" ],
+                    "LS": [ "southAfricaLow" ],
+                    "ZA": [ "southAfricaLow" ],
+                    "KR": [ "southKoreaLow" ],
+                    "ES": [ "spainLow" ],
+                    "LK": [ "sriLankaLow" ],
+                    "SR": [ "surinameLow" ],
+                    "SE": [ "swedenLow" ],
+                    "CH": [ "switzerlandLow" ],
+                    "SY": [ "syriaLow" ],
+                    "TW": [ "taiwanLow" ],
+                    "TJ": [ "tajikistanLow" ],
+                    "TH": [ "thailandLow" ],
+                    "TR": [ "turkeyLow" ],
+                    "UG": [ "ugandaLow" ],
+                    "UA": [ "ukraineLow" ],
+                    "GG": [ "unitedKingdomLow" ],
+                    "JE": [ "unitedKingdomLow" ],
+                    "IM": [ "unitedKingdomLow" ],
+                    "UY": [ "uruguayLow" ],
+                    "UZ": [ "uzbekistanLow" ],
+                    "VE": [ "venezuelaLow" ],
+                    "VN": [ "vietnamLow" ],
+                    "YE": [ "yemenLow" ]
+                };
 
-
-
-                                //------------------------------------------------------------------------------
-                    $(document).ready(function () {
-                        $.ajax({
-                                type: 'POST',
-                                url: '/Graph/GetMapDataTuned',
-                                data: "{'CountryID':" + GraphCountryID +",'Year':'" + $("#mapanios").val() + "','Graph':'GetMapData2', 'IRAG':'" + dataMapIrag + "', 'ETI':'" + dataMapEti + "'}",
-                                contentType: "application/json",
-                                dataType: 'json',
-                                async: true,
-                                success: function (data) {
+                //------------------------------------------------------------------------------
+                $(document).ready(function () {
+                    $.ajax({
+                            type: 'POST',
+                            url: '/Graph/GetMapDataTuned',
+                            data: "{'CountryID':" + GraphCountryID +",'Year':'" + $("#mapanios").val() + "','Graph':'GetMapData2', 'IRAG':'" + dataMapIrag + "', 'ETI':'" + dataMapEti + "'}",
+                            contentType: "application/json",
+                            dataType: 'json',
+                            async: true,
+                            success: function (data) {
                                 //console.log(data);
                                 var jsonX = JSON.parse(data);
                                 console.log(jsonX);
@@ -6213,7 +6211,7 @@
                                 currentMap = countryMaps[ chartCountry ][ 0 ];
                                 titles.push( {
                                     "text": chartTitle
-                            } );
+                                } );
                                 //----------mapa--------------------
                                 var map = AmCharts.makeChart( "mapDivGraph2", {
                                     "type": "map",
@@ -6224,38 +6222,37 @@
                                         "getAreasFromMap": true,
                                         "zoomLevel": 0.9,
                                         "areas": []
-                            },
+                                    },
                                     "areasSettings": {
                                         "autoZoom": true,
                                         "balloonText": "[[title]]: <br/><strong>[[description]]</strong>",
-                                color: "#FFCC00",
-                                colorSolid: "#990000"
-                            },
+                                        color: "#FFCC00",
+                                        colorSolid: "#990000"
+                                    },
                                     "valueLegend": {
                                         "right": 10,
                                         "minValue": "-",
                                         "maxValue": "+"
-                            },
+                                    },
                                     "zoomControl": {
                                         "minZoomLevel": 0.9
-                            },
+                                    },
                                     "titles": titles,
                                     "listeners": [ {
                                         "event": "init",
                                         "method": updateHeatmap
                             } ]
-                            } );
-
+                                } );
 
                                 function updateHeatmap( event ) {
                                     var map = event.chart;
                                     if ( map.dataGenerated )
                                         return;
-                                //alert(map.dataProvider.areas.length);
+                                    //alert(map.dataProvider.areas.length);
                                     if ( map.dataProvider.areas.length === 0 ) {
                                         setTimeout( updateHeatmap, 100 );
                                         return;
-                            }
+                                    }
                                     console.log(chartData);
                                     for ( var i = 0; i < map.dataProvider.areas.length; i++ ) {
                                         //alert(map.dataProvider.areas.length);
@@ -6266,26 +6263,21 @@
                                         var total = chartData[i].total.valueOf();
                                         map.dataProvider.areas[ i ].description = "AH1N1: " + AH1N1 + "<br/>AH3: " + AH3 + "<br/>IB: " + IB + "<br/>Total: " + total;//Math.round( Math.random() * 10000 );
                                         map.dataProvider.areas[ i ].value = total;
-                            }
+                                    }
                                     map.dataGenerated = true;
                                     map.validateNow();
-                            }
+                                }
                                 //----------fin mapa----------------
                             }
-                            })
-                            })
+                    })
+                })
 
+                //"text": jsonX.graph.graphTitle,
+                //"title":jsonX.graph.graphYAxisTitle
+                //"label": "(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphExportPrintTitle"))",
 
-
-                                //"text": jsonX.graph.graphTitle,
-                                //"title":jsonX.graph.graphYAxisTitle
-                                //"label": "(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphExportPrintTitle"))",
-
-
-                                //------------------------------------------------------------------------------
-
-
-                            };
+                //------------------------------------------------------------------------------
+            };
         </script>
 
         <!-- HTML -->
@@ -6331,11 +6323,14 @@
             //var CountryID =@Html.Raw(Json.Encode(Model.CountryID));
             var CountryID = @Html.Raw(Model.CountryID);
             var GraphCountryID = @Html.Raw(Model.CountryID);
+
+            var PAHOFLU_date_format = "@(Html.Raw(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("msgDateFormat")))";
+            var moment_date_format = "@(Html.Raw(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("msgDateFormatMoment")))";
+            var ISO_date_format = "@(Html.Raw(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("msgDateFormatISO")))";
+            var DatePicker_date_format = "@(Html.Raw(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("msgDateFormatDP")))";
         </script>
 
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGráficas previasxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
-        <!--/div-->
-        <!--/div-->
     </div>
 
 }
