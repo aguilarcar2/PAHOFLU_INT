@@ -2855,7 +2855,7 @@ namespace Paho.Controllers
                 }
             }
         }
-
+        /*
         private static string graficoLineasBasales(string languaje_country, int countryId, int? year, int? hospitalId, int? weekFrom, int? weekTo)
         {
             string jsonTextLB = "";
@@ -3053,7 +3053,182 @@ namespace Paho.Controllers
 
             return jsonTextLB;
         }
+        */
 
+        private static string graficoLineasBasales(string languaje_country, int countryId, int? year, int? hospitalId, int? weekFrom, int? weekTo)
+        {
+            string jsonTextLB = "";
+            string storedProcedure1 = "FLUID_IRAG_Total_Muestra_Analizadas";
+            string storedProcedure2 = "FLUID_IRAG_Total_Muestras_INF_A";
+            var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+            //****
+            Dictionary<string, decimal> aCEP1 = new Dictionary<string, decimal>();      // Curva epidemica promedio
+            Dictionary<string, decimal> aUA1 = new Dictionary<string, decimal>();       // Umbral de alerta
+            Dictionary<string, decimal> aUE1 = new Dictionary<string, decimal>();       // Umbral estacional
+
+            Dictionary<string, int> aMuAn = new Dictionary<string, int>();              // Muestras analizadas
+            Dictionary<string, int> aInfA = new Dictionary<string, int>();              // Muestras con Influenza A
+            Dictionary<string, decimal> aResu = new Dictionary<string, decimal>();      // Porcentaje positividad
+
+            ArrayList aParametros = new ArrayList();
+
+            //**** 
+            int nSeIn = 0, nAnEv, nSePe;                           // Semana inicio, Anio evaluacion, Total semanas periodo
+            string cTitu, cAnEv, sheet = "";
+
+            if (countryId == 7)
+                sheet = "Chile";
+            else if (countryId == 9)
+                sheet = "Costa Rica";
+            else if (countryId == 3)
+                sheet = "BOLIVIA INLASA";
+            else if (countryId == 3.1)
+                sheet = "BOLIVIA INLASA";
+            else if (countryId == 3.2)
+                sheet = "BOLIVIA CENETROP";
+            else if (countryId == 25)
+                sheet = "Surinam";
+            else if (countryId == 17)
+                sheet = "Jamaica";
+            else
+                return "";
+
+            //****
+            recuperarDatosExcelLineasBasales(countryId, aCEP1, aUA1, aUE1, sheet, aParametros);
+
+            //****
+            cTitu = (string)aParametros[0];         // Titulo
+            cAnEv = (string)aParametros[1];         // Anio
+            bool isNumerical = int.TryParse(cAnEv, out nAnEv);
+            if (isNumerical)
+                year = nAnEv;
+            if (countryId == 9)
+                cAnEv = (year - 1).ToString() + "-" + cAnEv;
+
+            isNumerical = int.TryParse((string)aParametros[2], out nSeIn);     // Semana inicio periodo
+            if (!isNumerical)
+                nSeIn = 1;
+
+            isNumerical = int.TryParse((string)aParametros[3], out nSePe);     // Semanas en el periodo
+            if (!isNumerical)
+                nSePe = 52;
+
+            //****
+            recuperarDatosLineasBasales(consString, storedProcedure1, countryId, languaje_country, (int)year, aMuAn);
+            recuperarDatosLineasBasales(consString, storedProcedure2, countryId, languaje_country, (int)year, aInfA);
+
+            //**** Calculando Porcenataje de positividad para todo el periodo analizado
+            int nAnio1, nAnio2, nJ, nX = 0, nS = 0;
+            string cKey;
+
+            nAnio1 = (nSeIn == 1) ? (int)year : (int)year - 1;
+            nAnio2 = (int)year;
+
+            nX = nSeIn;
+            for (int nI = nAnio1; nI <= nAnio2; nI++)
+            {
+                /*if (nI > nAnio1)
+                    nX = 1;*/
+                nX = (nI > nAnio1) ? 1 : nX;
+
+                for (nJ = nX; nJ <= nSePe; nJ++)
+                {
+                    if (nS > nSePe)
+                        break;
+                    else
+                    {
+                        cKey = nI.ToString() + nJ.ToString("00");
+                        if (aMuAn.ContainsKey(cKey))
+                        {
+                            if (aInfA.ContainsKey(cKey))
+                            {
+                                if (aMuAn[cKey] == 0)
+                                    aResu.Add(cKey, 0);
+                                else
+                                    aResu.Add(cKey, Convert.ToDecimal(aInfA[cKey]) / Convert.ToDecimal(aMuAn[cKey]));
+                            }
+                            else
+                                aResu.Add(cKey, 0);
+                        }
+                        else
+                        {
+                            //aResu.Add(cKey, -1);      // No debe trazar dato en el grafico
+                            aResu.Add(cKey, 0);
+                        }
+
+                        ++nS;
+                    }
+                }
+            }
+
+            //**** Crear el JSON
+            string cSema, cPorc, cJS = "", cTemp = "";
+            jsonTextLB = "";
+
+            cSema = SgetMsg("msgLineasBasalesSemanaEpidemiologica", countryId, languaje_country);
+            cPorc = SgetMsg("msgLineasBasalesPorcentaje", countryId, languaje_country);
+
+            jsonTextLB = "{\"" + "graph" + "\":";
+            jsonTextLB = jsonTextLB + "{\"" + "graphTitle" + "\":\"" + cTitu + "\",";
+            jsonTextLB = jsonTextLB + "\"" + "graphXAxisTitle" + "\":\"" + cSema + "\",";
+            jsonTextLB = jsonTextLB + "\"" + "graphYAxisTitle" + "\":\"" + cPorc + "\",";
+            jsonTextLB = jsonTextLB + "\"" + "graphData" + "\":{\"" + "graphDataItem" + "\":";
+
+            //**** Ultima semana con data
+            string cSeFi = "";
+            foreach (KeyValuePair<string, decimal> kvp in aResu)
+            {
+                if (kvp.Value != 0 && kvp.Value != -1)
+                    cSeFi = kvp.Key;
+            }
+
+            //****
+            decimal nTemp = 0;
+
+            foreach (KeyValuePair<string, decimal> kvp in aResu)
+            {
+                cKey = kvp.Key;
+                if (String.Compare(kvp.Key, cSeFi, true) <= 0)
+                {
+                    cSema = cKey.Substring(cKey.Length - 2, 2);
+
+                    cTemp = "{";
+                    cTemp = cTemp + "\"" + "semana" + "\":\"" + cSema + "\",";
+                    nTemp = Convert.ToDecimal(aCEP1[cKey]) * 100;
+                    cTemp = cTemp + "\"" + "serie1" + "\":\"" + nTemp.ToString("##0.0", new CultureInfo("en-US")) + "\",";          // Curva Epidemica Promedio
+                    nTemp = Convert.ToDecimal(aUA1[cKey]) * 100;
+                    cTemp = cTemp + "\"" + "serie2" + "\":\"" + nTemp.ToString("##0.0", new CultureInfo("en-US")) + "\",";          // Umbral de Alerta
+                    nTemp = Convert.ToDecimal(aUE1[cKey]) * 100;
+                    cTemp = cTemp + "\"" + "serie3" + "\":\"" + nTemp.ToString("##0.0", new CultureInfo("en-US")) + "\",";          // Umbral Estacional
+
+                    nTemp = Convert.ToDecimal(kvp.Value) * 100;
+                    if (nTemp < 0)
+                        cTemp = cTemp + "\"" + "serie4" + "\":\"" + "" + "\"";           // Porcentaje de Positividad
+                    else
+                        cTemp = cTemp + "\"" + "serie4" + "\":\"" + nTemp.ToString("##0.0", new CultureInfo("en-US")) + "\"";           // Porcentaje de Positividad
+
+                    cTemp = cTemp + "}";
+
+                    cJS = cJS + "," + cTemp;
+                }
+                else
+                    break;
+            }
+
+            cJS = "[" + cJS.Substring(1, cJS.Length - 1) + "]";
+
+            jsonTextLB = jsonTextLB + cJS + "},";
+            jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + SgetMsg("msgLineasBasalesCurvaEpidemicaPromedio", countryId, languaje_country) + "\",";
+            jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + SgetMsg("msgLineasBasalesUmbralAlerta", countryId, languaje_country) + "\",";
+            jsonTextLB = jsonTextLB + "\"" + "graphSeries3Label" + "\":\"" + SgetMsg("msgLineasBasalesUmbralEstacional", countryId, languaje_country) + "\",";
+            jsonTextLB = jsonTextLB + "\"" + "graphSeries4Label" + "\":\"" + SgetMsg("msgLineasBasalesPorcentajePositividad", countryId, languaje_country) + " " + cAnEv + "\"";
+            jsonTextLB = jsonTextLB + "}}";
+            //****
+            return jsonTextLB;
+        }
+
+        /*
         private static void recuperarDatos(string consString, string storedProcedure, int countryId, string languaje_country, int year, ArrayList aData)
         {
             using (var con = new SqlConnection(consString))
@@ -3093,7 +3268,101 @@ namespace Paho.Controllers
                 }
             }
         }
+        */
+        
+        private static void recuperarDatosLineasBasales(string consString, string storedProcedure, int countryId, string languaje_country, int year, Dictionary<string, int> aData)
+        {
+            using (var con = new SqlConnection(consString))
+            {
+                using (var command = new SqlCommand(storedProcedure, con) { CommandType = CommandType.StoredProcedure })
+                {
+                    command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
+                    command.Parameters.Add("@Languaje", SqlDbType.NVarChar).Value = languaje_country;
+                    command.Parameters.Add("@yearFrom", SqlDbType.Int).Value = year - 1;
+                    command.Parameters.Add("@yearTo", SqlDbType.Int).Value = year;
+                    command.Parameters.Add("@IRAG", SqlDbType.Int).Value = 1;
 
+                    con.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        int nAnio = reader.GetOrdinal("anio");
+                        int nEpiW = reader.GetOrdinal("epiw");
+                        int nMuAn = (storedProcedure == "FLUID_IRAG_Total_Muestra_Analizadas") ? reader.GetOrdinal("muestra_analizadas") : reader.GetOrdinal("muestra_positivas_INF_A");
+
+                        while (reader.Read())
+                        {
+                            if (reader.GetValue(nEpiW).ToString() != "")
+                            {
+                                string cKey = reader.GetValue(nAnio).ToString() + ((int)reader.GetValue(nEpiW)).ToString("00");
+                                int nValor = (int)reader.GetValue(nMuAn);
+                                aData.Add(cKey, nValor);
+                            }
+                        }
+                    }
+
+                    command.Parameters.Clear();
+                    con.Close();
+                }
+            }
+        }
+
+
+        private static void recuperarDatosExcelLineasBasales(int CountryID, Dictionary<string, decimal> aCEP1, Dictionary<string, decimal> aUA1, Dictionary<string, decimal> aUE1, string sheet, ArrayList aParaLiBa)
+        {
+            string cPathPlan = "";
+            cPathPlan = ConfigurationManager.AppSettings["GraphicsPath"];
+            cPathPlan = cPathPlan + "LinBa_" + CountryID.ToString() + ".xlsx";
+
+            using (var fs = System.IO.File.OpenRead(cPathPlan))
+            {
+                using (var excelPackage = new ExcelPackage(fs))
+                {
+                    var excelWorkBook = excelPackage.Workbook;
+                    int nSema, nSeIn, nAnio;
+                    decimal nCEP, nUA, nUE;
+                    int row = 3;
+                    int col = 1;
+
+                    var excelWorksheet = excelWorkBook.Worksheets[sheet];
+
+                    aParaLiBa.Add(excelWorksheet.Cells[row, 10].Value);                     // Titulo: J3
+                    string cAnio = (string)excelWorksheet.Cells[row + 1, 10].Value;         // Anio evluacion: J4
+                    aParaLiBa.Add(cAnio);
+                    string cSeIn = (string)excelWorksheet.Cells[row + 2, 10].Value;         // Semana inicio anio: J5
+                    aParaLiBa.Add(cSeIn);
+                    var xxx = excelWorksheet.Cells[row + 3, 10].Value;
+                    aParaLiBa.Add((string)excelWorksheet.Cells[row + 3, 10].Value);         // Total semanas del periodo
+
+                    nAnio = Convert.ToInt32(cAnio);
+                    --nAnio;
+
+                    for (int nI = 1; nI <= 53; ++nI)
+                    {
+                        var aaa = excelWorksheet.Cells[row, col].Value;
+                        if (aaa == null || aaa.ToString() == "")
+                            break;
+
+                        nSema = Convert.ToInt32(excelWorksheet.Cells[row, col].Value);
+                        nCEP = Convert.ToDecimal(excelWorksheet.Cells[row, col + 1].Value);
+                        nUA = Convert.ToDecimal(excelWorksheet.Cells[row, col + 2].Value);
+                        nUE = Convert.ToDecimal(excelWorksheet.Cells[row, col + 3].Value);
+
+                        if (nSema == 1)
+                            ++nAnio;
+
+                        string cKey = nAnio.ToString() + nSema.ToString("00");
+                        aCEP1.Add(cKey, nCEP);
+                        aUA1.Add(cKey, nUA);
+                        aUE1.Add(cKey, nUE);
+
+                        ++row;
+                    }
+                }
+            }
+        }
+
+
+        /*
         private static void recuperarDatosExcel(int CountryID, ArrayList aCEP1, ArrayList aCEP2, ArrayList aUA1, ArrayList aUA2, ArrayList aUE1, ArrayList aUE2, string sheet, ArrayList aParaLiBa)
         {
             string cPathPlan = "";
@@ -3143,6 +3412,8 @@ namespace Paho.Controllers
                 }
             }
         }
+        */
+
 
         public static string graficoETINumeroCasos(int countryId, string[] years, int? hospitalId)
         {
