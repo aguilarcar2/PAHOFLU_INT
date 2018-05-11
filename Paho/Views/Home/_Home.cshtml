@@ -612,8 +612,10 @@
         <div class="row rowform">
             <div class="col-md-6">
                 <div class='input-group'>
-                        @*<span class="input-group-addon"> @(ViewBag.UsrCtry != 7 ? ViewBag.UsrCtry == 3 ?  (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceMunicipio")) :  (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceCanton")) :  (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceProvince"))) <font color="#FF0000" id="mandatory_canton">*</font></span>*@
-                    <span class="input-group-addon">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceState")) @((ViewBag.UsrCtry == 17) ? "" : "<font color='#FF0000' id='mandatory_canton'>*</font>")</span>
+                                            @*<span class="input-group-addon"> @(ViewBag.UsrCtry != 7 ? ViewBag.UsrCtry == 3 ?  (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceMunicipio")) :  (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceCanton")) :  (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceProvince"))) <font color="#FF0000" id="mandatory_canton">*</font></span>
+        @((ViewBag.UsrCtry == 17) ? "data-bind='visible:false'" : "data-bind='visible:true'")
+                                            *@
+                    <span class="input-group-addon">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceState"))  <font color='#FF0000' id='mandatory_canton'>*</font></span>
                     <select id="provincia" class="form-control" data-bind="options: States,
                 optionsText: 'Name',
                 optionsValue: 'Id',
@@ -662,7 +664,8 @@
             </div>
             }
         </div>
-
+        @if ( @ViewBag.UsrCtry == 17)
+        {
         <div class="row rowform">
             <div class="col-md-6">
                 <div class='input-group'>                    
@@ -677,7 +680,7 @@
                 </div>
             </div>           
         </div>
-
+        
         <div class="row rowform">
             <div class="col-md-6">
                 <div class='input-group'>
@@ -694,7 +697,7 @@
                 </div>
             </div>
         </div>
-
+        }
         @if (@ViewBag.UsrCtry != 25 && @ViewBag.UsrCtry != 11 && @ViewBag.UsrCtry != 18 && @ViewBag.UsrCtry != 17)
         {
             <div class="row rowform" data-bind="visible:EnableCHI">
@@ -2065,6 +2068,14 @@
                         <input id="Diagnostic" type='text' class="form-control" readonly="readonly" data-bind="value: DiagEW">
                     </div>
                 </div>
+                <div class="col-md-3" data-bind="visible:false">
+                    <div class='input-group'>
+                        <span class="input-group-addon">
+                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelDiagnosisEY"))
+                        </span>
+                        <input id="DiagEY" type='text' class="form-control" readonly="readonly" data-bind="value: DiagEY">
+                    </div>
+                </div>
             </div>
         }
 
@@ -2390,6 +2401,8 @@
                     </div>
 
                     <div class="row rowform">
+                    @if (ViewBag.UsrCtry == 17)
+                    {<!-- Rinorrea y Disnea solo para Jamaica -->
                         <!-- NO ACTIVO: Rinorrea -->
                         <div class="col-md-3" data-bind="visible:true">
                             <label class="btn btn-default">
@@ -2397,8 +2410,7 @@
                             </label>
                         </div>
 
-                        @if (ViewBag.UsrCtry == 17)
-                        {<!-- Disnea solo para Jamaica -->
+
                             <div class="col-md-3" data-bind="visible:true">
                                 <label class="btn btn-default">
                                     <input type="checkbox" name="Disnea" id="Disnea" value="1" data-bind="checked: Disnea"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelDyspnoea"))
@@ -2411,7 +2423,8 @@
                                 <input type="checkbox" name="Odinofagia" id="Odinofagia" value="1" data-bind="checked: Odinofagia"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOdynophagia"))
                             </label>
                         </div>
-
+                        @if (ViewBag.UsrCtry == 17)
+                        {<!-- Adenopatia solo para Jamaica -->
                         <!-- NO ACTIVO: Adenopatia -->
                         <div class="col-md-3" data-bind="visible:true">
                             <label class="btn btn-default">
@@ -2419,7 +2432,7 @@
                                 <input type="checkbox" name="Adenopatia" id="Adenopatia" value="1" data-bind="checked: Adenopatia"> Wheezing
                             </label>
                         </div>
-
+                        }
 
                         <!-- NO ACTIVO: Estridor -->
                         <div class="col-md-3" data-bind="visible:false">

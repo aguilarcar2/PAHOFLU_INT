@@ -94,7 +94,7 @@
                     }
                 } else {
                     if (weekno == 1 && moment(date_ew).month() == 11) {
-                        var fwky_date_prox = new Date(moment(date_ew).getFullYear() + 1, 0, 1).getDay();
+                        var fwky_date_prox = new Date(date_ew.getFullYear() + 1, 0, 1).getDay();
 
                         if (fwky_date_prox > 3) {
                             FieldAct(53);
