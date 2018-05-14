@@ -29,6 +29,108 @@ namespace Paho.Controllers {
             return View();
         }
 
+        public void LoadDirectDB()
+        {
+
+            var consStringDB_INCIENSA = ConfigurationManager.ConnectionStrings["INCIENSA"].ConnectionString;
+            using (SqlConnection conServerRemote = new SqlConnection(consStringDB_INCIENSA))
+            {
+                conServerRemote.Open();
+
+                string selstr = "select * from dbo.SINTER_VIRresp";
+                SqlCommand cmd = new SqlCommand(selstr, conServerRemote);
+                //SqlParameter name = cmd.Parameters.Add("@name", SqlDbType.NVarChar, 15);
+                //name.Value = "Tang";
+                SqlDataReader rdr = cmd.ExecuteReader();
+
+                var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                using (var con = new SqlConnection(consString))
+                {
+                    using (var sqlBulkCopy = new SqlBulkCopy(con))
+                    {
+                        sqlBulkCopy.DestinationTableName = "dbo.ImportLab";
+                        con.Open();
+                        sqlBulkCopy.WriteToServer(rdr);
+                        con.Close();
+                    }
+                }
+
+                //Archivo de exportacion de resultados y ejecucion de StoreProcedure
+
+                var ms = new MemoryStream();
+                using (var fs = System.IO.File.OpenRead(ConfigurationManager.AppSettings["ImportTemplate"]
+                .Replace("{countryId}", "9")
+                ))
+
+                using (var excelPackage = new ExcelPackage(fs))
+                {
+                    var excelWorkBook = excelPackage.Workbook;
+                    int startColumn = 1;
+                    int startRow = 3;
+                    bool insertRow = true;
+                    string Report = "ImportLab_CR";
+
+                    AppendDataToExcel(9, excelWorkBook, Report, startRow, startColumn, 1, insertRow);
+
+                    excelPackage.SaveAs(ms);
+
+                    //implementación para el guardado del archivo
+                    FileInfo notImportedFile = new FileInfo(ConfigurationManager.AppSettings["ImportFailedFolder"] + User.Identity.Name + "_" + DateTime.Now.ToString("yyyyMMddhhmmsst") + "_" + Request.Files["file"]?.FileName + ".XLSX");
+                    FileStream aFile = new FileStream(notImportedFile.FullName, FileMode.Create);
+                    aFile.Seek(0, SeekOrigin.Begin);
+
+                    ExcelPackage excelNotImported = new ExcelPackage();
+
+                    excelNotImported.Load(ms);
+
+                    //excelNotImported.SaveAs(notImportedFile);
+                    excelNotImported.SaveAs(aFile);
+                    aFile.Close();
+
+
+                    //hacer inserción en la base de datos, bitácora de subidas
+                    var consStringLogImport = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                    using (var conImportLog = new SqlConnection(consStringLogImport))
+                    {
+                        using (var commandImportLog = new SqlCommand("importLogSP", conImportLog) { CommandType = CommandType.StoredProcedure })
+                        {
+                            var user = UserManager.FindById(User.Identity.GetUserId());
+                            commandImportLog.Parameters.Clear();
+                            commandImportLog.Parameters.Add("@Fecha_Import", SqlDbType.DateTime).Value = DateTime.Now.ToString();
+                            commandImportLog.Parameters.Add("@User_Import", SqlDbType.NVarChar).Value = User.Identity.Name;
+                            commandImportLog.Parameters.Add("@Country_ID", SqlDbType.Int).Value = user.Institution.CountryID;
+                            //commandImportLog.Parameters.Add("@Filename", SqlDbType.NVarChar).Value = ConfigurationManager.AppSettings["ImportFailedFolder"] + User.Identity.Name + "_" + DateTime.UtcNow.ToString("yyyyMMddhhmmsst") + "_" + Request.Files["file"]?.FileName;
+                            commandImportLog.Parameters.Add("@Filename", SqlDbType.NVarChar).Value = notImportedFile.FullName;
+                            var returnParameter = commandImportLog.Parameters.Add("@ReturnVal", SqlDbType.Int);
+                            returnParameter.Direction = ParameterDirection.ReturnValue;
+
+
+                            conImportLog.Open();
+
+                            using (var reader2 = commandImportLog.ExecuteReader())
+                            {
+                                if (returnParameter.Value.ToString() == "1")
+                                {
+                                    ViewBag.Message = $"Archivo registrado en al bitácora.";
+                                }
+                            }
+                        }
+                    }
+                    //fin de inserción
+                }
+                ms.Position = 0;
+                //ViewBag.Message = $"Archivo trabajado correctamente!";
+                //ViewBag.Message = "Archivo procesado. En la lista inferior podrá ver la lista de los registros que no fueron importados. Lo podrá localizar por la hora de subida y por su usuario. Puede hacer clic en la flecha azul para descargarlo.";
+                //return View();
+                //return new FileStreamResult(ms, "application/xlsx")
+                //{
+                //    FileDownloadName = "NoInsertados.xlsx"
+                //};
+
+            }
+        }
+
+
         [HttpPost]
         public ActionResult Index(HttpPostedFileBase file) {
             try {
