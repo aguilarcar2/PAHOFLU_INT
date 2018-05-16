@@ -379,6 +379,9 @@
                             <option value="3"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelInternalDocument"))</option>
                             <option value="7" data-bind="visible:app.Views.Contact.ActiveBOL"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelClinicalHistory"))</option>
                             <option value="8" data-bind="visible:app.Views.Contact.ActiveBOL"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelAnotherRecord"))</option>
+                            <option value="9" data-bind="visible:app.Views.Contact.ActiveCAY"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelCaseNumber"))</option>
+                            <option value="10" data-bind="visible:app.Views.Contact.ActiveCAY"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelMedicalRecordNumber"))</option>
+
                         }
                         else
                         {

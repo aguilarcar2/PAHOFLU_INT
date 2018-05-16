@@ -83,6 +83,12 @@ function ContactViewModel(app, dataModel) {
     self.NoActiveBOL = ko.computed(function () {
         return (self.UsrCountry() == 3) ? false : true;
     }, self);
+    self.ActiveCAY = ko.computed(function () {
+        return (self.UsrCountry() == 119) ? true : false;
+    }, self);
+    self.NoActiveCAY = ko.computed(function () {
+        return (self.UsrCountry() == 119) ? false : true;
+    }, self);
     self.ActiveSUR = ko.computed(function () {
         return (self.UsrCountry() == 25) ? true : false;
     }, self);       //#### CAFQ
