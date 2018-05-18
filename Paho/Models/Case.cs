@@ -1331,6 +1331,15 @@ namespace Paho.Models
         public int Country_ID { get; set; }
         public string ImportedFilename { get; set; }
     }
+
+    public class CatPadronCR_ImportLog
+    {
+        public int ID { get; set; }
+        public DateTime Fecha_Import { get; set; }
+        public string User_Import { get; set; }
+        public int Country_ID { get; set; }
+        public string ImportedFilename { get; set; }
+    }
     public class RecordHistory
     {
         public int Id { get; set; }
@@ -1555,6 +1564,7 @@ namespace Paho.Models
         public DbSet<Report> Reports { get; set; }
         public DbSet<ReportCountry> ReportsCountries { get; set; }
         public DbSet<ImportLog> ImportedFileList { get; set; }
+        public DbSet<CatPadronCR_ImportLog> ImportedFileListPadron { get; set; }
         public DbSet<RecordHistory> RecordHistories { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

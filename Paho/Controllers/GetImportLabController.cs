@@ -90,5 +90,45 @@ namespace Paho.Controllers
 
             return Json(ImportFileList, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult GetImportFileList_Padron(int Country_ID)
+        {
+            List<Dictionary<string, string>> ImportFileList = new List<Dictionary<string, string>>();
+
+            IQueryable<CatPadronCR_ImportLog> ImportedFileList = null;
+            //ImportedFileList = db.ImportedFileList.Where(i => i.CountryID == Country_ID);
+            var lista = db.ImportedFileListPadron.Where(i => i.Country_ID == Country_ID).OrderByDescending(j => j.Fecha_Import);
+
+            var id = "0";
+            var fecha = "1900-1-1";
+            var usuario = "n/a";
+            var archivo = "";
+
+            if (lista == null)
+            {
+
+            }
+            else
+            {
+                //var listaProcesada = lista.ToArray<>;
+                //StartDateOfWeek = casesummary.StartDateOfWeek;
+                foreach (CatPadronCR_ImportLog importItem in lista)
+                {//casesummaryDetails
+                    Dictionary<string, string> dictionary = new Dictionary<string, string>();
+                    id = importItem.ID.ToString();
+                    fecha = importItem.Fecha_Import.ToString();
+                    usuario = importItem.User_Import;
+                    archivo = importItem.ImportedFilename;
+                    archivo = archivo.Substring(archivo.LastIndexOf("\\") + 1);
+                    dictionary.Clear();
+                    dictionary.Add("ID", id);
+                    dictionary.Add("Fecha", fecha);
+                    dictionary.Add("Usuario", usuario);
+                    dictionary.Add("Archivo", archivo);
+                    ImportFileList.Add(dictionary);
+                }
+            }
+
+            return Json(ImportFileList, JsonRequestBehavior.AllowGet);
+        }
     }
 }

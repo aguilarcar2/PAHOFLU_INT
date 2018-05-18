@@ -284,6 +284,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AreasController.cs" />
+    <Compile Include="Controllers\ImportPadronController.cs" />
     <Compile Include="Controllers\RegionsController.cs" />
     <Compile Include="Controllers\ResourcesM.cs" />
     <Compile Include="Controllers\DbResourceProvider.cs" />
@@ -2370,6 +2371,8 @@
     <Content Include="Views\Area\Delete.cshtml" />
     <Content Include="Views\Area\Edit.cshtml" />
     <Content Include="Views\Area\Index.cshtml" />
+    <Content Include="Views\ImportPadron\_Partial.cshtml" />
+    <Content Include="Views\ImportPadron\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
