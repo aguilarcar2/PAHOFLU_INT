@@ -284,6 +284,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AreasController.cs" />
+    <Compile Include="Controllers\CatVirusLinajesController.cs" />
     <Compile Include="Controllers\ImportPadronController.cs" />
     <Compile Include="Controllers\RegionsController.cs" />
     <Compile Include="Controllers\ResourcesM.cs" />
@@ -2373,6 +2374,11 @@
     <Content Include="Views\Area\Index.cshtml" />
     <Content Include="Views\ImportPadron\_Partial.cshtml" />
     <Content Include="Views\ImportPadron\Index.cshtml" />
+    <Content Include="Views\CatVirusLinajes\Create.cshtml" />
+    <Content Include="Views\CatVirusLinajes\Delete.cshtml" />
+    <Content Include="Views\CatVirusLinajes\Details.cshtml" />
+    <Content Include="Views\CatVirusLinajes\Edit.cshtml" />
+    <Content Include="Views\CatVirusLinajes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
