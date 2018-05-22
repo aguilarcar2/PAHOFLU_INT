@@ -209,15 +209,15 @@ namespace Paho.Controllers {
                         }
 
                         var excelWs_VIRUSES_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "NATIONAL VIRUSES" : "Virus Identificados"];
-                        AppendDataToExcelFLUID(Languaje_country_.Language.ToString(), CountryID_, RegionID_, null, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_NATIONAL_VIRUSES", 6, 1, excelWs_VIRUSES_IRAG.Index, false, ReportCountry, YearEnd, YearEnd, Surv, Inusual);
+                        AppendDataToExcelFLUID(Languaje_country_.Language.ToString(), CountryID_, RegionID_, null, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_NATIONAL_VIRUSES", 6, 1, excelWs_VIRUSES_IRAG.Index, false, ReportCountry, YearEnd, YearEnd, 1, Inusual);
                         var excelWs_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "SARI" : "IRAG"];
-                        AppendDataToExcelFLUID(Languaje_country_.Language.ToString(), CountryID_, RegionID_, null, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_IRAG", 8, 1, excelWs_IRAG.Index, false, ReportCountry, YearBegin, YearEnd, Surv, Inusual);
+                        AppendDataToExcelFLUID(Languaje_country_.Language.ToString(), CountryID_, RegionID_, null, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_IRAG", 8, 1, excelWs_IRAG.Index, false, ReportCountry, YearBegin, YearEnd, 1, Inusual);
                         var excelWs_DEATHS_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "DEATHS Sentinel Sites" : "Fallecidos IRAG"];
-                        AppendDataToExcelFLUID(Languaje_country_.Language.ToString(), CountryID_, RegionID_, null, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_DEATHS_IRAG", 8, 1, excelWs_DEATHS_IRAG.Index, false, ReportCountry, YearEnd, YearEnd, Surv, Inusual);
+                        AppendDataToExcelFLUID(Languaje_country_.Language.ToString(), CountryID_, RegionID_, null, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_DEATHS_IRAG", 8, 1, excelWs_DEATHS_IRAG.Index, false, ReportCountry, YearEnd, YearEnd, 1, Inusual);
                         var excelWs_ILI = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "ILI" : "ETI"];
-                        AppendDataToExcelFLUID(Languaje_country_.Language.ToString(), CountryID_, RegionID_, null, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_ETI", 8, 1, excelWs_ILI.Index, false, ReportCountry, YearBegin, YearEnd, Surv, Inusual);
+                        AppendDataToExcelFLUID(Languaje_country_.Language.ToString(), CountryID_, RegionID_, null, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_ETI", 8, 1, excelWs_ILI.Index, false, ReportCountry, YearBegin, YearEnd, 2, Inusual);
                         var excelWs_VIRUSES_ILI = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "ILI VIRUSES - Sentinel" : "Virus ETI Identificados"];
-                        AppendDataToExcelFLUID(Languaje_country_.Language.ToString(), CountryID_, RegionID_, null, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_NATIONAL_VIRUSES", 6, 1, excelWs_VIRUSES_ILI.Index, false, ReportCountry, YearEnd, YearEnd, Surv, Inusual);
+                        AppendDataToExcelFLUID(Languaje_country_.Language.ToString(), CountryID_, RegionID_, null, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_NATIONAL_VIRUSES", 6, 1, excelWs_VIRUSES_ILI.Index, false, ReportCountry, YearEnd, YearEnd, 2, Inusual);
 
                         // Leyendas
                         var excelWs_Leyendas = excelWorkBook.Worksheets["Leyendas"];
@@ -289,14 +289,15 @@ namespace Paho.Controllers {
                     command.Parameters.Add("@yearFrom", SqlDbType.Int).Value = YearFrom;
                     command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
                     command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;
-                    if (storedProcedure == "FLUID_NATIONAL_VIRUSES" && sheet > 2)
-                    {
-                        command.Parameters.Add("@IRAG", SqlDbType.Int).Value = 2;
-                    }
-                    else
-                    {
-                        command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;
-                    }
+                    command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;
+                    //if (storedProcedure == "FLUID_NATIONAL_VIRUSES" && sheet > 2)
+                    //{
+                    //    command.Parameters.Add("@IRAG", SqlDbType.Int).Value = 2;
+                    //}
+                    //else
+                    //{
+                    //    command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;
+                    //}
 
                     con.Open();
                     using (var reader = command.ExecuteReader())
