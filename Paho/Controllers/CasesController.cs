@@ -813,7 +813,7 @@ namespace Paho.Controllers
             var DateDummyRange1 = DateFeverDummy.Date.AddDays(1);
             var DateDummyRange2 = DateFeverDummy.Date.AddDays(-10);
 
-                if (!id.HasValue)
+            if (!id.HasValue)
             {
                 var flucases = db.FluCases.Where(f => f.NoExpediente == NoExpediente.ToUpper() && (f.FeverDate < DateDummyRange1 && f.FeverDate >= DateDummyRange2)).ToList();
 

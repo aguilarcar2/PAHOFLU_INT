@@ -816,9 +816,7 @@ function ContactViewModel(app, dataModel) {
     };
 
     self.Save = function (option_Save, object_Save) {
-
         app.Views.Home.ValidateAll(option_Save);
-
     };
 
     self.SavePrev = function () {
