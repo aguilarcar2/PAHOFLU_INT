@@ -309,22 +309,21 @@
         var msg = "";
         if (!self.selectedCountryId() || self.selectedCountryId() == "")
             msg += "\n" + viewValidateCountryRequired;
+
         if (self.UsrCountry() == self.selectedCountryId()) {
             if (!self.selectedAreaId() || self.selectedAreaId() == "") {
                 msg += "\n" + msgValidationAreaRequired;
             }
                 
-            if ((!self.selectedStateId() || self.selectedStateId() == "") && self.UsrCountry() != 17) {
+            if ((!self.selectedStateId() || self.selectedStateId() == "") && self.UsrCountry() != 17 && self.UsrCountry() != 119) {
                 msg += "\n" + msgValidationStateRequired;
             }
-                
 
             if (self.UsrCountry() == 7) {
                 if (!self.Neighborhoods() || self.Neighborhoods() == "")
                     msg += "\n" + viewValidateComuneRequired;
             }
         }
-        
         
         if (msg !== "") { alert(msgValidationGeoRef + msg); $('#tabs').tabs({ active: 1 }); return false; }
         if (nextStep != null) nextStep();

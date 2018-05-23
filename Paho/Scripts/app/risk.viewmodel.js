@@ -643,7 +643,7 @@
                 msg += "\n" + "Variable trimestre de embarazo es requerida";
         }
 
-        if ((!self.VaccinFuente() || self.VaccinFuente() == "0") && self.UsrCountry() != 25 && self.UsrCountry() != 18 && self.UsrCountry() != 11 && self.UsrCountry() != 17)
+        if ((!self.VaccinFuente() || self.VaccinFuente() == "0") && self.UsrCountry() != 25 && self.UsrCountry() != 18 && self.UsrCountry() != 11 && self.UsrCountry() != 17 && self.UsrCountry() != 119)
             msg += "\n" + "Fuente de la información de la vacuna es requerida";
 
 
