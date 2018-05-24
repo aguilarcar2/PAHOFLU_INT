@@ -823,19 +823,6 @@ namespace Paho.Controllers
             _storedProcedure = storedProcedure;
             if (storedProcedure == "R5")
             {
-                /*if (countryId == 25 || countryId == 17)
-                {
-                    _storedProcedure = "R5_2";
-                    nPosiTipo = 19;
-                    nInicTip2 = 10;                 //Inicio hospitalizados
-                    nPoSuViGr = 12;                 // Posic. Ecel Sumatoria
-                }
-                else
-                {
-                    nPosiTipo = 15;
-                    nInicTip2 = 8;                  //Inicio hospitalizados
-                    nPoSuViGr = 10;                 // Posic. Ecel Sumatoria
-                }*/
                 if (countryId == 17)
                 {
                     _storedProcedure = "R5_JM";
@@ -845,7 +832,7 @@ namespace Paho.Controllers
                 }
                 else
                 {
-                    if (countryId == 25)
+                    if (countryId == 25 || countryId == 119)
                     {
                         _storedProcedure = "R5_2";
                         nPosiTipo = 19;                 // Posic. columna "Tipo" (tabla retornada x SP)
@@ -887,7 +874,6 @@ namespace Paho.Controllers
                     if ((storedProcedure == "R5"))
                     {
                         string VRS;
-                        //VRS = (countryId == 25 || countryId == 17) ? "RSV" : "VRS";
                         VRS = (languaje_ == "ENG") ? "RSV" : "VRS";
 
                         IDictionary<int, string> formulas1 = new Dictionary<int, string>();
@@ -917,7 +903,7 @@ namespace Paho.Controllers
                         }
                         else
                         {
-                            if (countryId == 25)
+                            if (countryId == 25 || countryId == 119)
                             {
                                 formulas1[9] = "=" + VRS + "!L{{toreplace}}";
                                 formulas1[10] = "=" + VRS + "!M{{toreplace}}+Ad!M{{toreplace}}+Parainfluenza!M{{toreplace}}+'Inf A'!M{{toreplace}}+'Inf B'!M{{toreplace}}+Metapnemovirus!M{{toreplace}}";
@@ -1131,19 +1117,8 @@ namespace Paho.Controllers
 
                                 using (var reader2 = command2.ExecuteReader())
                                 {
-                                    //row = 212;
                                     int nAnDa = 0;
-                                    /*if (countryId == 25 || countryId == 17)
-                                    {
-                                        row = row - 1 + (9 * 3) + 15;
-                                        nAnDa = 8 * 8;              // 8: Nº Age Group
-                                    }
-                                    else
-                                    {
-                                        row = 212;
-                                        nAnDa = 6 * 8;              // 6: Nº Age Group
-                                    }*/
-                                    if (countryId == 25)
+                                    if (countryId == 25 || countryId == 119)
                                     {
                                         row = row - 1 + (9 * 3) + 15;
                                         nAnDa = 8 * 8;                  // 8: Nº Age Group
@@ -1237,7 +1212,6 @@ namespace Paho.Controllers
                                                 {
                                                     excelWorksheet.Cells[row, col].Value = reader.GetValue(i).ToString();
                                                 }
-
                                             }
                                             excelWorksheet.Cells[row, col].StyleID = cell.StyleID;
                                         }
@@ -1249,11 +1223,12 @@ namespace Paho.Controllers
                             }
                         }
                     }
+
                     command.Parameters.Clear();
                     con.Close();
-
                 }
             }
+
             /*Inserción de tablas en el tab  de antecedentes del reporte R6*/
             if (storedProcedure == "R6")
             {
@@ -1298,8 +1273,6 @@ namespace Paho.Controllers
                                     {
                                         colcont += 2;
                                     }
-
-
                                 }
                                 contador_salto++;
                                 if (contador_salto == 1 || contador_salto == 10)
@@ -1327,6 +1300,7 @@ namespace Paho.Controllers
             }
             /*Fin inserción tablas*/
 
+            /*-----------------------Inserción de los parámetros usados para la generación del reporte al Excel--------------------------------------*/
             //inserción de labels y logo en el Excel
             if (ReportCountry != null)
             {
@@ -1375,74 +1349,6 @@ namespace Paho.Controllers
                 }
 
             }
-            /*-----------------------Inserción de los parámetros usados para la generación del reporte al Excel--------------------------------------*/
-            /*string datosInstitucion="";
-            string datosFechas="";
-
-            using (var con = new SqlConnection(consString))
-            {
-                if (countryId > 0)
-                {
-                    using (var command = new SqlCommand("select * from Country where ID = @CountryID", con))
-                    {
-                        command.Parameters.Clear();
-                        command.Parameters.Add("@CountryID", SqlDbType.Int).Value = countryId;
-
-                        con.Open();
-                        using (var reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                datosInstitucion += reader["Name"];
-                            }
-                        }
-                        command.Parameters.Clear();
-                        con.Close();
-                    }
-                }
-
-                if (hospitalId > 0)
-                {
-                    using (var command = new SqlCommand("select * from Institution where ID = @InstitutionID", con))
-                    {
-                        command.Parameters.Clear();
-                        command.Parameters.Add("@InstitutionID", SqlDbType.Int).Value = hospitalId;
-
-                        con.Open();
-                        using (var reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                if(countryId > 0)
-                                {
-                                    datosInstitucion += " - ";
-                                }
-                                datosInstitucion += reader["FullName"];
-                            }
-                        }
-                        command.Parameters.Clear();
-                        con.Close();
-                    }
-                }
-            }
-            if (year > 0)
-            {
-                datosFechas += "Año: " + year + " ";
-            }
-            if (se > 0)
-            {
-                datosFechas += "SE: " + se + " ";
-            }
-            if (startDate.HasValue)
-            {
-                datosFechas += "Fecha inicio: " + startDate.ToString() + " ";
-            }
-            if (endDate.HasValue)
-            {
-                datosFechas += "Fecha fin: " + endDate.ToString() + " ";
-            }
-            excelWorksheet.Cells[3, 1].Value = datosInstitucion;
-            excelWorksheet.Cells[4, 1].Value = datosFechas;*/
 
             /*-----------------------Fin de la Inserción de los parámetros usados para la generación del reporte al Excel--------------------------------------*/
 
