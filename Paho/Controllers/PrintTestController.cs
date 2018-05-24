@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace Paho.Controllers
 {
-    [Authorize(Roles = "Admin, Staff")]
+    [Authorize]
     public class PrintTestController : ControllerBase
     {
         // GET: ExportLab

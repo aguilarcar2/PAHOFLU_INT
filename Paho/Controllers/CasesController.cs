@@ -2494,6 +2494,7 @@ namespace Paho.Controllers
                     command.Parameters.Clear();
                     command.Parameters.Add("@Record_ID", SqlDbType.Int).Value = caseId;
                     command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = user.Institution.CountryID;
+                    command.Parameters.Add("@Languaje", SqlDbType.NVarChar).Value = user_lang;
                     con.Open();
                     using (var reader = command.ExecuteReader())
                     {

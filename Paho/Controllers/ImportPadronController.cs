@@ -173,7 +173,7 @@ namespace Paho.Controllers {
                     var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
                     using (var con = new SqlConnection(consString)) {
                         using (var sqlBulkCopy = new SqlBulkCopy(con)) {
-                            sqlBulkCopy.DestinationTableName = "dbo.CatPadronCR";
+                            sqlBulkCopy.DestinationTableName = "dbo.CatPadronCR_Temp";
                             con.Open();
                             sqlBulkCopy.WriteToServer(dtExcelData);
                             con.Close();

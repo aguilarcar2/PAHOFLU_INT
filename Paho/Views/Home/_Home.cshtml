@@ -2149,7 +2149,7 @@
                             </label>
                         </div>
                         }
-                        @if (ViewBag.UsrCtry == 17 || ViewBag.UsrCtry == 119)
+                        @if (ViewBag.UsrCtry != 3 && ViewBag.UsrCtry != 7)
                         {
                             <div class="col-md-3" id="casedefinitionwarning" >
                                 <span id="casedefinitionwarning_message" class="form-control" name="casedefinitionwarning_message" disabled="" style="color:red">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelCaseDefinitionWarning"))</span>
