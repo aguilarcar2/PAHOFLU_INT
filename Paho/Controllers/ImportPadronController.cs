@@ -180,27 +180,28 @@ namespace Paho.Controllers {
                         }
 
 
-                        
+
                         // Ejecutar el proceso almacenado en la DB
 
-                        //using (var command = new SqlCommand("ImportLab_CR", con) { CommandType = CommandType.StoredProcedure }) {
-                        //    //var returnParameter = command.Parameters.Add("@result", SqlDbType.VarChar);
-                        //    //returnParameter.Direction = ParameterDirection.ReturnValue;
+                        using (var command = new SqlCommand("CatPadronImport", con) { CommandType = CommandType.StoredProcedure })
+                        {
+                            //var returnParameter = command.Parameters.Add("@result", SqlDbType.VarChar);
+                            //returnParameter.Direction = ParameterDirection.ReturnValue;
 
-                        //    con.Open();
-                        //    using (var reader = command.ExecuteReader())
-                        //    {
-                        //        while (reader.Read())
-                        //        {
-                        //            var i = 0;
-                        //            i = reader.FieldCount;
-                        //        }
-                        //    }
+                            con.Open();
+                            using (var reader = command.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    var i = 0;
+                                    i = reader.FieldCount;
+                                }
+                            }
 
-                        //            //command.ExecuteNonQuery();
-                        //            //storeProcedureMessage = (string) returnParameter.Value;
-                        //            con.Close();
-                        //}
+                            //command.ExecuteNonQuery();
+                            //storeProcedureMessage = (string) returnParameter.Value;
+                            con.Close();
+                        }
                     }
                 }
 
@@ -237,39 +238,39 @@ namespace Paho.Controllers {
                 //    aFile.Close();
 
 
-                //    //hacer inserción en la base de datos, bitácora de subidas
-                //var consStringLogImport = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-                //using (var conImportLog = new SqlConnection(consStringLogImport))
-                //{
-                //    using (var commandImportLog = new SqlCommand("CatPadronCR_ImportLog", conImportLog) { CommandType = CommandType.StoredProcedure })
-                //    {
-                //        var user = UserManager.FindById(User.Identity.GetUserId());
-                //        commandImportLog.Parameters.Clear();
-                //        commandImportLog.Parameters.Add("@Fecha_Import", SqlDbType.DateTime).Value = DateTime.Now.ToString();
-                //        commandImportLog.Parameters.Add("@User_Import", SqlDbType.NVarChar).Value = User.Identity.Name;
-                //        commandImportLog.Parameters.Add("@Country_ID", SqlDbType.Int).Value = user.Institution.CountryID;
-                //        //commandImportLog.Parameters.Add("@Filename", SqlDbType.NVarChar).Value = ConfigurationManager.AppSettings["ImportFailedFolder"] + User.Identity.Name + "_" + DateTime.UtcNow.ToString("yyyyMMddhhmmsst") + "_" + Request.Files["file"]?.FileName;
-                //        commandImportLog.Parameters.Add("@Filename", SqlDbType.NVarChar).Value = notImportedFile.FullName;
-                //        var returnParameter = commandImportLog.Parameters.Add("@ReturnVal", SqlDbType.Int);
-                //        returnParameter.Direction = ParameterDirection.ReturnValue;
+                //hacer inserción en la base de datos, bitácora de subidas
+                var consStringLogImport = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                using (var conImportLog = new SqlConnection(consStringLogImport))
+                {
+                    using (var commandImportLog = new SqlCommand("CatPadronCR_ImportLog", conImportLog) { CommandType = CommandType.StoredProcedure })
+                    {
+                        var user = UserManager.FindById(User.Identity.GetUserId());
+                        commandImportLog.Parameters.Clear();
+                        commandImportLog.Parameters.Add("@Fecha_Import", SqlDbType.DateTime).Value = DateTime.Now.ToString();
+                        commandImportLog.Parameters.Add("@User_Import", SqlDbType.NVarChar).Value = User.Identity.Name;
+                        commandImportLog.Parameters.Add("@Country_ID", SqlDbType.Int).Value = user.Institution.CountryID;
+                        //commandImportLog.Parameters.Add("@Filename", SqlDbType.NVarChar).Value = ConfigurationManager.AppSettings["ImportFailedFolder"] + User.Identity.Name + "_" + DateTime.UtcNow.ToString("yyyyMMddhhmmsst") + "_" + Request.Files["file"]?.FileName;
+                        commandImportLog.Parameters.Add("@Filename", SqlDbType.NVarChar).Value = file.FileName;
+                        var returnParameter = commandImportLog.Parameters.Add("@ReturnVal", SqlDbType.Int);
+                        returnParameter.Direction = ParameterDirection.ReturnValue;
 
 
-                //        conImportLog.Open();
+                        conImportLog.Open();
 
-                //        using (var reader2 = commandImportLog.ExecuteReader())
-                //        {
-                //            if (returnParameter.Value.ToString() == "1")
-                //            {
-                //                ViewBag.Message = $"Archivo registrado en al bitácora.";
-                //            }
-                //        }
-                //    }
-                //}
+                        using (var reader2 = commandImportLog.ExecuteReader())
+                        {
+                            if (returnParameter.Value.ToString() == "1")
+                            {
+                                ViewBag.Message = $"Archivo registrado en al bitácora.";
+                            }
+                        }
+                    }
+                }
                 //fin de inserción
                 //}
                 //ms.Position = 0;                
                 ViewBag.Message = $"Archivo trabajado correctamente!";
-                ViewBag.Message = "Archivo procesado. En la lista inferior podrá ver la lista de los registros que no fueron importados. Lo podrá localizar por la hora de subida y por su usuario. Puede hacer clic en la flecha azul para descargarlo.";
+                ViewBag.Message = "Archivo procesado correctamente";
                 return View();
                 ////return new FileStreamResult(ms, "application/xlsx")
                 //{
