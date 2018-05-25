@@ -35,6 +35,15 @@ namespace Paho.Controllers
             //return View();
         }
 
+        public FileResult GetImportedFilePadron(string importedFileName)
+        {
+            FileInfo notImportedFile = new FileInfo(ConfigurationManager.AppSettings["ImportTempFolder"] + importedFileName);
+            byte[] fileBytes = System.IO.File.ReadAllBytes(notImportedFile.FullName);
+            string fileName = importedFileName;
+            return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+            //return View();
+        }
+
         public ActionResult GetImportedFile2(string importedFileName)
         {
             FileInfo notImportedFile = new FileInfo(ConfigurationManager.AppSettings["ImportFailedFolder"] + importedFileName);

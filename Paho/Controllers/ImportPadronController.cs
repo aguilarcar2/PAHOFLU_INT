@@ -136,7 +136,7 @@ namespace Paho.Controllers {
             try {
                 //var fileLocation = Server.MapPath("~/Content/") + DateTime.UtcNow.ToString("yyyyMMddhhmmsst") + Request.Files["file"]?.FileName;
                 //var fileLocation = "c:\\ImportTemp\\" + DateTime.UtcNow.ToString("yyyyMMddhhmmsst") + Request.Files["file"]?.FileName;
-                var fileLocation = ConfigurationManager.AppSettings["ImportTempFolder"] + DateTime.UtcNow.ToString("yyyyMMddhhmmsst") + Request.Files["file"]?.FileName;                
+                var fileLocation = ConfigurationManager.AppSettings["ImportTempFolder"] + DateTime.UtcNow.ToString("yyyyMMddhhmmsst") + Request.Files["file"]?.FileName;             
                 if (System.IO.File.Exists(fileLocation)) {
                     System.IO.File.Delete(fileLocation);
                 }
@@ -242,7 +242,7 @@ namespace Paho.Controllers {
                 var consStringLogImport = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
                 using (var conImportLog = new SqlConnection(consStringLogImport))
                 {
-                    using (var commandImportLog = new SqlCommand("CatPadronCR_ImportLog", conImportLog) { CommandType = CommandType.StoredProcedure })
+                    using (var commandImportLog = new SqlCommand("CatPadronImportLogSP", conImportLog) { CommandType = CommandType.StoredProcedure })
                     {
                         var user = UserManager.FindById(User.Identity.GetUserId());
                         commandImportLog.Parameters.Clear();
@@ -250,7 +250,7 @@ namespace Paho.Controllers {
                         commandImportLog.Parameters.Add("@User_Import", SqlDbType.NVarChar).Value = User.Identity.Name;
                         commandImportLog.Parameters.Add("@Country_ID", SqlDbType.Int).Value = user.Institution.CountryID;
                         //commandImportLog.Parameters.Add("@Filename", SqlDbType.NVarChar).Value = ConfigurationManager.AppSettings["ImportFailedFolder"] + User.Identity.Name + "_" + DateTime.UtcNow.ToString("yyyyMMddhhmmsst") + "_" + Request.Files["file"]?.FileName;
-                        commandImportLog.Parameters.Add("@Filename", SqlDbType.NVarChar).Value = file.FileName;
+                        commandImportLog.Parameters.Add("@Filename", SqlDbType.NVarChar).Value = fileLocation;
                         var returnParameter = commandImportLog.Parameters.Add("@ReturnVal", SqlDbType.Int);
                         returnParameter.Direction = ParameterDirection.ReturnValue;
 
