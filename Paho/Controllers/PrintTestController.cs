@@ -405,6 +405,7 @@ namespace Paho.Controllers
                             // Empieza la impresion de la ficha fisica
                             else if (storedProcedure == "Cases"){
 
+                                excelWorksheet.Cells[2, 2].Value = excelWorksheet.Cells[2, 2].Value + " " + reader.GetValue(reader.GetOrdinal("ID")).ToString();
                                 // Datos de vigilancia
                                 if ((reader.GetSchemaTable().Select("ColumnName = 'Vigilancia'").Length > 0))
                                     if (reader.GetValue(reader.GetOrdinal("Vigilancia")).ToString().ToUpper() == "IRAG" || reader.GetValue(reader.GetOrdinal("Vigilancia")).ToString().ToUpper() == "SARI")
