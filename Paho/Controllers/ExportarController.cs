@@ -377,6 +377,7 @@ namespace Paho.Controllers
         private static void AppendDataToExcel_R2_SeveralYears(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual)               //#### CAFQ
         {
             var excelWorksheet = excelWorkBook.Worksheets[sheet];
+            int nColumns = 0;
 
             //var xxx = excelWorksheet.Drawings;                // Coleccion de charts
             //var yyy = excelWorksheet.Drawings[0];             // Un chart especifico
@@ -437,6 +438,9 @@ namespace Paho.Controllers
 
                         using (var reader = command.ExecuteReader())
                         {
+                            //int nColums;
+                            nColumns = (storedProcedure == "R3") ? ((reader.FieldCount - 1) / 2) + 1 : reader.FieldCount;
+
                             while (reader.Read())
                             {
                                 var col = column;
@@ -448,7 +452,8 @@ namespace Paho.Controllers
                                 if (storedProcedure == "R2")
                                     col = column + (nI - YearFrom.Value) + ((nI == YearFrom) ? 0 : 1);
 
-                                for (var i = 0; i < reader.FieldCount; i++)
+                                //for (var i = 0; i < reader.FieldCount; i++)
+                                for (var i = 0; i < nColumns; i++)
                                 {
                                     if (storedProcedure == "R2")
                                     {
@@ -500,6 +505,7 @@ namespace Paho.Controllers
                     }
                 }
             }   // End for
+
             //**** INSERTAR GRAFICO
             if (storedProcedure == "R2")
             {
@@ -539,6 +545,12 @@ namespace Paho.Controllers
 
                     var myChartCC = excelWorksheet.Drawings.AddChart("ColumnStacked" + nI.ToString(), eChartType.ColumnStacked);
 
+                    for (int nK = 1; nK < nColumns; ++nK)
+                    {
+                        var seriesCC = myChartCC.Series.Add(ExcelRange.GetAddress(nFil, nCol + nK, nFil + 52, nCol + nK), ExcelRange.GetAddress(nFil, 2, nFil + 52, 2));
+                        seriesCC.Header = excelWorksheet.Cells[startRow - 1, nCol + nK].Value.ToString();
+                    }
+                    /*
                     var seriesCC = myChartCC.Series.Add(ExcelRange.GetAddress(nFil, nCol + 1, nFil + 52, nCol + 1), ExcelRange.GetAddress(nFil, 2, nFil + 52, 2));
                     seriesCC.Header = excelWorksheet.Cells[startRow - 1, nCol + 1].Value.ToString();
 
@@ -556,27 +568,34 @@ namespace Paho.Controllers
 
                     seriesCC = myChartCC.Series.Add(ExcelRange.GetAddress(nFil, nCol + 6, nFil + 52, nCol + 6), ExcelRange.GetAddress(nFil, 2, nFil + 52, 2));
                     seriesCC.Header = excelWorksheet.Cells[startRow - 1, nCol + 6].Value.ToString();
-
+                    */
                     if (languaje_ == "ENG")
                         myChartCC.Title.Text = "NUMBER OF SARI CASES BY AGE GROUP AND E. W. - " + nI.ToString();
                     else
                         myChartCC.Title.Text = "NÚMERO DE CASOS IRAG POR GRUPO DE EDAD Y S. E. - " + nI.ToString();
                     myChartCC.Title.Font.Bold = true;
                     myChartCC.SetSize(1090, 450);
-                    myChartCC.SetPosition(startRow + (23 * (nI - YearFrom.Value)) - 1, 0, 8, 40);
+                    myChartCC.SetPosition(startRow + (23 * (nI - YearFrom.Value)) - 1, 0, nColumns + 1, 40);
                     myChartCC.Legend.Position = eLegendPosition.Bottom;
 
                     // Formateo area de datos
+                    var rowA = startRow + (nI - YearFrom.Value) * 54;
+
+                    ExcelRange rRang = excelWorksheet.Cells[ExcelRange.GetAddress(rowA, startColumn, rowA + 53, startColumn + nColumns - 1)];
+                    rRang.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    rRang.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                    rRang.Style.Border.BorderAround(ExcelBorderStyle.Medium);
+
                     if (nI > YearFrom.Value)
                     {
-                        var rowA = startRow + (nI - YearFrom.Value) * 54;
+                        /*var rowA = startRow + (nI - YearFrom.Value) * 54;
 
-                        ExcelRange rRang = excelWorksheet.Cells[ExcelRange.GetAddress(rowA, startColumn, rowA + 53, startColumn + 6)];
+                        ExcelRange rRang = excelWorksheet.Cells[ExcelRange.GetAddress(rowA, startColumn, rowA + 53, startColumn + nColumns - 1)];
                         rRang.Style.Border.Left.Style = ExcelBorderStyle.Thin;
                         rRang.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-                        rRang.Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                        rRang.Style.Border.BorderAround(ExcelBorderStyle.Medium);*/
 
-                        rRang = excelWorksheet.Cells[ExcelRange.GetAddress(startRow + 53, startColumn, startRow + 53, startColumn + 6)];
+                        rRang = excelWorksheet.Cells[ExcelRange.GetAddress(startRow + 53, startColumn, startRow + 53, startColumn + nColumns - 1)];
                         rRang.Copy(excelWorksheet.Cells[rowA + 53, startColumn]);                // Total
                     }
                 }
@@ -1176,18 +1195,20 @@ namespace Paho.Controllers
                         {
                             using (var reader = command.ExecuteReader())
                             {
+                                int nColums;
+                                nColums = (storedProcedure == "R3") ? ((reader.FieldCount - 1) / 2) + 1 : reader.FieldCount;
+
                                 while (reader.Read())
                                 {
                                     var col = column;
                                     if (row > startRow && insert_row == true) excelWorksheet.InsertRow(row, 1);
 
-                                    for (var i = 0; i < reader.FieldCount; i++)
+                                    //for (var i = 0; i < reader.FieldCount; i++)
+                                    for (var i = 0; i < nColums; i++)
                                     {
                                         var cell = excelWorksheet.Cells[startRow, col];
                                         if (reader.GetValue(i) != null)
                                         {
-                                            //int number;
-                                            //bool isNumber = int.TryParse(reader.GetValue(i).ToString(), out number);
                                             double numberD;
                                             bool isNumber = double.TryParse(reader.GetValue(i).ToString(), out numberD);
 
@@ -1195,26 +1216,18 @@ namespace Paho.Controllers
                                             bool isDate = DateTime.TryParse(reader.GetValue(i).ToString(), out dt);
 
                                             if (isNumber)
-                                            {
-                                                //excelWorksheet.Cells[row, col].Value = number;
                                                 excelWorksheet.Cells[row, col].Value = numberD;
-                                            }
                                             else
                                             {
                                                 if (isDate)
-                                                {
                                                     excelWorksheet.Cells[row, col].Value = dt;
-                                                }
                                                 else
-                                                {
                                                     excelWorksheet.Cells[row, col].Value = reader.GetValue(i).ToString();
-                                                }
                                             }
                                             excelWorksheet.Cells[row, col].StyleID = cell.StyleID;
                                         }
                                         col++;
                                     }
-
                                     row++;
                                 }
                             }
