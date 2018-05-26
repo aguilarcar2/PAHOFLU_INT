@@ -1,33 +1,4 @@
-﻿
-//var AgeGroupDescription = [
-//    "Menores de 2 años",
-//    "2 a 4 años",
-//    "5 a 14 años",
-//    "15 a 34 años",
-//    "35 a 64 años",
-//    "65 años y más"
-//];
-
-//var AgeGroupDescriptionSUR = [
-//    "<6 months",
-//    "6-11 months",
-//    "12-23 months",
-//    "2-4 years",
-//    "5-14 years",
-//    "15-49 years",
-//    "50-64 years",
-//    "65 years +"
-//];
-
-//var AgeGroupDescriptionCHI = [
-//    "Menores de 2 años",
-//    "2 a 4 años",
-//    "5 a 19 años",
-//    "20 a 39 años",
-//    "40 a 59 años",
-//    "60 años y más"
-//];
-    
+﻿    
 function SummaryYearItem(data) {
     var self = this;
     self.ColHospTST = data.ColHospTST;
@@ -87,6 +58,14 @@ function SummaryYearItem(data) {
     self.NoActiveCOS = ko.computed(function () {
         return (self.UsrCountry() == 9) ? false : true;
     }, self);
+
+    self.ActiveCAY = ko.computed(function () {
+        return (self.UsrCountry() == 119) ? true : false;
+    }, self);
+
+    self.NoActiveCAY = ko.computed(function () {
+        return (self.UsrCountry() == 119) ? false : true;
+    }, self);
 }
 
 function SummayItem(data) {
@@ -105,7 +84,6 @@ function SummayItem(data) {
     //}
 
     self.AgeGroupDescription = CatAgeGroup[parseInt(self.AgeGroup) - 1].AgeGroup;
-    //console.log(CatAgeGroup[parseInt(self.AgeGroup) - 1]);
 
     self.EnableCHI = ko.computed(function () {
         return (self.UsrCountry() != 7) ? true : false;
@@ -147,6 +125,14 @@ function SummayItem(data) {
         return (self.UsrCountry() == 9) ? false : true;
     }, self);
 
+    self.ActiveCAY = ko.computed(function () {
+        return (self.UsrCountry() == 119) ? true : false;
+    }, self);
+
+    self.NoActiveCAY = ko.computed(function () {
+        return (self.UsrCountry() == 119) ? false : true;
+    }, self);
+
     self.ETINumFem = ko.observable(data.ETINumFem);
     self.ETINumMaso = ko.observable(data.ETINumMaso);
     self.ETINumST = ko.observable(data.ETINumST);
@@ -174,7 +160,6 @@ function SummayItem(data) {
         self.UCIST = ko.observable(data.UCIST);
     }
 
-
     self.DefFem = ko.observable(data.DefFem);
     self.DefMaso = ko.observable(data.DefMaso);
     if (self.DisableCHI() || self.ActiveBOL()) {
@@ -185,29 +170,17 @@ function SummayItem(data) {
         self.DefST = ko.observable(data.DefST);
     }
 
-
     self.NeuFem = ko.observable(data.NeuFem);
     self.NeuMaso = ko.observable(data.NeuMaso);
-    //self.DefST = ko.computed(function () {
-    //    return parseInt(self.DefFem()) + parseInt(self.DefMaso());
-    //}, self);
     self.NeuST = ko.observable(data.NeuST);
 
     self.CCSARIFem = ko.observable(data.CCSARIFem);
     self.CCSARIMaso = ko.observable(data.CCSARIMaso);
-    //self.DefST = ko.computed(function () {
-    //    return parseInt(self.DefFem()) + parseInt(self.DefMaso());
-    //}, self);
     self.CCSARIST = ko.observable(data.CCSARIST);
 
     self.VentFem = ko.observable(data.VentFem);
     self.VentMaso = ko.observable(data.VentMaso);
-    //self.DefST = ko.computed(function () {
-    //    return parseInt(self.DefFem()) + parseInt(self.DefMaso());
-    //}, self);
     self.VentST = ko.observable(data.VentST);
-
-
 
     self.MakeValueOfSummayItem = function () {
         return {
@@ -243,12 +216,8 @@ function SummayItem(data) {
 
 function SummaryViewModel(app, dataModel) {
     var self = this;
-    /*
-    //alert("a1");
-    */
-    /*self.Grupos1 = ko.observable(aaa1);         // Observando una varable JS
-    alert(self.Grupos1());
-    //AgeGroupDescriptionSUR[0] = self.Grupos1()*/
+
+    /////////////var msgSavedData = app.dataModel.MsgSavedData;      //#### CAFQ 
 
     var date_format_moment = app.dataModel.date_format_moment;
     var date_format_ISO = app.dataModel.date_format_ISO;
@@ -403,6 +372,14 @@ function SummaryViewModel(app, dataModel) {
         return (self.UsrCountry() == 9) ? false : true;
     }, self);
 
+    self.ActiveCAY = ko.computed(function () {
+        return (self.UsrCountry() == 119) ? true : false;
+    }, self);
+
+    self.NoActiveCAY = ko.computed(function () {
+        return (self.UsrCountry() == 119) ? false : true;
+    }, self);
+
     self.PickFirstDay = function (date) {
         var day = date.getDay();
         return [day == 0, " "];
@@ -438,7 +415,6 @@ function SummaryViewModel(app, dataModel) {
     };
 
     // Esto es para calcular los totales de las columnas
-
     self.ColETIDenoST = ko.computed(function () {
         var numberofitems = 0;
         ko.utils.arrayForEach(self.SummayItems(), function (r) {
@@ -567,7 +543,7 @@ function SummaryViewModel(app, dataModel) {
         for (index = 0; index < self.SummayItems().length; ++index) {
             ValuesOfSummayItems.push(self.SummayItems()[index].MakeValueOfSummayItem());
         };
-        console.log(ValuesOfSummayItems);
+        //console.log(ValuesOfSummayItems);
         return ValuesOfSummayItems;
     };
 
@@ -580,7 +556,7 @@ function SummaryViewModel(app, dataModel) {
 
     self.CancelarItems = function () {
         self.SummayItems.removeAll();
-        //self.id("");
+
         if ($.isFunction(self.Id)) {
             self.Id = ko.observable("");
             self.Id("");
@@ -588,7 +564,7 @@ function SummaryViewModel(app, dataModel) {
         else {
             self.Id = "";
         }
-        //self.Id(null);
+
         self.selectedHospitalId("");
         self.HospitalDate("");
         self.HospitalEW("");
@@ -674,10 +650,9 @@ function SummaryViewModel(app, dataModel) {
                    $("#TotalBandeja").show();
                    self.SummaryForYearItems([]);
                    data.forEach(self.AddSummaryForYearItems);
-                   console.log(data);
+                   //console.log(data);
                    //self.SummayItems([]);
                    //data.forEach(self.AddSummayItem);                             
-
                })
                .fail(function (jqXHR, textStatus, errorThrown) {
                    alert(errorThrown);
@@ -694,15 +669,14 @@ function SummaryViewModel(app, dataModel) {
         } else {
             if ((typeof self.selectedHospitalId() == "undefined") || self.selectedHospitalId() == "") {
                 //alert("Seleccionar un establecimiento es requerido");
-                if ((self.UsrCountry() == 25) || (self.UsrCountry() == 17))
+                if ((self.UsrCountry() == 25) || (self.UsrCountry() == 17) || (self.UsrCountry() == 119))
                     alert("Hospital is required");
                 else
                     alert("Seleccionar un establecimiento es requerido");
             }
 
             if ((typeof self.HospitalDate() == "undefined") || self.HospitalDate() == "") {
-                //alert("La fecha es requeridaxxxx");
-                if ((self.UsrCountry() == 25) || (self.UsrCountry() == 17))
+                if ((self.UsrCountry() == 25) || (self.UsrCountry() == 17) || (self.UsrCountry() == 119))
                     alert("Date is required");
                 else
                     alert("La fecha es requerida");
@@ -711,7 +685,6 @@ function SummaryViewModel(app, dataModel) {
     }
 
     self.GetSummayItems = function () {
-        //console.log(self.selectedHospitalId());
         if ((typeof self.selectedHospitalId() != "undefined") && self.selectedHospitalId() != "" && (typeof self.HospitalDate() != "undefined") && self.HospitalDate() != "") {
             $.postJSON(app.dataModel.getSummayDetailsUrl, { hospitalId: self.selectedHospitalId(), hospitalDate: moment(self.HospitalDate()).format(date_format_ISO), EpiWeek: self.HospitalEW(), EpiYear: self.HospitalYE() })
             .success(function (data, textStatus, jqXHR) {
@@ -726,14 +699,14 @@ function SummaryViewModel(app, dataModel) {
             })
         } else {
             if ((typeof self.selectedHospitalId() == "undefined") || self.selectedHospitalId() == "") {
-                if (self.UsrCountry() == 25 || (self.UsrCountry() == 17))
+                if (self.UsrCountry() == 25 || (self.UsrCountry() == 17) || (self.UsrCountry() == 119))
                     alert("Hospital is required");
                 else
                     alert("Seleccionar un establecimiento es requerido");
             }
 
             if ((typeof self.HospitalDate() == "undefined") || self.HospitalDate() == "") {
-                if (self.UsrCountry() == 25 || (self.UsrCountry() == 17))
+                if (self.UsrCountry() == 25 || (self.UsrCountry() == 17) || (self.UsrCountry() == 119))
                     alert("Date is required");
                 else
                     alert("La fecha es requerida");
@@ -742,7 +715,7 @@ function SummaryViewModel(app, dataModel) {
     };
 
     self.SaveSummayItems = function () {
-        console.log(self.MakeValuesOfSummayItems());
+        //console.log(self.MakeValuesOfSummayItems());
         $.ajax({
             type: 'POST',
             dataType: 'json',
@@ -750,12 +723,11 @@ function SummaryViewModel(app, dataModel) {
             data: JSON.stringify({ casesummaryDetails: self.MakeValuesOfSummayItems() }),
             contentType: 'application/json; charset=utf-8',
             success: function (data, textStatus, jqXHR) {
-                //alert(data);
-                if (self.UsrCountry() == 25)
-                    alert("Data saved");
+                if ((self.UsrCountry() == 25) || (self.UsrCountry() == 17) || (self.UsrCountry() == 119))
+                    alert("Data saved...");
+                    ///////alert(msgSavedData);
                 else
                     alert(data);
-                //****
                 self.CancelarItems();
             },
         })

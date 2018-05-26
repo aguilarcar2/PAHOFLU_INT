@@ -323,15 +323,7 @@ namespace Paho.Controllers
                     using (var excelPackage = new ExcelPackage(fs))
                     {
                         var excelWorkBook = excelPackage.Workbook;
-                        //int startColumn = 1;  Ambos comentados, para eso está reportStartCol y reportStartRow
-                        //int startRow = 2;
                         bool insertRow = true;
-
-                        //if (Report != "Cases")
-                        //{
-                        //    startColumn = 2;
-                        //    startRow = 8;
-                        //}
 
                         //#### CAFQ: 180204
                         bool bVariosAnios = false;
@@ -367,21 +359,16 @@ namespace Paho.Controllers
                 //return new FileStreamResult(ms, "application/xlsx")
                 //ExcelPackage.ExportAsFixedFormat(Microsoft.Office.Interop.Excel.XlFixedFormatType.xlTypePDF, outputPath);
 
-                 string nombFile = reportCountry.description == "" ? "Exportable_" : reportCountry.description.ToString().Replace("%", "_").Replace(" ", "_") + "_";            //#### CAFQ
-                /*if (reportTemplate == "I1")
-                    nombFile = "IndicDesempenio_";
-                if (reportTemplate == "RE1")
-                    nombFile = "REVELAC-i_";*/
+                string nombFile = reportCountry.description == "" ? "Exportable_" : reportCountry.description.ToString().Replace("%", "_").Replace(" ", "_") + "_";            //#### CAFQ
 
                 return new FileStreamResult(ms, "application/xlsx")
                 {
-                    //FileDownloadName = "Exportable_" + DateTime.Now.ToString("yyyy_MM_dd_HH_mm") + ".xlsx"
                     FileDownloadName = nombFile + DateTime.Now.ToString("yyyy_MM_dd_HH_mm") + ".xlsx"           //#### CAFQ
                 };
             }
             catch (Exception e)
             {
-                ViewBag.Message = "El reporte no se pudo generar, por favor intente de nuevo";
+                ViewBag.Message = "El reporte no se pudo generar, por favor intente de nuevo: " + e.Message;
             }
 
             return null;
@@ -500,6 +487,8 @@ namespace Paho.Controllers
                                 if (storedProcedure == "R1")
                                 {
                                     excelWorksheet.Cells[row, col].FormulaR1C1 = "IF(RC[-1]<=0, 0, (RC[-2]*100)/RC[-1])";
+                                    excelWorksheet.Cells[row, col].Style.Numberformat.Format = "##0";
+                                    excelWorksheet.Cells[row, col].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                                 }
 
                                 row++;
@@ -524,18 +513,21 @@ namespace Paho.Controllers
                 }
 
                 //myChartCC.Border.Fill.Color = System.Drawing.Color.Red;
-                myChartCC.Title.Text = "NÚMERO DE FALLECIDOS POR SEMANA EPIDEMIOLÓGICA";
+                if (languaje_ == "ENG")
+                    myChartCC.Title.Text = "NUMBERS OF DEATHS BY EPIDEMIOLOGICAL WEEK";
+                else
+                    myChartCC.Title.Text = "NÚMERO DE FALLECIDOS POR SEMANA EPIDEMIOLÓGICA";
                 myChartCC.Title.Font.Bold = true;
                 myChartCC.Legend.Position = eLegendPosition.Bottom;
                 myChartCC.SetSize(920, 405);                    // Ancho, Alto in pixel
                 myChartCC.SetPosition(startRow - 2, 0, (startColumn + (YearTo.Value - YearFrom.Value) + 1), 40);             // (int row, int rowoffset in pixel, int col, int coloffset in pixel)
 
-                ExcelRange rRang = excelWorksheet.Cells[ExcelRange.GetAddress(startRow - 2, startColumn + 1, startRow - 2, startColumn + 1 + (YearTo.Value - YearFrom.Value))];
+                /*ExcelRange rRang = excelWorksheet.Cells[ExcelRange.GetAddress(startRow - 2, startColumn + 1, startRow - 2, startColumn + 1 + (YearTo.Value - YearFrom.Value))];
                 rRang.Merge = true;
                 rRang.Style.Border.Top.Style = ExcelBorderStyle.Medium;
                 rRang.Style.Border.Left.Style = ExcelBorderStyle.Medium;
                 rRang.Style.Border.Right.Style = ExcelBorderStyle.Medium;
-                rRang.Style.Border.Bottom.Style = ExcelBorderStyle.Medium;
+                rRang.Style.Border.Bottom.Style = ExcelBorderStyle.Medium;*/
             }
             else if (storedProcedure == "R3")
             {
@@ -565,7 +557,10 @@ namespace Paho.Controllers
                     seriesCC = myChartCC.Series.Add(ExcelRange.GetAddress(nFil, nCol + 6, nFil + 52, nCol + 6), ExcelRange.GetAddress(nFil, 2, nFil + 52, 2));
                     seriesCC.Header = excelWorksheet.Cells[startRow - 1, nCol + 6].Value.ToString();
 
-                    myChartCC.Title.Text = "NÚMERO DE CASOS IRAG POR GRUPO DE EDAD Y SE - " + nI.ToString();
+                    if (languaje_ == "ENG")
+                        myChartCC.Title.Text = "NUMBER OF SARI CASES BY AGE GROUP AND E. W. - " + nI.ToString();
+                    else
+                        myChartCC.Title.Text = "NÚMERO DE CASOS IRAG POR GRUPO DE EDAD Y S. E. - " + nI.ToString();
                     myChartCC.Title.Font.Bold = true;
                     myChartCC.SetSize(1090, 450);
                     myChartCC.SetPosition(startRow + (23 * (nI - YearFrom.Value)) - 1, 0, 8, 40);
@@ -601,7 +596,11 @@ namespace Paho.Controllers
                     var serieLI = myChartLI.Series.Add(ExcelRange.GetAddress(nFil, nCol + 3, nFil + 52, nCol + 3), ExcelRange.GetAddress(nFil, 2, nFil + 52, 2));
                     myChartLI.UseSecondaryAxis = true;
 
-                    myChartCC.Title.Text = "CASOS DE IRAG POR SEMANA EPIDEMIOLOGICA CON % DE HOSPITALIZACIONES - " + nI.ToString();
+                    //myChartCC.Title.Text = "CASOS DE IRAG POR SEMANA EPIDEMIOLOGICA CON % DE HOSPITALIZACIONES - " + nI.ToString();
+                    if(languaje_ == "ENG")
+                        myChartCC.Title.Text = "CASES OF SARI BY EPIDEMIOLOGICAL WEEK  WITH % OF HOSPITALIZATIONS - " + nI.ToString();
+                    else
+                        myChartCC.Title.Text = "CASOS DE IRAG POR SEMANA EPIDEMIOLOGICA CON % DE HOSPITALIZACIONES - " + nI.ToString();
                     myChartCC.Title.Font.Bold = true;
                     myChartCC.SetSize(900, 420);
                     myChartCC.SetPosition(startRow + (23 * (nI - YearFrom.Value)) - 1, 0, 5, 40);
@@ -823,7 +822,7 @@ namespace Paho.Controllers
             _storedProcedure = storedProcedure;
             if (storedProcedure == "R5")
             {
-                if (countryId == 17)
+                if (countryId == 17 || countryId == 119)
                 {
                     _storedProcedure = "R5_JM";
                     nPosiTipo = 21;                 // Posic. columna "Tipo" (tabla retornada x SP)
@@ -832,7 +831,7 @@ namespace Paho.Controllers
                 }
                 else
                 {
-                    if (countryId == 25 || countryId == 119)
+                    if (countryId == 25)
                     {
                         _storedProcedure = "R5_2";
                         nPosiTipo = 19;                 // Posic. columna "Tipo" (tabla retornada x SP)
@@ -886,7 +885,7 @@ namespace Paho.Controllers
                         formulas1[7] = "='Inf B'!C{{toreplace}}";
                         formulas1[8] = "=Metapnemovirus!C{{toreplace}}";
 
-                        if (countryId == 17)
+                        if (countryId == 17 || countryId == 119)
                         {
                             formulas1[9] = "=" + VRS + "!M{{toreplace}}";
                             formulas1[10] = "=" + VRS + "!N{{toreplace}}+Ad!N{{toreplace}}+Parainfluenza!N{{toreplace}}+'Inf A'!N{{toreplace}}+'Inf B'!N{{toreplace}}+Metapnemovirus!N{{toreplace}}";
@@ -903,7 +902,7 @@ namespace Paho.Controllers
                         }
                         else
                         {
-                            if (countryId == 25 || countryId == 119)
+                            if (countryId == 25)
                             {
                                 formulas1[9] = "=" + VRS + "!L{{toreplace}}";
                                 formulas1[10] = "=" + VRS + "!M{{toreplace}}+Ad!M{{toreplace}}+Parainfluenza!M{{toreplace}}+'Inf A'!M{{toreplace}}+'Inf B'!M{{toreplace}}+Metapnemovirus!M{{toreplace}}";
@@ -1118,14 +1117,14 @@ namespace Paho.Controllers
                                 using (var reader2 = command2.ExecuteReader())
                                 {
                                     int nAnDa = 0;
-                                    if (countryId == 25 || countryId == 119)
+                                    if (countryId == 25)
                                     {
                                         row = row - 1 + (9 * 3) + 15;
                                         nAnDa = 8 * 8;                  // 8: Nº Age Group
                                     }
                                     else
                                     {
-                                        if (countryId == 17)
+                                        if (countryId == 17 || countryId == 119)
                                         {
                                             row = row - 1 + (9 * 3) + 15;
                                             nAnDa = 9 * 8;              // 9: Nº Age Group
@@ -1168,10 +1167,8 @@ namespace Paho.Controllers
                                                 row++;
                                             }
                                         }
-
                                     }
                                 }
-
                                 /*Termina llenado de Tabla2*/
                             }
                         }
@@ -1347,7 +1344,6 @@ namespace Paho.Controllers
                         con.Close();
                     }
                 }
-
             }
 
             /*-----------------------Fin de la Inserción de los parámetros usados para la generación del reporte al Excel--------------------------------------*/
