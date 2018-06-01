@@ -4,12 +4,15 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Paho.Models;
+using System.Configuration;
 
 namespace Paho.Controllers
 {
@@ -64,8 +67,44 @@ namespace Paho.Controllers
                 ListUser = await UserManager.Users.Where(j => j.Institution.CountryID == countryId).OrderBy(s => s.Institution.Country.Code).ThenBy(s => s.Institution.Name).ThenBy(s => s.UserName).ThenBy(s => s.FirstName1).ToListAsync();
             }
 
+            setUserRolesListJoin(ListUser);     //#### CAFQ: 180530
 
             return View(ListUser);
+        }
+
+        private void setUserRolesListJoin(List<ApplicationUser> ListUserX)
+        {
+            var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+            using (var con = new SqlConnection(consString))
+            {
+                using (var command = new SqlCommand("UserRolesListJoin", con) { CommandType = CommandType.StoredProcedure, CommandTimeout = 600 })
+                {
+                    con.Open();
+
+                    foreach (var item in ListUserX)
+                    {
+                        command.Parameters.Clear();
+                        command.Parameters.Add("@UserName", SqlDbType.Text).Value = item.UserName;
+
+                        //////con.Open();
+                        using (var reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                string cRoles = reader.GetValue(0).ToString();
+                                item.UserRolesListJoin = cRoles;
+                            }
+                        }
+
+                        //command.Parameters.Clear();
+                        //////con.Close();
+                    }
+
+                    command.Parameters.Clear();
+                    con.Close();
+                }
+            }
         }
 
         //

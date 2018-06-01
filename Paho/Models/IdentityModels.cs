@@ -43,11 +43,11 @@ namespace Paho.Models
         public string FullName
         {
             get {
-
                 return string.Concat(FirstName1, string.IsNullOrEmpty(FirstName2) ? "" : " ", FirstName2, " ", LastName1, string.IsNullOrEmpty(LastName2) ? "" : " ", LastName2);
             }
-
         }
+
+        public string UserRolesListJoin;        //#### CAFQ: 180530
 
         [Display(Name = "Institución")]
         public virtual Institution Institution { get; set; }

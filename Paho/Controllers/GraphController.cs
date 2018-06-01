@@ -847,7 +847,7 @@ namespace Paho.Controllers
                                     }
                                     else
                                     {
-                                        if (countryId == 17)
+                                        if (countryId == 17 || countryId == 119)
                                         {
                                             row = row - 1 + (9 * 3) + 15;           // Inicio tabla 2
                                             nAnDa = 9 * 8;                          // 9: Nº Age Group
@@ -1270,6 +1270,9 @@ namespace Paho.Controllers
                                 case 17:
                                     myXmlNode0.InnerText = "JM";
                                     break;
+                                case 119:
+                                    myXmlNode0.InnerText = "CI";
+                                    break;
                             }
                             myXmlDoc0.DocumentElement.AppendChild(myXmlNode0);
                             myXmlNode0 = myXmlDoc0.CreateElement("mapData");
@@ -1389,10 +1392,10 @@ namespace Paho.Controllers
                 int? IRAG_ = IRAG;
                 IRAG_ = (IRAG_ == 0 && ETI_ == 0) ? 1 : IRAG_;          //#### CAFQ: 180312 
                 /*/################################################################# DESARROLLO
-                if (Graph == "Graph1" && (CountryID == 25 || CountryID == 17))
+                if (Graph == "Graph1" && (CountryID == 25 || CountryID == 17 || CountryID == 119))
                 {
                     string cGraph1JS = "";
-                    return Json(cGraph1JS); ;
+                    return Json(cGraph1JS);
                 }
                 //################################################################# END DESARROLLO*/
                 //variable para armar los datos en un XML
@@ -1488,22 +1491,22 @@ namespace Paho.Controllers
                         case "Graph9":                              // CAFQ: ETI1
                             string jsonTextETI = "";
 
-                            jsonTextETI = graficoETINumeroCasos(CountryID_, years, HospitalID_);
+                            jsonTextETI = graficoETINumeroCasos(CountryID_, Languaje_, years, HospitalID_);
                             return Json(jsonTextETI);
                         case "Graph10":                             // CAFQ: ETI2
                             string jsonTextETIPosi = "";
 
-                            jsonTextETIPosi = graficoETINumeroCasosPositivos(CountryID_, years, HospitalID_);
+                            jsonTextETIPosi = graficoETINumeroCasosPositivos(CountryID_, Languaje_, years, HospitalID_);
                             return Json(jsonTextETIPosi);
                         case "Graph11":                             // CAFQ: Fallecidos IRAG x GE
                             string jsonTextIRAGGE = "";
 
-                            jsonTextIRAGGE = graficoIRAGxGrupoEdad(CountryID_, years, HospitalID_);
+                            jsonTextIRAGGE = graficoIRAGxGrupoEdad(CountryID_, Languaje_, years, HospitalID_);
                             return Json(jsonTextIRAGGE);
                         case "Graph12":                             // CAFQ: Fallecidos IRAG x GE
                             string jsonTextFallGE = "";
 
-                            jsonTextFallGE = graficoIRAGFallecidosxGE(CountryID_, years, HospitalID_);
+                            jsonTextFallGE = graficoIRAGFallecidosxGE(CountryID_, Languaje_, years, HospitalID_);
                             return Json(jsonTextFallGE);
                     }
 
@@ -1932,7 +1935,7 @@ namespace Paho.Controllers
                                             }
                                             else
                                             {
-                                                if (CountryID_ == 17)
+                                                if (CountryID_ == 17 || CountryID_ == 119)
                                                 {
                                                     qtyGruposEdad = 9;
                                                     filaInicialTabla2 = 289;    // Vigilancia de Influenza y otros Virus Respiratorios 
@@ -2412,7 +2415,7 @@ namespace Paho.Controllers
                                         }
                                         else
                                         {
-                                            if (CountryID_ == 17)
+                                            if (CountryID_ == 17 || CountryID_ == 119)
                                             {
                                                 indiceInicial3 = 844;       // Influenza B
                                                 indiceInicial4 = 1288;      // Virus Otros
@@ -3091,6 +3094,8 @@ namespace Paho.Controllers
                 sheet = "Surinam";
             else if (countryId == 17)
                 sheet = "Jamaica";
+            else if (countryId == 119)
+                sheet = "CaymanIslands";
             else
                 return "";
 
@@ -3318,7 +3323,7 @@ namespace Paho.Controllers
                 using (var excelPackage = new ExcelPackage(fs))
                 {
                     var excelWorkBook = excelPackage.Workbook;
-                    int nSema, nSeIn, nAnio;
+                    int nSema, nAnio;   //nSeIn, 
                     decimal nCEP, nUA, nUE;
                     int row = 3;
                     int col = 1;
@@ -3415,7 +3420,7 @@ namespace Paho.Controllers
         */
 
 
-        public static string graficoETINumeroCasos(int countryId, string[] years, int? hospitalId)
+        public static string graficoETINumeroCasos(int countryId, string Languaje, string[] years, int? hospitalId)
         {
             //System.Diagnostics.Debug.WriteLine("graficoETINumeroCasos->START");
             ArrayList aData = new ArrayList();
@@ -3433,7 +3438,8 @@ namespace Paho.Controllers
                 string cTitu, cSeEp, cNuCa, cPoCa, cCaEt, cPoEC, cJS = "", cTemp = "";
                 jsonTextLB = "";
 
-                if (countryId == 25 || countryId == 17)
+                //if (countryId == 25 || countryId == 17 || countryId == 119)
+                if (Languaje == "ENG")
                 {
                     cTitu = "Number of ILI cases per epidemiological week - " + string.Join(",", years);
                     cSeEp = "Epidemiological Week";
@@ -3549,7 +3555,7 @@ namespace Paho.Controllers
             }
         }//END recuperarDatosETI
 
-        public static string graficoETINumeroCasosPositivos(int countryId, string[] years, int? hospitalId)
+        public static string graficoETINumeroCasosPositivos(int countryId, string Languaje, string[] years, int? hospitalId)
         {
             //System.Diagnostics.Debug.WriteLine("graficoETINumeroCasosPositivos->START");
             ArrayList aData = new ArrayList();
@@ -3567,7 +3573,8 @@ namespace Paho.Controllers
                 string cTitu, cSeEp, cNuCa, cPoCa, cInPo, cPoEP, cJS = "", cTemp = "";
                 jsonTextLB = "";
 
-                if (countryId == 25 || countryId == 17)
+                //if (countryId == 25 || countryId == 17 || countryId == 119)
+                if (Languaje == "ENG")
                 {
                     cTitu = "Number of influenza positive ILI cases per epidemiological week - " + string.Join(",", years) + " (percentage of influenza positive cases in all ILI cases)";
                     cSeEp = "Epidemiological Week";
@@ -3674,7 +3681,7 @@ namespace Paho.Controllers
             }
         }//END recuperarDatosETIPositivos
 
-        public static string graficoIRAGFallecidosxGE(int countryId, string[] years, int? hospitalId)
+        public static string graficoIRAGFallecidosxGE(int countryId, string Languaje, string[] years, int? hospitalId)
         {
             //System.Diagnostics.Debug.WriteLine("graficoIRAGFallecidosxGE->START");
             ArrayList aData = new ArrayList();
@@ -3692,7 +3699,8 @@ namespace Paho.Controllers
                 string cTitu, cSeEp, cNuCa, cJS = "", cTemp = "";
                 jsonTextLB = "";
 
-                if (countryId == 25 || countryId == 17)
+                //if (countryId == 25 || countryId == 17 || countryId == 119)
+                if (Languaje == "ENG")
                 {
                     cTitu = "Distribution of SARI deaths by age groups per epidemiological week - " + string.Join(",", years);
                     cSeEp = "Epidemiological Week";
@@ -3732,7 +3740,7 @@ namespace Paho.Controllers
                         cTemp = cTemp + "\"" + "serie8" + "\":\"" + aDaSe[9] + "\",";               //
                         cTemp = cTemp + "\"" + "serie9" + "\":\"" + aDaSe[10] + "\"";               //
                     }
-                    if (countryId == 17)
+                    if (countryId == 17 || countryId == 119)
                     {
                         cTemp = cTemp + ",";
                         cTemp = cTemp + "\"" + "serie8" + "\":\"" + aDaSe[9] + "\",";               //
@@ -3763,7 +3771,7 @@ namespace Paho.Controllers
                 }
                 else
                 {
-                    if (countryId == 17)
+                    if (countryId == 17 || countryId == 119)
                     {
                         jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + "Under 6 months" + "\",";
                         jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + "6 to 11 months" + "\",";
@@ -3829,27 +3837,82 @@ namespace Paho.Controllers
                             {
                                 cAnio = reader.GetValue(1).ToString();
                                 cSema = reader.GetValue(2).ToString();
-                                cGE1 = ((int)reader.GetValue(3)).ToString();
+                                /*cGE1 = ((int)reader.GetValue(3)).ToString();
                                 cGE2 = ((int)reader.GetValue(4)).ToString();
                                 cGE3 = ((int)reader.GetValue(5)).ToString();
                                 cGE4 = ((int)reader.GetValue(6)).ToString();
                                 cGE5 = ((int)reader.GetValue(7)).ToString();
                                 cGE6 = ((int)reader.GetValue(8)).ToString();
-                                cGE7 = ((int)reader.GetValue(9)).ToString();
+                                cGE7 = ((int)reader.GetValue(9)).ToString();*/
+
+                                cGE1 = "0";
+                                if (reader.GetValue(3) != System.DBNull.Value)
+                                    cGE1 = ((int)reader.GetValue(3)).ToString();
+
+                                cGE2 = "0";
+                                if (reader.GetValue(4) != System.DBNull.Value)
+                                    cGE2 = ((int)reader.GetValue(4)).ToString();
+
+                                cGE3 = "0";
+                                if (reader.GetValue(5) != System.DBNull.Value)
+                                    cGE3 = ((int)reader.GetValue(5)).ToString();
+
+                                cGE4 = "0";
+                                if (reader.GetValue(6) != System.DBNull.Value)
+                                    cGE4 = ((int)reader.GetValue(6)).ToString();
+
+                                cGE5 = "0";
+                                if (reader.GetValue(7) != System.DBNull.Value)
+                                    cGE5 = ((int)reader.GetValue(7)).ToString();
+
+                                cGE6 = "0";
+                                if (reader.GetValue(8) != System.DBNull.Value)
+                                    cGE6 = ((int)reader.GetValue(8)).ToString();
+
+                                cGE7 = "0";
+                                if (reader.GetValue(9) != System.DBNull.Value)
+                                    cGE7 = ((int)reader.GetValue(9)).ToString();
 
                                 if (countryId == 25)
                                 {
-                                    cGE8 = ((int)reader.GetValue(10)).ToString();
-                                    cGE9 = ((int)reader.GetValue(11)).ToString();
+                                    /*
+                                    cGE1 = "0";
+                                    if (reader.GetValue() != System.DBNull.Value)
+                                        cGE1 = ((int)reader.GetValue()).ToString();
+                                    */
+                                    /*cGE8 = ((int)reader.GetValue(10)).ToString();
+                                    cGE9 = ((int)reader.GetValue(11)).ToString();*/
+
+                                    cGE8 = "0";
+                                    if (reader.GetValue(10) != System.DBNull.Value)
+                                        cGE8 = ((int)reader.GetValue(10)).ToString();
+
+                                    cGE9 = "0";
+                                    if (reader.GetValue(11) != System.DBNull.Value)
+                                        cGE9 = ((int)reader.GetValue(11)).ToString();
+                                    
                                     aData.Add(new string[] { cAnio, cSema, cGE1, cGE2, cGE3, cGE4, cGE5, cGE6, cGE7, cGE8, cGE9 });
                                 }
                                 else
                                 {
-                                    if (countryId == 17)
+                                    if (countryId == 17 || countryId == 119)
                                     {
-                                        cGE8 = ((int)reader.GetValue(10)).ToString();
+                                        /*cGE8 = ((int)reader.GetValue(10)).ToString();
                                         cGE9 = ((int)reader.GetValue(11)).ToString();
-                                        cGE10 = ((int)reader.GetValue(12)).ToString();
+                                        cGE10 = ((int)reader.GetValue(12)).ToString();*/
+
+                                        cGE8 = "0";
+                                        if (reader.GetValue(10) != System.DBNull.Value)
+                                            cGE8 = ((int)reader.GetValue(10)).ToString();
+
+                                        cGE9 = "0";
+                                        if (reader.GetValue(11) != System.DBNull.Value)
+                                            cGE9 = ((int)reader.GetValue(11)).ToString();
+
+                                        cGE10 = "0";
+                                        if (reader.GetValue(12) != System.DBNull.Value)
+                                            cGE10 = ((int)reader.GetValue(12)).ToString();
+
                                         aData.Add(new string[] { cAnio, cSema, cGE1, cGE2, cGE3, cGE4, cGE5, cGE6, cGE7, cGE8, cGE9, cGE10 });
                                     }
                                     else
@@ -3871,7 +3934,7 @@ namespace Paho.Controllers
             }
         }//END-recuperarDatosIRAGFallecidosxGE
 
-        public static string graficoIRAGxGrupoEdad(int countryId, string[] years, int? hospitalId)
+        public static string graficoIRAGxGrupoEdad(int countryId, string Languaje, string[] years, int? hospitalId)
         {
             //System.Diagnostics.Debug.WriteLine("graficoIRAGxGrupoEdad->START");
             ArrayList aData = new ArrayList();
@@ -3890,7 +3953,8 @@ namespace Paho.Controllers
 
                 jsonTextLB = "";
 
-                if (countryId == 25 || countryId == 17)
+                //if (countryId == 25 || countryId == 17)
+                if (Languaje == "ENG")
                 {
                     cTitu = "Distribution of total SARI cases by age group and epidemiological week - " + string.Join(",", years);
                     cSeEp = "Epidemiological Week";
@@ -3928,7 +3992,7 @@ namespace Paho.Controllers
                         cTemp = cTemp + "\"" + "serie7" + "\":\"" + aDaSe[8] + "\",";               //
                         cTemp = cTemp + "\"" + "serie8" + "\":\"" + aDaSe[9] + "\"";               //
                     }
-                    if (countryId == 17)
+                    if (countryId == 17 || countryId == 119)
                     {
                         cTemp = cTemp + ",";
                         cTemp = cTemp + "\"" + "serie7" + "\":\"" + aDaSe[8] + "\",";               //
@@ -3957,7 +4021,7 @@ namespace Paho.Controllers
                 }
                 else
                 {
-                    if (countryId == 17)
+                    if (countryId == 17 || countryId == 119)
                     {
                         jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + "Under 6 months" + "\",";
                         jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + "6 to 11 months" + "\",";
@@ -4073,7 +4137,7 @@ namespace Paho.Controllers
                                 }
                                 else
                                 {
-                                    if (countryId == 17)
+                                    if (countryId == 17 || countryId == 119)
                                     {
                                         /*cGE7 = ((int)reader.GetValue(17)).ToString();
                                         cGE8 = ((int)reader.GetValue(18)).ToString();

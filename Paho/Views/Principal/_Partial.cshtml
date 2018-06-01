@@ -903,7 +903,7 @@
                         },
                         success: function (data) {
                             /*/################################################################# DESARROLLO
-                            if(GraphCountryID == 17){
+                            if(GraphCountryID == 119){
                                 GetGraphData11();
                                 GetGraphData12();
                                 GetGraphData9();
@@ -3110,7 +3110,7 @@
                         GetGraphData11_25();
                         return '';
                     }
-                    if(GraphCountryID == 17){
+                    if(GraphCountryID == 17 || GraphCountryID == 119){
                         GetGraphData11_17();
                         return '';
                     }
@@ -4102,7 +4102,7 @@
                         GetGraphData12_25();
                         return '';
                     }
-                    if(GraphCountryID == 17){
+                    if(GraphCountryID == 17 || GraphCountryID == 119){
                         GetGraphData12_17();
                         return '';
                     }
@@ -5616,100 +5616,103 @@
         </div>
         <!--<script>GetGraphData10();</script>-->
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxFIN Gráfica 10 - ETI 2 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxControles para los mapasxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
-                <script>
-                /**
-                 * This demo uses our own method of determining user's location
-                 * It is not public web service that you can use
-                 * You'll need to find your own. We recommend http://www.maxmind.com
-                 */
-                var expandedMap = false;
+        <script>
+            /**
+                * This demo uses our own method of determining user's location
+                * It is not public web service that you can use
+                * You'll need to find your own. We recommend http://www.maxmind.com
+                */
+            var expandedMap = false;
 
-                function showCheckboxesMap() {
-                    var checkboxes = document.getElementById("map_c_b");
-                    if (!expandedMap) {
-                        checkboxes.style.display = "block";
-                        expandedMap = true;
-                    } else {
-                        checkboxes.style.display = "none";
-                        expandedMap = false;
-                    }
-                };
-
-                function addMapCheckbox(yval) {
-                    var container = $('#map_c_b');
-                    if(yval!=undefined){
-
-                    $('<input />', { type: 'checkbox', id: 'cb'+yval, value: yval, class:'yearCheckBox' }).appendTo(container);
-                    $('<label />', { 'for': 'cb'+yval, text: yval, class:'labelYearCheckBox' }).appendTo(container);
-                    $('<br />', { class:'labelYearCheckBox' }).appendTo(container);
-                    }
+            function showCheckboxesMap() {
+                var checkboxes = document.getElementById("map_c_b");
+                if (!expandedMap) {
+                    checkboxes.style.display = "block";
+                    expandedMap = true;
+                } else {
+                    checkboxes.style.display = "none";
+                    expandedMap = false;
                 }
+            };
 
-                function GetDataYearsMap() {
+            function addMapCheckbox(yval) {
+                var container = $('#map_c_b');
+                if(yval!=undefined){
 
-                    //Esta sección sirve para consolidar los años seleccionados en un string separado por comas
-                    var allVals = [];
-                    var yrs = "";
-
-
-                    //alert($("#anios").val());
-                    $(document).ready(function () {
-                        $.ajax({
-                            type: 'POST',
-                            url: '/Graph/GetYears',
-                            data: "{'CountryID':" + GraphCountryID +"}",
-                            contentType: "application/json",
-                            dataType: 'json',
-                            async: true,
-                            success: function (data) {
-                                var json_obj = JSON.parse(data);
-                                jsonX = JSON.parse(data);
-                                var chartData = [];
-                                console.log("jsonX");
-                                console.log(jsonX);
-                                $.each(jsonX, function(index, element) {
-
-                                    //alert(element);
-                                    addMapCheckbox(element);
-
-                                });
-                            }
-                        });
-                    })
+                $('<input />', { type: 'checkbox', id: 'cb'+yval, value: yval, class:'yearCheckBox' }).appendTo(container);
+                $('<label />', { 'for': 'cb'+yval, text: yval, class:'labelYearCheckBox' }).appendTo(container);
+                $('<br />', { class:'labelYearCheckBox' }).appendTo(container);
                 }
-                </script>
-                <script>GetDataYearsMap();</script>
-                <!--Mapa 1 Contenedor-->
-                <div id="containerMapControl0">
-                    <div id="subcontainerMapControl0">
-                        <input id="chkMapIrag" type="checkbox" value="irag"  />@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphSARICheckboxLabel"))
-                        <input id="chkMapEti" type="checkbox" value="eti"  />@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphILICheckboxLabel"))
-                    </div>
+            }
 
-                    <div id="subcontainerMapControl1">
-                        <div class='input-group' id="selectYears">
-                            <div id="labelMapYearsContainer" class="input-group-addon">@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphYearsSelect"))</div>
-                            <div id="yearsMapContainer">
-                                <div id="fakeMapSelectYear" onclick="showCheckboxesMap()">
-                                    <select id="selectMapYearFake" class="form-control">
-                                        <option selected>@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphYearsOptionSelect"))</option>
-                                    </select>
-                                    <div class="overSelect"></div>
-                                </div>
-                                <div id="map_c_b" class="form-control">
-                                </div>
-                            </div>
+            function GetDataYearsMap() {
+
+                //Esta sección sirve para consolidar los años seleccionados en un string separado por comas
+                var allVals = [];
+                var yrs = "";
+
+
+                //alert($("#anios").val());
+                $(document).ready(function () {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Graph/GetYears',
+                        data: "{'CountryID':" + GraphCountryID +"}",
+                        contentType: "application/json",
+                        dataType: 'json',
+                        async: true,
+                        success: function (data) {
+                            var json_obj = JSON.parse(data);
+                            jsonX = JSON.parse(data);
+                            var chartData = [];
+                            console.log("jsonX");
+                            console.log(jsonX);
+                            $.each(jsonX, function(index, element) {
+
+                                //alert(element);
+                                addMapCheckbox(element);
+
+                            });
+                        }
+                    });
+                })
+            }
+        </script>
+
+        <script>GetDataYearsMap();</script>
+
+        <!--Mapa 1 Contenedor-->
+        <div id="containerMapControl0">
+            <div id="subcontainerMapControl0">
+                <input id="chkMapIrag" type="checkbox" value="irag"  />@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphSARICheckboxLabel"))
+                <input id="chkMapEti" type="checkbox" value="eti"  />@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphILICheckboxLabel"))
+            </div>
+
+            <div id="subcontainerMapControl1">
+                <div class='input-group' id="selectYears">
+                    <div id="labelMapYearsContainer" class="input-group-addon">@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphYearsSelect"))</div>
+                    <div id="yearsMapContainer">
+                        <div id="fakeMapSelectYear" onclick="showCheckboxesMap()">
+                            <select id="selectMapYearFake" class="form-control">
+                                <option selected>@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphYearsOptionSelect"))</option>
+                            </select>
+                            <div class="overSelect"></div>
                         </div>
-
-                        <input type="text" style="display:none;" id="mapanios" value="2017" />
-                        <div><button id="btnGetMapData1" onclick="GetMapData1();GetMapData2();">@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphUpdateButton"))</button></div>
-                        <!--div id="c_b" style="display:block;">
-                    Años:
-                        </div-->
+                        <div id="map_c_b" class="form-control">
+                        </div>
                     </div>
-
                 </div>
+
+                <input type="text" style="display:none;" id="mapanios" value="2017" />
+                <div><button id="btnGetMapData1" onclick="GetMapData1();GetMapData2();">@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphUpdateButton"))</button></div>
+                <!--div id="c_b" style="display:block;">
+            Años:
+                </div-->
+            </div>
+
+        </div>
         <!---xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx MAPA 1 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx--->
         <!-- Chart code -->
         <script>
@@ -5763,6 +5766,7 @@
                     "KH": [ "cambodiaLow" ],
                     "CM": [ "cameroonLow" ],
                     "CA": [ "canadaLow" ],
+                    "CI": [ "caymanIslandsHigh" ],
                     "CV": [ "capeVerdeLow" ],
                     "CF": [ "centralAfricanRepublicLow" ],
                     "TD": [ "chadLow" ],
@@ -6054,6 +6058,7 @@
                     "KH": [ "cambodiaLow" ],
                     "CM": [ "cameroonLow" ],
                     "CA": [ "canadaLow" ],
+                    "CI": [ "caymanIslandsHigh" ],
                     "CV": [ "capeVerdeLow" ],
                     "CF": [ "centralAfricanRepublicLow" ],
                     "TD": [ "chadLow" ],

@@ -301,6 +301,9 @@ namespace Paho.Controllers
                     case "RE1":
                         templateToUse = "REVELAC-i";                        //#### CAFQ en web.config crear la variable 
                         break;
+                    case "ML1":
+                        templateToUse = "MuestrasLabTemplate";                        //#### CAFQ en web.config crear la variable 
+                        break;
                     case "FLUID":
                         templateToUse = "FluIDTemplate";
                         break;
@@ -347,6 +350,7 @@ namespace Paho.Controllers
                             AppendDataToExcel_R2_SeveralYears(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual);        //#### CAFQ: 180204
                         else {
                             //AppendDataToExcel(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo);
+                            reportTemplate = (reportTemplate == "ML1") ? "MuestrasLabNPHL" : reportTemplate;      //#### CAFQ
                             AppendDataToExcel(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual);        //#### CAFQ
                         }
 
@@ -383,6 +387,10 @@ namespace Paho.Controllers
             //var yyy = excelWorksheet.Drawings[0];             // Un chart especifico
             if (storedProcedure == "R2" || storedProcedure == "R3" || storedProcedure == "R1")
                 excelWorksheet.Drawings.Remove(0);              // Eliminando grafico por defecto en plantilla
+
+            string cLabelAxixY = "";
+            if (storedProcedure == "R2")
+                cLabelAxixY = (string)excelWorksheet.Cells[startRow - 1, startColumn + 1].Value;        // Label eje Y
 
             var row = startRow;
             var column = startColumn;
@@ -507,7 +515,7 @@ namespace Paho.Controllers
             }   // End for
 
             //**** INSERTAR GRAFICO
-            if (storedProcedure == "R2")
+            if (storedProcedure == "R2")        // Total fallecidos por IRAG
             {
                 var myChartCC = excelWorksheet.Drawings.AddChart("ChartColumnClustered", eChartType.ColumnClustered);
 
@@ -528,14 +536,11 @@ namespace Paho.Controllers
                 myChartCC.SetSize(920, 405);                    // Ancho, Alto in pixel
                 myChartCC.SetPosition(startRow - 2, 0, (startColumn + (YearTo.Value - YearFrom.Value) + 1), 40);             // (int row, int rowoffset in pixel, int col, int coloffset in pixel)
 
-                /*ExcelRange rRang = excelWorksheet.Cells[ExcelRange.GetAddress(startRow - 2, startColumn + 1, startRow - 2, startColumn + 1 + (YearTo.Value - YearFrom.Value))];
-                rRang.Merge = true;
-                rRang.Style.Border.Top.Style = ExcelBorderStyle.Medium;
-                rRang.Style.Border.Left.Style = ExcelBorderStyle.Medium;
-                rRang.Style.Border.Right.Style = ExcelBorderStyle.Medium;
-                rRang.Style.Border.Bottom.Style = ExcelBorderStyle.Medium;*/
+                myChartCC.YAxis.Title.Text = cLabelAxixY;
+                myChartCC.YAxis.Title.Font.Size = 9;
+                myChartCC.YAxis.Title.Font.Bold = true;
             }
-            else if (storedProcedure == "R3")
+            else if (storedProcedure == "R3")       // Casos por IRAG y Hospitalizaciones Totales
             {
                 int nFil = startRow;
                 for (int nI = YearFrom.Value; nI <= YearTo.Value; ++nI)
@@ -550,25 +555,7 @@ namespace Paho.Controllers
                         var seriesCC = myChartCC.Series.Add(ExcelRange.GetAddress(nFil, nCol + nK, nFil + 52, nCol + nK), ExcelRange.GetAddress(nFil, 2, nFil + 52, 2));
                         seriesCC.Header = excelWorksheet.Cells[startRow - 1, nCol + nK].Value.ToString();
                     }
-                    /*
-                    var seriesCC = myChartCC.Series.Add(ExcelRange.GetAddress(nFil, nCol + 1, nFil + 52, nCol + 1), ExcelRange.GetAddress(nFil, 2, nFil + 52, 2));
-                    seriesCC.Header = excelWorksheet.Cells[startRow - 1, nCol + 1].Value.ToString();
 
-                    seriesCC = myChartCC.Series.Add(ExcelRange.GetAddress(nFil, nCol + 2, nFil + 52, nCol + 2), ExcelRange.GetAddress(nFil, 2, nFil + 52, 2));
-                    seriesCC.Header = excelWorksheet.Cells[startRow - 1, nCol + 2].Value.ToString();
-
-                    seriesCC = myChartCC.Series.Add(ExcelRange.GetAddress(nFil, nCol + 3, nFil + 52, nCol + 3), ExcelRange.GetAddress(nFil, 2, nFil + 52, 2));
-                    seriesCC.Header = excelWorksheet.Cells[startRow - 1, nCol + 3].Value.ToString();
-
-                    seriesCC = myChartCC.Series.Add(ExcelRange.GetAddress(nFil, nCol + 4, nFil + 52, nCol + 4), ExcelRange.GetAddress(nFil, 2, nFil + 52, 2));
-                    seriesCC.Header = excelWorksheet.Cells[startRow - 1, nCol + 4].Value.ToString();
-
-                    seriesCC = myChartCC.Series.Add(ExcelRange.GetAddress(nFil, nCol + 5, nFil + 52, nCol + 5), ExcelRange.GetAddress(nFil, 2, nFil + 52, 2));
-                    seriesCC.Header = excelWorksheet.Cells[startRow - 1, nCol + 5].Value.ToString();
-
-                    seriesCC = myChartCC.Series.Add(ExcelRange.GetAddress(nFil, nCol + 6, nFil + 52, nCol + 6), ExcelRange.GetAddress(nFil, 2, nFil + 52, 2));
-                    seriesCC.Header = excelWorksheet.Cells[startRow - 1, nCol + 6].Value.ToString();
-                    */
                     if (languaje_ == "ENG")
                         myChartCC.Title.Text = "NUMBER OF SARI CASES BY AGE GROUP AND E. W. - " + nI.ToString();
                     else
@@ -577,6 +564,10 @@ namespace Paho.Controllers
                     myChartCC.SetSize(1090, 450);
                     myChartCC.SetPosition(startRow + (23 * (nI - YearFrom.Value)) - 1, 0, nColumns + 1, 40);
                     myChartCC.Legend.Position = eLegendPosition.Bottom;
+
+                    myChartCC.YAxis.Title.Text = (languaje_ == "ENG") ? "Number of SARI cases" : "Número de casos SARI";   
+                    myChartCC.YAxis.Title.Font.Size = 9;
+                    myChartCC.YAxis.Title.Font.Bold = true;
 
                     // Formateo area de datos
                     var rowA = startRow + (nI - YearFrom.Value) * 54;
@@ -588,19 +579,12 @@ namespace Paho.Controllers
 
                     if (nI > YearFrom.Value)
                     {
-                        /*var rowA = startRow + (nI - YearFrom.Value) * 54;
-
-                        ExcelRange rRang = excelWorksheet.Cells[ExcelRange.GetAddress(rowA, startColumn, rowA + 53, startColumn + nColumns - 1)];
-                        rRang.Style.Border.Left.Style = ExcelBorderStyle.Thin;
-                        rRang.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-                        rRang.Style.Border.BorderAround(ExcelBorderStyle.Medium);*/
-
                         rRang = excelWorksheet.Cells[ExcelRange.GetAddress(startRow + 53, startColumn, startRow + 53, startColumn + nColumns - 1)];
                         rRang.Copy(excelWorksheet.Cells[rowA + 53, startColumn]);                // Total
                     }
                 }
             }
-            else if (storedProcedure == "R1")
+            else if (storedProcedure == "R1")       // Número de casos y % de hospitalizaciones por IRAG
             {
                 int nFil = startRow;
                 for (int nI = YearFrom.Value; nI <= YearTo.Value; ++nI)
@@ -610,13 +594,21 @@ namespace Paho.Controllers
 
                     var myChartCC = excelWorksheet.Drawings.AddChart("ColumnStackedLine" + nI.ToString(), eChartType.ColumnClustered);
                     var serieCC = myChartCC.Series.Add(ExcelRange.GetAddress(nFil, nCol + 1, nFil + 52, nCol + 1), ExcelRange.GetAddress(nFil, 2, nFil + 52, 2));
+                    myChartCC.XAxis.Title.Text = (string)excelWorksheet.Cells[startRow - 1, nCol].Value;
+                    myChartCC.XAxis.Title.Font.Size = 9;
+                    myChartCC.XAxis.Title.Font.Bold = true;
+                    myChartCC.YAxis.Title.Text = (string)excelWorksheet.Cells[startRow - 1, nCol + 1].Value;
+                    myChartCC.YAxis.Title.Font.Size = 9;
+                    myChartCC.YAxis.Title.Font.Bold = true;
 
                     var myChartLI = myChartCC.PlotArea.ChartTypes.Add(eChartType.Line);
                     var serieLI = myChartLI.Series.Add(ExcelRange.GetAddress(nFil, nCol + 3, nFil + 52, nCol + 3), ExcelRange.GetAddress(nFil, 2, nFil + 52, 2));
                     myChartLI.UseSecondaryAxis = true;
+                    myChartLI.YAxis.Title.Text = (string)excelWorksheet.Cells[startRow - 1, nCol + 3].Value;
+                    myChartLI.YAxis.Title.Font.Size = 9;
+                    myChartLI.YAxis.Title.Font.Bold = true;
 
-                    //myChartCC.Title.Text = "CASOS DE IRAG POR SEMANA EPIDEMIOLOGICA CON % DE HOSPITALIZACIONES - " + nI.ToString();
-                    if(languaje_ == "ENG")
+                    if (languaje_ == "ENG")
                         myChartCC.Title.Text = "CASES OF SARI BY EPIDEMIOLOGICAL WEEK  WITH % OF HOSPITALIZATIONS - " + nI.ToString();
                     else
                         myChartCC.Title.Text = "CASOS DE IRAG POR SEMANA EPIDEMIOLOGICA CON % DE HOSPITALIZACIONES - " + nI.ToString();
@@ -645,14 +637,14 @@ namespace Paho.Controllers
             if (ReportCountry != null)
             {
                 //inserción de labels
-                InsertarLabelsExcel(consString, excelWorksheet, countryId, ReportCountry, hospitalId, year, se, startDate, endDate, YearFrom, YearTo);
+                reportLabels(consString, countryId, languaje_, ReportCountry, hospitalId, year, YearFrom, YearTo, se, startDate, endDate, excelWorkBook, excelWorksheet);
 
                 //inserción de logo
                 InsertarLogoExcel(consString, excelWorksheet, ReportCountry);
             }
         }
-
-        private static void InsertarLabelsExcel(string consString, ExcelWorksheet excelWorksheet, int countryId, int? ReportCountry, int? hospitalId, int? year, int? se, DateTime? startDate, DateTime? endDate, int? YearFrom, int? YearTo)
+        
+        private static void xxxxxxInsertarLabelsExcel(string consString, ExcelWorksheet excelWorksheet, int countryId, int? ReportCountry, int? hospitalId, int? year, int? se, DateTime? startDate, DateTime? endDate, int? YearFrom, int? YearTo)
         {//(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual)
             using (var con = new SqlConnection(consString))
             {
@@ -784,7 +776,7 @@ namespace Paho.Controllers
                 }
             }
         }
-
+        
         private static void InsertarLogoExcel(string consString, ExcelWorksheet excelWorksheet, int? ReportCountry)
         {
             //inserción de logo
