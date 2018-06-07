@@ -766,12 +766,26 @@ function LabViewModel(app, dataModel) {
                 }
 
             } else if ((date_shipping_date != null) && self.hasReset() != true) {
+                if (self.UsrCountry() == 119) {
+                    if (moment(current_value).isBefore(moment(date_sample_date_), "days")) {
+                        //alert("La fecha de recepción de Muestra 1 no puede ser menor a la fecha de envio de muestra de la Muestra 1");
+                        alert(msgValidationShippingDateValidateICS1);
+                              //msgValidationShippingDateValidateICS1
+                        self.RecDate(null);
+                    }
+                } else {
+                    if (moment(current_value).isBefore(moment(date_shipping_date), "days")) {
+                        //alert("La fecha de recepción de Muestra 1 no puede ser menor a la fecha de envio de muestra de la Muestra 1");
+                        alert(msgValidationShippingDateValidateS1);
+                        self.RecDate(null);
+                    }
+                }
 
-                if (moment(current_value).isBefore(moment(date_shipping_date), "days")) {
+                /*if (moment(current_value).isBefore(moment(date_shipping_date), "days")) {
                     //alert("La fecha de recepción de Muestra 1 no puede ser menor a la fecha de envio de muestra de la Muestra 1");
                     alert(msgValidationShippingDateValidateS1);
                     self.RecDate(null);
-                }
+                }*/
 
             } else if ((date_sample_date_ == null || date_sample_date_ == "") && self.hasReset() != true) {
                 //alert("Por favor ingrese antes la fecha de toma muestra de la Muestra 1");

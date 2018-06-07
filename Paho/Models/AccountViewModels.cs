@@ -26,18 +26,27 @@ namespace Paho.Models
     {
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Contraseña actual")]
+        //[Display(Name = "Contraseña actualxxx")]
+        [Display(Name = "Current password")]
         public string OldPassword { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        [Display(Name = "Current password")]
+        public string OldPasswordENG { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Este campo es requerido")]
         [StringLength(100, ErrorMessage = "En la contraseña {0} debe haber al menos {2} caracteres.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Nueva contraseña")]
+        //[Display(Name = "Nueva contraseña")]
+        [Display(Name = "New Password")]
         public string NewPassword { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirmar nueva contraseña")]
-        [Compare("NewPassword", ErrorMessage = "La nueva contraseña y la casilla de confirmación no coinciden.")]
+        //[Display(Name = "Confirmar nueva contraseña")]
+        [Display(Name = "Confirm new password")]
+        //[Compare("NewPassword", ErrorMessage = "La nueva contraseña y la casilla de confirmación no coinciden.")]
+        [Compare("NewPassword", ErrorMessage = "The new password and the confirmation box do not match.")]
         public string ConfirmPassword { get; set; }
     }
 

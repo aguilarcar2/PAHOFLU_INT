@@ -1,7 +1,8 @@
 ﻿@using Paho.Models;
 @using Microsoft.AspNet.Identity;
 @{
-    ViewBag.Title = "Administrar cuenta";
+    //ViewBag.Title = "Administrar cuentass";
+    ViewBag.Title = (((Paho.Controllers.AccountController)this.ViewContext.Controller).getMsg("msgUsersAdminChangePasswordManageAccount"));
 }
 
 <h2>@ViewBag.Title.</h2>

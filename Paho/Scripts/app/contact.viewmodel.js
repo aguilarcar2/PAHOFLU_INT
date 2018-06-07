@@ -324,21 +324,26 @@ function ContactViewModel(app, dataModel) {
         if ($("#DOB").prop("disabled")) return;
         if (self.hasGet() == true) return;
         if (self.DOB() && self.DOB() != "") {
-            //console.log(self.DOB());
-            //console.log(moment().diff(self.DOB(), 'years'));
-            if (moment().diff(self.DOB(), 'years') > 0) {
-                self.Age(moment().diff(self.DOB(), 'years'));
+            /*console.log(self.DOB());
+            console.log(moment().diff(self.DOB(), 'years'));*/
+            var cHospitalDate = self.HospitalDate().toISOString().substring(0, 10);
+
+            //if (moment().diff(self.DOB(), 'years') > 0) {
+            if (moment(cHospitalDate, "YYYY-MM-DD").diff(self.DOB(), 'years') > 0) {
+                //self.Age(moment().diff(self.DOB(), 'years'));
+                self.Age(moment(cHospitalDate, "YYYY-MM-DD").diff(self.DOB(), 'years'));
                 self.AMeasure("Year");
-                
-            } else if (moment().diff(self.DOB(), 'months') > 0) {
-                self.Age(moment().diff(self.DOB(), 'months'));
+            //} else if (moment().diff(self.DOB(), 'months') > 0) {   
+            } else if (moment(cHospitalDate, "YYYY-MM-DD").diff(self.DOB(), 'months') > 0) {
+                //self.Age(moment().diff(self.DOB(), 'months'));
+                self.Age(moment(cHospitalDate, "YYYY-MM-DD").diff(self.DOB(), 'months'));
                 self.AMeasure("Month");
-                
             } else {
-                self.Age(moment().diff(self.DOB(), 'days'));
+                //self.Age(moment().diff(self.DOB(), 'days'));
+                self.Age(moment(cHospitalDate, "YYYY-MM-DD").diff(self.DOB(), 'days'));
                 self.AMeasure("Day");
-                
             }
+
             $("#Age").prop("disabled", true);
             $("#AMeasure").prop("disabled", true);
             self.DOB_dummy(self.DOB);
