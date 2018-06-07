@@ -272,13 +272,15 @@
             self.Neighborhoods("");
             return;
         }
-        $.getJSON(app.dataModel.getNeighborhoodsUrl, { StateID: self.selectedStateId() }, function (data, status) {
-            self.Neighborhoods(data);
-            if ($.isFunction(select)) select();
-        })
-        .fail(function (jqXHR, textStatus, errorThrown) {
-            alert(errorThrown);
-        })
+        if (typeof self.selectedStateId() != "undefined" && self.selectedStateId() != "" && self.selectedStateId() > 0) {
+            $.getJSON(app.dataModel.getNeighborhoodsUrl, { StateID: self.selectedStateId() }, function (data, status) {
+                self.Neighborhoods(data);
+                if ($.isFunction(select)) select();
+            })
+            .fail(function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            })
+        }
     };
 
     self.ReloadNeighborhoods2weeks = function (select) {
