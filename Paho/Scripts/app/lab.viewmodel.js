@@ -1391,10 +1391,14 @@ function LabViewModel(app, dataModel) {
                 msg += "\n" + msgValidateRecDateInvalid;
                     //"Fecha de recepción es inválida ";
 
-            if (date_ShipDate != null && rec_date != null && moment(rec_date).isBefore(moment(date_ShipDate), 'days'))
-                msg += "\n" + msgValidateRecDateShipDate;
-                    //"'Fecha de recepcion' no puede ser anterior a la 'Fecha de envío'";
-            
+            if (self.UsrCountry() == 119) {
+                if (date_ShipDate != null && rec_date != null && moment(rec_date).isBefore(moment(rec_date), 'days'))
+                    msg += "\n" + msgValidateRecDateShipDateIC;
+            } else {
+                if (date_ShipDate != null && rec_date != null && moment(rec_date).isBefore(moment(date_ShipDate), 'days'))
+                    msg += "\n" + msgValidateRecDateShipDate;
+                //"'Fecha de recepcion' no puede ser anterior a la 'Fecha de envío'";
+            }
 
             if (self.Processed() == "true") {
                 if (self.LabTests().length <= 0) {
