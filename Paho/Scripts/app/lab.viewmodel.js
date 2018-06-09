@@ -1101,15 +1101,22 @@ function LabViewModel(app, dataModel) {
             $("a[href*='tab-case']").show();
             $("#tab-case").show();
             $("#tabs").tabs("refresh");
-            if (app.Views.Contact.SurvILI() == true) {
+            if (app.Views.Contact.SurvILI() == true && $("#ITy").val() != 2) {
                 $("#CaseStatus").attr("disabled", false);
-                }
-            if (app.Views.Contact.SurvSARI() == true && app.Views.Hospital.Destin() != "" && self.CanConclude() == true) {
+            } else if ($("#ITy").val() == 2) {
+                $("#CaseStatus").attr("disabled", true);
+            }
+
+
+            if (app.Views.Contact.SurvSARI() == true && app.Views.Hospital.Destin() != "" && self.CanConclude() == true && $("#ITy").val() != 2) {
                 $("#CaseStatus").attr("disabled", false);
+            } else if ($("#ITy").val() == 2) {
+                $("#CaseStatus").attr("disabled", true);
             }
             //$("#tabs").tabs("refresh");
 
         } else if ((newFinalResult == "" || newFinalResult == "undefined" || newFinalResult == null) && app.Views.Hospital.IsSample() === "true") {
+            //console.log("FinalResult_4");
             $("a[href*='tab-case']").hide();
             $("#tab-case").hide();
         }
