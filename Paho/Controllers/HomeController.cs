@@ -135,18 +135,18 @@ namespace Paho.Controllers
                 }
             }            
 
-            // Paises
+            //**** Paises
             CaseViewModel.Countries = db.Countries
                     .Select(c => new CountryView()
                     {
                         Id = c.ID.ToString(),
-                        Name = c.Name,
+                        Name = (user.Institution.Country.Language == "SPA") ? c.Name : c.ENG,
                         Active = c.Active
                     })
                     .OrderBy(d => d.Name) 
                     .ToArray();
-
-
+            
+            //**** Regiones
             if ( regions != null )
             {
                 var regionsDisplay = regions.Select(i => new LookupView<Region>()
@@ -167,7 +167,7 @@ namespace Paho.Controllers
                 //CaseViewModel.Regions = regions;
             }
 
-            // Hospitales
+            //**** Hospitales
             if (institutions != null) {
                 var institutionsDisplay = institutions.Select(i => new LookupView<Institution>() {
                     Id = i.ID.ToString(),
@@ -184,8 +184,7 @@ namespace Paho.Controllers
                 CaseViewModel.Institutions = institutionsDisplay;
             }
 
-            // Informacion del usuario
-
+            //**** Informacion del usuario
             var region_institucional_usr = user.Institution.cod_region_institucional;
             var region_salud_usr = user.Institution.cod_region_salud;
             var region_pais_usr = user.Institution.cod_region_pais;

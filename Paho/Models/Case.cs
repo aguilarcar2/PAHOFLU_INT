@@ -347,11 +347,11 @@ namespace Paho.Models
     }
     public class Country
     {
-
         public int ID { get; set; }
         public string Code { get; set; }
         [Display(Name = "Country")]
         public string Name { get; set; }
+        public string ENG { get; set; }
         public bool Active { get; set; }
         public virtual ICollection<Area> Areas { get; set; }
         public string Language { get; set; }
@@ -376,7 +376,6 @@ namespace Paho.Models
 
         [ForeignKey("CountryID")]
         public virtual Country Cat_Country { get; set; }
-
     }
 
     // Catalogos
@@ -387,7 +386,6 @@ namespace Paho.Models
         public string description { get; set; }
         public int? orden { get; set; }
         public string id_country { get; set; }
-
     }
 
     public class CatCaseStatus
@@ -419,7 +417,6 @@ namespace Paho.Models
         public string label_fluid { get; set; }
     }
 
-
     public class CatDiag
     {
         public int ID { get; set; }
@@ -436,7 +433,6 @@ namespace Paho.Models
         public string description { get; set; }
         public int? orden { get; set; }
         public int? id_country { get; set; }
-
     }
 
     public class CatNativePeople
@@ -445,7 +441,6 @@ namespace Paho.Models
         public string description { get; set; }
         public int? orden { get; set; }
         public int? active { get; set; }
-
     }
 
     public class CatServicios
@@ -1224,7 +1219,6 @@ namespace Paho.Models
 
     public class CatPopulationInstitution : CaseBase
     {
-
         public int id { get; set; }
         [Display(Name = "País")]
         public int country_id { get; set; }
@@ -1269,6 +1263,7 @@ namespace Paho.Models
         public int? EpiYear { get; set; }
         public virtual ICollection<CaseSummaryDetail> CaseSummaryDetails { get; set; }
     }
+
     public class CaseSummaryDetail
     {
         public int Id { get; set; }
@@ -1340,6 +1335,7 @@ namespace Paho.Models
         public int Country_ID { get; set; }
         public string ImportedFilename { get; set; }
     }
+
     public class RecordHistory
     {
         public int Id { get; set; }

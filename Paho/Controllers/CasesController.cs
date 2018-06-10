@@ -38,15 +38,17 @@ namespace Paho.Controllers
 
         public ActionResult GetCountries()
         {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+
             var countries = db.Countries
-                  .Select(c => new
-                  {
-                      Id = c.ID.ToString(),
-                      Name = c.Name,
-                      Active = c.Active
-                  })
-                  .OrderBy(c => c.Name)
-                  .ToArray();
+                .Select(c => new
+                {
+                    Id = c.ID.ToString(),
+                    Name = (user.Institution.Country.Language == "SPA") ? c.Name : c.ENG,
+                    Active = c.Active
+                })
+                .OrderBy(c => c.Name)
+                .ToArray();
 
             return Json(countries, JsonRequestBehavior.AllowGet);
         }
@@ -290,6 +292,7 @@ namespace Paho.Controllers
 
             return Json(locals, JsonRequestBehavior.AllowGet);
         }
+
         public ActionResult GetNeighborhoods(int StateID)
         {
             var neighborhoods =
@@ -306,6 +309,7 @@ namespace Paho.Controllers
 
             return Json(neighborhoods, JsonRequestBehavior.AllowGet);
         }
+
         // GET: FluCases
         public ActionResult GetFluCases(string sidx, string sord, int page, int rows,
                                         int institutionId,

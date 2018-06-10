@@ -16,9 +16,7 @@
                 $("#provincia").attr("disabled", false);
                 $("#Neighborhoods").attr("disabled", false);      
             }
-            
         }
-        
     });
     self.selectedCountryOrigin = ko.observable();
     self.selectedAreaId = ko.observable();
