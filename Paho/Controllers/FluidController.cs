@@ -51,7 +51,7 @@ namespace Paho.Controllers {
                         regions = db.Regions.Where(c => c.CountryID == user.Institution.CountryID && c.tipo_region == user.type_region).OrderBy(i => i.Name);
                     }
                 }
-                else if (user.Institution.AccessLevel == AccessLevel.Area)
+                else if (user.Institution.AccessLevel == AccessLevel.Parish)
                 {
                     institutions = db.Institutions.OfType<Hospital>()
                                    .Where(i => i.AreaID == user.Institution.AreaID);
@@ -93,7 +93,7 @@ namespace Paho.Controllers {
                     institutions = db.Institutions.OfType<Lab>()
                                    .Where(i => i.CountryID == user.Institution.CountryID);
                 }
-                else if (user.Institution.AccessLevel == AccessLevel.Area)
+                else if (user.Institution.AccessLevel == AccessLevel.Parish)
                 {
                     institutions = db.Institutions.OfType<Lab>()
                                    .Where(i => i.AreaID == user.Institution.AreaID);

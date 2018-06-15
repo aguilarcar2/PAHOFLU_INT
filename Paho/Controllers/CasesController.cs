@@ -313,6 +313,7 @@ namespace Paho.Controllers
         // GET: FluCases
         public ActionResult GetFluCases(string sidx, string sord, int page, int rows,
                                         int institutionId,
+                                        int? areaId,
                                         int? regionId,
                                         string ScaseNo,
                                         string ShospReg,

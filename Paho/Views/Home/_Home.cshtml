@@ -16,6 +16,19 @@
                            event:{ change: ReloadInstitutions}"></select>
                 </div>
             }
+            @if (Model.DisplayAreas)
+            {
+                <div id="RegionalsGroup" class='input-group col-md-7' style="margin-top: 7px; display: none; float: left" data-bind="visible: displayFilters">
+                    <span class="input-group-addon">
+                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgRegionals"))
+                    </span>
+                    <select id="Regionals" class="form-control" data-bind="options: regions,
+                       optionsText: 'Name',
+                       optionsValue: 'Id',
+                       value: selectedRegionId,
+                       event:{ change: ReloadFluCases}"></select>
+                </div>
+            }
             @if (Model.DisplayRegionals)
             {
                 <div id="RegionalsGroup" class='input-group col-md-7' style="margin-top: 7px; display: none; float: left" data-bind="visible: displayFilters">

@@ -1944,19 +1944,32 @@ function LabViewModel(app, dataModel) {
             self.resetFinalResult();
             self.OrderArrayFinalResult(self.LabTests().concat(self.LabTests_Sample2()).concat(self.LabTests_Sample3()));
             //console.log(self.OrderArrayFinalResult());
-            self.OrderDummy(self.OrderArrayFinalResult.sort(self.generateSortFn([{ name: 'OrdenLabID' }, { name: 'OrdenTestResultID' }, { name: 'OrdenVirusTypeID' }, { name: 'OrdenTestResultID_VirusSubType' }, { name: 'OrdenTestResultID_VirusSubType_2' }, { name: 'OrdenSubTypeID' }, { name: 'OrdenLineageID' }, { name: 'OrdenTestType' }])));
+            self.OrderDummy(self.OrderArrayFinalResult.sort(self.generateSortFn([{ name: 'OrdenLabID' }, { name: 'OrdenTestType' },  { name: 'OrdenTestResultID' }, { name: 'OrdenVirusTypeID' }, { name: 'OrdenTestResultID_VirusSubType' }, { name: 'OrdenTestResultID_VirusSubType_2' }, { name: 'OrdenSubTypeID' }, { name: 'OrdenLineageID' }])));
 
             self.OrderArrayFinalResult([]);
-
+            console.log("orderdummy");
+            console.log(self.OrderDummy());
             self.OrderDummy().forEach(function (v, i) {
 
                 if (i == 0) {
-                    //console.log(v);
-                    self.OrderArrayFinalResult.push(v);
-                } else if (self.OrderDummy()[i - 1].VirusTypeID() != v.VirusTypeID() && v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB") {
+                    //console.log(self.OrderDummy()[i + 1]);
+                    if (typeof(self.OrderDummy()[i + 1]) === "undefined" ){
+                        self.OrderArrayFinalResult.push(v);
+                    } else if (v.TestResultID() == "P" || (v.TestResultID() == "N" && self.OrderDummy()[i + 1].TestResultID() == "N") || (self.OrderDummy()[i + 1].TestResultID() == "P" && (self.OrderDummy()[i + 1].VirusTypeID() != 2 || self.OrderDummy()[i + 1].VirusTypeID() != 1))) {
+                        console.log("aqui");
+                        self.OrderArrayFinalResult.push(v);
+                    }
+                    //else if ((self.OrderDummy()[i + 1].VirusTypeID() != 2 || self.OrderDummy()[i + 1].VirusTypeID() != 1) && self.OrderDummy()[i + 1].TestResultID() == "P" && v.TestType() != 1) {
+                    //    self.OrderArrayFinalResult.push(v);
+                    //}
+                    
+                } else if (self.OrderDummy()[i - 1].VirusTypeID() != v.VirusTypeID() && v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB" && (v.VirusTypeID() != 2 || v.VirusTypeID() != 1)) {
+                    console.log("aqui");
                       self.OrderArrayFinalResult.push(v);
                 }
             });
+            console.log("orderarrayfinalresult");
+            console.log(self.OrderArrayFinalResult());
 
             self.OrderArrayFinalResult().forEach(function (v, i) {                
                 if (i == 0) {

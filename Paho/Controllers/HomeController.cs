@@ -17,8 +17,9 @@ namespace Paho.Controllers
             var CaseViewModel = new CaseViewModel();
             IQueryable<Institution> institutions = null;
             IQueryable<Region> regions = null;
+            IQueryable<Area> areas = null;
 
-            
+
             IQueryable<CatSampleNoProcessed> CSNP = null;
             IQueryable<CatTestType> CTT = null;
             IQueryable<CatTestResult> CTR = null;
@@ -48,6 +49,7 @@ namespace Paho.Controllers
             if (user.Institution.AccessLevel == AccessLevel.All)
             {   
                 CaseViewModel.DisplayCountries = true;
+                CaseViewModel.DisplayAreas = true;
                 CaseViewModel.DisplayRegionals = true;
                 CaseViewModel.DisplayHospitals = true;
             }
@@ -72,8 +74,10 @@ namespace Paho.Controllers
 
 
                 }
-                else if (user.Institution.AccessLevel == AccessLevel.Area)
+                else if (user.Institution.AccessLevel == AccessLevel.Parish)
                 {
+                    CaseViewModel.DisplayAreas = true;
+
                     institutions = db.Institutions.OfType<Hospital>()
                                    .Where(i => i.AreaID == user.Institution.AreaID);
                 }
@@ -122,7 +126,7 @@ namespace Paho.Controllers
                         institutions = db.Institutions.OfType<Lab>()
                                        .Where(i => i.CountryID == user.Institution.CountryID).OrderBy(j => j.FullName);
                     }
-                    else if (user.Institution.AccessLevel == AccessLevel.Area)
+                    else if (user.Institution.AccessLevel == AccessLevel.Parish)
                     {
                         institutions = db.Institutions.OfType<Lab>()
                                        .Where(i => i.AreaID == user.Institution.AreaID).OrderBy(j => j.FullName);
@@ -145,7 +149,28 @@ namespace Paho.Controllers
                     })
                     .OrderBy(d => d.Name) 
                     .ToArray();
-            
+
+            //**** Regiones
+            if (areas != null)
+            {
+                var areasDisplay = areas.Select(i => new LookupView<Area>()
+                {
+                    Id = i.ID.ToString(),
+                    Name = i.Name
+                }).ToList();
+
+                if (areasDisplay.Count() > 1)
+                {
+                    //var all = new LookupView<Region> { Id = "0", Name = "-- Todo(a)s --" };
+                    var all = new LookupView<Area> { Id = "0", Name = getMsg("msgGeneralMessageAll") };
+                    areasDisplay.Insert(0, all);
+                    CaseViewModel.DisplayRegionals = true;
+                }
+
+                CaseViewModel.Areas = areasDisplay;
+                //CaseViewModel.Regions = regions;
+            }
+
             //**** Regiones
             if ( regions != null )
             {
