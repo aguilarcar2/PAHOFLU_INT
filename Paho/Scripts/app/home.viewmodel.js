@@ -35,6 +35,7 @@
     self.UsrRegSalud = ko.observable(reg_salu_usr);
     self.UsrRegPais = ko.observable(reg_pais_usr);
     self.selectedCountryId = ko.observable("");
+    self.selectedAreaId = ko.observable("");
     self.selectedRegionId = ko.observable("");
     self.institutions = ko.observableArray(institutions);
     self.selectedInstitutionId = ko.observable("");
@@ -191,7 +192,7 @@
     });
 
     self.ReloadFluCases = function () {
-        if (typeof self.selectedInstitutionId() === 'undefined' && typeof self.selectedRegionId() === 'undefined') {
+        if (typeof self.selectedInstitutionId() === 'undefined' && typeof self.selectedRegionId() === 'undefined' && typeof self.selectedAreaId() === 'undefined') {
             $("#caselist").jqGrid('clearGridData');
             $("#SCasenumber").val("");
             $("#SHospRegis").val("");
@@ -203,6 +204,10 @@
 
         }
         else {
+
+            if (self.selectedAreaId() > 0) {
+                self.ReloadInstitutions();
+            }
             if (self.selectedRegionId() > 0) {
                 self.ReloadInstitutions();
             }
@@ -367,11 +372,12 @@
         }
         self.loadInstitutions();
         $("#HospitalsGroup").show();
+        $("#AreasGroup").show();
         $("#RegionalsGroup").show();
     };
 
     self.loadInstitutions = function () {
-        $.getJSON(app.dataModel.getInstitutionsUrl, { CountryID: self.selectedCountryId() === "" ? self.UsrCountry() : self.selectedCountryId(), RegionID: self.selectedRegionId() }, function (data, status) {
+        $.getJSON(app.dataModel.getInstitutionsUrl, { CountryID: self.selectedCountryId() === "" ? self.UsrCountry() : self.selectedCountryId(), AreaID: self.selectedAreaId(), RegionID: self.selectedRegionId() }, function (data, status) {
             self.institutions(data);
         })
         .fail(function (jqXHR, textStatus, errorThrown) {

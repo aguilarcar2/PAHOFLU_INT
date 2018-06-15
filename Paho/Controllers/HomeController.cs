@@ -72,9 +72,10 @@ namespace Paho.Controllers
                         regions = db.Regions.Where(c => c.CountryID == user.Institution.CountryID && c.tipo_region == user.type_region).OrderBy(i => i.Name);
                     }
 
+                    areas = db.Areas.Where(d => d.CountryID == user.Institution.CountryID).OrderBy(i => i.Name);
 
                 }
-                else if (user.Institution.AccessLevel == AccessLevel.Parish)
+                else if (user.Institution.AccessLevel == AccessLevel.Area)
                 {
                     CaseViewModel.DisplayAreas = true;
 
@@ -126,7 +127,7 @@ namespace Paho.Controllers
                         institutions = db.Institutions.OfType<Lab>()
                                        .Where(i => i.CountryID == user.Institution.CountryID).OrderBy(j => j.FullName);
                     }
-                    else if (user.Institution.AccessLevel == AccessLevel.Parish)
+                    else if (user.Institution.AccessLevel == AccessLevel.Area)
                     {
                         institutions = db.Institutions.OfType<Lab>()
                                        .Where(i => i.AreaID == user.Institution.AreaID).OrderBy(j => j.FullName);
@@ -164,7 +165,7 @@ namespace Paho.Controllers
                     //var all = new LookupView<Region> { Id = "0", Name = "-- Todo(a)s --" };
                     var all = new LookupView<Area> { Id = "0", Name = getMsg("msgGeneralMessageAll") };
                     areasDisplay.Insert(0, all);
-                    CaseViewModel.DisplayRegionals = true;
+                    CaseViewModel.DisplayAreas = true;
                 }
 
                 CaseViewModel.Areas = areasDisplay;

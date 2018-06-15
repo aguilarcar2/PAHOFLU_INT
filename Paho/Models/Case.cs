@@ -1501,6 +1501,16 @@ namespace Paho.Models
     {
         All = 1,
         Country = 2,
+        Area = 3,
+        SelfOnly = 4,
+        Regional = 5,
+        Service = 6
+    }
+
+    public enum AccessLevel_JAM
+    {
+        All = 1,
+        Country = 2,
         Parish = 3,
         SelfOnly = 4,
         Regional = 5,
@@ -2053,16 +2063,16 @@ namespace Paho.Models
             {  new AdminInstitution { InstID =100000001, FullName ="Pan American Health Organization PAHO-WHO",  	Name="PAHO-WHO", CountryID = countries.Single(s => s.Code =="ZZ").ID, AreaID=Areas.Single(s => s.Name == "Metropolitana").ID, AccessLevel = AccessLevel.All }, 
                new AdminInstitution { InstID = 59100000000, FullName ="OPS - Bolivia",  	Name="OPS - Bolivia", CountryID = countries.Single(s => s.Code =="BO").ID, AreaID=Areas.Single(s => s.Name =="Altiplano").ID,  AccessLevel = AccessLevel.Country }, 
                new AdminInstitution { InstID = 59100100001, FullName ="Ministerio de Salud y Deportes",  	Name="MSD", CountryID = countries.Single(s => s.Code =="BO").ID, AreaID=Areas.Single(s => s.Name =="Altiplano").ID,  AccessLevel = AccessLevel.Country }, 
-               new AdminInstitution { InstID = 59100200000,  FullName ="Servicio Departamental de Salud La Paz",  	Name="SEDES LA PAZ", CountryID = countries.Single(s => s.Code =="BO").ID, AreaID=Areas.Single(s => s.Name =="Altiplano").ID, AccessLevel = AccessLevel.Parish},
-               new AdminInstitution { InstID = 59100100004,  FullName ="Servicio Departamental de Salud Tarija",  	Name="SEDES TAR", CountryID = countries.Single(s => s.Code =="BO").ID, AreaID=Areas.Single(s => s.Name =="Valles").ID, AccessLevel = AccessLevel.Parish},
-               new AdminInstitution { InstID = 59100100010,  FullName ="Servicio Departamental de Salud Santa Cruz ",  	Name="SEDES SCZ", CountryID = countries.Single(s => s.Code =="BO").ID, AreaID=Areas.Single(s => s.Name =="Llanos").ID, AccessLevel = AccessLevel.Parish},
-               new AdminInstitution { InstID = 5600000003,  FullName ="SEREMI Tarapacá",  	Name="SEREMI Tarapacá", CountryID = countries.Single(s => s.Code =="CL").ID,  AreaID=Areas.Single(s => s.Name =="De Tarapacá").ID, AccessLevel = AccessLevel.Parish},
-               new AdminInstitution { InstID = 5600003350,  FullName ="CAN Antofagasta",  	Name="CAN",        CountryID = countries.Single(s => s.Code =="CL").ID,  AreaID=Areas.Single(s => s.Name =="De Tarapacá").ID, AccessLevel = AccessLevel.Parish},
+               new AdminInstitution { InstID = 59100200000,  FullName ="Servicio Departamental de Salud La Paz",  	Name="SEDES LA PAZ", CountryID = countries.Single(s => s.Code =="BO").ID, AreaID=Areas.Single(s => s.Name =="Altiplano").ID, AccessLevel = AccessLevel.Area},
+               new AdminInstitution { InstID = 59100100004,  FullName ="Servicio Departamental de Salud Tarija",  	Name="SEDES TAR", CountryID = countries.Single(s => s.Code =="BO").ID, AreaID=Areas.Single(s => s.Name =="Valles").ID, AccessLevel = AccessLevel.Area},
+               new AdminInstitution { InstID = 59100100010,  FullName ="Servicio Departamental de Salud Santa Cruz ",  	Name="SEDES SCZ", CountryID = countries.Single(s => s.Code =="BO").ID, AreaID=Areas.Single(s => s.Name =="Llanos").ID, AccessLevel = AccessLevel.Area},
+               new AdminInstitution { InstID = 5600000003,  FullName ="SEREMI Tarapacá",  	Name="SEREMI Tarapacá", CountryID = countries.Single(s => s.Code =="CL").ID,  AreaID=Areas.Single(s => s.Name =="De Tarapacá").ID, AccessLevel = AccessLevel.Area},
+               new AdminInstitution { InstID = 5600003350,  FullName ="CAN Antofagasta",  	Name="CAN",        CountryID = countries.Single(s => s.Code =="CL").ID,  AreaID=Areas.Single(s => s.Name =="De Tarapacá").ID, AccessLevel = AccessLevel.Area},
                new AdminInstitution { InstID = 5600000000,  FullName ="Epidemiología del Ministerio de Salud de Chile",  	Name="EPI-MINSAL-CL",   CountryID = countries.Single(s => s.Code =="CL").ID, AreaID=Areas.Single(s => s.Name =="Metropolitana De Santiago ").ID, AccessLevel = AccessLevel.Country},
-               new AdminInstitution { InstID = 5600000001,  FullName ="SEREMI Metropolitana",  	Name="SEREMI Metropolitana",        CountryID = countries.Single(s => s.Code =="CL").ID, AreaID=Areas.Single(s => s.Name =="Metropolitana De Santiago").ID, AccessLevel = AccessLevel.Parish},
-               new AdminInstitution { InstID = 5600000002,  FullName ="SEREMI Valparaíso",  	Name="SEREMI Valparaíso",        CountryID = countries.Single(s => s.Code =="CL").ID, AreaID=Areas.Single(s => s.Name =="De Valparaíso").ID, AccessLevel = AccessLevel.Parish},
-               new AdminInstitution { InstID = 5600000005, FullName ="SEREMI Bio Bío",  	Name="SEREMI Bio Bío",        CountryID = countries.Single(s => s.Code =="CL").ID, AreaID=Areas.Single(s => s.Name =="Del Bío Bío").ID, AccessLevel = AccessLevel.Parish},
-               new AdminInstitution { InstID = 5600000006,  FullName ="SEREMI Los Lagos ",  	Name="SEREMI Los Lagos",        CountryID = countries.Single(s => s.Code =="CL").ID, AreaID=Areas.Single(s => s.Name =="De Los Lagos").ID, AccessLevel = AccessLevel.Parish},
+               new AdminInstitution { InstID = 5600000001,  FullName ="SEREMI Metropolitana",  	Name="SEREMI Metropolitana",        CountryID = countries.Single(s => s.Code =="CL").ID, AreaID=Areas.Single(s => s.Name =="Metropolitana De Santiago").ID, AccessLevel = AccessLevel.Area},
+               new AdminInstitution { InstID = 5600000002,  FullName ="SEREMI Valparaíso",  	Name="SEREMI Valparaíso",        CountryID = countries.Single(s => s.Code =="CL").ID, AreaID=Areas.Single(s => s.Name =="De Valparaíso").ID, AccessLevel = AccessLevel.Area},
+               new AdminInstitution { InstID = 5600000005, FullName ="SEREMI Bio Bío",  	Name="SEREMI Bio Bío",        CountryID = countries.Single(s => s.Code =="CL").ID, AreaID=Areas.Single(s => s.Name =="Del Bío Bío").ID, AccessLevel = AccessLevel.Area},
+               new AdminInstitution { InstID = 5600000006,  FullName ="SEREMI Los Lagos ",  	Name="SEREMI Los Lagos",        CountryID = countries.Single(s => s.Code =="CL").ID, AreaID=Areas.Single(s => s.Name =="De Los Lagos").ID, AccessLevel = AccessLevel.Area},
             };
             admininstitutions.ForEach(v => Institutions.AddOrUpdate(p => p.Name, v));
             SaveChanges();
@@ -2070,8 +2080,8 @@ namespace Paho.Models
             var hospitals = new List<Hospital>
             {
                new Hospital { InstID =59100100002, FullName ="Hospital San Juan de Dios Tarija",  	Name="HSJDD TAR",     CountryID = countries.Single(s => s.Code =="BO").ID, AreaID=Areas.Single(s => s.Name =="Valles").ID,  AccessLevel = AccessLevel.SelfOnly }, 
-               new Hospital { InstID =59100100006, FullName ="hospital San Juan de Dios",  	Name="HSJDD SCZ",        CountryID = countries.Single(s => s.Code =="BO").ID, AreaID=Areas.Single(s => s.Name =="Llanos").ID, AccessLevel = AccessLevel.Parish},
-               new Hospital { InstID =59100100007,  FullName ="Caja Nacional del Seguro Obrero Nro 3",  	Name="CNS Obrero 3",        CountryID = countries.Single(s => s.Code =="BO").ID,  AreaID=Areas.Single(s => s.Name =="Llanos").ID, AccessLevel = AccessLevel.Parish},
+               new Hospital { InstID =59100100006, FullName ="hospital San Juan de Dios",  	Name="HSJDD SCZ",        CountryID = countries.Single(s => s.Code =="BO").ID, AreaID=Areas.Single(s => s.Name =="Llanos").ID, AccessLevel = AccessLevel.Area},
+               new Hospital { InstID =59100100007,  FullName ="Caja Nacional del Seguro Obrero Nro 3",  	Name="CNS Obrero 3",        CountryID = countries.Single(s => s.Code =="BO").ID,  AreaID=Areas.Single(s => s.Name =="Llanos").ID, AccessLevel = AccessLevel.Area},
                new Hospital { InstID =59100100008,  FullName ="Hospital del Niño Santa Cruz",  	Name="HN SCZ",        CountryID = countries.Single(s => s.Code =="BO").ID, AreaID=Areas.Single(s => s.Name =="Llanos").ID, AccessLevel = AccessLevel.SelfOnly},
                new Hospital { InstID =59100200004,  FullName ="Hospital Arco Iris",  	Name="Hospital Arco Iris",        CountryID = countries.Single(s => s.Code =="BO").ID, AreaID=Areas.Single(s => s.Name =="Altiplano").ID, AccessLevel = AccessLevel.SelfOnly},
                new Hospital { InstID =59100200078,  FullName ="Hospital del Niño \"Ovidio Aliaga\"",  	Name="Hospital del Niño",        CountryID = countries.Single(s => s.Code =="BO").ID, AreaID=Areas.Single(s => s.Name =="Altiplano").ID, AccessLevel = AccessLevel.SelfOnly},
@@ -2777,16 +2787,16 @@ namespace Paho.Models
             {  new AdminInstitution { InstID =100000001, FullName ="Pan American Health Organization PAHO-WHO",  	Name="PAHO-WHO", CountryID = countries.Single(s => s.Code =="ZZ").ID, AreaID=Areas.Single(s => s.Name == "Metropolitana").ID, AccessLevel = AccessLevel.All }, 
                new AdminInstitution { InstID = 59100000000, FullName ="OPS - Bolivia",  	Name="OPS - Bolivia", CountryID = countries.Single(s => s.Code =="BO").ID, AreaID=Areas.Single(s => s.Name =="Altiplano").ID,  AccessLevel = AccessLevel.Country }, 
                new AdminInstitution { InstID = 59100100001, FullName ="Ministerio de Salud y Deportes",  	Name="MSD", CountryID = countries.Single(s => s.Code =="BO").ID, AreaID=Areas.Single(s => s.Name =="Altiplano").ID,  AccessLevel = AccessLevel.Country }, 
-               new AdminInstitution { InstID = 59100200000,  FullName ="Servicio Departamental de Salud La Paz",  	Name="SEDES LA PAZ", CountryID = countries.Single(s => s.Code =="BO").ID, AreaID=Areas.Single(s => s.Name =="Altiplano").ID, AccessLevel = AccessLevel.Parish},
-               new AdminInstitution { InstID = 59100100004,  FullName ="Servicio Departamental de Salud Tarija",  	Name="SEDES TAR", CountryID = countries.Single(s => s.Code =="BO").ID, AreaID=Areas.Single(s => s.Name =="Valles").ID, AccessLevel = AccessLevel.Parish},
-               new AdminInstitution { InstID = 59100100010,  FullName ="Servicio Departamental de Salud Santa Cruz ",  	Name="SEDES SCZ", CountryID = countries.Single(s => s.Code =="BO").ID, AreaID=Areas.Single(s => s.Name =="Llanos").ID, AccessLevel = AccessLevel.Parish},
-               new AdminInstitution { InstID = 5600000003,  FullName ="SEREMI Tarapacá",  	Name="SEREMI Tarapacá", CountryID = countries.Single(s => s.Code =="CL").ID,  AreaID=Areas.Single(s => s.Name =="De Tarapacá").ID, AccessLevel = AccessLevel.Parish},
-               new AdminInstitution { InstID = 5600003350,  FullName ="CAN Antofagasta",  	Name="CAN",        CountryID = countries.Single(s => s.Code =="CL").ID,  AreaID=Areas.Single(s => s.Name =="De Tarapacá").ID, AccessLevel = AccessLevel.Parish},
+               new AdminInstitution { InstID = 59100200000,  FullName ="Servicio Departamental de Salud La Paz",  	Name="SEDES LA PAZ", CountryID = countries.Single(s => s.Code =="BO").ID, AreaID=Areas.Single(s => s.Name =="Altiplano").ID, AccessLevel = AccessLevel.Area},
+               new AdminInstitution { InstID = 59100100004,  FullName ="Servicio Departamental de Salud Tarija",  	Name="SEDES TAR", CountryID = countries.Single(s => s.Code =="BO").ID, AreaID=Areas.Single(s => s.Name =="Valles").ID, AccessLevel = AccessLevel.Area},
+               new AdminInstitution { InstID = 59100100010,  FullName ="Servicio Departamental de Salud Santa Cruz ",  	Name="SEDES SCZ", CountryID = countries.Single(s => s.Code =="BO").ID, AreaID=Areas.Single(s => s.Name =="Llanos").ID, AccessLevel = AccessLevel.Area},
+               new AdminInstitution { InstID = 5600000003,  FullName ="SEREMI Tarapacá",  	Name="SEREMI Tarapacá", CountryID = countries.Single(s => s.Code =="CL").ID,  AreaID=Areas.Single(s => s.Name =="De Tarapacá").ID, AccessLevel = AccessLevel.Area},
+               new AdminInstitution { InstID = 5600003350,  FullName ="CAN Antofagasta",  	Name="CAN",        CountryID = countries.Single(s => s.Code =="CL").ID,  AreaID=Areas.Single(s => s.Name =="De Tarapacá").ID, AccessLevel = AccessLevel.Area},
                new AdminInstitution { InstID = 5600000000,  FullName ="Epidemiología del Ministerio de Salud de Chile",  	Name="EPI-MINSAL-CL",   CountryID = countries.Single(s => s.Code =="CL").ID, AreaID=Areas.Single(s => s.Name =="Metropolitana De Santiago ").ID, AccessLevel = AccessLevel.Country},
-               new AdminInstitution { InstID = 5600000001,  FullName ="SEREMI Metropolitana",  	Name="SEREMI Metropolitana",        CountryID = countries.Single(s => s.Code =="CL").ID, AreaID=Areas.Single(s => s.Name =="Metropolitana De Santiago").ID, AccessLevel = AccessLevel.Parish},
-               new AdminInstitution { InstID = 5600000002,  FullName ="SEREMI Valparaíso",  	Name="SEREMI Valparaíso",        CountryID = countries.Single(s => s.Code =="CL").ID, AreaID=Areas.Single(s => s.Name =="De Valparaíso").ID, AccessLevel = AccessLevel.Parish},
-               new AdminInstitution { InstID = 5600000005, FullName ="SEREMI Bio Bío",  	Name="SEREMI Bio Bío",        CountryID = countries.Single(s => s.Code =="CL").ID, AreaID=Areas.Single(s => s.Name =="Del Bío Bío").ID, AccessLevel = AccessLevel.Parish},
-               new AdminInstitution { InstID = 5600000006,  FullName ="SEREMI Los Lagos ",  	Name="SEREMI Los Lagos",        CountryID = countries.Single(s => s.Code =="CL").ID, AreaID=Areas.Single(s => s.Name =="De Los Lagos").ID, AccessLevel = AccessLevel.Parish},
+               new AdminInstitution { InstID = 5600000001,  FullName ="SEREMI Metropolitana",  	Name="SEREMI Metropolitana",        CountryID = countries.Single(s => s.Code =="CL").ID, AreaID=Areas.Single(s => s.Name =="Metropolitana De Santiago").ID, AccessLevel = AccessLevel.Area},
+               new AdminInstitution { InstID = 5600000002,  FullName ="SEREMI Valparaíso",  	Name="SEREMI Valparaíso",        CountryID = countries.Single(s => s.Code =="CL").ID, AreaID=Areas.Single(s => s.Name =="De Valparaíso").ID, AccessLevel = AccessLevel.Area},
+               new AdminInstitution { InstID = 5600000005, FullName ="SEREMI Bio Bío",  	Name="SEREMI Bio Bío",        CountryID = countries.Single(s => s.Code =="CL").ID, AreaID=Areas.Single(s => s.Name =="Del Bío Bío").ID, AccessLevel = AccessLevel.Area},
+               new AdminInstitution { InstID = 5600000006,  FullName ="SEREMI Los Lagos ",  	Name="SEREMI Los Lagos",        CountryID = countries.Single(s => s.Code =="CL").ID, AreaID=Areas.Single(s => s.Name =="De Los Lagos").ID, AccessLevel = AccessLevel.Area},
             };
             admininstitutions.ForEach(v => Institutions.AddOrUpdate(p => p.Name, v));
             SaveChanges();
@@ -2794,8 +2804,8 @@ namespace Paho.Models
             var hospitals = new List<Hospital>
             {
                new Hospital { InstID =59100100002, FullName ="Hospital San Juan de Dios Tarija",  	Name="HSJDD TAR",     CountryID = countries.Single(s => s.Code =="BO").ID, AreaID=Areas.Single(s => s.Name =="Valles").ID,  AccessLevel = AccessLevel.SelfOnly }, 
-               new Hospital { InstID =59100100006, FullName ="hospital San Juan de Dios",  	Name="HSJDD SCZ",        CountryID = countries.Single(s => s.Code =="BO").ID, AreaID=Areas.Single(s => s.Name =="Llanos").ID, AccessLevel = AccessLevel.Parish},
-               new Hospital { InstID =59100100007,  FullName ="Caja Nacional del Seguro Obrero Nro 3",  	Name="CNS Obrero 3",        CountryID = countries.Single(s => s.Code =="BO").ID,  AreaID=Areas.Single(s => s.Name =="Llanos").ID, AccessLevel = AccessLevel.Parish},
+               new Hospital { InstID =59100100006, FullName ="hospital San Juan de Dios",  	Name="HSJDD SCZ",        CountryID = countries.Single(s => s.Code =="BO").ID, AreaID=Areas.Single(s => s.Name =="Llanos").ID, AccessLevel = AccessLevel.Area},
+               new Hospital { InstID =59100100007,  FullName ="Caja Nacional del Seguro Obrero Nro 3",  	Name="CNS Obrero 3",        CountryID = countries.Single(s => s.Code =="BO").ID,  AreaID=Areas.Single(s => s.Name =="Llanos").ID, AccessLevel = AccessLevel.Area},
                new Hospital { InstID =59100100008,  FullName ="Hospital del Niño Santa Cruz",  	Name="HN SCZ",        CountryID = countries.Single(s => s.Code =="BO").ID, AreaID=Areas.Single(s => s.Name =="Llanos").ID, AccessLevel = AccessLevel.SelfOnly},
                new Hospital { InstID =59100200004,  FullName ="Hospital Arco Iris",  	Name="Hospital Arco Iris",        CountryID = countries.Single(s => s.Code =="BO").ID, AreaID=Areas.Single(s => s.Name =="Altiplano").ID, AccessLevel = AccessLevel.SelfOnly},
                new Hospital { InstID =59100200078,  FullName ="Hospital del Niño \"Ovidio Aliaga\"",  	Name="Hospital del Niño",        CountryID = countries.Single(s => s.Code =="BO").ID, AreaID=Areas.Single(s => s.Name =="Altiplano").ID, AccessLevel = AccessLevel.SelfOnly},

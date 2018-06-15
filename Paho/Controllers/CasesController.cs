@@ -107,11 +107,46 @@ namespace Paho.Controllers
         public JsonResult GetInstitutions(int? CountryID, int? AreaID, int? RegionID)
         {
 
-            if (RegionID != null )
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            var UsrCtry = user.Institution.CountryID;
+
+            if (AreaID != null && AreaID > 0)
+            {
+                var institutions =
+                 (
+                  from institution in db.Institutions as IQueryable<Institution>
+                  where institution.CountryID == UsrCtry && institution.AreaID == AreaID
+                  select new
+                  {
+                      Id = institution.ID,
+                      Name = institution.Name,
+                      InstitutionType = institution is Hospital ? InstitutionType.Hospital : InstitutionType.Lab
+                      //InstitutionType = InstitutionType.Hospital
+                  }).ToArray();
+
+
+                var institutionsDisplay = institutions.Select(i => new LookupView<Institution>()
+                {
+                    Id = i.Id.ToString(),
+                    Name = i.Name
+                }).ToList();
+
+                if (institutions.Count() > 1)
+                {
+                    var all = new LookupView<Institution> { Id = "0", Name = getMsg("msgGeneralMessageAll") };
+                    institutionsDisplay.Insert(0, all);
+                }
+                else if (institutions.Count() == 0)
+                {
+                    var all = new LookupView<Institution> { Id = "0", Name = "-- Sin unidades centinela --" };
+                    institutionsDisplay.Insert(0, all);
+                }
+                return Json(institutionsDisplay, JsonRequestBehavior.AllowGet);
+
+            }
+            else if (RegionID != null  && RegionID > 0)
             {
 
-                var user = UserManager.FindById(User.Identity.GetUserId());
-                var UsrCtry = user.Institution.CountryID;
                 //Refrescar institucion en el combo segun la region a la que pertenecen
 
                 var institutions =
@@ -335,6 +370,7 @@ namespace Paho.Controllers
             var RecordId = SRecordId;
             var UsrAccessLevel = user.Institution.AccessLevel;
             var UsrRegion = user.Institution.cod_region_institucional;
+            var UsrArea = user.Institution.AreaID;
             var UsrInstitution = user.Institution.ID;
 
             var Access_Lever_IT = false;
@@ -381,7 +417,19 @@ namespace Paho.Controllers
                 {
                     flucases = flucases.Where(k => list_regions.Contains(k.HospitalID));
                 }
-            } 
+            }
+
+            if ((areaId > 0 || UsrAccessLevel == AccessLevel.Area) && institutionId == 0)
+            {
+                var AreaId_ = (UsrAccessLevel == AccessLevel.Area) ? UsrArea : areaId;
+                var Areas = db.Institutions.Where(l => l.AreaID == AreaId_);
+                var list_areas = Areas.Select(i => i.ID).ToList();
+
+                if (list_areas.Any())
+                {
+                    flucases = flucases.Where(k => list_areas.Contains(k.HospitalID));
+                }
+            }
 
             var pageIndex = Convert.ToInt32(page) - 1;
             var pageSize = rows;

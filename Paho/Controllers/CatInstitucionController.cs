@@ -298,6 +298,13 @@ namespace Paho.Controllers
             var nivelQuery = from AccessLevel e in Enum.GetValues(typeof(AccessLevel)) select new { Id = e, Name = e.ToString() };
             ViewBag.AccessLevel = new SelectList(nivelQuery, "Id", "Name", selectedNivel);
 
+            if (user.Institution.CountryID == 17)
+            {
+                var nivelQuery_JAM = from AccessLevel_JAM e in Enum.GetValues(typeof(AccessLevel)) select new { Id = e, Name = e.ToString() };
+                ViewBag.AccessLevel = new SelectList(nivelQuery_JAM, "Id", "Name", selectedNivel);
+            }
+
+
             var tipoQuery = from InstitutionType e in Enum.GetValues(typeof(InstitutionType)) select new { Id = e, Name = e.ToString() };
             ViewBag.InstitutionType = new SelectList(tipoQuery, "Id", "Name", selectedTipo);
 

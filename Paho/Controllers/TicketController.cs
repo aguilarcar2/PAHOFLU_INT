@@ -47,7 +47,7 @@ namespace Paho.Controllers
                     institutions = db.Institutions.OfType<Hospital>()
                                   .Where(i => i.CountryID == user.Institution.CountryID);
                 }
-                else if (user.Institution.AccessLevel == AccessLevel.Parish)
+                else if (user.Institution.AccessLevel == AccessLevel.Area)
                 {
                     institutions = db.Institutions.OfType<Hospital>()
                                    .Where(i => i.AreaID == user.Institution.AreaID);

@@ -18,14 +18,14 @@
             }
             @if (Model.DisplayAreas)
             {
-                <div id="RegionalsGroup" class='input-group col-md-7' style="margin-top: 7px; display: none; float: left" data-bind="visible: displayFilters">
+                <div id="AreasGroup" class='input-group col-md-7' style="margin-top: 7px; display: none; float: left" data-bind="visible: displayFilters">
                     <span class="input-group-addon">
-                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgRegionals"))
+                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgAreas"))
                     </span>
-                    <select id="Regionals" class="form-control" data-bind="options: regions,
+                    <select id="Areas" class="form-control" data-bind="options: areas,
                        optionsText: 'Name',
                        optionsValue: 'Id',
-                       value: selectedRegionId,
+                       value: selectedAreaId,
                        event:{ change: ReloadFluCases}"></select>
                 </div>
             }
@@ -5190,6 +5190,7 @@
 <script type="text/javascript">
     // Configuration and Catalogs
     var countries = @Html.Raw(Json.Encode(Model.Countries));
+    var areas= @Html.Raw(Json.Encode(Model.Areas));
     var regions= @Html.Raw(Json.Encode(Model.Regions));
     var labs = @Html.Raw(Json.Encode(Model.Labs));
     var institutions = @Html.Raw(Json.Encode(Model.Institutions));
@@ -5318,7 +5319,7 @@
     var msgValidateRecDateInvalid = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateRecDateInvalid")))";
     var msgValidateRecDateShipDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateRecDateShipDate")))";
     var msgValidateRecDateShipDateIC = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateRecDateShipDateIC")))";
-    
+
     var msgValidateInsertResult = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateInsertResult")))";
     var msgValidateFinalResultDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateFinalResultDate")))";
     var msgValidateFinalResultDateInvalid = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateFinalResultDateInvalid")))";
@@ -5399,6 +5400,7 @@
                 datatype: "json",
                 postData: { institutionId: function () { if (typeof app !== 'undefined') { return app.Views.Home.selectedInstitutionId(); }; } ,
                     regionId: function () { if (typeof app !== 'undefined') { return app.Views.Home.selectedRegionId(); }; } ,
+                    areaId: function () { if (typeof app !== 'undefined') { return app.Views.Home.selectedAreaId(); }; } ,
                     ScaseNo: function () { return $("#SCasenumber").val()},
                     ShospReg: function () { return $("#SHospRegis").val()},
                     Sstatus:function () { return $("#SCaseStatus").val()},
@@ -5549,6 +5551,7 @@
                 datatype: "json",
                 postData: { institutionId: function () { if (typeof app !== 'undefined') { return app.Views.Home.selectedInstitutionId(); }; } ,
                     regionId: function () { if (typeof app !== 'undefined') { return app.Views.Home.selectedRegionId(); }; } ,
+                    areaId: function () { if (typeof app !== 'undefined') { return app.Views.Home.selectedAreaId(); }; } ,
                     ScaseNo: function () { return $("#SCasenumber").val()},
                     ShospReg: function () { return $("#SHospRegis").val()},
                     Sstatus:function () { return $("#SCaseStatus").val()},
