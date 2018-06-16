@@ -372,6 +372,7 @@ namespace Paho.Controllers
             var UsrRegion = user.Institution.cod_region_institucional;
             var UsrArea = user.Institution.AreaID;
             var UsrInstitution = user.Institution.ID;
+            string language = user.Institution.Country.Language.ToString();     //#### CAFQ: 180604 - Jamaica Universal
 
             var Access_Lever_IT = false;
 
@@ -563,6 +564,7 @@ namespace Paho.Controllers
                                  select new
                                  {
                                      surv_ID = flucase.Surv,
+                                     surv_IDInusual = flucase.SurvInusual,    //#### CAFQ: 180604 - Jamaica Universal
                                      id_D = flucase.ID,
                                      H_D = flucase.HospitalDate,
                                      LN_D = flucase.LName1 + " " + flucase.LName2 ?? "",
@@ -585,7 +587,9 @@ namespace Paho.Controllers
                                        id = x.id_D.ToString(),
                                        cell = new string[]
                                      {
-                                         "<img src='/Content/themes/base/images/" + x.surv_ID.ToString() + "_" + user.Institution.Country.Language.ToString() + ".png' alt='"+ (x.surv_ID == 1 ? "SARI":"ILI") + "'/>",
+                                         //#### CAFQ: 180604 - Jamaica Universal
+                                         //"<img src='/Content/themes/base/images/" + x.surv_ID.ToString() + "_" + user.Institution.Country.Language.ToString() + ".png' alt='"+ (x.surv_ID == 1 ? "SARI":"ILI") + "'/>",
+                                         "<img src='/Content/themes/base/images/" + ((UsrCtry==17 && (bool)x.surv_IDInusual==true) ? Convert.ToInt32((bool)x.surv_IDInusual).ToString() + "_" + "UNI" + ".png' alt='" + "UNIVERSAL" : x.surv_ID.ToString() + "_" + language + ".png' alt='" + (x.surv_ID == 1 ? "SARI":"ILI")) + "'/>",
                                          x.id_D.ToString(),
                                          //x.H_D.ToString("d", CultureInfo.CreateSpecificCulture("es-GT")),
                                          x.H_D.ToString((user.Institution.CountryID==17) ? "yyyy/MM/dd": "dd/MM/yyyy" ),
@@ -862,12 +866,15 @@ namespace Paho.Controllers
             int? OcupacMercAnimVivos                //#### CAFQ*/
             )
         {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            var UsrCtry = user.Institution.CountryID;
             FluCase flucase;
-            var DateDummyRange1 = DateFeverDummy.Date.AddDays(1);
-            var DateDummyRange2 = DateFeverDummy.Date.AddDays(-10);
+            /*var DateDummyRange1 = DateFeverDummy.Date.AddDays(1);         //#### CAFQ: 180604 - Jamaica Universal
+            var DateDummyRange2 = DateFeverDummy.Date.AddDays(-10);*/
 
             if (!id.HasValue)
             {
+                /*  //#### CAFQ: 180604 - Jamaica Universal
                 var flucases = db.FluCases.Where(f => f.NoExpediente == NoExpediente.ToUpper() && (f.FeverDate < DateDummyRange1 && f.FeverDate >= DateDummyRange2)).ToList();
 
                 if (flucases.Any())
@@ -877,7 +884,6 @@ namespace Paho.Controllers
                     //db.Entry(flucase).State = EntityState.Modified;
                     flucase = db.FluCases.Find(id);
                     return Json("El registro ya existe por favor verifique. Último registro: " + flucases.First().ID.ToString() );
-
                 }
                 else
                 {
@@ -885,8 +891,39 @@ namespace Paho.Controllers
                     flucase.HospitalID = HospitalId;
                     flucase.flow = 0;
                     db.Entry(flucase).State = EntityState.Added;
+                }*/
 
+                //#### CAFQ: 180604 - Jamaica Universal
+                if (UsrCtry == 17 && SInusual == true)       // Jamaica Universal
+                {
+                    flucase = new FluCase();
+                    flucase.HospitalID = HospitalId;
+                    flucase.flow = 0;
+                    db.Entry(flucase).State = EntityState.Added;
                 }
+                else
+                {
+                    var DateDummyRange1 = DateFeverDummy.Date.AddDays(1);
+                    var DateDummyRange2 = DateFeverDummy.Date.AddDays(-10);
+                    var flucases = db.FluCases.Where(f => f.NoExpediente == NoExpediente.ToUpper() && (f.FeverDate < DateDummyRange1 && f.FeverDate >= DateDummyRange2)).ToList();
+
+                    if (flucases.Any())
+                    {
+                        //id = flucases.First().ID;
+                        //flucase = db.FluCases.Find(id);
+                        //db.Entry(flucase).State = EntityState.Modified;
+                        flucase = db.FluCases.Find(id);
+                        return Json("El registro ya existe por favor verifique. Último registro: " + flucases.First().ID.ToString());
+                    }
+                    else
+                    {
+                        flucase = new FluCase();
+                        flucase.HospitalID = HospitalId;
+                        flucase.flow = 0;
+                        db.Entry(flucase).State = EntityState.Added;
+                    }
+                }
+                //####
             }
             else
             {
@@ -918,7 +955,7 @@ namespace Paho.Controllers
             flucase.TrabajoEstablec = TrabajoEstablec;                          //#### CAFQ
             flucase.ContactoAnimVivos = ContactoAnimVivos;                      //#### CAFQ
             flucase.OcupacMercAnimVivos = OcupacMercAnimVivos;                  //#### CAFQ*/
-            flucase.InsertDate = DateTime.Now;
+                flucase.InsertDate = DateTime.Now;
             //flucase.UserID = User.Identity.Name;
             try
             {
@@ -1334,6 +1371,7 @@ namespace Paho.Controllers
                     Destin = flucase.Destin,
                     DestinICU = flucase.DestinICU,
                     HallRadio = flucase.HallRadio,
+                    HallRadioFindings = flucase.HallRadioFindings,      //#### CAFQ
                     UCInt = flucase.UCInt,
                     UCri = flucase.UCri,
                     MecVent = flucase.MecVent,
@@ -1522,6 +1560,7 @@ namespace Paho.Controllers
                 DateTime? FalleDate,
                 string InstReferName,
                 bool? HallRadio,
+                string HallRadioFindings,                       //#### CAFQ
                 bool? UCInt,
                 bool? UCri,
                 bool? MecVent,
@@ -1641,6 +1680,7 @@ namespace Paho.Controllers
             flucase.DiagOtroAdm = DiagOtroAdm;
             flucase.DestinICU = DestinICU;
             flucase.HallRadio = HallRadio;
+            flucase.HallRadioFindings = HallRadioFindings;          //#### CAFQ*/
             flucase.UCInt = UCInt;
             flucase.UCri = UCri;
             flucase.MecVent = MecVent;

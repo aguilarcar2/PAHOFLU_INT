@@ -353,6 +353,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Content\themes\base\images\1_ENG.png" />
     <Content Include="Content\themes\base\images\1_SPA.png" />
+    <Content Include="Content\themes\base\images\1_UNI.png" />
     <Content Include="Content\themes\base\images\2_ENG.png" />
     <Content Include="Content\themes\base\images\2_SPA.png" />
     <Content Include="Content\themes\base\images\ajax-loader.gif" />

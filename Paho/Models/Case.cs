@@ -246,6 +246,7 @@ namespace Paho.Models
         public int? DiagAdm { get; set; }
         public string DiagOtroAdm { get; set; }
         public bool? HallRadio { get; set; }
+        public string HallRadioFindings { get; set; }           //**** CAFQ
         public bool? MecVent { get; set; }
         public int? DiagEg { get; set; }
         public bool? DifResp { get; set; }
@@ -994,6 +995,7 @@ namespace Paho.Models
         public int? DiagAdm { get; set; }
         public string DiagOtroAdm { get; set; }
         public bool? HallRadio { get; set; }
+        public string HallRadioFindings { get; set; }               //#### CAFQ
         public bool? MecVent { get; set; }
         public bool? UCInt { get; set; } //Unidad de cuidados intermedios 
         public bool? UCri { get; set; } //Unidad crítica
@@ -1726,6 +1728,7 @@ namespace Paho.Models
                    p.DiagAdm,
                    p.DiagOtroAdm,
                    p.HallRadio,
+                   p.HallRadioFindings,             //#### CAFQ
                    p.UCInt,
                    p.UCri, 
                    p.MecVent,

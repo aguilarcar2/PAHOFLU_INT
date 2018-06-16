@@ -190,12 +190,11 @@
 	</div>
 </div>
 
+<!-- New -->
 @if(ViewBag.UserInstitutionType != 2)
 {
     <div class="row" style="margin-top:1em;" data-bind="visible: newButton">
         <div class="col-md-8">
-            
-                
             @if (User.IsInRole("Staff"))
             {
                 <div class="col-md-4">
@@ -204,7 +203,6 @@
                     </div>
                 </div>
             }
-
         </div>
     </div>
 }
@@ -2708,35 +2706,38 @@
                     </div>
                 </div>
             }
-			@if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 3 ){
-            <div class="row rowform">
-                <div class="col-md-3" data-bind="visible:EnableCHI() && app.Views.Contact.NoActiveBOL()">
-                    <label class="btn btn-default">
-                        <input type="checkbox" name="HallRadio" id="HallRadio" value="1" data-bind="checked: HallRadio"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelRadiologicalFindings"))
-                    </label>
-                </div>
-                <div class="col-md-3" data-bind="visible:app.Views.Contact.NoActiveBOL">
-                    <label class="btn btn-default">
-                        <input type="checkbox" name="MecVent" id="MecVent" value="1" data-bind="checked: MecVent"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelRespiratorySupport")) 
-                    </label>
-                </div>
-                <div class="col-md-3" data-bind="visible:EnableCHI() && app.Views.Contact.NoActiveBOL()">
-                    <label class="btn btn-default">
-                        <input type="checkbox" name="UCInt" id="UCInt" value="1" data-bind="checked: UCInt"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelTransitionalCareUnit"))
-                    </label>
-                </div>
-                <div class="col-md-3" data-bind="visible:EnableCHI() && app.Views.Contact.NoActiveBOL()">
-                    <label class="btn btn-default">
-                        <input type="checkbox" name="UCri" id="UCri" value="1" data-bind="checked: UCri"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelCriticalCareUnit"))
-                    </label>
-                </div>
-                @if (ViewBag.UsrCtry == 7)
-                {
-                    <div class="col-md-3">
+			@if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 119)
+            {
+                <div class="row rowform">
+                    <!-- <div class="col-md-3" data-bind="visible:EnableCHI() && app.Views.Contact.NoActiveBOL()"> -->
+                    <div class="@((ViewBag.UsrCtry == 119) ?  "col-md-2" : "col-md-3")" data-bind="visible:(EnableCHI() && app.Views.Contact.NoActiveBOL()) || app.Views.Contact.ActiveCAY()">
                         <label class="btn btn-default">
-                            <input type="checkbox" name="MecVentNoInv" id="MecVentNoInv" value="1" data-bind="checked: MecVentNoInv"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNIMV"))
+                            <input type="checkbox" name="HallRadio" id="HallRadio" value="1" data-bind="checked: HallRadio"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelRadiologicalFindings"))
                         </label>
                     </div>
+                    <div class="col-md-3" data-bind="visible:app.Views.Contact.NoActiveBOL && app.Views.Contact.NoActiveCAY()">
+                        <label class="btn btn-default">
+                            <input type="checkbox" name="MecVent" id="MecVent" value="1" data-bind="checked: MecVent"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelRespiratorySupport")) 
+                        </label>
+                    </div>
+                    <div class="col-md-3" data-bind="visible:EnableCHI() && app.Views.Contact.NoActiveBOL() && app.Views.Contact.NoActiveCAY()">
+                        <label class="btn btn-default">
+                            <input type="checkbox" name="UCInt" id="UCInt" value="1" data-bind="checked: UCInt"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelTransitionalCareUnit"))
+                        </label>
+                    </div>
+                    <div class="col-md-3" data-bind="visible:EnableCHI() && app.Views.Contact.NoActiveBOL() && app.Views.Contact.NoActiveCAY()">
+                        <label class="btn btn-default">
+                            <input type="checkbox" name="UCri" id="UCri" value="1" data-bind="checked: UCri"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelCriticalCareUnit"))
+                        </label>
+                    </div>
+                    <!-- Ventilacion mecanica no invasiva / ECMO / VAFO -->
+                    @if (ViewBag.UsrCtry == 7)
+                    {
+                        <div class="col-md-3">
+                            <label class="btn btn-default">
+                                <input type="checkbox" name="MecVentNoInv" id="MecVentNoInv" value="1" data-bind="checked: MecVentNoInv"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNIMV"))
+                            </label>
+                        </div>
                         <div class="col-md-3">
                             <label class="btn btn-default">
                                 <input type="checkbox" name="ECMO" id="ECMO" value="1" data-bind="checked: ECMO"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelECMO"))
@@ -2747,10 +2748,20 @@
                                 <input type="checkbox" name="VAFO" id="VAFO" value="1" data-bind="checked: VAFO"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelHFOV"))
                             </label>
                         </div>
-                }
-            </div>
-
-
+                    }
+                    <!-- Descripcion/Hallazgos -->
+                    @if (ViewBag.UsrCtry == 119)
+                    {
+                        <div class="col-md-3" data-bind="visible: HallRadioFindingsShow">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelHallRadioFindings"))
+                                </span>
+                                <input id="HallRadioFindings" type='text' class="form-control" data-bind="value: HallRadioFindings" />
+                            </div>
+                        </div>
+                    }
+                </div>
             }
 
             @if (ViewBag.UsrCtry == 17)

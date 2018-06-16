@@ -735,7 +735,8 @@
         //}
 
         if (!self.AntiViral())
-            msg += "\n" + msgValidationAntiviralTreatment;
+            if (!(self.UsrCountry() == 17 && app.Views.Contact.SurvInusual() == 1))    //#### CAFQ: 180604 - Jamaica Universal
+                msg += "\n" + msgValidationAntiviralTreatment;
 
         if (self.EnableAntiViralDate() && app.Views.Contact.SurvSARI() == true) {
             if (date_antiviral == null)
@@ -754,7 +755,8 @@
         }
 
         if (!self.RiskFactors() || self.RiskFactors() == "")
-            msg += "\n" + msgValidationRiskFactor;
+            if (!(self.UsrCountry() == 17 && app.Views.Contact.SurvInusual() == 1))    //#### CAFQ: 180604 - Jamaica Universal
+                msg += "\n" + msgValidationRiskFactor;
 
         if (app.Views.Contact.ActiveBOL()) {
             if (!self.Comorbidities() || self.Comorbidities() == "")

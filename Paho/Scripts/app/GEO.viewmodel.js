@@ -312,7 +312,8 @@
 
         if (self.UsrCountry() == self.selectedCountryId()) {
             if (!self.selectedAreaId() || self.selectedAreaId() == "") {
-                msg += "\n" + msgValidationAreaRequired;
+                if (!(self.UsrCountry() == 17 && app.Views.Contact.SurvInusual() == 1))    //#### CAFQ: 180604 - Jamaica Universal
+                    msg += "\n" + msgValidationAreaRequired;
             }
                 
             if ((!self.selectedStateId() || self.selectedStateId() == "") && self.UsrCountry() != 17 && self.UsrCountry() != 119) {
