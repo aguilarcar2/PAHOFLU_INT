@@ -5205,7 +5205,8 @@
     var regions= @Html.Raw(Json.Encode(Model.Regions));
     var labs = @Html.Raw(Json.Encode(Model.Labs));
     var institutions = @Html.Raw(Json.Encode(Model.Institutions));
-    var selcty = @ViewBag.UsrCtry;
+    //var selcty = @ViewBag.UsrCtry;
+    var selcty = @(ViewBag.UsrCtry);
     var reg_inst_usr = @Html.Raw(Json.Encode(Model.reg_inst_usr));
     var reg_salu_usr = @Html.Raw(Json.Encode(Model.reg_salu_usr));
     var reg_pais_usr = @Html.Raw(Json.Encode(Model.reg_pais_usr));
@@ -5706,64 +5707,60 @@
 </script>
 
 <script type="text/javascript">
+    function loadData(id) {
+        //alert(id);
+        app.Views.Home.EditFluCase();
+        app.Views.Contact.GetContact(id);
+        app.Views.Home.FlowData();
+        app.Views.GEO.GetGEO(id);
+        app.Views.Risk.GetRisk(id);
+        app.Views.Hospital.GetHospital(id);
+        app.Views.Home.FlowDataLab();
+        app.Views.Lab.GetLab(id);
+        app.Views.Home.FlowDataLabAfter();
+        app.Views.Home.FlowDataCaseStatus();
+        app.Views.Home.GetRecordHistory(id);
+    };
 
-            function loadData(id) {
-                //alert(id);
-                app.Views.Home.EditFluCase();
-                app.Views.Contact.GetContact(id);
-                app.Views.Home.FlowData();
-                app.Views.GEO.GetGEO(id);
-                app.Views.Risk.GetRisk(id);
-                app.Views.Hospital.GetHospital(id);
-                app.Views.Home.FlowDataLab();
-                app.Views.Lab.GetLab(id);
-                app.Views.Home.FlowDataLabAfter();
-                app.Views.Home.FlowDataCaseStatus();
-                app.Views.Home.GetRecordHistory(id);
-
-
-            };
-
-
-            $(function () {
-                $("#tabs").tabs();
-                @if (!Model.DisplayCountries && Model.DisplayHospitals)
-                {
-                    if (ViewBag.UserInstitutionType == 1)
-                    {
-                        <text>
-                        $("#tab-lab :input").prop('disabled', true);
+    $(function () {
+        $("#tabs").tabs();
+        @if (!Model.DisplayCountries && Model.DisplayHospitals)
+        {
+            if (ViewBag.UserInstitutionType == 1)
+            {
+                <text>
+                $("#tab-lab :input").prop('disabled', true);
                 </text>
-                            }
-                            else
-                            {
-                        <text>
-                        //alert("aqui");
-                        $("#tab-lab :input").prop('disabled', false);
-                        </text>
-                            }
-                        <text>
-                        $("#HospitalsGroup").show();
+            }
+            else
+            {
+                <text>
+                //alert("aqui");
+                $("#tab-lab :input").prop('disabled', false);
                 </text>
+            }
+            <text>
+            $("#HospitalsGroup").show();
+            </text>
 
-                        }
-                        else if (!Model.DisplayCountries)
-                        {
-                        <text>
-                //alert("aqui2");
-                        $("#tab-contact :input, #tab-GEO :input, #tab-hospital :input, #tab-risk :input, #tab-case :input").attr('disabled', true);
-                        $("#tab-lab :input").prop('disabled', true);
-                        $("#LabsGroup").show();
-                        </text>
-                    }
+        }
+        else if (!Model.DisplayCountries)
+        {
+            <text>
+            //alert("aqui2");
+            $("#tab-contact :input, #tab-GEO :input, #tab-hospital :input, #tab-risk :input, #tab-case :input").attr('disabled', true);
+            $("#tab-lab :input").prop('disabled', true);
+            $("#LabsGroup").show();
+            </text>
+        }
 
-                @if ((User.IsInRole("Reader") || User.IsInRole("Report")) && !User.IsInRole("Staff"))
-                {
-                        <text>
-                        $("#tab-contact :input, #tab-GEO :input, #tab-hospital :input, #tab-risk :input, #tab-case :input, #tab-lab :input").prop('disabled', true);
-                        </text>
-                }
-            });
+        @if ((User.IsInRole("Reader") || User.IsInRole("Report")) && !User.IsInRole("Staff"))
+        {
+            <text>
+            $("#tab-contact :input, #tab-GEO :input, #tab-hospital :input, #tab-risk :input, #tab-case :input, #tab-lab :input").prop('disabled', true);
+            </text>
+        }
+    });
 
 </script>
 <!-- /ko -->

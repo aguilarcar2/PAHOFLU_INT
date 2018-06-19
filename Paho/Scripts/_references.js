@@ -769,6 +769,7 @@
 /// <reference path="app/report.viewmodel.js" />
 /// <reference path="app/risk.viewmodel.js" />
 /// <reference path="app/summary.viewmodel.js" />
+/// <reference path="app/summaryjm.viewmodel.js" />
 /// <reference path="app/ticket.viewmodel.js" />
 /// <reference path="bootstrap.js" />
 /// <reference path="bootstrap-datetimepicker.js" />

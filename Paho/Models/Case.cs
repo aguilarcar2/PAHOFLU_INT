@@ -41,9 +41,7 @@ namespace Paho.Models
         public string reg_salu_usr { get; set; }
         public string reg_pais_usr { get; set; }
 
-
         // Catalogos de laboratorio
-
         public IEnumerable<LookupView<CatSampleNoProcessed>> CSNP { get; set; }
         public IEnumerable<LookupView<CatTestType>> CTT { get; set; }
         public IEnumerable<LookupView<CatTestResult>> CTR { get; set; }
@@ -51,7 +49,6 @@ namespace Paho.Models
         public IEnumerable<LookupView<CatVirusSubType>> CVST { get; set; }
         public IEnumerable<LookupView<CatVirusSubType>> CVST_Test { get; set; }
         public IEnumerable<LookupView<CatVirusLinaje>> CVL { get; set; }
-
         public IEnumerable<LookupView<CatNativePeople>> CNP { get; set; }
         public IEnumerable<LookupView<CatVaccinSource>> CVS { get; set; }
         public IEnumerable<LookupView<CatOccupation>> CatOccupations { get; set; }              //**** CAFQ
@@ -275,6 +272,7 @@ namespace Paho.Models
         //public virtual ICollection<CaseLabTest> CaseLabTests { get; set; }
 
 }
+
     public class SummaryViewModel
     {
         public IEnumerable<CountryView> Countries { get; set; }
@@ -286,6 +284,18 @@ namespace Paho.Models
         public string DatePickerConfig { get; set; }
         public string DateFormatDP { get; set; }
         //public int? UsrCtry { get; set; }
+    }
+
+    public class SummaryJMViewModel             //#### CAFQ: Summary Jamaica
+    {
+        public IEnumerable<CountryView> Countries { get; set; }
+        public IEnumerable<LookupView<Institution>> Institutions { get; set; }
+        public IEnumerable<CatAgeGroupJM> CatAgeGroup { get; set; }
+        public bool DisplayCountries { get; set; }
+        public bool DisplayRegionals { get; set; }
+        public bool DisplayHospitals { get; set; }
+        public string DatePickerConfig { get; set; }
+        public string DateFormatDP { get; set; }
     }
 
     public class ReportViewModel
@@ -348,6 +358,7 @@ namespace Paho.Models
             InsertDate = LastUpdate = DateTime.Now;
         }
     }
+
     public class Country
     {
         public int ID { get; set; }
@@ -359,6 +370,7 @@ namespace Paho.Models
         public virtual ICollection<Area> Areas { get; set; }
         public string Language { get; set; }
     }
+
     public class CatRegionType
     {
         public int ID { get; set; }
@@ -417,6 +429,34 @@ namespace Paho.Models
         [Required]
         [StringLength(30)]
         [Display(Name = "FLUID")]
+        public string label_fluid { get; set; }
+    }
+
+    public class CatAgeGroupJM                  //#### CAFQ: Summary Jamaica
+    {
+        public int id { get; set; }
+        [Display(Name = "ID")]
+
+        public int id_conf_country { get; set; }
+        [Required]
+        [StringLength(50)]
+        [Display(Name = "Grupo de Edad")]
+
+        public string AgeGroup { get; set; }
+
+        public int id_country { get; set; }
+        [Required]
+        [Display(Name = "Mes Inicia")]
+
+        public int month_begin { get; set; }
+        [Required]
+        [Display(Name = "Mes Finaliza")]
+
+        public int month_end { get; set; }
+        [Required]
+        [StringLength(30)]
+        [Display(Name = "FLUID")]
+
         public string label_fluid { get; set; }
     }
 
@@ -536,7 +576,6 @@ namespace Paho.Models
 
     public class CatVirusSubType
     {
-
         public int ID { get; set; }
         public string SPA { get; set; }
         public string ENG { get; set; }
@@ -554,7 +593,6 @@ namespace Paho.Models
 
     public class CatVirusLinaje
     {
-
         public int ID { get; set; }
         public string SPA { get; set; }
         public string ENG { get; set; }
@@ -568,14 +606,12 @@ namespace Paho.Models
 
     public class CatStatusCase
     {
-
         public int ID { get; set; }
         public string SPA { get; set; }
         public string ENG { get; set; }
         public int? orden { get; set; }
     }
     // Termina catalogos generales
-
 
     public class Area
     {
@@ -1268,6 +1304,18 @@ namespace Paho.Models
         public virtual ICollection<CaseSummaryDetail> CaseSummaryDetails { get; set; }
     }
 
+    public class CaseSummaryJM : CaseBase                   //#### CAFQ: Summary Jamaica
+    {
+        public int Id { get; set; }
+        public int HospitalId { get; set; }                 //#### CAFQ: Summary Jamaica
+        public DateTime WeekendDate { get; set; }           //#### CAFQ: Summary Jamaica
+        public int? EW { get; set; }
+        public int? EpiYear { get; set; }
+
+        [ForeignKey("CaseSummaryId")]
+        public virtual ICollection<CaseSummaryDetailJM> CaseSummaryDetailJM { get; set; }
+    }
+
     public class CaseSummaryDetail
     {
         public int Id { get; set; }
@@ -1298,6 +1346,16 @@ namespace Paho.Models
         public int? VentFem { get; set; }
         public int? VentMaso { get; set; }
         public int? VentST { get; set; }
+    }
+
+    public class CaseSummaryDetailJM                   //#### CAFQ: Summary Jamaica
+    {
+        public int Id { get; set; }
+        public int CaseSummaryId { get; set; }
+        public int AgeGroup { get; set; }
+        public int ILICases { get; set; }
+        public int ILISamplesTaken { get; set; }
+        public int TotalVisits { get; set; }
     }
 
     public class Report
@@ -1424,6 +1482,7 @@ namespace Paho.Models
         Age_35_to_64_years = 5,
         Age_65_years_and_over = 6
     }
+
     public enum AgeGroup_SUR
     {
         Age_child_under_6_months = 1,
@@ -1479,12 +1538,14 @@ namespace Paho.Models
         Third = 3,
         Unknown = 9
     }
+
     public enum Pregnant
     {
         Sí = 1,
         No = 0,
         Desconocido = 9
     }
+
     public enum VaccineOptions
     {
         Sí = 1,
@@ -1560,7 +1621,7 @@ namespace Paho.Models
         public DbSet<CatVirusSubTypeConfByLab> CatVirusSubTypeConfByLab { get; set; }
         public DbSet<CatVirusLinaje> CatVirusLinaje { get; set; }
         public DbSet<CatAgeGroup> CatAgeGroup { get; set; }
-
+        public DbSet<CatAgeGroupJM> CatAgeGroupJM { get; set; }
         public DbSet<CatAntiviral> CatAntiviral { get; set; }
         public DbSet<CatNativePeople> CatNativePeople { get; set; }
         public DbSet<CatVaccinSource> CatVaccinSource { get; set; }
@@ -1571,6 +1632,7 @@ namespace Paho.Models
 
         public DbSet<CaseLabTest> CaseLabTests { get; set; }
         public DbSet<CaseSummary> CaseSummaries { get; set; }
+        public DbSet<CaseSummaryJM> CaseSummariesJM { get; set; }       //#### CAFQ: Summary Jamaica
         public DbSet<Report> Reports { get; set; }
         public DbSet<ReportCountry> ReportsCountries { get; set; }
         public DbSet<ImportLog> ImportedFileList { get; set; }
