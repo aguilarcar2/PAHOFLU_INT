@@ -205,10 +205,10 @@
         }
         else {
 
-            if (self.selectedAreaId() > 0) {
+            if (self.selectedAreaId() > -1) {
                 self.ReloadInstitutions();
             }
-            if (self.selectedRegionId() > 0) {
+            if (self.selectedRegionId() > -1) {
                 self.ReloadInstitutions();
             }
             //else {
@@ -420,6 +420,7 @@
     self.FlowData = function () {
         //console.log("FlowData - frecord_flowMax -- " + app.Views.Contact.flow_max() + ", frecord_flowdata -- " + app.Views.Contact.flow_record() + ", finsti_flowdata -- " + app.Views.Contact.flow_institution() + ", dataStatement_flowdata -- " + app.Views.Contact.DataStatement() + ", userRole " + self.UserRole() + ", Inst" + $("#ITy").val());
         
+
         if (($("#ITy").val() != 2) && self.UserRole() == "adm") {
             //console.log("aqui _ adm");
             $("#tab-contact :input, #tab-GEO :input, #tab-hospital :input, #tab-risk :input, #tab-case :input").attr('disabled', false);
@@ -461,7 +462,16 @@
             return x.EndFlow() === "TRUE";
         });
         //console.log("FlowDataCaseStatus_ " + flow_check.length);
-        if (app.Views.Hospital.CaseStatus() == "3" && self.UserRole() != "adm") {
+        if (($("#ITy").val() != 2) && self.UserRole() == "mod_epi" && app.Views.Hospital.CaseStatus() == "3") {
+
+            $("#tab-contact :input, #tab-GEO :input, #tab-hospital :input, #tab-risk :input, #tab-case :input").attr('disabled', false);
+            $("#tab-lab :input").prop('disabled', true);
+            $("a[href*='tab-case']").show();
+            $("#tab-case").show();
+            $("#CaseStatus").attr("disabled", false);
+            $("#tabs").tabs("refresh");
+
+        } else if (app.Views.Hospital.CaseStatus() == "3" && self.UserRole() != "adm") {
             console.log("aqui _ CaseStatus 3"); //
             $("#tabs :input").prop('disabled', true); // Modificacion para que se pueda modificar el registro aunque este cerrado el caso.
             self.ModDataNo();

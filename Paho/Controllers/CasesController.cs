@@ -115,7 +115,7 @@ namespace Paho.Controllers
                 var institutions =
                  (
                   from institution in db.Institutions as IQueryable<Institution>
-                  where institution.CountryID == UsrCtry && institution.AreaID == AreaID
+                  where institution.CountryID == UsrCtry && institution.AreaID == AreaID && institution is Hospital
                   select new
                   {
                       Id = institution.ID,
@@ -152,7 +152,7 @@ namespace Paho.Controllers
                 var institutions =
                  (
                   from institution in db.Institutions as IQueryable<Institution>
-                  where institution.CountryID == UsrCtry 
+                  where institution.CountryID == UsrCtry && institution is Hospital
                   select new
                   {
                       Id = institution.ID,
@@ -166,7 +166,7 @@ namespace Paho.Controllers
                     institutions =
                  (
                   from institution in db.Institutions as IQueryable<Institution>
-                  where institution.CountryID == UsrCtry && institution.cod_region_institucional == RegionID
+                  where institution.CountryID == UsrCtry && institution.cod_region_institucional == RegionID && institution is Hospital
                   select new
                   {
                       Id = institution.ID,
@@ -182,7 +182,7 @@ namespace Paho.Controllers
                     institutions =
                  (
                   from institution in db.Institutions as IQueryable<Institution>
-                  where institution.CountryID == UsrCtry && institution.cod_region_salud == RegionID
+                  where institution.CountryID == UsrCtry && institution.cod_region_salud == RegionID && institution is Hospital
                   select new
                   {
                       Id = institution.ID,
@@ -196,7 +196,7 @@ namespace Paho.Controllers
                     institutions =
                  (
                   from institution in db.Institutions as IQueryable<Institution>
-                  where institution.CountryID == UsrCtry && institution.cod_region_pais == RegionID
+                  where institution.CountryID == UsrCtry && institution.cod_region_pais == RegionID && institution is Hospital
                   select new
                   {
                       Id = institution.ID,
@@ -233,7 +233,7 @@ namespace Paho.Controllers
                 var institutions =
                  (
                   from institution in db.Institutions as IQueryable<Institution>
-                  where institution.CountryID == CountryID
+                  where institution.CountryID == CountryID && institution is Hospital
                   select new
                   {
                       Id = institution.ID,

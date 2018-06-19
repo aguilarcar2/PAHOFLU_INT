@@ -67,7 +67,7 @@ namespace Paho.Controllers
                 ViewBag.UsrInstNPHL = user.Institution.NPHL;
                 ViewBag.NPHL_exist = (db.Institutions.OfType<Lab>()
                                    .Where(x => x.NPHL == true && x.CountryID == user.Institution.CountryID).Count() > 0) ;
-                ViewBag.UR = (string) (User.IsInRole("Admin") ? "adm" : User.IsInRole("Staff") ? "stf" : User.IsInRole("Report") ? "rpt" : "");
+                ViewBag.UR = (string) (User.IsInRole("Admin") ? "adm" : User.IsInRole("Modify_Epi") ? "mod_epi" : User.IsInRole("Modify_Lab") ? "mod_lab" : User.IsInRole("Close_case") ? "clo_case" : User.IsInRole("Staff") ? "stf" : User.IsInRole("Report") ? "rpt" :   "");
             }
 
             base.OnAuthentication(filterContext);

@@ -189,7 +189,8 @@ namespace Paho.Controllers
             }
 
             //Get the list of Roles
-            model.RolesList = new SelectList(await RoleManager.Roles.ToListAsync(), "Name", "Name");
+            model.RolesList = new SelectList(await RoleManager.Roles.OrderBy(d=>d.Name).ToListAsync(), "Name", "Name");
+            model.InstitutionType = "";
 
             return View(model);
         }
@@ -385,12 +386,13 @@ namespace Paho.Controllers
                 LastName2 = user.LastName2,
                 Email = user.Email,           
                 Institutions = institutions,
+                InstitutionType = user.Institution.AccessLevel.ToString(),
                 RolesList = RoleManager.Roles.ToList().Select(x => new SelectListItem()
                 {
                     Selected = userRoles.Contains(x.Name),
                     Text = x.Name,
                     Value = x.Name
-                })
+                }).OrderBy(z => z.Text)
             });
         }
 

@@ -48,6 +48,7 @@ namespace Paho.Models
        [Required(AllowEmptyStrings = false, ErrorMessage = "Este campo es requerido")]
         [Display(Name = "Institución")]
         public long InstitutionID { get; set; }
+        public string InstitutionType { get; set; }
         public IEnumerable<System.Web.Mvc.SelectListItem> Institutions { get; set; }
         public IEnumerable<System.Web.Mvc.SelectListItem> RolesList { get; set; }
     }
