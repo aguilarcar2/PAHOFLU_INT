@@ -24,10 +24,16 @@
     self.getVirusTypesUrl = "/testcases/GetVirusTypes";
     self.getInstitutionsUrl = "/cases/GetInstitutions";
     self.getRegionsUrl = "/cases/GetRegions";
+
     self.getSummayDetailsUrl = "/summary/GetSummaryDetails";
     self.getSummayDetailsExcel = "/exportar/GetSummaryDetailsExcel";
     self.getSummaryForYearUrl = "/summary/GetSummaryForYear"
     self.saveSummayDetailsUrl = "/summary/SaveSummary";
+
+    self.getSummayDetailsUrlJM = "/summaryJM/GetSummaryDetailsJM";
+    self.getSummaryForYearUrlJM = "/summaryJM/GetSummaryForYearJM"
+    self.saveSummayDetailsUrlJM = "/summaryJM/SaveSummaryJM";
+
     self.getCasesInExcelUrl = "/exportar/GetCasesInExcel";
     self.getExportar = "/exportar/GetExcel";
     self.getFluid = "/fluid/Generate";

@@ -95,7 +95,7 @@
     {
         <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 9) ?  "col-md-2_5" : "col-md-1")">
             <!-- "Pobl." : "Tot. Cons."-->
-            <div class="col-md-1 input-group" data-bind="visible:EnableCHI() && NoActiveBOL() && (ActiveCOS() || ActiveSUR() || ActiveJAM())">
+            <div class="col-md-1 input-group" data-bind="visible:EnableCHI() && NoActiveBOL() && (ActiveCOS() || ActiveSUR())">
                 <span class="input-group-addon">
                     @(ViewBag.UsrCtry == 7 ? (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelPopulation")) : (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelTotalCons")))
                 </span>
@@ -251,7 +251,7 @@
     {
         <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 9) ?  "col-md-2_5" : "col-md-1")">
             <!-- T. Cons. -->
-            <div class="col-md-1 input-group" data-bind="visible:EnableCHI() && NoActiveBOL() && (ActiveSUR() || ActiveCOS() || ActiveJAM())">
+            <div class="col-md-1 input-group" data-bind="visible:EnableCHI() && NoActiveBOL() && (ActiveSUR() || ActiveCOS())">
                 <input type='text' name="ETIDenoST" id="ETIDenoST" class="form-control" style="padding:6px;" data-bind="value: ETIDenoST" />
             </div>
             <!--  -->
@@ -388,7 +388,7 @@
     {
         <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 9) ?  "col-md-2_5" : "col-md-1")">
             <!-- T. Cons. -->
-            <span class="col-md-1 input-group" data-bind="visible:EnableCHI() && NoActiveBOL() && (ActiveSUR() || ActiveCOS() || ActiveJAM())">
+            <span class="col-md-1 input-group" data-bind="visible:EnableCHI() && NoActiveBOL() && (ActiveSUR() || ActiveCOS())">
                 <input type='text' class="form-control" style="padding:6px;" readonly="readonly" id="ColETIDenoST" data-bind="value: ColETIDenoST" />
             </span>
             <!--  -->
@@ -507,7 +507,7 @@
                 @if (ViewBag.ILI == true)
                 {
                     <!--"Pobl." : "Tot. Cons."-->
-                    <th data-bind="visible:EnableCHI() && NoActiveBOL() && (ActiveSUR() || ActiveJAM())" class="col-md-1">
+                    <th data-bind="visible:EnableCHI() && NoActiveBOL() && (ActiveSUR())" class="col-md-1">
                         @(ViewBag.UsrCtry == 7 ? (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelPopulation")) : (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelTotalCons")))
                     </th>
                     <!--"ETI T." : "ETI Ext."-->
@@ -551,7 +551,7 @@
                 @if (ViewBag.ILI == true)
                 {
                     <!--"Pobl." : "Tot. Cons."-->
-                    <td data-bind="visible:EnableCHI() && NoActiveBOL() && (ActiveSUR() || ActiveJAM())">
+                    <td data-bind="visible:EnableCHI() && NoActiveBOL() && (ActiveSUR())">
                         <span data-bind="text: ColETIDenoST" />
                     </td>
                     <!--"ETI T." : "ETI Ext."-->
@@ -596,9 +596,7 @@
     var institutions = @Html.Raw(Json.Encode(Model.Institutions));
     var CatAgeGroup = @Html.Raw(Json.Encode(Model.CatAgeGroup));
     var selcty = @ViewBag.UsrCtry;
-    //var aaa1 = Model.AgeGroupLang;
-    //alert(aaaaa);
-    //var xyz = @**@ResourcesM.ResourcesM.msgViewSummaryLabelUnder2YearOld;
+
     var PAHOFLU_date_format = "@(Html.Raw(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgDateFormat")))";
     var moment_date_format = "@(Html.Raw(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgDateFormatMoment")))";
     var ISO_date_format = "@(Html.Raw(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgDateFormatISO")))";

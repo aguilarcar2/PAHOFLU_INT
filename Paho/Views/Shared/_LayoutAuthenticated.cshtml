@@ -44,9 +44,10 @@
                             <img src="~/Content/themes/base/images/logo_pahowho_blue-en.png" />
                         </div>
                         @if (ViewBag.UsrCtry == 7)
-                        {<div class="col-md-1" dstyle="padding-right:0px;">
-                              <img src="~/Content/themes/base/images/Logo_MINSAL.png" style="padding-left:17px;" />
-                          </div>
+                        {
+                            <div class="col-md-1" dstyle="padding-right:0px;">
+                                <img src="~/Content/themes/base/images/Logo_MINSAL.png" style="padding-left:17px;" />
+                            </div>
                         }
                     </div>
 
@@ -84,60 +85,67 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
 					<li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuPrincipalView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Principal", new { area = "" }, null)</li>
-                    @*<li>@Html.ActionLink((((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelSituationAnalysis")), "Index", "Principal", new { area = "" }, null)</li>*@
 					<li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuHomeView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Home", new { area = "" }, null)</li>
-                    @*<li>@Html.ActionLink((((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelDataEntry")), "Index", "Home", new { area = "" }, null)</li>*@
-                    @if (ViewBag.UserInstitutionType != 2 && ViewBag.UsrCtry != 7)
+                    @if (ViewBag.UserInstitutionType != 2 && ViewBag.UsrCtry == 7)
                     {
-						<li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuSummaryView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Summary", new { area = "" }, null)</li>
-                        @*<li>@Html.ActionLink((((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelDenominators")), "Index", "Summary", new { area = "" }, null)</li>*@
+                        <li> @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuSummaryView2", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Summary", new { area = "" }, null) </li>
                     }
                     else
                     {
                         if (ViewBag.UserInstitutionType != 2)
                         {
-							<li> @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuSummaryView2", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Summary", new { area = "" }, null) </li>
-                            @*<li> @Html.ActionLink((((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelAgregatedData")), "Index", "Summary", new { area = "" }, null) </li>*@
+                            if (ViewBag.UsrCtry == 17)
+                            {
+                                if (ViewBag.SARI == true)
+                                {
+                                    <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuSummaryView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Summary", new { area = "" }, null)</li>
+                                }
+                                if (ViewBag.ILI == true)
+                                {
+                                    <li>@Html.ActionLink("Denominators-ILI", "Index", "SummaryJM", new { area = "" }, null)</li>
+                                }
+                            }
+                            else
+                            {
+                                <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuSummaryView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Summary", new { area = "" }, null)</li>
+                            }
                         }
-
                     }
 
-                    @if(ViewBag.UserInstitutionType == 2 && ViewBag.UsrCtry == 9)
+                    @if (ViewBag.UserInstitutionType == 2 && ViewBag.UsrCtry == 9)
                     {
 						<li> @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuImportLabView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "ImportLab", new { area = "" }, null) </li>
-                        @*<li> @Html.ActionLink((((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelImportLab")), "Index", "ImportLab", new { area = "" }, null) </li>*@
                     }
 
                     @if (User.IsInRole("Admin") || User.IsInRole("Report"))
                     {
 						<li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuExportarView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Exportar", new { area = "" }, null)</li>
-                        @*<li>@Html.ActionLink((((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelReports")), "Index", "Exportar", new { area = "" }, null)</li>*@
                     }
 
                     @if(User.IsInRole("Admin") || User.IsInRole("Report")) {
 						<li dstyle = "display:none;"> @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuFluidView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Fluid", new { area = "" }, null) </li>
-                        @*<li dstyle = "display:none;"> @Html.ActionLink((((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelFLUID")), "Index", "Fluid", new { area = "" }, null) </li>*@
                     }
+
                     @if (User.IsInRole("Admin"))
                     {
 						@*<li class="dropdown">  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Mantenimiento <b class="caret"></b></a>*@
                         <li class="dropdown">  <a href="#" class="dropdown-toggle" data-toggle="dropdown">@(Paho.Controllers.ResourcesM.SgetMessage("viewLayoutAuthenticated_LabelMaintenance", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) <b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                            @if (@ViewBag.UserInstitutionType == 3)
-                            {
-								<li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuDiccionarioView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Diccionario", new { area = "" }, null) </li>
-                                <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelArea", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Area", new { area = "" }, null)</li>
-                                <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgRegion", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Regions", new { area = "" }, null)</li>         
-                                <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatVirusTypeView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "CatVirusType", new { area = "" }, null)</li>
-                                <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatVirusSubTypeView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "CatVirusSubTypes", new { area = "" }, null)</li>
-                                <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatVirusLinajeView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "CatVirusLinajes", new { area = "" }, null)</li>
-                                <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatAgeGroupView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "CatAgeGroup", new { area = "" }, null)</li>
-                                <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatVaccinSourcesView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "CatVaccinSources", new { area = "" }, null)</li>
-                                if (@ViewBag.UsrCtry == 9)
+                                @if (@ViewBag.UserInstitutionType == 3)
                                 {
-                                    <li> @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuImportPadronView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "ImportPadron", new { area = "" }, null) </li>
+								    <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuDiccionarioView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Diccionario", new { area = "" }, null) </li>
+                                    <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelArea", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Area", new { area = "" }, null)</li>
+                                    <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgRegion", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Regions", new { area = "" }, null)</li>         
+                                    <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatVirusTypeView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "CatVirusType", new { area = "" }, null)</li>
+                                    <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatVirusSubTypeView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "CatVirusSubTypes", new { area = "" }, null)</li>
+                                    <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatVirusLinajeView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "CatVirusLinajes", new { area = "" }, null)</li>
+                                    <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatAgeGroupView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "CatAgeGroup", new { area = "" }, null)</li>
+                                    <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatVaccinSourcesView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "CatVaccinSources", new { area = "" }, null)</li>
+                                    if (@ViewBag.UsrCtry == 9)
+                                    {
+                                        <li> @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuImportPadronView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "ImportPadron", new { area = "" }, null) </li>
+                                    }
                                 }
-                            }
                                 <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatInstitucionView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "CatInstitucion", new { area = "" }, null)</li>
                                 <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatInstitucionConfView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "CatInstitucionConf", new { area = "" }, null)</li>
                                 @*<li>@Html.ActionLink((((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelDataDictionary")), "Index", "Diccionario", new { area = "" }, null) </li>
@@ -151,6 +159,7 @@
                             </ul>
                         </li>
                     }
+
                     @if ((User.IsInRole("Admin") || ViewBag.ILI) && (ViewBag.UsrCtry == 7))
                     {
                         <li>

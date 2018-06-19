@@ -1,14 +1,9 @@
-﻿    
+﻿
 function SummaryYearItem(data) {
     var self = this;
     self.ColHospTST = data.ColHospTST;
     self.ColUCITST = data.ColUCITST;
     self.ColFalleTST = data.ColFalleTST;
-
-    self.ColILICasesST = data.ColILICasesST;
-    self.ColILISamplesTakenST = data.ColILISamplesTakenST;
-    self.ColTotalVisitsST = data.ColTotalVisitsST;
-
     self.ColEpiYear = data.EpiYear;
     self.ColEpiWeek = data.EpiWeek;
     self.ColEpiYearWeek = data.EpiYear + "-" + data.EpiWeek;
@@ -18,7 +13,6 @@ function SummaryYearItem(data) {
     self.ColNeuTST = data.ColNeuTST;
     self.ColVentTST = data.ColVentTST;
     self.StartDateOfWeek = data.StartDateOfWeek;
-    self.WeekendDate = data.WeekendDate
 
     self.ColETIFST = ko.observable("");
     self.ColETIMST = ko.observable("");
@@ -154,7 +148,6 @@ function SummayItem(data) {
 
     } else {
         self.HospST = ko.observable(data.HospST);
-        self.ILICases = ko.observable(data.ILICases);
     }
 
     self.UCIFem = ko.observable(data.UCIFem);
@@ -165,7 +158,6 @@ function SummayItem(data) {
         }, self);
     } else {
         self.UCIST = ko.observable(data.UCIST);
-        self.ILISamplesTaken = ko.observable(data.ILISamplesTaken);
     }
 
     self.DefFem = ko.observable(data.DefFem);
@@ -176,7 +168,6 @@ function SummayItem(data) {
         }, self);
     } else {
         self.DefST = ko.observable(data.DefST);
-        self.TotalVisits = ko.observable(data.TotalVisits);
     }
 
     self.NeuFem = ko.observable(data.NeuFem);
@@ -204,15 +195,12 @@ function SummayItem(data) {
             HospFem: typeof (self.HospFem()) !== "number" ? parseInt(self.HospFem()) : self.HospFem(),
             HospMaso: typeof (self.HospMaso()) !== "number" ? parseInt(self.HospMaso()) : self.HospMaso(),
             HospST: typeof (self.HospST()) !== "number" ? parseInt(self.HospST()) : self.HospST(),
-            ILICases: typeof (self.ILICases()) !== "number" ? parseInt(self.ILICases()) : self.ILICases(),
             UCIFem: typeof (self.UCIFem()) !== "number" ? parseInt(self.UCIFem()) : self.UCIFem(),
             UCIMaso: typeof (self.UCIMaso()) !== "number" ? parseInt(self.UCIMaso()) : self.UCIMaso(),
             UCIST: typeof (self.UCIST()) !== "number" ? parseInt(self.UCIST()) : self.UCIST(),
-            ILISamplesTaken: typeof (self.ILISamplesTaken()) !== "number" ? parseInt(self.ILISamplesTaken()) : self.ILISamplesTaken(),
             DefFem: typeof (self.DefFem()) !== "number" ? parseInt(self.DefFem()) : self.DefFem(),
             DefMaso: typeof (self.DefMaso()) !== "number" ? parseInt(self.DefMaso()) : self.DefMaso(),
             DefST: typeof (self.DefST()) !== "number" ? parseInt(self.DefST()) : self.DefST(),
-            TotalVisits: typeof (self.TotalVisits()) !== "number" ? parseInt(self.TotalVisits()) : self.TotalVisits(),
             NeuFem: typeof (self.NeuFem()) !== "number" ? parseInt(self.NeuFem()) : self.NeuFem(),
             NeuMaso: typeof (self.NeuMaso()) !== "number" ? parseInt(self.NeuMaso()) : self.NeuMaso(),
             NeuST: typeof (self.NeuST()) !== "number" ? parseInt(self.NeuST()) : self.NeuST(),
@@ -226,7 +214,7 @@ function SummayItem(data) {
     }
 }
 
-function SummaryViewModel(app, dataModel) {
+function SummaryJMViewModel(app, dataModel) {
     var self = this;
 
     /////////////var msgSavedData = app.dataModel.MsgSavedData;      //#### CAFQ 
@@ -258,10 +246,6 @@ function SummaryViewModel(app, dataModel) {
     self.ColHospTST01 = ko.observable("");
     self.ColUCITST01 = ko.observable("");
     self.ColFalleTST01 = ko.observable("");
-
-    self.ColILICasesST01 = ko.observable("");
-    self.ColILISamplesTakenST01 = ko.observable("");
-    self.ColTotalVisitsST01 = ko.observable("");
 
     self.ColETIFST = ko.observable("");
     self.ColETIMST = ko.observable("");
@@ -479,14 +463,6 @@ function SummaryViewModel(app, dataModel) {
         return parseInt(numberofitems);
     }, self);
 
-    self.ColILICasesST = ko.computed(function () {                  // //#### CAFQ: ILI Jamaica
-        var numberofitems = 0;
-        ko.utils.arrayForEach(self.SummayItems(), function (r) {
-            numberofitems += parseInt(r.ILICases());
-        });
-        return parseInt(numberofitems);
-    }, self);
-
     self.ColUCIFST = ko.computed(function () {
         var numberofitems = 0;
         ko.utils.arrayForEach(self.SummayItems(), function (r) {
@@ -511,14 +487,6 @@ function SummaryViewModel(app, dataModel) {
         return parseInt(numberofitems);
     }, self);
 
-    self.ColILISamplesTakenST = ko.computed(function () {               //#### CAFQ: ILI Jamaica
-        var numberofitems = 0;
-        ko.utils.arrayForEach(self.SummayItems(), function (r) {
-            numberofitems += parseInt(r.ILISamplesTaken());
-        });
-        return parseInt(numberofitems);
-    }, self);
-
     self.ColFalleFST = ko.computed(function () {
         var numberofitems = 0;
         ko.utils.arrayForEach(self.SummayItems(), function (r) {
@@ -539,14 +507,6 @@ function SummaryViewModel(app, dataModel) {
         var numberofitems = 0;
         ko.utils.arrayForEach(self.SummayItems(), function (r) {
             numberofitems += parseInt(r.DefST());
-        });
-        return parseInt(numberofitems);
-    }, self);
-
-    self.ColTotalVisitsST = ko.computed(function () {                   //#### CAFQ: ILI Jamaica
-        var numberofitems = 0;
-        ko.utils.arrayForEach(self.SummayItems(), function (r) {
-            numberofitems += parseInt(r.TotalVisits());
         });
         return parseInt(numberofitems);
     }, self);
@@ -680,26 +640,12 @@ function SummaryViewModel(app, dataModel) {
     //    }
     //};
 
-    self.GetYearSummaryForYearItems = function () {
-        if ((typeof self.selectedHospitalId() != "undefined") && self.selectedHospitalId() != "") {
-            $.postJSON(app.dataModel.getSummaryForYearUrl, { hospitalId: self.selectedHospitalId() })
-               .success(function (data, textStatus, jqXHR) {
-                   $("#LabelBandeja").show();
-                   $("#TotalBandeja").show();
-                   self.SummaryForYearItems([]);
-                   data.forEach(self.AddSummaryForYearItems);
-                   //console.log(data);
-                   //self.SummayItems([]);
-                   //data.forEach(self.AddSummayItem);                             
-               })
-               .fail(function (jqXHR, textStatus, errorThrown) {
-                   alert(errorThrown);
-               })
-        }
-    };
 
-    self.GetYearSummaryForYearItemsJM = function () {
+
+    self.GetYearSummaryForYearItems = function () {
+        console.log("->A1");
         if ((typeof self.selectedHospitalId() != "undefined") && self.selectedHospitalId() != "") {
+            //$.postJSON(app.dataModel.getSummaryForYearUrl, { hospitalId: self.selectedHospitalId() })
             $.postJSON(app.dataModel.getSummaryForYearUrlJM, { hospitalId: self.selectedHospitalId() })
                .success(function (data, textStatus, jqXHR) {
                    $("#LabelBandeja").show();
@@ -770,36 +716,6 @@ function SummaryViewModel(app, dataModel) {
         }
     };
 
-    self.GetSummayItemsJM = function () {
-        if ((typeof self.selectedHospitalId() != "undefined") && self.selectedHospitalId() != "" && (typeof self.HospitalDate() != "undefined") && self.HospitalDate() != "") {
-            $.postJSON(app.dataModel.getSummayDetailsUrlJM, { hospitalId: self.selectedHospitalId(), hospitalDate: moment(self.HospitalDate()).format(date_format_ISO), EpiWeek: self.HospitalEW(), EpiYear: self.HospitalYE() })
-            .success(function (data, textStatus, jqXHR) {
-                self.SummayItems([]);
-                data.forEach(self.AddSummayItem);
-                $("#LabelSummary").show();
-                $("#TotalSummary").show();
-                $("#ButtonSummary").show();
-            })
-            .fail(function (jqXHR, textStatus, errorThrown) {
-                alert(errorThrown);
-            })
-        } else {
-            if ((typeof self.selectedHospitalId() == "undefined") || self.selectedHospitalId() == "") {
-                if (self.UsrCountry() == 25 || (self.UsrCountry() == 17) || (self.UsrCountry() == 119))
-                    alert("Hospital is required");
-                else
-                    alert("Seleccionar un establecimiento es requerido");
-            }
-
-            if ((typeof self.HospitalDate() == "undefined") || self.HospitalDate() == "") {
-                if (self.UsrCountry() == 25 || (self.UsrCountry() == 17) || (self.UsrCountry() == 119))
-                    alert("Date is required");
-                else
-                    alert("La fecha es requerida");
-            }
-        }
-    };
-
     self.SaveSummayItems = function () {
         //console.log(self.MakeValuesOfSummayItems());
         $.ajax({
@@ -819,48 +735,20 @@ function SummaryViewModel(app, dataModel) {
         })
     };
 
-    self.SaveSummayItemsJM = function () {
-        //console.log(self.MakeValuesOfSummayItems());
-        $.ajax({
-            type: 'POST',
-            dataType: 'json',
-            url: app.dataModel.saveSummayDetailsUrlJM,
-            data: JSON.stringify({ casesummaryDetails: self.MakeValuesOfSummayItems() }),
-            contentType: 'application/json; charset=utf-8',
-            success: function (data, textStatus, jqXHR) {
-                if ((self.UsrCountry() == 25) || (self.UsrCountry() == 17) || (self.UsrCountry() == 119))
-                    alert("Data saved...");
-                    ///////alert(msgSavedData);
-                else
-                    alert(data);
-                self.CancelarItems();
-            },
-        })
-    };
-
-
     return self;
 };
 
 app.addViewModel({
-    name: "Summary",
-    bindingMemberName: "summary",
-    factory: SummaryViewModel
+    name: "SummaryJM",
+    bindingMemberName: "summaryJM",
+    factory: SummaryJMViewModel
 });
 
 /** Bandeja de denominadores **/
 function showEpiWeek(data, event) {
+    console.log(data.StartDateOfWeek);
     var date = moment.unix(data.StartDateOfWeek).utc().format(moment_date_format);
-    //console.log(date);
-    $("#HospitalDate").val(date);
-    $("#HospitalDate").change();
-    $("#search").click();
-}
-
-function showEpiWeekJM(data, event) {
-    //var date = moment.unix(data.StartDateOfWeek).utc().format(moment_date_format);
-    var date = moment.unix(data.WeekendDate).utc().format(moment_date_format);
-    //console.log(date);
+    console.log(date);
     $("#HospitalDate").val(date);
     $("#HospitalDate").change();
     $("#search").click();

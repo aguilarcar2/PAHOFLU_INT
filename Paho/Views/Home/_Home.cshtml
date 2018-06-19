@@ -190,12 +190,11 @@
 	</div>
 </div>
 
+<!-- New -->
 @if(ViewBag.UserInstitutionType != 2)
 {
     <div class="row" style="margin-top:1em;" data-bind="visible: newButton">
         <div class="col-md-8">
-            
-                
             @if (User.IsInRole("Staff"))
             {
                 <div class="col-md-4">
@@ -204,7 +203,6 @@
                     </div>
                 </div>
             }
-
         </div>
     </div>
 }
@@ -2708,35 +2706,38 @@
                     </div>
                 </div>
             }
-			@if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 3 ){
-            <div class="row rowform">
-                <div class="col-md-3" data-bind="visible:EnableCHI() && app.Views.Contact.NoActiveBOL()">
-                    <label class="btn btn-default">
-                        <input type="checkbox" name="HallRadio" id="HallRadio" value="1" data-bind="checked: HallRadio"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelRadiologicalFindings"))
-                    </label>
-                </div>
-                <div class="col-md-3" data-bind="visible:app.Views.Contact.NoActiveBOL">
-                    <label class="btn btn-default">
-                        <input type="checkbox" name="MecVent" id="MecVent" value="1" data-bind="checked: MecVent"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelRespiratorySupport")) 
-                    </label>
-                </div>
-                <div class="col-md-3" data-bind="visible:EnableCHI() && app.Views.Contact.NoActiveBOL()">
-                    <label class="btn btn-default">
-                        <input type="checkbox" name="UCInt" id="UCInt" value="1" data-bind="checked: UCInt"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelTransitionalCareUnit"))
-                    </label>
-                </div>
-                <div class="col-md-3" data-bind="visible:EnableCHI() && app.Views.Contact.NoActiveBOL()">
-                    <label class="btn btn-default">
-                        <input type="checkbox" name="UCri" id="UCri" value="1" data-bind="checked: UCri"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelCriticalCareUnit"))
-                    </label>
-                </div>
-                @if (ViewBag.UsrCtry == 7)
-                {
-                    <div class="col-md-3">
+			@if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 119)
+            {
+                <div class="row rowform">
+                    <!-- <div class="col-md-3" data-bind="visible:EnableCHI() && app.Views.Contact.NoActiveBOL()"> -->
+                    <div class="@((ViewBag.UsrCtry == 119) ?  "col-md-2" : "col-md-3")" data-bind="visible:(EnableCHI() && app.Views.Contact.NoActiveBOL()) || app.Views.Contact.ActiveCAY()">
                         <label class="btn btn-default">
-                            <input type="checkbox" name="MecVentNoInv" id="MecVentNoInv" value="1" data-bind="checked: MecVentNoInv"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNIMV"))
+                            <input type="checkbox" name="HallRadio" id="HallRadio" value="1" data-bind="checked: HallRadio"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelRadiologicalFindings"))
                         </label>
                     </div>
+                    <div class="col-md-3" data-bind="visible:app.Views.Contact.NoActiveBOL && app.Views.Contact.NoActiveCAY()">
+                        <label class="btn btn-default">
+                            <input type="checkbox" name="MecVent" id="MecVent" value="1" data-bind="checked: MecVent"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelRespiratorySupport")) 
+                        </label>
+                    </div>
+                    <div class="col-md-3" data-bind="visible:EnableCHI() && app.Views.Contact.NoActiveBOL() && app.Views.Contact.NoActiveCAY()">
+                        <label class="btn btn-default">
+                            <input type="checkbox" name="UCInt" id="UCInt" value="1" data-bind="checked: UCInt"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelTransitionalCareUnit"))
+                        </label>
+                    </div>
+                    <div class="col-md-3" data-bind="visible:EnableCHI() && app.Views.Contact.NoActiveBOL() && app.Views.Contact.NoActiveCAY()">
+                        <label class="btn btn-default">
+                            <input type="checkbox" name="UCri" id="UCri" value="1" data-bind="checked: UCri"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelCriticalCareUnit"))
+                        </label>
+                    </div>
+                    <!-- Ventilacion mecanica no invasiva / ECMO / VAFO -->
+                    @if (ViewBag.UsrCtry == 7)
+                    {
+                        <div class="col-md-3">
+                            <label class="btn btn-default">
+                                <input type="checkbox" name="MecVentNoInv" id="MecVentNoInv" value="1" data-bind="checked: MecVentNoInv"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNIMV"))
+                            </label>
+                        </div>
                         <div class="col-md-3">
                             <label class="btn btn-default">
                                 <input type="checkbox" name="ECMO" id="ECMO" value="1" data-bind="checked: ECMO"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelECMO"))
@@ -2747,10 +2748,20 @@
                                 <input type="checkbox" name="VAFO" id="VAFO" value="1" data-bind="checked: VAFO"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelHFOV"))
                             </label>
                         </div>
-                }
-            </div>
-
-
+                    }
+                    <!-- Descripcion/Hallazgos -->
+                    @if (ViewBag.UsrCtry == 119)
+                    {
+                        <div class="col-md-3" data-bind="visible: HallRadioFindingsShow">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelHallRadioFindings"))
+                                </span>
+                                <input id="HallRadioFindings" type='text' class="form-control" data-bind="value: HallRadioFindings" />
+                            </div>
+                        </div>
+                    }
+                </div>
             }
 
             @if (ViewBag.UsrCtry == 17)
@@ -5194,7 +5205,8 @@
     var regions= @Html.Raw(Json.Encode(Model.Regions));
     var labs = @Html.Raw(Json.Encode(Model.Labs));
     var institutions = @Html.Raw(Json.Encode(Model.Institutions));
-    var selcty = @ViewBag.UsrCtry;
+    //var selcty = @ViewBag.UsrCtry;
+    var selcty = @(ViewBag.UsrCtry);
     var reg_inst_usr = @Html.Raw(Json.Encode(Model.reg_inst_usr));
     var reg_salu_usr = @Html.Raw(Json.Encode(Model.reg_salu_usr));
     var reg_pais_usr = @Html.Raw(Json.Encode(Model.reg_pais_usr));
@@ -5695,64 +5707,60 @@
 </script>
 
 <script type="text/javascript">
+    function loadData(id) {
+        //alert(id);
+        app.Views.Home.EditFluCase();
+        app.Views.Contact.GetContact(id);
+        app.Views.Home.FlowData();
+        app.Views.GEO.GetGEO(id);
+        app.Views.Risk.GetRisk(id);
+        app.Views.Hospital.GetHospital(id);
+        app.Views.Home.FlowDataLab();
+        app.Views.Lab.GetLab(id);
+        app.Views.Home.FlowDataLabAfter();
+        app.Views.Home.FlowDataCaseStatus();
+        app.Views.Home.GetRecordHistory(id);
+    };
 
-            function loadData(id) {
-                //alert(id);
-                app.Views.Home.EditFluCase();
-                app.Views.Contact.GetContact(id);
-                app.Views.Home.FlowData();
-                app.Views.GEO.GetGEO(id);
-                app.Views.Risk.GetRisk(id);
-                app.Views.Hospital.GetHospital(id);
-                app.Views.Home.FlowDataLab();
-                app.Views.Lab.GetLab(id);
-                app.Views.Home.FlowDataLabAfter();
-                app.Views.Home.FlowDataCaseStatus();
-                app.Views.Home.GetRecordHistory(id);
-
-
-            };
-
-
-            $(function () {
-                $("#tabs").tabs();
-                @if (!Model.DisplayCountries && Model.DisplayHospitals)
-                {
-                    if (ViewBag.UserInstitutionType == 1)
-                    {
-                        <text>
-                        $("#tab-lab :input").prop('disabled', true);
+    $(function () {
+        $("#tabs").tabs();
+        @if (!Model.DisplayCountries && Model.DisplayHospitals)
+        {
+            if (ViewBag.UserInstitutionType == 1)
+            {
+                <text>
+                $("#tab-lab :input").prop('disabled', true);
                 </text>
-                            }
-                            else
-                            {
-                        <text>
-                        //alert("aqui");
-                        $("#tab-lab :input").prop('disabled', false);
-                        </text>
-                            }
-                        <text>
-                        $("#HospitalsGroup").show();
+            }
+            else
+            {
+                <text>
+                //alert("aqui");
+                $("#tab-lab :input").prop('disabled', false);
                 </text>
+            }
+            <text>
+            $("#HospitalsGroup").show();
+            </text>
 
-                        }
-                        else if (!Model.DisplayCountries)
-                        {
-                        <text>
-                //alert("aqui2");
-                        $("#tab-contact :input, #tab-GEO :input, #tab-hospital :input, #tab-risk :input, #tab-case :input").attr('disabled', true);
-                        $("#tab-lab :input").prop('disabled', true);
-                        $("#LabsGroup").show();
-                        </text>
-                    }
+        }
+        else if (!Model.DisplayCountries)
+        {
+            <text>
+            //alert("aqui2");
+            $("#tab-contact :input, #tab-GEO :input, #tab-hospital :input, #tab-risk :input, #tab-case :input").attr('disabled', true);
+            $("#tab-lab :input").prop('disabled', true);
+            $("#LabsGroup").show();
+            </text>
+        }
 
-                @if ((User.IsInRole("Reader") || User.IsInRole("Report")) && !User.IsInRole("Staff"))
-                {
-                        <text>
-                        $("#tab-contact :input, #tab-GEO :input, #tab-hospital :input, #tab-risk :input, #tab-case :input, #tab-lab :input").prop('disabled', true);
-                        </text>
-                }
-            });
+        @if ((User.IsInRole("Reader") || User.IsInRole("Report")) && !User.IsInRole("Staff"))
+        {
+            <text>
+            $("#tab-contact :input, #tab-GEO :input, #tab-hospital :input, #tab-risk :input, #tab-case :input, #tab-lab :input").prop('disabled', true);
+            </text>
+        }
+    });
 
 </script>
 <!-- /ko -->

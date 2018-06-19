@@ -630,7 +630,8 @@ function ContactViewModel(app, dataModel) {
             msg += "\n" + msgValidationTypeOfDocument; // Este no esta en la base
 
         if (!self.NoExpediente()) {
-            msg += "\n" + msgValidationDocumentIDRequired;
+            if (!(self.UsrCountry() == 17 && self.SurvInusual() == 1))    //#### CAFQ: 180604 - Jamaica Universal
+                msg += "\n" + msgValidationDocumentIDRequired;
         }
             
 
@@ -676,6 +677,7 @@ function ContactViewModel(app, dataModel) {
 //        if (self.RegDate() && self.DOB() && moment(self.RegDate()).isBefore(moment(self.DOB())))
 //            msg += "\n" + "Fecha de nacimiento no puede ser posterior a la de notificación ";
         if (!self.Gender())
+            //if (!(self.UsrCountry() == 17 && self.SurvInusual() == 1))    //#### CAFQ: 180604 - Jamaica Universal
             msg += "\n" + msgValidationSexRequired;
 
         // Validaciones Chile
@@ -687,10 +689,10 @@ function ContactViewModel(app, dataModel) {
                 msg += "\n" + msgValidationDOBLater;
         }
 
-        if ((date_DOB == null || date_DOB == "") && (self.Age() == "") )
-            msg += "\n" + msgValidationTypeDOBorAge;
+        if ((date_DOB == null || date_DOB == "") && (self.Age() == ""))
+            if (!(self.UsrCountry() == 17 && self.SurvInusual() == 1))    //#### CAFQ: 180604 - Jamaica Universal
+                msg += "\n" + msgValidationTypeDOBorAge;
                 
-
         //if (msg !== "") { alert('DAT. VIGILANCIA:' + msg); $('#tabs').tabs({ active: 0 }); return false; }
         if (msg !== "") { alert(msgValidationSurvData + msg); $('#tabs').tabs({ active: 0 }); return false; }
         if (nextStep != null) nextStep();
@@ -832,7 +834,15 @@ function ContactViewModel(app, dataModel) {
         date_hospital = jQuery.type(self.HospitalDate()) === 'date' ? self.HospitalDate() : parseDate($("#HospitalDate").val(), date_format_);
         date_reg_date = jQuery.type(self.RegDate()) === 'date' ? self.RegDate() : parseDate($("#RegDate").val(), date_format_);
         date_DOB = jQuery.type(self.DOB()) === 'date' ? self.DOB() : parseDate($("#DOB").val(), date_format_);
-        date_fever_dummy = jQuery.type(app.Views.Hospital.FeverDate()) === 'date' ? app.Views.Hospital.FeverDate() : parseDate($("#FeverDate").val(), date_format_);
+        //#### CAFQ: 180604 - Jamaica Universal
+        //date_fever_dummy = jQuery.type(app.Views.Hospital.FeverDate()) === 'date' ? app.Views.Hospital.FeverDate() : parseDate($("#FeverDate").val(), date_format_);
+        if (self.UsrCountry() == 17 && self.SurvInusual() == 1) {
+            date_fever_dummy = jQuery.type(self.HospitalDate()) === 'date' ? self.HospitalDate() : parseDate($("#HospitalDate").val(), date_format_);
+        } else {
+            date_fever_dummy = jQuery.type(app.Views.Hospital.FeverDate()) === 'date' ? app.Views.Hospital.FeverDate() : parseDate($("#FeverDate").val(), date_format_);
+        }
+        //####
+
         //console.log("date_hospital " + date_hospital);
         //console.log("self.HospitalDate " + self.HospitalDate());
         //console.log("jquery.type self.HospitalDate " + jQuery.type(self.HospitalDate()));

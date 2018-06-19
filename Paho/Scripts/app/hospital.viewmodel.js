@@ -390,6 +390,15 @@
     self.DestinICU = ko.observable("");
 
     self.HallRadio = ko.observable("");
+    self.HallRadioFindings = ko.observable("");                                 //#### CAFQ
+    self.HallRadioFindingsShow = ko.computed(function () {
+        if (self.HallRadio() == "1") {
+            return true;
+        } else {
+            self.HallRadioFindings("");
+            return false;
+        }
+    }, self);             //#### CAFQ
     self.UCInt = ko.observable("");
     self.UCri = ko.observable("");
     self.MecVent = ko.observable("");
@@ -882,6 +891,7 @@
        self.Destin("");
        self.DestinICU("");
        self.HallRadio("");
+       self.HallRadioFindings("");          //#### CAFQ
        self.UCInt("");
        self.UCri("");
        self.MecVent("");
@@ -890,7 +900,7 @@
        self.VAFO("");
        self.DiagEg("");
        self.DiagEgVal("");
-       self.DiagEgOtro("");         //#### CAFQ
+       self.DiagEgOtro("");                 //#### CAFQ
        self.IsSample(false);
        self.SampleDate (null);
        self.SampleType("");
@@ -996,7 +1006,8 @@
         date_close_case = jQuery.type(self.CloseDate()) === 'date' ? self.CloseDate() : parseDate($("#CloseDate").val(), date_format_);
         
         if ($("#FeverDate").val() == "")
-            msg += "\n" + msgValidationOnsetOnFever;
+            if (!(self.UsrCountry() == 17 && app.Views.Contact.SurvInusual() == 1))    //#### CAFQ: 180604 - Jamaica Universal
+                msg += "\n" + msgValidationOnsetOnFever;
         if ($("#FeverDate").val() != "" && !moment(moment(date_fever).format(date_format_moment), [date_format_moment], true).isValid())
             msg += "\n" + viewValidateOnsetInvalid;
         if (date_notification != null && date_fever != null && moment(date_fever).isAfter(moment(date_notification), "days")) {
@@ -1017,7 +1028,8 @@
         
         if (app.Views.Contact.SurvSARI() == true) {
             if ($("#HospAmDate").val() == "")
-                msg += "\n" + viewValidateHospDateRequired;
+                if (!(self.UsrCountry() == 17 && app.Views.Contact.SurvInusual() == 1))    //#### CAFQ: 180604 - Jamaica Universal
+                    msg += "\n" + viewValidateHospDateRequired;
             if ($("#HospAmDate").val() != "" && !moment(moment(date_hosp_adm).format(date_format_moment), [date_format_moment], true).isValid())
                 msg += "\n" + viewValidateHospDateInvalid;
             if (date_hosp_adm != null && date_fever != null && moment(date_hosp_adm).isBefore(moment(date_fever), "days")) {
@@ -1071,7 +1083,8 @@
 //           msg += "\n" + "Fecha de UCI no puede ser posterior a la de hospitalización";
 
         if (!self.IsSample())
-            msg += "\n" + viewValidateSampleInfoRequired;
+            if (!(self.UsrCountry() == 17 && app.Views.Contact.SurvInusual() == 1))    //#### CAFQ: 180604 - Jamaica Universal
+                msg += "\n" + viewValidateSampleInfoRequired;
 
         if (self.IsSample() === "true") {
             if ($("#SampleDate").val() == "")
@@ -1261,6 +1274,7 @@
                 self.MedSatOxig(data.MedSatOxig);
                 self.SatOxigPor(data.SatOxigPor);
                 self.HallRadio(data.HallRadio);
+                self.HallRadioFindings(data.HallRadioFindings);                 //#### CAFQ
                 self.UCInt(data.UCInt);
                 self.UCri(data.UCri);
                 self.MecVent(data.MecVent);
@@ -1431,6 +1445,7 @@
                 DiagOtroAdm: self.DiagOtroAdm() == null ? "" : self.DiagOtroAdm().toLocaleUpperCase(),
                 DestinICU: self.DestinICU(),
                 HallRadio: self.HallRadio(),
+                HallRadioFindings: self.HallRadioFindings(),                //#### CAFQ
                 UCInt: self.UCInt(),
                 UCri: self.UCri(),
                 MecVent: self.MecVent(),
