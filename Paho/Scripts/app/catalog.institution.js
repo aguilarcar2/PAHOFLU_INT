@@ -4,7 +4,7 @@
 
     function onLoad() {
         var isEdit = $("#ID").val() != undefined;
-        toggleAccessLevel();
+        //toggleAccessLevel();
         toggleRegion(isEdit);
         $("#RegionInstitucionalGroup").hide();
         $("#RegionSaludGroup").hide();
@@ -13,7 +13,6 @@
         $("#div-IFI").hide();
         $("#div-NPHL").hide();
         $("#div-OPbL").hide();
-        
 
         if ($("#cod_region_institucional").children().length > 1)
             $("#RegionInstitucionalGroup").show();
@@ -23,6 +22,9 @@
 
         if ($("#cod_region_pais").children().length > 1)
             $("#RegionPaisGroup").show();
+
+        toggleInstitutionType();
+        toggleAccessLevel();
 
         //$("#OrdenPrioritybyLab").ForceNumericOnly();
         //$('#OrdenPrioritybyLab').keyup(function (e) {
@@ -36,13 +38,31 @@
 
     function toggleAccessLevel(isEdit) {
         accessLevel = $("#AccessLevel").val();
+        console.log(accessLevel);
         if (accessLevel == "Service") {
             $("#div-father").show();
             if (isEdit) return;
             loadFatherInst();
-        } else {
+        }
+        else if (accessLevel == "Area") {
+            $("#RegionInstitucionalGroup").hide();
+            $("#RegionSaludGroup").hide();
+            $("#RegionPaisGroup").hide();
             $("#div-father").hide();
+        }
+        else if (accessLevel != "Area" && accessLevel != "Service") {
+            if ($("#cod_region_institucional").children().length > 1)
+                $("#RegionInstitucionalGroup").show();
 
+            if ($("#cod_region_salud").children().length > 1)
+                $("#RegionSaludGroup").show();
+
+            if ($("#cod_region_pais").children().length > 1)
+                $("#RegionPaisGroup").show();
+        }
+
+        else {
+            $("#div-father").hide();
         }
     }
 

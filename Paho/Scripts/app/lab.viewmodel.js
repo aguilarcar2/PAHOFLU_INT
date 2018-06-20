@@ -203,6 +203,21 @@
         return result;
     }, self);
 
+    self.EnableTestResultID_VirusSubTypeID = ko.computed(function () {
+        //var result = (self.VirusTypeID() == "1" && self.TestResultID() == "P"); // modificacion solicitada por Rodrigo
+        //console.log("EnableVirusSubTypeID");
+        var result = (self.VirusTypeID() == "1" && self.TestResultID() == "P" && self.UsrCountry() == 7);
+        if (!result) {
+            self.TestResultID_VirusSubType("");
+        };
+        if (self.TestType() == "1") {
+            self.TestResultID_VirusSubType("");
+            return false;
+        }
+
+        return result;
+    }, self);
+
     // Aqui agregar la funcion para esconder el resultado del subtipo
 
     self.EnableVirusSubTypeID_2 = ko.computed(function () {
@@ -1993,10 +2008,18 @@ function LabViewModel(app, dataModel) {
                     self.FinalResult((v.TestResultID() == "NA" || v.TestResultID() == "NB") ? 'N' : v.TestResultID());
                     if (v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB") {
                         self.FinalResultVirusTypeID(v.VirusTypeID());
-                        if (v.TestResultID_VirusSubType() ==  "P")
+                        if (v.TestResultID_VirusSubType() == "P" && self.UsrCountry() == 7) {
                             self.FinalResultVirusSubTypeID(v.VirusSubTypeID());
-                        if (v.TestResultID_VirusSubType_2() == "P")
+                        } else if (v.TestResultID_VirusSubType() != "N" && v.TestResultID_VirusSubType() != "NA" && v.TestResultID_VirusSubType() != "NB") {
+                            self.FinalResultVirusSubTypeID(v.VirusSubTypeID());
+                        }
+                            
+                        if (v.TestResultID_VirusSubType_2() == "P" && self.UsrCountry() == 7) {
                             self.FinalResultVirusSubTypeID(v.VirusSubTypeID_2());
+                        } else if (v.TestResultID_VirusSubType_2() != "N" && v.TestResultID_VirusSubType_2() != "NA" && v.TestResultID_VirusSubType_2() != "NB") {
+                            self.FinalResultVirusSubTypeID(v.VirusSubTypeID_2());
+                        }
+
                         self.FinalResultVirusLineageID(v.VirusLineageID());
                     }
                     

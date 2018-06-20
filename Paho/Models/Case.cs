@@ -1565,20 +1565,22 @@ namespace Paho.Models
         All = 1,
         Country = 2,
         Area = 3,
-        SelfOnly = 4,
+        State = 7,
         Regional = 5,
+        SelfOnly = 4,
         Service = 6
+
     }
 
-    public enum AccessLevel_JAM
-    {
-        All = 1,
-        Country = 2,
-        Parish = 3,
-        SelfOnly = 4,
-        Regional = 5,
-        Service = 6
-    }
+    //public enum AccessLevel_JAM
+    //{
+    //    All = 1,
+    //    Country = 2,
+    //    Parish = 3,
+    //    SelfOnly = 4,
+    //    Regional = 5,
+    //    Service = 6
+    //}
 
     public class PahoDbContext : IdentityDbContext<ApplicationUser>
     {

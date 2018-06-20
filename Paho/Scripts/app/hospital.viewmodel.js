@@ -1154,9 +1154,7 @@
                     self.HospAmDate(moment(data.HospAmDate).clone().toDate());
                 else self.HospAmDate(null)
                 self.CalculateEW("HospAmDate", self.HospEW, self.HospEY);
-                if (data.HospExDate)
-                    self.HospExDate(moment(data.HospExDate).clone().toDate());
-                else self.HospExDate(null)
+
                 self.ICU(data.ICU);
                 if (data.ICUAmDate)
                     self.ICUAmDate(moment(data.ICUAmDate).clone().toDate());
@@ -1167,6 +1165,9 @@
                     self.ICUExDate(moment(data.ICUExDate).clone().toDate());
                 else self.ICUExDate(null);
                 self.Destin(data.Destin);
+                if (data.HospExDate)
+                    self.HospExDate(moment(data.HospExDate).clone().toDate());
+                else self.HospExDate(null)
                 self.DestinICU(data.DestinICU);
                 self.InstReferName(data.InstReferName);
                 if (data.FalleDate)

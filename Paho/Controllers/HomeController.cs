@@ -77,10 +77,10 @@ namespace Paho.Controllers
                 }
                 else if (user.Institution.AccessLevel == AccessLevel.Area)
                 {
-                    CaseViewModel.DisplayAreas = true;
+                    //CaseViewModel.DisplayAreas = true;
 
                     institutions = db.Institutions.OfType<Hospital>()
-                                   .Where(i => i.AreaID == user.Institution.AreaID);
+                                   .Where(i => i.AreaID == user.Institution.AreaID).OrderBy(n => n.FullName);
                 }
                 else if (user.Institution is Hospital && user.Institution.AccessLevel != AccessLevel.Service)//línea agregada de la versión en inglés. Según AM, sirve para los servicios
                 {
@@ -158,7 +158,7 @@ namespace Paho.Controllers
                 {
                     Id = i.ID.ToString(),
                     Name = i.Name
-                }).ToList();
+                }).OrderBy(d => d.Name).ToList();
 
                 if (areasDisplay.Count() > 1)
                 {

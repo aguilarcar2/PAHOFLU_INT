@@ -429,7 +429,11 @@ namespace Paho.Controllers
                 if (list_areas.Any())
                 {
                     flucases = flucases.Where(k => list_areas.Contains(k.HospitalID));
+                } else
+                {
+                    flucases = flucases.Where(k => k.Hospital.AreaID == AreaId_);
                 }
+
             }
 
             var pageIndex = Convert.ToInt32(page) - 1;

@@ -57,6 +57,27 @@
         return typeof self.selectedInstitutionId() !== "undefined" && self.selectedInstitutionId() !== "" && !self.editMode();
     });
 
+    self.selectedAreaId.subscribe(function (NewAreaID) {
+        console.log("New Area ID -" + NewAreaID);
+        if (NewAreaID > 0) {
+            //("#Regionals").attr('disabled', true);
+            self.selectedRegionId(0);
+        }
+        //else {
+        //    //("#Regionals").attr('disabled', false);
+        //}
+    });
+
+    self.selectedRegionId.subscribe(function (NewRegionID) {
+        if (NewRegionID > 0) {
+            //("#Areas").attr('disabled', true);
+            self.selectedAreaId(0);
+        }
+        //else {
+        //    ("#Areas").attr('disabled', false);
+        //}
+    });
+
     // Inicia EsRut validacion para Chile
     self.revisarDigito = function (componente) {
         var crut = componente
@@ -379,10 +400,12 @@
     self.loadInstitutions = function () {
         $.getJSON(app.dataModel.getInstitutionsUrl, { CountryID: self.selectedCountryId() === "" ? self.UsrCountry() : self.selectedCountryId(), AreaID: self.selectedAreaId(), RegionID: self.selectedRegionId() }, function (data, status) {
             self.institutions(data);
+            self.selectedInstitutionId(0);
         })
         .fail(function (jqXHR, textStatus, errorThrown) {
             alert(errorThrown);
         })
+        
     };
 
        
