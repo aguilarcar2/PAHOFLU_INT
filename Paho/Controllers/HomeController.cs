@@ -86,7 +86,7 @@ namespace Paho.Controllers
                 {
 
                     institutions = db.Institutions.OfType<Hospital>()
-                                .Where(i => i.Father_ID == user.InstitutionID || i.ID == user.InstitutionID);
+                                .Where(i => i.Father_ID == user.InstitutionID || i.ID == user.InstitutionID).OrderBy(n => n.FullName);
                 }
                 else if (user.Institution.AccessLevel == AccessLevel.Regional)
                 {

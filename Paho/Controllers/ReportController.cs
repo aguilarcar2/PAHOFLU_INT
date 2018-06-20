@@ -1,16 +1,8 @@
 ﻿using Paho.Models;
 using System;
-//using System.Collections.Generic;
-//using System.Data.Entity;
-//using System.Globalization;
 using System.Linq;
-//using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
-//using System.IO;
-//using System.Web.UI;
-//using System.Xml.Serialization;
-//using Paho.Reports.Entities;
 
 namespace Paho.Controllers
 {
@@ -42,17 +34,17 @@ namespace Paho.Controllers
                 if (user.Institution.AccessLevel == AccessLevel.Country)
                 {
                     institutions = db.Institutions.OfType<Hospital>()
-                                  .Where(i => i.CountryID == user.Institution.CountryID);
+                                  .Where(i => i.CountryID == user.Institution.CountryID).OrderBy(n => n.FullName);
                 }
                 else if (user.Institution.AccessLevel == AccessLevel.Area)
                 {
                     institutions = db.Institutions.OfType<Hospital>()
-                                   .Where(i => i.AreaID == user.Institution.AreaID);
+                                   .Where(i => i.AreaID == user.Institution.AreaID).OrderBy(n => n.FullName);
                 }
                 else
                 {
                     institutions = db.Institutions.OfType<Hospital>()
-                                   .Where(i => i.ID == user.Institution.ID);
+                                   .Where(i => i.ID == user.Institution.ID).OrderBy(n => n.FullName);
                 }
             }
             else

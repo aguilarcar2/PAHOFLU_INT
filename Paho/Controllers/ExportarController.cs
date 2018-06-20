@@ -3,17 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-//using System.Data.Entity;
 using System.Data.SqlClient;
-//using System.Globalization;
 using System.Linq;
-//using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using System.IO;
-//using System.Web.UI;
-//using System.Xml.Serialization;
-//using System.Text;
 using OfficeOpenXml;
 using OfficeOpenXml.Drawing.Chart;
 using OfficeOpenXml.Style;
@@ -37,6 +31,7 @@ namespace Paho.Controllers
             var ExportarViewModel = new ExportarViewModel();
             IQueryable<Institution> institutions = null;
             IQueryable<Paho.Models.Region> regions = null;
+            IQueryable<Paho.Models.Area> areas = null;
             IQueryable<ReportCountry> ReportsCountries = null;
             var user = UserManager.FindById(User.Identity.GetUserId());
             ExportarViewModel.CountryID = user.Institution.CountryID ?? 0;
@@ -55,7 +50,7 @@ namespace Paho.Controllers
                 if (user.Institution.AccessLevel == AccessLevel.Country)
                 {
                     institutions = db.Institutions.OfType<Hospital>()
-                                  .Where(i => i.CountryID == user.Institution.CountryID);
+                                  .Where(i => i.CountryID == user.Institution.CountryID).OrderBy(n => n.FullName);
 
                     if (user.type_region == null)
                     {     // Regiones
@@ -66,11 +61,13 @@ namespace Paho.Controllers
                         // Regiones
                         regions = db.Regions.Where(c => c.CountryID == user.Institution.CountryID && c.tipo_region == user.type_region).OrderBy(i => i.Name);
                     }
+
+                    areas = db.Areas.Where(d => d.CountryID == user.Institution.CountryID).OrderBy(i => i.Name);
                 }
                 else if (user.Institution.AccessLevel == AccessLevel.Area)
                 {
                     institutions = db.Institutions.OfType<Hospital>()
-                                   .Where(i => i.AreaID == user.Institution.AreaID);
+                                   .Where(i => i.AreaID == user.Institution.AreaID).OrderBy(n => n.FullName);
                 }
                 else if (user.Institution is Hospital && user.Institution.AccessLevel != AccessLevel.Service)//línea agregada de la versión en inglés. Según AM, sirve para los servicios
                 {
@@ -105,16 +102,34 @@ namespace Paho.Controllers
             else
             {
                 ExportarViewModel.DisplayHospitals = true;
-                var inst_by_lab = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(j => j.InstitutionToID == user.InstitutionID).Select(i => i.InstitutionToID).ToList();
+                var inst_by_lab = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(j => j.InstitutionToID == user.InstitutionID).Select(i => i.InstitutionParentID).ToList();
                 if (user.Institution.AccessLevel == AccessLevel.Country)
                 {
                     institutions = db.Institutions.OfType<Hospital>()
-                                   .Where(i => i.CountryID == user.Institution.CountryID );
+                                   .Where(i => i.CountryID == user.Institution.CountryID ).OrderBy(j => j.FullName);
                 }
                 else if (user.Institution.AccessLevel == AccessLevel.Area)
                 {
                     institutions = db.Institutions.OfType<Hospital>()
-                                   .Where(i => i.AreaID == user.Institution.AreaID);
+                                   .Where(i => i.AreaID == user.Institution.AreaID).OrderBy(j => j.FullName);
+                }
+                else if (user.Institution.AccessLevel == AccessLevel.Regional)
+                {
+                    if (user.type_region == 1 || user.type_region == null)
+                    {
+                        institutions = db.Institutions.OfType<Hospital>()
+                                  .Where(i => i.CountryID == user.Institution.CountryID && i.cod_region_institucional == user.Institution.cod_region_institucional).OrderBy(j => j.FullName);
+                    }
+                    else if (user.type_region == 2)
+                    {
+                        institutions = db.Institutions.OfType<Hospital>()
+                                  .Where(i => i.CountryID == user.Institution.CountryID && i.cod_region_salud == user.Institution.cod_region_salud).OrderBy(j => j.FullName);
+                    }
+                    else if (user.type_region == 3)
+                    {
+                        institutions = db.Institutions.OfType<Hospital>()
+                                  .Where(i => i.CountryID == user.Institution.CountryID && i.cod_region_pais == user.Institution.cod_region_pais).OrderBy(j => j.FullName);
+                    }
                 }
                 else
                 {

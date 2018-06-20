@@ -400,7 +400,6 @@
     self.loadInstitutions = function () {
         $.getJSON(app.dataModel.getInstitutionsUrl, { CountryID: self.selectedCountryId() === "" ? self.UsrCountry() : self.selectedCountryId(), AreaID: self.selectedAreaId(), RegionID: self.selectedRegionId() }, function (data, status) {
             self.institutions(data);
-            self.selectedInstitutionId(0);
         })
         .fail(function (jqXHR, textStatus, errorThrown) {
             alert(errorThrown);

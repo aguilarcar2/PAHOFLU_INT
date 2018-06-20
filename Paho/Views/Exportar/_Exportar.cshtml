@@ -11,23 +11,6 @@
     </div>
 
 </div>
-<!--div class="row" style="margin-bottom: 15px; margin-top: 1em;">
-    <div class="col-md-5">
-        <div class='input-group'>
-            <span class="input-group-addon">
-                Reporte:
-            </span>
-            <select id="Report" class="form-control" data-bind="value:Report">
-                <option value="Cases">Exportación de registros</option>
-                <option value="R1">Número de casos y % hospitalizaciones por IRAG</option>
-                <option value="R2">Total fallecidos por IRAG</option>
-                @*<option value="R3">Casos por IRAG y Hospitalizaciones totales</option>*@
-                <option value="R4">Virus detectados</option>
-                @*<option value="Example">Example</option>*@
-            </select>
-        </div>
-    </div>
-</div-->
 
 <!-- Vigilancia -->
 <div class="row" style="margin-bottom: 15px; margin-top: 1em;">
@@ -103,16 +86,6 @@
 <!--Región:-->
 @if (Model.DisplayRegionals)
 {
-    <!--div id="RegionalsGroup" class='input-group col-md-7' style="margin-top: 7px; display: block; float: left" data-bind="visible: displayFilters">
-        <span class="input-group-addon">
-            Región:
-        </span>
-        <select id="Regionals" class="form-control" data-bind="options: regions,
-                       optionsText: 'Name',
-                       optionsValue: 'Id',
-                       value: selectedRegionId,
-                       valueUpdate:'change'"></select>
-    </div-->
     <div class="row" style="margin-bottom: 15px; margin-top: 1em;">
         <div class="col-md-5">
             <div class='input-group'>
@@ -126,8 +99,7 @@
                        value: selectedRegionId,
                        valueUpdate:'change',
                        event:{ change: ReloadInstitutions}"></select>
-                @*optionsCaption: '@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarFieldSelect"))',*@
-                @*optionsCaption: 'Select...',*@
+
             </div>
         </div>
     </div>
