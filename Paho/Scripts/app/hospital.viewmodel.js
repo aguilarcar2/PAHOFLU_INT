@@ -794,7 +794,7 @@
 
     self.Destin.subscribe(function (NewDestin) {
     //(app.Views.Contact.SurvSARI() == true || app.Views.Contact.SurvInusual() == true)
-        if ( app.Views.Contact.IsSurv() != "" && NewDestin != null && NewDestin != "") {
+        if ((app.Views.Contact.IsSurv() != "" || app.Views.Contact.SurvInusual() == true) && NewDestin != null && NewDestin != "") {
             if (self.HospExDate() == "" || self.HospExDate() == "undefined" || self.HospExDate() == null)
             {
                 alert(viewValidateExitDateBeforeDestin);

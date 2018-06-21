@@ -40,13 +40,13 @@ namespace Paho.Controllers
 
                 if (user.Institution.AccessLevel == AccessLevel.Country)
                 {
-                    institutions = db.Institutions.OfType<Hospital>()
-                                  .Where(i => i.CountryID == user.Institution.CountryID).OrderBy(n => n.FullName);
+                    institutions = db.Institutions
+                                  .Where(i => i.CountryID == user.Institution.CountryID && i.AccessLevel == AccessLevel.Area).OrderBy(n => n.FullName);
                 }
                 else if (user.Institution.AccessLevel == AccessLevel.Area)
                 {
                     institutions = db.Institutions
-                                   .Where(i => i.AreaID == user.Institution.AreaID).OrderBy(n => n.FullName);
+                                   .Where(i => i.AreaID == user.Institution.AreaID && i.AccessLevel == AccessLevel.Area).OrderBy(n => n.FullName);
                 }
                 else
                 {
