@@ -703,7 +703,8 @@ namespace Paho.Models
         public bool NPHL { get; set; }
         [NotMapped]
 		public InstitutionType InstType { get; set; }
-    }    
+    }
+
 
     public class Hospital : Institution
     {

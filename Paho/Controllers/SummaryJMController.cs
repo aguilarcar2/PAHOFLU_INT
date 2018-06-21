@@ -45,7 +45,7 @@ namespace Paho.Controllers
                 }
                 else if (user.Institution.AccessLevel == AccessLevel.Area)
                 {
-                    institutions = db.Institutions.OfType<Hospital>()
+                    institutions = db.Institutions
                                    .Where(i => i.AreaID == user.Institution.AreaID).OrderBy(n => n.FullName);
                 }
                 else
