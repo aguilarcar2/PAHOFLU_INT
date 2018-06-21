@@ -98,7 +98,7 @@
                             {
                                 if (ViewBag.InstAccesLevel == 3 || ViewBag.UserInstitutionType == 3)
                                 {
-                                    if (ViewBag.SARI == true && ViewBag.UserInstitutionType == 3)
+                                    if (ViewBag.SARI == true && ViewBag.UserInstitutionType == 3 && ViewBag.InstAccesLevel != 3)
                                     {
                                         <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuSummaryView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Summary", new { area = "" }, null)</li>
                                     }
