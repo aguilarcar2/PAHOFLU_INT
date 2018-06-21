@@ -20,21 +20,30 @@
                 @(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelSurv"))
             </span>
             <select id="Surv" class="form-control" data-bind="value: Surv">
-                @if (ViewBag.SARI == true && ViewBag.ILI == false)
+                @if ((ViewBag.SARI == true && ViewBag.ILI == true) || (ViewBag.SARI == true && ViewBag.unusual == true) || (ViewBag.ILI == true && ViewBag.unusual == true) || (ViewBag.SARI == true && ViewBag.ILI == true && ViewBag.unusual == true))
+                {
+                    if (ViewBag.UsrCtry == 17)
+                    {
+                        <option value="0">@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarFieldSelectSARIUniversal"))</option>
+                    }
+                    else
+                    {
+                        <option value="0">@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarFieldSelect"))</option>
+                    }
+                }
+                @if (ViewBag.SARI == true)
                 {
                     <option value="1">@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelSari"))</option>
                 }
-                @if (ViewBag.ILI == true && ViewBag.SARI == false)
+                @if (ViewBag.ILI == true)
                 {
                     <option value="2">@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelIli"))</option>
                 }
-                @if (ViewBag.ILI == true && ViewBag.SARI == true)
+                @if (ViewBag.unusual == true)
                 {
-                    <option value="0">@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarFieldSelect"))</option>
-                    <option value="1">@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelSari"))</option>
-                        <option value="2">@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelIli"))</option>
+                    <option value="3">@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelUnusualCase"))</option>
                 }
-                <option value="3">@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelUnusualCase"))</option>
+
             </select>
             <!--
             <label class="btn btn-default">

@@ -1084,7 +1084,8 @@ namespace Paho.Models
         public bool? Tos { get; set; }
         public bool? Tiraje { get; set; }
         public bool? Odinofagia { get; set; }
-       //public class CaseLab : CaseBase
+        public bool? Wheezing { get; set; }             //#### CAFQ: 180619
+        //public class CaseLab : CaseBase
         public DateTime? RecDate { get; set; }
         public string Identification_Test { get; set; }
         public bool? Processed { get; set; }
@@ -1831,6 +1832,7 @@ namespace Paho.Models
                    p.ShipDate3,
                    p.LabID3,
                    p.Adenopatia,
+                   p.Wheezing,                        //#### CAFQ: 180619
                    p.AntecedentesFiebre,
                    p.Rinorrea,
                    p.Malestar,
