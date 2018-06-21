@@ -939,6 +939,8 @@
        self.CloseDate(null);
        self.ObservationCase("");
        self.ResetHospitalInusual();         //#### CAFQ
+       self.FeverEW("");
+       self.FeverEY("");
        self.hasReset(false);
     };
 

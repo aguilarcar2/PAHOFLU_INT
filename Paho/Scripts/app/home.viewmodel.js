@@ -271,9 +271,6 @@
     };
 
 
-
-
-
     self.ResetFluCase = function () {
         app.Views.Contact.ResetContact();
         app.Views.GEO.ResetGEO();
