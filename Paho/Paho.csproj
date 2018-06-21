@@ -284,6 +284,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AreasController.cs" />
+    <Compile Include="Controllers\CatSampleReasonsNoProcessedController.cs" />
     <Compile Include="Controllers\CatVirusLinajesController.cs" />
     <Compile Include="Controllers\ImportPadronController.cs" />
     <Compile Include="Controllers\RegionsController.cs" />
@@ -2106,6 +2107,7 @@
     <None Include="Properties\PublishProfiles\aaa2.pubxml" />
     <None Include="Properties\PublishProfiles\aaaa.pubxml" />
     <None Include="Properties\PublishProfiles\CAFQ.pubxml" />
+    <None Include="Properties\PublishProfiles\CAFQ01.pubxml" />
     <None Include="Properties\PublishProfiles\INTERNATIONAL.pubxml" />
     <None Include="Properties\PublishProfiles\INT_PUBLISH.pubxml" />
     <None Include="Properties\PublishProfiles\PAHO.pubxml" />
@@ -2385,6 +2387,10 @@
     <Content Include="Views\CatVirusLinajes\Edit.cshtml" />
     <Content Include="Views\CatVirusLinajes\Index.cshtml" />
     <Content Include="Views\SummaryJM\Index.cshtml" />
+    <Content Include="Views\CatSampleReasonsNoProcessed\Create.cshtml" />
+    <Content Include="Views\CatSampleReasonsNoProcessed\Delete.cshtml" />
+    <Content Include="Views\CatSampleReasonsNoProcessed\Edit.cshtml" />
+    <Content Include="Views\CatSampleReasonsNoProcessed\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1398,6 +1398,7 @@ namespace Paho.Controllers
                     ShipDate3 = flucase.ShipDate3,
                     LabId3 = flucase.LabID3,
                     Adenopatia = flucase.Adenopatia,
+                    Wheezing = flucase.Wheezing,                                        //#### CAFQ: 180619
                     AntecedentesFiebre = flucase.AntecedentesFiebre,
                     Rinorrea = flucase.Rinorrea,
                     //Malestar = flucase.Malestar,
@@ -1511,6 +1512,7 @@ namespace Paho.Controllers
                 DateTime? ShipDate3,
                 long? LabId3,
                 bool? Adenopatia,
+                bool? Wheezing,                                 //#### CAFQ: 180619
                 bool? AntecedentesFiebre,
                 bool? Rinorrea,
                 //bool? Malestar,
@@ -1633,6 +1635,7 @@ namespace Paho.Controllers
             flucase.InsertDate = DateTime.Now;
             //flucase.UserID = User.Identity.Name;
             flucase.Adenopatia = Adenopatia;
+            flucase.Wheezing = Wheezing;                            //#### CAFQ: 180619
             flucase.AntecedentesFiebre = AntecedentesFiebre;
             flucase.Rinorrea = Rinorrea;
             //flucase.Malestar = Malestar;

@@ -693,6 +693,7 @@
     }, self);
 
     self.Adenopatia = ko.observable("");
+    self.Wheezing = ko.observable("");                  //#### CAFQ: 180619
     self.AntecedentesFiebre = ko.observable("");
     self.Rinorrea = ko.observable("");
     self.Malestar = ko.observable("");
@@ -915,6 +916,7 @@
        self.ShipDate3(null);
        self.LabId3("");
        self.Adenopatia("");
+       self.Wheezing("");                   //#### CAFQ: 180619
        self.AntecedentesFiebre("");
        self.Rinorrea("");
        self.Malestar("");
@@ -1226,6 +1228,7 @@
                 self.LabId3(data.LabId3);
 
                 self.Adenopatia(data.Adenopatia);
+                self.Wheezing(data.Wheezing);               		        //#### CAFQ: 180619
                 self.AntecedentesFiebre(data.AntecedentesFiebre);
                 self.Rinorrea(data.Rinorrea);
                 self.Malestar(data.Malestar);
@@ -1395,6 +1398,7 @@
                 ShipDate3: $("#ShipDate3").val() == "" ? null : moment(date_ship3).format(date_format_ISO),
                 LabId3: $("#SampleDate3").val() == "" ? null : self.LabId3(),
                 Adenopatia: self.Adenopatia() != true ? false : self.Adenopatia(),
+                Wheezing: self.Wheezing() != true ? false : self.Wheezing(),                    //#### CAFQ: 180619
                 AntecedentesFiebre: self.AntecedentesFiebre() != true ? false : self.AntecedentesFiebre(),
                 Rinorrea: self.Rinorrea() != true ? false : self.Rinorrea(),
                 Malestar: self.Malestar() != true ? false : self.Malestar(),

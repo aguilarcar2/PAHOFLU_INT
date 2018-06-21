@@ -60,6 +60,7 @@ namespace Paho.Controllers
                 ViewBag.DateofServer = DateTime.Now.ToString("d", CultureInfo.CreateSpecificCulture("es-GT"));
                 ViewBag.SARI = (user.Institution.SARI == true ) ? true : false ;
                 ViewBag.ILI = (user.Institution.ILI == true ) ? true : false;
+                ViewBag.InstAccesLevel = (int)user.Institution.AccessLevel;
                 ViewBag.unusual = (user.Institution.surv_unusual == true) ? true : false;
                 ViewBag.UsrCtry = user.Institution.CountryID;
                 ViewBag.UsrCtryLang = user.Institution.Country.Language;
