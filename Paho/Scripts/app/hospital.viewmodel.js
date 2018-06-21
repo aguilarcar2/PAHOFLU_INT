@@ -793,7 +793,8 @@
     }, self);
 
     self.Destin.subscribe(function (NewDestin) {
-        if (app.Views.Contact.SurvSARI() == true && app.Views.Contact.IsSurv() != "" && NewDestin != null && NewDestin != "") {
+    //(app.Views.Contact.SurvSARI() == true || app.Views.Contact.SurvInusual() == true)
+        if ( app.Views.Contact.IsSurv() != "" && NewDestin != null && NewDestin != "") {
             if (self.HospExDate() == "" || self.HospExDate() == "undefined" || self.HospExDate() == null)
             {
                 alert(viewValidateExitDateBeforeDestin);
