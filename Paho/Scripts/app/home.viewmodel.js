@@ -57,26 +57,6 @@
         return typeof self.selectedInstitutionId() !== "undefined" && self.selectedInstitutionId() !== "" && !self.editMode();
     });
 
-    self.selectedAreaId.subscribe(function (NewAreaID) {
-        console.log("New Area ID -" + NewAreaID);
-        if (NewAreaID > 0) {
-            //("#Regionals").attr('disabled', true);
-            self.selectedRegionId(0);
-        }
-        //else {
-        //    //("#Regionals").attr('disabled', false);
-        //}
-    });
-
-    self.selectedRegionId.subscribe(function (NewRegionID) {
-        if (NewRegionID > 0) {
-            //("#Areas").attr('disabled', true);
-            self.selectedAreaId(0);
-        }
-        //else {
-        //    ("#Areas").attr('disabled', false);
-        //}
-    });
 
     // Inicia EsRut validacion para Chile
     self.revisarDigito = function (componente) {
@@ -226,12 +206,12 @@
         }
         else {
 
-            if (self.selectedAreaId() > -1) {
-                self.ReloadInstitutions();
-            }
-            if (self.selectedRegionId() > -1) {
-                self.ReloadInstitutions();
-            }
+            //if (self.selectedAreaId() > 0) {
+            //    self.ReloadInstitutions();
+            //}
+            //if (self.selectedRegionId() > 0) {
+            //    self.ReloadInstitutions();
+            //}
             //else {
             //    self.loadInstitutions();
             //}
@@ -406,6 +386,40 @@
         })
         
     };
+
+    self.selectedAreaId.subscribe(function (NewAreaID) {
+
+        if (NewAreaID > 0) {
+            //("#Regionals").attr('disabled', true);
+            self.selectedRegionId(0);
+
+        }
+
+        self.loadInstitutions();
+        $("#caselist").trigger("reloadGrid");
+        $("#caselist_pend").trigger('reloadGrid');
+
+        if (NewAreaID == 0 && self.institutions().length > 1) {
+            self.selectedInstitutionId(0);
+        }
+
+    });
+
+    self.selectedRegionId.subscribe(function (NewRegionID) {
+
+        if (NewRegionID > 0) {
+            self.selectedAreaId(0);
+        }
+
+        self.loadInstitutions();
+        $("#caselist").trigger("reloadGrid");
+        $("#caselist_pend").trigger('reloadGrid');
+
+        if (NewRegionID == 0 && self.institutions().length > 1) {
+            self.selectedInstitutionId(0);
+        }
+
+    });
 
        
     Sammy(function () {
