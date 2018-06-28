@@ -778,6 +778,7 @@ function ContactViewModel(app, dataModel) {
                 self.selectedNationalityID(data.nationality);
                 self.selectedNativepeopleID(data.nativepeople);
                 self.hasHospitalID(data.hospitalIDRecord);
+                self.hasHospitalID() > 0 ? app.Views.Home.selectedInstitutionId(self.hasHospitalID()) : "";
                 self.DataStatement(data.DataStatement);
                 self.flow_record(data.flow_record);
                 self.flow_institution(data.flow_institution);
@@ -841,14 +842,6 @@ function ContactViewModel(app, dataModel) {
         } else {
             date_fever_dummy = jQuery.type(app.Views.Hospital.FeverDate()) === 'date' ? app.Views.Hospital.FeverDate() : parseDate($("#FeverDate").val(), date_format_);
         }
-        //####
-
-        //console.log("date_hospital " + date_hospital);
-        //console.log("self.HospitalDate " + self.HospitalDate());
-        //console.log("jquery.type self.HospitalDate " + jQuery.type(self.HospitalDate()));
-        //console.log("date_reg_date " + date_reg_date);
-        //console.log("self.RegDate " + self.RegDate());
-        //console.log("typeof self.RegDate " + typeof (self.RegDate()));
         if (self.DocumentType() == "" && (self.UsrCountry() == 25 || self.UsrCountry() == 11 || self.UsrCountry() == 18 || self.UsrCountry() == 17)) {//sirve para que en el caso de Suriname, el DocumentType se llene con un valor predeterminado            
             self.DocumentType(8);
         }
@@ -871,6 +864,7 @@ function ContactViewModel(app, dataModel) {
                 //HospitalDate: moment(date_hospital).format(date_format_ISO),
                 HospitalDate: moment(date_hospital).format(date_format_ISO),
                 RegDate: moment(date_reg_date).format(date_format_ISO),
+                //HospitalId: self.hasHospitalID() > 0 ? self.hasHospitalID() : self.selectedServiceId() > 0 ? self.selectedServiceId() : app.Views.Home.selectedInstitutionId(),
                 HospitalId: self.selectedServiceId() > 0 ? self.selectedServiceId() : app.Views.Home.selectedInstitutionId(),
                 nativepeople: self.selectedNativepeopleID(),
                 nationality: self.selectedNationalityID(),
@@ -908,7 +902,9 @@ function ContactViewModel(app, dataModel) {
         //console.log("Flow Lab - SaveAndAdd_1");
         //console.log(app.Views.Home.SaveAndAdd_1());
         //console.log("Contact epi - frecord_lab -- " + self.flow_record() + ", finstitution_lab -- " + self.flow_institution() + ", dataStatement_lab -- " + self.DataStatement() + ", userRole " + app.Views.Home.UserRole() + ", Inst" + $("#ITy").val() + ", OpenAlways" + self.flow_open_always());
-        if ((self.flow_record() == (self.flow_institution() - 1) && (self.DataStatement() == 2 || self.DataStatement() == null || self.flow_open_always() == true) && app.Views.Home.SaveAndAdd_1() == true) || (self.flow_record() == self.flow_institution() && (self.DataStatement() == 1 || self.DataStatement() == null || self.flow_open_always() == true)) || (self.flow_close_case() == 99 && self.flow_open_always() == true)) {
+        if ($("#ITy").val() == "2"  && app.Views.Home.UserRole() == "mod_lab") {
+            return true;
+        } else if ((self.flow_record() == (self.flow_institution() - 1) && (self.DataStatement() == 2 || self.DataStatement() == null || self.flow_open_always() == true) && app.Views.Home.SaveAndAdd_1() == true) || (self.flow_record() == self.flow_institution() && (self.DataStatement() == 1 || self.DataStatement() == null || self.flow_open_always() == true)) || (self.flow_close_case() == 99 && self.flow_open_always() == true)) {
             return true;
         }
         else {
@@ -920,13 +916,18 @@ function ContactViewModel(app, dataModel) {
     self.Flow_Local_Institution_Epi = function () {
 
         //console.log("Contact epi - frecord_epi -- " + self.flow_record() + ", finstitution_epi -- " + self.flow_institution() + ", dataStatement_epi -- " + self.DataStatement() + ", userRole " + app.Views.Home.UserRole() + ", Inst" + $("#ITy").val());
+
         if ($("#ITy").val() == "2") {
             return false;
         } else if ($("#ITy").val() != "2"  && app.Views.Home.UserRole() == "adm") {
             return true;
         } else if ($("#ITy").val() != "2"  && app.Views.Home.UserRole() == "stf") {
             return true;
-        }
+        } else if ($("#ITy").val() != "2" && app.Views.Home.UserRole() == "mod_epi") {
+            return true;
+        } else if ($("#ITy").val() != "2" && app.Views.Home.UserRole() == "clo_case" && app.Views.Hospital.CaseStatus() == "") {
+            return true;
+        } 
         //else if ((self.flow_record() == 0 && self.DataStatement() == 1) ||  (self.flow_record() == self.flow_institution() && self.DataStatement() == 2) || (self.Id() == "") || (self.flow_record() == self.flow_max() && (self.DataStatement() == 2 || self.DataStatement() == null))) {  // Case Status ==3 cuando esta cerrado  -- Modificacion requerida por RRR 20170924 no desactivar en caso cerrado
         else if ((self.flow_record() == 0 && self.DataStatement() == 1) ||  (self.flow_record() == self.flow_institution() && self.DataStatement() == 2) || (self.Id() == "") || (self.flow_record() == self.flow_max() && (self.DataStatement() == 2 || self.DataStatement() == null))) {  
             return true;

@@ -5132,19 +5132,19 @@
     </div>
 </div>
 
-@if (User.IsInRole("Admin")  || User.IsInRole("Staff") || User.IsInRole("Reader"))
-{
+@*@if (User.IsInRole("Admin")  || User.IsInRole("Staff") || User.IsInRole("Reader") || User.IsInRole("Modify_Epi") || User.IsInRole("Modify_Lab"))
+{*@
     <div id="botones" data-bind="with: app.Views.Contact, visible: shouldtabs">
         <div class="row rowform">
             <div class="col-md-12">
                 <div class="btn-group">
-                    @if (User.IsInRole("Admin") || User.IsInRole("Staff"))
+                    @if (User.IsInRole("Admin") || User.IsInRole("Staff") || User.IsInRole("Close_case") || User.IsInRole("Modify_Epi") || User.IsInRole("Modify_Lab"))
                     {
                         <button id="saveGeneralPrev" type="button" class="btn btn-primary" data-bind="click: SavePrev, visible: false">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigGeneralSavePrevious"))</button>
                         <span></span>
                         <button id="saveGeneral_1" type="button" class="btn btn-primary" data-bind="click: Save.bind($data,1), visible:app.Views.Contact.Flow_Local_Institution_Epi() || app.Views.Contact.Flow_Local_Institution_Lab()">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigGeneralSaveAndExit"))</button>
                         <span></span>
-                        if (ViewBag.UserInstitutionType == 1)
+                        if (ViewBag.UserInstitutionType == 1 )
                         {
                             <button id="saveGeneral_2" type="button" class="btn btn-primary" data-bind="click: Save.bind($data,0), visible:app.Views.Contact.Flow_Local_Institution_Epi()">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigGeneralSaveAndNew"))</button>
                             <span></span>
@@ -5178,7 +5178,7 @@
         </div>
 
     </div>
-}
+@* } *@
 
 <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document">

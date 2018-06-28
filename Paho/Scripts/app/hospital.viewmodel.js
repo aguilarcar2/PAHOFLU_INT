@@ -209,7 +209,7 @@
             $("#CaseStatus").attr("disabled", true);
             //self.Destin("");
         } else if (self.Destin() == "") {
-
+            
             $("a[href*='tab-case']").hide();
             $("#tab-case").hide();
             $("#CaseStatus").attr("disabled", true);
@@ -221,6 +221,7 @@
             }
 
             if (app.Views.Lab.CanConclude() == true) {
+                //console.log("HospExDate - CanConclude igual a true")
                 $("a[href*='tab-case']").show();
                 $("#tab-case").show();
                 $("#tabs").tabs("refresh");
@@ -795,6 +796,7 @@
     self.Destin.subscribe(function (NewDestin) {
     //(app.Views.Contact.SurvSARI() == true || app.Views.Contact.SurvInusual() == true)
         if ((app.Views.Contact.IsSurv() != "" || app.Views.Contact.SurvInusual() == true) && NewDestin != null && NewDestin != "") {
+            //console.log("destin");
             if (self.HospExDate() == "" || self.HospExDate() == "undefined" || self.HospExDate() == null)
             {
                 alert(viewValidateExitDateBeforeDestin);
@@ -804,14 +806,16 @@
                 $("#CaseStatus").attr("disabled", true);
                 $("#tabs").tabs("refresh");
                 $("#HospExDate").focus();
-             } else if (NewDestin != "" && self.IsSample() === "false") {
+            } else if (NewDestin != "" && self.IsSample() === "false") {
+                //console.log("destin is sample false");
                 $("a[href*='tab-case']").show();
                 $("#tab-case").show();
                 $("#CaseStatus").attr("disabled", false);
                 $("#tabs").tabs("refresh");
                 if (self.UsrCountry() == 9 && NewDestin == 'D') { self.FalleDate(self.HospExDate()); }
              } else if (NewDestin != "" && self.IsSample() === "true" && app.Views.Lab.FinalResult() != "" && typeof app.Views.Lab.FinalResult() != "undefined" && app.Views.Lab.CanConclude() == true) {
-                $("a[href*='tab-case']").show();
+                 //console.log("destin finalresult - can conclude");
+                 $("a[href*='tab-case']").show();
                 $("#tab-case").show();
                 $("#CaseStatus").attr("disabled", false);
                 $("#tabs").tabs("refresh");
@@ -823,6 +827,7 @@
                 if (self.UsrCountry() == 9 && NewDestin == 'D') { self.FalleDate(self.HospExDate()); }
              }
              else if (self.IsSample() === "true" && app.Views.Lab.NPHL_Processed() === "false") {  // preguntar a Rodrigo
+                 //console.log("destin is sample true");
                  $("a[href*='tab-case']").show();
                  $("#tab-case").show();
                  $("#CaseStatus").attr("disabled", false);
@@ -830,6 +835,7 @@
                  if (self.UsrCountry() == 9 && NewDestin == 'D') { self.FalleDate(self.HospExDate()); }
              }
              else if (self.IsSample() === "true" && app.Views.Lab.Processed() === "false") {  // preguntar a Rodrigo
+                 //console.log("destin processed false");
                     $("a[href*='tab-case']").show();
                     $("#tab-case").show();
                     $("#CaseStatus").attr("disabled", false);
@@ -1169,10 +1175,11 @@
                 if (data.ICUExDate)
                     self.ICUExDate(moment(data.ICUExDate).clone().toDate());
                 else self.ICUExDate(null);
-                self.Destin(data.Destin);
+                
                 if (data.HospExDate)
                     self.HospExDate(moment(data.HospExDate).clone().toDate());
                 else self.HospExDate(null)
+                self.Destin(data.Destin);
                 self.DestinICU(data.DestinICU);
                 self.InstReferName(data.InstReferName);
                 if (data.FalleDate)

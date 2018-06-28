@@ -2008,6 +2008,8 @@ function LabViewModel(app, dataModel) {
                     self.FinalResult((v.TestResultID() == "NA" || v.TestResultID() == "NB") ? 'N' : v.TestResultID());
                     if (v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB") {
                         self.FinalResultVirusTypeID(v.VirusTypeID());
+                        console.log("Virus subtype")
+                        console.log(v.TestResultID_VirusSubType());
                         if (v.TestResultID_VirusSubType() == "P" && self.UsrCountry() == 7) {
                             self.FinalResultVirusSubTypeID(v.VirusSubTypeID());
                         } else if (v.TestResultID_VirusSubType() != "N" && v.TestResultID_VirusSubType() != "NA" && v.TestResultID_VirusSubType() != "NB") {

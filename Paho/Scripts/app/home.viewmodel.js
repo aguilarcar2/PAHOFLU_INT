@@ -250,10 +250,15 @@
 
 
     self.CancelEdit = function () {
+        $("#Hospitals option:selected").prop("selected", false);
+        $("#Hospitals option:first").attr('selected', 'selected');
+        //$('#Hospitals').removeAttr('selected').find('option:first').attr('selected', 'selected');
+        self.selectedInstitutionId($("#Hospitals").val());
         self.displayFilters(true);
         self.editMode(false);
         self.showGrid(true);
         self.ReloadFluCases();
+
         //self.selectedInstitutionId("");
     };
 
@@ -284,6 +289,7 @@
         //$("#saveLab").attr("disabled", false);
         $("#saveGeneral").attr("disabled", false);
         $("#saveGeneralPrev").attr("disabled", true);
+
         //$("#cancel").attr("disabled", false);
         //$("#cancelGEO").attr("disabled", false);
         //$("#cancelRisk").attr("disabled", false);
@@ -323,6 +329,8 @@
                                 alert(viewValidateSavedRecord + app.Views.Hospital.Id);
                                 //app.Views.Home.CancelEdit();
                                 if (option_Save == 1 || option_Save == 2) app.Views.Home.CancelEdit();
+                                //console.log("Combo Hospitals" + $("#Hospitals").children().length);
+                                //$("#Hospitals option:first").attr('selected', 'selected');
                                 if (option_Save == 0) app.Views.Home.NewFluCase();
                                 //app.Views.Home.ResetFluCase();
                             } else {
@@ -487,25 +495,21 @@
     };
 
     self.FlowDataCaseStatus = function () {
-        console.log("FlowCaseStatus");
-        //console.log("Is Sample en Hospital");
-        //console.log(app.Views.Hospital.IsSample());
+        //console.log("FlowCaseStatus");
         var flow_check = $.grep(app.Views.Lab.LabTests(), function (x) {         
-            //console.log("Home - FlowDataCaseStatus - EndFlow " + x.EndFlow());
             return x.EndFlow() === "TRUE";
         });
-        //console.log("FlowDataCaseStatus_ " + flow_check.length);
         if (($("#ITy").val() != 2) && self.UserRole() == "mod_epi" && app.Views.Hospital.CaseStatus() == "3") {
 
             $("#tab-contact :input, #tab-GEO :input, #tab-hospital :input, #tab-risk :input, #tab-case :input").attr('disabled', false);
             $("#tab-lab :input").prop('disabled', true);
             $("a[href*='tab-case']").show();
             $("#tab-case").show();
-            $("#CaseStatus").attr("disabled", false);
+            $("#CaseStatus").attr("disabled", true);
             $("#tabs").tabs("refresh");
 
         } else if (app.Views.Hospital.CaseStatus() == "3" && self.UserRole() != "adm") {
-            console.log("aqui _ CaseStatus 3"); //
+            //console.log("aqui _ CaseStatus 3"); //
             $("#tabs :input").prop('disabled', true); // Modificacion para que se pueda modificar el registro aunque este cerrado el caso.
             self.ModDataNo();
             if (self.OpenAlwaysLab() == true) {
@@ -519,7 +523,7 @@
             }
             $("a[href*='tab-case']").show();
             $("#tab-case").show();
-            $("#CaseStatus").attr("disabled", false);
+            $("#CaseStatus").attr("disabled", true);
             $("#tabs").tabs("refresh");
         }
         //else if (flow_check.length > 0 && app.Views.Contact.DataStatement() == 2) {
@@ -530,34 +534,34 @@
         //    $("#tabs").tabs("refresh");
             //}
         else if (app.Views.Hospital.IsSample() === "false" && app.Views.Contact.IsSurv() == "2") {
-            console.log("aqui _ CaseStatus ETI"); //
+            //console.log("aqui _ CaseStatus ETI"); //
             $("a[href*='tab-case']").show();
             $("#tab-case").show();
             $("#CaseStatus").attr("disabled", false);
             $("#tabs").tabs("refresh");
         }
         else if (app.Views.Contact.SurvSARI() == true && app.Views.Hospital.IsSample() === "true" && (app.Views.Lab.FinalResult() == "" || app.Views.Hospital.Destin() == "" || app.Views.Hospital.HospExDate() == "" || app.Views.Hospital.HospExDate() == null || app.Views.Lab.CanConclude() == false)) {
-            console.log("aqui _ no processed 3");
+            //console.log("aqui _ no processed 3");
             $("a[href*='tab-case']").hide();
             $("#tab-case").hide();
             $("#CaseStatus").attr("disabled", false);
             $("#tabs").tabs("refresh");
         }
         else if ($("#ITy").val() == "1" && ((app.Views.Hospital.IsSample() === "true" && app.Views.Lab.Processed() === "false") || (app.Views.Lab.NPHL() == true && app.Views.Hospital.IsSample() === "true" && app.Views.Lab.NPHL_Processed() === "false"))) {
-            console.log("aqui _  Flow status no processed");
+            //console.log("aqui _  Flow status no processed");
             $("a[href*='tab-case']").show();
             $("#tab-case").show();
             $("#CaseStatus").attr("disabled", false);
             $("#tabs").tabs("refresh");
         }
         else if ($("#ITy").val() == "1" && (app.Views.Hospital.CaseStatus() != "" && app.Views.Hospital.CaseStatus() != null)) {
-            console.log("aqui _ CaseStatus");
+            //console.log("aqui _ CaseStatus");
             $("#tab-lab :input").prop('disabled', true);
             self.FlowDataHospital();
         }
 
-        if (app.Views.Lab.CanConclude() == true && $("#ITy").val() == "1") {
-            console.log("aqui _ CaseStatus IT = 1");
+        if (app.Views.Lab.CanConclude() == true && ($("#ITy").val() == "1" || (app.Views.Hospital.CaseStatus() == "" && app.Views.Home.UserRole() == "clo_case") || (app.Views.Hospital.CaseStatus() == "" && app.Views.Home.UserRole() == "mod_epi"))) {
+            //console.log("aqui _ CaseStatus IT = 1");
             $("#HospExDate").attr("disabled", false);
             $("#Destin").attr("disabled", false)
 
@@ -570,7 +574,7 @@
 
         } else
         {
-            console.log("aqui _ CaseStatus else");
+            //console.log("aqui _ CaseStatus else");
             $("#HospExDate").attr("disabled", true);
             $("#Destin").attr("disabled", true)
         }
