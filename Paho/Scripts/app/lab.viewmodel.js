@@ -2008,18 +2008,20 @@ function LabViewModel(app, dataModel) {
                     self.FinalResult((v.TestResultID() == "NA" || v.TestResultID() == "NB") ? 'N' : v.TestResultID());
                     if (v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB") {
                         self.FinalResultVirusTypeID(v.VirusTypeID());
-                        console.log("Virus subtype")
-                        console.log(v.TestResultID_VirusSubType());
+
                         if (v.TestResultID_VirusSubType() == "P" && self.UsrCountry() == 7) {
                             self.FinalResultVirusSubTypeID(v.VirusSubTypeID());
                         } else if (v.TestResultID_VirusSubType() != "N" && v.TestResultID_VirusSubType() != "NA" && v.TestResultID_VirusSubType() != "NB") {
                             self.FinalResultVirusSubTypeID(v.VirusSubTypeID());
+                            console.log("Virus subtype --")
+                            console.log(v.VirusSubTypeID());
+                            console.log(self.FinalResultVirusSubTypeID());
                         }
                             
                         if (v.TestResultID_VirusSubType_2() == "P" && self.UsrCountry() == 7) {
-                            self.FinalResultVirusSubTypeID(v.VirusSubTypeID_2());
+                            self.FinalResultVirusSubTypeID_2(v.VirusSubTypeID_2());
                         } else if (v.TestResultID_VirusSubType_2() != "N" && v.TestResultID_VirusSubType_2() != "NA" && v.TestResultID_VirusSubType_2() != "NB") {
-                            self.FinalResultVirusSubTypeID(v.VirusSubTypeID_2());
+                            self.FinalResultVirusSubTypeID_2(v.VirusSubTypeID_2());
                         }
 
                         self.FinalResultVirusLineageID(v.VirusLineageID());

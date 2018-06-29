@@ -898,11 +898,12 @@ function ContactViewModel(app, dataModel) {
         return true;
     };
     // Revision del flujo si es epidemiologico o laboratorio
-    self.Flow_Local_Institution_Lab = ko.computed(function () {
+    self.Flow_Local_Institution_Lab = function () {
         //console.log("Flow Lab - SaveAndAdd_1");
         //console.log(app.Views.Home.SaveAndAdd_1());
         //console.log("Contact epi - frecord_lab -- " + self.flow_record() + ", finstitution_lab -- " + self.flow_institution() + ", dataStatement_lab -- " + self.DataStatement() + ", userRole " + app.Views.Home.UserRole() + ", Inst" + $("#ITy").val() + ", OpenAlways" + self.flow_open_always());
-        if ($("#ITy").val() == "2"  && app.Views.Home.UserRole() == "mod_lab") {
+        //if ($("#ITy").val() == "2"  && app.Views.Home.UserRole() == "mod_lab") {
+        if ($("#ITy").val() == "2" && app.Views.Home.URmod_lab() == true) {
             return true;
         } else if ((self.flow_record() == (self.flow_institution() - 1) && (self.DataStatement() == 2 || self.DataStatement() == null || self.flow_open_always() == true) && app.Views.Home.SaveAndAdd_1() == true) || (self.flow_record() == self.flow_institution() && (self.DataStatement() == 1 || self.DataStatement() == null || self.flow_open_always() == true)) || (self.flow_close_case() == 99 && self.flow_open_always() == true)) {
             return true;
@@ -911,7 +912,20 @@ function ContactViewModel(app, dataModel) {
             return false;
         }
 
-    }, self);
+    }
+
+    self.Flow_Local_Institution_Lab_send = function () {
+
+        if ($("#ITy").val() != "2" && app.Views.Home.URmod_lab() == true) {
+            return false;
+        } else if ((self.flow_record() == (self.flow_institution() - 1) && (self.DataStatement() == 2 || self.DataStatement() == null || self.flow_open_always() == true) && app.Views.Home.SaveAndAdd_1() == true) || (self.flow_record() == self.flow_institution() && (self.DataStatement() == 1 || self.DataStatement() == null || self.flow_open_always() == true)) || (self.flow_close_case() == 99 && self.flow_open_always() == true)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+
+    };
 
     self.Flow_Local_Institution_Epi = function () {
 
@@ -919,13 +933,18 @@ function ContactViewModel(app, dataModel) {
 
         if ($("#ITy").val() == "2") {
             return false;
-        } else if ($("#ITy").val() != "2"  && app.Views.Home.UserRole() == "adm") {
+            //} else if ($("#ITy").val() != "2" && app.Views.Home.UserRole() == "adm") {
+        } else if ($("#ITy").val() != "2" && app.Views.Home.URadm() == true) {
             return true;
-        } else if ($("#ITy").val() != "2"  && app.Views.Home.UserRole() == "stf") {
+            //} else if ($("#ITy").val() != "2"  && app.Views.Home.UserRole() == "stf") {
+        } else if ($("#ITy").val() != "2" && app.Views.Home.URstf() == true) {
+            
             return true;
-        } else if ($("#ITy").val() != "2" && app.Views.Home.UserRole() == "mod_epi") {
+            //} else if ($("#ITy").val() != "2" && app.Views.Home.UserRole() == "mod_epi") {
+        } else if ($("#ITy").val() != "2" && app.Views.Home.URmod_epi() == true) {
             return true;
-        } else if ($("#ITy").val() != "2" && app.Views.Home.UserRole() == "clo_case" && app.Views.Hospital.CaseStatus() == "") {
+            //} else if ($("#ITy").val() != "2" && app.Views.Home.UserRole() == "clo_case" && app.Views.Hospital.CaseStatus() == "") {
+        } else if ($("#ITy").val() != "2" && app.Views.Home.URclo_case() == true && app.Views.Hospital.CaseStatus() == "") {
             return true;
         } 
         //else if ((self.flow_record() == 0 && self.DataStatement() == 1) ||  (self.flow_record() == self.flow_institution() && self.DataStatement() == 2) || (self.Id() == "") || (self.flow_record() == self.flow_max() && (self.DataStatement() == 2 || self.DataStatement() == null))) {  // Case Status ==3 cuando esta cerrado  -- Modificacion requerida por RRR 20170924 no desactivar en caso cerrado

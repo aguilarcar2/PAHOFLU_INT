@@ -2118,6 +2118,7 @@ namespace Paho.Controllers
                               CTRLNegative = caselabtest.CTRLNegative,
                               TestEndDate = caselabtest.TestEndDate,
                               //CanEdit = flucase.flow == 99 ? false : (((flucase.flow - 1) == flow_local_lab || flucase.flow == flow_local_lab) & flow_local_lab > 0  && flow_statement == 1) ? true : false, //institutionsIds.Contains(caselabtest.LabID),
+                              //CanEdit = User.IsInRole("Modify_Lab") ? true : institutionsIds.Contains(caselabtest.LabID),
                               CanEdit = institutionsIds.Contains(caselabtest.LabID),
                               CanPCR = db.Institutions.OfType<Lab>().Where(i => i.ID == caselabtest.LabID).First()?.PCR,
                               CanIFI = db.Institutions.OfType<Lab>().Where(i => i.ID == caselabtest.LabID).First()?.IFI,
@@ -2523,17 +2524,30 @@ namespace Paho.Controllers
             if ((user.Institution is Lab && existrecordlabtest == true) || user.Institution.NPHL == true)
             {
                 var institutionsConfiguration = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(i => i.InstitutionToID == user.Institution.ID && i.InstitutionParentID == flucase.HospitalID);
+                var flow_temp = institutionsConfiguration.First().Priority;
+                var flow_original_flucase = flucase.flow;
+
                 if (institutionsConfiguration.Any())
                 {
-                    var flow_temp = institutionsConfiguration.First().Priority;
-                    if (flow_temp > flucase.flow || flucase.flow == null)
-                        flucase.flow = flow_temp;
+                    
+                    if ((flow_temp > flucase.flow) || flucase.flow == null)
+                    {
+                        if (institutionsConfiguration.First().OpenAlways == true && (flow_temp - 1) > flucase.flow)
+                        {
+                            flucase.flow = flow_original_flucase;
+                        }
+                        else
+                        {
+                            flucase.flow = flow_temp;
+                        }
+                    }   
                 }
                 else
                 {
                     flucase.flow = 1;
                 }
                 if (flucase.flow != 99)
+                    if (institutionsConfiguration.First().OpenAlways == true && (flow_temp - 1) == flow_original_flucase)
                     flucase.statement = DataStatement;
             }
 
@@ -2566,13 +2580,13 @@ namespace Paho.Controllers
 
             //Bitacora
             if (IFI_Count == 0 && PCR_Count == 0)
-            HistoryRecord(flucase.ID, 4, flucase.flow, 1);
+                HistoryRecord(flucase.ID, 4, flucase.flow, 1);
 
             if (IFI_Count > 0 || PCR_Count > 0)
                 HistoryRecord(flucase.ID, 4, flucase.flow, 5);
 
             if (IFI_RecordHistory && IFI_Count == 0)
-            HistoryRecord(flucase.ID, 4, flucase.flow, 7);
+               HistoryRecord(flucase.ID, 4, flucase.flow, 7);
 
             if (PCR_RecordHistory && PCR_Count == 0)
                 HistoryRecord(flucase.ID, 4, flucase.flow, 8);
