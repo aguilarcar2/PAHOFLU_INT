@@ -2,8 +2,10 @@
     var self = this;
     var date_format_moment = app.dataModel.date_format_ISO;
     self.UsrCountry = ko.observable(selcty);
-    self.displayFilters = ko.observable(false);
+    //self.displayFilters = ko.observable(false);
+    self.displayFilters = ko.observable(true);                  //#### CAFQ: 180703
     self.selectedCountryId = ko.observable(CountryID);
+    self.selectedAreaId = ko.observable("");
     self.countries = ko.observableArray(countries);
     self.institutions = ko.observableArray(institutions);
     self.reportsCountries = ko.observableArray(reportsCountries);
@@ -34,6 +36,24 @@
                 alert(errorThrown);
             });
     };
+
+    self.selectedAreaId.subscribe(function (NewAreaID) {
+
+        if (NewAreaID > 0) {
+            //("#Regionals").attr('disabled', true);
+            self.selectedRegionId(0);
+
+        }
+
+        self.loadInstitutions();
+        $("#caselist").trigger("reloadGrid");
+        $("#caselist_pend").trigger('reloadGrid');
+
+        if (NewAreaID == 0 && self.institutions().length > 1) {
+            self.selectedInstitutionId(0);
+        }
+
+    });
 
     self.Report = ko.observable("Cases");
 
@@ -89,7 +109,7 @@
         //var namevalues = { Report: self.Report(), CountryID: self.selectedCountryId() ? self.selectedCountryId() : CountryID, HospitalID: self.selectedInstitutionId(), Year: self.Year(), Month: self.Month(), SE: self.SE(), StartDate: self.StartDate() ? moment(self.StartDate()).format(date_format_moment) : null, EndDate: self.EndDate() ? moment(self.EndDate()).format(date_format_moment) : null, ReportCountry: self.selectedReportCountryId(), RegionID: self.selectedRegionId(), YearFrom: self.YearFrom(), YearTo: self.YearTo() }
         //#### CAFQ
         var namevalues = { Report: self.Report(), CountryID: self.selectedCountryId() ? self.selectedCountryId() : CountryID, HospitalID: self.selectedInstitutionId(), Year: self.Year(), Month: self.Month(), SE: self.SE(), StartDate: self.StartDate() ? moment(self.StartDate()).format(date_format_moment) : null, EndDate: self.EndDate() ? moment(self.EndDate()).format(date_format_moment) : null, ReportCountry: self.selectedReportCountryId(), RegionID: self.selectedRegionId(), YearFrom: self.YearFrom(),
-            YearTo: self.YearTo(), Surv: self.Surv(), Inusual: self.SurvInusual() }            //#### CAFQ
+            YearTo: self.YearTo(), Surv: self.Surv(), Inusual: self.SurvInusual(), Area: self.selectedAreaId() }            //#### CAFQ
         if(self.validate() == true)
             window.open(app.dataModel.getExportar + "?" + $.param(namevalues, true), "_blank");
     };
@@ -205,7 +225,8 @@
             YearTo: self.YearTo(),
             Surv: self.Surv(),
             Inusual: self.SurvInusual(),
-            CasosNPHL: Casos
+            CasosNPHL: Casos,
+            Area: self.selectedAreaId()
         }
 
         if (self.validate() == true) {

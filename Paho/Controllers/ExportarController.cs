@@ -31,8 +31,10 @@ namespace Paho.Controllers
             var ExportarViewModel = new ExportarViewModel();
             IQueryable<Institution> institutions = null;
             IQueryable<Paho.Models.Region> regions = null;
-            IQueryable<Paho.Models.Area> areas = null;
+            //IQueryable<Paho.Models.Area> areas = null;
+            IQueryable<Area> areas = null;                          //#### CAFQ: 180703 
             IQueryable<ReportCountry> ReportsCountries = null;
+
             var user = UserManager.FindById(User.Identity.GetUserId());
             ExportarViewModel.CountryID = user.Institution.CountryID ?? 0;
             ReportsCountries = db.ReportsCountries.Where(i => i.CountryID == user.Institution.CountryID && i.active == true);
@@ -40,6 +42,7 @@ namespace Paho.Controllers
             if (user.Institution.AccessLevel == AccessLevel.All)
             {
                 ExportarViewModel.DisplayCountries = true;
+                ExportarViewModel.DisplayAreas = true;              //#### CAFQ: 180703   
                 ExportarViewModel.DisplayRegionals = true;
                 ExportarViewModel.DisplayHospitals = true;
             }
@@ -102,6 +105,7 @@ namespace Paho.Controllers
             else
             {
                 ExportarViewModel.DisplayHospitals = true;
+
                 var inst_by_lab = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(j => j.InstitutionToID == user.InstitutionID).Select(i => i.InstitutionParentID).ToList();
                 if (user.Institution.AccessLevel == AccessLevel.Country)
                 {
@@ -169,6 +173,27 @@ namespace Paho.Controllers
                     Id = i.ID.ToString(),
                     Name = i.description,
                 }).ToArray();
+            }
+
+            //**** 
+            if (areas != null)
+            {
+                var areasDisplay = areas.Select(i => new LookupView<Area>()
+                {
+                    Id = i.ID.ToString(),
+                    Name = i.Name
+                }).OrderBy(d => d.Name).ToList();
+
+                if (areasDisplay.Count() > 1)
+                {
+                    //var all = new LookupView<Region> { Id = "0", Name = "-- Todo(a)s --" };
+                    var all = new LookupView<Area> { Id = "0", Name = getMsg("msgGeneralMessageAll") };
+                    areasDisplay.Insert(0, all);
+                    ExportarViewModel.DisplayAreas = true;
+                }
+
+                ExportarViewModel.Areas = areasDisplay;
+                //CaseViewModel.Regions = regions;
             }
 
             if (regions != null)
@@ -262,7 +287,9 @@ namespace Paho.Controllers
         }
         
         [HttpGet]
-        public ActionResult GetExcel(string Report, int CountryID, int? RegionID, int? HospitalID, int? Year, int? Month, int? SE, DateTime? StartDate, DateTime? EndDate, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? Inusual, string CasosNPHL = "")        //#### CAFQ
+        public ActionResult GetExcel(string Report, int CountryID, int? RegionID, int? HospitalID, int? Year, int? Month, int? SE, 
+            DateTime? StartDate, DateTime? EndDate, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? Inusual, 
+            string CasosNPHL="", int? Area=0)        //#### CAFQ
         {
             try
             {
@@ -365,13 +392,13 @@ namespace Paho.Controllers
                         else if (reportTemplate == "RE1")
                             AppendDataToExcel_REVELAC(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual);        //#### CAFQ
                         else if (reportTemplate == "FM1")
-                            AppendDataToExcel_FormSariIliHospDeath(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual);        //#### CAFQ
+                            AppendDataToExcel_FormSariIliHospDeath(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, Area);        //#### CAFQ
                         else if ((reportTemplate == "R2" || reportTemplate == "R3" || reportTemplate == "R1") && bVariosAnios)
                             AppendDataToExcel_R2_SeveralYears(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual);        //#### CAFQ: 180204
                         else {
                             //AppendDataToExcel(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo);
                             //reportTemplate = (reportTemplate == "ML1") ? "MuestrasLabNPHL" : reportTemplate;      //#### CAFQ
-                            AppendDataToExcel(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, CasosNPHL);        //#### CAFQ
+                            AppendDataToExcel(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, CasosNPHL, Area);        //#### CAFQ
                         }
 
                         excelPackage.SaveAs(ms);
@@ -398,7 +425,7 @@ namespace Paho.Controllers
             return null;
         }
 
-        private static void AppendDataToExcel_FormSariIliHospDeath(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual)               //#### CAFQ
+        private static void AppendDataToExcel_FormSariIliHospDeath(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? Area = 0)               //#### CAFQ
         {
             var excelWorksheet = excelWorkBook.Worksheets[sheet];
             var row = startRow;
@@ -426,6 +453,7 @@ namespace Paho.Controllers
                     command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
                     command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;                        //#### CAFQ
                     command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;          //#### CAFQ
+                    command.Parameters.Add("@Area", SqlDbType.Int).Value = Area;                        //#### CAFQ
 
                     con.Open();
 
@@ -956,7 +984,9 @@ namespace Paho.Controllers
         }
 
         //private static void AppendDataToExcel(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo)
-        private static void AppendDataToExcel(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, string CasosNPHL = "")               //#### CAFQ
+        private static void AppendDataToExcel(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, 
+            DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, 
+            bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, string CasosNPHL = "", int? Area = 0)               //#### CAFQ
         {
             var excelWorksheet = excelWorkBook.Worksheets[sheet];
             var row = startRow;

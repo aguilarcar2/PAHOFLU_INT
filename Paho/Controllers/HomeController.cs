@@ -151,7 +151,7 @@ namespace Paho.Controllers
                     .OrderBy(d => d.Name) 
                     .ToArray();
 
-            //**** Regiones
+            //**** 
             if (areas != null)
             {
                 var areasDisplay = areas.Select(i => new LookupView<Area>()

@@ -92,6 +92,24 @@
     </div>
 }
 
+<!--Areas / Parish-->
+@if (Model.DisplayAreas)
+{
+    <div class="row" style="margin-bottom: 15px; margin-top: 1em;" data-bind="visible: displayFilters">
+        <div class="col-md-5">
+            <div class='input-group'>
+                <span class="input-group-addon">
+                    @(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("viewHome_msgAreas"))
+                </span>
+                <select id="Areas" class="form-control" data-bind="options: areas,
+                       optionsText: 'Name',
+                       optionsValue: 'Id',
+                       value: selectedAreaId "></select>
+            </div>
+        </div>
+    </div>
+}
+
 <!--Región:-->
 @if (Model.DisplayRegionals)
 {
@@ -293,6 +311,8 @@
     })
 
     var countries = @Html.Raw(Json.Encode(Model.Countries));
+    var areas= @Html.Raw(Json.Encode(Model.Areas));
+    //console.log(areas);
     var regions= @Html.Raw(Json.Encode(Model.Regions));
     var institutions = @Html.Raw(Json.Encode(Model.Institutions));
     var reportsCountries = @Html.Raw(Json.Encode(Model.ReportsCountries));

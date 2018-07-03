@@ -129,10 +129,12 @@ namespace Paho.Models
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public IEnumerable<CountryView> Countries { get; set; }
+        public IEnumerable<LookupView<Area>> Areas { get; set; }        //#### CAFQ: 180703
         public IEnumerable<LookupView<Institution>> Institutions { get; set; }
         public IEnumerable<LookupView<ReportCountry>> ReportsCountries { get; set; }
         public IEnumerable<LookupView<Region>> Regions { get; set; }
         public bool DisplayCountries { get; set; }
+        public bool DisplayAreas { get; set; }                      //#### CAFQ: 180703
         public bool DisplayRegionals { get; set; }
         public bool DisplayHospitals { get; set; }
         public string DatePickerConfig { get; set; }
