@@ -94,6 +94,125 @@
             window.open(app.dataModel.getExportar + "?" + $.param(namevalues, true), "_blank");
     };
 
+    self.IsReporteLabNPHL = ko.computed(function () {            //**** CAFQ
+        if (self.selectedReportCountryId() == 79) {
+            return true;
+        } else {
+            return false;
+        }
+    }, self);                           //**** CAFQ
+
+    self.getCasosNPHL = function () {                           //**** CAFQ
+        var _CountryID = self.selectedCountryId() ? self.selectedCountryId() : CountryID
+        var _StartDate = self.StartDate() ? moment(self.StartDate()).format(date_format_moment) : null
+        var _EndDate = self.EndDate() ? moment(self.EndDate()).format(date_format_moment) : null
+
+        $.ajax({
+            type: 'POST',
+            url: 'Exportar/ListaCasosPorEnviarNPHL',
+            data: "{'Report':'" + self.Report() + "'" +
+                    ",'CountryID':" + _CountryID + "" +
+                    ",'HospitalID':'" + self.selectedInstitutionId() + "'" +
+                    ",'Year':'" + self.Year() + "'" +
+                    ",'Month':'" + self.Month() + "'" +
+                    ",'SE':'" + self.SE() + "'" +
+                    ",'StartDate':'" + _StartDate + "'" +
+                    ",'EndDate':'" + (self.EndDate() ? moment(self.EndDate()).format(date_format_moment) : null) + "'" +
+                    ",'ReportCountry':'" + self.selectedReportCountryId() + "'" +
+                    ",'RegionID':'" + self.selectedRegionId() + "'" +
+                    ",'YearFrom':'" + self.YearFrom() + "'" +
+                    ",'YearTo':'" + self.YearTo() + "'" +
+                    ",'Surv':'" + self.Surv() + "'" +
+                    ",'Inusual':'" + self.SurvInusual() + "'" +
+                    "}",
+            contentType: "application/json",
+            dataType: 'json',
+            success: function (response) {
+                var json_obj = JSON.parse(response);
+                jsonX = JSON.parse(response);
+
+                var i = 0;
+                var container = $('#modalBody');
+                container.empty();
+                $('<table />', { id: 'tableAntecedentes', class: 'table-own', style: 'width:500px;', border: 2, cellspacing: 10, cellpadding: 5 }).appendTo(container);
+
+                var container = $('#tableAntecedentes');
+                $('<tr />', { id: 'trheadersLabel', style: 'width:500px;', class: 'table-tr-own' }).appendTo(container);
+
+                var container = $('#trheadersLabel');
+                $('<td />', { id: 'tdheadersLabel1', colspan: 1, class: 'table-td-own', text: ' ' }).appendTo(container);
+                $('<td />', { id: 'tdheadersLabel2', colspan: 1, class: 'table-td-own', text: 'Reg. No' }).appendTo(container);
+                $('<td />', { id: 'tdheadersLabel3', colspan: 1, class: 'table-td-own', text: 'JPL LAB NUMBER' }).appendTo(container);
+                $('<td />', { id: 'tdheadersLabel4', colspan: 1, class: 'table-td-own', text: 'First Name' }).appendTo(container);
+                $('<td />', { id: 'tdheadersLabel5', colspan: 1, class: 'table-td-own', text: 'Last Name' }).appendTo(container);
+
+                $.each(jsonX, function (index, element) {
+                    ++i;
+
+                    var container = $('#tableAntecedentes');
+                    $('<tr />', { id: 'trheaders' + i.toString(), style: 'width:500px;', class: 'table-tr-own' }).appendTo(container);
+
+                    var colspanThis = 1;
+                    var container = $('#trheaders' + i.toString());
+                    $('<td />', { id: 'tdheaders' + i.toString() + '0', colspan: colspanThis, style: 'width:30px;', class: 'table-td-own', text: element[0] }).appendTo(container);
+                    $('<td />', { id: 'tdheaders' + i.toString() + '1', colspan: colspanThis, class: 'table-td-own', text: element[0] }).appendTo(container);
+                    $('<td />', { id: 'tdheaders' + i.toString() + '2', colspan: colspanThis, class: 'table-td-own', text: element[1] }).appendTo(container);
+                    $('<td />', { id: 'tdheaders' + i.toString() + '3', colspan: colspanThis, class: 'table-td-own', text: element[2] }).appendTo(container);
+                    $('<td />', { id: 'tdheaders' + i.toString() + '4', colspan: colspanThis, class: 'table-td-own', text: element[3] }).appendTo(container);
+
+                    var container = $('#tdheaders' + i.toString() + '0');
+                    container.empty();
+                    //$('<input />', { id:'inpCheck' + i.toString(), name:'inpCheck' + i.toString(), type:'checkbox', class:'table-td-own', value:'1' }).appendTo(container);
+                    $('<input />', { id: 'inpCheck' + i.toString(), name: 'inpCheck' + i.toString(), type: 'checkbox', class: 'table-td-own', value: i.toString() }).appendTo(container);
+                })
+            }
+        });
+    };                           //**** CAFQ
+
+    self.exportarNPHL = function () {                           //**** CAFQ
+        var Casos = "";
+
+        $("input:checkbox:checked").each(function () {
+            var indice = ($(this).val()).toString()
+            //alert($(this).attr("id"));
+            caso = $('#tdheaders' + indice + '1').html()
+            if (caso != "") {
+                if (Casos == "")
+                    Casos = caso;
+                else
+                    Casos = Casos + "#" + caso;
+            }
+        });
+
+        if (Casos == "") {
+            $('#myModal').modal('hide');                // Cerrando el modal
+            alert("No items selected");
+            return "";
+        }
+
+        var namevalues = {
+            Report: self.Report(),
+            CountryID: self.selectedCountryId() ? self.selectedCountryId() : CountryID,
+            HospitalID: self.selectedInstitutionId(),
+            Year: self.Year(),
+            Month: self.Month(),
+            SE: self.SE(),
+            StartDate: self.StartDate() ? moment(self.StartDate()).format(date_format_moment) : null,
+            EndDate: self.EndDate() ? moment(self.EndDate()).format(date_format_moment) : null,
+            ReportCountry: self.selectedReportCountryId(),
+            RegionID: self.selectedRegionId(),
+            YearFrom: self.YearFrom(),
+            YearTo: self.YearTo(),
+            Surv: self.Surv(),
+            Inusual: self.SurvInusual(),
+            CasosNPHL: Casos
+        }
+
+        if (self.validate() == true) {
+            window.open(app.dataModel.getExportar + "?" + $.param(namevalues, true), "_blank");
+            $('#myModal').modal('hide');                // Cerrando el modal
+        }
+    };                           //**** CAFQ
 
     self.url = ko.computed(function () {
         var namevalues = { Report: self.Report(), CountryID: self.selectedCountryId() ? self.selectedCountryId() : CountryID, HospitalID: self.selectedInstitutionId(), Year: self.Year(), Month: self.Month(), SE: self.SE(), StartDate: self.StartDate() ? moment(self.StartDate()).format(date_format_moment) : null, EndDate: self.EndDate() ? moment(self.EndDate()).format(date_format_moment) : null }

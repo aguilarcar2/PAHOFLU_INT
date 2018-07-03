@@ -519,11 +519,14 @@ function ContactViewModel(app, dataModel) {
             self.IsSurv("1");
         } else if ($('input[name="IsSurv"][value="2"]').length > 0 && $('input[name="IsSurv"][value="1"]').length == 0) {
             self.IsSurv("2");
+        } else if ($('input[name="IsSurv"][value="2"]').length == 0 && $('input[name="IsSurv"][value="1"]').length == 0) {
+            self.IsSurv("");
+            self.SurvInusual(true);
         } else {
             self.IsSurv("");
         }
  
-        self.SurvInusual(false);
+        //self.SurvInusual(false);
         self.Brote(false);
         self.hospitalName("");
         self.LName1("");
