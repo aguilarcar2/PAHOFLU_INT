@@ -10,6 +10,7 @@
     self.getAreasUrl = "/cases/GetAreas"; 
     self.getContactUrl = "/cases/GetContact";
     self.getPatientInformationUrl = "/cases/GetPatientInformation"
+    self.getPatientInformationUrl_JAM = "/cases/GetPatientInformation_JAM"
     self.saveContactUrl = "/cases/SaveContact";  
     self.getHospitalUrl = "/cases/GetHospital";
     self.saveHospitalUrl = "/cases/SaveHospital";

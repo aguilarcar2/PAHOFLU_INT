@@ -1601,6 +1601,8 @@ namespace Paho.Controllers
             //inicializar llaves
             if (Destin == "") Destin = null;
 
+            bool ifclosecase = flucase.flow == 99;
+
             flucase.CHNum = CHNum;
             flucase.FeverDate = FeverDate;
             flucase.FeverEW = FeverEW;
@@ -1706,7 +1708,7 @@ namespace Paho.Controllers
             flucase.ObservationCase = ObservationCase;
             db.SaveChanges();
 
-            if (flucase.flow == 99 )
+            if (flucase.flow == 99 && ifclosecase == false )
                 HistoryRecord(flucase.ID, 1, flucase.flow, 9);
 
             return Json("Success");
@@ -2363,6 +2365,7 @@ namespace Paho.Controllers
             var IFI_Count = 0;
             var PCR_Count = 0;
             var user = UserManager.FindById(User.Identity.GetUserId());
+            
 
             flucase = db.FluCases.Find(id);
 
@@ -2373,6 +2376,7 @@ namespace Paho.Controllers
                 db.Entry(flucase).State = EntityState.Modified;
             }
 
+            bool ifclosecase = flucase.flow == 99;
             IFI_Count = flucase.CaseLabTests.Where(e => e.FluCaseID == id && e.TestType == 1 && e.Processed != null).Count();
             PCR_Count = flucase.CaseLabTests.Where(e => e.FluCaseID == id && e.TestType == 2 && e.Processed != null).Count();
 
@@ -2582,8 +2586,11 @@ namespace Paho.Controllers
             if (IFI_Count == 0 && PCR_Count == 0)
                 HistoryRecord(flucase.ID, 4, flucase.flow, 1);
 
-            if (IFI_Count > 0 || PCR_Count > 0)
+            if ((IFI_Count > 0 || PCR_Count > 0) && ifclosecase == false)
                 HistoryRecord(flucase.ID, 4, flucase.flow, 5);
+
+            if ((IFI_Count > 0 || PCR_Count > 0) && ifclosecase == true)
+                HistoryRecord(flucase.ID, 4, flucase.flow, 11);
 
             if (IFI_RecordHistory && IFI_Count == 0)
                HistoryRecord(flucase.ID, 4, flucase.flow, 7);
@@ -2690,7 +2697,7 @@ namespace Paho.Controllers
         [Authorize]
         public JsonResult GetPatientInformation(int DTP, string DNP)
         {
-            var dataforpatron = false;
+            var dataforpadron = false;
             var user = UserManager.FindById(User.Identity.GetUserId());
             List<Dictionary<string, string>> PatientInformation_ = new List<Dictionary<string, string>>();
             var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
@@ -2719,7 +2726,7 @@ namespace Paho.Controllers
                                 PatientInformation.Add("DOB", Convert.ToDateTime(reader["FEC_NACIMIENTO"]).ToString("yyyy-MM-dd"));
                                 //PatientInformation.Add("value", reader["Val_Padron"].ToString( ));
                                 PatientInformation_.Add(PatientInformation);
-                                dataforpatron = true;
+                                dataforpadron = true;
 
                             }
                         }
@@ -2727,7 +2734,7 @@ namespace Paho.Controllers
                     }
                 }
 
-                if (dataforpatron == false)
+                if (dataforpadron == false)
                 {
                     using (var command = new SqlCommand("PatientInformation", con) { CommandType = CommandType.StoredProcedure })
                     {
@@ -2750,7 +2757,7 @@ namespace Paho.Controllers
                                 //PatientInformation.Add("DOB", JsonConvert.SerializeObject(reader["DOB"], new JsonSerializerSettings() { DateFormatHandling = DateFormatHandling.MicrosoftDateFormat }));
                                 PatientInformation.Add("DOB", Convert.ToDateTime(reader["DOB"]).ToString("yyyy-MM-dd"));
                                 PatientInformation_.Add(PatientInformation);
-                                dataforpatron = true;
+                                dataforpadron = true;
 
                             }
                         }
@@ -2760,6 +2767,33 @@ namespace Paho.Controllers
 
                 return Json(PatientInformation_, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        [Authorize]
+        public JsonResult GetPatientInformation_JAM(DateTime? DOB, string DNP)
+        {
+
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            List<Dictionary<string, string>> PatientInformation_ = new List<Dictionary<string, string>>();
+
+
+            IQueryable<FluCase> flucases = null;
+
+            //flucases = flucases.Where(x=> x.DOB)
+
+            //        //x = reader.GetValue(1);
+            //        Dictionary<string, string> PatientInformation = new Dictionary<string, string>();
+            //        PatientInformation.Add("nombre1", reader["FName1"].ToString());
+            //        PatientInformation.Add("nombre2", reader["FName2"].ToString());
+            //        PatientInformation.Add("apellido1", reader["LName1"].ToString());
+            //        PatientInformation.Add("apellido2", reader["LName2"].ToString());
+            //        PatientInformation.Add("sexo", reader["Gender"].ToString() == "1" ? "Male" : reader["Gender"].ToString() == "2" ? "Female" : "Unknown");
+            //        //PatientInformation.Add("DOB", JsonConvert.SerializeObject(reader["DOB"], new JsonSerializerSettings() { DateFormatHandling = DateFormatHandling.MicrosoftDateFormat }));
+            //        PatientInformation.Add("DOB", Convert.ToDateTime(reader["DOB"]).ToString("yyyy-MM-dd"));
+            //        PatientInformation_.Add(PatientInformation);
+
+            return Json(PatientInformation_, JsonRequestBehavior.AllowGet);
+           
         }
 
     }

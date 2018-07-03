@@ -771,6 +771,7 @@
 /// <reference path="app/summary.viewmodel.js" />
 /// <reference path="app/summaryjm.viewmodel.js" />
 /// <reference path="app/ticket.viewmodel.js" />
+/// <reference path="app/usersadmin.js" />
 /// <reference path="bootstrap.js" />
 /// <reference path="bootstrap-datetimepicker.js" />
 /// <reference path="d3.js" />

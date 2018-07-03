@@ -67,13 +67,15 @@
         </div>     
         <div class="form-group">
             @Html.Label("Roles", ((string)Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminEditRoles", ViewBag.UsrCtry, ViewBag.UsrCtryLang)), new { @class = "control-label col-md-2" })
-            <span class=" col-md-5">
+            <div class="col-md-4_5">
                 @foreach (var item in Model.RolesList)
                 {
-                    <input type="checkbox" name="SelectedRole" value="@item.Value" checked="@item.Selected" class="checkbox-inline" />
-                    @Html.Label(item.Value, new { @class = "control-label" })
+                    <div class="col-sm-3" id="@item.Value">
+                        <input type="checkbox" name="SelectedRole" value="@item.Value" checked="@item.Selected" class="checkbox-inline" @((item.Value == "Admin") ? "id=checkAdmin" : (item.Value == "Modify_Epi") ? "id=checkModify_Epi" : (item.Value == "Modify_Lab") ? "id=checkModify_Lab" : (item.Value == "Close_case") ? "id=checkClose_case" : ""  ) />
+                        @Html.Label(item.Value, new { @class = "control-label" })
+                    </div>
                 }
-            </span>
+            </div>
         </div>
 
         <div class="form-group">
@@ -89,5 +91,7 @@
 </div>
 
 @section Scripts {
+    @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/usersadmin")
 }

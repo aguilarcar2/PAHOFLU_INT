@@ -56,6 +56,10 @@ namespace Paho
                 "~/Scripts/app/catalog.institution-conf.js"
                 ));
 
+            bundles.Add(new ScriptBundle("~/bundles/usersadmin").Include(
+                "~/Scripts/app/usersAdmin.js"
+                ));
+
             bundles.Add(new ScriptBundle("~/bundles/summary").Include(
                 "~/Scripts/app/kotoolsfordate.js",
                 "~/Scripts/sammy-{version}.js",

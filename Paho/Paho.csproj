@@ -2063,6 +2063,7 @@
     <Content Include="Scripts\ammap\themes\dark.js" />
     <Content Include="Scripts\ammap\themes\light.js" />
     <Content Include="Scripts\ammap\themes\patterns.js" />
+    <Content Include="Scripts\app\usersAdmin.js" />
     <Content Include="Scripts\app\catalog.institution-conf.js" />
     <Content Include="Scripts\app\catalog.institution.js" />
     <Content Include="Scripts\app\catalog.population.js" />

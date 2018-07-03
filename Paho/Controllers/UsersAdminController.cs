@@ -72,6 +72,7 @@ namespace Paho.Controllers
             return View(ListUser);
         }
 
+        [Authorize]
         private void setUserRolesListJoin(List<ApplicationUser> ListUserX)
         {
             var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
@@ -105,6 +106,19 @@ namespace Paho.Controllers
                     con.Close();
                 }
             }
+        }
+
+        [Authorize(Roles = "Admin")]
+        private void getAccessLevelInstitution(int id_inst)
+        {
+
+        }
+
+
+        [Authorize(Roles = "Admin")]
+        private void getInstitutionType(int id_inst)
+        {
+
         }
 
         //
