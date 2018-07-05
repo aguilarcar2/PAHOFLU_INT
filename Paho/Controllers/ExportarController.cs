@@ -655,6 +655,47 @@ namespace Paho.Controllers
                     con2.Close();
                 }
             }
+
+            //####
+            row = startRow;
+            column = startColumn;
+            _storedProcedure = "FLUID_IRAG_Total_Muestra_Analizadas_AgeGroup";
+
+            using (var con2 = new SqlConnection(consString))
+            {
+                using (var command = new SqlCommand(_storedProcedure, con2) { CommandType = CommandType.StoredProcedure, CommandTimeout = 1200 })    //**** CAFQ
+                {
+                    command.Parameters.Clear();
+                    command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
+                    command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
+                    command.Parameters.Add("@Languaje", SqlDbType.Text).Value = languaje_;
+                    command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
+                    command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
+                    command.Parameters.Add("@Mes_", SqlDbType.Int).Value = month;
+                    command.Parameters.Add("@SE", SqlDbType.Int).Value = se;
+                    command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
+                    command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
+                    command.Parameters.Add("@yearFrom", SqlDbType.Int).Value = YearFrom;
+                    command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
+                    command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;
+                    command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;
+
+                    con2.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        var col = startColumn;
+  
+                        while (reader.Read())
+                        {
+                            excelWorksheet.Cells[row + 4, col].Value = (int)reader.GetValue(2);
+                            ++col;
+                         }
+                    }
+
+                    command.Parameters.Clear();
+                    con2.Close();
+                }
+            }
         }
 
         private static void AppendDataToExcel_R2_SeveralYears(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual)               //#### CAFQ
