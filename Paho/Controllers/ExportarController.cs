@@ -696,6 +696,10 @@ namespace Paho.Controllers
                     con2.Close();
                 }
             }
+
+            //****
+            reportLabels(consString, countryId, languaje_, ReportCountry, hospitalId, year, YearFrom, YearTo, se, startDate, endDate, excelWorkBook, excelWorksheet);
+            //InsertarImagenLogo(consString, reportTemplate, ReportCountry, excelWorksheet);
         }
 
         private static void AppendDataToExcel_R2_SeveralYears(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual)               //#### CAFQ
@@ -2311,6 +2315,7 @@ namespace Paho.Controllers
                             string labelSE = "";
                             string labelStartDate = "";
                             string labelEndDate = "";
+                            string labelCurrDate = "";
 
                             //Obtención del pais y llenado en la variable
                             if (countryId > 0)
@@ -2428,6 +2433,12 @@ namespace Paho.Controllers
                                         case "{{fulldate}}":
                                             //label = (labelYear != "" ? ("Año:" + labelYear) : "") + " " + (labelSE != "" ? ("SE:" + labelSE) : "") + " " + (labelStartDate != "" ? ("Del:" + labelStartDate) : "") + " " + (labelEndDate != "" ? ("Al:" + labelEndDate) : "");
                                             label = (labelYear != "" ? (SgetMsg("msgViewExportarLabelEpidemiologicalYear", countryId, languaje_) + ": " + labelYear) : "") + " " + (labelSE != "" ? (SgetMsg("msgViewExportarLabelEW", countryId, languaje_) + ": " + labelSE) : "") + " " + (labelStartDate != "" ? (SgetMsg("msgViewExportarLabelFrom", countryId, languaje_) + ": " + labelStartDate) : "") + " " + (labelEndDate != "" ? (SgetMsg("msgViewExportarLabelTo", countryId, languaje_) + ": " + labelEndDate) : "");
+                                            break;
+                                        case "{{currentDate}}":
+                                            DateTime oDate = DateTime.Today;
+                                            //labelCurrDate = oDate.Date.ToString();
+                                            labelCurrDate = String.Format("{0:yyyy/MM/dd}", oDate);
+                                            label = labelCurrDate;
                                             break;
                                         default:                    //#### CAFQ: 180415
                                             label = "";             //#### CAFQ: 180415
