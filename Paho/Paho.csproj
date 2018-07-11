@@ -336,6 +336,7 @@
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Controllers\TestCasesController.cs" />
+    <Compile Include="Utility\PAHOClassUtilities.cs" />
     <Compile Include="Utility\ResourceBuilder.cs" />
   </ItemGroup>
   <ItemGroup>

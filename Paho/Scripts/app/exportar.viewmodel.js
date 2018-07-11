@@ -68,7 +68,6 @@
     self.EndDate = ko.observable(null);
     self.Surv = ko.observable("");
     self.SurvInusual = ko.observable(false);
-    //self.SurvInusual = ko.observable("2");      // Todos        //#### CAFQ
 
     self.validate = function (nextStep) {
         var msg = "";
@@ -77,46 +76,20 @@
         if ($("#Reports").val() == "") {
             msg += "\n" + " - " + msgViewExportarValidateSelectionReport
         }
-            
 
         if ($("#Hospitals").children().length <= 2 && self.selectedInstitutionId() == null) {
-            /*if (self.selectedCountryId() == 25)
-                msg += "\n" + " - You are required to enter the hospital";
-            else
-                msg += "\n" + " - Es requerido que ingrese la institución";*/
             msg += "\n" + " - " + msgViewExportarValidateSelectionHospital;
         }
 
-
-        /*if ($("#Hospitals").children().length <= 2 && self.selectedInstitutionId() == null)
-        {
-            if (self.selectedCountryId() == 25)
-                msg += "\n" + " - You are required to enter the hospital";
-            else
-                msg += "\n" + " - Es requerido que ingrese la institución";
-        }*/
-
         if ($("#Report").val() == "R1" || $("#Report").val() == "R2" || $("#Report").val() == "R3" || $("#Report").val() == "R4" ){
             if ( self.Year() == "" )
-                /*if (self.selectedCountryId() == 25 || self.selectedCountryId() == 17)
-                    msg += "\n" + " - Enter year of report generation";
-                else
-                    msg += "\n" + " - Ingrese el año de generación del reporte";*/
                 msg += "\n" + " - " + msgViewExportarValidateSelectionYear;
 
             if (self.Month() == "" && self.SE() == "" && self.StartDate() == "" && self.EndDate() == "" && self.Year() == "")
-                /*if (self.selectedCountryId() == 25 || self.selectedCountryId() == 17)
-                    msg += "\n" + " - Enter any restriction criteria for the report (Year, Month, WE, Start Date and End Date) "
-                else
-                    msg += "\n" + " - Ingrese algún critero de restricción del reporte (Año, Mes, SE, Fecha inicio y Fecha fin) "*/
                 msg += "\n" + " - " + msgViewExportarValidateSelectionCriteria;
         }
 
         if (msg !== "") {
-            /*if (self.selectedCountryId() == 25 || self.selectedCountryId() == 17)
-                alert('Reports:' + msg);
-            else
-                alert('Reportes:' + msg);*/
             alert(msgViewExportarLabelReports + ": " + msg)
             return false;
         }
@@ -209,17 +182,19 @@
     };                           //**** CAFQ
 
     self.exportarNPHL = function () {                           //**** CAFQ
-        var Casos = "";
+        var Casos = "", casoNPHL = "";
 
         $("input:checkbox:checked").each(function () {
             var indice = ($(this).val()).toString()
-            //alert($(this).attr("id"));
+
             caso = $('#tdheaders' + indice + '1').html()
+            casoNPHL = $('#tdheaders' + indice + '2').html()
             if (caso != "") {
                 if (Casos == "")
                     Casos = caso;
                 else
                     Casos = Casos + "#" + caso;
+                Casos = Casos + ":" + casoNPHL
             }
         });
 
@@ -228,7 +203,7 @@
             alert("No items selected");
             return "";
         }
-
+        //alert(Casos);
         var namevalues = {
             Report: self.Report(),
             CountryID: self.selectedCountryId() ? self.selectedCountryId() : CountryID,

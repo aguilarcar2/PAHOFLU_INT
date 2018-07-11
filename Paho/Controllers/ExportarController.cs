@@ -18,13 +18,13 @@ using System.Data.Entity;
 using System.Globalization;
 using System.Collections;
 using System.Web.Script.Serialization;
+using Paho.Utility;
 
 namespace Paho.Controllers
 {
     [Authorize(Roles = "Admin, Report")]
     public class ExportarController : ControllerBase
     { 
-
         // GET:Exportar
         public ActionResult Index()
         {
@@ -303,6 +303,7 @@ namespace Paho.Controllers
                 else if (Surv == 0)
                     Inusual = null;
 
+                int AreaID_ = 0;
                 var user = UserManager.FindById(User.Identity.GetUserId());
                 int CountryID_ = (CountryID >= 0) ? CountryID : (user.Institution.CountryID ?? 0);
                 //int? HospitalID_ = (user.Institution.Father_ID > 0 || user.Institution.Father_ID == null) ? HospitalID : Convert.ToInt32(user.Institution.ID);
@@ -319,6 +320,7 @@ namespace Paho.Controllers
                 string reportTemplate = report.Template;//contiene el nombre del template, que luego se relacionará al archivo template de Excel
 
                 if (user.Institution.AccessLevel == AccessLevel.SelfOnly && HospitalID_ == 0) { HospitalID_ = Convert.ToInt32(user.Institution.ID); }
+                if (user.Institution.AccessLevel == AccessLevel.Area && Area == 0) { AreaID_ = Convert.ToInt32(user.Institution.AreaID); }
 
                 if (ReportCountry < 1)
                 {
@@ -388,17 +390,17 @@ namespace Paho.Controllers
 
                         if (reportTemplate == "I1")      //#### CAFQ
                             //AppendDataToExcel_IndDes(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo);
-                            AppendDataToExcel_IndDes(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual);        //#### CAFQ
+                            AppendDataToExcel_IndDes(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, AreaID_);        //#### CAFQ
                         else if (reportTemplate == "RE1")
-                            AppendDataToExcel_REVELAC(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual);        //#### CAFQ
+                            AppendDataToExcel_REVELAC(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, AreaID_);        //#### CAFQ
                         else if (reportTemplate == "FM1")
-                            AppendDataToExcel_FormSariIliHospDeath(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, Area);        //#### CAFQ
+                            AppendDataToExcel_FormSariIliHospDeath(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, AreaID_);        //#### CAFQ
                         else if ((reportTemplate == "R2" || reportTemplate == "R3" || reportTemplate == "R1") && bVariosAnios)
-                            AppendDataToExcel_R2_SeveralYears(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual);        //#### CAFQ: 180204
+                            AppendDataToExcel_R2_SeveralYears(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, AreaID_);        //#### CAFQ: 180204
                         else {
                             //AppendDataToExcel(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo);
                             //reportTemplate = (reportTemplate == "ML1") ? "MuestrasLabNPHL" : reportTemplate;      //#### CAFQ
-                            AppendDataToExcel(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, CasosNPHL, Area);        //#### CAFQ
+                            AppendDataToExcel(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, AreaID_, CasosNPHL);        //#### CAFQ
                         }
 
                         excelPackage.SaveAs(ms);
@@ -425,192 +427,230 @@ namespace Paho.Controllers
             return null;
         }
 
-        private static void AppendDataToExcel_FormSariIliHospDeath(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? Area = 0)               //#### CAFQ
+        private void AppendDataToExcel_FormSariIliHospDeath(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId)               //#### CAFQ
         {
             var excelWorksheet = excelWorkBook.Worksheets[sheet];
             var row = startRow;
             var column = startColumn;
-            string _storedProcedure;
-            //int excelColTota = 0, nPosiTipo = 0, nInicTip2 = 0, nPoSuViGr = 0;
+            string _storedProcedure = "", consString = "";
 
-            _storedProcedure = "R6"; 
-            var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            using (var con = new SqlConnection(consString))
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            bool ili = user.Institution.ILI;
+            bool sari = user.Institution.SARI;
+
+            if (sari)
             {
-                using (var command = new SqlCommand(_storedProcedure, con) { CommandType = CommandType.StoredProcedure, CommandTimeout = 1200 })    //**** CAFQ
+                _storedProcedure = "R6";
+                consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                using (var con = new SqlConnection(consString))
                 {
-                    command.Parameters.Clear();
-                    command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
-                    command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
-                    command.Parameters.Add("@Languaje", SqlDbType.Text).Value = languaje_;
-                    command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
-                    command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
-                    command.Parameters.Add("@Mes_", SqlDbType.Int).Value = month;
-                    command.Parameters.Add("@SE", SqlDbType.Int).Value = se;
-                    command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
-                    command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
-                    command.Parameters.Add("@yearFrom", SqlDbType.Int).Value = YearFrom;
-                    command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
-                    command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;                        //#### CAFQ
-                    command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;          //#### CAFQ
-                    command.Parameters.Add("@Area", SqlDbType.Int).Value = Area;                        //#### CAFQ
-
-                    con.Open();
-
-                    using (var reader = command.ExecuteReader())
+                    using (var command = new SqlCommand(_storedProcedure, con) { CommandType = CommandType.StoredProcedure, CommandTimeout = 1200 })    //**** CAFQ
                     {
-                        var col = startColumn;
-                        int nFiLe = 0;
-                        int nGrup = 0;
+                        command.Parameters.Clear();
+                        command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
+                        command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
+                        command.Parameters.Add("@Languaje", SqlDbType.Text).Value = languaje_;
+                        command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
+                        command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
+                        command.Parameters.Add("@Mes_", SqlDbType.Int).Value = month;
+                        command.Parameters.Add("@SE", SqlDbType.Int).Value = se;
+                        command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
+                        command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
+                        command.Parameters.Add("@yearFrom", SqlDbType.Int).Value = YearFrom;
+                        command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
+                        command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;                        //#### CAFQ
+                        command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;          //#### CAFQ
+                        command.Parameters.Add("@Area_ID", SqlDbType.Int).Value = AreaId;                        //#### CAFQ
 
-                        var n1 = 0;
-                        var n2 = 0;
-                        var n3 = 0;
-                        var n4 = 0;
-                        var n5 = 0;
-                        var n6 = 0;
+                        con.Open();
 
-                        while (reader.Read())
+                        using (var reader = command.ExecuteReader())
                         {
-                            ++nFiLe;                                // Fila leida
-                            if(nFiLe == 1)
+                            var col = startColumn;
+                            int nFiLe = 0;
+
+                            var n1 = 0;
+                            var n2 = 0;
+                            var n3 = 0;
+                            var n4 = 0;
+                            var n5 = 0;
+                            var n6 = 0;
+
+                            while (reader.Read())
                             {
+                                ++nFiLe;                                // Fila leida
+                                //************************************ Hospitalizaciones Denominadores
                                 for (int i = 0; i < 53; i++)
-                                {
-                                    n5 += (int)reader.GetValue(i);      // Hospital admissions Denominadores
-                                }
-                                //++nFiLe;                                // Fila leida
+                                    n5 += (int)reader.GetValue(i);          // Masculino
+
+                                if (reader.Read())
+                                    for (int i = 0; i < 53; i++)
+                                        n5 += (int)reader.GetValue(i);      // Femenino
+
+                                //**** Hospitalizaciones SARI
+                                if (reader.Read())
+                                    for (int i = 0; i < 53; i++)
+                                        n1 += (int)reader.GetValue(i);      // Masculino
+
+                                if (reader.Read())
+                                    for (int i = 0; i < 53; i++)
+                                        n1 += (int)reader.GetValue(i);      // Masculino
+
+                                //************************************ ICU Denominadores
+                                if (reader.Read())
+                                    for (int i = 0; i < 53; i++)
+                                        n4 += (int)reader.GetValue(i);          // Masculino
+
+                                if (reader.Read())
+                                    for (int i = 0; i < 53; i++)
+                                        n4 += (int)reader.GetValue(i);      // Femenino
+
+                                //**** ICU SARI
+                                if (reader.Read())
+                                    for (int i = 0; i < 53; i++)
+                                        n2 += (int)reader.GetValue(i);      // Masculino
+
+                                if (reader.Read())
+                                    for (int i = 0; i < 53; i++)
+                                        n2 += (int)reader.GetValue(i);      // Masculino
+
+                                //************************************ Death Denominadores
+                                if (reader.Read())
+                                    for (int i = 0; i < 53; i++)
+                                        n6 += (int)reader.GetValue(i);          // Masculino
+
+                                if (reader.Read())
+                                    for (int i = 0; i < 53; i++)
+                                        n6 += (int)reader.GetValue(i);      // Femenino
+
+                                //**** Death SARI
+                                if (reader.Read())
+                                    for (int i = 0; i < 53; i++)
+                                        n3 += (int)reader.GetValue(i);      // Masculino
+
+                                if (reader.Read())
+                                    for (int i = 0; i < 53; i++)
+                                        n3 += (int)reader.GetValue(i);      // Masculino
+
+                                //************************************
+                                excelWorksheet.Cells[row + 0, col].Value = n1;      // Admissions SARI
+                                excelWorksheet.Cells[row + 1, col].Value = n3;      // Deaths SARI
+                                excelWorksheet.Cells[row + 2, col].Value = n2;      // ICU admissions SARI
+
+                                excelWorksheet.Cells[row + 3, col].Value = n4;      // ICU Denominadores
                                 excelWorksheet.Cells[row + 7, col].Value = n5;      // Hospital admissions Denominadores
+                                excelWorksheet.Cells[row + 8, col].Value = n6;      // Deaths Denominadores
+                                //****
+                                ++col;
+                                n1 = 0;
+                                n2 = 0;
+                                n3 = 0;
+                                n4 = 0;
                                 n5 = 0;
-                            }//*/
-
-                            if (nFiLe % 4 == 0) {
-                                ++nGrup;
-
-                                for (int i = 0; i < 53; i++)
-                                {
-                                    if (nGrup == 1)
-                                        n1 += (int)reader.GetValue(i);      // Admissions SARI
-                                    else if (nGrup == 2)
-                                        n2 += (int)reader.GetValue(i);      // ICU admissions SARI
-                                    else if (nGrup == 3)
-                                        n3 += (int)reader.GetValue(i);      // Deaths SARI
-                                }
-                                if(nGrup == 1)
-                                {
-                                    if (reader.Read())
-                                    {
-                                        for (int i = 0; i < 53; i++)
-                                        {
-                                            n4 += (int)reader.GetValue(i);      // ICU Denominadores
-                                        }
-                                        ++nFiLe;                                // Fila leida
-                                    }
-                                }
-                                if (nGrup == 2)
-                                {
-                                    if (reader.Read())
-                                    {
-                                        for (int i = 0; i < 53; i++)
-                                        {
-                                            n6 += (int)reader.GetValue(i);      // Deaths Denominadores
-                                        }
-                                        ++nFiLe;                                // Fila leida
-                                    }
-                                }
-                                if (nGrup == 3)
-                                {
-                                    if (reader.Read())
-                                    {
-                                        for (int i = 0; i < 53; i++)
-                                        {
-                                            n5 += (int)reader.GetValue(i);      // Hospital admissions Denominadores
-                                        }
-                                        ++nFiLe;                                // Fila leida
-                                    }
-                                }
-
-                                if (nGrup == 3)
-                                {
-                                    excelWorksheet.Cells[row + 0, col].Value = n1;      // Admissions SARI
-                                    excelWorksheet.Cells[row + 1, col].Value = n3;      // Deaths SARI
-                                    excelWorksheet.Cells[row + 2, col].Value = n2;      // ICU admissions SARI
-
-                                    excelWorksheet.Cells[row + 3, col].Value = n4;      // ICU Denominadores
-                                    if (col != 11)
-                                    {
-                                        excelWorksheet.Cells[row + 7, col + 1].Value = n5;      // Hospital admissions Denominadores
-                                    }
-                                    excelWorksheet.Cells[row + 8, col].Value = n6;      // Deaths Denominadores
-
-                                    ++col;
-
-                                    nGrup = 0;
-                                    n1 = 0;
-                                    n2 = 0;
-                                    n3 = 0;
-                                    n4 = 0;
-                                    n5 = 0;
-                                    n6 = 0;
-                                }
+                                n6 = 0;
+                                //****
                             }
                         }
+
+                        command.Parameters.Clear();
+                        con.Close();
                     }
-
-                    command.Parameters.Clear();
-                    con.Close();
                 }
-            }
 
-            //####
-            row = startRow;
-            column = startColumn;
-            _storedProcedure = "Summary_ILI_Cases_AgeGroup";
+                //****
+                row = startRow;
+                column = startColumn;
+                _storedProcedure = "FLUID_IRAG_Total_Muestra_Analizadas_AgeGroup";
 
-            using (var con2 = new SqlConnection(consString))
-            {
-                using (var command = new SqlCommand(_storedProcedure, con2) { CommandType = CommandType.StoredProcedure, CommandTimeout = 1200 })    //**** CAFQ
+                using (var con2 = new SqlConnection(consString))
                 {
-                    command.Parameters.Clear();
-                    command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
-                    command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
-                    command.Parameters.Add("@Languaje", SqlDbType.Text).Value = languaje_;
-                    command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
-                    command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
-                    command.Parameters.Add("@Mes_", SqlDbType.Int).Value = month;
-                    command.Parameters.Add("@SE", SqlDbType.Int).Value = se;
-                    command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
-                    command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
-                    command.Parameters.Add("@yearFrom", SqlDbType.Int).Value = YearFrom;
-                    command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
-                    command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;
-                    command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;
-
-                    con2.Open();
-
-                    using (var reader = command.ExecuteReader())
+                    using (var command = new SqlCommand(_storedProcedure, con2) { CommandType = CommandType.StoredProcedure, CommandTimeout = 1200 })    //**** CAFQ
                     {
-                        var col = startColumn;
-                        int nFiLe = 0;
-                        int nGrup = 0;
+                        command.Parameters.Clear();
+                        command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
+                        command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
+                        command.Parameters.Add("@Languaje", SqlDbType.Text).Value = languaje_;
+                        command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
+                        command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
+                        command.Parameters.Add("@Mes_", SqlDbType.Int).Value = month;
+                        command.Parameters.Add("@SE", SqlDbType.Int).Value = se;
+                        command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
+                        command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
+                        command.Parameters.Add("@yearFrom", SqlDbType.Int).Value = YearFrom;
+                        command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
+                        command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;
+                        command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;
+                        command.Parameters.Add("@Area_ID", SqlDbType.Int).Value = AreaId;                        //#### CAFQ
 
-                        int nCase1 = 0;
-                        int nCase2 = 0;
-                        int nCase3 = 0;
-                        int nSamp1 = 0;
-                        int nSamp2 = 0;
-                        int nSamp3 = 0;
-                        int nVisi1 = 0;
-                        int nVisi2 = 0;
-                        int nVisi3 = 0;
-
-                        while (reader.Read())
+                        con2.Open();
+                        using (var reader = command.ExecuteReader())
                         {
-                            ++nFiLe;
-                            ++nGrup;
+                            var col = startColumn;
 
-                            //for (int i = 0; i < 2; i++)
-                            //{
+                            while (reader.Read())
+                            {
+                                excelWorksheet.Cells[row + 4, col].Value = (int)reader.GetValue(2);
+                                ++col;
+                            }
+                        }
+
+                        command.Parameters.Clear();
+                        con2.Close();
+                    }
+                }
+            }       // End sari
+
+            if (ili)
+            {
+                row = startRow;
+                column = startColumn;
+                _storedProcedure = "Summary_ILI_Cases_AgeGroup";
+
+                using (var con2 = new SqlConnection(consString))
+                {
+                    using (var command = new SqlCommand(_storedProcedure, con2) { CommandType = CommandType.StoredProcedure, CommandTimeout = 1200 })    //**** CAFQ
+                    {
+                        command.Parameters.Clear();
+                        command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
+                        command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
+                        command.Parameters.Add("@Languaje", SqlDbType.Text).Value = languaje_;
+                        command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
+                        command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
+                        command.Parameters.Add("@Mes_", SqlDbType.Int).Value = month;
+                        command.Parameters.Add("@SE", SqlDbType.Int).Value = se;
+                        command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
+                        command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
+                        command.Parameters.Add("@yearFrom", SqlDbType.Int).Value = YearFrom;
+                        command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
+                        command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;
+                        command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;
+                        command.Parameters.Add("@Area_ID", SqlDbType.Int).Value = AreaId;                        //#### CAFQ
+
+                        con2.Open();
+
+                        using (var reader = command.ExecuteReader())
+                        {
+                            var col = startColumn;
+                            int nFiLe = 0;
+                            int nGrup = 0;
+
+                            int nCase1 = 0;
+                            int nCase2 = 0;
+                            int nCase3 = 0;
+                            int nSamp1 = 0;
+                            int nSamp2 = 0;
+                            int nSamp3 = 0;
+                            int nVisi1 = 0;
+                            int nVisi2 = 0;
+                            int nVisi3 = 0;
+
+                            while (reader.Read())
+                            {
+                                ++nFiLe;
+                                ++nGrup;
+
+                                //for (int i = 0; i < 2; i++)
+                                //{
                                 if (nGrup == 1)
                                 {
                                     nCase1 += (int)reader.GetValue(4);
@@ -629,80 +669,40 @@ namespace Paho.Controllers
                                     nSamp3 += (int)reader.GetValue(5);
                                     nVisi3 += (int)reader.GetValue(6);
                                 }
-                            //}
+                                //}
 
-                            if (nFiLe % 3 == 0)
-                            {
-                                nGrup = 0;
+                                if (nFiLe % 3 == 0)
+                                {
+                                    nGrup = 0;
+                                }
                             }
+                            //****
+                            row = row + 12;
+                            excelWorksheet.Cells[row, col + 1].Value = nCase1;
+                            excelWorksheet.Cells[row, col + 2].Value = nCase2;
+                            excelWorksheet.Cells[row, col + 3].Value = nCase3;
+                            ++row;
+                            excelWorksheet.Cells[row, col + 1].Value = nSamp1;
+                            excelWorksheet.Cells[row, col + 2].Value = nSamp2;
+                            excelWorksheet.Cells[row, col + 3].Value = nSamp3;
+                            ++row;
+                            excelWorksheet.Cells[row, col + 1].Value = nVisi1;
+                            excelWorksheet.Cells[row, col + 2].Value = nVisi2;
+                            excelWorksheet.Cells[row, col + 3].Value = nVisi3;
                         }
-                        //****
-                        row = row + 12;
-                        excelWorksheet.Cells[row, col + 1].Value = nCase1;
-                        excelWorksheet.Cells[row, col + 2].Value = nCase2;
-                        excelWorksheet.Cells[row, col + 3].Value = nCase3;
-                        ++row;
-                        excelWorksheet.Cells[row, col + 1].Value = nSamp1;
-                        excelWorksheet.Cells[row, col + 2].Value = nSamp2;
-                        excelWorksheet.Cells[row, col + 3].Value = nSamp3;
-                        ++row;
-                        excelWorksheet.Cells[row, col + 1].Value = nVisi1;
-                        excelWorksheet.Cells[row, col + 2].Value = nVisi2;
-                        excelWorksheet.Cells[row, col + 3].Value = nVisi3;
+
+                        command.Parameters.Clear();
+                        con2.Close();
                     }
-
-                    command.Parameters.Clear();
-                    con2.Close();
                 }
-            }
-
-            //####
-            row = startRow;
-            column = startColumn;
-            _storedProcedure = "FLUID_IRAG_Total_Muestra_Analizadas_AgeGroup";
-
-            using (var con2 = new SqlConnection(consString))
-            {
-                using (var command = new SqlCommand(_storedProcedure, con2) { CommandType = CommandType.StoredProcedure, CommandTimeout = 1200 })    //**** CAFQ
-                {
-                    command.Parameters.Clear();
-                    command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
-                    command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
-                    command.Parameters.Add("@Languaje", SqlDbType.Text).Value = languaje_;
-                    command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
-                    command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
-                    command.Parameters.Add("@Mes_", SqlDbType.Int).Value = month;
-                    command.Parameters.Add("@SE", SqlDbType.Int).Value = se;
-                    command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
-                    command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
-                    command.Parameters.Add("@yearFrom", SqlDbType.Int).Value = YearFrom;
-                    command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
-                    command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;
-                    command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;
-
-                    con2.Open();
-                    using (var reader = command.ExecuteReader())
-                    {
-                        var col = startColumn;
-  
-                        while (reader.Read())
-                        {
-                            excelWorksheet.Cells[row + 4, col].Value = (int)reader.GetValue(2);
-                            ++col;
-                         }
-                    }
-
-                    command.Parameters.Clear();
-                    con2.Close();
-                }
-            }
+            }       // End ili
 
             //****
-            reportLabels(consString, countryId, languaje_, ReportCountry, hospitalId, year, YearFrom, YearTo, se, startDate, endDate, excelWorkBook, excelWorksheet);
+            reportLabels(consString, countryId, languaje_, ReportCountry, hospitalId, year, YearFrom, YearTo, se, startDate, endDate, excelWorkBook, excelWorksheet, AreaId);
             //InsertarImagenLogo(consString, reportTemplate, ReportCountry, excelWorksheet);
         }
-
-        private static void AppendDataToExcel_R2_SeveralYears(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual)               //#### CAFQ
+                
+        private static void AppendDataToExcel_R2_SeveralYears(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId)               //#### CAFQ
         {
             var excelWorksheet = excelWorkBook.Worksheets[sheet];
             int nColumns = 0;
@@ -1031,15 +1031,15 @@ namespace Paho.Controllers
         //private static void AppendDataToExcel(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo)
         private static void AppendDataToExcel(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, 
             DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, 
-            bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, string CasosNPHL = "", int? Area = 0)               //#### CAFQ
+            bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId, string CasosNPHL = "")               //#### CAFQ
         {
             var excelWorksheet = excelWorkBook.Worksheets[sheet];
             var row = startRow;
             var column = startColumn;
             string _storedProcedure;
             int excelColTota = 0, nPosiTipo = 0, nInicTip2 = 0, nPoSuViGr = 0;
+            Dictionary<string, string> casosNHPLNumber = new Dictionary<string, string>();
 
-            //_storedProcedure = storedProcedure;
             _storedProcedure = (storedProcedure == "ML1") ? "MuestrasLabNPHL" : storedProcedure;      //#### CAFQ
             if (storedProcedure == "R5")
             {
@@ -1089,9 +1089,11 @@ namespace Paho.Controllers
                     command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
                     command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;                        //#### CAFQ
                     command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;          //#### CAFQ
-                    if (storedProcedure == "ML1")                                                           // Muestras laboratorio NPHL
-                        command.Parameters.Add("@CasosNPHL", SqlDbType.Text).Value = CasosNPHL;          //#### CAFQ
-
+                    if (storedProcedure == "ML1")                                                       // Muestras laboratorio NPHL
+                    {                                                       
+                        CasosNPHL = getIdentificarCasos(CasosNPHL, casosNHPLNumber);
+                        command.Parameters.Add("@CasosNPHL", SqlDbType.Text).Value = CasosNPHL;   
+                    }
                     con.Open();
                     if ((storedProcedure == "R5"))
                     {
@@ -1397,6 +1399,8 @@ namespace Paho.Controllers
                         }
                         else        // R1, R2, R3, R4 etc
                         {
+                            bool procesarFila;
+
                             using (var reader = command.ExecuteReader())
                             {
                                 int nColums;
@@ -1407,32 +1411,42 @@ namespace Paho.Controllers
                                     var col = column;
                                     if (row > startRow && insert_row == true) excelWorksheet.InsertRow(row, 1);
 
-                                    //for (var i = 0; i < reader.FieldCount; i++)
-                                    for (var i = 0; i < nColums; i++)
+                                    procesarFila = true;
+                                    if (storedProcedure == "ML1")
                                     {
-                                        var cell = excelWorksheet.Cells[startRow, col];
-                                        if (reader.GetValue(i) != null)
-                                        {
-                                            double numberD;
-                                            bool isNumber = double.TryParse(reader.GetValue(i).ToString(), out numberD);
-
-                                            DateTime dt;
-                                            bool isDate = DateTime.TryParse(reader.GetValue(i).ToString(), out dt);
-
-                                            if (isNumber)
-                                                excelWorksheet.Cells[row, col].Value = numberD;
-                                            else
-                                            {
-                                                if (isDate)
-                                                    excelWorksheet.Cells[row, col].Value = dt;
-                                                else
-                                                    excelWorksheet.Cells[row, col].Value = reader.GetValue(i).ToString();
-                                            }
-                                            excelWorksheet.Cells[row, col].StyleID = cell.StyleID;
-                                        }
-                                        col++;
+                                        //string aaa = (string)reader.GetValue(0);
+                                        if (!casosNHPLNumber.ContainsKey((string)reader.GetValue(0)))
+                                            procesarFila = false;
                                     }
-                                    row++;
+
+                                    if (procesarFila)
+                                    {
+                                        for (var i = 0; i < nColums; i++)
+                                        {
+                                            var cell = excelWorksheet.Cells[startRow, col];
+                                            if (reader.GetValue(i) != null)
+                                            {
+                                                double numberD;
+                                                bool isNumber = double.TryParse(reader.GetValue(i).ToString(), out numberD);
+
+                                                DateTime dt;
+                                                bool isDate = DateTime.TryParse(reader.GetValue(i).ToString(), out dt);
+
+                                                if (isNumber)
+                                                    excelWorksheet.Cells[row, col].Value = numberD;
+                                                else
+                                                {
+                                                    if (isDate)
+                                                        excelWorksheet.Cells[row, col].Value = dt;
+                                                    else
+                                                        excelWorksheet.Cells[row, col].Value = reader.GetValue(i).ToString();
+                                                }
+                                                excelWorksheet.Cells[row, col].StyleID = cell.StyleID;
+                                            }
+                                            col++;
+                                        }
+                                        row++;
+                                    }
                                 }
                             }
                         }
@@ -1523,47 +1537,6 @@ namespace Paho.Controllers
 
                 //inserción de logo
                 InsertarLogoExcel(consString, excelWorksheet, ReportCountry);
-                /*
-                using (var con = new SqlConnection(consString))
-                {
-                    using (var command = new SqlCommand("select * from ReportCountry where ID = @ReportCountryID", con))
-                    {
-                        command.Parameters.Clear();
-                        command.Parameters.Add("@ReportCountryID", SqlDbType.Int).Value = ReportCountry;
-
-                        con.Open();
-                        using (var reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                int insertrow = (int)reader["logoRow"];
-                                int insertcol = (int)reader["logoCol"];
-                                String imagurl = (String)reader["logo"];
-                                if (imagurl != "")
-                                {
-                                    try
-                                    {
-                                        WebClient wc = new WebClient();
-                                        byte[] bytes = wc.DownloadData(imagurl);
-                                        MemoryStream ms = new MemoryStream(bytes);
-                                        Bitmap newImage = new Bitmap(System.Drawing.Image.FromStream(ms));
-                                        excelWorksheet.Row(insertrow).Height = newImage.Height;
-                                        var picture = excelWorksheet.Drawings.AddPicture("reportlogo", newImage);
-                                        picture.SetPosition(insertrow, -(newImage.Height), insertcol, -100);
-                                        //picture.SetPosition(insertrow, 0, insertcol, 0);
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        //ViewBag.Message = "No se insertó el logo, porque no es accesible";
-                                    }
-                                }
-                            }
-                        }
-                        command.Parameters.Clear();
-                        con.Close();
-                    }
-                }
-                */
 
                 if (storedProcedure == "ML1")
                     setDatosAdicionales(excelWorksheet, startRow, startColumn);
@@ -1573,6 +1546,26 @@ namespace Paho.Controllers
 
             // Apply only if it has a Total row at the end and hast SUM in range, i.e. SUM(A1:A4)
             //excelWorksheet.DeleteRow(row, 2);
+        }
+
+        private static string getIdentificarCasos(string data, Dictionary<string, string> aData)
+        {
+            string cTemp = "";
+
+            var array = data.Split('#');
+            foreach (string element in array)
+            {
+                var array2 = element.Split(':');
+                if(cTemp == "")
+                    cTemp = array2[0];
+                else
+                    cTemp += '#' + array2[0];
+
+                if(array2.Length > 1)
+                    aData.Add(array2[1], array2[1]);
+            }
+
+            return cTemp;
         }
 
         private static void setDatosAdicionales(ExcelWorksheet excelWorksheet, int startRow, int startColumn)
@@ -1716,7 +1709,7 @@ namespace Paho.Controllers
             }
             catch (Exception e)
             {
-                ViewBag.Message = "El reporte no se pudo generar, por favor intente de nuevo";
+                ViewBag.Message = "El reporte no se pudo generar, por favor intente de nuevo" + "\n" + e.Message;
             }
 
             return null;
@@ -1804,7 +1797,7 @@ namespace Paho.Controllers
             }
             catch (Exception e)
             {
-                ViewBag.Message = "El reporte no se pudo generar, por favor intente de nuevo";
+                ViewBag.Message = "El reporte no se pudo generar, por favor intente de nuevo" + "\n" + e.Message;
             }
 
             return null;
@@ -1833,7 +1826,7 @@ namespace Paho.Controllers
             return Json(reportsPerCountry, JsonRequestBehavior.AllowGet);
         }*/
 
-        private static void AppendDataToExcel_REVELAC(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string reportTemplate, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual)         //#### CAFQ
+        private static void AppendDataToExcel_REVELAC(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string reportTemplate, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId)         //#### CAFQ
         {
             ExcelWorksheet excelWorksheet1 = excelWorkBook.Worksheets["DatosReporte"];
             var row = startRow;
@@ -2185,7 +2178,7 @@ namespace Paho.Controllers
         }
 
         //private static void AppendDataToExcel_IndDes(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string reportTemplate, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo)
-        private static void AppendDataToExcel_IndDes(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string reportTemplate, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual)         //#### CAFQ
+        private static void AppendDataToExcel_IndDes(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string reportTemplate, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId)         //#### CAFQ
         {
             ExcelWorksheet excelWorksheet1 = excelWorkBook.Worksheets["DatosPie"];
             var row = startRow;
@@ -2288,9 +2281,12 @@ namespace Paho.Controllers
             InsertarImagenLogo(consString, reportTemplate, ReportCountry, excelWorksheet2);
         }
 
-        private static void reportLabels(string consString, int countryId, string languaje_, int? ReportCountry, int? hospitalId, int? year, int? YearFrom, int? YearTo, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, ExcelWorksheet excelWorksheet)
+        private static void reportLabels(string consString, int countryId, string languaje_, int? ReportCountry, int? hospitalId, int? year, int? YearFrom, int? YearTo, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, ExcelWorksheet excelWorksheet, int? AreaId = 0)
         {
             //inserción de labels
+            string labelWeekEpid = "";
+            labelWeekEpid = getSemanasEpidemiologicasReporte(year, YearFrom, YearTo, se, startDate, endDate);
+
             using (var con = new SqlConnection(consString))
             {
                 using (var command = new SqlCommand("select * from ReportCountryConfig where ReportCountryID = @ReportCountryID", con))
@@ -2311,45 +2307,24 @@ namespace Paho.Controllers
                             /*Llenado parámetros que vienen del formulario*/
                             string labelCountry = "";
                             string labelHospital = "";
+                            string labelArea = "";
                             string labelYear = "";
                             string labelSE = "";
                             string labelStartDate = "";
                             string labelEndDate = "";
                             string labelCurrDate = "";
+                            //string labelWeekEpid = "";
 
                             //Obtención del pais y llenado en la variable
                             if (countryId > 0)
-                            {
-                                using (var command2 = new SqlCommand("select * from Country where ID = @CountryID", con))
-                                {
-                                    command2.Parameters.Clear();
-                                    command2.Parameters.Add("@CountryID", SqlDbType.Int).Value = countryId;
-                                    using (var reader2 = command2.ExecuteReader())
-                                    {
-                                        while (reader2.Read())
-                                        {
-                                            labelCountry += reader2["Name"];
-                                        }
-                                    }
-                                    command2.Parameters.Clear();
-                                }
-                            }
+                                labelCountry = getDescripcionDatoDesdeID(con, "select * from Country where ID = @ID", "Name", countryId);
+
                             if (hospitalId > 0)
-                            {
-                                using (var command2 = new SqlCommand("select * from Institution where ID = @InstitutionID", con))
-                                {
-                                    command2.Parameters.Clear();
-                                    command2.Parameters.Add("@InstitutionID", SqlDbType.Int).Value = hospitalId;
-                                    using (var reader2 = command2.ExecuteReader())
-                                    {
-                                        while (reader2.Read())
-                                        {
-                                            labelHospital += reader2["FullName"];
-                                        }
-                                    }
-                                    command2.Parameters.Clear();
-                                }
-                            }
+                                labelHospital = getDescripcionDatoDesdeID(con, "select * from Institution where ID = @ID", "FullName", hospitalId);
+
+                            if (AreaId > 0)
+                                labelArea = getDescripcionDatoDesdeID(con, "select * from Area where ID = @ID", "Name", AreaId);
+
                             if (year > 0)
                             {
                                 labelYear += year;
@@ -2380,6 +2355,8 @@ namespace Paho.Controllers
                                 DateTime oDate = Convert.ToDateTime(labelEndDate);
                                 labelEndDate = oDate.Date.ToString();
                             }
+
+                            //labelWeekEpid = getSemanasEpidemiologicasReporte(year, YearFrom, YearTo, se, startDate, endDate);
                             /*Fin llenado parámetros*/
 
                             string label = reader["label"].ToString();
@@ -2399,12 +2376,13 @@ namespace Paho.Controllers
                                     switch (label)
                                     {
                                         case "{{country}}":
-                                            //label = (labelCountry != "" ? ("Pais:" + labelCountry) : "");
                                             label = (labelCountry != "" ? (SgetMsg("msgViewExportarLabelCountry", countryId, languaje_) + ": " + labelCountry) : "");
                                             break;
                                         case "{{institution}}":
-                                            //label = (labelHospital != "" ? ("Inst:" + labelHospital) : "");
                                             label = (labelHospital != "" ? (SgetMsg("msgViewExportarLabelInstitutionShort", countryId, languaje_) + ": " + labelHospital) : "");
+                                            break;
+                                        case "{{Area}}":
+                                            label = (labelArea != "" ? (SgetMsg("msgViewExportarLabelArea", countryId, languaje_) + ": " + labelArea) : "");
                                             break;
                                         case "{{year}}":
                                             //label = (labelYear != "" ? ("Año: " + labelYear) : "");
@@ -2436,13 +2414,17 @@ namespace Paho.Controllers
                                             break;
                                         case "{{currentDate}}":
                                             DateTime oDate = DateTime.Today;
-                                            //labelCurrDate = oDate.Date.ToString();
-                                            labelCurrDate = String.Format("{0:yyyy/MM/dd}", oDate);
+                                            labelCurrDate = String.Format("{0:" + SgetMsg("msgDateFormatReporting", countryId, languaje_) + "}", oDate);
                                             label = labelCurrDate;
                                             break;
-                                        default:                    //#### CAFQ: 180415
-                                            label = "";             //#### CAFQ: 180415
-                                            break;                  //#### CAFQ: 180415
+                                        case "{{weekEpid}}":
+                                            //label = (labelYear != "" ? ("Año:" + labelYear) : "") + " " + (labelSE != "" ? ("SE:" + labelSE) : "") + " " + (labelStartDate != "" ? ("Del:" + labelStartDate) : "") + " " + (labelEndDate != "" ? ("Al:" + labelEndDate) : "");
+                                            //label = (labelWeekEpid != "" ? (SgetMsg("msgViewExportarLabelEpidemiologicalYear", countryId, languaje_) + ": " + labelWeekEpid) : "") + " " + (labelSE != "" ? (SgetMsg("msgViewExportarLabelEW", countryId, languaje_) + ": " + labelSE) : "") + " " + (labelStartDate != "" ? (SgetMsg("msgViewExportarLabelFrom", countryId, languaje_) + ": " + labelStartDate) : "") + " " + (labelEndDate != "" ? (SgetMsg("msgViewExportarLabelTo", countryId, languaje_) + ": " + labelEndDate) : "");
+                                            label = (labelWeekEpid != "" ? (SgetMsg("msgViewExportarLabelWeekEpidReporting", countryId, languaje_) + ": " + labelWeekEpid) : "");
+                                            break;
+                                        default:        
+                                            label = "";  
+                                            break;       
                                     }
                                 }
                                 else
@@ -2457,10 +2439,10 @@ namespace Paho.Controllers
                                         var excelWs = excelWorksheet;
                                     }*/
                                  //excelWorksheet.Cells[insertrow, insertcol].Value = label;
-                                if (label == "")
+                                if (label != "")
                                     //excelWorksheet.Cells[insertrow, insertcol].Value = cOriginal;
-                                    excelWs.Cells[insertrow, insertcol].Value = cOriginal;
-                                else
+                                    //excelWs.Cells[insertrow, insertcol].Value = cOriginal;
+                                //else
                                     //excelWorksheet.Cells[insertrow, insertcol].Value = cOriginal.Substring(0, nResu1) + label + cOriginal.Substring(nResu2 + 2, cOriginal.Length - nResu2 - 2);
                                     excelWs.Cells[insertrow, insertcol].Value = cOriginal.Substring(0, nResu1) + label + cOriginal.Substring(nResu2 + 2, cOriginal.Length - nResu2 - 2);
                             }
@@ -2470,6 +2452,72 @@ namespace Paho.Controllers
                     con.Close();
                 }
             }
+        }
+
+        private static string getDescripcionDatoDesdeID(SqlConnection con, string query, string columnName, int? nID)
+        {
+            string dato = "";
+
+            //using (var command2 = new SqlCommand("select * from Institution where ID = @InstitutionID", con))
+            using (var command2 = new SqlCommand(query, con))
+            {
+                command2.Parameters.Clear();
+                command2.Parameters.Add("@ID", SqlDbType.Int).Value = nID;
+                using (var reader2 = command2.ExecuteReader())
+                {
+                    while (reader2.Read())
+                    {
+                        dato += reader2[columnName];
+                    }
+                }
+                command2.Parameters.Clear();
+            }
+
+            return dato;
+        }
+
+        private static string getSemanasEpidemiologicasReporte(int? year, int? yearFrom, int? yearTo, int? se, DateTime? startDate, DateTime? endDate)
+        {
+            DateTime dtCurr = DateTime.Today;
+            string labelSemanas = "";
+            //****
+            if (startDate.HasValue && endDate.HasValue)
+            {
+               
+            }
+            else if (year > 0 && se > 0)
+            {
+                if (year == dtCurr.Year)
+                    labelSemanas = se.ToString();
+                else
+                    labelSemanas = year.ToString() + " - " + se.ToString();
+            }
+            else if (yearFrom > 0 && yearTo > 0)
+            {
+                int nUlSe = 0;
+
+                if (yearTo == dtCurr.Year)
+                    nUlSe = PAHOClassUtilities.semanasActualEpidemiologico();
+                else
+                    nUlSe = PAHOClassUtilities.semanasAnioEpidemiologico((int)yearTo);
+
+                labelSemanas = yearFrom.ToString() + "." + "1" + " - " + yearTo.ToString() + "." + nUlSe.ToString();
+            }
+            else if (year > 0)
+            {
+                if (year == dtCurr.Year)
+                {
+                    int nSemanas = PAHOClassUtilities.semanasActualEpidemiologico();
+                    labelSemanas = "1" + " - " + nSemanas.ToString();
+                }
+                else if (year < dtCurr.Year)
+                {
+                    int nSemanas = PAHOClassUtilities.semanasAnioEpidemiologico((int)year);
+                    labelSemanas = year.ToString() + " " + "1" + " - " + nSemanas.ToString();
+                }
+            }
+
+            return labelSemanas;
         }
 
         //private static void recuperarDatosIndDes(string consString, string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, int? YearFrom, int? YearTo, int IRAG, int opcion, decimal[] nResuOut, string[,] aResuOut = null)
