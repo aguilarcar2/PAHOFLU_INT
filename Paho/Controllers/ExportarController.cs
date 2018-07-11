@@ -311,6 +311,10 @@ namespace Paho.Controllers
                 int? RegionID_ = (RegionID >= 0) ? RegionID : (user.Institution.cod_region_institucional ?? 0);
                 string Languaje_ = user.Institution.Country.Language ?? "SPA";
 
+                //var Region_Name = (RegionID_ >= 0) ? "" : 
+                var Hospital_Name = (HospitalID_ == 0) ? "" : db.Institutions.Where(x => x.ID == HospitalID_).FirstOrDefault().Name;
+                var Country_Code = (CountryID == 0) ? "" : db.Countries.Where(x => x.ID == CountryID_).FirstOrDefault().Code;
+
                 var reportCountry = db.ReportsCountries.FirstOrDefault(s => s.ID == ReportCountry);
                 int reportID = reportCountry.ReportID;//contiene la FK para obtener el ID del reporte en la tabla Report
                 int reportStartCol = reportCountry.startCol;//contiene la startCol de la tabla ReportCountry, pasa saber en que columna se inicia
@@ -391,6 +395,53 @@ namespace Paho.Controllers
                             AppendDataToExcel_IndDes(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual);        //#### CAFQ
                         else if (reportTemplate == "RE1")
                             AppendDataToExcel_REVELAC(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual);        //#### CAFQ
+                        else if (reportTemplate == "FLUID")
+                        {
+
+                            var contador = 0;
+                            var YearBegin = 0;
+                            var YearEnd = 0;
+
+                            if (YearFrom != null && YearTo != null)
+                            {
+                                YearBegin = (int)YearFrom;
+                                YearEnd = (int)YearTo;
+
+                            }
+                            else if (Year != null)
+                            {
+                                YearBegin = (int)Year;
+                                YearEnd = (int)Year;
+                            }
+
+                            var excelWs_VIRUSES_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "NATIONAL VIRUSES" : "Virus Identificados"];
+                            AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_NATIONAL_VIRUSES", 6, 1, excelWs_VIRUSES_IRAG.Index, false, ReportCountry, YearEnd, YearEnd, 1, Inusual);
+                            var excelWs_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "SARI" : "IRAG"];
+                            AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_IRAG", 8, 1, excelWs_IRAG.Index, false, ReportCountry, YearBegin, YearEnd, 1, Inusual);
+                            var excelWs_DEATHS_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "DEATHS Sentinel Sites" : "Fallecidos IRAG"];
+                            AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_DEATHS_IRAG", 8, 1, excelWs_DEATHS_IRAG.Index, false, ReportCountry, YearEnd, YearEnd, 1, Inusual);
+                            var excelWs_ILI = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "ILI" : "ETI"];
+                            AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_ETI", 8, 1, excelWs_ILI.Index, false, ReportCountry, YearBegin, YearEnd, 2, Inusual);
+                            var excelWs_VIRUSES_ILI = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "ILI VIRUSES - Sentinel" : "Virus ETI Identificados"];
+                            AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_NATIONAL_VIRUSES", 6, 1, excelWs_VIRUSES_ILI.Index, false, ReportCountry, YearEnd, YearEnd, 2, Inusual);
+
+                            // Leyendas
+                            var excelWs_Leyendas = excelWorkBook.Worksheets["Leyendas"];
+                            ConfigToExcel_FLUID(CountryID, Languaje_, RegionID, Year, HospitalID, excelWorkBook, "Leyendas", 1, excelWs_Leyendas.Index, false);
+
+                            // Manejo de graficas 
+
+                            contador = YearEnd - YearBegin;
+                            if (contador > 0)
+                            {
+                                var excelWs_Graph_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "SARI Graphs" : "Gráficos IRAG"];
+                                for (int i = contador; i >= 0; i--)
+                                {
+                                    ConfigGraph_FLUID(YearEnd - contador, excelWorkBook, excelWs_Graph_IRAG.Index);
+                                }
+                            }                   
+                        }
+                            
                         else if (reportTemplate == "FM1")
                             AppendDataToExcel_FormSariIliHospDeath(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, Area);        //#### CAFQ
                         else if ((reportTemplate == "R2" || reportTemplate == "R3" || reportTemplate == "R1") && bVariosAnios)
@@ -410,7 +461,7 @@ namespace Paho.Controllers
                 //return new FileStreamResult(ms, "application/xlsx")
                 //ExcelPackage.ExportAsFixedFormat(Microsoft.Office.Interop.Excel.XlFixedFormatType.xlTypePDF, outputPath);
 
-                string nombFile = reportCountry.description == "" ? "Exportable_" : reportCountry.description.ToString().Replace("%", "_").Replace(" ", "_") + "_";            //#### CAFQ
+                string nombFile = reportCountry.description == "" ? "Exportable_" : Country_Code  + "_" + reportCountry.description.ToString().Replace("%", "_").Replace(" ", "_") + "_" ;            //#### CAFQ
 
                 return new FileStreamResult(ms, "application/xlsx")
                 {
@@ -2721,6 +2772,119 @@ namespace Paho.Controllers
             var jsonDatosLabNPHL = jsonSerialiser.Serialize(casoDatosList);
 
             return Json(jsonDatosLabNPHL);
+        }
+
+        private static void AppendDataToExcel_FLUID(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual)
+        {
+
+            var excelWorksheet = excelWorkBook.Worksheets[sheet];
+            var row = startRow;
+
+            var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            using (var con = new SqlConnection(consString))
+            {
+                using (var command = new SqlCommand(storedProcedure, con) { CommandType = CommandType.StoredProcedure })
+                {
+                    command.Parameters.Clear();
+                    command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
+                    command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
+                    command.Parameters.Add("@Languaje", SqlDbType.Text).Value = languaje_;
+                    command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
+                    command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
+                    command.Parameters.Add("@Mes_", SqlDbType.Int).Value = month;
+                    command.Parameters.Add("@SE", SqlDbType.Int).Value = se;
+                    command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
+                    command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
+                    command.Parameters.Add("@yearFrom", SqlDbType.Int).Value = YearFrom;
+                    command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
+                    command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;
+                    command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;
+
+                    con.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var col = 1;
+                            //&& insert_row == true
+                            if (row > startRow && insert_row == true) excelWorksheet.InsertRow(row, 1);
+
+                            for (var i = 0; i < reader.FieldCount; i++)
+                            {
+                                var cell = excelWorksheet.Cells[startRow, col];
+                                if (reader.GetValue(i) != null)
+                                {
+                                    int number;
+                                    bool isNumber = int.TryParse(reader.GetValue(i).ToString(), out number);
+
+                                    if (isNumber)
+                                    {
+                                        excelWorksheet.Cells[row, col].Value = number;
+                                    }
+                                    else
+                                    {
+                                        excelWorksheet.Cells[row, col].Value = reader.GetValue(i).ToString();
+                                    }
+                                    excelWorksheet.Cells[row, col].StyleID = cell.StyleID;
+
+                                }
+                                col++;
+                            }
+
+                            row++;
+                        }
+                    }
+                    command.Parameters.Clear();
+                    con.Close();
+
+                }
+            }
+
+            // Apply only if it has a Total row at the end and hast SUM in range, i.e. SUM(A1:A4)
+            //excelWorksheet.DeleteRow(row, 2);
+        }
+        private void ConfigToExcel_FLUID(int countryId, string languaje_country, int? regionId, int? year, int? hospitalId, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int sheet, bool? insert_row)
+        {
+            var excelWorksheet = excelWorkBook.Worksheets[sheet];
+
+            if (year != null)
+            {
+                excelWorksheet.Cells[2, 1].Value = year.ToString();
+            }
+
+            if (hospitalId != null && hospitalId > 0)
+            {
+                var Institution = db.Institutions.Find(hospitalId);
+
+                excelWorksheet.Cells[2, 5].Value = Institution.Name.ToString();
+
+            }
+            else if (regionId != null)
+            {
+                var Region_report = db.Regions.Find(regionId);
+
+                excelWorksheet.Cells[2, 4].Value = Region_report.Name.ToString();
+            }
+            else
+            {
+                var Pais = db.Countries.Find(countryId);
+
+                excelWorksheet.Cells[2, 3].Value = Pais.Name.ToString();
+            }
+
+        }
+
+        private void ConfigGraph_FLUID(int? year, ExcelWorkbook excelWorkBook, int sheet)
+        {
+            var excelWorksheet = excelWorkBook.Worksheets[sheet];
+
+            var LineChart = excelWorksheet.Drawings["GS1"] as ExcelLineChart;
+            var series = LineChart.Series[0];
+
+            series.Header = year.ToString();
+
+            //var seriesCC = LineChart.Series.Add(ExcelRange.GetAddress(7, nCol, 59, nCol), ExcelRange.GetAddress(7, 2, 59, 2));
+
         }
 
         public string getMsg(string msgView)

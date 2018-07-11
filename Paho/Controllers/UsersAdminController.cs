@@ -205,6 +205,7 @@ namespace Paho.Controllers
             //Get the list of Roles
             model.RolesList = new SelectList(await RoleManager.Roles.OrderBy(d=>d.Name).ToListAsync(), "Name", "Name");
             model.InstitutionType = "";
+            ViewBag.InstitutionType = user_id.Institution.AccessLevel.ToString().ToLower();
 
             return View(model);
         }
@@ -229,6 +230,7 @@ namespace Paho.Controllers
                 var adminresult = await UserManager.CreateAsync(user, userViewModel.Password);
 
                 var user_id = UserManager.FindById(User.Identity.GetUserId());
+                ViewBag.InstitutionType = user_id.Institution.InstType;
 
                 if (user_id.Institution.AccessLevel == AccessLevel.All)
                 {
@@ -311,6 +313,7 @@ namespace Paho.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.RoleId = new SelectList(RoleManager.Roles, "Name", "Name");
+
             return View(userViewModel);
         }
 
@@ -387,6 +390,8 @@ namespace Paho.Controllers
                                                  Selected = false
                                              };
             }
+
+            ViewBag.InstitutionType = user_id.Institution.AccessLevel.ToString().ToLower();
 
             return View(new EditUserViewModel()
             {

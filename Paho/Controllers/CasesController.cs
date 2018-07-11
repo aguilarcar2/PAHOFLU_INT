@@ -2658,41 +2658,41 @@ namespace Paho.Controllers
             return searchedMsg;
         }
 
-        public List<T> ProcedureExecute<T>(string NameProcedure, string Parameter1, int ValuePar1) where T : new()
-        {
-            List<T> res = new List<T>();
+        //public List<T> ProcedureExecute<T>(string NameProcedure, string Parameter1, int ValuePar1) where T : new()
+        //{
+        //    List<T> res = new List<T>();
 
-            var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+        //    var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
-            using (var con = new SqlConnection(consString))
-            {
-                SqlCommand command = new SqlCommand(NameProcedure, con);
-                command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.Clear();
-                command.Parameters.Add(Parameter1, SqlDbType.Int).Value = ValuePar1;
-                con.Open();
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        T t = new T();
+        //    using (var con = new SqlConnection(consString))
+        //    {
+        //        SqlCommand command = new SqlCommand(NameProcedure, con);
+        //        command.CommandType = CommandType.StoredProcedure;
+        //        command.Parameters.Clear();
+        //        command.Parameters.Add(Parameter1, SqlDbType.Int).Value = ValuePar1;
+        //        con.Open();
+        //        using (var reader = command.ExecuteReader())
+        //        {
+        //            while (reader.Read())
+        //            {
+        //                T t = new T();
 
-                        for (int inc = 0; inc < reader.FieldCount; inc++)
-                        {
-                            Type type = t.GetType();
-                            System.Reflection.PropertyInfo prop = type.GetProperty(reader.GetName(inc));
-                            prop.SetValue(t, reader.GetValue(inc) == DBNull.Value ? null : reader.GetValue(inc), null);
-                        }
+        //                for (int inc = 0; inc < reader.FieldCount; inc++)
+        //                {
+        //                    Type type = t.GetType();
+        //                    System.Reflection.PropertyInfo prop = type.GetProperty(reader.GetName(inc));
+        //                    prop.SetValue(t, reader.GetValue(inc) == DBNull.Value ? null : reader.GetValue(inc), null);
+        //                }
 
-                        res.Add(t);
-                    }
-                }
-                con.Close();
-            }
+        //                res.Add(t);
+        //            }
+        //        }
+        //        con.Close();
+        //    }
 
-            return res;
+        //    return res;
 
-        }
+        //}
 
         [Authorize]
         public JsonResult GetPatientInformation(int DTP, string DNP)
@@ -2770,29 +2770,44 @@ namespace Paho.Controllers
         }
 
         [Authorize]
-        public JsonResult GetPatientInformation_JAM(DateTime? DOB, string DNP)
+        public JsonResult GetPatientInformation_JAM(DateTime? DOB, DateTime? DateOnSetFever, DateTime? SampleDate)
         {
 
             var user = UserManager.FindById(User.Identity.GetUserId());
+            var userRegion = user.Institution.cod_region_institucional;
+            var DateToDay = DateTime.Now;
+            var Date14DaysDiff = DateToDay.AddDays(-20);
             List<Dictionary<string, string>> PatientInformation_ = new List<Dictionary<string, string>>();
 
 
             IQueryable<FluCase> flucases = null;
 
-            //flucases = flucases.Where(x=> x.DOB)
+            flucases = flucases.Where(x => x.DOB == DOB && x.FeverDate == DateOnSetFever && x.SampleDate == SampleDate && x.RegDate >= Date14DaysDiff && x.Hospital.cod_region_institucional == userRegion);
 
-            //        //x = reader.GetValue(1);
-            //        Dictionary<string, string> PatientInformation = new Dictionary<string, string>();
-            //        PatientInformation.Add("nombre1", reader["FName1"].ToString());
-            //        PatientInformation.Add("nombre2", reader["FName2"].ToString());
-            //        PatientInformation.Add("apellido1", reader["LName1"].ToString());
-            //        PatientInformation.Add("apellido2", reader["LName2"].ToString());
-            //        PatientInformation.Add("sexo", reader["Gender"].ToString() == "1" ? "Male" : reader["Gender"].ToString() == "2" ? "Female" : "Unknown");
-            //        //PatientInformation.Add("DOB", JsonConvert.SerializeObject(reader["DOB"], new JsonSerializerSettings() { DateFormatHandling = DateFormatHandling.MicrosoftDateFormat }));
-            //        PatientInformation.Add("DOB", Convert.ToDateTime(reader["DOB"]).ToString("yyyy-MM-dd"));
-            //        PatientInformation_.Add(PatientInformation);
 
-            return Json(PatientInformation_, JsonRequestBehavior.AllowGet);
+            var jsondata = new
+            {
+                rows = (
+                    from flucase in flucases
+                    select new
+                    {
+                        id = flucase.ID.ToString(),
+                        cell = new string[]
+                      { 
+                         flucase.ID.ToString(),
+                         flucase.HospitalDate.ToString((user.Institution.CountryID==17) ? "yyyy/MM/dd": "dd/MM/yyyy" ),
+                         flucase.LName1 ??  "",
+                         flucase.LName2  ?? "",
+                         flucase.FName1 ?? "",
+                         flucase.FName2 ?? "",
+                         flucase.RegDate.ToString((user.Institution.CountryID==17) ? "yyyy/MM/dd": "dd/MM/yyyy" ),
+                         //flucase.FeverDate.ToString((user.Institution.CountryID==17) ? "yyyy/MM/dd": "dd/MM/yyyy" ),
+                      }
+                    }).ToArray()
+            };
+
+
+            return Json(jsondata, JsonRequestBehavior.AllowGet);
            
         }
 

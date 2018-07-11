@@ -169,9 +169,7 @@ namespace Paho.Controllers {
         }
 
         [HttpGet]
-        public ActionResult Generate(string Report, int CountryID, int? RegionID, int? HospitalID, int? Year, int? Month, int? SE, DateTime? StartDate, DateTime? EndDate, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? Inusual)        //#### CAFQ
-                //(int CountryID, string Languaje_country, int? RegionId, int? HospitalID, int? Year, int? WeekFrom, int? WeekTo, int? surveillance) {
-
+        public ActionResult Generate(string Report, int CountryID, int? RegionID, int? HospitalID, int? Year, int? Month, int? SE, DateTime? StartDate, DateTime? EndDate, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? Inusual)       
         {
             try {
                 var ms = new MemoryStream();
@@ -221,7 +219,7 @@ namespace Paho.Controllers {
 
                         // Leyendas
                         var excelWs_Leyendas = excelWorkBook.Worksheets["Leyendas"];
-                        ConfigToExcel(CountryID, Languaje_country_.Language.ToString(), RegionID, Year, HospitalID,  excelWorkBook, "Leyendas", 1, excelWs_Leyendas.Index, false);
+                        ConfigToExcelFLUID(CountryID, Languaje_country_.Language.ToString(), RegionID, Year, HospitalID,  excelWorkBook, "Leyendas", 1, excelWs_Leyendas.Index, false);
 
                         // Manejo de graficas 
 
@@ -231,7 +229,7 @@ namespace Paho.Controllers {
                             var excelWs_Graph_IRAG = excelWorkBook.Worksheets[ (user.Institution.Country.Language == "ENG") ? "SARI Graphs" : "Gráficos IRAG"];
                             for (int i = contador; i >= 0; i--)
                             {
-                                ConfigGraph(YearEnd - contador, excelWorkBook, excelWs_Graph_IRAG.Index);
+                                ConfigGraphFLUID(YearEnd - contador, excelWorkBook, excelWs_Graph_IRAG.Index);
                             }
                             
                         }
@@ -245,7 +243,7 @@ namespace Paho.Controllers {
                 ms.Position = 0;
 
                 return new FileStreamResult(ms, "application/xlsx") {
-                    FileDownloadName = "FluID_" + DateTime.Now.ToString("yyyy_MM_dd_hh_mm") + ".xlsx"
+                    FileDownloadName = "FluID_" + user.Institution.Country.Code.ToString() + "_" + DateTime.Now.ToString("yyyy_MM_dd_hh_mm") +  ".xlsx"
                 };
 
                 //ViewBag.Message = $"Report generated successfully!";
@@ -268,14 +266,6 @@ namespace Paho.Controllers {
             {
                 using (var command = new SqlCommand(storedProcedure, con) {CommandType = CommandType.StoredProcedure})
                 {
-                    //command.Parameters.Clear();
-                    //command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
-                    //command.Parameters.Add("@Languaje", SqlDbType.NVarChar).Value = languaje_country;
-                    //command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
-                    //command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
-                    //command.Parameters.Add("@weekFrom", SqlDbType.Int).Value = weekFrom;
-                    //command.Parameters.Add("@weekTo", SqlDbType.Int).Value = weekTo;
-
                     command.Parameters.Clear();
                     command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
                     command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
@@ -290,14 +280,6 @@ namespace Paho.Controllers {
                     command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
                     command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;
                     command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;
-                    //if (storedProcedure == "FLUID_NATIONAL_VIRUSES" && sheet > 2)
-                    //{
-                    //    command.Parameters.Add("@IRAG", SqlDbType.Int).Value = 2;
-                    //}
-                    //else
-                    //{
-                    //    command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;
-                    //}
 
                     con.Open();
                     using (var reader = command.ExecuteReader())
@@ -342,7 +324,7 @@ namespace Paho.Controllers {
             // Apply only if it has a Total row at the end and hast SUM in range, i.e. SUM(A1:A4)
             //excelWorksheet.DeleteRow(row, 2);
         }
-        private void ConfigToExcel(int countryId, string languaje_country, int? regionId,  int? year, int? hospitalId, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int sheet, bool? insert_row)
+        private void ConfigToExcelFLUID(int countryId, string languaje_country, int? regionId,  int? year, int? hospitalId, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int sheet, bool? insert_row)
         {
             var excelWorksheet = excelWorkBook.Worksheets[sheet];
 
@@ -384,7 +366,7 @@ namespace Paho.Controllers {
             return searchedMsg;
         }
 
-        private void ConfigGraph(int? year, ExcelWorkbook excelWorkBook, int sheet)
+        private void ConfigGraphFLUID(int? year, ExcelWorkbook excelWorkBook, int sheet)
         {
             var excelWorksheet = excelWorkBook.Worksheets[sheet];
 
