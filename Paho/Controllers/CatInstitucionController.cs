@@ -136,7 +136,7 @@ namespace Paho.Controllers
             }
             catch (RetryLimitExceededException dex)
             {
-                ModelState.AddModelError("", "No es posible guardar los datos. Intente de nuevo, si el problema persiste contacte al administrador.");
+                ModelState.AddModelError("", "No es posible guardar los datos. Intente de nuevo, si el problema persiste contacte al administrador." + "\n" + dex.Message);
             }
             return View(catalog);
         }
