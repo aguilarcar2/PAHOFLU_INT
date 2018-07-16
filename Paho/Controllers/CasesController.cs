@@ -1881,6 +1881,10 @@ namespace Paho.Controllers
 
             var InstFlow_NPHL = false;
             var canConclude = true;
+            var canConclude_Sample_1 = false;
+            var canConclude_Sample_2 = false;
+            var canConclude_Sample_3 = false;
+
             var SaveAndAdd_1 = true;
             var SaveAndAdd_2 = true;
             var SaveAndAdd_3 = true;
@@ -1901,7 +1905,7 @@ namespace Paho.Controllers
 
             if (user.Institution is Hospital)
             {
-                var list_institution_conf = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(i => i.InstitutionParentID == flucase.HospitalID && i.Conclusion == true).Select(t => t.InstitutionToID).ToList();
+                var list_institution_conf = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(i => i.InstitutionParentID == flucase.HospitalID && i.Conclusion == true).OrderBy(x=> x.Priority).Select(t => t.InstitutionToID).ToList();
                 if (list_institution_conf.Any())
                 {
                      canConclude = flucase.CaseLabTests.Where(y => list_institution_conf.Contains(y.LabID)).Any() && flucase.statement==2;
@@ -1918,17 +1922,15 @@ namespace Paho.Controllers
                                                                                      .ThenByDescending(g => g.CatVirusSubType != null ? g.CatVirusSubType.orden : 99)
                                                                                      .ThenByDescending(h => h.CatVirusLinaje != null ? h.CatVirusLinaje.orden : 99);
 
-                    //.OrderBy(c => c.SampleNumber)
-                                                                                     //.ThenBy(i => i.inst_conf_end_flow_by_virus);
-                                                                                     //List<EndFlowByVirus> response = ProcedureExecute <EndFlowByVirus> ("EndFlowByVirus", "@RecordID", Id);
 
                     if (list_test_record.Count() > 0 )
                     {
                         var Any_Test_EndFlow = false;
-                        //foreach (EndFlowByVirus test_Record in response)
+
                         foreach (CaseLabTest test_Record in list_test_record)
                         {
                             Any_Test_EndFlow = test_Record.inst_conf_end_flow_by_virus > 0;
+                            if (Any_Test_EndFlow == true) break;  // Esta linea lo agregue para cuando hay alguna 
                         }
                         canConclude = Any_Test_EndFlow && flucase.statement == 2;
                     }
@@ -1955,6 +1957,96 @@ namespace Paho.Controllers
                 if (flucase.IsSample == false)
                     canConclude = true;
 
+                if (flucase.CaseLabTests.Count > 0)
+                {
+                    // Chequeo para activar la conclusión del caso si el flujo esta terminado o por lo menos activado
+                    var list_test_record = flucase.CaseLabTests.OfType<CaseLabTest>().OrderBy(c => c.SampleNumber);
+                    var Sample_1_test = list_test_record.Where(y => y.SampleNumber == 1).OrderBy(j => j.flow_test);
+                    var flow_complete_Sample_1 = false;
+                    var Sample_2_test = list_test_record.Where(y => y.SampleNumber == 2).OrderBy(j => j.flow_test);
+                    var flow_complete_Sample_2 = (Sample_2_test.Count() > 0 ) ? false : (flucase.SampleDate2 != null && flucase.Processed2 != null) ? false : true;
+                    var Sample_3_test = list_test_record.Where(y => y.SampleNumber == 3).OrderBy(j => j.flow_test);
+                    var flow_complete_Sample_3 = (Sample_3_test.Count() > 0) ? false : (flucase.SampleDate3 != null && flucase.Processed3 != null) ? false : true;
+                    
+                    if (Sample_1_test.Count() == 0 && flucase.SampleDate != null) flow_complete_Sample_1 = true;
+                    if (Sample_2_test.Count() == 0 && flucase.SampleDate2 != null) flow_complete_Sample_2 = true;
+                    if (Sample_3_test.Count() == 0 && flucase.SampleDate3 != null) flow_complete_Sample_3 = true;
+
+                    //foreach (EndFlowByVirus test_Record in response)
+
+                    var actual_flow = 0;
+                    var preview_flow = 0;
+                    foreach (CaseLabTest Sample_test in Sample_1_test)
+                    {
+                        //if (Count_ == 1)
+                        //{ actual_flow = preview_flow = (Int32)Sample_test.flow_test; }
+                        //else
+                        //{
+                            preview_flow = actual_flow;
+                            actual_flow = (Int32)Sample_test.flow_test;
+                        //}
+
+                        if ((actual_flow - preview_flow) == 1 || (actual_flow - preview_flow) == 0)
+                        {
+                            flow_complete_Sample_1 = true;
+                        }
+                        else
+                        {
+                            flow_complete_Sample_1 = false;
+                            break;
+                        }
+                    }
+                    canConclude_Sample_1 = flow_complete_Sample_1;
+
+                   actual_flow = 0;
+                    preview_flow = 0;
+                    foreach (CaseLabTest Sample_test in Sample_2_test)
+                    {
+                        //if (Count_ == 1)
+                        //{ actual_flow = preview_flow = (Int32)Sample_test.flow_test; }
+                        //else
+                        //{
+                        preview_flow = actual_flow;
+                        actual_flow = (Int32)Sample_test.flow_test;
+                        //}
+
+                        if ((actual_flow - preview_flow) == 1 || (actual_flow - preview_flow) == 0)
+                        {
+                            flow_complete_Sample_2 = true;
+                        }
+                        else
+                        {
+                            flow_complete_Sample_2 = false;
+                            break;
+                        }
+                    }
+                    canConclude_Sample_2 = flow_complete_Sample_2;
+
+                    actual_flow = 0;
+                    preview_flow = 0;
+                    foreach (CaseLabTest Sample_test in Sample_3_test)
+                    {
+                        //if (Count_ == 1)
+                        //{ actual_flow = preview_flow = (Int32)Sample_test.flow_test; }
+                        //else
+                        //{
+                        preview_flow = actual_flow;
+                        actual_flow = (Int32)Sample_test.flow_test;
+                        //}
+
+                        if ((actual_flow - preview_flow) == 1 || (actual_flow - preview_flow) == 0)
+                        {
+                            flow_complete_Sample_3 = true;
+                        }
+                        else
+                        {
+                            flow_complete_Sample_3 = false;
+                            break;
+                        }
+                    }
+                    canConclude_Sample_3 = flow_complete_Sample_3;
+                }
+
             }
 
             if (institutionsConfiguration.Any()) {
@@ -1977,17 +2069,15 @@ namespace Paho.Controllers
                         Any_Test_EndFlow_3 = test_Record.inst_conf_end_flow_by_virus > 0 && test_Record.SampleNumber == 3;
                     }
 
-
                     //SaveAndAdd_1 = !Any_Test_EndFlow_1 && flucase.statement == 2;
                     SaveAndAdd_1 = !Any_Test_EndFlow_1 && flucase.statement == 2;
                     SaveAndAdd_2 = !Any_Test_EndFlow_2 && flucase.statement == 2;
                     SaveAndAdd_3 = !Any_Test_EndFlow_3 && flucase.statement == 2;
                 }
-                //else
-                //{
-                //    SaveAndAdd = 
-                //}
+
+
                 canConclude = institutionsConfiguration.Count(x => x.Conclusion == true) > 0 && flucase.statement == 2;
+                canConclude = canConclude && canConclude_Sample_1 && canConclude_Sample_2 && canConclude_Sample_3;  // Agregar 
                 CanPCRLab = db.Institutions.OfType<Lab>().Where(i => i.ID == user.Institution.ID).First()?.PCR;
                 CanIFILab = db.Institutions.OfType<Lab>().Where(i => i.ID == user.Institution.ID).First()?.IFI;
                 flow_local_lab = institutionsConfiguration.First().Priority;
@@ -2459,6 +2549,7 @@ namespace Paho.Controllers
                       .ThenBy(z => z.TestDate)
                       //.ThenBy(d => d.CatTestType != null ? d.CatTestType.orden : null)
                       .ThenBy(y=>y.LabID)) {
+
                     if (labTestViewModel.LabID == user.InstitutionID)
                         existrecordlabtest = true;
                     if (labTestViewModel.TestType == 1) IFI_RecordHistory = true;
@@ -2525,6 +2616,75 @@ namespace Paho.Controllers
                 }
             }
 
+            //var Sample_1_process = LabTests.OrderBy(z => z.TestDate).ThenBy(y => y.LabID).Where(x => x.SampleNumber == 1);
+            var flow_max_record = db.InstitutionsConfiguration.Where(z => z.InstitutionParentID == flucase.HospitalID).OrderByDescending(x => x.Priority).FirstOrDefault().Priority;
+            var flow_min_record = db.InstitutionsConfiguration.Where(z => z.InstitutionParentID == flucase.HospitalID).OrderBy(x => x.Priority).FirstOrDefault().Priority;
+
+            var Sample_1_process = flucase.CaseLabTests.Where(x => x.SampleNumber == 1).OrderBy(y => y.flow_test).ThenBy(z => z.TestDate);
+            var flow_complete_Sample_1 = (Sample_1_process.Count() > 0) ? false : (flucase.SampleDate != null && flucase.Processed != null) ? false : true;
+
+            var Sample_2_process = flucase.CaseLabTests.Where(x => x.SampleNumber == 2).OrderBy(y => y.flow_test);
+            var flow_complete_Sample_2 = (Sample_2_process.Count() > 0) ? false : (flucase.SampleDate2 != null && flucase.Processed2 != null) ? false  : true;
+
+            var Sample_3_process = flucase.CaseLabTests.Where(x => x.SampleNumber == 3).OrderBy(y => y.flow_test);
+            var flow_complete_Sample_3 = (Sample_3_process.Count() > 0) ? false : (flucase.SampleDate3 != null && flucase.Processed3 != null) ? false : true;
+
+            var actual_flow_Sample_1 = 0;
+            var preview_flow_sample_1 = 0;
+            foreach (CaseLabTest Sample_test in Sample_1_process)
+            {
+                preview_flow_sample_1 = actual_flow_Sample_1;
+                actual_flow_Sample_1 = (Int32)Sample_test.flow_test;
+
+                if ((actual_flow_Sample_1 - preview_flow_sample_1) == 1 || (actual_flow_Sample_1 - preview_flow_sample_1) == 0)
+                {
+                    flow_complete_Sample_1 = true;
+                }
+                else
+                {
+                    flow_complete_Sample_1 = false;
+                    break;
+                }
+
+            }
+
+            var actual_flow_Sample_2 = 0;
+            var preview_flow_sample_2 = 0;
+            foreach (CaseLabTest Sample_test in Sample_2_process)
+            {
+                preview_flow_sample_2 = actual_flow_Sample_2;
+                actual_flow_Sample_2 = (Int32)Sample_test.flow_test;
+
+                if ((actual_flow_Sample_2 - preview_flow_sample_2) == 1 || (actual_flow_Sample_2 - preview_flow_sample_2) == 0)
+                {
+                    flow_complete_Sample_2 = true;
+                }
+                else
+                {
+                    flow_complete_Sample_2 = false;
+                    break;
+                }
+            }
+
+            var actual_flow_Sample_3 = 0;
+            var preview_flow_sample_3 = 0;
+            foreach (CaseLabTest Sample_test in Sample_3_process)
+            {
+                preview_flow_sample_3 = actual_flow_Sample_3;
+                actual_flow_Sample_3 = (Int32)Sample_test.flow_test;
+
+                if ((actual_flow_Sample_3 - preview_flow_sample_3) == 1 || (actual_flow_Sample_3 - preview_flow_sample_3) == 0)
+                {
+                    flow_complete_Sample_3 = true;
+                }
+                else
+                {
+                    flow_complete_Sample_3 = false;
+                    break;
+                }
+            }
+
+
             if ((user.Institution is Lab && existrecordlabtest == true) || user.Institution.NPHL == true)
             {
                 var institutionsConfiguration = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(i => i.InstitutionToID == user.Institution.ID && i.InstitutionParentID == flucase.HospitalID);
@@ -2533,26 +2693,66 @@ namespace Paho.Controllers
 
                 if (institutionsConfiguration.Any())
                 {
-                    
-                    if ((flow_temp > flucase.flow) || flucase.flow == null)
+
+                    //if ((flow_temp > flucase.flow) || flucase.flow == null)
+                    //{
+                    //    if (institutionsConfiguration.First().OpenAlways == true && (flow_temp - 1) > flucase.flow)
+                    //    {
+                    //        flucase.flow = flow_original_flucase;
+                    //    }
+                    //    else
+                    //    {
+                    //        flucase.flow = flow_temp;
+                    //    }
+                    //}  
+
+                    if (flow_complete_Sample_1 == true && flow_complete_Sample_2 == true && flow_complete_Sample_3 == true)
                     {
-                        if (institutionsConfiguration.First().OpenAlways == true && (flow_temp - 1) > flucase.flow)
-                        {
-                            flucase.flow = flow_original_flucase;
-                        }
-                        else
-                        {
-                            flucase.flow = flow_temp;
-                        }
-                    }   
+                        flucase.flow = flow_temp;
+                    }
+                    else if (flow_complete_Sample_1 == true && flow_complete_Sample_2 == false && flow_complete_Sample_3 == true)
+                    {
+                        flucase.flow = actual_flow_Sample_2;
+                    }
+                    else if (flow_complete_Sample_1 == false && flow_complete_Sample_2 == false && flow_complete_Sample_3 == true)
+                    {
+                        if (preview_flow_sample_1 > preview_flow_sample_2)
+                        { flucase.flow = preview_flow_sample_2; }
+                        else { flucase.flow = preview_flow_sample_1; }
+                    }
+                    else if (flow_complete_Sample_1 == false && flow_complete_Sample_2 == true && flow_complete_Sample_3 == true)
+                    {
+                        flucase.flow = preview_flow_sample_1;
+                    }
+                    else
+                    {
+                        flucase.flow = flow_original_flucase;
+                    }
+
+                 
                 }
                 else
                 {
                     flucase.flow = 1;
                 }
                 if (flucase.flow != 99)
-                    if (institutionsConfiguration.First().OpenAlways == true && (flow_temp - 1) == flow_original_flucase)
-                    flucase.statement = DataStatement;
+                    if (flucase.flow == 0)
+                    {
+                        flucase.statement = 2;
+                    }
+                    else if (flow_complete_Sample_1 == true && flow_complete_Sample_2 == true && flow_complete_Sample_3 == true)
+                    {
+                        flucase.statement = DataStatement;
+                    }
+                    else if ( flow_complete_Sample_1 == true || flow_complete_Sample_2 == true || flow_complete_Sample_3 == true)
+                    {
+                        flucase.statement = flucase.statement;
+                    }
+                    else if (institutionsConfiguration.First().OpenAlways == true && (flow_temp - 1) == flow_original_flucase)
+                    {
+                        flucase.statement = DataStatement;
+                    }
+                    
             }
 
             flucase.InsertDate = DateTime.Now;

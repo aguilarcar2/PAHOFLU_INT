@@ -2115,6 +2115,7 @@
     <None Include="Properties\PublishProfiles\PAHO.pubxml" />
     <None Include="Properties\PublishProfiles\PAHO2.pubxml" />
     <None Include="Properties\PublishProfiles\PahoEN.pubxml" />
+    <None Include="Properties\PublishProfiles\PAHOFLU_INT.pubxml" />
     <None Include="Properties\PublishProfiles\PahoSPA %282%29.pubxml">
       <SubType>Designer</SubType>
     </None>
