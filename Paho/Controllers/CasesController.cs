@@ -482,8 +482,11 @@ namespace Paho.Controllers
 
                         flucases = flucases.Where(h => (h.IsSample == true && h.Processed != false) && (((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault() - 1)) && (h.statement == 2 || h.statement == null)) || ((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault())) && (h.statement == 1 || h.statement == null))));
 
+                        //flucases = flucases.Where(i => i.CaseLabTests.Where(x => ((x.inst_conf_end_flow_by_virus == 0 || x.inst_conf_end_flow_by_virus == null) && x.flow_test <= institutionsConfiguration.Where(v => v.InstitutionParentID == db.FluCases.Where( d=> d.ID == x.FluCaseID).FirstOrDefault().HospitalID && i.InstitutionToID == user.Institution.ID).FirstOrDefault().Priority) || x.statement_test == 1).Any() || i.CaseLabTests.Count == 0);
+                        //Es la escepción únicamente para AZP  -- tengo que mejorar el query para hacerlo automatico
+                        if (user.Institution.CountryID != 25)
+                            flucases = flucases.Where(i => i.CaseLabTests.Where(x => (x.inst_conf_end_flow_by_virus == 0 || x.inst_conf_end_flow_by_virus == null)  || x.statement_test == 1).Any() || i.CaseLabTests.Count == 0);
 
-                        flucases = flucases.Where(i => i.CaseLabTests.Where(x => (x.inst_conf_end_flow_by_virus == 0 || x.inst_conf_end_flow_by_virus == null) || x.statement_test == 1).Any() || i.CaseLabTests.Count == 0);
                         //var ListCloseCase = db.InstitutionConfEndFlowByVirus.OfType<InstitutionConfEndFlowByVirus>()
                         //                .Where(i => institutionsConfiguration.Select(j => j.ID).ToList().Contains(i.id_InstCnf));
 
@@ -2329,7 +2332,7 @@ namespace Paho.Controllers
                       .ToArray(),
                     LabsResult = institutions.Select(x => new { Id = x.ID.ToString(), x.Name }).ToList(),
                     SubTypeByLabRes = GetSubTypebyLab(user.InstitutionID),
-                    CanConclude = canConclude,
+                    CanConclude = canConclude & canConclude_Sample_1 & canConclude_Sample_2 & canConclude_Sample_3,
                     SaveAndAdd_1 = SaveAndAdd_1,
                     SaveAndAdd_2 = SaveAndAdd_2,
                     SaveAndAdd_3 = SaveAndAdd_3
