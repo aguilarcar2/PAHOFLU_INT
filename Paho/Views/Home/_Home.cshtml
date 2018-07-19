@@ -265,7 +265,7 @@
                     </label>
                 }
             </div>
-			@if (ViewBag.UsrCtry != 7 && ViewBag.UsrCtry != 9 && ViewBag.UsrCtry != 3 && ViewBag.UsrCtry != 17)
+			@if (ViewBag.UsrCtry == 25 && ViewBag.UsrCtry == 11)
             {
 			<div class="col-md-6">
                 <div id="ServicesGroup" class='input-group' data-bind="visible: displayService">
@@ -282,7 +282,7 @@
             </div>
             }
             @*Agregar aqui a todos los paises que deben mostrar la institución*@
-			@if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 17)
+			@if (ViewBag.UsrCtry != 25 || ViewBag.UsrCtry != 11 )
             {
                 <div class="col-md-5" data-bind="visible:VisHopName">
                     <div class='input-group'>
