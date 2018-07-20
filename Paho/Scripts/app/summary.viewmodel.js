@@ -268,15 +268,13 @@ function SummaryViewModel(app, dataModel) {
 
     self.CalculateEW = function (FieldDate, FieldAct, FieldActYear) {
         if ($("#" + FieldDate).val() != "") {
-            var date_ew = new Date($("#" + FieldDate).datepicker('getDate', {
-                dateFormat: date_format_DatePicker
-            }));
+            ////////var date_ew = new Date($("#" + FieldDate).datepicker('getDate', { dateFormat: date_format_DatePicker }));
+            var date_ew = new Date($("#" + FieldDate).val());
             var fwky_date = new Date(moment(date_ew).year(), 0, 1).getDay();
             var weekno = moment(date_ew).week();
             var weeknoISO = moment(date_ew).isoWeek();
 
             if (date_ew == null) {
-
                 FieldAct(null);
                 FieldActYear(null);
 

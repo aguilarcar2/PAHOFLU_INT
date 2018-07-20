@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using Paho.Utility;
 
 namespace Paho.Controllers
 {
@@ -227,10 +228,14 @@ namespace Paho.Controllers
             var epiYear = DateTime.Now.Year.ToString();
             int intEpiYear = Int32.Parse(epiYear);
             List<Dictionary<string, int>> summaryPerYear = new List<Dictionary<string, int>>();
-            DateTime dFech = fechaInicioPrimeraSemanaEpidemiologica(DateTime.UtcNow.Year);
+            //DateTime dFech = fechaInicioPrimeraSemanaEpidemiologica(DateTime.UtcNow.Year);
+            DateTime dFech = PAHOClassUtilities.fechaInicioPrimeraSemanaEpidemiologica(DateTime.Today.Year);
+            int nSemaActual = PAHOClassUtilities.NumeroActualSE();
+            DateTime dSEHoy;
+            dSEHoy = dFech.AddDays((nSemaActual - 1) * 7).AddDays(6);
 
             //#### Fecha fin de SE del dia de hoy
-            DateTime dSEHoy;
+            /*DateTime dSEHoy;
             DateTime dHoy = DateTime.Now.Date;
             dSEHoy = dHoy;
 
@@ -243,11 +248,12 @@ namespace Paho.Controllers
                     dSEHoy = vSeFi;
                     break;
                 }
-            }
+            }*/
             //#### 
 
             //for (int i = 1; i <= 52; i++)
-            for (int i = 52; i >= 1; i--)
+            //for (int i = 52; i >= 1; i--)
+            for (int i = nSemaActual; i >= 1; i--)
             {
                 Dictionary<string, int> dictionary = new Dictionary<string, int>();
                 var ColHospTST = 0;
@@ -308,6 +314,7 @@ namespace Paho.Controllers
                 dictionary.Add("EpiYear", intEpiYear);
                 summaryPerYear.Add(dictionary);
             }
+
             return Json(summaryPerYear, JsonRequestBehavior.AllowGet);
         }
 
@@ -408,7 +415,8 @@ namespace Paho.Controllers
             return Json(summaryPerYear, JsonRequestBehavior.AllowGet);
         }
         */
-        private DateTime fechaInicioPrimeraSemanaEpidemiologica(int nYear)
+
+        /*private DateTime fechaInicioPrimeraSemanaEpidemiologica(int nYear)
         {
             DateTime vFeIn, vTemp, vSaba;
             //****
@@ -424,7 +432,7 @@ namespace Paho.Controllers
                 vFeIn = vSaba.AddDays(1);
             //****
             return vFeIn;
-        }
+        }*/
         
         public string getMsg(string msgView)
         {

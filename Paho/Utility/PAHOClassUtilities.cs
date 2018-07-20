@@ -61,6 +61,23 @@ namespace Paho.Utility
             //****
             return numSema;
         }
-        
+
+        public static int NumeroActualSE()
+        {
+            int nSema = 1;
+            DateTime dtHoy = DateTime.Today;
+            DateTime dtInicio = fechaInicioPrimeraSemanaEpidemiologica(dtHoy.Year);
+            DateTime dtFinal = dtInicio.AddDays(6);
+
+            while (!(dtHoy >= dtInicio && dtHoy <= dtFinal))
+            {
+                ++nSema;
+                dtInicio = dtInicio.AddDays(7);
+                dtFinal = dtInicio.AddDays(6);
+            }
+
+            return nSema;
+        }
+
     }
 }
