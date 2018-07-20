@@ -112,6 +112,28 @@
         self.Latitude("");
         self.Longitude("");*/
         //self.hasReset(false);
+
+        self.selectedCountryId("");
+        self.selectedCountryId(app.Views.Home.UsrCountry());
+        self.selectedCountryOrigin("");
+        self.selectedAreaId("");
+        self.selectedParishPostOfficeJMId("");
+        self.StreetNo("");
+        self.StreetName("");
+        self.ApartmentSuiteLot("");
+        self.Address2("");
+        self.selectedStateId("");
+        self.selectedLocalId("");
+        self.selectedNeighborhoodId("");
+        self.UrbanRural(0);
+        self.selectedCountryId2weeks("");
+        self.selectedAreaId2weeks("");
+        self.selectedStateId2weeks("");
+        self.selectedNeighborhoodId2weeks("");
+        self.Address("");
+        self.PhoneNumber("");
+        self.Latitude("");
+        self.Longitude("");
     };
 
     self.GetGEO = function (id) {
