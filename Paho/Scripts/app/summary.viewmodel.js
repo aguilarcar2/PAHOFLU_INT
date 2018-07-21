@@ -480,7 +480,8 @@ function SummaryViewModel(app, dataModel) {
     self.ColILICasesST = ko.computed(function () {                  // //#### CAFQ: ILI Jamaica
         var numberofitems = 0;
         ko.utils.arrayForEach(self.SummayItems(), function (r) {
-            numberofitems += parseInt(r.ILICases());
+            if (r['ILICases'] != undefined)
+               numberofitems += parseInt(r.ILICases());            
         });
         return parseInt(numberofitems);
     }, self);
@@ -512,7 +513,8 @@ function SummaryViewModel(app, dataModel) {
     self.ColILISamplesTakenST = ko.computed(function () {               //#### CAFQ: ILI Jamaica
         var numberofitems = 0;
         ko.utils.arrayForEach(self.SummayItems(), function (r) {
-            numberofitems += parseInt(r.ILISamplesTaken());
+            if (r['ILISamplesTaken'] != undefined) 
+                numberofitems += parseInt(r.ILISamplesTaken());
         });
         return parseInt(numberofitems);
     }, self);
@@ -544,7 +546,8 @@ function SummaryViewModel(app, dataModel) {
     self.ColTotalVisitsST = ko.computed(function () {                   //#### CAFQ: ILI Jamaica
         var numberofitems = 0;
         ko.utils.arrayForEach(self.SummayItems(), function (r) {
-            numberofitems += parseInt(r.TotalVisits());
+            if (r['TotalVisits'] != undefined)
+                numberofitems += parseInt(r.TotalVisits());
         });
         return parseInt(numberofitems);
     }, self);
@@ -740,8 +743,10 @@ function SummaryViewModel(app, dataModel) {
 
     self.GetSummayItems = function () {
         if ((typeof self.selectedHospitalId() != "undefined") && self.selectedHospitalId() != "" && (typeof self.HospitalDate() != "undefined") && self.HospitalDate() != "") {
+            console.log("aquí1");
             $.postJSON(app.dataModel.getSummayDetailsUrl, { hospitalId: self.selectedHospitalId(), hospitalDate: moment(self.HospitalDate()).format(date_format_ISO), EpiWeek: self.HospitalEW(), EpiYear: self.HospitalYE() })
             .success(function (data, textStatus, jqXHR) {
+                console.log("dentrodeJSON");
                 self.SummayItems([]);
                 data.forEach(self.AddSummayItem);
                 $("#LabelSummary").show();
@@ -752,6 +757,7 @@ function SummaryViewModel(app, dataModel) {
                 alert(errorThrown);
             })
         } else {
+            console.log("aquí2");
             if ((typeof self.selectedHospitalId() == "undefined") || self.selectedHospitalId() == "") {
                 if (self.UsrCountry() == 25 || (self.UsrCountry() == 17) || (self.UsrCountry() == 119))
                     alert("Hospital is required");
@@ -770,6 +776,7 @@ function SummaryViewModel(app, dataModel) {
 
     self.GetSummayItemsJM = function () {
         if ((typeof self.selectedHospitalId() != "undefined") && self.selectedHospitalId() != "" && (typeof self.HospitalDate() != "undefined") && self.HospitalDate() != "") {
+            console.log("aquí1JM");
             $.postJSON(app.dataModel.getSummayDetailsUrlJM, { hospitalId: self.selectedHospitalId(), hospitalDate: moment(self.HospitalDate()).format(date_format_ISO), EpiWeek: self.HospitalEW(), EpiYear: self.HospitalYE() })
             .success(function (data, textStatus, jqXHR) {
                 self.SummayItems([]);
