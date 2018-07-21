@@ -3366,7 +3366,6 @@ namespace Paho.Controllers
             }
         }
 
-
         /*
         private static void recuperarDatosExcel(int CountryID, ArrayList aCEP1, ArrayList aCEP2, ArrayList aUA1, ArrayList aUA2, ArrayList aUE1, ArrayList aUE2, string sheet, ArrayList aParaLiBa)
         {
@@ -3418,7 +3417,6 @@ namespace Paho.Controllers
             }
         }
         */
-
 
         public static string graficoETINumeroCasos(int countryId, string Languaje, string[] years, int? hospitalId)
         {
@@ -3681,19 +3679,23 @@ namespace Paho.Controllers
             }
         }//END recuperarDatosETIPositivos
 
-        public static string graficoIRAGFallecidosxGE(int countryId, string Languaje, string[] years, int? hospitalId)
+        public string graficoIRAGFallecidosxGE(int countryId, string Languaje, string[] years, int? HospitalID_)
         {
             //System.Diagnostics.Debug.WriteLine("graficoIRAGFallecidosxGE->START");
             ArrayList aData = new ArrayList();
             string jsonTextLB = "";
             string storedProcedure = "FLUID_DEATHS_IRAG";
             var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+            /*var user = UserManager.FindById(User.Identity.GetUserId());
+            if (user.Institution.AccessLevel == AccessLevel.SelfOnly && HospitalID_ == 0) { HospitalID_ = Convert.ToInt32(user.Institution.ID); }*/
+            //if (user.Institution.AccessLevel == AccessLevel.Area && Area == 0) { AreaID_ = Convert.ToInt32(user.Institution.AreaID); }
             //****
             try
             {
                 for (int nI = 0; nI < years.Length; ++nI)
                 {
-                    recuperarDatosIRAGFallecidosxGE(consString, storedProcedure, countryId, hospitalId, Int32.Parse(years[nI]), aData);
+                    recuperarDatosIRAGFallecidosxGE(consString, storedProcedure, countryId, HospitalID_, Int32.Parse(years[nI]), aData);
                 }
                 //**** Crear el JSON  
                 string cTitu, cSeEp, cNuCa, cJS = "", cTemp = "";
@@ -3934,19 +3936,23 @@ namespace Paho.Controllers
             }
         }//END-recuperarDatosIRAGFallecidosxGE
 
-        public static string graficoIRAGxGrupoEdad(int countryId, string Languaje, string[] years, int? hospitalId)
+        public string graficoIRAGxGrupoEdad(int countryId, string Languaje, string[] years, int? HospitalID_)
         {
             //System.Diagnostics.Debug.WriteLine("graficoIRAGxGrupoEdad->START");
             ArrayList aData = new ArrayList();
             string jsonTextLB = "";
             string storedProcedure = "FLUID_IRAG";
             var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+            /*var user = UserManager.FindById(User.Identity.GetUserId());
+            if (user.Institution.AccessLevel == AccessLevel.SelfOnly && HospitalID_ == 0) { HospitalID_ = Convert.ToInt32(user.Institution.ID); }*/
+            //if (user.Institution.AccessLevel == AccessLevel.Area && Area == 0) { AreaID_ = Convert.ToInt32(user.Institution.AreaID); }
             //****
             try
             {
                 for (int nI = 0; nI < years.Length; ++nI)
                 {
-                    recuperarDatosIRAGxGrupoEdad(consString, storedProcedure, countryId, hospitalId, Int32.Parse(years[nI]), aData);
+                    recuperarDatosIRAGxGrupoEdad(consString, storedProcedure, countryId, HospitalID_, Int32.Parse(years[nI]), aData);
                 }
                 //**** Crear el JSON
                 string cTitu, cSeEp, cNuCa, cJS = "", cTemp = "";
@@ -4087,36 +4093,29 @@ namespace Paho.Controllers
                             {
                                 cAnio = reader.GetValue(1).ToString();
                                 cSema = reader.GetValue(2).ToString();
-                                //var vTemp = reader.GetValue(11);
-                                /*cGE1 = ((int)reader.GetValue(11)).ToString();
-                                cGE2 = ((int)reader.GetValue(12)).ToString();
-                                cGE3 = ((int)reader.GetValue(13)).ToString();
-                                cGE4 = ((int)reader.GetValue(14)).ToString();
-                                cGE5 = ((int)reader.GetValue(15)).ToString();
-                                cGE6 = ((int)reader.GetValue(16)).ToString();*/
 
-                                if (reader.GetValue(11) != System.DBNull.Value)
-                                    cGE1 = ((int)reader.GetValue(11)).ToString();
+                                if (reader.GetValue(19) != System.DBNull.Value)
+                                    cGE1 = ((int)reader.GetValue(19)).ToString();
                                 else
                                     cGE1 = "0";
-                                if (reader.GetValue(12) != System.DBNull.Value)
-                                    cGE2 = ((int)reader.GetValue(12)).ToString();
+                                if (reader.GetValue(20) != System.DBNull.Value)
+                                    cGE2 = ((int)reader.GetValue(20)).ToString();
                                 else
                                     cGE2 = "0";
-                                if (reader.GetValue(13) != System.DBNull.Value)
-                                    cGE3 = ((int)reader.GetValue(13)).ToString();
+                                if (reader.GetValue(21) != System.DBNull.Value)
+                                    cGE3 = ((int)reader.GetValue(21)).ToString();
                                 else
                                     cGE3 = "0";
-                                if (reader.GetValue(14) != System.DBNull.Value)
-                                    cGE4 = ((int)reader.GetValue(14)).ToString();
+                                if (reader.GetValue(22) != System.DBNull.Value)
+                                    cGE4 = ((int)reader.GetValue(22)).ToString();
                                 else
                                     cGE4 = "0";
-                                if (reader.GetValue(15) != System.DBNull.Value)
-                                    cGE5 = ((int)reader.GetValue(15)).ToString();
+                                if (reader.GetValue(23) != System.DBNull.Value)
+                                    cGE5 = ((int)reader.GetValue(23)).ToString();
                                 else
                                     cGE5 = "0";
-                                if (reader.GetValue(16) != System.DBNull.Value)
-                                    cGE6 = ((int)reader.GetValue(16)).ToString();
+                                if (reader.GetValue(24) != System.DBNull.Value)
+                                    cGE6 = ((int)reader.GetValue(24)).ToString();
                                 else
                                     cGE6 = "0";
 
@@ -4124,12 +4123,12 @@ namespace Paho.Controllers
                                 {
                                     /*cGE7 = ((int)reader.GetValue(17)).ToString();
                                     cGE8 = ((int)reader.GetValue(18)).ToString();*/
-                                    if (reader.GetValue(17) != System.DBNull.Value)
-                                        cGE7 = ((int)reader.GetValue(17)).ToString();
+                                    if (reader.GetValue(25) != System.DBNull.Value)
+                                        cGE7 = ((int)reader.GetValue(25)).ToString();
                                     else
                                         cGE7 = "0";
-                                    if (reader.GetValue(18) != System.DBNull.Value)
-                                        cGE8 = ((int)reader.GetValue(18)).ToString();
+                                    if (reader.GetValue(26) != System.DBNull.Value)
+                                        cGE8 = ((int)reader.GetValue(26)).ToString();
                                     else
                                         cGE8 = "0";
 
@@ -4139,19 +4138,16 @@ namespace Paho.Controllers
                                 {
                                     if (countryId == 17 || countryId == 119)
                                     {
-                                        /*cGE7 = ((int)reader.GetValue(17)).ToString();
-                                        cGE8 = ((int)reader.GetValue(18)).ToString();
-                                        cGE9 = ((int)reader.GetValue(19)).ToString();*/
-                                        if (reader.GetValue(17) != System.DBNull.Value)
-                                            cGE7 = ((int)reader.GetValue(17)).ToString();
+                                        if (reader.GetValue(25) != System.DBNull.Value)
+                                            cGE7 = ((int)reader.GetValue(25)).ToString();
                                         else
                                             cGE7 = "0";
-                                        if (reader.GetValue(18) != System.DBNull.Value)
-                                            cGE8 = ((int)reader.GetValue(18)).ToString();
+                                        if (reader.GetValue(26) != System.DBNull.Value)
+                                            cGE8 = ((int)reader.GetValue(26)).ToString();
                                         else
                                             cGE8 = "0";
-                                        if (reader.GetValue(19) != System.DBNull.Value)
-                                            cGE9 = ((int)reader.GetValue(19)).ToString();
+                                        if (reader.GetValue(27) != System.DBNull.Value)
+                                            cGE9 = ((int)reader.GetValue(27)).ToString();
                                         else
                                             cGE9 = "0";
 
