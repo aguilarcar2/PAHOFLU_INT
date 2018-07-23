@@ -1331,6 +1331,8 @@ namespace Paho.Models
         public int ETINumFem { get; set; }
         public int ETINumMaso { get; set; }
         public int ETINumST { get; set; }
+        public int ETINumEmerFem { get; set; }
+        public int ETINumEmerMaso { get; set; }
         public int ETINumEmerST { get; set; }
         public int HospFem { get; set; }
         public int HospMaso { get; set; }

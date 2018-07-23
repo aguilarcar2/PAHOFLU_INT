@@ -14,6 +14,8 @@ function SummaryYearItem(data) {
     self.ColEpiYearWeek = data.EpiYear + "-" + data.EpiWeek;
     self.ColETINumST = data.ColETINumST;
     self.ColETIDenoST = data.ColETIDenoST;
+    self.ColETINumEmerFST = data.ColETINumEmerFST;
+    self.ColETINumEmerMST = data.ColETINumEmerMST;
     self.ColETINumEmerST = data.ColETINumEmerST;
     self.ColNeuTST = data.ColNeuTST;
     self.ColVentTST = data.ColVentTST;
@@ -141,12 +143,45 @@ function SummayItem(data) {
 
     self.ETINumFem = ko.observable(data.ETINumFem);
     self.ETINumMaso = ko.observable(data.ETINumMaso);
-    self.ETINumST = ko.observable(data.ETINumST);
-    self.ETINumEmerST = ko.observable(data.ETINumEmerST);
-    self.ETIDenoST = ko.observable(data.ETIDenoST);
+    if (self.DisableCHI() || self.ActiveBOL()) {
+        self.ETINumST = ko.computed(function () {
+            return parseInt(self.ETINumFem()) + parseInt(self.ETINumMaso());
+        }, self);
+
+    } else {
+        self.ETINumST = ko.observable(data.ETINumST);
+    }
+    
+
+    self.ETINumEmerFem = ko.observable(data.ETINumEmerFem);
+    self.ETINumEmerMaso = ko.observable(data.ETINumEmerMaso);
+
+    if (self.DisableCHI() || self.ActiveBOL()) {
+        self.ETINumEmerST = ko.computed(function () {
+            console.log(parseInt(self.ETINumEmerFem()));
+            return parseInt(self.ETINumEmerFem()) + parseInt(self.ETINumEmerMaso());
+        }, self);
+
+    } else {
+        self.ETINumEmerST = ko.observable(data.ETINumEmerST);
+    }
+
+    self.ETIDenoFem = ko.observable(data.ETIDenoFem);
+    self.ETIDenoMaso = ko.observable(data.ETIDenoMaso);
+
+    if (self.DisableCHI() || self.ActiveBOL()) {
+        self.ETIDenoST = ko.computed(function () {
+            return parseInt(self.ETIDenoFem()) + parseInt(self.ETIDenoMaso());
+        }, self);
+
+    } else {
+            self.ETIDenoST = ko.observable(data.ETIDenoST);
+    }
+
 
     self.HospFem = ko.observable(data.HospFem);
     self.HospMaso = ko.observable(data.HospMaso);
+    self.ILICases = ko.observable(data.ILICases);
     if (self.DisableCHI() || self.ActiveBOL()) {
         self.HospST = ko.computed(function () {
             return parseInt(self.HospFem()) + parseInt(self.HospMaso());
@@ -154,29 +189,31 @@ function SummayItem(data) {
 
     } else {
         self.HospST = ko.observable(data.HospST);
-        self.ILICases = ko.observable(data.ILICases);
+
     }
 
     self.UCIFem = ko.observable(data.UCIFem);
     self.UCIMaso = ko.observable(data.UCIMaso);
+    self.ILISamplesTaken = ko.observable(data.ILISamplesTaken);
     if (self.DisableCHI() || self.ActiveBOL()) {
         self.UCIST = ko.computed(function () {
             return parseInt(self.UCIFem()) + parseInt(self.UCIMaso());
         }, self);
     } else {
         self.UCIST = ko.observable(data.UCIST);
-        self.ILISamplesTaken = ko.observable(data.ILISamplesTaken);
+
     }
 
     self.DefFem = ko.observable(data.DefFem);
     self.DefMaso = ko.observable(data.DefMaso);
+    self.TotalVisits = ko.observable(data.TotalVisits);
     if (self.DisableCHI() || self.ActiveBOL()) {
         self.DefST = ko.computed(function () {
             return parseInt(self.DefFem()) + parseInt(self.DefMaso());
         }, self);
     } else {
         self.DefST = ko.observable(data.DefST);
-        self.TotalVisits = ko.observable(data.TotalVisits);
+
     }
 
     self.NeuFem = ko.observable(data.NeuFem);
@@ -199,7 +236,11 @@ function SummayItem(data) {
             ETINumFem: typeof (self.ETINumFem()) !== "number" ? parseInt(self.ETINumFem()) : self.ETINumFem(),
             ETINumMaso: typeof (self.ETINumMaso()) !== "number" ? parseInt(self.ETINumMaso()) : self.ETINumMaso(),
             ETINumST: typeof (self.ETINumST()) !== "number" ? parseInt(self.ETINumST()) : self.ETINumST(),
+            ETINumEmerFem: typeof (self.ETINumEmerFem()) !== "number" ? parseInt(self.ETINumEmerFem()) : self.ETINumEmerFem(),
+            ETINumEmerMaso: typeof (self.ETINumEmerMaso()) !== "number" ? parseInt(self.ETINumEmerMaso()) : self.ETINumEmerMaso(),
             ETINumEmerST: typeof (self.ETINumEmerST()) !== "number" ? parseInt(self.ETINumEmerST()) : self.ETINumEmerST(),
+            ETIDenoFem: typeof (self.ETIDenoFem()) !== "number" ? parseInt(self.ETIDenoFem()) : self.ETIDenoFem(),
+            ETIDenoMaso: typeof (self.ETIDenoMaso()) !== "number" ? parseInt(self.ETIDenoMaso()) : self.ETIDenoMaso(),
             ETIDenoST: typeof (self.ETIDenoST()) !== "number" ? parseInt(self.ETIDenoST()) : self.ETIDenoST(),
             HospFem: typeof (self.HospFem()) !== "number" ? parseInt(self.HospFem()) : self.HospFem(),
             HospMaso: typeof (self.HospMaso()) !== "number" ? parseInt(self.HospMaso()) : self.HospMaso(),
@@ -236,6 +277,13 @@ function SummaryViewModel(app, dataModel) {
     var date_format_ = app.dataModel.date_format_;
     var date_format_DatePicker = app.dataModel.date_format_DatePicker;
 
+    console.log(date_format_moment);
+    console.log(date_format_ISO);
+    console.log(date_format_);
+    console.log(date_format_DatePicker);
+
+
+
     self.Id = "";
     self.UsrCountry = ko.observable(selcty); // Pais del usuario logueado
     self.selectedCountryId = ko.observable("");
@@ -266,15 +314,88 @@ function SummaryViewModel(app, dataModel) {
     self.ColETIFST = ko.observable("");
     self.ColETIMST = ko.observable("");
 
+    //self.CalculateEW = function (FieldDate, FieldAct, FieldActYear) {
+    //    if ($("#" + FieldDate).val() != "") {
+    //        ////////var date_ew = new Date($("#" + FieldDate).datepicker('getDate', { dateFormat: date_format_DatePicker }));
+    //        var date_ew = new Date($("#" + FieldDate).val());
+    //        var fwky_date = new Date(moment(date_ew).year(), 0, 1).getDay();
+    //        var weekno = moment(date_ew).week();
+    //        var weeknoISO = moment(date_ew).isoWeek();
+
+    //        if (date_ew == null) {
+    //            FieldAct(null);
+    //            FieldActYear(null);
+
+    //        } else {
+
+    //            if (fwky_date > 3) {
+    //                var month = 11, day = 31;
+    //                var end_date_year_ant = new Date(moment(date_ew).year() - 1, month, day--);
+
+    //                if (weekno == 1 && moment(date_ew).month() == 0) {
+    //                    var fwky_date_ant = new Date(moment(date_ew).year() - 1, 0, 1).getDay();
+    //                    var fwdoyant = moment(end_date_year_ant).isoWeek();
+    //                    if (fwky_date_ant > 3) {
+
+    //                        FieldAct(fwdoyant - 1);
+
+    //                    } else {
+
+    //                        if (weekno == 1 && moment(date_ew).month() == 0 && fwky_date_ant <= 3) {
+    //                            FieldAct(53);
+    //                            fwdoyant = 53;
+    //                        }
+    //                        else
+    //                            FieldAct(fwdoyant);
+    //                    }
+    //                    if (FieldActYear != "")
+    //                        if (fwdoyant == 52 || fwdoyant == 53)
+    //                            FieldActYear(date_ew.getFullYear() - 1);
+    //                        else
+    //                            FieldActYear(date_ew.getFullYear());
+    //                }
+    //                else if (weekno == 1 && moment(date_ew).month() != 0) {
+    //                    FieldAct(moment(date_ew).isoWeek() - 1);
+    //                    if (FieldActYear != "")
+    //                        FieldActYear(date_ew.getFullYear());
+    //                }
+    //                else {
+    //                    FieldAct(weekno - 1);
+    //                    if (FieldActYear != "")
+    //                        FieldActYear(date_ew.getFullYear());
+    //                }
+    //            } else {
+    //                if (weekno == 1 && moment(date_ew).month() == 11) {
+    //                    var fwky_date_prox = new Date(moment(date_ew).getFullYear() + 1, 0, 1).getDay();
+
+    //                    if (fwky_date_prox > 3) {
+    //                        FieldAct(53);
+    //                        FieldActYear(date_ew.getFullYear());
+    //                    } else {
+    //                        FieldAct(weekno);
+    //                        FieldActYear(date_ew.getFullYear() + 1);
+    //                    }
+    //                } else {
+    //                    FieldAct(weekno);
+    //                    if (FieldActYear != "")
+    //                        FieldActYear(date_ew.getFullYear());
+    //                }
+    //            }
+    //        }
+    //    }
+    //};
+
     self.CalculateEW = function (FieldDate, FieldAct, FieldActYear) {
         if ($("#" + FieldDate).val() != "") {
-            ////////var date_ew = new Date($("#" + FieldDate).datepicker('getDate', { dateFormat: date_format_DatePicker }));
-            var date_ew = new Date($("#" + FieldDate).val());
+            var date_ew = new Date($("#" + FieldDate).datepicker('getDate', {
+                dateFormat: date_format_DatePicker
+            }));
             var fwky_date = new Date(moment(date_ew).year(), 0, 1).getDay();
             var weekno = moment(date_ew).week();
             var weeknoISO = moment(date_ew).isoWeek();
 
             if (date_ew == null) {
+
                 FieldAct(null);
                 FieldActYear(null);
 
@@ -318,7 +439,7 @@ function SummaryViewModel(app, dataModel) {
                     }
                 } else {
                     if (weekno == 1 && moment(date_ew).month() == 11) {
-                        var fwky_date_prox = new Date(moment(date_ew).getFullYear() + 1, 0, 1).getDay();
+                        var fwky_date_prox = new Date(date_ew.getFullYear() + 1, 0, 1).getDay();
 
                         if (fwky_date_prox > 3) {
                             FieldAct(53);
@@ -429,6 +550,22 @@ function SummaryViewModel(app, dataModel) {
     };
 
     // Esto es para calcular los totales de las columnas
+    self.ColETIDenoFST = ko.computed(function () {
+        var numberofitems = 0;
+        ko.utils.arrayForEach(self.SummayItems(), function (r) {
+            numberofitems += parseInt(r.ETIDenoFem());
+        });
+        return parseInt(numberofitems);
+    }, self);
+
+    self.ColETIDenoMST = ko.computed(function () {
+        var numberofitems = 0;
+        ko.utils.arrayForEach(self.SummayItems(), function (r) {
+            numberofitems += parseInt(r.ETIDenoMaso());
+        });
+        return parseInt(numberofitems);
+    }, self);
+
     self.ColETIDenoST = ko.computed(function () {
         var numberofitems = 0;
         ko.utils.arrayForEach(self.SummayItems(), function (r) {
@@ -437,10 +574,42 @@ function SummaryViewModel(app, dataModel) {
         return parseInt(numberofitems);
     }, self);
 
+    self.ColETIFST = ko.computed(function () {
+        var numberofitems = 0;
+        ko.utils.arrayForEach(self.SummayItems(), function (r) {
+            numberofitems += parseInt(r.ETINumFem());
+        });
+        return parseInt(numberofitems);
+    }, self);
+    
+    self.ColETIMST = ko.computed(function () {
+        var numberofitems = 0;
+        ko.utils.arrayForEach(self.SummayItems(), function (r) {
+            numberofitems += parseInt(r.ETINumMaso());
+        });
+        return parseInt(numberofitems);
+    }, self);
+
     self.ColETINumST = ko.computed(function () {
         var numberofitems = 0;
         ko.utils.arrayForEach(self.SummayItems(), function (r) {
             numberofitems += parseInt(r.ETINumST());
+        });
+        return parseInt(numberofitems);
+    }, self);
+
+    self.ColETINumEmerFST = ko.computed(function () {
+        var numberofitems = 0;
+        ko.utils.arrayForEach(self.SummayItems(), function (r) {
+            numberofitems += parseInt(r.ETINumEmerFem());
+        });
+        return parseInt(numberofitems);
+    }, self);
+
+    self.ColETINumEmerMST = ko.computed(function () {
+        var numberofitems = 0;
+        ko.utils.arrayForEach(self.SummayItems(), function (r) {
+            numberofitems += parseInt(r.ETINumEmerMaso());
         });
         return parseInt(numberofitems);
     }, self);
@@ -615,71 +784,7 @@ function SummaryViewModel(app, dataModel) {
         $("#ButtonSummary").hide();
     };
 
-    //self.CalculateEW = function (FieldDate, FieldAct, FieldActYear) {
-    //    if ($("#" + FieldDate).val() != "") {
-    //        var date_ew = moment(date_format_moment, $("#" + FieldDate).val()).toDate();
-    //        var fwky_date = new Date(moment(date_ew).year(), 0, 1).getDay();
-    //        var weekno = moment(date_ew).week();
-    //        var weeknoISO = moment(date_ew).isoWeek();
-
-    //        if (fwky_date > 3) {
-    //            var month = 11, day = 31;
-    //            var end_date_year_ant = new Date(moment(date_ew).year() - 1, month, day--);
-
-    //            if (weekno == 1 && moment(date_ew).month() == 0) {
-    //                var fwky_date_ant = new Date(moment(date_ew).year() - 1, 0, 1).getDay();
-    //                var fwdoyant = moment(end_date_year_ant).isoWeek();
-    //                if (fwky_date_ant > 3) {
-
-    //                    FieldAct(fwdoyant - 1);
-
-    //                } else {
-
-    //                    if (weekno == 1 && moment(date_ew).month() == 0 && fwky_date_ant <= 3) {
-    //                        FieldAct(53);
-    //                        fwdoyant = 53;
-    //                    }
-    //                    else
-    //                        FieldAct(fwdoyant);
-    //                }
-    //                if (FieldActYear != "")
-    //                    if (fwdoyant == 52 || fwdoyant == 53)
-    //                        FieldActYear(date_ew.getFullYear() - 1);
-    //                    else
-    //                        FieldActYear(date_ew.getFullYear());
-    //            }
-    //            else if (weekno == 1 && moment(date_ew).month() != 0) {
-    //                FieldAct(moment(date_ew).isoWeek() - 1);
-    //                if (FieldActYear != "")
-    //                    FieldActYear(date_ew.getFullYear());
-    //            }
-    //            else {
-    //                FieldAct(weekno - 1);
-    //                if (FieldActYear != "")
-    //                    FieldActYear(date_ew.getFullYear());
-    //            }
-    //        } else {
-    //            console.log("aqui " + weekno);
-    //            if (weekno == 1 && moment(date_ew).month() == 11) {
-    //                var fwky_date_prox = new Date(moment(date_ew).year() + 1, 0, 1).getDay();
-
-    //                if (fwky_date_prox > 3) {
-    //                    FieldAct(53);
-    //                    FieldActYear(date_ew.getFullYear());
-    //                } else {
-    //                    FieldAct(weekno);
-    //                    FieldActYear(date_ew.getFullYear() + 1);
-    //                }
-
-    //            } else {
-    //                FieldAct(weekno);
-    //                if (FieldActYear != "")
-    //                    FieldActYear(date_ew.getFullYear());
-    //            }
-    //        }
-
-    //    }
-    //};
+ 
 
     self.GetYearSummaryForYearItems = function () {
         if ((typeof self.selectedHospitalId() != "undefined") && self.selectedHospitalId() != "") {
@@ -743,10 +848,9 @@ function SummaryViewModel(app, dataModel) {
 
     self.GetSummayItems = function () {
         if ((typeof self.selectedHospitalId() != "undefined") && self.selectedHospitalId() != "" && (typeof self.HospitalDate() != "undefined") && self.HospitalDate() != "") {
-            console.log("aquí1");
-            $.postJSON(app.dataModel.getSummayDetailsUrl, { hospitalId: self.selectedHospitalId(), hospitalDate: moment(self.HospitalDate()).format(date_format_ISO), EpiWeek: self.HospitalEW(), EpiYear: self.HospitalYE() })
+            DatetoSend = jQuery.type(self.HospitalDate()) === 'date' ? self.HospitalDate() : parseDate($("#HospitalDate").val(), date_format_)
+            $.postJSON(app.dataModel.getSummayDetailsUrl, { hospitalId: self.selectedHospitalId(), hospitalDate: moment(DatetoSend).format(date_format_ISO), EpiWeek: self.HospitalEW(), EpiYear: self.HospitalYE() })
             .success(function (data, textStatus, jqXHR) {
-                console.log("dentrodeJSON");
                 self.SummayItems([]);
                 data.forEach(self.AddSummayItem);
                 $("#LabelSummary").show();
@@ -757,7 +861,7 @@ function SummaryViewModel(app, dataModel) {
                 alert(errorThrown);
             })
         } else {
-            console.log("aquí2");
+
             if ((typeof self.selectedHospitalId() == "undefined") || self.selectedHospitalId() == "") {
                 if (self.UsrCountry() == 25 || (self.UsrCountry() == 17) || (self.UsrCountry() == 119))
                     alert("Hospital is required");
@@ -776,8 +880,8 @@ function SummaryViewModel(app, dataModel) {
 
     self.GetSummayItemsJM = function () {
         if ((typeof self.selectedHospitalId() != "undefined") && self.selectedHospitalId() != "" && (typeof self.HospitalDate() != "undefined") && self.HospitalDate() != "") {
-            console.log("aquí1JM");
-            $.postJSON(app.dataModel.getSummayDetailsUrlJM, { hospitalId: self.selectedHospitalId(), hospitalDate: moment(self.HospitalDate()).format(date_format_ISO), EpiWeek: self.HospitalEW(), EpiYear: self.HospitalYE() })
+            DatetoSend = jQuery.type(self.HospitalDate()) === 'date' ? self.HospitalDate() : parseDate($("#HospitalDate").val(), date_format_)
+            $.postJSON(app.dataModel.getSummayDetailsUrlJM, { hospitalId: self.selectedHospitalId(), hospitalDate: moment(DatetoSend).format(date_format_ISO), EpiWeek: self.HospitalEW(), EpiYear: self.HospitalYE() })
             .success(function (data, textStatus, jqXHR) {
                 self.SummayItems([]);
                 data.forEach(self.AddSummayItem);
@@ -843,6 +947,13 @@ function SummaryViewModel(app, dataModel) {
         })
     };
 
+    self.showEpiWeek_AM = function (option, item) {
+        console.log("aquí");
+        console.log(self.HospitalDate());
+    };
+
+
+
 
     return self;
 };
@@ -856,7 +967,6 @@ app.addViewModel({
 /** Bandeja de denominadores **/
 function showEpiWeek(data, event) {
     var date = moment.unix(data.StartDateOfWeek).utc().format(moment_date_format);
-    //console.log(date);
     $("#HospitalDate").val(date);
     $("#HospitalDate").change();
     $("#search").click();
