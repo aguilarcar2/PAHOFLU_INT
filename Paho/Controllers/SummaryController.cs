@@ -238,24 +238,6 @@ namespace Paho.Controllers
             DateTime dSEHoy;
             dSEHoy = dFech.AddDays((nSemaActual - 1) * 7).AddDays(6);
 
-            //#### Fecha fin de SE del dia de hoy
-            /*DateTime dSEHoy;
-            DateTime dHoy = DateTime.Now.Date;
-            dSEHoy = dHoy;
-
-            for (int i = 52; i >= 1; i--)
-            {
-                DateTime vSeIn = dFech.AddDays(7 * (i - 1));
-                DateTime vSeFi = vSeIn.AddDays(6);
-                if (dHoy >= vSeIn && dHoy <= vSeFi)
-                {
-                    dSEHoy = vSeFi;
-                    break;
-                }
-            }*/
-            //#### 
-
-            //for (int i = 1; i <= 52; i++)
             //for (int i = 52; i >= 1; i--)
             for (int i = nSemaActual; i >= 1; i--)
             {
@@ -267,6 +249,7 @@ namespace Paho.Controllers
                 var ColETIDenoST = 0;
                 var ColETINumEmerST = 0;
                 var ColNeuTST = 0;
+                var ColCCSARITST = 0;
                 var ColVentTST = 0;
                 DateTime StartDateOfWeek = DateTime.UtcNow;
 
@@ -299,9 +282,8 @@ namespace Paho.Controllers
                         ColETIDenoST += casesummaryDetail.ETIDenoST;
                         ColETINumEmerST += casesummaryDetail.ETINumEmerST;
                         ColNeuTST += casesummaryDetail.NeuST.HasValue ? casesummaryDetail.NeuST.Value : 0;
+                        ColCCSARITST += casesummaryDetail.CCSARIST.HasValue ? casesummaryDetail.CCSARIST.Value : 0;
                         ColVentTST += casesummaryDetail.VentST.HasValue ? casesummaryDetail.VentST.Value : 0;
-                        //ColNeuTST += casesummaryDetail.NeuST;
-                        //ColVentTST += casesummaryDetail.VentST;
                     }
                 }
                 dictionary.Add("EpiWeek", i);
@@ -312,6 +294,7 @@ namespace Paho.Controllers
                 dictionary.Add("ColETIDenoST", ColETIDenoST);
                 dictionary.Add("ColETINumEmerST", ColETINumEmerST);
                 dictionary.Add("ColNeuTST", ColNeuTST);
+                dictionary.Add("ColCCSARITST", ColCCSARITST);
                 dictionary.Add("ColVentTST", ColVentTST);
                 Int32 unixTimestamp = (Int32)(StartDateOfWeek.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
                 dictionary.Add("StartDateOfWeek", unixTimestamp);
@@ -321,122 +304,6 @@ namespace Paho.Controllers
 
             return Json(summaryPerYear, JsonRequestBehavior.AllowGet);
         }
-
-        /*
-        public JsonResult GetSummaryForYearJM(int hospitalId)
-        {
-            var epiYear = DateTime.Now.Year.ToString();
-            int intEpiYear = Int32.Parse(epiYear);
-            List<Dictionary<string, int>> summaryPerYear = new List<Dictionary<string, int>>();
-            DateTime dFech = fechaInicioPrimeraSemanaEpidemiologica(DateTime.UtcNow.Year);
-
-            //#### Fecha fin de SE del dia de hoy
-            DateTime dSEHoy;
-            DateTime dHoy = DateTime.Now.Date;
-            dSEHoy = dHoy;
-
-            for (int i = 52; i >= 1; i--)
-            {
-                DateTime vSeIn = dFech.AddDays(7 * (i - 1));
-                DateTime vSeFi = vSeIn.AddDays(6);
-                if (dHoy >= vSeIn && dHoy <= vSeFi)
-                {
-                    dSEHoy = vSeFi;
-                    break;
-                }
-            }
-            //#### 
-
-            //for (int i = 1; i <= 52; i++)
-            for (int i = 52; i >= 1; i--)
-            {
-                Dictionary<string, int> dictionary = new Dictionary<string, int>();
-                var ColHospTST = 0;
-                var ColUCITST = 0;
-                var ColFalleTST = 0;
-                var ColETINumST = 0;
-                var ColETIDenoST = 0;
-                var ColETINumEmerST = 0;
-                var ColNeuTST = 0;
-                var ColVentTST = 0;
-                DateTime StartDateOfWeek = DateTime.UtcNow;
-
-                //var casesummary = null;
-                //if (user.Institution.CountryID == 17 && user.Institution.ILI == true)
-                //     var casesummary = db.CaseSummariesJM.FirstOrDefault(s => s.HospitalId == hospitalId && s.EW == i && s.EpiYear == intEpiYear);
-                //}
-                //else
-                //{
-                var casesummary = db.CaseSummariesJM.FirstOrDefault(s => s.HospitalId == hospitalId && s.EW == i && s.EpiYear == intEpiYear);
-
-                if (casesummary == null)
-                {
-                    DateTime vFeIn = dFech.AddDays(7 * (i - 1));
-                    DateTime vFeFi = vFeIn.AddDays(6);
-
-                    if (StartDateOfWeek >= vFeIn && StartDateOfWeek <= vFeFi)
-                        StartDateOfWeek = vFeFi;
-                    else
-                    {
-                        if (vFeFi < StartDateOfWeek)
-                            StartDateOfWeek = dFech.AddDays(7 * (i - 1) + 6);
-                        else
-                            StartDateOfWeek = dSEHoy;
-                    }
-                }
-                else
-                {
-                    var casesummaryDetails = casesummary.CaseSummaryDetailJM.ToArray();
-                    StartDateOfWeek = casesummary.WeekendDate;
-                    foreach (CaseSummaryDetailJM casesummaryDetail in casesummaryDetails)
-                    {
-                        ColHospTST += casesummaryDetail.HospST;
-                        ColUCITST += casesummaryDetail.UCIST;
-                        ColFalleTST += casesummaryDetail.DefST;
-                        ColETINumST += casesummaryDetail.ETINumST;
-                        ColETIDenoST += casesummaryDetail.ETIDenoST;
-                        ColETINumEmerST += casesummaryDetail.ETINumEmerST;
-                        ColNeuTST += casesummaryDetail.NeuST.HasValue ? casesummaryDetail.NeuST.Value : 0;
-                        ColVentTST += casesummaryDetail.VentST.HasValue ? casesummaryDetail.VentST.Value : 0;
-                        //ColNeuTST += casesummaryDetail.NeuST;
-                        //ColVentTST += casesummaryDetail.VentST;
-                    }
-                }
-                dictionary.Add("EpiWeek", i);
-                dictionary.Add("ColHospTST", ColHospTST);
-                dictionary.Add("ColUCITST", ColUCITST);
-                dictionary.Add("ColFalleTST", ColFalleTST);
-                dictionary.Add("ColETINumST", ColETINumST);
-                dictionary.Add("ColETIDenoST", ColETIDenoST);
-                dictionary.Add("ColETINumEmerST", ColETINumEmerST);
-                dictionary.Add("ColNeuTST", ColNeuTST);
-                dictionary.Add("ColVentTST", ColVentTST);
-                Int32 unixTimestamp = (Int32)(StartDateOfWeek.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
-                dictionary.Add("StartDateOfWeek", unixTimestamp);
-                dictionary.Add("EpiYear", intEpiYear);
-                summaryPerYear.Add(dictionary);
-            }
-            return Json(summaryPerYear, JsonRequestBehavior.AllowGet);
-        }
-        */
-
-        /*private DateTime fechaInicioPrimeraSemanaEpidemiologica(int nYear)
-        {
-            DateTime vFeIn, vTemp, vSaba;
-            //****
-            //vTemp = new DateTime(DateTime.Now.Year, 1, 1);
-            vTemp = new DateTime(nYear, 1, 1);                  // 1er día del anio
-            int nWeDa = (int)vTemp.DayOfWeek + 1;               // Domingo 1er día   
-            vSaba = vTemp.AddDays(7 - nWeDa);                   // 1er sábado
-
-            int nDife = (int)vSaba.Subtract(vTemp).TotalDays;
-            if (nDife >= 3)
-                vFeIn = vSaba.AddDays(-(7 - 1));
-            else
-                vFeIn = vSaba.AddDays(1);
-            //****
-            return vFeIn;
-        }*/
         
         public string getMsg(string msgView)
         {

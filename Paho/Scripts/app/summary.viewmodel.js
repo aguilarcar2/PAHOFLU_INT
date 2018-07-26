@@ -18,6 +18,7 @@ function SummaryYearItem(data) {
     self.ColETINumEmerMST = data.ColETINumEmerMST;
     self.ColETINumEmerST = data.ColETINumEmerST;
     self.ColNeuTST = data.ColNeuTST;
+    self.ColCCSARITST = data.ColCCSARITST;          //####CAFQ
     self.ColVentTST = data.ColVentTST;
     self.StartDateOfWeek = data.StartDateOfWeek;
     self.WeekendDate = data.WeekendDate
@@ -52,7 +53,7 @@ function SummaryYearItem(data) {
     }, self);
 
     self.ActiveJAM = ko.computed(function () {
-        return (self.UsrCountry() == 17) ? true : true;
+        return (self.UsrCountry() == 17) ? true : false;
     }, self);
 
     self.NoActiveJAM = ko.computed(function () {
@@ -118,7 +119,7 @@ function SummayItem(data) {
     }, self);
 
     self.ActiveJAM = ko.computed(function () {
-        return (self.UsrCountry() == 17) ? true : true;
+        return (self.UsrCountry() == 17) ? true : false;
     }, self);
 
     self.NoActiveJAM = ko.computed(function () {
@@ -158,7 +159,7 @@ function SummayItem(data) {
 
     if (self.DisableCHI() || self.ActiveBOL()) {
         self.ETINumEmerST = ko.computed(function () {
-            console.log(parseInt(self.ETINumEmerFem()));
+            //console.log(parseInt(self.ETINumEmerFem()));
             return parseInt(self.ETINumEmerFem()) + parseInt(self.ETINumEmerMaso());
         }, self);
 
@@ -269,20 +270,12 @@ function SummayItem(data) {
 
 function SummaryViewModel(app, dataModel) {
     var self = this;
-
     /////////////var msgSavedData = app.dataModel.MsgSavedData;      //#### CAFQ 
 
     var date_format_moment = app.dataModel.date_format_moment;
     var date_format_ISO = app.dataModel.date_format_ISO;
     var date_format_ = app.dataModel.date_format_;
     var date_format_DatePicker = app.dataModel.date_format_DatePicker;
-
-    console.log(date_format_moment);
-    console.log(date_format_ISO);
-    console.log(date_format_);
-    console.log(date_format_DatePicker);
-
-
 
     self.Id = "";
     self.UsrCountry = ko.observable(selcty); // Pais del usuario logueado
@@ -492,7 +485,7 @@ function SummaryViewModel(app, dataModel) {
     }, self);
 
     self.ActiveJAM = ko.computed(function () {
-        return (self.UsrCountry() == 17) ? true : true;
+        return (self.UsrCountry() == 17) ? true : false;
     }, self);
 
     self.NoActiveJAM = ko.computed(function () {
@@ -729,7 +722,15 @@ function SummaryViewModel(app, dataModel) {
         return parseInt(numberofitems);
     }, self);
 
-    self.ColIRAGTST = ko.computed(function () {
+    /*self.ColIRAGTST = ko.computed(function () {
+        var numberofitems = 0;
+        ko.utils.arrayForEach(self.SummayItems(), function (r) {
+            numberofitems += parseInt(r.CCSARIST());
+        });
+        return parseInt(numberofitems);
+    }, self);*/
+
+    self.ColCCSARITST = ko.computed(function () {
         var numberofitems = 0;
         ko.utils.arrayForEach(self.SummayItems(), function (r) {
             numberofitems += parseInt(r.CCSARIST());
@@ -967,17 +968,29 @@ app.addViewModel({
 /** Bandeja de denominadores **/
 function showEpiWeek(data, event) {
     var date = moment.unix(data.StartDateOfWeek).utc().format(moment_date_format);
+    var week = data.ColEpiWeek;
+    var year = data.ColEpiYear;
+
     $("#HospitalDate").val(date);
     $("#HospitalDate").change();
+    $("#HospitalEW").val(week);
+    $("#HospitalEW").change();
+    $("#HospitalYE").val(year);
+    $("#HospitalYE").change();
     $("#search").click();
 }
 
 function showEpiWeekJM(data, event) {
-    //var date = moment.unix(data.StartDateOfWeek).utc().format(moment_date_format);
     var date = moment.unix(data.WeekendDate).utc().format(moment_date_format);
-    //console.log(date);
+    var week = data.ColEpiWeek;
+    var year = data.ColEpiYear;
+
     $("#HospitalDate").val(date);
     $("#HospitalDate").change();
+    $("#HospitalEW").val(week);
+    $("#HospitalEW").change();
+    $("#HospitalYE").val(year);
+    $("#HospitalYE").change();
     $("#search").click();
 }
 /** Fin Bandeja de denominadores **/
