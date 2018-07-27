@@ -238,12 +238,12 @@
         <div class="row rowform">
             <div class="col-md-6">
                 <span>
-                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelSurv"))<font color="#FF0000">*</font>
+                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelSurv"))<font color="#FF0000">*</font>
                 </span>
                 @if (ViewBag.SARI == true)
                 {
                     <label class="btn btn-default">
-                        <input type="radio" name="IsSurv" id="IsSurv" value="1"  data-bind="checked: IsSurv" @((ViewBag.SARI == true && ViewBag.ILI == false ) ? "checked = checked" : "" ) />  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelSari"))
+                        <input type="radio" name="IsSurv" id="IsSurv" value="1" data-bind="checked: IsSurv" @((ViewBag.SARI == true && ViewBag.ILI == false) ? "checked = checked" : "" ) />  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelSari"))
                     </label>
                 }
                 @if (ViewBag.ILI == true)
@@ -254,7 +254,7 @@
                 }
                 @if (ViewBag.unusual == true)
                 {
-                    <label class="btn btn-default" >
+                    <label class="btn btn-default">
                         <input type="checkbox" name="SurvInusual" id="SurvInusual" data-bind="checked: SurvInusual">  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelUnusualCase"))
                     </label>
                 }
@@ -265,35 +265,35 @@
                     </label>
                 }
             </div>
-			@if (ViewBag.UsrCtry == 25 && ViewBag.UsrCtry == 11)
+            @if (ViewBag.UsrCtry != 7 && ViewBag.UsrCtry != 9 && ViewBag.UsrCtry != 3 && ViewBag.UsrCtry != 17)
             {
-			<div class="col-md-6">
-                <div id="ServicesGroup" class='input-group' data-bind="visible: displayService">
-                    <span class="input-group-addon">
-                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelService"))
-                    </span>
+                <div class="col-md-6">
+                    <div id="ServicesGroup" class='input-group' data-bind="visible: displayService">
+                        <span class="input-group-addon">
+                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelService"))
+                        </span>
 
-                    <select id="cmbServices" class="form-control" style="max-width:85%;" data-bind="options: app.Views.Home.institutions,
+                        <select id="cmbServices" class="form-control" style="max-width:85%;" data-bind="options: app.Views.Home.institutions,
 
                 optionsText: 'Name',
                 optionsValue: 'Id',
                 value: selectedServiceId "></select>
+                    </div>
                 </div>
-            </div>
             }
             @*Agregar aqui a todos los paises que deben mostrar la institución*@
-			@if (ViewBag.UsrCtry != 25 || ViewBag.UsrCtry != 11 )
+            @if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 17)
             {
                 <div class="col-md-5" data-bind="visible:VisHopName">
                     <div class='input-group'>
                         <span class="input-group-addon">
-                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelHospital"))
+                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelHospital"))
                         </span>
-                        <span id="hospitalName" class="form-control" data-bind="text:hospitalName" disabled  />
+                        <span id="hospitalName" class="form-control" data-bind="text:hospitalName" disabled />
                     </div>
-                </div>
-			}
+                </div>}
         </div>
+
         @*@if (ViewBag.UsrCtry == 9)
         {
             <div class="row rowform">

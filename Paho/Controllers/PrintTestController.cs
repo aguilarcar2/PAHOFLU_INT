@@ -461,10 +461,26 @@ namespace Paho.Controllers
                                 AssignValueCell(20, 31, excelWorksheet, reader, "Distrito"); // Comuna / (Zona/Comunidad) / Distrito
                                 // Falta Pais de procedencia - 21
                                 // Falta Urbana y Rural - 21
-                                AssignValueCell(22, 9, excelWorksheet, reader, "Direccion"); // Direccion
-                                AssignValueCell(22, 31, excelWorksheet, reader, "Telefono"); // Telefono
-                                AssignValueCell(23, 9, excelWorksheet, reader, "Latitud"); // Latitud
-                                AssignValueCell(23, 31, excelWorksheet, reader, "Longitud"); // Longitud
+
+                                if (user.Institution.CountryID == 17)
+                                {
+                                    AssignValueCell(22, 9, excelWorksheet, reader, "StreetNo"); // Latitud
+                                    AssignValueCell(22, 31, excelWorksheet, reader, "Telefono"); // Telefono
+
+                                    AssignValueCell(23, 9, excelWorksheet, reader, "ApartmentSuiteLot"); // ApartmentSuiteLot
+                                    AssignValueCell(23, 31, excelWorksheet, reader, "Address2"); // Longitud
+
+                                    AssignValueCell(24, 9, excelWorksheet, reader, "Latitud"); // Latitud
+                                    AssignValueCell(24, 31, excelWorksheet, reader, "Longitud"); // Longitud
+                                }
+                                else
+                                {
+                                    AssignValueCell(22, 9, excelWorksheet, reader, "Direccion"); // Direccion
+                                    AssignValueCell(22, 31, excelWorksheet, reader, "Telefono"); // Telefono
+                                    AssignValueCell(23, 9, excelWorksheet, reader, "Latitud"); // Latitud
+                                    AssignValueCell(23, 31, excelWorksheet, reader, "Longitud"); // Longitud
+                                }
+
 
                                 // Falta País dos semanas antes - 25
                                 // Falta Departamento dos semanas antes - 25
@@ -682,6 +698,8 @@ namespace Paho.Controllers
                                     { MarkCell(86, 16, excelWorksheet); }
                                 }
 
+                                // Muestras
+                                
                                 AssignValueCell(87, 10, excelWorksheet, reader, "Fecha_muestra"); // Fecha toma de muestra
                                 AssignValueCell(87, 34, excelWorksheet, reader, "Tipo_muestra"); // Fecha toma de muestra
                                 AssignValueCell(88, 10, excelWorksheet, reader, "Fecha_envio"); // Fecha toma de muestra
@@ -698,29 +716,70 @@ namespace Paho.Controllers
                                 AssignValueCell(94, 10, excelWorksheet, reader, "Fecha_envio_3"); // Fecha toma de muestra 3
                                 AssignValueCell(94, 34, excelWorksheet, reader, "Lab_envio_3"); // Fecha toma de muestra 3
 
+                                // NPHL
+                                if (user.Institution.CountryID == 17)
+                                {
+                                    // Muestra 1 NPHL
+                                    AssignValueCell(96, 10, excelWorksheet, reader, "NPHL_RecipeDate"); // Fecha de recepción de la muestra
+
+                                    if ((reader.GetSchemaTable().Select("ColumnName = 'NPHL_Processed'").Length > 0))
+                                    {
+                                        if (reader.GetValue(reader.GetOrdinal("NPHL_Processed")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("NPHL_Processed")).ToString().ToUpper() == "YES")
+                                        { MarkCell(96, 34, excelWorksheet); }
+                                        else if (reader.GetValue(reader.GetOrdinal("NPHL_Processed")).ToString().ToUpper() == "NO")
+                                        { MarkCell(96, 36, excelWorksheet); }
+                                    }
+                                    AssignValueCell(96, 41, excelWorksheet, reader, "NPHL_Temperature"); // Fecha toma de muestra
+
+                                    AssignValueCell(97, 10, excelWorksheet, reader, "identification_test_nphl"); // Identificacion de la muestra en NPHL - código de barras
+                                    AssignValueCell(97, 34, excelWorksheet, reader, "NPHL_NoProRenId"); // Motivo de no procesamiento
+
+                                    AssignValueCell(98, 10, excelWorksheet, reader, "NPHL_ShipDate"); // Fecha de envío al laboratorio del flujo
+                                    AssignValueCell(98, 34, excelWorksheet, reader, "NPHL_Observations"); // Observaciones - texto libre
+
+                                    // Muestra 2 NPHL
+                                    AssignValueCell(99, 10, excelWorksheet, reader, "Rec_Date_NPHL_2"); // Fecha toma de muestra
+
+                                    if ((reader.GetSchemaTable().Select("ColumnName = 'NPHL_Processed_2'").Length > 0))
+                                    {
+                                        if (reader.GetValue(reader.GetOrdinal("NPHL_Processed_2")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("NPHL_Processed_2")).ToString().ToUpper() == "YES")
+                                        { MarkCell(99, 34, excelWorksheet); }
+                                        else if (reader.GetValue(reader.GetOrdinal("NPHL_Processed_2")).ToString().ToUpper() == "NO")
+                                        { MarkCell(99, 36, excelWorksheet); }
+                                    }
+                                    AssignValueCell(99, 41, excelWorksheet, reader, "Temp_NPHL_2"); // Fecha toma de muestra
+
+                                    AssignValueCell(100, 10, excelWorksheet, reader, "identification_test_nphl_2"); // Identificacion de la muestra en NPHL - código de barras
+                                    AssignValueCell(100, 34, excelWorksheet, reader, "NPHL_NoProRenId_2"); // Motivo de no procesamiento
+
+                                    AssignValueCell(101, 10, excelWorksheet, reader, "Ship_Date_NPHL_2"); // Fecha de envío al laboratorio del flujo
+                                    AssignValueCell(101, 34, excelWorksheet, reader, "Observation_NPHL_2"); // Observaciones - texto libre
+                                }
+
+
                                 //Conclusion del laboratorio
-                                AssignValueCell(96, 10, excelWorksheet, reader, "Res_fin_fecha"); // Fecha del resultado final
+                                AssignValueCell((user.Institution.CountryID == 17) ? 103 : 96, 10, excelWorksheet, reader, "Res_fin_fecha"); // Fecha del resultado final
 
-                                AssignValueCell(97, 10, excelWorksheet, reader, "Resultado_final_1"); // Resultado
-                                AssignValueCell(97, 20, excelWorksheet, reader, "Res_fin_Virus_1"); // Tipo de virus
-                                AssignValueCell(97, 32, excelWorksheet, reader, "Res_fin_Subtipo_1"); // Subtipo 
-                                AssignValueCell(97, 40, excelWorksheet, reader, "Res_fin_Linaje_1"); // Linaje 
+                                AssignValueCell((user.Institution.CountryID == 17) ? 104 : 97, 10, excelWorksheet, reader, "Resultado_final_1"); // Resultado
+                                AssignValueCell((user.Institution.CountryID == 17) ? 104 : 97, 20, excelWorksheet, reader, "Res_fin_Virus_1"); // Tipo de virus
+                                AssignValueCell((user.Institution.CountryID == 17) ? 104 : 97, 32, excelWorksheet, reader, "Res_fin_Subtipo_1"); // Subtipo 
+                                AssignValueCell((user.Institution.CountryID == 17) ? 104 : 97, 40, excelWorksheet, reader, "Res_fin_Linaje_1"); // Linaje 
 
-                                AssignValueCell(98, 10, excelWorksheet, reader, "Resultado_final_2"); // Resultado 2
-                                AssignValueCell(98, 20, excelWorksheet, reader, "Res_fin_Virus_2"); // Tipo de virus 2
-                                AssignValueCell(98, 32, excelWorksheet, reader, "Res_fin_Subtipo_2"); // Subtipo 2
-                                AssignValueCell(98, 40, excelWorksheet, reader, "Res_fin_Linaje_2"); // Linaje 2
+                                AssignValueCell((user.Institution.CountryID == 17) ? 105 : 98, 10, excelWorksheet, reader, "Resultado_final_2"); // Resultado 2
+                                AssignValueCell((user.Institution.CountryID == 17) ? 105 : 98, 20, excelWorksheet, reader, "Res_fin_Virus_2"); // Tipo de virus 2
+                                AssignValueCell((user.Institution.CountryID == 17) ? 105 : 98, 32, excelWorksheet, reader, "Res_fin_Subtipo_2"); // Subtipo 2
+                                AssignValueCell((user.Institution.CountryID == 17) ? 105 : 98, 40, excelWorksheet, reader, "Res_fin_Linaje_2"); // Linaje 2
 
-                                AssignValueCell(99, 10, excelWorksheet, reader, "Resultado_final_3"); // Resultado 3
-                                AssignValueCell(99, 20, excelWorksheet, reader, "Res_fin_Virus_3"); // Tipo de virus 3
-                                AssignValueCell(99, 32, excelWorksheet, reader, "Res_fin_Subtipo_3"); // Subtipo 3
-                                AssignValueCell(99, 40, excelWorksheet, reader, "Res_fin_Linaje_3"); // Linaje 3
+                                AssignValueCell((user.Institution.CountryID == 17) ? 106 : 99, 10, excelWorksheet, reader, "Resultado_final_3"); // Resultado 3
+                                AssignValueCell((user.Institution.CountryID == 17) ? 106 : 99, 20, excelWorksheet, reader, "Res_fin_Virus_3"); // Tipo de virus 3
+                                AssignValueCell((user.Institution.CountryID == 17) ? 106 : 99, 32, excelWorksheet, reader, "Res_fin_Subtipo_3"); // Subtipo 3
+                                AssignValueCell((user.Institution.CountryID == 17) ? 106 : 99, 40, excelWorksheet, reader, "Res_fin_Linaje_3"); // Linaje 3
 
                                 //Estatus del caso
                                 
-                                AssignValueCell(101, 10, excelWorksheet, reader, "Estatus_caso"); // Estsado del caso
-                                AssignValueCell(101, 31, excelWorksheet, reader, "Caso_cerrado_fecha"); // Fecha de cierre de caso
-                                AssignValueCell(102, 10, excelWorksheet, reader, "Observaciones"); // Observaciones del caso
+                                AssignValueCell((user.Institution.CountryID == 17) ? 108 : 101, 10, excelWorksheet, reader, "Estatus_caso"); // Estsado del caso
+                                AssignValueCell((user.Institution.CountryID == 17) ? 108 : 101, 31, excelWorksheet, reader, "Caso_cerrado_fecha"); // Fecha de cierre de caso
+                                AssignValueCell((user.Institution.CountryID == 17) ? 109 : 102, 10, excelWorksheet, reader, "Observaciones"); // Observaciones del caso
 
 
                             }
@@ -733,11 +792,11 @@ namespace Paho.Controllers
                         FluCase flucase = db.FluCases.Find(recordID);
                         var ListTest = flucase.CaseLabTests.OrderBy(x=> x.flow_test).ThenByDescending(z => z.CatTestType != null ? z.CatTestType.orden : 99).ThenBy(m => m.CatTestResult != null ? m.CatTestResult.orden : 99).ThenBy(z => z.TestDate != null ? z.TestDate : DateTime.Now);
                         var NumTest = ListTest.Count();
-                        var fila_original_empieza = 104;
+                        var fila_original_empieza = (user.Institution.CountryID == 17) ? 111 : 104;
                         if (ListTest.Count() > 1) {
-                            var fila_original_termina = 113;
-                            var fila_copiar_empieza = 114;
-                            var fila_copiar_termina = 121;
+                            var fila_original_termina = (user.Institution.CountryID == 17) ? 120 : 113;
+                            var fila_copiar_empieza = (user.Institution.CountryID == 17) ? 121 : 114;
+                            var fila_copiar_termina = (user.Institution.CountryID == 17) ? 128 : 121;
                             for (var i = 1; i < ListTest.Count(); i++)
                             {
 
@@ -761,10 +820,13 @@ namespace Paho.Controllers
                             if (j > 1) fila_original_empieza = fila_original_empieza + 10;
                             AssignValueCell_value(fila_original_empieza, 10, excelWorksheet, flucase.RecDate.ToString(), "DateTime"); // Fecha de recepcion
                             if ((bool)flucase.Processed)
-                                { MarkCell(fila_original_empieza, 36, excelWorksheet); }
+                                { MarkCell(fila_original_empieza, 34, excelWorksheet); }
                             else
-                                { MarkCell(fila_original_empieza, 40, excelWorksheet); }
-                            AssignValueCell_value(fila_original_empieza + 1, 10, excelWorksheet, flucase.NoProRen.ToString(), "String"); // Motivo de no procesado
+                                { MarkCell(fila_original_empieza, 36, excelWorksheet); }
+                            AssignValueCell_value(fila_original_empieza, 41, excelWorksheet, flucase.TempSample1.ToString(), "String"); // Temperatura
+                            if (user.Institution.CountryID == 17)
+                            AssignValueCell_value(fila_original_empieza + 1, 10, excelWorksheet, flucase.Identification_Test, "String"); // Codigo de barras
+                            AssignValueCell_value(fila_original_empieza + 1, (user.Institution.CountryID == 17) ? 34 : 10, excelWorksheet, flucase.NoProRen.ToString(), "String"); // Motivo de no procesado
 
                             AssignValueCell_value(fila_original_empieza + 2, 10, excelWorksheet, Test.Institution.Name, "String"); // Laboratorio que procesa
                             if (Test.Processed == true)
