@@ -375,6 +375,7 @@
     <Content Include="Content\themes\base\images\PAHOimagen.gif" />
     <Content Include="Content\themes\base\images\PAHOlogo.gif" />
     <Content Include="Content\themes\base\images\PDF.png" />
+    <Content Include="Content\themes\base\images\ReadyClose.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -1472,7 +1473,9 @@
     <Content Include="Scripts\ammap\maps\svg\continentsWithAntarcticaLow.svg" />
     <Content Include="Scripts\ammap\maps\svg\cookIslandsHigh.svg" />
     <Content Include="Scripts\ammap\maps\svg\cookIslandsLow.svg" />
+    <Content Include="Scripts\ammap\maps\svg\costaRicaHEA.svg" />
     <Content Include="Scripts\ammap\maps\svg\costaRicaHigh.svg" />
+    <Content Include="Scripts\ammap\maps\svg\costaRicaINS.svg" />
     <Content Include="Scripts\ammap\maps\svg\costaRicaLow.svg" />
     <Content Include="Scripts\ammap\maps\svg\croatiaHigh.svg" />
     <Content Include="Scripts\ammap\maps\svg\croatiaLow.svg" />

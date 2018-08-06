@@ -11,3 +11,9 @@
 <p>@(((Paho.Controllers.DiccionarioController)this.ViewContext.Controller).getMsg("msgClickToDownload"))</p>
 
 @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgDownloadDataDictionary", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "GetDataDictionaryExcel", "exportar", new { area = "" }, null)
+
+<script type="text/javascript">
+    //***************************************
+    $('a#MaintenanceM').addClass("active");        //#### CAFQ: 180806
+    //***************************************
+</script>   

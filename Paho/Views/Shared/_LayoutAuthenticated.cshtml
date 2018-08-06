@@ -22,15 +22,22 @@
             font-weight: bold;
         }
 
-            a#dashboard:hover {
-                color: black;
-                background-color: #ffa500; /*Naranja*/
-            }
+        a#dashboard:hover {
+            color: black;
+            background-color: #ffa500; /*Naranja*/
+        }
 
-            a#dashboard:visited {
-                color: yellow;
-                background-color: #008dc9; /*Celeste**/
-            }
+        a#dashboard:visited {
+            color: yellow;
+            background-color: #008dc9; /*Celeste**/
+        }
+
+        .active {
+        /*
+        background-color: #ffa500; 
+        color: black;*/
+        background-color: #c60;
+        }
     </style>
 </head>
 <body>
@@ -84,11 +91,11 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-					<li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuPrincipalView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Principal", new { area = "" }, null)</li>
-					<li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuHomeView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Home", new { area = "" }, null)</li>
+					<li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuPrincipalView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Principal", new { area = "" }, new { ID = "PrincipalM" })</li>
+					<li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuHomeView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Home", new { area = "" }, new { ID = "HomeM" })</li>
                     @if (ViewBag.UserInstitutionType != 2 && ViewBag.UsrCtry == 7)
                     {
-                        <li> @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuSummaryView2", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Summary", new { area = "" }, null) </li>
+                        <li> @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuSummaryView2", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Summary", new { area = "" }, new { ID = "SummaryM" }) </li>
                     }
                     else
                     {
@@ -100,21 +107,21 @@
                                 {
                                     if (ViewBag.SARI == true && ViewBag.UserInstitutionType == 3 && ViewBag.InstAccesLevel != 3)
                                     {
-                                        <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuSummaryView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Summary", new { area = "" }, null)</li>
+                                        <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuSummaryView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Summary", new { area = "" }, new { ID = "SummaryM" })</li>
                                     }
-                                    <li>@Html.ActionLink("ILI Cases-Visits", "Index", "SummaryJM", new { area = "" }, null)</li>
+                                    <li>@Html.ActionLink("ILI Cases-Visits", "Index", "SummaryJM", new { area = "" }, new { ID = "SummaryJMM" })</li>
                                 }
                                 else
                                 {
                                     if (ViewBag.SARI == true)
                                     {
-                                        <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuSummaryView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Summary", new { area = "" }, null)</li>
+                                        <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuSummaryView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Summary", new { area = "" }, new { ID = "SummaryM" })</li>
                                     }
                                 }
                             }
                             else
                             {
-                                <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuSummaryView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Summary", new { area = "" }, null)</li>
+                                <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuSummaryView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Summary", new { area = "" }, new { ID = "SummaryM" })</li>
                             }
                         }
                     }
@@ -126,17 +133,17 @@
 
                     @if (User.IsInRole("Admin") || User.IsInRole("Report"))
                     {
-						<li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuExportarView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Exportar", new { area = "" }, null)</li>
+						<li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuExportarView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Exportar", new { area = "" }, new { ID = "ExportarM" })</li>
                     }
 
                     @if(User.IsInRole("Admin") || User.IsInRole("Report")) {
-						<li dstyle = "display:none;"> @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuFluidView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Fluid", new { area = "" }, null) </li>
+						<li dstyle = "display:none;"> @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuFluidView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Fluid", new { area = "" }, new { ID = "FluidM" }) </li>
                     }
 
                     @if (User.IsInRole("Admin"))
                     {
 						@*<li class="dropdown">  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Mantenimiento <b class="caret"></b></a>*@
-                        <li class="dropdown">  <a href="#" class="dropdown-toggle" data-toggle="dropdown">@(Paho.Controllers.ResourcesM.SgetMessage("viewLayoutAuthenticated_LabelMaintenance", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) <b class="caret"></b></a>
+                        <li class="dropdown">  <a href="#" id="MaintenanceM" class="dropdown-toggle" data-toggle="dropdown">@(Paho.Controllers.ResourcesM.SgetMessage("viewLayoutAuthenticated_LabelMaintenance", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) <b class="caret"></b></a>
                             <ul class="dropdown-menu">
                                 @if (@ViewBag.UserInstitutionType == 3)
                                 {
@@ -171,12 +178,12 @@
                     @if ((User.IsInRole("Admin") || ViewBag.ILI) && (ViewBag.UsrCtry == 7))
                     {
                         <li>
-                            @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatPopulationView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "CatPopulationInstitutions", new { area = "" }, null)
+                            @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatPopulationView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "CatPopulationInstitutions", new { area = "" }, new { ID = "PopulationInstitutionsM" })
                         </li>
                     }
                     @if (ViewBag.UsrCtry == 9) {
 
-						<li dstyle="display:none;"> @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuNotImportedView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "NotImported", new { area = "" }, null) </li>
+						<li dstyle="display:none;"> @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuNotImportedView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "NotImported", new { area = "" }, new { ID = "NotImportedM" }) </li>
                         @*<li dstyle="display:none;"> @Html.ActionLink((((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelNotImportedList")), "Index", "NotImported", new { area = "" }, null) </li>*@
 
                     }                    

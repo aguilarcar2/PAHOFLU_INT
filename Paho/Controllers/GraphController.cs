@@ -1248,8 +1248,11 @@ namespace Paho.Controllers
                                     myXmlNode0.InnerText = getMsg("viewSituationalMap1Title");
                                     break;
                                 case "GetMapData2":
-                                    myXmlNode0.InnerText = getMsg("viewSituationalMap2Title");
-                                    break;                                    
+                                    myXmlNode0.InnerText = getMsg("viewSituationalMap2Title") + " INSTITUCIONAL";
+                                    break;
+                                case "GetMapData3":
+                                    myXmlNode0.InnerText = getMsg("viewSituationalMap2Title") + " SALUD";
+                                    break;
                             }
                             myXmlDoc0.DocumentElement.AppendChild(myXmlNode0);
                             myXmlNode0 = myXmlDoc0.CreateElement("mapCountry");
@@ -1262,7 +1265,14 @@ namespace Paho.Controllers
                                     myXmlNode0.InnerText = "CL";
                                     break;
                                 case 9:
-                                    myXmlNode0.InnerText = "CR";
+                                    //myXmlNode0.InnerText = "CR";
+                                    if (GetMapDataSP == "GetMapData1")
+                                        myXmlNode0.InnerText = "CR";
+                                    else if (GetMapDataSP == "GetMapData2")
+                                        //myXmlNode0.InnerText = "CR";
+                                        myXmlNode0.InnerText = "CRI";
+                                    else if (GetMapDataSP == "GetMapData3")
+                                        myXmlNode0.InnerText = "CRH";
                                     break;
                                 case 25:
                                     myXmlNode0.InnerText = "SR";
@@ -1325,6 +1335,39 @@ namespace Paho.Controllers
                                     }
                                     break;
                                 case "GetMapData2":
+                                    while (reader.Read())
+                                    {
+                                        ArrayList mapVal = new ArrayList();
+                                        mapVal.Add(reader["AreaID"].ToString().Trim());
+                                        mapVal.Add(reader["3"].ToString().Trim());
+                                        mapVal.Add(reader["10"].ToString().Trim());
+                                        mapVal.Add(reader["2"].ToString().Trim());
+                                        mapVals.Add(mapVal);
+
+                                        XmlNode auxXmlNode0;
+                                        XmlNode anotherAuxXmlNode0;
+
+                                        auxXmlNode0 = myXmlDoc0.CreateElement("areaData");
+                                        myXmlNode0.AppendChild(auxXmlNode0);
+
+                                        anotherAuxXmlNode0 = myXmlDoc0.CreateElement("area");
+                                        anotherAuxXmlNode0.InnerText = reader["AreaID"].ToString().Trim();
+                                        auxXmlNode0.AppendChild(anotherAuxXmlNode0);
+
+                                        anotherAuxXmlNode0 = myXmlDoc0.CreateElement("ah1n1");
+                                        anotherAuxXmlNode0.InnerText = reader["3"].ToString().Trim();
+                                        auxXmlNode0.AppendChild(anotherAuxXmlNode0);
+
+                                        anotherAuxXmlNode0 = myXmlDoc0.CreateElement("ah3");
+                                        anotherAuxXmlNode0.InnerText = reader["10"].ToString().Trim();
+                                        auxXmlNode0.AppendChild(anotherAuxXmlNode0);
+
+                                        anotherAuxXmlNode0 = myXmlDoc0.CreateElement("ib");
+                                        anotherAuxXmlNode0.InnerText = reader["2"].ToString().Trim();
+                                        auxXmlNode0.AppendChild(anotherAuxXmlNode0);
+                                    }
+                                    break;
+                                case "GetMapData3":
                                     while (reader.Read())
                                     {
                                         ArrayList mapVal = new ArrayList();
@@ -2729,6 +2772,7 @@ namespace Paho.Controllers
             return null;
         }
 
+
         private static string graficoIndicadoreDesempenio(string languaje_country, int countryId, string countryName, int? year, int? hospitalId, int? weekFrom, int? weekTo, List<string> datosID)
         {
             /*var user = UserManager.FindById(User.Identity.GetUserId());
@@ -2858,205 +2902,6 @@ namespace Paho.Controllers
                 }
             }
         }
-        /*
-        private static string graficoLineasBasales(string languaje_country, int countryId, int? year, int? hospitalId, int? weekFrom, int? weekTo)
-        {
-            string jsonTextLB = "";
-            string storedProcedure1 = "FLUID_IRAG_Total_Muestra_Analizadas";
-            string storedProcedure2 = "FLUID_IRAG_Total_Muestras_INF_A";
-            var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            //****
-            ArrayList aParametros = new ArrayList();
-
-            ArrayList aCEP1 = new ArrayList();
-            ArrayList aCEP2 = new ArrayList();
-            ArrayList aUA1 = new ArrayList();
-            ArrayList aUA2 = new ArrayList();
-            ArrayList aUE1 = new ArrayList();
-            ArrayList aUE2 = new ArrayList();
-
-            ArrayList aMuAnTo2 = new ArrayList();
-            ArrayList aMuAnTo1 = new ArrayList();
-            ArrayList aMuAnIA2 = new ArrayList();
-            ArrayList aMuAnIA1 = new ArrayList();
-
-            for (int nI = 0; nI <= 52; ++nI)
-            {
-                aCEP1.Add(0);
-                aCEP2.Add(0);
-                aUA1.Add(0);
-                aUA2.Add(0);
-                aUE1.Add(0);
-                aUE2.Add(0);
-
-                aMuAnTo1.Add(0);
-                aMuAnTo2.Add(0);
-                aMuAnIA1.Add(0);
-                aMuAnIA2.Add(0);
-            }
-            //**** 
-            int nSeIn = 0, nAnEv;                           // Semana inicio, Anio evaluacion
-            int nSeQu = 0;                                  // Semana quiebre
-            string cTitu, cAnEv;
-            string sheet = "";
-
-            if (countryId == 7)
-                sheet = "Chile";
-            else if (countryId == 9)
-                sheet = "Costa Rica";
-            else if (countryId == 3)
-                sheet = "BOLIVIA INLASA";
-            else if (countryId == 3.1)
-                sheet = "BOLIVIA INLASA";
-            else if (countryId == 3.2)
-                sheet = "BOLIVIA CENETROP";
-            else if (countryId == 25)
-                sheet = "Surinam";
-            else if (countryId == 17)
-                sheet = "Jamaica";
-            else
-                return "";
-
-            recuperarDatosExcel(countryId, aCEP1, aCEP2, aUA1, aUA2, aUE1, aUE2, sheet, aParametros);
-
-            cTitu = (string)aParametros[0];         // Titulo
-            cAnEv = (string)aParametros[1];         // Anio
-            bool isNumerical = int.TryParse(cAnEv, out nAnEv);
-            if (isNumerical)
-                year = nAnEv;
-            if (countryId == 9)
-                cAnEv = (year - 1).ToString() + "-" + cAnEv;
-
-            isNumerical = int.TryParse((string)aParametros[2], out nSeIn);     // Semana inicio periodo
-            if (!isNumerical)
-                nSeIn = 1;
-
-            nSeQu = 52 - nSeIn + 1;                 // Semana de quiebre
-            //****
-            recuperarDatos(consString, storedProcedure1, countryId, languaje_country, (int)year - 1, aMuAnTo1);
-            recuperarDatos(consString, storedProcedure1, countryId, languaje_country, (int)year, aMuAnTo2);
-            recuperarDatos(consString, storedProcedure2, countryId, languaje_country, (int)year - 1, aMuAnIA1);
-            recuperarDatos(consString, storedProcedure2, countryId, languaje_country, (int)year, aMuAnIA2);
-            //****
-            for (int nI = 0; nI <= 52; ++nI)                        // Calculando Porcentaje de Positividad
-            {
-                if ((int)aMuAnTo1[nI] != 0)
-                {
-                    aMuAnTo1[nI] = Convert.ToDecimal(aMuAnIA1[nI]) / Convert.ToDecimal(aMuAnTo1[nI]);
-                }
-                if ((int)aMuAnTo2[nI] != 0)
-                {
-                    aMuAnTo2[nI] = Convert.ToDecimal(aMuAnIA2[nI]) / Convert.ToDecimal(aMuAnTo2[nI]);
-                }
-            }
-
-            //**** Crear el JSON
-            string cSema, cPorc, cJS = "", cTemp = "";
-            jsonTextLB = "";
-
-            cSema = SgetMsg("msgLineasBasalesSemanaEpidemiologica", countryId, languaje_country);
-            cPorc = SgetMsg("msgLineasBasalesPorcentaje", countryId, languaje_country);
-
-            jsonTextLB = "{\"" + "graph" + "\":";
-            jsonTextLB = jsonTextLB + "{\"" + "graphTitle" + "\":\"" + cTitu + "\",";
-            jsonTextLB = jsonTextLB + "\"" + "graphXAxisTitle" + "\":\"" + cSema + "\",";
-            jsonTextLB = jsonTextLB + "\"" + "graphYAxisTitle" + "\":\"" + cPorc + "\",";
-            jsonTextLB = jsonTextLB + "\"" + "graphData" + "\":{\"" + "graphDataItem" + "\":";
-
-            //** Ultima semana con data
-            int nSeFi = 0;
-            if (countryId == 9)
-            {
-                nSeFi = 52;
-                for (int nJ = 52; nJ > 0; --nJ)
-                {
-                    if (nJ > nSeQu)
-                    {
-                        if (Convert.ToDecimal(aMuAnTo2[nJ - nSeQu]) != 0)
-                        {
-                            nSeFi = nJ;         // Semana final con datos
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        if (Convert.ToDecimal(aMuAnTo1[nJ + nSeIn - 1]) != 0)
-                        {
-                            nSeFi = nJ;         // Semana final con datos
-                            break;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                nSeFi = 52;
-                for (int nJ = 52; nJ > 0; --nJ)
-                {
-                    if (Convert.ToDecimal(aMuAnTo1[nJ]) != 0)
-                    {
-                        nSeFi = nJ;         // Semana final con datos
-                        break;
-                    }
-                }
-            }
-            //**
-            int nK = 0;
-            decimal nTemp = 0;
-
-            for (int nI = 1; nI <= nSeFi; ++nI)
-            {
-                if (nI > nSeQu)
-                {
-                    nK = nI - nSeQu;
-                    cTemp = "{";
-                    cTemp = cTemp + "\"" + "semana" + "\":\"" + nK.ToString() + "\",";
-                    nTemp = Convert.ToDecimal(aCEP2[nK]) * 100;
-                    cTemp = cTemp + "\"" + "serie1" + "\":\"" + nTemp.ToString("##0.0", new CultureInfo("en-US")) + "\",";           // Curva Epidemica Promedio
-                    nTemp = Convert.ToDecimal(aUA2[nK]) * 100;
-                    cTemp = cTemp + "\"" + "serie2" + "\":\"" + nTemp.ToString("##0.0", new CultureInfo("en-US")) + "\",";             // Umbral de Alerta
-                    nTemp = Convert.ToDecimal(aUE2[nK]) * 100;
-                    cTemp = cTemp + "\"" + "serie3" + "\":\"" + nTemp.ToString("##0.0", new CultureInfo("en-US")) + "\",";             // Umbral Estacional
-                    nTemp = Convert.ToDecimal(aMuAnTo2[nK]) * 100;
-                    cTemp = cTemp + "\"" + "serie4" + "\":\"" + nTemp.ToString("##0.0", new CultureInfo("en-US")) + "\"";          // Porcentaje de Positividad
-                    cTemp = cTemp + "}";
-                }
-                else
-                {
-                    nK = nI + nSeIn - 1;
-
-                    cTemp = "{";
-                    cTemp = cTemp + "\"" + "semana" + "\":\"" + nK.ToString() + "\",";
-
-                    nTemp = Convert.ToDecimal(aCEP1[nK]) * 100;
-                    cTemp = cTemp + "\"" + "serie1" + "\":\"" + nTemp.ToString("##0.0", new CultureInfo("en-US")) + "\",";           // Curva Epidemica Promedio
-
-                    nTemp = Convert.ToDecimal(aUA1[nK]) * 100;
-                    cTemp = cTemp + "\"" + "serie2" + "\":\"" + nTemp.ToString("##0.0", new CultureInfo("en-US")) + "\",";             // Umbral de Alerta
-
-                    nTemp = Convert.ToDecimal(aUE1[nK]) * 100;
-                    cTemp = cTemp + "\"" + "serie3" + "\":\"" + nTemp.ToString("##0.0", new CultureInfo("en-US")) + "\",";             // Umbral Estacional
-
-                    nTemp = Convert.ToDecimal(aMuAnTo1[nK]) * 100;
-                    cTemp = cTemp + "\"" + "serie4" + "\":\"" + nTemp.ToString("##0.0", new CultureInfo("en-US")) + "\"";          // Porcentaje de Positividad
-
-                    cTemp = cTemp + "}";
-                }
-
-                cJS = (nI == 1) ? cTemp : cJS + "," + cTemp;
-            }
-            cJS = "[" + cJS + "]";
-
-            jsonTextLB = jsonTextLB + cJS + "},";
-            jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + SgetMsg("msgLineasBasalesCurvaEpidemicaPromedio", countryId, languaje_country) + "\",";
-            jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + SgetMsg("msgLineasBasalesUmbralAlerta", countryId, languaje_country) + "\",";
-            jsonTextLB = jsonTextLB + "\"" + "graphSeries3Label" + "\":\"" + SgetMsg("msgLineasBasalesUmbralEstacional", countryId, languaje_country) + "\",";
-            jsonTextLB = jsonTextLB + "\"" + "graphSeries4Label" + "\":\"" + SgetMsg("msgLineasBasalesPorcentajePositividad", countryId, languaje_country) + " " + cAnEv + "\"";
-            jsonTextLB = jsonTextLB + "}}";
-
-            return jsonTextLB;
-        }
-        */
 
         private static string graficoLineasBasales(string languaje_country, int countryId, int? year, int? hospitalId, int? weekFrom, int? weekTo)
         {
@@ -3233,48 +3078,6 @@ namespace Paho.Controllers
             return jsonTextLB;
         }
 
-        /*
-        private static void recuperarDatos(string consString, string storedProcedure, int countryId, string languaje_country, int year, ArrayList aData)
-        {
-            using (var con = new SqlConnection(consString))
-            {
-                using (var command = new SqlCommand(storedProcedure, con) { CommandType = CommandType.StoredProcedure })
-                {
-                    command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
-                    command.Parameters.Add("@Languaje", SqlDbType.NVarChar).Value = languaje_country;
-                    command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
-                    command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = null;
-                    command.Parameters.Add("@Mes_", SqlDbType.Int).Value = null;
-                    command.Parameters.Add("@SE", SqlDbType.Int).Value = null;
-                    command.Parameters.Add("@Fecha_inicio", SqlDbType.Int).Value = null;
-                    command.Parameters.Add("@Fecha_fin", SqlDbType.Int).Value = null;
-                    command.Parameters.Add("@label_beg", SqlDbType.Int).Value = null;
-                    command.Parameters.Add("@table_temp_name", SqlDbType.Int).Value = null;
-                    command.Parameters.Add("@IRAG", SqlDbType.Int).Value = 1;
-
-                    con.Open();
-                    using (var reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            if (reader.GetValue(0).ToString() == "")
-                            {
-                            }
-                            else
-                            {
-                                if ((int)reader.GetValue(0) <= 52)
-                                    aData[(int)reader.GetValue(0)] = reader.GetValue(1);
-                            }
-                        }
-                    }
-
-                    command.Parameters.Clear();
-                    con.Close();
-                }
-            }
-        }
-        */
-        
         private static void recuperarDatosLineasBasales(string consString, string storedProcedure, int countryId, string languaje_country, int year, Dictionary<string, int> aData)
         {
             using (var con = new SqlConnection(consString))
@@ -3310,7 +3113,6 @@ namespace Paho.Controllers
                 }
             }
         }
-
 
         private static void recuperarDatosExcelLineasBasales(int CountryID, Dictionary<string, decimal> aCEP1, Dictionary<string, decimal> aUA1, Dictionary<string, decimal> aUE1, string sheet, ArrayList aParaLiBa)
         {
@@ -3366,59 +3168,7 @@ namespace Paho.Controllers
             }
         }
 
-        /*
-        private static void recuperarDatosExcel(int CountryID, ArrayList aCEP1, ArrayList aCEP2, ArrayList aUA1, ArrayList aUA2, ArrayList aUE1, ArrayList aUE2, string sheet, ArrayList aParaLiBa)
-        {
-            string cPathPlan = "";
-            cPathPlan = ConfigurationManager.AppSettings["GraphicsPath"];
-            cPathPlan = cPathPlan + "LinBa_X.xlsx";
-
-            using (var fs = System.IO.File.OpenRead(cPathPlan))
-            {
-                using (var excelPackage = new ExcelPackage(fs))
-                {
-                    var excelWorkBook = excelPackage.Workbook;
-                    int nSema = 0;
-                    decimal nCEP = 0;
-                    decimal nUA = 0;
-                    decimal nUE = 0;
-                    int row = 3;
-                    int col = 1;
-
-                    var excelWorksheet = excelWorkBook.Worksheets[sheet];
-
-                    aParaLiBa.Add(excelWorksheet.Cells[3, 10].Value);            // Titulo: J3
-                    aParaLiBa.Add(excelWorksheet.Cells[4, 10].Value);            // Anio evluacion: J4
-                    aParaLiBa.Add(excelWorksheet.Cells[5, 10].Value);            // Semana inicio anio: J5
-
-                    for (int nI = 1; nI <= 52; ++nI)
-                    {
-                        nSema = Convert.ToInt32(excelWorksheet.Cells[row, col].Value);
-                        nCEP = Convert.ToDecimal(excelWorksheet.Cells[row, col + 1].Value);
-                        nUA = Convert.ToDecimal(excelWorksheet.Cells[row, col + 2].Value);
-                        nUE = Convert.ToDecimal(excelWorksheet.Cells[row, col + 3].Value);
-
-                        if (nI > 38 && CountryID == 9)
-                        {
-                            aCEP2[nSema] = nCEP;
-                            aUA2[nSema] = nUA;
-                            aUE2[nSema] = nUE;
-                        }
-                        else
-                        {
-                            aCEP1[nSema] = nCEP;
-                            aUA1[nSema] = nUA;
-                            aUE1[nSema] = nUE;
-                        }
-
-                        ++row;
-                    }
-                }
-            }
-        }
-        */
-
-        public static string graficoETINumeroCasos(int countryId, string Languaje, string[] years, int? hospitalId)
+        public static string graficoETINumeroCasos(int countryId, string Languaje, string[] years, int? hospitalId)     // Grafico 9
         {
             //System.Diagnostics.Debug.WriteLine("graficoETINumeroCasos->START");
             ArrayList aData = new ArrayList();
@@ -3436,25 +3186,12 @@ namespace Paho.Controllers
                 string cTitu, cSeEp, cNuCa, cPoCa, cCaEt, cPoEC, cJS = "", cTemp = "";
                 jsonTextLB = "";
 
-                //if (countryId == 25 || countryId == 17 || countryId == 119)
-                if (Languaje == "ENG")
-                {
-                    cTitu = "Number of ILI cases per epidemiological week - " + string.Join(",", years);
-                    cSeEp = "Epidemiological Week";
-                    cNuCa = "Number of cases";
-                    cPoCa = "Percentage of ILI cases of total consultations";
-                    cCaEt = "Number of cases ILI";
-                    cPoEC = "% ILI of total consultations";
-                }
-                else
-                {//
-                    cTitu = "Número de casos ETI por semana epidemiológica - " + string.Join(",", years);
-                    cSeEp = "Semana epidemiológica";
-                    cNuCa = "Número de casos";
-                    cPoCa = "Porcentaje de casos ETI del total de consultas";
-                    cCaEt = "Número de casos ETI";
-                    cPoEC = "% ETI del total de consultas";
-                }
+                cTitu = SgetMsg("viewSituationalGraph9Title", countryId, Languaje) + " - " + string.Join(",", years);
+                cSeEp = SgetMsg("viewSituationalGraph9XAxisTitle", countryId, Languaje);
+                cNuCa = SgetMsg("viewSituationalGraph9YAxisTitle", countryId, Languaje);
+                cPoCa = SgetMsg("viewSituationalGraph9YAxisTitle2", countryId, Languaje);
+                cCaEt = SgetMsg("viewSituationalGraph9Series1Label", countryId, Languaje);
+                cPoEC = SgetMsg("viewSituationalGraph9Series2Label", countryId, Languaje);
 
                 jsonTextLB = jsonTextLB + "{\"" + "graph" + "\":";
                 jsonTextLB = jsonTextLB + "{\"" + "graphTitle" + "\":\"" + cTitu + "\",";
@@ -3571,25 +3308,12 @@ namespace Paho.Controllers
                 string cTitu, cSeEp, cNuCa, cPoCa, cInPo, cPoEP, cJS = "", cTemp = "";
                 jsonTextLB = "";
 
-                //if (countryId == 25 || countryId == 17 || countryId == 119)
-                if (Languaje == "ENG")
-                {
-                    cTitu = "Number of influenza positive ILI cases per epidemiological week - " + string.Join(",", years) + " (percentage of influenza positive cases in all ILI cases)";
-                    cSeEp = "Epidemiological Week";
-                    cNuCa = "Number of positive cases";
-                    cPoCa = "Percentage of positive cases";
-                    cInPo = "Influenza positive ILI cases";
-                    cPoEP = "% of influenza positive ILI cases";
-                }
-                else
-                {//
-                    cTitu = cTitu = "Número de casos ETI positivos a influenza por semana epidemiológica - " + string.Join(",", years) + " (porcentaje de casos positivos a influenza de todos casos de ETI)";
-                    cSeEp = "Semana epidemiológica";
-                    cNuCa = "Número de casos";
-                    cPoCa = "Porcentaje de casos positivos";
-                    cInPo = "Casos ETI positivos a influenza";
-                    cPoEP = "% de casos ETI positivos a influenza";
-                }
+                cTitu = SgetMsg("viewSituationalGraph10Title", countryId, Languaje) + " - " + string.Join(",", years) + " " + SgetMsg("viewSituationalGraph10Title2", countryId, Languaje);
+                cSeEp = SgetMsg("viewSituationalGraph10XAxisTitle", countryId, Languaje);
+                cNuCa = SgetMsg("viewSituationalGraph10YAxisTitle", countryId, Languaje);
+                cPoCa = SgetMsg("viewSituationalGraph10YAxisTitle2", countryId, Languaje);
+                cInPo = SgetMsg("viewSituationalGraph10Series1Label", countryId, Languaje);
+                cPoEP = SgetMsg("viewSituationalGraph10Series2Label", countryId, Languaje);
 
                 jsonTextLB = jsonTextLB + "{\"" + "graph" + "\":";
                 jsonTextLB = jsonTextLB + "{\"" + "graphTitle" + "\":\"" + cTitu + "\",";
@@ -3679,7 +3403,7 @@ namespace Paho.Controllers
             }
         }//END recuperarDatosETIPositivos
 
-        public string graficoIRAGFallecidosxGE(int countryId, string Languaje, string[] years, int? HospitalID_)
+        public string graficoIRAGFallecidosxGE(int countryId, string Languaje, string[] years, int? HospitalID_)    // Grafico 12
         {
             //System.Diagnostics.Debug.WriteLine("graficoIRAGFallecidosxGE->START");
             ArrayList aData = new ArrayList();
@@ -3687,34 +3411,19 @@ namespace Paho.Controllers
             string storedProcedure = "FLUID_DEATHS_IRAG";
             var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
-            /*var user = UserManager.FindById(User.Identity.GetUserId());
-            if (user.Institution.AccessLevel == AccessLevel.SelfOnly && HospitalID_ == 0) { HospitalID_ = Convert.ToInt32(user.Institution.ID); }*/
-            //if (user.Institution.AccessLevel == AccessLevel.Area && Area == 0) { AreaID_ = Convert.ToInt32(user.Institution.AreaID); }
             //****
             try
             {
                 for (int nI = 0; nI < years.Length; ++nI)
-                {
                     recuperarDatosIRAGFallecidosxGE(consString, storedProcedure, countryId, HospitalID_, Int32.Parse(years[nI]), aData);
-                }
+
                 //**** Crear el JSON  
                 string cTitu, cSeEp, cNuCa, cJS = "", cTemp = "";
                 jsonTextLB = "";
 
-                //if (countryId == 25 || countryId == 17 || countryId == 119)
-                if (Languaje == "ENG")
-                {
-                    cTitu = "Distribution of SARI deaths by age groups per epidemiological week - " + string.Join(",", years);
-                    cSeEp = "Epidemiological Week";
-                    cNuCa = "Number of cases";
-                }
-                else
-                {
-                    cTitu = "Distribución de total de casos de IRAG por  grupos de edad y semana epidemiológica - " + string.Join(",", years);
-                    cSeEp = "Semana Epidemiológica";
-                    cNuCa = "Número de Casos";
-                }
-
+                cTitu = SgetMsg("viewSituationalGraph12Title", countryId, Languaje) + " - " + string.Join(",", years);
+                cSeEp = SgetMsg("viewSituationalGraph12XAxisTitle", countryId, Languaje);
+                cNuCa = SgetMsg("viewSituationalGraph12YAxisTitle", countryId, Languaje);
                 //****
                 jsonTextLB = jsonTextLB + "{\"" + "graph" + "\":";
                 jsonTextLB = jsonTextLB + "{\"" + "graphTitle" + "\":\"" + cTitu + "\",";
@@ -3839,13 +3548,6 @@ namespace Paho.Controllers
                             {
                                 cAnio = reader.GetValue(1).ToString();
                                 cSema = reader.GetValue(2).ToString();
-                                /*cGE1 = ((int)reader.GetValue(3)).ToString();
-                                cGE2 = ((int)reader.GetValue(4)).ToString();
-                                cGE3 = ((int)reader.GetValue(5)).ToString();
-                                cGE4 = ((int)reader.GetValue(6)).ToString();
-                                cGE5 = ((int)reader.GetValue(7)).ToString();
-                                cGE6 = ((int)reader.GetValue(8)).ToString();
-                                cGE7 = ((int)reader.GetValue(9)).ToString();*/
 
                                 cGE1 = "0";
                                 if (reader.GetValue(3) != System.DBNull.Value)
@@ -3877,14 +3579,6 @@ namespace Paho.Controllers
 
                                 if (countryId == 25)
                                 {
-                                    /*
-                                    cGE1 = "0";
-                                    if (reader.GetValue() != System.DBNull.Value)
-                                        cGE1 = ((int)reader.GetValue()).ToString();
-                                    */
-                                    /*cGE8 = ((int)reader.GetValue(10)).ToString();
-                                    cGE9 = ((int)reader.GetValue(11)).ToString();*/
-
                                     cGE8 = "0";
                                     if (reader.GetValue(10) != System.DBNull.Value)
                                         cGE8 = ((int)reader.GetValue(10)).ToString();
@@ -3892,17 +3586,13 @@ namespace Paho.Controllers
                                     cGE9 = "0";
                                     if (reader.GetValue(11) != System.DBNull.Value)
                                         cGE9 = ((int)reader.GetValue(11)).ToString();
-                                    
+
                                     aData.Add(new string[] { cAnio, cSema, cGE1, cGE2, cGE3, cGE4, cGE5, cGE6, cGE7, cGE8, cGE9 });
                                 }
                                 else
                                 {
                                     if (countryId == 17 || countryId == 119)
                                     {
-                                        /*cGE8 = ((int)reader.GetValue(10)).ToString();
-                                        cGE9 = ((int)reader.GetValue(11)).ToString();
-                                        cGE10 = ((int)reader.GetValue(12)).ToString();*/
-
                                         cGE8 = "0";
                                         if (reader.GetValue(10) != System.DBNull.Value)
                                             cGE8 = ((int)reader.GetValue(10)).ToString();
@@ -3936,7 +3626,7 @@ namespace Paho.Controllers
             }
         }//END-recuperarDatosIRAGFallecidosxGE
 
-        public string graficoIRAGxGrupoEdad(int countryId, string Languaje, string[] years, int? HospitalID_)
+        public string graficoIRAGxGrupoEdad(int countryId, string Languaje, string[] years, int? HospitalID_)       // Grafico 11
         {
             //System.Diagnostics.Debug.WriteLine("graficoIRAGxGrupoEdad->START");
             ArrayList aData = new ArrayList();
@@ -3951,27 +3641,16 @@ namespace Paho.Controllers
             try
             {
                 for (int nI = 0; nI < years.Length; ++nI)
-                {
                     recuperarDatosIRAGxGrupoEdad(consString, storedProcedure, countryId, HospitalID_, Int32.Parse(years[nI]), aData);
-                }
+
                 //**** Crear el JSON
                 string cTitu, cSeEp, cNuCa, cJS = "", cTemp = "";
 
                 jsonTextLB = "";
 
-                //if (countryId == 25 || countryId == 17)
-                if (Languaje == "ENG")
-                {
-                    cTitu = "Distribution of total SARI cases by age group and epidemiological week - " + string.Join(",", years);
-                    cSeEp = "Epidemiological Week";
-                    cNuCa = "Number of cases";
-                }
-                else
-                {
-                    cTitu = "Distribución de total de casos de IRAG por  grupos de edad y semana epidemiológica - " + string.Join(",", years);
-                    cSeEp = "Semana Epidemiológica";
-                    cNuCa = "Número de Casos";
-                }
+                cTitu = SgetMsg("viewSituationalGraph11Title", countryId, Languaje) + " - " + string.Join(",", years);
+                cSeEp = SgetMsg("viewSituationalGraph11XAxisTitle", countryId, Languaje);
+                cNuCa = SgetMsg("viewSituationalGraph11YAxisTitle", countryId, Languaje);
 
                 jsonTextLB = jsonTextLB + "{\"" + "graph" + "\":";
                 jsonTextLB = jsonTextLB + "{\"" + "graphTitle" + "\":\"" + cTitu + "\",";
@@ -4013,7 +3692,7 @@ namespace Paho.Controllers
 
                 cJS = "[" + cJS + "]";
                 jsonTextLB = jsonTextLB + cJS + "},";
-                               
+
                 if (countryId == 25)
                 {
                     jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + "Under 6 months" + "\",";
