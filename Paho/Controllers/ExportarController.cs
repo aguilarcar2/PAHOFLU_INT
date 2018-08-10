@@ -309,6 +309,7 @@ namespace Paho.Controllers
                 int? HospitalID_ = (HospitalID > 0) ? HospitalID : 0;
                 int? RegionID_ = (RegionID >= 0) ? RegionID : (user.Institution.cod_region_institucional ?? 0);
                 string Languaje_ = user.Institution.Country.Language ?? "SPA";
+                string Country_Code = user.Institution.Country.Code;
 
                 var reportCountry = db.ReportsCountries.FirstOrDefault(s => s.ID == ReportCountry);
                 int reportID = reportCountry.ReportID;//contiene la FK para obtener el ID del reporte en la tabla Report
@@ -391,7 +392,7 @@ namespace Paho.Controllers
                             AppendDataToExcel_IndDes(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, AreaID_);        //#### CAFQ
                         else if (reportTemplate == "RE1")
                             AppendDataToExcel_REVELAC(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, AreaID_);        //#### CAFQ
-						else if (reportTemplate == "FLUID")
+						else if (reportTemplate.ToUpper() == "FLUID")
                         {
 
                             var contador = 0;
@@ -457,7 +458,7 @@ namespace Paho.Controllers
                 //return new FileStreamResult(ms, "application/xlsx")
                 //ExcelPackage.ExportAsFixedFormat(Microsoft.Office.Interop.Excel.XlFixedFormatType.xlTypePDF, outputPath);
 
-                string nombFile = reportCountry.description == "" ? "Exportable_" : reportCountry.description.ToString().Replace("%", "_").Replace(" ", "_") + "_";            //#### CAFQ
+                string nombFile = reportCountry.description == "" ? "Exportable_" : Country_Code+ "_" + reportCountry.description.ToString().Replace("%", "_").Replace(" ", "_") + "_";            //#### CAFQ
 
 				// string nombFile = reportCountry.description == "" ? "Exportable_" : Country_Code  + "_" + reportCountry.description.ToString().Replace("%", "_").Replace(" ", "_") + "_" ;            //#### CAFQ
                 return new FileStreamResult(ms, "application/xlsx")

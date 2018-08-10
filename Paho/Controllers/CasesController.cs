@@ -2635,11 +2635,14 @@ namespace Paho.Controllers
             var Sample_3_process = flucase.CaseLabTests.Where(x => x.SampleNumber == 3).OrderBy(y => y.flow_test);
             var flow_complete_Sample_3 = (Sample_3_process.Count() > 0) ? false : (flucase.SampleDate3 != null && flucase.Processed3 != null) ? false : true;
 
-            var actual_flow_Sample_1 = 0;
+            var any_lab_nphl_in_flow = db.InstitutionsConfiguration.Where(z => z.InstitutionParentID == flucase.HospitalID && z.InstitutionTo.NPHL == true).Any();
+
+            var actual_flow_Sample_1 =  0;
             var preview_flow_sample_1 = 0;
+            var count = 0;
             foreach (CaseLabTest Sample_test in Sample_1_process)
             {
-                preview_flow_sample_1 = actual_flow_Sample_1;
+                preview_flow_sample_1 = (any_lab_nphl_in_flow == true && count < 1) ? actual_flow_Sample_1 + 1 : actual_flow_Sample_1 ;
                 actual_flow_Sample_1 = (Int32)Sample_test.flow_test;
 
                 if ((actual_flow_Sample_1 - preview_flow_sample_1) == 1 || (actual_flow_Sample_1 - preview_flow_sample_1) == 0)
@@ -2651,14 +2654,16 @@ namespace Paho.Controllers
                     flow_complete_Sample_1 = false;
                     break;
                 }
+                count = +1;
 
             }
 
             var actual_flow_Sample_2 = 0;
             var preview_flow_sample_2 = 0;
+             count = 0;
             foreach (CaseLabTest Sample_test in Sample_2_process)
             {
-                preview_flow_sample_2 = actual_flow_Sample_2;
+                preview_flow_sample_2 = (any_lab_nphl_in_flow == true && count < 1) ? actual_flow_Sample_2 + 1 : actual_flow_Sample_2;
                 actual_flow_Sample_2 = (Int32)Sample_test.flow_test;
 
                 if ((actual_flow_Sample_2 - preview_flow_sample_2) == 1 || (actual_flow_Sample_2 - preview_flow_sample_2) == 0)
@@ -2670,13 +2675,15 @@ namespace Paho.Controllers
                     flow_complete_Sample_2 = false;
                     break;
                 }
+                count = +1;
             }
 
             var actual_flow_Sample_3 = 0;
             var preview_flow_sample_3 = 0;
+            count = 0;
             foreach (CaseLabTest Sample_test in Sample_3_process)
             {
-                preview_flow_sample_3 = actual_flow_Sample_3;
+                preview_flow_sample_3 = (any_lab_nphl_in_flow == true && count < 1) ? actual_flow_Sample_3 + 1 : actual_flow_Sample_3;
                 actual_flow_Sample_3 = (Int32)Sample_test.flow_test;
 
                 if ((actual_flow_Sample_3 - preview_flow_sample_3) == 1 || (actual_flow_Sample_3 - preview_flow_sample_3) == 0)
@@ -2688,7 +2695,111 @@ namespace Paho.Controllers
                     flow_complete_Sample_3 = false;
                     break;
                 }
+                count = +1;
             }
+
+            // Revisión si los datos están completos
+
+            var data_sample = false;
+            var data_sample_1 = false;
+            var data_sample_2 = false;
+            var data_sample_3 = false;
+
+            if (flucase.SampleDate == null && flucase.SampleDate2 == null && flucase.SampleDate3 == null)
+                data_sample = true;
+            else
+                data_sample = false;
+
+            if (flucase.SampleDate != null)
+            {
+                if  (user.Institution.NPHL == true) {
+                    if (flucase.NPHL_Processed != null)
+                    {
+                        data_sample_1 = true;
+                    }
+                    else
+                    {
+                        data_sample_1 = false;
+                    }
+                }
+                else
+                {
+                    if (flucase.Processed != null)
+                    {
+                        data_sample_1 = true;
+                    }
+                    else
+                    {
+                        data_sample_1 = false;
+                    }
+                }
+            }
+            else
+            {
+                data_sample_1 = true;
+            }
+
+            if (flucase.SampleDate2 != null)
+            {
+                if (user.Institution.NPHL == true)
+                {
+                    if (flucase.NPHL_Processed_2 != null)
+                    {
+                        data_sample_2 = true;
+                    }
+                    else
+                    {
+                        data_sample_2 = false;
+                    }
+                }
+                else
+                {
+                    if (flucase.Processed2 != null)
+                    {
+                        data_sample_2 = true;
+                    }
+                    else
+                    {
+                        data_sample_2 = false;
+                    }
+                }
+            }
+            else
+            {
+                data_sample_2 = true;
+            }
+
+            if (flucase.SampleDate3 != null)
+            {
+                if (user.Institution.NPHL == true)
+                {
+                    if (flucase.NPHL_Processed_3 != null)
+                    {
+                        data_sample_3 = true;
+                    }
+                    else
+                    {
+                        data_sample_3 = false;
+                    }
+                }
+                else
+                {
+                    if (flucase.Processed3 != null)
+                    {
+                        data_sample_3 = true;
+                    }
+                    else
+                    {
+                        data_sample_3 = false;
+                    }
+                }
+            }
+            else
+            {
+                data_sample_3 = true;
+            }
+
+            data_sample = data_sample_1 & data_sample_2 & data_sample_3;
 
 
             if ((user.Institution is Lab && existrecordlabtest == true) || user.Institution.NPHL == true)
@@ -2746,18 +2857,23 @@ namespace Paho.Controllers
                     {
                         flucase.statement = 2;
                     }
-                    else if (flow_complete_Sample_1 == true && flow_complete_Sample_2 == true && flow_complete_Sample_3 == true)
+                    else if (flow_complete_Sample_1 == true && flow_complete_Sample_2 == true && flow_complete_Sample_3 == true && data_sample == true)
                     {
                         flucase.statement = DataStatement;
-                    }
-                    else if ( flow_complete_Sample_1 == true || flow_complete_Sample_2 == true || flow_complete_Sample_3 == true)
-                    {
-                        flucase.statement = flucase.statement;
                     }
                     else if (institutionsConfiguration.First().OpenAlways == true && (flow_temp - 1) == flow_original_flucase)
                     {
                         flucase.statement = DataStatement;
                     }
+                    else if (data_sample == false)
+                    {
+                        flucase.statement = 1;
+                    }
+                    else if ( flow_complete_Sample_1 == true || flow_complete_Sample_2 == true || flow_complete_Sample_3 == true)
+                    {
+                        flucase.statement = flucase.statement;
+                    }
+
                     
             }
 
