@@ -137,7 +137,7 @@
                     }
 
                     @if(User.IsInRole("Admin") || User.IsInRole("Report")) {
-						<li dstyle = "display:none;"> @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuFluidView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Fluid", new { area = "" }, new { ID = "FluidM" }) </li>
+						<li style = "display:none;"> @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuFluidView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Fluid", new { area = "" }, new { ID = "FluidM" }) </li>
                     }
 
                     @if (User.IsInRole("Admin"))
