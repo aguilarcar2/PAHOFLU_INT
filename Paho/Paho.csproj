@@ -1414,7 +1414,9 @@
     <Content Include="Scripts\ammap\maps\svg\bermudaHigh.svg" />
     <Content Include="Scripts\ammap\maps\svg\bhutanHigh.svg" />
     <Content Include="Scripts\ammap\maps\svg\bhutanLow.svg" />
-    <Content Include="Scripts\ammap\maps\svg\boliviaHigh.svg" />
+    <Content Include="Scripts\ammap\maps\svg\boliviaHigh.svg">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Scripts\ammap\maps\svg\boliviaLow.svg" />
     <Content Include="Scripts\ammap\maps\svg\bosniaHerzegovinaCantonsHigh.svg" />
     <Content Include="Scripts\ammap\maps\svg\bosniaHerzegovinaCantonsLow.svg" />
@@ -1444,15 +1446,21 @@
     <Content Include="Scripts\ammap\maps\svg\capeVerdeLow.svg" />
     <Content Include="Scripts\ammap\maps\svg\caribbeanNetherlandsHigh.svg" />
     <Content Include="Scripts\ammap\maps\svg\caribbeanNetherlandsLow.svg" />
-    <Content Include="Scripts\ammap\maps\svg\caymanIslandsHigh.svg" />
-    <Content Include="Scripts\ammap\maps\svg\caymanIslandsLow.svg" />
+    <Content Include="Scripts\ammap\maps\svg\caymanIslandsHigh.svg">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Scripts\ammap\maps\svg\caymanIslandsLow.svg">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Scripts\ammap\maps\svg\centralAfricanRepublicHigh.svg" />
     <Content Include="Scripts\ammap\maps\svg\centralAfricanRepublicLow.svg" />
     <Content Include="Scripts\ammap\maps\svg\chadHigh.svg" />
     <Content Include="Scripts\ammap\maps\svg\chadLow.svg" />
     <Content Include="Scripts\ammap\maps\svg\channelIslandsHigh.svg" />
     <Content Include="Scripts\ammap\maps\svg\chileHigh.svg" />
-    <Content Include="Scripts\ammap\maps\svg\chileLow.svg" />
+    <Content Include="Scripts\ammap\maps\svg\chileLow.svg">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Scripts\ammap\maps\svg\chinaHigh.svg" />
     <Content Include="Scripts\ammap\maps\svg\chinaLow.svg" />
     <Content Include="Scripts\ammap\maps\svg\christmasIslandHigh.svg" />
@@ -1474,8 +1482,12 @@
     <Content Include="Scripts\ammap\maps\svg\cookIslandsHigh.svg" />
     <Content Include="Scripts\ammap\maps\svg\cookIslandsLow.svg" />
     <Content Include="Scripts\ammap\maps\svg\costaRicaHEA.svg" />
-    <Content Include="Scripts\ammap\maps\svg\costaRicaHigh.svg" />
-    <Content Include="Scripts\ammap\maps\svg\costaRicaINS.svg" />
+    <Content Include="Scripts\ammap\maps\svg\costaRicaHigh.svg">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Scripts\ammap\maps\svg\costaRicaINS.svg">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Scripts\ammap\maps\svg\costaRicaLow.svg" />
     <Content Include="Scripts\ammap\maps\svg\croatiaHigh.svg" />
     <Content Include="Scripts\ammap\maps\svg\croatiaLow.svg" />
@@ -1595,9 +1607,13 @@
     <Content Include="Scripts\ammap\maps\svg\ivoryCoastHigh.svg" />
     <Content Include="Scripts\ammap\maps\svg\ivoryCoastLow.svg" />
     <Content Include="Scripts\ammap\maps\svg\jamaicaCONDLow.svg" />
-    <Content Include="Scripts\ammap\maps\svg\jamaicaHigh.svg" />
+    <Content Include="Scripts\ammap\maps\svg\jamaicaHigh.svg">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Scripts\ammap\maps\svg\jamaicaLow.svg" />
-    <Content Include="Scripts\ammap\maps\svg\jamaicaPARRLow.svg" />
+    <Content Include="Scripts\ammap\maps\svg\jamaicaPARRLow.svg">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Scripts\ammap\maps\svg\jamaicaREGILow.svg" />
     <Content Include="Scripts\ammap\maps\svg\japanHigh.svg" />
     <Content Include="Scripts\ammap\maps\svg\japanLow.svg" />
@@ -2113,10 +2129,12 @@
     <None Include="Properties\PublishProfiles\aaaa.pubxml" />
     <None Include="Properties\PublishProfiles\CAFQ.pubxml" />
     <None Include="Properties\PublishProfiles\CAFQ01.pubxml" />
+    <None Include="Properties\PublishProfiles\CAFQ_PAHO.pubxml" />
     <None Include="Properties\PublishProfiles\INTERNATIONAL.pubxml" />
     <None Include="Properties\PublishProfiles\INT_PUBLISH.pubxml" />
     <None Include="Properties\PublishProfiles\PAHO.pubxml" />
     <None Include="Properties\PublishProfiles\PAHO2.pubxml" />
+    <None Include="Properties\PublishProfiles\PAHOCAFQ.pubxml" />
     <None Include="Properties\PublishProfiles\PahoEN.pubxml" />
     <None Include="Properties\PublishProfiles\PAHOFLU_INT.pubxml" />
     <None Include="Properties\PublishProfiles\PahoSPA %282%29.pubxml">
