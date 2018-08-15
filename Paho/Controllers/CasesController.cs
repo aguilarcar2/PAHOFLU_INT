@@ -400,10 +400,8 @@ namespace Paho.Controllers
                     }
                 }
             } else if (InstitutionDB == 0 ) {
-                //flucases = db.FluCases.Where(f => f.CountryID == UsrCtry) as IQueryable<FluCase>;
                 flucases = db.FluCases.Where(f => f.CountryID == UsrCtry);
             } else {
-                //flucases = db.FluCases.Where(f => f.HospitalID == InstitutionDB) as IQueryable<FluCase>;
                 flucases = db.FluCases.Where(f => f.HospitalID == InstitutionDB);
             }
 
@@ -441,8 +439,6 @@ namespace Paho.Controllers
 
             if (ITy == 2)
             {
-                //if ( InstitutionDB != 0) var user = UserManager.FindById(User.Identity.GetUserId());
-                //var usrCtry = user.Institution.CountryID;
                 var labs = db.Institutions.Where(f => f.ID == institutionId);
                 var list_labs = labs.ToList();
                 var institutionsConfiguration = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>()
@@ -470,10 +466,6 @@ namespace Paho.Controllers
                     flucases = flucases.Where(f => f.CaseStatus == null);
                     if (institutionsConfiguration.Any())
                     {
-                        //&& (h.Hospital.NPHL == true && h.NPHL_Processed != false)
-                        //flucases = flucases.Where(h => (h.IsSample == true && h.Processed != false && (h.FinalResult == null || h.FinalResult != "N")) && ( ((h.flow == (institutionsConfiguration.Where(i=> i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j=> j.Priority).ToList().FirstOrDefault() - 1)) && (h.statement == 2 || h.statement == null) ) || ((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault())) && (h.statement == 1 || h.statement == null))) );
-
-                        //flucases = flucases.Where(h => (h.IsSample == true && (h.Processed != false || (h.flow > 1 && h.NPHL_Processed != false))) && (((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault() - 1)) && (h.statement == 2 || h.statement == null)) || ((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault())) && (h.statement == 1 || h.statement == null)))); //BK 20180504_1626
 
                         if (institutionsConfiguration.Where(c => c.InstitutionToID == user.InstitutionID && c.InstitutionFrom.NPHL == true).Any())
                         {
@@ -482,17 +474,10 @@ namespace Paho.Controllers
 
                         flucases = flucases.Where(h => (h.IsSample == true && h.Processed != false) && (((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault() - 1)) && (h.statement == 2 || h.statement == null)) || ((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault())) && (h.statement == 1 || h.statement == null))));
 
-                        //flucases = flucases.Where(i => i.CaseLabTests.Where(x => ((x.inst_conf_end_flow_by_virus == 0 || x.inst_conf_end_flow_by_virus == null) && x.flow_test <= institutionsConfiguration.Where(v => v.InstitutionParentID == db.FluCases.Where( d=> d.ID == x.FluCaseID).FirstOrDefault().HospitalID && i.InstitutionToID == user.Institution.ID).FirstOrDefault().Priority) || x.statement_test == 1).Any() || i.CaseLabTests.Count == 0);
                         //Es la escepción únicamente para AZP  -- tengo que mejorar el query para hacerlo automatico
                         if (user.Institution.CountryID != 25)
                             flucases = flucases.Where(i => i.CaseLabTests.Where(x => (x.inst_conf_end_flow_by_virus == 0 || x.inst_conf_end_flow_by_virus == null)  || x.statement_test == 1).Any() || i.CaseLabTests.Count == 0);
 
-                        //var ListCloseCase = db.InstitutionConfEndFlowByVirus.OfType<InstitutionConfEndFlowByVirus>()
-                        //                .Where(i => institutionsConfiguration.Select(j => j.ID).ToList().Contains(i.id_InstCnf));
-
-                        //if (ListCloseCase.Any())
-                        //{
-                        //}
                     }
                     else
                     {
@@ -500,8 +485,6 @@ namespace Paho.Controllers
                         flucases = flucases.Where(h => h.flow == 0);
                     }
 
-                    //flucases = flucases.Where(h => !h.CaseLabTests.Where(i => i.LabID == UsrInstitution).Any());
-                    //flucases = flucases.Where(f => f.CaseStatus != null);
                 }
 
 
@@ -515,7 +498,6 @@ namespace Paho.Controllers
             if (SPend == true && ITy != 2)
             {
                 flucases = flucases.Where(f => (f.Surv== 1 && (f.Destin == "" || f.Destin == null)) || (f.CaseStatus != 3 && f.CaseStatus != 2 )  );
-                //flucases = flucases.Where(f => f.CaseStatus != null);
             }
 
             if (SNotiDateS != "" && SNotiDateS != "undefined")
@@ -529,7 +511,6 @@ namespace Paho.Controllers
             if (Sstatus != "" && Sstatus != "undefined")
             {
                 flucases = flucases.Where(f => f.Destin == Sstatus);
-                //flucases = flucases.Where(f => f.CaseStatus != null);
             }
 
 
@@ -540,14 +521,12 @@ namespace Paho.Controllers
             if (SName != "" && SName != "undefined")
             {
                 flucases = flucases.Where(z => string.Concat(z.FName1.Trim().ToUpper(), " ", z.FName2.Trim().ToUpper()).Contains(SName.Trim().ToUpper()));
-                //flucases = flucases.Where(g => g.FName1.ToUpper().Contains(SName.ToUpper()) || g.FName2.ToUpper().Contains(SName.ToUpper()));
             }
 
             if (SLastName != "" && SLastName != "undefined")
             {
                 flucases = flucases.Where(z => string.Concat(z.LName1.Trim().ToUpper(), " ", z.LName2.Trim().ToUpper()).Contains(SLastName.Trim().ToUpper()));
 
-                //flucases = flucases.Where(g => g.LName1.ToUpper().Contains(SLastName.ToUpper()) || g.LName2.ToUpper().Contains(SLastName.ToUpper()));
             }
 
             if (ScaseNo != "")
@@ -562,7 +541,6 @@ namespace Paho.Controllers
 
             flucases = flucases.Skip(pageIndex * pageSize).Take(1500).Take(pageSize);
 
-            //flucases = flucases.Skip(pageIndex * pageSize).Take(pageSize);
             var jsondata = new List<Object>();
 
  
@@ -572,7 +550,7 @@ namespace Paho.Controllers
                                  {
                                      surv_ID = flucase.Surv,
                                      surv_IDInusual = flucase.SurvInusual,    //#### CAFQ: 180604 - Jamaica Universal
-                                     ready_close = flucase.flow == flucase.statement ? 1 : 0,
+                                     ready_close = (flucase.flow == db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID).OrderByDescending(x => x.Priority).FirstOrDefault().Priority && flucase.statement == 2) ? 1 : 0,
                                      id_D = flucase.ID,
                                      H_D = flucase.HospitalDate,
                                      LN_D = flucase.LName1 + " " + flucase.LName2 ?? "",
@@ -596,10 +574,8 @@ namespace Paho.Controllers
                                        cell = new string[]
                                      {
                                          //#### CAFQ: 180604 - Jamaica Universal
-                                         //"<img src='/Content/themes/base/images/" + x.surv_ID.ToString() + "_" + user.Institution.Country.Language.ToString() + ".png' alt='"+ (x.surv_ID == 1 ? "SARI":"ILI") + "'/>",
                                          "<img src='/Content/themes/base/images/" + ((UsrCtry==17 && (bool)x.surv_IDInusual==true) ? Convert.ToInt32((bool)x.surv_IDInusual).ToString() + "_" + "UNI" + ".png' alt='" + "UNIVERSAL" : x.surv_ID.ToString() + "_" + language + ".png' alt='" + (x.surv_ID == 1 ? "SARI":"ILI")) + "'/>",
                                          x.id_D.ToString(),
-                                         //x.H_D.ToString("d", CultureInfo.CreateSpecificCulture("es-GT")),
                                          x.H_D.ToString((user.Institution.CountryID==17) ? "yyyy/MM/dd": "dd/MM/yyyy" ),
                                          x.LN_D,
                                          x.FN_D,
@@ -609,10 +585,8 @@ namespace Paho.Controllers
                                          x.VR_PCR_D == null ? "" : x.VR_PCR_D.TestResultID == null ? "": x.VR_PCR_D.TestResultID.ToString() == "P" ?  x.VR_PCR_D.CatVirusType == null ? "" : x.VR_PCR_D.CatVirusType.SPA.Contains("Influenza A") == true ? x.VR_PCR_D.CatVirusSubType == null ? "" : (user.Institution.Country.Language == "SPA" ?  x.VR_PCR_D.CatVirusSubType.SPA : x.VR_PCR_D.CatVirusSubType.ENG ): (user.Institution.Country.Language == "SPA" ? x.VR_PCR_D.CatVirusType.SPA : x.VR_PCR_D.CatVirusType.ENG) :  x.VR_PCR_D.TestResultID == null ? "" : user.Institution.Country.Language == "SPA" ? db.CatTestResult.Where(j=> j.value == x.VR_PCR_D.TestResultID.ToString()).FirstOrDefault().description : db.CatTestResult.Where(j=> j.value == x.VR_PCR_D.TestResultID.ToString()).FirstOrDefault().ENG,
                                          x.IS_D == false ? getMsg("msgFlucasesMessageNoSample") : x.FR_D == "P" ? x.FR_D_C == null ? "" : (user.Institution.Country.Language == "SPA" ? x.FR_D_C.SPA : x.FR_D_C.ENG) : (x.P_D == false) ? getMsg("msgFlucasesMessageNotProcessed") : x.FR_D == "N" ? getMsg("msgFlucasesMessageNegative") : x.FR_D == "I" ? getMsg("msgFlucasesMessageIndeterminated") : ""  ,
                                          x.HEALTH_INST ?? "",
-                                         //x.CS_D_Cat == null ? "<img src='/Content/themes/base/images/open.png' alt='Sin estatus'/>" +  getMsg("msgFlucasesMessageNoStatus") : (user.Institution.Country.Language == "SPA" ? "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.SPA+"'/> " + x.CS_D_Cat.SPA : "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.ENG+"'/> " + x.CS_D_Cat.ENG )
-                                         x.ready_close == 1 ? "<img src='/Content/themes/base/images/ReadyClose.png' alt='Ready_to_close'/> " : "" + (x.CS_D_Cat == null ? "<img src='/Content/themes/base/images/open.png' alt='Sin estatus'/>" +  getMsg("msgFlucasesMessageNoStatus") :
+                                         x.ready_close == 1 ? "<img src='/Content/themes/base/images/ReadyClose.png' alt='"+getMsg("msgFlucasesMessageReadytoClose")+"'/> "  : "" + (x.CS_D_Cat == null ? "<img src='/Content/themes/base/images/open.png' alt='"+getMsg("msgFlucasesMessageNoStatus")+"'/>" +  getMsg("msgFlucasesMessageNoStatus") :
                                                                 (user.Institution.Country.Language == "SPA" ? "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.SPA+"'/> " + x.CS_D_Cat.SPA : "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.ENG+"'/> " + x.CS_D_Cat.ENG ))
-                                         //x.CS_D == 1 ?  "<img src='/Content/themes/base/images/open.png' alt='En estudio'/>" + " Under study" : x.CS_D == 2 ? "<img src='/Content/themes/base/images/close.png' alt='Descartado'/>" + " Discarded" : x.CS_D == 3 ? "<img src='/Content/themes/base/images/close.png' alt='Cerrado'/>" + " Closed"  : "<img src='/Content/themes/base/images/open.png' alt='Sin estatus'/>" + " No status"
                                      }
                                    }).ToArray();
 
