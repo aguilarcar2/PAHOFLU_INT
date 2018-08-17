@@ -679,6 +679,7 @@ namespace Paho.Models
         public bool Active { get; set; }
         public virtual Country Country { get; set; }
         public virtual Area Area { get; set; }
+        public bool? sentinel { get; set; }
         [DisplayName("IRAG:")]
         public bool SARI { get; set; }
         [DisplayName("ETI:")]
@@ -1415,6 +1416,22 @@ namespace Paho.Models
         public DateTime DateAction { get; set; }
     }
 
+    public class GraphCache
+    {
+        public int ID { get; set; }
+        public DateTime? FechaCache { get; set; }
+        public string Graph { get; set; }
+        public string Year { get; set; }
+        public int CountryID { get; set; }
+        public int? RegionID { get; set; }
+        public int? StateID { get; set; }
+        public int? HospitalID { get; set; }
+        public int? IRAG { get; set; }
+        public int? ETI { get; set; }
+        public string GraphData { get; set; }
+
+    }
+
     public class VirusType
     {
         public int ID { get; set; }
@@ -1646,6 +1663,9 @@ namespace Paho.Models
         public DbSet<ImportLog> ImportedFileList { get; set; }
         public DbSet<CatPadronCR_ImportLog> ImportedFileListPadron { get; set; }
         public DbSet<RecordHistory> RecordHistories { get; set; }
+
+        // Graficas
+        public DbSet<GraphCache> GraphCache { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

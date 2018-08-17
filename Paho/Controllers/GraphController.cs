@@ -17,6 +17,7 @@ using System.Globalization;
 using System.Xml.Xsl;
 using System.Collections;
 using System.Web.Script.Serialization;
+using System.Data.Entity;
 //using System.Xml.XPath;
 
 namespace Paho.Controllers
@@ -2702,28 +2703,46 @@ namespace Paho.Controllers
                                             jsonGraphData = jsonText5;
                                             break;
                                     }
-                                    using (var command = new SqlCommand("SetGraphData", con) { CommandType = CommandType.StoredProcedure })
-                                    {
-                                        command.Parameters.Clear();
-                                        command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = CountryID_;
-                                        command.Parameters.Add("@Graph", SqlDbType.Text).Value = grafica;
-                                        command.Parameters.Add("@Year", SqlDbType.Text).Value = Year;
-                                        command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = RegionID_;
-                                        command.Parameters.Add("@State_ID", SqlDbType.Int).Value = StateID_;
-                                        command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = HospitalID_Cache;
-                                        command.Parameters.Add("@IRAG", SqlDbType.Int).Value = IRAG_;
-                                        command.Parameters.Add("@ETI", SqlDbType.Int).Value = ETI_;
-                                        command.Parameters.Add("@GraphData", SqlDbType.Text).Value = jsonGraphData;
-                                        con.Open();
-                                        using (var reader = command.ExecuteReader())
-                                        {
-                                            while (reader.Read())
-                                            {
-                                                resultGetGraphData = reader["GraphData"].ToString().Trim();
+                                    //using (var command = new SqlCommand("SetGraphData", con) { CommandType = CommandType.StoredProcedure })
+                                    //{
+                                    //    command.Parameters.Clear();
+                                    //    command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = CountryID_;
+                                    //    command.Parameters.Add("@Graph", SqlDbType.Text).Value = grafica;
+                                    //    command.Parameters.Add("@Year", SqlDbType.Text).Value = Year;
+                                    //    command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = RegionID_;
+                                    //    command.Parameters.Add("@State_ID", SqlDbType.Int).Value = StateID_;
+                                    //    command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = HospitalID_Cache;
+                                    //    command.Parameters.Add("@IRAG", SqlDbType.Int).Value = IRAG_;
+                                    //    command.Parameters.Add("@ETI", SqlDbType.Int).Value = ETI_;
+                                    //    command.Parameters.Add("@GraphData", SqlDbType.Text).Value = jsonGraphData;
+                                    //    con.Open();
+                                    //    using (var reader = command.ExecuteReader())
+                                    //    {
+                                    //        while (reader.Read())
+                                    //        {
+                                    //            resultGetGraphData = reader["GraphData"].ToString().Trim();
 
-                                            }
-                                        }
-                                    }
+                                    //        }
+                                    //    }
+                                    //}
+                                    // Cambio para la grabación de datos en el cache de la DB
+
+                                    GraphCache GraphCache;
+
+                                    GraphCache = new GraphCache();
+                                    GraphCache.CountryID = CountryID_;
+                                    GraphCache.FechaCache = DateTime.Now;
+                                    GraphCache.Graph = (grafica == null) ? "" : grafica;
+                                    GraphCache.Year = (Year == null) ? "2017" : Year;
+                                    GraphCache.RegionID = (RegionID_ == null) ? 0 : RegionID_;
+                                    GraphCache.StateID = (StateID_ == null) ? 0 : StateID_;
+                                    GraphCache.HospitalID = (HospitalID_ == null) ? 0 : HospitalID_;
+                                    GraphCache.IRAG = (IRAG_ == null) ? 0 : IRAG_;
+                                    GraphCache.ETI = (ETI_ == null) ? 0 : ETI_;
+                                    GraphCache.GraphData = (jsonGraphData == null) ? "" : jsonGraphData;
+
+                                    db.Entry(GraphCache).State = EntityState.Added;
+                                    db.SaveChanges();
                                 }
                             }
                             //Fin de la revisión de si existen los datos para la gráfica
