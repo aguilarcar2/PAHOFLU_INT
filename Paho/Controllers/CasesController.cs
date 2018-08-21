@@ -550,7 +550,7 @@ namespace Paho.Controllers
                                  {
                                      surv_ID = flucase.Surv,
                                      surv_IDInusual = flucase.SurvInusual,    //#### CAFQ: 180604 - Jamaica Universal
-                                     ready_close = (flucase.flow == db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID).OrderByDescending(x => x.Priority).FirstOrDefault().Priority && flucase.statement == 2) ? 1 : 0,
+                                     ready_close = ((flucase.flow == db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID).OrderByDescending(x => x.Priority).FirstOrDefault().Priority && flucase.statement == 2 ) || (flucase.IsSample == false) ) ? 1 : 0,
                                      id_D = flucase.ID,
                                      H_D = flucase.HospitalDate,
                                      LN_D = flucase.LName1 + " " + flucase.LName2 ?? "",
@@ -1934,8 +1934,7 @@ namespace Paho.Controllers
                     canConclude = true;
                 }
 
-                if (flucase.IsSample == false)
-                    canConclude = true;
+               
 
                 if (flucase.CaseLabTests.Count > 0)
                 {
@@ -2026,6 +2025,15 @@ namespace Paho.Controllers
                     }
                     canConclude_Sample_3 = flow_complete_Sample_3;
                 }
+
+                if (flucase.IsSample == false)
+                {
+                    canConclude = true;
+                    canConclude_Sample_1 = true;
+                    canConclude_Sample_2 = true;
+                    canConclude_Sample_3 = true;
+                }
+                    
 
             }
 

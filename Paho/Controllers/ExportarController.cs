@@ -2891,7 +2891,8 @@ namespace Paho.Controllers
         }
         private void ConfigToExcel_FLUID(int countryId, string languaje_country, int? regionId, int? year, int? hospitalId, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int sheet, bool? insert_row)
         {
-            var excelWorksheet = excelWorkBook.Worksheets[sheet];
+            var excelWorksheet = excelWorkBook.Worksheets["Leyendas"];
+            //var excelWorksheet = excelWorkBook.Worksheets[sheet];
 
             if (year != null)
             {
@@ -2905,7 +2906,7 @@ namespace Paho.Controllers
                 excelWorksheet.Cells[2, 5].Value = Institution.Name.ToString();
 
             }
-            else if (regionId != null)
+            else if (regionId != null && regionId > 0)
             {
                 var Region_report = db.Regions.Find(regionId);
 
