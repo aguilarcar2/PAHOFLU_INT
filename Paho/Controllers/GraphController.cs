@@ -968,6 +968,7 @@ namespace Paho.Controllers
                         command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
                         command.Parameters.Add("@IRAG", SqlDbType.Int).Value = irag_;
                         command.Parameters.Add("@ETI", SqlDbType.Int).Value = eti_;
+                        command.CommandTimeout = 300;
 
                         con.Open();
 
@@ -2736,7 +2737,7 @@ namespace Paho.Controllers
                                     GraphCache.Year = (Year == null) ? "2017" : Year;
                                     GraphCache.RegionID = (RegionID_ == null) ? 0 : RegionID_;
                                     GraphCache.StateID = (StateID_ == null) ? 0 : StateID_;
-                                    GraphCache.HospitalID = (HospitalID_ == null) ? 0 : HospitalID_;
+                                    GraphCache.HospitalID = (HospitalID_ == null) ? 0 : HospitalID_Cache;
                                     GraphCache.IRAG = (IRAG_ == null) ? 0 : IRAG_;
                                     GraphCache.ETI = (ETI_ == null) ? 0 : ETI_;
                                     GraphCache.GraphData = (jsonGraphData == null) ? "" : jsonGraphData;
