@@ -516,7 +516,16 @@
         var flow_check = $.grep(app.Views.Lab.LabTests(), function (x) {         
             return x.EndFlow() === "TRUE";
         });
-        //if (($("#ITy").val() != 2) && self.UserRole() == "mod_epi" && app.Views.Hospital.CaseStatus() == "3") {
+        //Esta modificación es porque es necesario modificar todos los datos aunque no este cerrado el caso
+        if (($("#ITy").val() != 2) && self.URmod_epi() == true) {
+            console.log("aqui _ CaseStatus 1"); //
+            $("#tab-contact :input, #tab-GEO :input, #tab-hospital :input, #tab-risk :input, #tab-case :input").attr('disabled', false);
+            $("#tab-lab :input").prop('disabled', true);
+            $("a[href*='tab-case']").show();
+            $("#tab-case").show();
+            $("#CaseStatus").attr("disabled", true);
+            $("#tabs").tabs("refresh");
+        }
         if (($("#ITy").val() != 2) && self.URmod_epi() == true && app.Views.Hospital.CaseStatus() == "3") {
             console.log("aqui _ CaseStatus 1"); //
             $("#tab-contact :input, #tab-GEO :input, #tab-hospital :input, #tab-risk :input, #tab-case :input").attr('disabled', false);
