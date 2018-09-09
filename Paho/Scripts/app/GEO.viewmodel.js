@@ -338,7 +338,7 @@
                     msg += "\n" + msgValidationAreaRequired;
             }
                 
-            if ((!self.selectedStateId() || self.selectedStateId() == "") && self.UsrCountry() != 17 && self.UsrCountry() != 119) {
+            if ((!self.selectedStateId() || self.selectedStateId() == "") && self.UsrCountry() != 17 && self.UsrCountry() != 11 && self.UsrCountry() != 119) {
                 msg += "\n" + msgValidationStateRequired;
             }
 

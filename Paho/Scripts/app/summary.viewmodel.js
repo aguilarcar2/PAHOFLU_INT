@@ -68,6 +68,14 @@ function SummaryYearItem(data) {
         return (self.UsrCountry() == 9) ? false : true;
     }, self);
 
+    self.ActiveDOM = ko.computed(function () {
+        return (self.UsrCountry() == 11) ? true : false;
+    }, self);
+
+    self.NoActiveDOM = ko.computed(function () {
+        return (self.UsrCountry() == 11) ? false : true;
+    }, self);
+
     self.ActiveCAY = ko.computed(function () {
         return (self.UsrCountry() == 119) ? true : false;
     }, self);
@@ -132,6 +140,14 @@ function SummayItem(data) {
 
     self.NoActiveCOS = ko.computed(function () {
         return (self.UsrCountry() == 9) ? false : true;
+    }, self);
+
+    self.ActiveDOM = ko.computed(function () {
+        return (self.UsrCountry() == 11) ? true : false;
+    }, self);
+
+    self.NoActiveDOM = ko.computed(function () {
+        return (self.UsrCountry() == 11) ? false : true;
     }, self);
 
     self.ActiveCAY = ko.computed(function () {
@@ -498,6 +514,14 @@ function SummaryViewModel(app, dataModel) {
 
     self.NoActiveCOS = ko.computed(function () {
         return (self.UsrCountry() == 9) ? false : true;
+    }, self);
+
+    self.ActiveDOM = ko.computed(function () {
+        return (self.UsrCountry() == 11) ? true : false;
+    }, self);
+
+    self.NoActiveDOM = ko.computed(function () {
+        return (self.UsrCountry() == 11) ? false : true;
     }, self);
 
     self.ActiveCAY = ko.computed(function () {

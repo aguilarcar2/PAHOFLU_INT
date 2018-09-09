@@ -390,8 +390,8 @@
                             <option value="3"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelInternalDocument"))</option>
                             <option value="7" data-bind="visible:app.Views.Contact.ActiveBOL"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelClinicalHistory"))</option>
                             <option value="8" data-bind="visible:app.Views.Contact.ActiveBOL"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelAnotherRecord"))</option>
-                            <option value="9" data-bind="visible:app.Views.Contact.ActiveCAY"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelCaseNumber"))</option>
-                            <option value="10" data-bind="visible:app.Views.Contact.ActiveCAY"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelMedicalRecordNumber"))</option>
+                            <option value="9" data-bind="visible:app.Views.Contact.ActiveDOM() || app.Views.Contact.ActiveCAY()"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelCaseNumber"))</option>
+                            <option value="10" data-bind="visible:app.Views.Contact.ActiveDOM() || app.Views.Contact.ActiveCAY()"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelMedicalRecordNumber"))</option>
                         }
                         else
                         {
@@ -629,7 +629,7 @@
 
         <div class="row rowform">
             <!-- State -->
-            @if (@ViewBag.UsrCtry != 119)
+            @if (@ViewBag.UsrCtry != 11 && @ViewBag.UsrCtry != 119)
             {
                 <div class="col-md-6">
                     <div class='input-group'>
@@ -674,7 +674,7 @@
                 </div>
             </div>
             <!-- Neighborhoods -->
-            @if (@ViewBag.UsrCtry != 25 && @ViewBag.UsrCtry != 11 && @ViewBag.UsrCtry != 18 && @ViewBag.UsrCtry != 17 && @ViewBag.UsrCtry != 119)
+            @if (@ViewBag.UsrCtry != 25 && @ViewBag.UsrCtry != 18 && @ViewBag.UsrCtry != 17 && @ViewBag.UsrCtry != 11 && @ViewBag.UsrCtry != 119)
             {
                 <div class="col-md-6" ssdata-bind="visible:EnableCHI">
                     <div class='input-group'>                            
@@ -1753,7 +1753,7 @@
                         }
                     }
 
-                    <div class="row rowform" data-bind="visible:IsInusitadoAdulto() && (app.Views.Contact.ActiveJAM() || app.Views.Contact.ActiveSUR() || app.Views.Contact.ActiveCAY())">
+                    <div class="row rowform" data-bind="visible:IsInusitadoAdulto() && (app.Views.Contact.ActiveJAM() || app.Views.Contact.ActiveSUR() || app.Views.Contact.ActiveDOM()  || app.Views.Contact.ActiveCAY())">
                         <div class="col-md-6">
                             <!-- Trabajador de salud -->
                             <div class="col-md-3" data-bind="visible:app.Views.Contact.ShowOnlyAdult">
@@ -1995,7 +1995,7 @@
         </div>
 
         <!-- Tabaquismo / Alcoholismo / Sindrome de down / Trabajador de salud -->
-        @if (ViewBag.UsrCtry != 7 && ViewBag.UsrCtry !=3 && ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 18 && ViewBag.UsrCtry != 17 && ViewBag.UsrCtry != 119)
+        @if (ViewBag.UsrCtry != 7 && ViewBag.UsrCtry !=3 && ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 18 && ViewBag.UsrCtry != 17 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 119)
         {
             <div class="row rowform">
                 <div class="col-md-12">
@@ -2090,7 +2090,7 @@
         </div>
 
         <!-- Fecha de diagnostico / EW diagnostico / EY diagnostico -->
-        @if (ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 18 && ViewBag.UsrCtry != 17 && ViewBag.UsrCtry != 119)
+        @if (ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 18 && ViewBag.UsrCtry != 17 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 119)
         {
             <div class="row rowform" data-bind="visible:EnableCHI() && app.Views.Contact.NoActiveBOL()">
                 <div class="col-md-5">
@@ -2099,7 +2099,7 @@
                             @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelDiagnosisDate"))
                         </span>
                         <div>
-                            <input id="f" type='text' class="form-control " data-bind='datepicker:DiagDate , datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}, event:{ change: CheckDiagDate}' />
+                            <input id="DiagDate" type='text' class="form-control " data-bind='datepicker:DiagDate , datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}, event:{ change: CheckDiagDate}' />
                         </div>
                     </div>
                 </div>
@@ -2157,7 +2157,7 @@
                             </label>
                         </div>
                         <!-- Dificultad respiratoria -->
-                        @if (ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 18 && ViewBag.UsrCtry != 17 && ViewBag.UsrCtry != 119)
+                        @if (ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 18 && ViewBag.UsrCtry != 17 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 119)
                         {
                             <div class="col-md-3" data-bind="visible: app.Views.Contact.SurvSARI">
                             <label class="btn btn-default">
@@ -2444,7 +2444,7 @@
                     </div>
 
                     <div class="row rowform">
-                        @if (ViewBag.UsrCtry == 17 || ViewBag.UsrCtry == 119)
+                        @if (ViewBag.UsrCtry == 17 || ViewBag.UsrCtry == 11 || ViewBag.UsrCtry == 119)
                         {   <!-- Rinorrea y Disnea para Jamaica e IC -->
                             <div class="col-md-3" data-bind="visible:true">
                                 <label class="btn btn-default">
@@ -2466,7 +2466,7 @@
                             </label>
                         </div>
 
-                        @if (ViewBag.UsrCtry == 17 || ViewBag.UsrCtry == 119)
+                        @if (ViewBag.UsrCtry == 17 || ViewBag.UsrCtry == 11 || ViewBag.UsrCtry == 119)
                         {   <!-- Wheezing para Jamaica y IC -->
                             <div class="col-md-3" data-bind="visible:true">
                                 <label class="btn btn-default">
@@ -2706,26 +2706,26 @@
                     </div>
                 </div>
             }
-			@if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 119)
+			@if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 11 || ViewBag.UsrCtry == 119)
             {
                 <div class="row rowform">
                     <!-- <div class="col-md-3" data-bind="visible:EnableCHI() && app.Views.Contact.NoActiveBOL()"> -->
-                    <div class="@((ViewBag.UsrCtry == 119) ?  "col-md-2" : "col-md-3")" data-bind="visible:(EnableCHI() && app.Views.Contact.NoActiveBOL()) || app.Views.Contact.ActiveCAY()">
+                    <div class="@((ViewBag.UsrCtry == 11 || ViewBag.UsrCtry == 119) ?  "col-md-2" : "col-md-3")" data-bind="visible:(EnableCHI() && app.Views.Contact.NoActiveBOL()) || app.Views.Contact.ActiveDOM() || app.Views.Contact.ActiveCAY()">
                         <label class="btn btn-default">
                             <input type="checkbox" name="HallRadio" id="HallRadio" value="1" data-bind="checked: HallRadio"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelRadiologicalFindings"))
                         </label>
                     </div>
-                    <div class="col-md-3" data-bind="visible:app.Views.Contact.NoActiveBOL() && app.Views.Contact.NoActiveCAY()">
+                    <div class="col-md-3" data-bind="visible:app.Views.Contact.NoActiveBOL() && app.Views.Contact.NoActiveDOM() && app.Views.Contact.NoActiveCAY()">
                         <label class="btn btn-default">
                             <input type="checkbox" name="MecVent" id="MecVent" value="1" data-bind="checked: MecVent"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelRespiratorySupport")) 
                         </label>
                     </div>
-                    <div class="col-md-3" data-bind="visible:EnableCHI() && app.Views.Contact.NoActiveBOL() && app.Views.Contact.NoActiveCAY()">
+                    <div class="col-md-3" data-bind="visible:EnableCHI() && app.Views.Contact.NoActiveBOL() && app.Views.Contact.NoActiveDOM() && app.Views.Contact.NoActiveCAY()">
                         <label class="btn btn-default">
                             <input type="checkbox" name="UCInt" id="UCInt" value="1" data-bind="checked: UCInt"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelTransitionalCareUnit"))
                         </label>
                     </div>
-                    <div class="col-md-3" data-bind="visible:EnableCHI() && app.Views.Contact.NoActiveBOL() && app.Views.Contact.NoActiveCAY()">
+                    <div class="col-md-3" data-bind="visible:EnableCHI() && app.Views.Contact.NoActiveBOL() && app.Views.Contact.NoActiveDOM() && app.Views.Contact.NoActiveCAY()">
                         <label class="btn btn-default">
                             <input type="checkbox" name="UCri" id="UCri" value="1" data-bind="checked: UCri"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelCriticalCareUnit"))
                         </label>
@@ -2750,7 +2750,7 @@
                         </div>
                     }
                     <!-- Descripcion/Hallazgos -->
-                    @if (ViewBag.UsrCtry == 119)
+                    @if (ViewBag.UsrCtry == 11 || ViewBag.UsrCtry == 119)
                     {
                         <div class="col-md-3" data-bind="visible: HallRadioFindingsShow">
                             <div class='input-group'>

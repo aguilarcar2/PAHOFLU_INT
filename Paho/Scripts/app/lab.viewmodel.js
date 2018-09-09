@@ -781,7 +781,7 @@ function LabViewModel(app, dataModel) {
                 }
 
             } else if ((date_shipping_date != null) && self.hasReset() != true) {
-                if (self.UsrCountry() == 119) {
+                if (self.UsrCountry() == 11 || self.UsrCountry() == 119) {
                     if (moment(current_value).isBefore(moment(date_sample_date_), "days")) {
                         //alert("La fecha de recepción de Muestra 1 no puede ser menor a la fecha de envio de muestra de la Muestra 1");
                         alert(msgValidationShippingDateValidateICS1);
@@ -1413,7 +1413,7 @@ function LabViewModel(app, dataModel) {
                 msg += "\n" + msgValidateRecDateInvalid;
                     //"Fecha de recepción es inválida ";
 
-            if (self.UsrCountry() == 119) {
+            if (self.UsrCountry() == 11 || self.UsrCountry() == 119) {
                 if (date_ShipDate != null && rec_date != null && moment(rec_date).isBefore(moment(rec_date), 'days'))
                     msg += "\n" + msgValidateRecDateShipDateIC;
             } else {
