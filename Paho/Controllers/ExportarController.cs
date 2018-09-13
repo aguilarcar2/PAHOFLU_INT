@@ -1090,7 +1090,7 @@ namespace Paho.Controllers
             _storedProcedure = (storedProcedure == "ML1") ? "MuestrasLabNPHL" : storedProcedure;      //#### CAFQ
             if (storedProcedure == "R5")
             {
-                if (countryId == 17 || countryId == 119)
+                if (countryId == 17 || countryId == 119 || countryId == 11)
                 {
                     _storedProcedure = "R5_JM";
                     nPosiTipo = 21;                 // Posic. columna "Tipo" (tabla retornada x SP)
@@ -1157,7 +1157,7 @@ namespace Paho.Controllers
                         formulas1[7] = "='Inf B'!C{{toreplace}}";
                         formulas1[8] = "=Metapnemovirus!C{{toreplace}}";
 
-                        if (countryId == 17 || countryId == 119)
+                        if (countryId == 17 || countryId == 119 || countryId == 11)
                         {
                             formulas1[9] = "=" + VRS + "!M{{toreplace}}";
                             formulas1[10] = "=" + VRS + "!N{{toreplace}}+Ad!N{{toreplace}}+Parainfluenza!N{{toreplace}}+'Inf A'!N{{toreplace}}+'Inf B'!N{{toreplace}}+Metapnemovirus!N{{toreplace}}";
@@ -1394,7 +1394,7 @@ namespace Paho.Controllers
                                     }
                                     else
                                     {
-                                        if (countryId == 17 || countryId == 119)
+                                        if (countryId == 17 || countryId == 119 || countryId == 11)
                                         {
                                             row = row - 1 + (9 * 3) + 15;
                                             nAnDa = 9 * 8;              // 9: Nº Age Group
@@ -2713,20 +2713,12 @@ namespace Paho.Controllers
             if (_Unid == "D")
             {
                 cMeta = _Meta.ToString("##0", CultureInfo.InvariantCulture);
-                /*if (countryId == 25 || countryId == 17)
-                    cForma = (_Meta == 1) ? cMeta + " Day" : cMeta + " Days";
-                else
-                    cForma = (_Meta == 1) ? cMeta + " Día" : cMeta + " Días";*/
                 cForma = (_Meta == 1) ? cMeta + " " + SgetMsg("msgViewExportarLabelDay", countryId, languaje) : cMeta + " " + SgetMsg("msgViewExportarLabelDays", countryId, languaje);
             }
 
             if (_Unid == "H")
             {
                 cMeta = _Meta.ToString("##0", CultureInfo.InvariantCulture);
-                /*if (countryId == 25 || countryId == 17)
-                    cForma = (_Meta == 1) ? cMeta + " " + "Hour" : cMeta + " " + "Hours";
-                else
-                    cForma = (_Meta == 1) ? cMeta + " " + "Hora" : cMeta + " " + "Horas";*/
                 cForma = (_Meta == 1) ? cMeta + " " + SgetMsg("msgViewExportarLabelHour", countryId, languaje) : cMeta + " " + SgetMsg("msgViewExportarLabelHours", countryId, languaje);
             }
 

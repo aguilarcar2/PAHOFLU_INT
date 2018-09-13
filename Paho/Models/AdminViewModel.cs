@@ -48,6 +48,8 @@ namespace Paho.Models
        [Required(AllowEmptyStrings = false, ErrorMessage = "Este campo es requerido")]
         [Display(Name = "Institución")]
         public long InstitutionID { get; set; }
+        [Display(Name = "Institución Externa:")]            //#### CAFQ: 180911
+        public bool InstitutionForeign { get; set; }        //#### CAFQ: 180911
         public string InstitutionType { get; set; }
         public IEnumerable<System.Web.Mvc.SelectListItem> Institutions { get; set; }
         public IEnumerable<System.Web.Mvc.SelectListItem> RolesList { get; set; }

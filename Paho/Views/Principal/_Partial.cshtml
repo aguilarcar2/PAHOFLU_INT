@@ -3130,7 +3130,7 @@
                         GetGraphData11_25();
                         return '';
                     }
-                    if(GraphCountryID == 17 || GraphCountryID == 119){
+                    if(GraphCountryID == 17 || GraphCountryID == 119 || GraphCountryID == 11){
                         GetGraphData11_17();
                         return '';
                     }
@@ -4121,7 +4121,7 @@
                         GetGraphData12_25();
                         return '';
                     }
-                    if(GraphCountryID == 17 || GraphCountryID == 119){
+                    if(GraphCountryID == 17 || GraphCountryID == 119 || GraphCountryID == 11){
                         GetGraphData12_17();
                         return '';
                     }
@@ -5804,6 +5804,7 @@
                     "CZ": [ "czechRepublicLow" ],
                     "DK": [ "denmarkLow" ],
                     "DJ": [ "djiboutiLow" ],
+                    "DOI": [ "dominicaHigh" ],
                     "DO": [ "dominicanRepublicLow" ],
                     "EC": [ "ecuadorLow" ],
                     "EG": [ "egyptLow" ],
@@ -6106,6 +6107,7 @@
                     "CZ": [ "czechRepublicLow" ],
                     "DK": [ "denmarkLow" ],
                     "DJ": [ "djiboutiLow" ],
+                    "DOI": [ "dominicaHigh" ],
                     "DO": [ "dominicanRepublicLow" ],
                     "EC": [ "ecuadorLow" ],
                     "EG": [ "egyptLow" ],
@@ -6393,6 +6395,7 @@
                     "CZ": [ "czechRepublicLow" ],
                     "DK": [ "denmarkLow" ],
                     "DJ": [ "djiboutiLow" ],
+                    "DOI": [ "dominicaHigh" ],
                     "DO": [ "dominicanRepublicLow" ],
                     "EC": [ "ecuadorLow" ],
                     "EG": [ "egyptLow" ],
@@ -6606,7 +6609,7 @@
             GetMapData1();
 
             var CountryIDM = @Html.Raw(Model.CountryID);
-            if(!(CountryIDM == 25 || CountryIDM == 119)){           // Suriname y Islas Cayman: No tienen region
+            if(!(CountryIDM == 25 || CountryIDM == 119 || CountryIDM == 11)){           // Suriname y Islas Cayman: No tienen region
                 GetMapData2();
             }
             if(CountryIDM == 9){
@@ -6636,7 +6639,7 @@
             <div id="mapDivGraph1"></div>
         </div>
 
-        @if (!(ViewBag.UsrCtry == 25 || ViewBag.UsrCtry == 119))
+        @if (!(ViewBag.UsrCtry == 25 || ViewBag.UsrCtry == 119 || ViewBag.UsrCtry == 11))
         {
             <div id="mapContainerGraph2">
                 <div id="mapDivGraph2"></div>

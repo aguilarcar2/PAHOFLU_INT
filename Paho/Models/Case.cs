@@ -706,8 +706,30 @@ namespace Paho.Models
         public bool NPHL { get; set; }
         [NotMapped]
 		public InstitutionType InstType { get; set; }
+        //*****>                                            //#### CAFQ: 180911
+        [DisplayName("Tipo Ubicación:")]
+        public int? LocationTypeID { get; set; }
+
+        [DisplayName("País Extranjero:")]
+        public int? ForeignCountryID { get; set; }
+
+        [DisplayName("Dirección Institución Extranjero:")]
+        public string ForeignInstitutionAddress { get; set; }
+        //****<
     }
 
+    public class InstitutionLocationType                    //#### CAFQ: 180911
+    {
+        public int ID { get; set; }
+        public string Name_SPA { get; set; }
+        public string Name_ENG { get; set; }
+    }
+
+    public class InstitutionLocationTypeView                //#### CAFQ: 180911
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+    }
 
     public class Hospital : Institution
     {
@@ -1626,6 +1648,7 @@ namespace Paho.Models
         public DbSet<Institution> Institutions { get; set; }
         public DbSet<InstitutionConfiguration> InstitutionsConfiguration { get; set; }
         public DbSet<InstitutionConfEndFlowByVirus> InstitutionConfEndFlowByVirus { get; set; }
+        public DbSet<InstitutionLocationType> InstitutionLocationType { get; set; }     //#### CAFQ: 180911
         public DbSet<CatDiag> CIE10 { get; set; }
         public DbSet<CatServicios> Salones { get; set; }
         public DbSet<FluCase> FluCases { get; set; }

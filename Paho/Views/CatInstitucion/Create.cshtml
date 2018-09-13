@@ -9,6 +9,21 @@
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
+        <!-- Location -->
+        <div class="form-group vertical-align">
+            @Html.LabelFor(model => model.LocationTypeID, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgViewCatInstitution_Location", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
+            <div class="col-md-10">
+                @Html.DropDownList("LocationTypeID", ViewBag.cod_institution_type_location as SelectList, null, new { @class = "form-control" })
+            </div>
+        </div>
+        <!-- País Foreign -->
+        <div class="form-group vertical-align" id="div-ForeignCountry">
+            @Html.LabelFor(model => model.ForeignCountryID, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgViewCatInstitution_Country", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
+            <div class="col-md-10">
+                @Html.DropDownList("ForeignCountryID", ViewBag.ForeignCountries as SelectList, null, new { @class = "form-control" })
+            </div>
+        </div>
+        <!-- Area (Parish) -->
         <div class="form-group vertical-align">
             <label class="col-md-1_5 text-right" for="AreaID">@((string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelArea", ViewBag.UsrCtry, ViewBag.UsrCtryLang))</label>
             <div class="col-md-10">
@@ -33,7 +48,14 @@
                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
             </div>
         </div>
-
+        <!-- Direccion Foreign -->
+        <div class="form-group vertical-align" id="div-ForeignInstitutionAddress">
+            @Html.LabelFor(model => model.ForeignInstitutionAddress, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgViewCatInstitution_Address", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ForeignInstitutionAddress, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ForeignInstitutionAddress, "", new { @class = "text-danger" })
+            </div>
+        </div>
         <div class="form-group vertical-align">
             <label class="col-md-1_5 text-right" for="AccessLevel">@((string)Paho.Controllers.ResourcesM.SgetMessage("msgLevelAccess", ViewBag.UsrCtry, ViewBag.UsrCtryLang)):</label>
             <div class="col-md-10">

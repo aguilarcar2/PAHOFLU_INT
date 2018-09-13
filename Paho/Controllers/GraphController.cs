@@ -66,7 +66,7 @@ namespace Paho.Controllers
             return Json(json);
         }
 
-        private static void AppendDataToExcelPrevioCambiosAgeGroup(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? irag_, int?eti_)
+        private static void xxxAppendDataToExcelPrevioCambiosAgeGroup(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? irag_, int?eti_)
         {
 
             var excelWorksheet = excelWorkBook.Worksheets[sheet];
@@ -848,7 +848,7 @@ namespace Paho.Controllers
                                     }
                                     else
                                     {
-                                        if (countryId == 17 || countryId == 119)
+                                        if (countryId == 17 || countryId == 119 || countryId == 11)
                                         {
                                             row = row - 1 + (9 * 3) + 15;           // Inicio tabla 2
                                             nAnDa = 9 * 8;                          // 9: Nº Age Group
@@ -1281,6 +1281,9 @@ namespace Paho.Controllers
                                     break;
                                 case 17:
                                     myXmlNode0.InnerText = "JM";
+                                    break;
+                                case 11:
+                                    myXmlNode0.InnerText = "DOI";
                                     break;
                                 case 119:
                                     myXmlNode0.InnerText = "CI";
@@ -1980,7 +1983,7 @@ namespace Paho.Controllers
                                             }
                                             else
                                             {
-                                                if (CountryID_ == 17 || CountryID_ == 119)
+                                                if (CountryID_ == 17 || CountryID_ == 119 || CountryID_ == 11)
                                                 {
                                                     qtyGruposEdad = 9;
                                                     filaInicialTabla2 = 289;    // Vigilancia de Influenza y otros Virus Respiratorios 
@@ -2460,7 +2463,7 @@ namespace Paho.Controllers
                                         }
                                         else
                                         {
-                                            if (CountryID_ == 17 || CountryID_ == 119)
+                                            if (CountryID_ == 17 || CountryID_ == 119 || CountryID_ == 11)
                                             {
                                                 indiceInicial3 = 844;       // Influenza B
                                                 indiceInicial4 = 1288;      // Virus Otros
@@ -2959,6 +2962,8 @@ namespace Paho.Controllers
                 sheet = "Surinam";
             else if (countryId == 17)
                 sheet = "Jamaica";
+            else if (countryId == 11)
+                sheet = "Dominica";
             else if (countryId == 119)
                 sheet = "CaymanIslands";
             else
@@ -3471,7 +3476,7 @@ namespace Paho.Controllers
                         cTemp = cTemp + "\"" + "serie8" + "\":\"" + aDaSe[9] + "\",";               //
                         cTemp = cTemp + "\"" + "serie9" + "\":\"" + aDaSe[10] + "\"";               //
                     }
-                    if (countryId == 17 || countryId == 119)
+                    if (countryId == 17 || countryId == 119 || countryId == 11)
                     {
                         cTemp = cTemp + ",";
                         cTemp = cTemp + "\"" + "serie8" + "\":\"" + aDaSe[9] + "\",";               //
@@ -3502,7 +3507,7 @@ namespace Paho.Controllers
                 }
                 else
                 {
-                    if (countryId == 17 || countryId == 119)
+                    if (countryId == 17 || countryId == 119 || countryId == 11)
                     {
                         jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + "Under 6 months" + "\",";
                         jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + "6 to 11 months" + "\",";
@@ -3611,7 +3616,7 @@ namespace Paho.Controllers
                                 }
                                 else
                                 {
-                                    if (countryId == 17 || countryId == 119)
+                                    if (countryId == 17 || countryId == 119 || countryId == 11)
                                     {
                                         cGE8 = "0";
                                         if (reader.GetValue(10) != System.DBNull.Value)
@@ -3697,7 +3702,7 @@ namespace Paho.Controllers
                         cTemp = cTemp + "\"" + "serie7" + "\":\"" + aDaSe[8] + "\",";               //
                         cTemp = cTemp + "\"" + "serie8" + "\":\"" + aDaSe[9] + "\"";               //
                     }
-                    if (countryId == 17 || countryId == 119)
+                    if (countryId == 17 || countryId == 119 || countryId == 11)
                     {
                         cTemp = cTemp + ",";
                         cTemp = cTemp + "\"" + "serie7" + "\":\"" + aDaSe[8] + "\",";               //
@@ -3726,7 +3731,7 @@ namespace Paho.Controllers
                 }
                 else
                 {
-                    if (countryId == 17 || countryId == 119)
+                    if (countryId == 17 || countryId == 119 || countryId == 11)
                     {
                         jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + "Under 6 months" + "\",";
                         jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + "6 to 11 months" + "\",";
@@ -3835,7 +3840,7 @@ namespace Paho.Controllers
                                 }
                                 else
                                 {
-                                    if (countryId == 17 || countryId == 119)
+                                    if (countryId == 17 || countryId == 119 || countryId == 11)
                                     {
                                         if (reader.GetValue(25) != System.DBNull.Value)
                                             cGE7 = ((int)reader.GetValue(25)).ToString();

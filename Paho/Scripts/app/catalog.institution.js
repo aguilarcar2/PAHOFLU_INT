@@ -25,6 +25,7 @@
 
         toggleInstitutionType();
         toggleAccessLevel();
+        toggleLocationTypeID();            //#### CAFQ: 180911
 
         //$("#OrdenPrioritybyLab").ForceNumericOnly();
         //$('#OrdenPrioritybyLab').keyup(function (e) {
@@ -81,8 +82,23 @@
         }
     }
 
+    function toggleLocationTypeID() {                       //#### CAFQ: 180911
+        LocationTypeID = $("#LocationTypeID").val();
+        if (LocationTypeID == "2") {                        // Exterior
+            $("#div-ForeignCountry").show();
+            $("#div-ForeignInstitutionAddress").show();
+        } else {
+            $("#div-ForeignCountry").hide();
+            $("#div-ForeignInstitutionAddress").hide();
+        }
+    }
+
     $("#AccessLevel").change(function () {
         toggleAccessLevel();
+    });
+
+    $("#LocationTypeID").change(function () {               //#### CAFQ: 180911
+        toggleLocationTypeID();
     });
 
     $("#InstitutionType").change(function () {
@@ -120,6 +136,14 @@
             }
         });
         return false;
+    }
+
+    function resetForLocationTypeID() {                     //#### CAFQ: 180911
+        LocationTypeID = $("#LocationTypeID").val();
+        if (LocationTypeID != "2") {                        // Exterior
+            $("#ForeignCountryID").val("0");
+            $("#ForeignInstitutionAddress").val("");
+        }
     }
 	
     function toggleRegion() {
