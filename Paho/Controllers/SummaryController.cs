@@ -124,7 +124,7 @@ namespace Paho.Controllers
                 CaseSummaryDetails = new List<CaseSummaryDetail>()
                 };
                 db.Entry(casesummary).State = EntityState.Added;
-                var AgeGroupbyCountry = db.CatAgeGroup.Where(i => i.id_country == user.Institution.CountryID).ToList();
+                var AgeGroupbyCountry = db.CatAgeGroup.Where(i => i.id_country == user.Institution.CountryID).OrderBy(z => z.id_conf_country).ToList();
                 foreach  (CatAgeGroup agegroup in AgeGroupbyCountry )
                 {
                     casesummary.CaseSummaryDetails.Add(
