@@ -163,7 +163,7 @@ namespace Paho.Controllers
                 }
                 db.SaveChanges();
             }
-            var casesummaryDetails = casesummary.CaseSummaryDetails.ToArray();
+            var casesummaryDetails = casesummary.CaseSummaryDetails.OrderBy(z => z.AgeGroup).ToArray();
 
 
             //     (
