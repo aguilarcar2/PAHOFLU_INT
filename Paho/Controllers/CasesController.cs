@@ -550,7 +550,7 @@ namespace Paho.Controllers
                                  {
                                      surv_ID = flucase.Surv,
                                      surv_IDInusual = flucase.SurvInusual,    //#### CAFQ: 180604 - Jamaica Universal
-                                     ready_close = ((flucase.flow == db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID && i.Conclusion == true).OrderBy(x => x.Priority).FirstOrDefault().Priority && flucase.statement == 2 ) || (flucase.IsSample == false) ) ? 1 : 0,
+                                     ready_close = ((flucase.flow == db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID && i.Conclusion == true).OrderBy(x => x.Priority).FirstOrDefault().Priority && flucase.statement == 2 ) || (flucase.IsSample == false) ) ? 0 : 0,
                                      id_D = flucase.ID,
                                      H_D = flucase.HospitalDate,
                                      LN_D = flucase.LName1 + " " + flucase.LName2 ?? "",
@@ -2603,6 +2603,11 @@ namespace Paho.Controllers
                         }
                     );
                 }
+            } else if (((flucase.SampleDate == null && flucase.Processed == null) ||  flucase.Processed == false) &&
+                       ((flucase.SampleDate2 == null && flucase.Processed2 == null) || flucase.Processed2 == false) &&
+                       ((flucase.SampleDate3 == null && flucase.Processed3 == null) || flucase.Processed3 == false))
+            {
+                existrecordlabtest = true;
             }
 
             //var Sample_1_process = LabTests.OrderBy(z => z.TestDate).ThenBy(y => y.LabID).Where(x => x.SampleNumber == 1);
@@ -2610,13 +2615,13 @@ namespace Paho.Controllers
             var flow_min_record = db.InstitutionsConfiguration.Where(z => z.InstitutionParentID == flucase.HospitalID).OrderBy(x => x.Priority).FirstOrDefault().Priority;
 
             var Sample_1_process = flucase.CaseLabTests.Where(x => x.SampleNumber == 1).OrderBy(y => y.flow_test).ThenBy(z => z.TestDate);
-            var flow_complete_Sample_1 = (Sample_1_process.Count() > 0) ? false : (flucase.SampleDate != null && flucase.Processed != null) ? false : true;
+            var flow_complete_Sample_1 = (Sample_1_process.Count() > 0) ? false : (flucase.SampleDate != null && flucase.Processed != null) ? (flucase.Processed == false) ? true : false : true;
 
             var Sample_2_process = flucase.CaseLabTests.Where(x => x.SampleNumber == 2).OrderBy(y => y.flow_test);
-            var flow_complete_Sample_2 = (Sample_2_process.Count() > 0) ? false : (flucase.SampleDate2 != null && flucase.Processed2 != null) ? false  : true;
+            var flow_complete_Sample_2 = (Sample_2_process.Count() > 0) ? false : (flucase.SampleDate2 != null && flucase.Processed2 != null) ? (flucase.Processed2 == false) ? true : false  : true;
 
             var Sample_3_process = flucase.CaseLabTests.Where(x => x.SampleNumber == 3).OrderBy(y => y.flow_test);
-            var flow_complete_Sample_3 = (Sample_3_process.Count() > 0) ? false : (flucase.SampleDate3 != null && flucase.Processed3 != null) ? false : true;
+            var flow_complete_Sample_3 = (Sample_3_process.Count() > 0) ? false : (flucase.SampleDate3 != null && flucase.Processed3 != null) ? (flucase.Processed3 == false) ? true : false : true;
 
             var any_lab_nphl_in_flow = db.InstitutionsConfiguration.Where(z => z.InstitutionParentID == flucase.HospitalID && z.InstitutionTo.NPHL == true).Any();
 
