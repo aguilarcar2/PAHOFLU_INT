@@ -543,14 +543,16 @@ namespace Paho.Controllers
 
             var jsondata = new List<Object>();
 
- 
+            string readyCloseHtml = "<img src='/Content/themes/base/images/ReadyClose.png' alt='" + getMsg("msgFlucasesMessageReadytoClose") + "'/>";
+            string openHtml = "<img src='/Content/themes/base/images/open.png' alt='" + getMsg("msgFlucasesMessageNoStatus") + "'/>" + getMsg("msgFlucasesMessageNoStatus");
 
             var  Arrayrows = (from flucase in flucases
                                  select new
                                  {
                                      surv_ID = flucase.Surv,
                                      surv_IDInusual = flucase.SurvInusual,    //#### CAFQ: 180604 - Jamaica Universal
-                                     ready_close = ((flucase.flow == db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID && i.Conclusion == true).OrderBy(x => x.Priority).FirstOrDefault().Priority && flucase.statement == 2 ) || (flucase.IsSample == false) ) ? 0 : 0,
+                                     ready_close = ((flucase.flow == db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID && i.Conclusion == true).OrderBy(x => x.Priority).FirstOrDefault().Priority && flucase.statement == 2) || (flucase.IsSample == false)) ? 1 : 0,
+                                     ready_close2 = ((flucase.flow == db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID).OrderByDescending(x => x.Priority).FirstOrDefault().Priority && flucase.statement == 2) || (flucase.IsSample == false)) ? 1 : 0,
                                      id_D = flucase.ID,
                                      H_D = flucase.HospitalDate,
                                      LN_D = flucase.LName1 + " " + flucase.LName2 ?? "",
@@ -567,7 +569,17 @@ namespace Paho.Controllers
                                      VR_IF_D = flucase.CaseLabTests.Where(e => e.TestType == 1 && e.Processed != null).OrderBy(y => y.CatVirusType.orden).ThenBy(d => d.SampleNumber).ThenBy(u => u.TestDate).FirstOrDefault(),
                                      VR_PCR_D = flucase.CaseLabTests.Where(e => e.TestType == 2 && e.Processed != null).OrderBy(y => y.CatVirusType.orden).ThenBy(d => d.SampleNumber).ThenBy(u => u.TestDate).FirstOrDefault(),
                                      HEALTH_INST = flucase.Hospital.Name ?? "",
-                                     FLOW_FLUCASE = flucase.flow
+                                     FLOW_FLUCASE = flucase.flow,
+                                     TEST_LAST = flucase.CaseLabTests.Where(e => e.Processed != null).OrderByDescending(d => d.flow_test).FirstOrDefault(),
+                                     FLOW_VIRUS = db.InstitutionConfEndFlowByVirus.Where(i => i.ID == flucase.CaseLabTests.Where(e => e.Processed != null).OrderByDescending(d => d.flow_test).FirstOrDefault().inst_conf_end_flow_by_virus).FirstOrDefault(),
+                                     VI_OK = (from a in db.InstitutionConfEndFlowByVirus
+                                              join p in db.InstitutionsConfiguration on a.id_InstCnf equals p.ID
+                                              join dt in db.Institutions on p.InstitutionFromID equals dt.ID
+                                              where dt.CountryID == flucase.CountryID && p.InstitutionParentID == flucase.HospitalID
+                                              select new
+                                              {
+                                                  ID = a.ID
+                                              }).Any()
                                  }).AsEnumerable()
                                    .Select(x => new
                                    {
@@ -586,11 +598,41 @@ namespace Paho.Controllers
                                          x.VR_PCR_D == null ? "" : x.VR_PCR_D.TestResultID == null ? "": x.VR_PCR_D.TestResultID.ToString() == "P" ?  x.VR_PCR_D.CatVirusType == null ? "" : x.VR_PCR_D.CatVirusType.SPA.Contains("Influenza A") == true ? x.VR_PCR_D.CatVirusSubType == null ? "" : (user.Institution.Country.Language == "SPA" ?  x.VR_PCR_D.CatVirusSubType.SPA : x.VR_PCR_D.CatVirusSubType.ENG ): (user.Institution.Country.Language == "SPA" ? x.VR_PCR_D.CatVirusType.SPA : x.VR_PCR_D.CatVirusType.ENG) :  x.VR_PCR_D.TestResultID == null ? "" : user.Institution.Country.Language == "SPA" ? db.CatTestResult.Where(j=> j.value == x.VR_PCR_D.TestResultID.ToString()).FirstOrDefault().description : db.CatTestResult.Where(j=> j.value == x.VR_PCR_D.TestResultID.ToString()).FirstOrDefault().ENG,
                                          x.IS_D == false ? getMsg("msgFlucasesMessageNoSample") : x.FR_D == "P" ? x.FR_D_C == null ? "" : (user.Institution.Country.Language == "SPA" ? x.FR_D_C.SPA : x.FR_D_C.ENG) : (x.P_D == false) ? getMsg("msgFlucasesMessageNotProcessed") : x.FR_D == "N" ? getMsg("msgFlucasesMessageNegative") : x.FR_D == "I" ? getMsg("msgFlucasesMessageIndeterminated") : ""  ,
                                          x.HEALTH_INST ?? "",
+                                         /*
                                          x.ready_close == 1 && x.FLOW_FLUCASE != 99 ?   "<img src='/Content/themes/base/images/ReadyClose.png' alt='"+getMsg("msgFlucasesMessageReadytoClose")+"'/> "  : "" + (x.CS_D_Cat == null ? "<img src='/Content/themes/base/images/open.png' alt='"+getMsg("msgFlucasesMessageNoStatus")+"'/>" +  getMsg("msgFlucasesMessageNoStatus") :
                                                                 (user.Institution.Country.Language == "SPA" ? "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.SPA+"'/> " + x.CS_D_Cat.SPA : "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.ENG+"'/> " + x.CS_D_Cat.ENG ))
+                                        */
+                                        x.VI_OK == true ?
+                                            (x.FLOW_VIRUS != null ?
+                                                (x.FLOW_VIRUS.value_Cat_TestResult==x.TEST_LAST.TestResultID && x.FLOW_VIRUS.id_Cat_VirusType==x.TEST_LAST.VirusTypeID ?
+                                                    readyCloseHtml :
+                                                    (x.ready_close2 == 1 && x.FLOW_FLUCASE != 99 ?
+                                                        readyCloseHtml :
+                                                        (x.CS_D_Cat == null ?
+                                                            openHtml :
+                                                            (user.Institution.Country.Language == "SPA" ? "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.SPA+"'/> " + x.CS_D_Cat.SPA : "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.ENG+"'/> " + x.CS_D_Cat.ENG )
+                                                        )
+                                                    )
+                                                )
+                                                :
+                                                (x.ready_close2 == 1 && x.FLOW_FLUCASE != 99 ?
+                                                    readyCloseHtml :
+                                                    (x.CS_D_Cat == null ?
+                                                        openHtml :
+                                                        (user.Institution.Country.Language == "SPA" ? "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.SPA+"'/> " + x.CS_D_Cat.SPA : "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.ENG+"'/> " + x.CS_D_Cat.ENG )
+                                                    )
+                                                )
+                                            )
+                                            :
+                                            (x.ready_close == 1 && x.FLOW_FLUCASE != 99 ?
+                                                    readyCloseHtml :
+                                                    (x.CS_D_Cat == null ?
+                                                        openHtml :
+                                                        (user.Institution.Country.Language == "SPA" ? "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.SPA+"'/> " + x.CS_D_Cat.SPA : "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.ENG+"'/> " + x.CS_D_Cat.ENG )
+                                                    )
+                                            )
                                      }
                                    }).ToArray();
-
 
                 jsondata.Add(new
                 {
