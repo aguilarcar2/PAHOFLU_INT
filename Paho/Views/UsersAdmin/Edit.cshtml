@@ -59,13 +59,6 @@
                 @Html.TextBoxFor(m => m.LastName2, new { @class = "form-control" })
             </div>
         </div>
-        <!-- Foreign Institution -->
-        <div class="form-group">
-            @Html.LabelFor(model => model.InstitutionForeign, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminForeignInstitution", ViewBag.UsrCtry, ViewBag.UsrCtryLang)), htmlAttributes: new { @class = "col-md-2 control-label" })
-            <div class="col-md-1">
-                @Html.EditorFor(model => model.InstitutionForeign, new { htmlAttributes = new { @class = "form-control text-left" } })
-            </div>
-        </div> 
         <div class="form-group">
             @Html.LabelFor(m => m.InstitutionID, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminEditInstitution", ViewBag.UsrCtry, ViewBag.UsrCtryLang)),  new { @class = "col-md-2 control-label" })
             <div class="col-md-5">
@@ -84,7 +77,14 @@
                 }
             </div>
         </div>
-
+        <!-- Foreign Institution -->
+        <div class="form-group">
+            @Html.LabelFor(model => model.ForeignLab, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminForeignInstitution", ViewBag.UsrCtry, ViewBag.UsrCtryLang)), htmlAttributes: new { @class = "col-md-2 control-label" })
+            <div class="col-md-1" align="left">
+                @Html.EditorFor(model => model.ForeignLab, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+        <!-- Boton Grabar -->
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value=@(Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminEditButtonSave", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) class="btn btn-default" />

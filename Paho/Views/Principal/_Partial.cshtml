@@ -595,57 +595,6 @@
         </style>
 
         <div id="containerGraph8">
-            <!--
-            <div id="divTable8">
-                <table id="ind_tabla">
-                    <tr>
-                        <td id="ind_tablafila1" colspan="3">
-                            <p id="IDTitulo1" class="ind_titulo"></p>
-                            <p id="IDTitulo2" class="ind_titulo"></p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="ind_titulo3" width="55%"><P class="ind_datostyle">Indicador</P></td>
-                        <td class="ind_titulo3" width="15%"><P class="ind_datostyle">Meta</P></td>
-                        <td class="ind_titulo3" width="30%"><P class="ind_datostyle">Resultado</P></td>
-                    </tr>
-                    <tr>
-                        <td class="ind_titulo3"><p class="ind_datotitulostyle">Porcentaje de casos de IRAG con muestra de laboratorio.</p></td>
-                        <td><p id="IDMeta3" class="ind_datostyle">Meta 3</p></td>
-                        <td>
-                            <div id="divGraph8_3" class="divGraph8_Pies"></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="ind_titulo3"><p class="ind_datotitulostyle">Porcentaje de pacientes con resultado virológico reportado.</p></td>
-                        <td><p id="IDMeta4" class="ind_datostyle">Meta 4</p></td>
-                        <td>
-                            <div id="divGraph8_4" class="divGraph8_Pies"></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="ind_titulo3"><p class="ind_datotitulostyle">Porcentaje de casos cerrados de IRAG medidos por la variable de condición de egreso del paciente.</p></td>
-                        <td><p id="IDMeta5" class="ind_datostyle">Meta 5</p></td>
-                        <td><div id="divGraph8_5" class="divGraph8_Pies"></div>
-                    </tr>
-                    <tr>
-                        <td class="ind_titulo3"><p class="ind_datotitulostyle">Mediana entre la recolección de muestras y su recepción en laboratorio.</p></td>
-                        <td><p id="IDMeta6" class="ind_datostyle">Meta 6</p></td>
-                        <td><div id="divGraph8_6" class="divGraph8_Pies"></div>
-                    </tr>
-                    <tr>
-                        <td class="ind_titulo3"><p class="ind_datotitulostyle">Mediana entre la recepcion de la muestra en laboratorio y la notificación de los resultados.</p></td>
-                        <td><p id="IDMeta7" class="ind_datostyle">Meta 7</p></td>
-                        <td><div id="divGraph8_7" class="divGraph8_Pies"></div>
-                    </tr>
-                    <tr>
-                        <td class="ind_titulo3"><p class="ind_datotitulostyle">Mediana entre la fecha de hospitalizacion y la fecha de notificacion en el sistema de vigilancia.</p></td>
-                        <td><p id="IDMeta8" class="ind_datostyle">Meta 8</p></td>
-                        <td><div id="divGraph8_8" class="divGraph8_Pies"></div>
-                    </tr>
-                </table>
-            </div>
-            -->
             <div id="loaderGraph8" class="loaderGraph"><!-- Place at bottom of page --></div>
             <div id="divGraph8">
                 <p id="IDTitulo1" class="ind_titulo" style="padding-top:12px"></p>
@@ -656,30 +605,6 @@
                         <td class="ind_titulo3" width="15%"><P id="meta" class="ind_datostyle">...</P></td>
                         <td class="ind_titulo3" width="30%"><P id="resultado" class="ind_datostyle">...</P></td>
                     </tr>
-                    <!--
-                    <tr>
-                        <td class="ind_titulo3"><P class="ind_datotitulostyle">Cobertura de captación de casos IRAG en la unidad centinela.</P></td>
-                        <td colspan="6"><p id="IDDato1" class="ind_datostyle"></p></td>
-                    </tr>
-                    <tr>
-                        <td class="ind_titulo3" rowspan="2">
-                            <p class="ind_datotitulostyle">Cobertura de captación de casos IRAG en la unidad centinela por grupos poblacionales.</p>
-                        </td>
-                        <td class="ind_titulo3"><p class="ind_datostyle">Menor de 2 años</p></td>
-                        <td class="ind_titulo3"><p class="ind_datostyle">2 < 5 años</p></td>
-                        <td class="ind_titulo3"><p class="ind_datostyle">5 a 19 años</p></td>
-                        <td class="ind_titulo3"><p class="ind_datostyle">20 a 39 años</p></td>
-                        <td class="ind_titulo3"><p class="ind_datostyle">40 a 59 años</p></td>
-                        <td class="ind_titulo3"><p class="ind_datostyle">60 o más años</p></td>
-                    </tr>
-                    <tr>
-                        <td><p id="IDDato2a" class="ind_datostyle"></p></td>
-                        <td><p id="IDDato2b" class="ind_datostyle"></p></td>
-                        <td><p id="IDDato2c" class="ind_datostyle"></p></td>
-                        <td><p id="IDDato2d" class="ind_datostyle"></p></td>
-                        <td><p id="IDDato2e" class="ind_datostyle"></p></td>
-                        <td><p id="IDDato2f" class="ind_datostyle"></p></td>
-                    </tr> -->
                     <tr>
                         <td class="ind_titulo3"><p id="indicador3" class="ind_datotitulostyle">...</p></td>
                         <td><p id="IDMeta3" class="ind_datostyle">...</p></td>
@@ -902,7 +827,7 @@
                         },
                         success: function (data) {
                             /*/################################################################# DESARROLLO
-                            if(GraphCountryID == 119){
+                            if(GraphCountryID == 18){
                                 GetGraphData11();
                                 GetGraphData12();
                                 GetGraphData9();
@@ -1089,40 +1014,6 @@
         </script>
 
         <style>
-            /*.multiselect {
-                width: 200px;
-            }
-
-            .selectBox {
-                position: relative;
-            }
-
-            .selectBox select {
-                width: 100%;
-                font-weight: bold;
-            }
-
-            .overSelect {
-                position: absolute;
-                left: 0;
-                right: 0;
-                top: 0;
-                bottom: 0;
-            }
-
-            #c_b {
-                display: none;
-                border: 1px #dadada solid;
-            }
-
-            #c_b label {
-                display: block;
-            }
-
-            #c_b label:hover {
-                background-color: #1e90ff;
-            }*/
-
             .loaderGraph {
                 display: block;
                 position: fixed;
@@ -1205,12 +1096,7 @@
                 height: 34px;
                 padding-top: 10px;
             }
-            /*#c_b{
-                dpadding: 6px 8px;
-                padding: 10px 0px;
-                dheight: 100px;
-                display:none;
-            }*/
+
             #c_b {
                 padding: 5px 17px;
                 height: 100px;
@@ -1366,8 +1252,6 @@
                            value: selectedInstitutionId,
                            optionsCaption: 'Select...',
                            valueUpdate:'change'"></select>
-
-                    @*optionsCaption: 'Select...',*@
                 </div>
 
                 <div class='input-group' id="selectYears">
@@ -1386,11 +1270,7 @@
 
                 <input type="text" style="display:none;" id="anios" value="2017" />
                 <div><button id="btnGetGraphData1" onclick="GetGraphData1()">@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphUpdateButton"))</button></div>
-                <!--div id="c_b" style="display:block;">
-                    Años:
-                </div-->
             </div>
-
         </div>
 
         <div id="containerGraph1">
@@ -1527,22 +1407,6 @@
                                             //alert (JSON.stringify(element2));
                                         });
                                     });
-                                    /*var container = $('#c_b');
-
-                                    $('<input />', { type: 'checkbox', id: 'cb'+yval, value: yval, class:'yearCheckBox' }).appendTo(container);*/
-                                    /*$.each(element.graphData.graphDataItem, function(index2, element2) {
-                                        chartData.push({
-                                            semana: element2.semana,
-                                            serie1: element2.serie1,
-                                            serie2: element2.serie2,
-                                            serie3: element2.serie3,
-                                            serie4: element2.serie4,
-                                            serie5: element2.serie5,
-                                            serie6: element2.serie6,
-                                            serie7: element2.serie7
-                                        });
-                                    });*/
-
                                 });
 
                                 //-----------------Quita los ceros del fin y del inicio del array----------------------
@@ -2460,7 +2324,6 @@
                                     "balloonFunction": function(info) {
                                         if (info.values.value){
                                             return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-
                                         }
                                         else
                                             return '';
@@ -3053,10 +2916,6 @@
                                     "minorGridEnabled": true,
                                     "title":jsonX.graph.graphXAxisTitle
                                 },
-                                /*"export": {
-                                    "enabled": true,
-                                    "position": "top-right"
-                                    }*/
                                 "export": {
                                     "enabled": true,
                                     "menu": [ {
@@ -3126,7 +2985,7 @@
                 var jsonX;
 
                 function GetGraphData11() {
-                    if(GraphCountryID == 25){
+                    if(GraphCountryID == 25 || GraphCountryID == 18){
                         GetGraphData11_25();
                         return '';
                     }
@@ -4117,7 +3976,7 @@
                 var jsonX;
 
                 function GetGraphData12() {
-                    if(GraphCountryID == 25){
+                    if(GraphCountryID == 25 || GraphCountryID == 18){
                         GetGraphData12_25();
                         return '';
                     }
@@ -5756,6 +5615,7 @@
 
                 var defaultMap = "usaLow";
                 var countryMaps = {
+                    "STL": [ "stLuciaHigh" ],                    
                     "AF": [ "afghanistanLow" ],
                     "AL": [ "albaniaLow" ],
                     "DZ": [ "algeriaLow" ],
@@ -6059,6 +5919,7 @@
 
                 var defaultMap = "usaLow";
                 var countryMaps = {
+                    "STL": [ "stLuciaHigh" ],
                     "AF": [ "afghanistanLow" ],
                     "AL": [ "albaniaLow" ],
                     "DZ": [ "algeriaLow" ],
@@ -6347,6 +6208,7 @@
 
                 var defaultMap = "usaLow";
                 var countryMaps = {
+                    "STL": [ "stLuciaHigh" ],
                     "AF": [ "afghanistanLow" ],
                     "AL": [ "albaniaLow" ],
                     "DZ": [ "algeriaLow" ],
@@ -6605,11 +6467,14 @@
         <!---xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx MAPA 3 END xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx--->
         <!-- HTML -->
         <script>
-            addMapCheckbox($('#txtName').val());
-            GetMapData1();
-
             var CountryIDM = @Html.Raw(Model.CountryID);
-            if(!(CountryIDM == 25 || CountryIDM == 119 || CountryIDM == 11)){           // Suriname y Islas Cayman: No tienen region
+            addMapCheckbox($('#txtName').val());
+
+            if(CountryIDM != 18){
+                GetMapData1();
+            }
+
+            if(!(CountryIDM == 25 || CountryIDM == 119 || CountryIDM == 11 || CountryIDM == 18)){           // Suriname y Islas Cayman: No tienen region
                 GetMapData2();
             }
             if(CountryIDM == 9){
@@ -6639,7 +6504,7 @@
             <div id="mapDivGraph1"></div>
         </div>
 
-        @if (!(ViewBag.UsrCtry == 25 || ViewBag.UsrCtry == 119 || ViewBag.UsrCtry == 11))
+        @if (!(ViewBag.UsrCtry == 25 || ViewBag.UsrCtry == 119 || ViewBag.UsrCtry == 11 || ViewBag.UsrCtry == 18))
         {
             <div id="mapContainerGraph2">
                 <div id="mapDivGraph2"></div>

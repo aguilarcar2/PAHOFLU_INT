@@ -47,7 +47,8 @@ namespace Paho.Models
             }
         }
 
-        public string UserRolesListJoin;        //#### CAFQ: 180530
+        public string UserRolesListJoin;            //#### CAFQ: 180530
+        public bool ForeignLab { get; set; }        //#### CAFQ: 180911
 
         [Display(Name = "Institución")]
         public virtual Institution Institution { get; set; }

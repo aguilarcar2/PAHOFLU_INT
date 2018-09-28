@@ -226,7 +226,8 @@ namespace Paho.Controllers
                     LastName1 =   userViewModel.LastName1,
                     LastName2 =  userViewModel.LastName2,
                     Hometown = userViewModel.Hometown,
-                    };
+                    ForeignLab = userViewModel.ForeignLab        //#### CAFQ: 180911
+                };
                 var adminresult = await UserManager.CreateAsync(user, userViewModel.Password);
 
                 var user_id = UserManager.FindById(User.Identity.GetUserId());
@@ -411,7 +412,8 @@ namespace Paho.Controllers
                     Selected = userRoles.Contains(x.Name),
                     Text = x.Name,
                     Value = x.Name
-                }).OrderBy(z => z.Text)
+                }).OrderBy(z => z.Text),
+                ForeignLab = user.ForeignLab        //#### CAFQ: 180911
             });
         }
 
@@ -419,7 +421,7 @@ namespace Paho.Controllers
         // POST: /Users/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "UserName,Email,Id,InstitutionID,FirstName1,FirstName2,LastName1,LastName2, Hometown")] EditUserViewModel editUser, params string[] selectedRole)
+        public async Task<ActionResult> Edit([Bind(Include = "UserName,Email,Id,InstitutionID,FirstName1,FirstName2,LastName1,LastName2,Hometown,ForeignLab")] EditUserViewModel editUser, params string[] selectedRole)
         {
             if (ModelState.IsValid)
             {
@@ -437,6 +439,7 @@ namespace Paho.Controllers
                 user.LastName1 =   editUser.LastName1;
                 user.LastName2 =  editUser.LastName2;
                 user.Hometown = editUser.Hometown;
+                user.ForeignLab = editUser.ForeignLab;          //#### CAFQ: 180911
 
                 var result = await UserManager.UpdateAsync(user);
                 if (!result.Succeeded)

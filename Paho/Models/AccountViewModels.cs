@@ -101,6 +101,8 @@ namespace Paho.Models
         public long InstitutionID { get; set; }
         public int? type_region { get; set; }
         public string InstitutionType { get; set; }
+        [Display(Name = "Institución Externa:")]            //#### CAFQ: 180911
+        public bool ForeignLab { get; set; }                //#### CAFQ: 180911
         public IEnumerable<System.Web.Mvc.SelectListItem> Institutions { get; set; }
         public IEnumerable<System.Web.Mvc.SelectListItem> RolesList { get; set; }
     }

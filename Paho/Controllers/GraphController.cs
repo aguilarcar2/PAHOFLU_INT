@@ -841,7 +841,7 @@ namespace Paho.Controllers
                                 {
                                     //row = 212;
                                     int nAnDa = 0;
-                                    if (countryId == 25)
+                                    if (countryId == 25 || countryId == 18)
                                     {
                                         row = row - 1 + (9 * 3) + 15;               // Inicio tabla 2
                                         nAnDa = 8 * 8;                              // 8: Nº Age Group
@@ -1282,6 +1282,9 @@ namespace Paho.Controllers
                                 case 17:
                                     myXmlNode0.InnerText = "JM";
                                     break;
+                                case 18:
+                                    myXmlNode0.InnerText = "STL";
+                                    break;
                                 case 11:
                                     myXmlNode0.InnerText = "DOI";
                                     break;
@@ -1440,7 +1443,7 @@ namespace Paho.Controllers
                 int? IRAG_ = IRAG;
                 IRAG_ = (IRAG_ == 0 && ETI_ == 0) ? 1 : IRAG_;          //#### CAFQ: 180312 
                 /*/################################################################# DESARROLLO
-                if (Graph == "Graph1" && (CountryID == 25 || CountryID == 17 || CountryID == 119))
+                if (Graph == "Graph1" && (CountryID == 25 || CountryID == 17 || CountryID == 119 || CountryID == 18))
                 {
                     string cGraph1JS = "";
                     return Json(cGraph1JS);
@@ -1990,7 +1993,7 @@ namespace Paho.Controllers
                                                     indiceInicial = 1291;       // Other
                                                     indiceInicial2 = 1292;
                                                 }
-                                                else
+                                                else                            // 25: Surinam y 18: Sta Lucia
                                                 {
                                                     qtyGruposEdad = 8;
                                                     filaInicialTabla2 = 262;    // Vigilancia de Influenza y otros Virus Respiratorios 
@@ -2469,7 +2472,7 @@ namespace Paho.Controllers
                                                 indiceInicial4 = 1288;      // Virus Otros
                                                 altoGrupo = 111;            // Tamaño virus otros
                                             }
-                                            else
+                                            else                            // 25 y 18
                                             {
                                                 indiceInicial3 = 757;       // Influenza B
                                                 indiceInicial4 = 1153;      // Virus Otros
@@ -2962,6 +2965,8 @@ namespace Paho.Controllers
                 sheet = "Surinam";
             else if (countryId == 17)
                 sheet = "Jamaica";
+            else if (countryId == 18)
+                sheet = "Saint Lucia";
             else if (countryId == 11)
                 sheet = "Dominica";
             else if (countryId == 119)
@@ -3470,7 +3475,7 @@ namespace Paho.Controllers
                     cTemp = cTemp + "\"" + "serie5" + "\":\"" + aDaSe[6] + "\",";               //
                     cTemp = cTemp + "\"" + "serie6" + "\":\"" + aDaSe[7] + "\",";               //
                     cTemp = cTemp + "\"" + "serie7" + "\":\"" + aDaSe[8] + "\"";               //
-                    if (countryId == 25)
+                    if (countryId == 25 || countryId == 18)
                     {
                         cTemp = cTemp + ",";
                         cTemp = cTemp + "\"" + "serie8" + "\":\"" + aDaSe[9] + "\",";               //
@@ -3492,7 +3497,7 @@ namespace Paho.Controllers
                 cJS = "[" + cJS + "]";
                 jsonTextLB = jsonTextLB + cJS + "},";
 
-                if (countryId == 25)
+                if (countryId == 25 || countryId == 18)
                 {
                     jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + "Under 6 months" + "\",";
                     jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + "6 to 11 months" + "\",";
@@ -3602,7 +3607,7 @@ namespace Paho.Controllers
                                 if (reader.GetValue(9) != System.DBNull.Value)
                                     cGE7 = ((int)reader.GetValue(9)).ToString();
 
-                                if (countryId == 25)
+                                if (countryId == 25 || countryId == 18)
                                 {
                                     cGE8 = "0";
                                     if (reader.GetValue(10) != System.DBNull.Value)
@@ -3696,7 +3701,7 @@ namespace Paho.Controllers
                     cTemp = cTemp + "\"" + "serie4" + "\":\"" + aDaSe[5] + "\",";               //
                     cTemp = cTemp + "\"" + "serie5" + "\":\"" + aDaSe[6] + "\",";               //
                     cTemp = cTemp + "\"" + "serie6" + "\":\"" + aDaSe[7] + "\"";               //
-                    if (countryId == 25)
+                    if (countryId == 25 || countryId == 18)
                     {
                         cTemp = cTemp + ",";
                         cTemp = cTemp + "\"" + "serie7" + "\":\"" + aDaSe[8] + "\",";               //
@@ -3718,7 +3723,7 @@ namespace Paho.Controllers
                 cJS = "[" + cJS + "]";
                 jsonTextLB = jsonTextLB + cJS + "},";
 
-                if (countryId == 25)
+                if (countryId == 25 || countryId == 18)
                 {
                     jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + "Under 6 months" + "\",";
                     jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + "6 to 11 months" + "\",";
@@ -3823,7 +3828,7 @@ namespace Paho.Controllers
                                 else
                                     cGE6 = "0";
 
-                                if (countryId == 25)
+                                if (countryId == 25 || countryId == 18)
                                 {
                                     /*cGE7 = ((int)reader.GetValue(17)).ToString();
                                     cGE8 = ((int)reader.GetValue(18)).ToString();*/
