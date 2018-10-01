@@ -2076,6 +2076,17 @@ namespace Paho.Controllers
                     canConclude_Sample_2 = true;
                     canConclude_Sample_3 = true;
                 }
+                if (flucase.IsSample == true)
+                {
+                    if (((flucase.SampleDate == null && flucase.Processed == null) || flucase.Processed == false) &&
+                       ((flucase.SampleDate2 == null && flucase.Processed2 == null) || flucase.Processed2 == false) &&
+                       ((flucase.SampleDate3 == null && flucase.Processed3 == null) || flucase.Processed3 == false))
+                    {
+                        canConclude_Sample_1 = true;
+                        canConclude_Sample_2 = true;
+                        canConclude_Sample_3 = true;
+                    }
+                }
                     
 
             }

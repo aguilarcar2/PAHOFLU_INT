@@ -13,10 +13,10 @@
     self.UsrCountry = ko.observable(app.Views.Home.UsrCountry()); // Pais del usuario logueado
     self.UsrInstID = ko.observable($('#IIDL').val()); // ID de la institucion del usuario
     self.CaseLabID = "";
+    self.OrdenLabID = 99;
     self.LabDummy = ko.observable("");
     self.ProcLab = ko.observable("");
     self.LabID = ko.observable("");
-    self.OrdenLabID = 99;
     self.CanEdit = ko.observable(true);
     self.CanPCR = ko.observable(app.Views.Lab.CanPCRLab());
     self.CanIFI = ko.observable(app.Views.Lab.CanIFILab());
@@ -364,8 +364,11 @@
             var category = ko.utils.arrayFirst(app.Views.Home.CVT(), function (category) {
                 return category.Id === new_virus;
             });
-            if (category != null && category != "undefined" )
-            self.OrdenVirusTypeID = category.orden;
+            if (category != null && category != "undefined") {
+                self.OrdenVirusTypeID = category.orden;
+                //console.log("OrdenVirusTypeID --" + self.OrdenVirusTypeID);
+            }
+            
             app.Views.Lab.OrdenFinalResult();
         }
         
@@ -378,10 +381,11 @@
             var category = ko.utils.arrayFirst(app.Views.Contact.IntsFlow(), function (category) {
                 return category.LabID === new_Lab_Select;
             });
-            //console.log("Lab_assign -- " + new_Lab_Select);
-            //console.log("Lab_orden -- " + category.OPbyL);
-            if (category != null && category != "undefined")
-                self.OrdenLabID = category.orden;
+            if (category != null && category != "undefined") {
+
+                self.OrdenLabID = category.OPbyL;
+            }
+               
             app.Views.Lab.OrdenFinalResult();
         }
 
@@ -1940,6 +1944,7 @@ function LabViewModel(app, dataModel) {
                 }
 
                 self.hasGet(false);
+                self.OrdenFinalResult();
                 if (self.FinalResult() == "") {
                     self.OrdenFinalResult();
                 };
@@ -1958,7 +1963,7 @@ function LabViewModel(app, dataModel) {
             self.OrderDummy([]);
             self.resetFinalResult();
             self.OrderArrayFinalResult(self.LabTests().concat(self.LabTests_Sample2()).concat(self.LabTests_Sample3()));
-            //console.log(self.OrderArrayFinalResult());
+            console.log(self.OrderArrayFinalResult());
             self.OrderDummy(self.OrderArrayFinalResult.sort(self.generateSortFn([{ name: 'OrdenLabID' }, { name: 'OrdenTestType' },  { name: 'OrdenTestResultID' }, { name: 'OrdenVirusTypeID' }, { name: 'OrdenTestResultID_VirusSubType' }, { name: 'OrdenTestResultID_VirusSubType_2' }, { name: 'OrdenSubTypeID' }, { name: 'OrdenLineageID' }])));
 
             self.OrderArrayFinalResult([]);
@@ -1968,6 +1973,7 @@ function LabViewModel(app, dataModel) {
                     self.otherviruses(true);
                 }
             });
+
 
             self.OrderDummy().forEach(function (v, i) {
 
