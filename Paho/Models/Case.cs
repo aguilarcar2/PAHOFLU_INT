@@ -28,6 +28,7 @@ namespace Paho.Models
         public IEnumerable<LookupView<Region>> Regions { get; set; }
         public IEnumerable<LookupView<Institution>> Institutions { get; set; }
         public IEnumerable<LookupView<Lab>> Labs { get; set; }
+        public Array LabsExternal { get; set; }
         public Array LabsHospital_cmb { get; set;  }
         public bool DisplayCountries { get; set; }
         public bool DisplayAreas { get; set; }
@@ -715,6 +716,8 @@ namespace Paho.Models
 
         [DisplayName("Dirección Institución Extranjero:")]
         public string ForeignInstitutionAddress { get; set; }
+
+        public bool ForeignLab { get; set; }
         //****<
     }
 
@@ -818,6 +821,23 @@ namespace Paho.Models
         public virtual Institution InstitutionParent { get; set; }
     }
 
+    public class InstitutionForeignConf
+    {
+        [Column(Order = 1), Key]
+        public long? InstitutionForeignID { get; set; }
+        [Column(Order = 2), Key]
+        public long? InstitutionLocalID { get; set; }
+        //public int? InstitutionLocalCountryID { get; set; }
+
+
+        [ForeignKey("InstitutionForeignID")]
+        public virtual Institution InstitutionForeign { get; set; }
+        [ForeignKey("InstitutionLocalID")]
+        public virtual Institution InstitutionLocal { get; set; }
+        //[ForeignKey("InstitutionLocalCountryID")]
+        //public virtual Country CountryLocalLab { get; set; }
+    }
+
     public class InstitutionConfEndFlowByVirus
     {
         
@@ -866,7 +886,7 @@ namespace Paho.Models
 
     public class FluCase : CaseBase
     {
-         // Mapeo principal para grabar datos
+         // Mapeo princifpal para grabar datos
         public int ID { get; set; }
         [Required]
         public long HospitalID { get; set; }  
@@ -1032,6 +1052,9 @@ namespace Paho.Models
         public int? AntiViralType { get; set; }
         public int? OseltaDose { get; set; }
         public string AntiViralDose { get; set; }
+
+        public int? Antibiotic { get; set; }
+        public string AntibioticName { get; set; }
 
         public bool? Pperium { get; set; }
         public Trimester? Trimester { get; set; }
@@ -1687,6 +1710,10 @@ namespace Paho.Models
         public DbSet<CatPadronCR_ImportLog> ImportedFileListPadron { get; set; }
         public DbSet<RecordHistory> RecordHistories { get; set; }
 
+        //Laboratorios externos
+        public DbSet<InstitutionForeignConf> InstitutionForeignConf { get; set; }
+        
+
         // Graficas
         public DbSet<GraphCache> GraphCache { get; set; }
 
@@ -1807,6 +1834,8 @@ namespace Paho.Models
                    p.AntiViralDate,
                    p.AntiViralDateEnd,
                    p.AntiViralType,
+                   p.Antibiotic,
+                   p.AntibioticName,
                    p.OseltaDose,
                    p.AntiViralDose,
                    p.ViajePrevSintoma,             //#### CAFQ

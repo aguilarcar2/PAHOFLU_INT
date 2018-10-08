@@ -1077,6 +1077,9 @@ namespace Paho.Controllers
                     OseltaDose = flucase.OseltaDose,
                     AntiViralDose = flucase.AntiViralDose,
 
+                    Antibiotic = flucase.Antibiotic,
+                    AntibioticName = flucase.AntibioticName,
+
                     Ocupacion = flucase.Ocupacion,                             //#### CAFQ
                     TrabajoDirecc = flucase.TrabajoDirecc,                     //#### CAFQ
                     TrabajoEstablec = flucase.TrabajoEstablec,                 //#### CAFQ
@@ -1186,6 +1189,10 @@ namespace Paho.Controllers
                 DateTime? AntiViralDate,
                 DateTime? AntiViralDateEnd,
                 int? AntiViralType,
+                // Antibiotic
+                int? Antibiotic,
+                string AntibioticName,
+
                 int? OseltaDose,
                 string AntiViralDose,
                 int? RiskFactors,
@@ -1288,6 +1295,10 @@ namespace Paho.Controllers
             flucase.AntiViralType = AntiViralType;
             flucase.OseltaDose = OseltaDose;
             flucase.AntiViralDose = AntiViralDose;
+
+            flucase.Antibiotic = Antibiotic;
+            flucase.AntibioticName = AntibioticName;
+
             if (AntiViral != null)  flucase.RiskFactors = (RiskFactor)Enum.Parse(typeof(RiskFactor), RiskFactors.ToString());
             flucase.Comorbidities = Comorbidities;
 
@@ -1921,6 +1932,9 @@ namespace Paho.Controllers
             var flow_local_lab = 0;
             var flow_statement = flucase.statement ?? 1;
             var flow_open_always = false;
+
+            var LabForeignCountry = db.InstitutionForeignConf.Where(z => z.InstitutionLocal.CountryID == user.Institution.CountryID).Any();
+            var LabForeignInstitutionLocal = db.InstitutionForeignConf.Where(y => y.InstitutionLocalID == user.InstitutionID).Any();
             // Chequeo de muestas segun configuracion de virus por flujo actual
             // Revisar si existe alguna configuracion por virus en el flujo actual
             var list_by_virus_endflow_byActualFlow = db.InstitutionConfEndFlowByVirus.Where(y=> institucionActualAndPreviousFlow.Contains(y.id_InstCnf));
@@ -2204,6 +2218,9 @@ namespace Paho.Controllers
                     CanPCRLab = CanPCRLab,
                     CanIFILab = CanIFILab,
                     InstFlow_NPHL = user.Institution.NPHL != null ? (bool)user.Institution.NPHL : false,
+                    // Lab Foreign
+                    ForeignLabCountry = LabForeignCountry,
+                    ForeignLabLocal = LabForeignInstitutionLocal,
                 LabTests = (
                           from caselabtest in flucase.CaseLabTests
                           where caselabtest.SampleNumber == 1 || caselabtest.SampleNumber == null
@@ -2321,6 +2338,57 @@ namespace Paho.Controllers
                     LabTests_Sample3 = (
                           from caselabtest in flucase.CaseLabTests
                           where caselabtest.SampleNumber == 3
+                          select new
+                          {
+                              Id = caselabtest.ID,
+                              CaseLabID = caselabtest.FluCaseID,
+                              ProcLab = caselabtest.LabID.ToString(),
+                              ProcLabName = GetLabName(caselabtest.LabID),
+                              ProcessLab = caselabtest.Processed,
+                              SampleNumber = caselabtest.SampleNumber,
+                              TestType = caselabtest.TestType,
+                              TestDate = caselabtest.TestDate,
+                              TestResultID = caselabtest.TestResultID,
+                              VirusTypeID = caselabtest.VirusTypeID,
+                              CTVirusType = caselabtest.CTVirusType,
+                              CTRLVirusType = caselabtest.CTRLVirusType,
+                              OtherVirusTypeID = caselabtest.OtherVirusTypeID,
+                              CTOtherVirusType = caselabtest.CTOtherVirusType,
+                              OtherVirus = caselabtest.OtherVirus,
+                              //InfA = caselabtest.InfA,
+                              VirusSubTypeID = caselabtest.VirusSubTypeID,
+                              CTSubType = caselabtest.CTSubType,
+                              CTRLSubType = caselabtest.CTRLSubType,
+                              //InfB = caselabtest.InfB,
+                              VirusLineageID = caselabtest.VirusLineageID,
+                              CTLineage = caselabtest.CTLineage,
+                              CTRLLineage = caselabtest.CTRLLineage,
+                              //ParaInfI = caselabtest.ParaInfI,
+                              //ParaInfII = caselabtest.ParaInfII,
+                              //ParaInfIII = caselabtest.ParaInfIII,
+                              //RSV = caselabtest.RSV,
+                              //Adenovirus = caselabtest.Adenovirus,
+                              //Metapneumovirus = caselabtest.Metapneumovirus,
+                              RNP = caselabtest.RNP,
+                              CTRLRNP = caselabtest.CTRLRNP,
+                              CTRLNegative = caselabtest.CTRLNegative,
+                              TestEndDate = caselabtest.TestEndDate,
+                              CanEdit = institutionsIds.Contains(caselabtest.LabID),
+                              CanPCR = db.Institutions.OfType<Lab>().Where(i => i.ID == caselabtest.LabID).First()?.PCR,
+                              CanIFI = db.Institutions.OfType<Lab>().Where(i => i.ID == caselabtest.LabID).First()?.IFI,
+                              EndFlow = institutionActualFlow.Any() ? ((caselabtest.TestResultID == "N") ? db.InstitutionConfEndFlowByVirus.Where(j => j.id_InstCnf == institutionActualFlow.FirstOrDefault().ID && j.id_Cat_TestType == caselabtest.TestType && j.value_Cat_TestResult == caselabtest.TestResultID).Any().ToString().ToUpper() : db.InstitutionConfEndFlowByVirus.Where(j => j.id_InstCnf == institutionActualFlow.FirstOrDefault().ID && j.id_Cat_TestType == caselabtest.TestType && j.value_Cat_TestResult == caselabtest.TestResultID && j.id_Cat_VirusType == caselabtest.VirusTypeID).Any().ToString().ToUpper()) : "UNKNOWN",
+                              // Orden de muestra
+                              InstPriority = db.InstitutionsConfiguration.Where(i => i.InstitutionToID == caselabtest.LabID && i.InstitutionParentID == flucase.HospitalID).Any() ? db.InstitutionsConfiguration.Where(i => i.InstitutionToID == caselabtest.LabID && i.InstitutionParentID == flucase.HospitalID).FirstOrDefault().ID : 0,
+                              OrderTestType = caselabtest.CatTestType != null ? caselabtest.CatTestType.orden : 99
+                          }
+                      )
+                      .OrderBy(x => x.InstPriority)
+                      .ThenByDescending(d => d.OrderTestType)
+                      .ThenBy(c => c.TestDate)
+                      .ToArray(),
+                    LabTests_Extern = (
+                          from caselabtest in flucase.CaseLabTests
+                          where caselabtest.SampleNumber == 999
                           select new
                           {
                               Id = caselabtest.ID,

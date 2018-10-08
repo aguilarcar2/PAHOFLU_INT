@@ -413,6 +413,28 @@ namespace Paho.Controllers
                                       Name = institution.Name
                                   }).ToArray();
 
+            // Combo de laboratorios externos
+            var LabsForeign = db.InstitutionForeignConf.Where(z => z.InstitutionLocal.CountryID == user.Institution.CountryID).Select(x => x.InstitutionForeignID);
+
+            if (LabsForeign.Any() == true)
+            {
+
+                CaseViewModel.LabsExternal = (from institution in db.Institutions.OfType<Lab>().Where(i => LabsForeign.Contains(i.ID) && i.ForeignLab == true)
+                                              select new LookupView<Lab>()
+                                              {
+                                                  Id = institution.ID.ToString(),
+                                                  Name = institution.Name
+                                              })
+                      .ToArray();
+
+            }
+            else
+            {
+                CaseViewModel.LabsExternal = LabsForeign.ToArray();
+            }
+
+
+
             // Modificacion de Labs lo agrego AM 25 abril 2016
 
             var institutionsConfigurationLabs = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>()

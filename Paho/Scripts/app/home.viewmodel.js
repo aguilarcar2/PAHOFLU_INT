@@ -50,6 +50,7 @@
     self.SNEndDate = ko.observable("");
     
     self.labs = ko.observableArray(labs);
+    self.labsExternal = ko.observableArray(labsExternal);
     self.labsHospital = ko.observableArray([]);
     self.RecordHistoryItems = ko.observableArray([]);
 
@@ -277,7 +278,7 @@
         $('#tabs').tabs({ active: 0 });
         app.Views.Hospital.LabsHospital(self.labsHospital());
         app.Views.Lab.LabsResult(self.labs());
-
+        //app.Views.Lab.LabsExterno(self.labs());
 
     };
 
@@ -536,7 +537,7 @@
             $("#tabs").tabs("refresh");
 
             //} else if (app.Views.Hospital.CaseStatus() == "3" && self.UserRole() != "adm") {
-        } else if (app.Views.Hospital.CaseStatus() == "3" && self.URadm() == true) {
+        } else if (app.Views.Hospital.CaseStatus() == "3" && self.URmod_epi() != true) {
             console.log("aqui _ CaseStatus 3"); //
             $("#tabs :input").prop('disabled', true); // Modificacion para que se pueda modificar el registro aunque este cerrado el caso.
             self.ModDataNo();
@@ -596,6 +597,10 @@
 
         if (app.Views.Lab.CanConclude() == true && ($("#ITy").val() == "1" || (app.Views.Hospital.CaseStatus() == "" && self.URclo_case() == true) || (app.Views.Hospital.CaseStatus() == "" && self.URmod_epi() == true))) {
             console.log("aqui _ CaseStatus IT = 1"); //
+            console.log(app.Views.Lab.CanConclude());
+            console.log(app.Views.Hospital.CaseStatus());
+            console.log(self.URmod_epi() == true);
+            console.log(self.URclo_case() == true);
             $("#HospExDate").attr("disabled", false);
             $("#Destin").attr("disabled", false)
 

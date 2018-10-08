@@ -553,6 +553,8 @@ function LabViewModel(app, dataModel) {
     self.UsrInstID = ko.observable($('#IIDL').val()); // ID de la institucion del usuario
     self.ISPID = ko.observable(97);  //Es 97 porque es el ID de la tabla institución
     self.NPHL = ko.observable(false);
+    self.ForeignLabCountry = ko.observable(false);
+    self.ForeignLabLocal = ko.observable(false);
     self.hasReset = ko.observable(false);
     self.hasGet = ko.observable(false);
 
@@ -1022,6 +1024,10 @@ function LabViewModel(app, dataModel) {
         return (self.NPHL_NoProRenId() === "5")
     }, self);
 
+    self.ShowForeignLabCountryContainer = ko.computed(function () {
+        return (self.ForeignLabCountry())
+    }, self);
+
     self.ShowProcessedNPHL_2 = ko.computed(function () {
         self.NPHL_NoProRen_2("");
         self.NPHL_NoProRenId_2("");
@@ -1104,7 +1110,9 @@ function LabViewModel(app, dataModel) {
     self.LabTests = ko.observableArray([]);
     self.LabTests_Sample2 = ko.observableArray([]);
     self.LabTests_Sample3 = ko.observableArray([]);
+    self.LabTestsExternal = ko.observableArray([]);
     self.LabsResult = ko.observableArray([]);
+    self.LabsResultExternal = ko.observableArray(app.Views.Home.labsExternal());
     self.SubTypeByLabRes = ko.observableArray([]);
     self.ArrayValidate = ko.observableArray([]);
     
@@ -1293,8 +1301,11 @@ function LabViewModel(app, dataModel) {
             alert(erroMsg);
             return;
         }
+
         var labtest = new LabTest(sample_number);
+
         labtest.hideLabOptions = true;
+       
         //console.log(labtest.displayLabOptions + " **** ");
         labtest.CaseLabID = self.Id;
         labtest.SampleNumber(sample_number);
@@ -1304,6 +1315,8 @@ function LabViewModel(app, dataModel) {
             self.LabTests_Sample2.push(labtest);
         } else if (sample_number == 3) {
             self.LabTests_Sample3.push(labtest);
+        } else if (sample_number == 999) {
+            self.LabTestsExternal.push(labtest);
         }
          
     };
@@ -1396,6 +1409,7 @@ function LabViewModel(app, dataModel) {
         self.LabTests_Sample2([]);
         self.LabTests_Sample3([]);
         self.LabsResult([]);
+        self.LabsResultExternal([]);
         self.SubTypeByLabRes([]);
         
     };
@@ -1717,6 +1731,9 @@ function LabViewModel(app, dataModel) {
                 self.CanIFILab(data.CanIFILab);
                 self.CanPCRLab(data.CanPCRLab);
 
+                self.ForeignLabCountry(data.ForeignLabCountry);
+                self.ForeignLabLocal(data.ForeignLabLocal);
+
 
                 self.LabTests([]);
                 if (data.LabTests != "") {                  
@@ -1886,6 +1903,11 @@ function LabViewModel(app, dataModel) {
                 $("#FinalResultVirusTypeID_3").prop('disabled', true);
                 $("#FinalResultVirusSubTypeID_3").prop('disabled', true);
                 $("#FinalResultVirusLineageID_3").prop('disabled', true);
+
+                if (self.ForeignLabCountry() == true) {
+
+                }
+
                 if (self.NPHL() == true) {
                     $("#Rec_Date_NPHL").prop('disabled', false);                    
                     $("#Temp_NPHL").prop('disabled', false);
@@ -1944,7 +1966,7 @@ function LabViewModel(app, dataModel) {
                 }
 
                 self.hasGet(false);
-                self.OrdenFinalResult();
+                //self.OrdenFinalResult();  // Esta línea es para probar si el orden estsa funcionando 
                 if (self.FinalResult() == "") {
                     self.OrdenFinalResult();
                 };

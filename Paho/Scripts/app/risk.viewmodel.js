@@ -101,7 +101,10 @@
     self.AStartDate = ko.observable(new Date());
     self.OseltaDose = ko.observable("");
     self.AntiViralDose = ko.observable("");
-
+    // Antibiotic
+    self.Antibiotic = ko.observable("");
+    self.AntibioticName = ko.observable("");
+    
     self.EnableCHI = ko.computed(function () {
         return (self.UsrCountry() != 7 ) ? true : false;
 
@@ -188,6 +191,12 @@
         var result = (self.AntiViralType() == "" || self.AntiViralType() == "5");
         if (!result) self.AntiViralDose("");
         return !result;
+    }, self);
+
+    self.VisibleAntibioticName = ko.computed(function () {
+        var result = (self.Antibiotic() == "1");
+        if (result) self.AntibioticName("");
+        return result;
     }, self);
 
     self.HDisease = ko.observable(false);
@@ -456,6 +465,9 @@
         self.AntiViralType("");
         self.OseltaDose("");
         self.AntiViralDose("");
+
+        self.Antibiotic("");
+        self.AntibioticName("");
         self.ResetRiskInusual();                    //#### CAFQ
         self.hasReset(false);
     };
@@ -558,6 +570,9 @@
                 self.AntiViralType(data.AntiViralType);
                 self.OseltaDose(data.OseltaDose);
                 self.AntiViralDose(data.AntiViralDose);
+
+                self.Antibiotic(data.Antibiotic);
+                self.AntibioticName(data.AntibioticName);
 
                 self.selectedOccupationId(data.Ocupacion);                         //#### CAFQ
                 self.TrabajoDirecc(data.TrabajoDirecc);                         //#### CAFQ
@@ -850,6 +865,10 @@
                 AntiViralType: self.AntiViralType(),
                 OseltaDose: self.OseltaDose(),
                 AntiViralDose: self.AntiViralDose(),
+                // Antibiotic
+                Antibiotic: self.Antibiotic(),
+                AntibioticName: self.AntibioticName(),
+
                 RiskFactors: self.RiskFactors(),
                 Comorbidities: self.Comorbidities(),
 
