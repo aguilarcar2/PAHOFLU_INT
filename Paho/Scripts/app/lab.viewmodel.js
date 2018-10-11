@@ -374,18 +374,17 @@
         
     });
 
-    self.ProcLab.subscribe(function (new_Lab_Select) {
+    self.LabID.subscribe(function (new_Lab_Select) {
         //console.log("Lab_assign -- " + new_Lab_Select);
         if (new_Lab_Select != "" && new_Lab_Select != null) {
             //console.log(app.Views.Contact.IntsFlow());
             var category = ko.utils.arrayFirst(app.Views.Contact.IntsFlow(), function (category) {
-                return category.LabID === new_Lab_Select;
+                //console.log(" LabId ++ " + self.LabID());
+                return category.LabID ===  new_Lab_Select;
             });
             if (category != null && category != "undefined") {
-
                 self.OrdenLabID = category.OPbyL;
-            }
-               
+            }  
             app.Views.Lab.OrdenFinalResult();
         }
 
@@ -428,6 +427,10 @@
             });
             if (category != null && category != "undefined")
                 self.OrdenTestType = category.orden;
+
+            if (self.LabID() === "")
+                self.LabID(self.ProcLab());
+
             app.Views.Lab.OrdenFinalResult();
         }
 
@@ -1801,6 +1804,7 @@ function LabViewModel(app, dataModel) {
                         labtest_s2.CanPCR((typeof data.LabTests_Sample2[index].CanPCR === "undefined") ? false : data.LabTests_Sample2[index].CanPCR);
                         labtest_s2.CanIFI((typeof data.LabTests_Sample2[index].CanIFI === "undefined") ? false : data.LabTests_Sample2[index].CanIFI);
                         labtest_s2.ProcLab(data.LabTests_Sample2[index].ProcLab.toString());
+                        console.log("--ProcLab Sample2 -- " + labtest.ProcLab());
                         labtest_s2.LabID(data.LabTests_Sample2[index].ProcLab.toString());
                         labtest_s2.ProcLabName(data.LabTests_Sample2[index].ProcLabName.toString());
                         labtest_s2.ProcessLab(data.LabTests_Sample2[index].ProcessLab.toString());
@@ -1851,6 +1855,7 @@ function LabViewModel(app, dataModel) {
                         labtest_s3.CanPCR((typeof data.LabTests_Sample3[index].CanPCR === "undefined") ? false : data.LabTests_Sample3[index].CanPCR);
                         labtest_s3.CanIFI((typeof data.LabTests_Sample3[index].CanIFI === "undefined") ? false : data.LabTests_Sample3[index].CanIFI);
                         labtest_s3.ProcLab(data.LabTests_Sample3[index].ProcLab.toString());
+                        console.log("--ProcLab Sample3 -- " + labtest.ProcLab());
                         labtest_s3.LabID(data.LabTests_Sample3[index].ProcLab.toString());
                         labtest_s3.ProcLabName(data.LabTests_Sample3[index].ProcLabName.toString());
                         labtest_s3.ProcessLab(data.LabTests_Sample3[index].ProcessLab.toString());
@@ -1985,7 +1990,7 @@ function LabViewModel(app, dataModel) {
             self.OrderDummy([]);
             self.resetFinalResult();
             self.OrderArrayFinalResult(self.LabTests().concat(self.LabTests_Sample2()).concat(self.LabTests_Sample3()));
-            console.log(self.OrderArrayFinalResult());
+            //console.log(self.OrderArrayFinalResult());
             self.OrderDummy(self.OrderArrayFinalResult.sort(self.generateSortFn([{ name: 'OrdenLabID' }, { name: 'OrdenTestType' },  { name: 'OrdenTestResultID' }, { name: 'OrdenVirusTypeID' }, { name: 'OrdenTestResultID_VirusSubType' }, { name: 'OrdenTestResultID_VirusSubType_2' }, { name: 'OrdenSubTypeID' }, { name: 'OrdenLineageID' }])));
 
             self.OrderArrayFinalResult([]);
