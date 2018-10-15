@@ -611,6 +611,25 @@
                 </div>
             </div>
 
+            @if (ViewBag.UsrCtry == 11)
+            {
+                <div class="row" style="margin-bottom: 15px; margin-top: 1em;">
+                    <div class="col-md-5">
+                        <div class='input-group'>
+                            <span class="input-group-addon">
+                                <!--Región:-->
+                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgViewExportarLabelRegion"))
+                            </span>
+                            <select id="Regions" class="form-control" data-bind="options: regions,
+                               optionsText: 'Name',
+                               optionsValue: 'Id',
+                               value: selectedRegionId,
+                               valueUpdate:'change'"></select>
+                        </div>
+                    </div>
+                </div>
+            }
+
             <!-- Area -->
             <div class="col-md-6">
                 <div class='input-group'>
@@ -629,7 +648,7 @@
 
         <div class="row rowform">
             <!-- State -->
-            @if ( @ViewBag.UsrCtry != 119)
+            @if ( @ViewBag.UsrCtry != 119 && @ViewBag.UsrCtry != 11)
             {
                 <div class="col-md-6">
                     <div class='input-group'>
@@ -2899,7 +2918,10 @@
                                     <option value="8">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelBronchoalveolarLavage")) </option>
                                     <option value="9">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelLungBiopsy")) </option>
                                     <option value="10">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSerum"))</option>
-                                    <option value="11">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOther"))</option>
+                                    if (ViewBag.UsrCtry != 11)
+                                    {
+                                        <option value="11">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOther"))</option>
+                                    }
                                 }
                                 else
                                 {
@@ -2974,7 +2996,10 @@
                                     <option value="8">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelBronchoalveolarLavage")) </option>
                                     <option value="9">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelLungBiopsy")) </option>
                                     <option value="10">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSerum"))</option>
-                                    <option value="11">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOther"))</option>
+                                    if (ViewBag.UsrCtry != 11)
+                                    {
+                                        <option value="11">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOther"))</option>
+                                    }
                                 }
                                 else
                                 {
@@ -2984,7 +3009,6 @@
                                     <option value="9">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelLungBiopsy"))</option>
                                     <option value="11">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOther"))</option>
                                 }
-
                             </select>
                         </div>
                     </div>
@@ -3047,7 +3071,10 @@
                                     <option value="8">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelBronchoalveolarLavage")) </option>
                                     <option value="9">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelLungBiopsy")) </option>
                                     <option value="10">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSerum"))</option>
-                                    <option value="11">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOther"))</option>
+                                    if (ViewBag.UsrCtry != 11)
+                                    {
+                                        <option value="11">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOther"))</option>
+                                    }
                                 }
                                 else
                                 {

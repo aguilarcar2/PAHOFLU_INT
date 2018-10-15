@@ -138,7 +138,12 @@ namespace Paho.Controllers
                                        .Where(i => i.ID == user.Institution.ID).OrderBy(j => j.FullName);
                     }
                 }
-            }            
+            }
+
+            if (regions == null && user.Institution.CountryID == 11)        // Dominica
+            {
+                regions = db.Regions.Where(c => c.CountryID == user.Institution.CountryID && c.tipo_region == 1).OrderBy(i => i.Name);
+            }
 
             //**** Paises
             CaseViewModel.Countries = db.Countries
@@ -184,7 +189,8 @@ namespace Paho.Controllers
                 if (regionsDisplay.Count() > 1)
                 {
                     //var all = new LookupView<Region> { Id = "0", Name = "-- Todo(a)s --" };
-                    var all = new LookupView<Region> { Id = "0", Name = getMsg("msgGeneralMessageAll") };
+                    //var all = new LookupView<Region> { Id = "0", Name = getMsg("msgGeneralMessageAll") };
+                    var all = new LookupView<Region> { Id = "0", Name = getMsg("msgSelectLabel") };         //#### CAFQ: 181008
                     regionsDisplay.Insert(0, all);
                     CaseViewModel.DisplayRegionals = true;
                 }

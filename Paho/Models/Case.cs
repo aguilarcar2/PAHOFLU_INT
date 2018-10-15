@@ -997,6 +997,7 @@ namespace Paho.Models
         public int? NeighborhoodID2weeks { get; set; }
         [MaxLength(250)]
         public string Address { get; set; }
+        public int? RegionAddress { get; set; }             //#### CAFQ: 181008
         public string PhoneNumber { get; set; }
         public string Latitude { get; set; }
         public string Longitude { get; set; }
@@ -1783,6 +1784,7 @@ namespace Paho.Models
                    p.StateID2weeks,
                    p.NeighborhoodID2weeks,
                    p.Address,
+                   p.RegionAddress,             //#### CAFQ: 181008
                    p.CountryOrigin,
                    p.PhoneNumber,
                    p.Latitude,

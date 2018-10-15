@@ -405,8 +405,24 @@ namespace Paho.Controllers
                 flucases = db.FluCases.Where(f => f.HospitalID == InstitutionDB);
             }
 
+            if (user.Institution.CountryID == 11)               //#### CAFQ: 181008
+            {
+                var regions = db.Regions.Where(c => c.CountryID == user.Institution.CountryID && c.tipo_region == 1).OrderBy(i => i.Name);
 
-            if ((regionId > 0 || UsrAccessLevel == AccessLevel.Regional) && institutionId == 0)
+                var regionsDisplay = regions.Select(i => new LookupView<Paho.Models.Region>()
+                {
+                    Id = i.orig_country.ToString(),
+                    //Id = i.ID.ToString(),
+                    Name = i.Name
+                }).ToList();
+
+                if (regionsDisplay.Count() > 1)
+                {
+                    var all = new LookupView<Paho.Models.Region> { Id = "0", Name = getMsg("msgSelectLabel") };
+                    regionsDisplay.Insert(0, all);
+                }
+            }
+            else if ((regionId > 0 || UsrAccessLevel == AccessLevel.Regional) && institutionId == 0)
             {
                 var RegionId_ = (UsrAccessLevel == AccessLevel.Regional) ? UsrRegion : regionId;
                 var Regions = db.Institutions.Where(l => l.cod_region_institucional == RegionId_);
@@ -551,8 +567,8 @@ namespace Paho.Controllers
                                  {
                                      surv_ID = flucase.Surv,
                                      surv_IDInusual = flucase.SurvInusual,    //#### CAFQ: 180604 - Jamaica Universal
-                                     ready_close = ((flucase.flow == db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID && i.Conclusion == true).OrderBy(x => x.Priority).FirstOrDefault().Priority && flucase.statement == 2) || (flucase.IsSample == false)) ? 1 : 0,
-                                     ready_close2 = ((flucase.flow == db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID).OrderByDescending(x => x.Priority).FirstOrDefault().Priority && flucase.statement == 2) || (flucase.IsSample == false)) ? 1 : 0,
+                                     ready_close = ((flucase.flow == db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID && i.Conclusion == true).OrderBy(x => x.Priority).FirstOrDefault().Priority && flucase.statement == 2) || (flucase.IsSample == false) || (flucase.Processed == false) || (flucase.Processed2 == false) || (flucase.Processed3 == false)) ? 1 : 0,
+                                     ready_close2 = ((flucase.flow == db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID).OrderByDescending(x => x.Priority).FirstOrDefault().Priority && flucase.statement == 2) || (flucase.IsSample == false) || (flucase.Processed == false) || (flucase.Processed2 == false) || (flucase.Processed3 == false)) ? 1 : 0,
                                      id_D = flucase.ID,
                                      H_D = flucase.HospitalDate,
                                      LN_D = flucase.LName1 + " " + flucase.LName2 ?? "",
@@ -604,7 +620,7 @@ namespace Paho.Controllers
                                         */
                                         x.VI_OK == true ?
                                             (x.FLOW_VIRUS != null ?
-                                                (x.FLOW_VIRUS.value_Cat_TestResult==x.TEST_LAST.TestResultID && x.FLOW_VIRUS.id_Cat_VirusType==x.TEST_LAST.VirusTypeID ?
+                                                (x.FLOW_VIRUS.value_Cat_TestResult==x.TEST_LAST.TestResultID && x.FLOW_VIRUS.id_Cat_VirusType==x.TEST_LAST.VirusTypeID && x.FLOW_FLUCASE != 99 ?
                                                     readyCloseHtml :
                                                     (x.ready_close2 == 1 && x.FLOW_FLUCASE != 99 ?
                                                         readyCloseHtml :
@@ -1806,7 +1822,8 @@ namespace Paho.Controllers
                     PhoneNumber = flucase.PhoneNumber,
                     Latitude = flucase.Latitude,
                     Longitude = flucase.Longitude,
-                    CountryOrigin = flucase.CountryOrigin
+                    CountryOrigin = flucase.CountryOrigin,
+                    RegionAddress = flucase.RegionAddress                   //#### CAFQ: 181008
                 }, JsonRequestBehavior.AllowGet);
             };
             return Json(new
@@ -1854,7 +1871,8 @@ namespace Paho.Controllers
                 int? CountryOrigin,
                 string PhoneNumber,
                 string Latitude,
-                string Longitude
+                string Longitude,
+                int? RegionAddress
             )
         {
             FluCase flucase;
@@ -1890,6 +1908,7 @@ namespace Paho.Controllers
             flucase.Longitude = Longitude;
             flucase.CountryOrigin = CountryOrigin;
             flucase.InsertDate = DateTime.Now;
+            flucase.RegionAddress = RegionAddress;              //#### CAFQ: 181008
             //flucase.UserID = User.Identity.Name;
 
             db.SaveChanges();

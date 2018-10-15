@@ -46,6 +46,8 @@
     self.PhoneNumber = ko.observable("");
     self.Latitude = ko.observable("");
     self.Longitude = ko.observable("");
+    self.regions = ko.observableArray(regions);             //#### CAFQ: 181008
+    self.selectedRegionId = ko.observable("");              //#### CAFQ: 181008
 
     self.ActiveBOLCountry2weeks = ko.computed(function () {
         return (self.UsrCountry() == 3 && self.selectedCountryId2weeks() == app.Views.Contact.UsrCountry()) ? true : false;
@@ -88,6 +90,7 @@
         self.Latitude("");
         self.Longitude("");
         self.hasReset(false);
+        self.selectedRegionId("")               //#### CAFQ: 181008
     };
 
     self.ResetGEOInusual = function () {
@@ -146,6 +149,7 @@
                 self.PhoneNumber(data.PhoneNumber);
                 self.Latitude(data.Latitude);
                 self.Longitude(data.Longitude);
+                self.selectedRegionId(data.RegionAddress);                  //#### CAFQ: 181008
                 self.ReloadAreas(function() {
                     self.selectedAreaId(data.AreaID);
                     self.ReloadStates(function () {
@@ -389,7 +393,8 @@
                 CountryOrigin: self.selectedCountryOrigin(),
                 PhoneNumber: self.PhoneNumber(),
                 Latitude: self.Latitude(),
-                Longitude: self.Longitude()
+                Longitude: self.Longitude(),
+                RegionAddress: self.selectedRegionId()             //#### CAFQ: 181008
             },
             function (data) {
                 if (nextStep) nextStep();
