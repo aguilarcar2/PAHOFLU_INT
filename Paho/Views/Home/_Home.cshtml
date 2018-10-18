@@ -596,6 +596,23 @@
                 @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidence"))
         </div>
 
+        <!-- Buscar -->
+        @if (@ViewBag.UsrCtry == 15)
+        {
+            <div class="row rowform">
+                <div class="col-md-7">
+                    <div class='input-group'>
+                        <span class="input-group-addon">
+                            <i class="glyphicon glyphicon-search"></i>
+                        </span>
+                        <input id="SearchUbicaResid" type='text' class="form-control case_letter" data-bind="value: SearchUbicaResid" style="max-width:400px;" />
+                        <input id="SearchUbicaResidVal" type='hidden' class="form-control" data-bind="value: SearchUbicaResidVal, valueUpdate:'change'" />
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!-- País de residencia / Distrito / Area -->
         <div class="row rowform">
             <!-- País de residencia -->
             <div class="col-md-6">
@@ -611,6 +628,7 @@
                 </div>
             </div>
 
+            <!-- Distrito -->
             @if (ViewBag.UsrCtry == 11)
             {
                 <div class="row" style="margin-bottom: 15px; margin-top: 1em;">
@@ -1444,42 +1462,42 @@
                                     </tr>
                                     @if (ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 18 && ViewBag.UsrCtry != 17)
                                     {
-                                    <tr align="center" data-bind="visible:NotShowChilds">
-                                        <td>
-                                            <span class="input-group-addon"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelNeumococo"))</span>
-                                        </td>
-                                        <td>
-                                            <input type="radio" name="VacNeumococo" id="VacNeumococo" value="1" data-bind="checked: VacNeumococo">
-                                        </td>
-                                        <td>
-                                            <input type="radio" name="VacNeumococo" id="VacNeumococo" value="2" data-bind="checked: VacNeumococo">
-                                        </td>
-                                        <td>
-                                            <input type="radio" name="VacNeumococo" id="VacNeumococo" value="9" checked data-bind="checked: VacNeumococo">
-                                        </td>
-                                        <td>
-                                            <div>
-                                                <select id="VacNeumococoDosis" name="VacNeumococoDosis" class="form-control" style="max-width: 130px" data-bind='value: VacNeumococoDosis, enable: EnableVacNeumococoDate'>
-                                                    <option value="">Sel...</option>
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    @if (ViewBag.UsrCtry == 9)
-                                                    {<option value="4">4</option>}
-                                                </select>
+                                        <tr align="center" data-bind="visible:NotShowChilds">
+                                            <td>
+                                                <span class="input-group-addon"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelNeumococo"))</span>
+                                            </td>
+                                            <td>
+                                                <input type="radio" name="VacNeumococo" id="VacNeumococo" value="1" data-bind="checked: VacNeumococo">
+                                            </td>
+                                            <td>
+                                                <input type="radio" name="VacNeumococo" id="VacNeumococo" value="2" data-bind="checked: VacNeumococo">
+                                            </td>
+                                            <td>
+                                                <input type="radio" name="VacNeumococo" id="VacNeumococo" value="9" checked data-bind="checked: VacNeumococo">
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <select id="VacNeumococoDosis" name="VacNeumococoDosis" class="form-control" style="max-width: 130px" data-bind='value: VacNeumococoDosis, enable: EnableVacNeumococoDate'>
+                                                        <option value="">Sel...</option>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        @if (ViewBag.UsrCtry == 9)
+                                                        {<option value="4">4</option>}
+                                                    </select>
+                                                    </div>
+                                            </td>
+                                            <td>
+                                                <div class="col-md-6">
+                                                    <div class='input-group'>
+                                                        <span class="input-group-addon">
+                                                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelNeumococoDate"))
+                                                        </span>
+                                                        <input id="VacNeumococoDate" type="text" class="form-control" data-bind='datepicker: VacNeumococoDate, enable: EnableVacNeumococoDate, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
+                                                    </div>
                                                 </div>
-                                        </td>
-                                        <td>
-                                            <div class="col-md-6">
-                                                <div class='input-group'>
-                                                    <span class="input-group-addon">
-                                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelNeumococoDate"))
-                                                    </span>
-                                                    <input id="VacNeumococoDate" type="text" class="form-control" data-bind='datepicker: VacNeumococoDate, enable: EnableVacNeumococoDate, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                            </td>
+                                        </tr>
                                     }
                                     <tr align="center"  style="display:none;">
                                         <td>
@@ -1538,11 +1556,10 @@
                                         </td>
                                     </tr>
                                 </tbody>
-
                             </table>
                         </div>
                     </div>
-                    @if (@ViewBag.UsrCtry == 7 || @ViewBag.UsrCtry == 9 || @ViewBag.UsrCtry == 3)
+                    @if (@ViewBag.UsrCtry == 7 || @ViewBag.UsrCtry == 9 || @ViewBag.UsrCtry == 3 || @ViewBag.UsrCtry == 15)
                     {
                         <div class="row rowform">
                             <div class='input-group col-md-12'>

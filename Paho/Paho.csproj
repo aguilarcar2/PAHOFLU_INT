@@ -2130,6 +2130,7 @@
     <None Include="Properties\PublishProfiles\CAFQ.pubxml" />
     <None Include="Properties\PublishProfiles\CAFQ01.pubxml" />
     <None Include="Properties\PublishProfiles\CAFQ_PAHO.pubxml" />
+    <None Include="Properties\PublishProfiles\CAFQ_PAHOFLU.pubxml" />
     <None Include="Properties\PublishProfiles\INTERNATIONAL.pubxml" />
     <None Include="Properties\PublishProfiles\INT_PUBLISH.pubxml" />
     <None Include="Properties\PublishProfiles\PAHO.pubxml" />

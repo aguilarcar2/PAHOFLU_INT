@@ -22,6 +22,10 @@
     self.selectedAreaId = ko.observable();
     self.selectedStateId = ko.observable();
     self.selectedParishPostOfficeJMId = ko.observable();
+
+    self.SearchUbicaResid = ko.observable("");              //####CAFQ: 180817
+    self.SearchUbicaResidVal = ko.observable("");           //####CAFQ: 180817
+
     self.StreetNo = ko.observable();
     self.StreetName = ko.observable();
     self.ApartmentSuiteLot = ko.observable();

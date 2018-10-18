@@ -75,8 +75,6 @@ $(document).ready(function () {
             return $.ajax(o);
         };
     }(jQuery));
-
-
     
     $('#DiagPrinAdm').autocomplete({
         minLength: 3,
@@ -223,6 +221,76 @@ $(document).ready(function () {
             return false;
         }
     });
+    
+    $('#SearchUbicaResid').autocomplete({
+        minLength: 3,
+        source: function (request, response) {
+            $.ajax({
+                url: "/cases/GetSearchUbicaResid",
+                type: "GET",
+                data: { term: $('#SearchUbicaResid').val(), max: 15, code: "-J" },
+                dataType: "json",
+                async: true,
+                success: function (data) {
+                    console.log(data);
+                    response($.map(data, function (el) {
+                        return {
+                            label: el.label,
+                            value: el.value,
+                            typeubic: el.typeubic,
+                            areaID: el.areaID,
+                            areaName: el.areaName,
+                            stateID: el.stateID,
+                            stateName: el.stateName,
+                            neighborhoodID: el.neighborhoodID,
+                            neighborhoodName: el.neighborhoodName
+                        };
+                    }));
+                }
+            });
+        },
+        change: function (event, ui) {
+            if (ui.item) {
+                // do whatever you want to when the item is found
+            }
+            else {
+                alert("Select a valid option");
+                $('#SearchUbicaResid').val("");
+            }
+        },
+        select: function (event, ui) {
+            var selectedValue = ui.item.value;                      // just in case you want to see the ID
+            var selectedText = ui.item.label;                       // now set the label in the textbox
+            var typeUbic = ui.item.typeubic;
+            var areaID = ui.item.areaID;
+            var areaName = ui.item.areaName;
+            var stateID = ui.item.stateID;
+            var stateName = ui.item.stateName;
+            var neighborhoodID = ui.item.neighborhoodID;
+            var neighborhoodName = ui.item.neighborhoodName;
+
+            $('#SearchUbicaResid').val("").change();
+            
+            if (typeUbic == "AR") {
+                $('#Area').val(areaID).change();
+            } else if (typeUbic == "ST") {
+                $('#Area').val(areaID).change();
+                $('#provincia').val(stateID).change();
+            } else if (typeUbic == "NE") {
+                $('#Area').val(areaID).change();
+                $('#provincia').val(stateID).change();
+                $('#Neighborhoods').val(neighborhoodID).change();
+            }
+            //****
+            return false;
+        },
+        focus: function (event, ui) {
+            // this is to prevent showing an ID in the textbox instead of name 
+            // when the user tries to select using the up/down arrow of his keyboard
+            //$('#DiagPrinAdm').val(ui.item.label);
+            return false;
+        }
+    });
 
     //$('#NoExpediente').autocomplete({
     //    minLength: 8,
@@ -272,8 +340,29 @@ $(document).ready(function () {
     //    }
     //});
 
+    /*
+    function updateSelect(selectedValue, selectedText, cCampo, bSelect) {
+        var newOptions = new Object();
+        newOptions[selectedValue] = selectedText;
 
+        var select = $(cCampo);
 
+        if (select.prop) {
+            var options = select.prop('options');
+        }
+        else {
+            var options = select.attr('options');
+        }
+        //$('option', select).remove();						        // Elimina todas las opciones existente
+
+        //$.each(newOptions, function (val, text) {			        // Agregando las nuevas opciones
+        //    options[options.length] = new Option(text, val);
+        //});
+
+        //if(bSelect == true)
+            select.val(selectedValue).change();							// Seleccionando un elemento
+    }// END updateSelect 
+    */
 
 })
 
