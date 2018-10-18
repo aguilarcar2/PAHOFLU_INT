@@ -101,7 +101,12 @@ function ContactViewModel(app, dataModel) {
     self.ActiveJAM = ko.computed(function () {
         return (self.UsrCountry() == 17) ? true : false;
     }, self);       //#### CAFQ
-
+    self.ActiveHON = ko.computed(function () {
+        return (self.UsrCountry() == 15) ? true : false;
+    }, self);
+    self.NoActiveHON = ko.computed(function () {
+        return (self.UsrCountry() == 15) ? false : true;
+    }, self);
     self.selectedNationalityID = ko.observable("");
     self.selectedNativepeopleID = ko.observable("");
 
@@ -442,7 +447,23 @@ function ContactViewModel(app, dataModel) {
         }
     }, self);
 
+    self.SurvSARIHON = ko.computed(function () {
+        if (self.IsSurv() != "2" && self.UsrCountry() == 15) {
+            return true;
+        } else {
+            return false;
+        }
+    }, self);
+
     self.NacionalidadCHI = ko.computed(function () {
+        if (self.selectedNationalityID() == "7") {
+            return true;
+        } else {
+            self.selectedNativepeopleID("");
+            return false;
+        }
+    }, self);
+    self.NacionalidadHON = ko.computed(function () {
         if (self.selectedNationalityID() == "7") {
             return true;
         } else {

@@ -258,14 +258,14 @@
                         <input type="checkbox" name="SurvInusual" id="SurvInusual" data-bind="checked: SurvInusual">  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelUnusualCase"))
                     </label>
                 }
-                @if (ViewBag.UsrCtry == 9)
+                @if (ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 15)
                 {
                     <label class="btn btn-default">
                         <input type="checkbox" name="Brote" id="Brote" data-bind="checked: Brote">  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelOutbreak"))
                     </label>
                 }
             </div>
-            @if (ViewBag.UsrCtry != 7 && ViewBag.UsrCtry != 9 && ViewBag.UsrCtry != 3 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 17)
+            @if (ViewBag.UsrCtry != 7 && ViewBag.UsrCtry != 9 && ViewBag.UsrCtry != 15 && ViewBag.UsrCtry != 3 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 17)
             {
                 <div class="col-md-6">
                     <div id="ServicesGroup" class='input-group' data-bind="visible: displayService">
@@ -282,7 +282,7 @@
                 </div>
             }
             @*Agregar aqui a todos los paises que deben mostrar la institución*@
-            @if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 11 || ViewBag.UsrCtry == 119 || ViewBag.UsrCtry == 17)
+            @if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 15 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 11 || ViewBag.UsrCtry == 119 || ViewBag.UsrCtry == 17)
             {
                 <div class="col-md-5" data-bind="visible:VisHopName">
                     <div class='input-group'>
@@ -319,7 +319,7 @@
                     </div>
                 </div>
         }*@
-        @if (ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 3)
+        @if (ViewBag.UsrCtry == 15 ||  ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 3)
         {
 
             <div class="row rowform">
@@ -336,11 +336,20 @@
                     </div>
                     <div class="col-md-2"></div>
                 }
+                else
+                {
+                    @*<div class="col-md-6">
+                        <div class='input-group'>
+                        </div>
+
+                    </div>*@
+
+                }
 
                 <div class="col-md-4">
                     <div class='input-group'>
                         <span class="input-group-addon">
-                            @((ViewBag.UsrCtry == 9) ? ((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelRegionCCSS") : (ViewBag.UsrCtry == 3) ? "SEDES" : "Región") :
+                            @((ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 15) ? ((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelRegionCCSS") : (ViewBag.UsrCtry == 3) ? "SEDES" : "Región"):
                         </span>
                         <span id="region_institucional" class="form-control" data-bind="text:region_institucional" disabled />
                     </div>
@@ -387,7 +396,7 @@
                             <option value=""></option>
                             <option value="1"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelDocumentName"))</option>
                             <option value="2"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelDocumentInsurancePassport"))</option>
-                            <option value="3"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelInternalDocument"))</option>
+                            <option value="3" data-bind="visible:app.Views.Contact.NoActiveHON"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelInternalDocument"))</option>
                             <option value="7" data-bind="visible:app.Views.Contact.ActiveBOL"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelClinicalHistory"))</option>
                             <option value="8" data-bind="visible:app.Views.Contact.ActiveBOL"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelAnotherRecord"))</option>
                             <option value="9" data-bind="visible:app.Views.Contact.ActiveDOM() || app.Views.Contact.ActiveCAY()"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelCaseNumber"))</option>
@@ -427,18 +436,31 @@
                         @*<button id="DatosPaciente" type="button" class="btn btn-primary btn-next " data-bind="click: GetPatient, visible:EnableCR">Datos paciente</button>*@
                     </div>
                 </div>
-				@if (ViewBag.UsrCtry == 25 || ViewBag.UsrCtry == 11 || ViewBag.UsrCtry == 18)
-                {
+
+            </div>
+        @if (ViewBag.UsrCtry == 25 || ViewBag.UsrCtry == 11 || ViewBag.UsrCtry == 18 || ViewBag.UsrCtry == 15)
+        {
+        <div class="row rowform">
+            @*@if ( ViewBag.UsrCtry == 15)
+            {
+            <div class="col-md-6">
+                <div class='input-group'>
+
+                </div>
+            </div>
+            }*@
+
                 <div class="col-md-6">
                     <div class='input-group'>
                         <span class="input-group-addon">
-                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelHospitalRegNumber"))
+                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelHospitalRegNumber"))
                         </span>
                         <input id="Documento" type='text' class="form-control case_letter" data-bind="value: NationalId" />
                     </div>
                 </div>
-				}
-            </div>
+
+        </div>
+        }
         <div class="row rowform">
             <div class="col-md-6">
                 <div class='input-group'>
@@ -474,7 +496,7 @@
                     <label class="date_format">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgDateFormat"))</label>
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="@((ViewBag.UsrCtry == 15 ) ?  "col-md-3" : "col-md-2")">
                 <div class='input-group'>
                     <span class="input-group-addon">
                         @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelAge")) <font color="#FF0000">*</font>
@@ -482,7 +504,7 @@
                     <input id="Age" type='text' class="form-control" data-bind="value:Age" />
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="@((ViewBag.UsrCtry == 15 ) ?  "col-md-3" : "col-md-4")">
                 <div class='input-group'>
                     <span class="input-group-addon">
                             @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelYMorD")) <font color="#FF0000">*</font>
@@ -527,7 +549,7 @@
 
         <!-- Nacionalidad/Pueblo originario -->
         <!--<div class="row rowform" data-bind="visible: SurvSARICHI() || (ActiveBOL() && IsInusitado()) || (ActiveSUR() && IsInusitado())">-->
-        <div class="row rowform" data-bind="visible: (SurvSARICHI() || IsInusitado())">
+        <div class="row rowform" data-bind="visible: (SurvSARICHI() || IsInusitado() || SurvSARIHON())">
             <!--Nacionalidad-->
             <div class="col-md-6">
                 <div class='input-group'>
@@ -793,7 +815,7 @@
                     </div>
                 </div>
 
-			    @if (@ViewBag.UsrCtry == 7 || @ViewBag.UsrCtry == 9 || @ViewBag.UsrCtry == 3)
+			    @if (@ViewBag.UsrCtry == 7 || @ViewBag.UsrCtry == 9 || @ViewBag.UsrCtry == 15 || @ViewBag.UsrCtry == 3)
                 {
                     <div class="col-md-6">
                         <div class='input-group'>
@@ -807,7 +829,7 @@
             </div>
         }
         <!--Latitude / Longitude-->
-		@if (@ViewBag.UsrCtry == 7 || @ViewBag.UsrCtry == 9 || @ViewBag.UsrCtry == 3 || @ViewBag.UsrCtry == 11)
+		@if (@ViewBag.UsrCtry == 7 || @ViewBag.UsrCtry == 9 || @ViewBag.UsrCtry == 15 || @ViewBag.UsrCtry == 3 || @ViewBag.UsrCtry == 11)
         {
             <div class="row rowform">
                 <div class="col-md-6">
@@ -847,7 +869,7 @@
             </div>
         </div>
 
-		@if (@ViewBag.UsrCtry == 7 || @ViewBag.UsrCtry == 9 || @ViewBag.UsrCtry == 3 ){
+		@if (@ViewBag.UsrCtry == 7 || @ViewBag.UsrCtry == 9 || @ViewBag.UsrCtry == 15 || @ViewBag.UsrCtry == 3 ){
             <div class="row rowform" data-bind="visible:app.Views.Contact.ActiveBOL">
                     @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelWhere2WeeksAgo"))
             </div>
@@ -1559,7 +1581,7 @@
                             </table>
                         </div>
                     </div>
-                    @if (@ViewBag.UsrCtry == 7 || @ViewBag.UsrCtry == 9 || @ViewBag.UsrCtry == 3 || @ViewBag.UsrCtry == 15)
+                    @if (@ViewBag.UsrCtry == 7 || @ViewBag.UsrCtry == 9 || @ViewBag.UsrCtry == 15 || @ViewBag.UsrCtry == 3 )
                     {
                         <div class="row rowform">
                             <div class='input-group col-md-12'>
@@ -1650,7 +1672,7 @@
                             <option value=""> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel"))</option>
                             <option value="1">Oseltamivir</option>
                             <option value="2">Zanamivir</option>
-							@if (ViewBag.UsrCtry != 7 && ViewBag.UsrCtry != 9 && ViewBag.UsrCtry != 3){
+							@if (ViewBag.UsrCtry != 7 && ViewBag.UsrCtry != 9 && ViewBag.UsrCtry != 15 && ViewBag.UsrCtry != 3){
 							<option value="3">Amantadine</option>
                             <option value="4">Rimantadine</option>
 							}
@@ -1943,7 +1965,7 @@
                         </div>
                     </div>
 					
-                    @if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 3){
+                    @if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 15 || ViewBag.UsrCtry == 3){
                         <div class="row rowform">
                             <div class="col-md-4" data-bind="visible:EnableCHI() && app.Views.Contact.NoActiveBOL()">
                                 <label class="btn btn-default">
@@ -1987,7 +2009,7 @@
                                 </span>
                                 <select id="combObesity" name="" class="form-control" data-bind="value: Obesity">
                                     <option value=""> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel"))</option>
-                                    @if (ViewBag.UsrCtry == 9)
+                                    @if (ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 15)
                                     {
                                         <option value="5"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelObesityUnknown"))</option>
                                         <option value="6"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelObesityIMC3040"))</option>
@@ -2589,7 +2611,7 @@
                 </button>
         
         <div id="Fechas" class="collapse in">
-			@if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry ==9 || ViewBag.UsrCtry ==3){
+			@if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 15 || ViewBag.UsrCtry ==3){
                 <!-- Servicio / Diagnóstico principal de ingreso -->
                 <div class="row rowform">
                     <div class="col-md-4">
@@ -2774,7 +2796,7 @@
                     </div>
                 </div>
             }
-			@if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 11 || ViewBag.UsrCtry == 119)
+			@if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 15 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 11 || ViewBag.UsrCtry == 119)
             {
                 <div class="row rowform">
                     <!-- <div class="col-md-3" data-bind="visible:EnableCHI() && app.Views.Contact.NoActiveBOL()"> -->
