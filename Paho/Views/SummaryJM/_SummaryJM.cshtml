@@ -27,14 +27,15 @@
             <div class='input-group'>
                 <span class="input-group-addon">
                     <!--Establecimientos:-->
-                    @(((Paho.Controllers.SummaryJMController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelParish"))
+                    @*(((Paho.Controllers.SummaryJMController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelParish"))*@
+                    @(((Paho.Controllers.SummaryJMController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelILISentinelSite"))
                 </span>
                 <select id="combHospital1" class="form-control" data-bind="options: hospitals,
                     optionsText: 'Name',
                     optionsValue: 'Id',
                     value: selectedHospitalId,
-					event:{change: GetYearSummaryForYearItemsJM}"></select>
-                @*optionsCaption: 'Seleccione...',*@
+					event:{change: GetYearSummaryForYearItemsJM}">
+                </select>
             </div>
         </div>
     }

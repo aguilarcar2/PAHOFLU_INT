@@ -42,14 +42,15 @@ namespace Paho.Controllers
                 if (user.Institution.AccessLevel == AccessLevel.Country)
                 {
                     institutions = db.Institutions
-                                  .Where(i => i.CountryID == user.Institution.CountryID && i.AccessLevel == AccessLevel.Area).OrderBy(n => n.FullName);
+                                   //.Where(i => i.CountryID == user.Institution.CountryID && i.AccessLevel == AccessLevel.Area).OrderBy(n => n.FullName);
+                                   .Where(i => i.CountryID == user.Institution.CountryID && i.ILI == true).OrderBy(n => n.FullName);   
                 }
                 else if (user.Institution.AccessLevel == AccessLevel.Area)
                 {
                     //institutions = db.Institutions
                     //               .Where(i => i.AreaID == user.Institution.AreaID && i.AccessLevel == AccessLevel.Area).OrderBy(n => n.FullName);
                     institutions = db.Institutions
-                                   .Where(i => i.AreaID == user.Institution.AreaID).OrderBy(n => n.FullName);
+                                   .Where(i => i.AreaID == user.Institution.AreaID && i.ILI == true).OrderBy(n => n.FullName);
                 }
                 else
                 {
@@ -76,8 +77,8 @@ namespace Paho.Controllers
 
                 if (institutionsDisplay.Count() > 1)
                 {
-                    //var all = new LookupView<Institution> { Id = "0", Name = "-- Todo(a)s --" };
-                    var all = new LookupView<Institution> { Id = "0", Name = getMsg("msgGeneralMessageAll") };
+                    //var all = new LookupView<Institution> { Id = "0", Name = getMsg("msgGeneralMessageAll") };
+                    var all = new LookupView<Institution> { Id = "0", Name = getMsg("msgSelectLabel") };
                     institutionsDisplay.Insert(0, all);
                 }
 
