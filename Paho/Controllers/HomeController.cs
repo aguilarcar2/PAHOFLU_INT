@@ -34,6 +34,8 @@ namespace Paho.Controllers
             IQueryable<CatOccupation> occupations = null;                       //**** CAFQ
             IQueryable<CatTrabSaludRama> trabsaludrama = null;                  //**** CAFQ
             IQueryable<CatTrabLaboRama> trablaborama = null;                    //**** CAFQ
+            // Cat Hospitalizado en: para HN
+            IQueryable<CatHospitalizedIn> CHIn = null;
 
             var user = UserManager.FindById(User.Identity.GetUserId());
             //var DoS = ( user.Institution.CountryID == 17) ? DateTime.Now.ToString("d", CultureInfo.CreateSpecificCulture("es-GT")) : DateTime.Now.ToString("yy/mm/dd") ;
@@ -279,6 +281,19 @@ namespace Paho.Controllers
                 orden = i.orden.ToString()
             }).ToList()) ;
 
+            CHIn = db.CatHospitalizedIn.OrderBy(i => i.orden);
+            var CHInDisplay = (user.Institution.Country.Language == "SPA" ? CHIn.Select(i => new LookupView<CatHospitalizedIn>()
+            {
+                Id = i.ID.ToString(),
+                Name = i.SPA,
+                orden = i.orden.ToString()
+            }).ToList() : CHIn.Select(i => new LookupView<CatHospitalizedIn>()
+            {
+                Id = i.ID.ToString(),
+                Name = i.ENG,
+                orden = i.orden.ToString()
+            }).ToList());
+
             occupations = db.CatOccupations.OrderBy(i => i.Occupation_SPA);         //**** CAFQ
             var occupationsDisplay = (user.Institution.Country.Language == "SPA" ? occupations.Select(i => new LookupView<CatOccupation>()
             {
@@ -403,6 +418,7 @@ namespace Paho.Controllers
             CaseViewModel.CVST = CVSTDisplay;
             CaseViewModel.CVST_Test = CVST_TestDisplay;
             CaseViewModel.CVL = CVLDisplay;
+            CaseViewModel.CHIn = CHInDisplay;
 
             CaseViewModel.CNP = CNPDisplay;
             CaseViewModel.CVS = CVSDisplay;

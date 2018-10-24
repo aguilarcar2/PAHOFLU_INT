@@ -2732,6 +2732,19 @@
             <!-- UPC -->
             @*@if (ViewBag.UsrCtry == 7) 
             {*@
+
+            <div class="row rowform">
+                <div class="input-group col-md-3">
+                    <span class="input-group-addon">
+                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelHospitalizedIn")) <font color="#FF0000">*</font>
+                    </span>
+                    <select id="HospitalizedIn" class="form-control" data-bind="options: CHIn,
+                            optionsText: 'Name',
+                            optionsValue: 'Id',
+                            value: HospitalizedIn,
+                            optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel")) '"></select>
+                </div>
+            </div>
                 <div class="row rowform">
                     <div class="input-group col-md-3">
                         <span class="input-group-addon">
@@ -3646,6 +3659,68 @@
             </div>
         </div>
 
+        @if (ViewBag.UsrCtry == 15)
+        {
+            <div class="row rowform" id="Test_National">
+                <div class="col-md-3_5">
+                    <div class='input-group'>
+                        <span class="input-group-addon">
+                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelReceptionDateNational"))
+                        </span>
+                        <input id="RecDate_National" type='text' class="form-control " data-bind='datepicker: RecDate_National , datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class='input-group'>
+                        <span class="input-group-addon">
+                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelTemp"))
+                        </span>
+                        <input id="TempSample_National" type='text' class="form-control case_letter" data-bind="value: TempSample_National" />
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row rowform" id="Test_National">
+                <div class="col-md-3_5">
+                    <span>
+                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelProcessed"))
+                    </span>
+                    <label class="btn btn-default">
+                        <input type="radio" name="Processed_National" id="Processed_National" value="true" data-bind="checked: Processed_National"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelYes"))
+                    </label>
+                    <label class="btn btn-default">
+                        <input type="radio" name="Processed_National" id="Processed_National" value="false" checked data-bind="checked: Processed_National"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelNo"))
+                    </label>
+                </div>
+
+                <div class="col-md-5" data-bind="visible:NotShowProcessed">
+                    <div class='input-group'>
+                        <span class="input-group-addon">
+                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelCauseNotProcessed"))
+                        </span>
+                        <select id="NoProRenId_National" class="form-control" data-bind="options: CSNP,
+                            optionsText: 'Name',
+                            optionsValue: 'Id',
+                            optionsCaption: '@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabCaseLabelSelect"))...',
+                            value: NoProRenId_National"></select>
+                        <input id="NoProRen_National" type='text' class="form-control case_letter" data-bind="value: NoProRen_National , visible:NotShowProcessedOther" />
+
+                    </div>
+                </div>
+
+                <div class="col-md-5" data-bind="visible:ShowProcessed">
+                    <div class='input-group'>
+                        <span class="input-group-addon">
+                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigLabIntLabelBarCode"))
+                        </span>
+                        <input id="Identification_Test_National" name="Identification_Test_National" type='text' class="form-control case_letter" data-bind="value: Identification_Test_National" />
+                    </div>
+                </div>
+            </div>
+        }
+
         <div class="row rowform">
             <div class="col-md-12">
                 <div style="font-weight:bold;font-size:11px">
@@ -3973,6 +4048,8 @@
                 </div>
             </div>
         </div>
+
+
 
         @* Empieza muestra dos muestra 2 *@
 
@@ -5667,6 +5744,7 @@
 
     var CNP= @Html.Raw(Json.Encode(Model.CNP));
     var CVS= @Html.Raw(Json.Encode(Model.CVS));
+    var CHIn = @Html.Raw(Json.Encode(Model.CHIn));
 
     var URle =  '@ViewBag.UR'  ;
     var URleadm = new Boolean(@User.IsInRole("Admin").ToString().ToLower()) ;

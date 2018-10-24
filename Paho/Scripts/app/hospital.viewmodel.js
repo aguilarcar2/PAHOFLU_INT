@@ -253,7 +253,8 @@
     self.InstReferName = ko.observable("");
 
     self.ICU = ko.observable("");
-
+    self.HospitalizedIn = ko.observable("");
+    
     self.FalleDate.subscribe(function (newFalleDate) {
 
         var current_value = typeof (newFalleDate) == "object" ? newFalleDate : parseDate(newFalleDate, date_format_);
@@ -901,6 +902,7 @@
        self.ICUEW("");
        self.ICUEY("");
        self.ICUExDate(null);
+       self.HospitalizedIn(null);
        self.FalleDate(null);
        self.InstReferName("");
        self.Destin(null);
@@ -1175,6 +1177,7 @@
                 self.CalculateEW("HospAmDate", self.HospEW, self.HospEY);
 
                 self.ICU(data.ICU);
+                self.HospitalizedIn(data.HospitalizedIn);
                 if (data.ICUAmDate)
                     self.ICUAmDate(moment(data.ICUAmDate).clone().toDate());
                 else self.ICUAmDate(null)
@@ -1399,6 +1402,7 @@
                 ICUAmDate: $("#ICUAmDate").val() == "" ? null : moment(date_ICU_adm).format(date_format_ISO),
                 ICUEW: self.ICUEW(),
                 ICUExDate: $("#ICUExDate").val() == "" ? null : moment(date_ICU_disc).format(date_format_ISO),
+                HospitalizedIn: self.HospitalizedIn(),
                 Destin: self.Destin(),
                 FalleDate: $("#FalleDate").val() == "" ? null : moment(date_falle).format(date_format_ISO),
                 InstReferName: self.InstReferName(),

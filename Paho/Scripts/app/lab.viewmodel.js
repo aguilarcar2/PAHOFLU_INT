@@ -582,6 +582,13 @@ function LabViewModel(app, dataModel) {
     self.NoProRen3 = ko.observable("");
     self.NoProRenId3 = ko.observable("");
 
+    self.RecDate_National = ko.observable(null);
+    self.Identification_Test_National = ko.observable("");
+    self.TempSample_National = ko.observable("").extend({ numeric: 2 });
+    self.Processed_National = ko.observable("");
+    self.NoProRen_National = ko.observable("");
+    self.NoProRenId_National = ko.observable("");
+
     self.CanPCRLab = ko.observable(true);
     self.CanIFILab = ko.observable(true);
 
@@ -1349,6 +1356,14 @@ function LabViewModel(app, dataModel) {
         self.Id = "";
         self.CanIFILab(false);
         self.CanPCRLab(false);
+
+        self.RecDate_National(null);
+        self.Identification_Test_National("");
+        self.Processed_National("");
+        self.TempSample_National("");
+        self.NoProRen_National("");
+        self.NoProRenId_National("");
+
         self.RecDate(null);
         //self.RecDate(null);
         self.Processed("");
@@ -1698,6 +1713,13 @@ function LabViewModel(app, dataModel) {
                 self.NoProRen3(data.NoProRen3);
                 self.NoProRenId3(data.NoProRenId3);
                 self.TempSample3(data.TempSample3);
+
+                (data.RecDate_National) ? self.RecDate_National(moment(data.RecDate_National).clone().toDate()) : self.RecDate_National(null);
+                self.Identification_Test_National(data.Identification_Test_National);
+                self.Processed_National((data.Processed_National != null) ? data.Processed_National.toString() : "");
+                self.NoProRen_National(data.NoProRen_National);
+                self.NoProRenId_National(data.NoProRenId_National);
+                self.TempSample_National(data.TempSample_National);
 
                 (data.EndLabDate) ? self.EndLabDate(moment(data.EndLabDate).clone().toDate()) : self.EndLabDate(null);
                 self.FResult(data.FResult);
@@ -2110,6 +2132,7 @@ function LabViewModel(app, dataModel) {
         rec_date = jQuery.type(self.RecDate()) === 'date' ? self.RecDate() : parseDate($("#RecDate").val(), date_format_);
         rec_date2 = jQuery.type(self.RecDate2()) === 'date' ? self.RecDate2() : parseDate($("#RecDate2").val(), date_format_);
         rec_date3 = jQuery.type(self.RecDate3()) === 'date' ? self.RecDate3() : parseDate($("#RecDate3").val(), date_format_);
+        rec_date_National = jQuery.type(self.RecDate_National()) === 'date' ? self.RecDate_National() : parseDate($("#RecDate_National").val(), date_format_);
         date_close_date_lab = jQuery.type(self.EndLabDate()) === 'date' ? self.EndLabDate() : parseDate($("#EndLabDate").val(), date_format_);
 
         rec_date_NPHL = jQuery.type(self.Rec_Date_NPHL()) === 'date' ? self.Rec_Date_NPHL() : parseDate($("#Rec_Date_NPHL").val(), date_format_);
@@ -2305,6 +2328,13 @@ function LabViewModel(app, dataModel) {
                 NoProRen3: self.NoProRen3() ? self.NoProRen3().toLocaleUpperCase() : "",
                 NoProRenId3: self.NoProRenId3(),
                 TempSample3: self.TempSample3(),
+
+                RecDate_National: $("#RecDate_National").val() == "" ? null : moment(rec_date_National).format(date_format_ISO),
+                Identification_Test_National: self.Identification_Test_National() ? self.Identification_Test_National().toLocaleUpperCase() : "",
+                Processed_National: self.Processed_National() === "true" ? true : self.Processed_National() === "false" ? false : null,
+                NoProRen_National: self.NoProRen_National() ? self.NoProRen_National().toLocaleUpperCase() : "",
+                NoProRenId_National: self.NoProRenId_National(),
+                TempSample_National: self.TempSample_National(),
 
                 EndLabDate: $("#EndLabDate").val() == "" ? null : moment(date_close_date_lab).format(date_format_ISO),
                 FResult: self.FResult(),          

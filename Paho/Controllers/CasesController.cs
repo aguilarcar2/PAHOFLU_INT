@@ -1420,6 +1420,7 @@ namespace Paho.Controllers
                     ICU = flucase.ICU,
                     ICUAmDate = flucase.ICUAmDate,
                     ICUExDate = flucase.ICUExDate,
+                    HospitalizedIn = flucase.HospitalizedIn,
                     FalleDate = flucase.FalleDate,
                     InstReferName = flucase.InstReferName,
                     Destin = flucase.Destin,
@@ -1547,6 +1548,7 @@ namespace Paho.Controllers
                 DateTime? ICUAmDate,
                 int? ICUEW,
                 DateTime? ICUExDate,
+                int? HospitalizedIn,
                 string Destin,
                 bool? IsSample,
                 DateTime? SampleDate,
@@ -1668,6 +1670,7 @@ namespace Paho.Controllers
             flucase.ICUAmDate = ICUAmDate;
             flucase.ICUEW = ICUEW;
             flucase.ICUExDate = ICUExDate;
+            flucase.HospitalizedIn = HospitalizedIn;
             flucase.Destin = Destin;
             flucase.FalleDate = FalleDate;
             flucase.InstReferName = InstReferName;
@@ -1951,6 +1954,7 @@ namespace Paho.Controllers
             var flow_local_lab = 0;
             var flow_statement = flucase.statement ?? 1;
             var flow_open_always = false;
+            var flow_max_record = db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID).OrderByDescending(j => j.Priority).FirstOrDefault().Priority;
 
             var LabForeignCountry = db.InstitutionForeignConf.Where(z => z.InstitutionLocal.CountryID == user.Institution.CountryID).Any();
             var LabForeignInstitutionLocal = db.InstitutionForeignConf.Where(y => y.InstitutionLocalID == user.InstitutionID).Any();
@@ -2189,6 +2193,16 @@ namespace Paho.Controllers
                     NoProRenId3 = flucase.NoProRenId3,
                     TempSample3 = flucase.TempSample3,
 
+                    // Laboratorio Nacional solo para HN
+
+                    RecDate_National = flucase.RecDate_National,
+                    Processed_National = flucase.Processed_National,
+                    Identification_Test_National = flucase.Identification_Test_National,
+                    TempSample_National = flucase.TempSample_National,
+                    NoProRenId_National = flucase.NoProRenId_National,
+                    NoProRen_National = flucase.NoProRen_National,
+
+
                     // Laboratorio Intermedio
                     Rec_Date_NPHL = flucase.Rec_Date_NPHL,                    
                     Temp_NPHL = flucase.Temp_NPHL,
@@ -2233,6 +2247,7 @@ namespace Paho.Controllers
                     flow_record = flucase.flow,
                     flow_institution = flow_local_lab,
                     flow_open_always = flow_open_always,
+                    flow_max_record = flow_max_record,
                     DataStatement = flow_statement,
                     CanPCRLab = CanPCRLab,
                     CanIFILab = CanIFILab,
@@ -2248,7 +2263,7 @@ namespace Paho.Controllers
                               Id = caselabtest.ID,
                               CaseLabID = caselabtest.FluCaseID,
                               ProcLab = caselabtest.LabID.ToString(),
-                              OrdenLabID = caselabtest.Institution.OrdenPrioritybyLab,
+                              OrdenLabID = caselabtest.Institution.OrdenPrioritybyLab != null ? caselabtest.Institution.OrdenPrioritybyLab : 99,
                               //ProcLabName = GetLabName(caselabtest.LabID),
                               ProcLabName = caselabtest.Institution.Name,
                               ProcessLab = caselabtest.Processed,
@@ -2295,7 +2310,9 @@ namespace Paho.Controllers
                               EndFlow = institutionActualFlow.Any() ? ((caselabtest.TestResultID == "N") ? db.InstitutionConfEndFlowByVirus.Where(j => j.id_InstCnf == institutionActualFlow.FirstOrDefault().ID && j.id_Cat_TestType == caselabtest.TestType && j.value_Cat_TestResult == caselabtest.TestResultID).Any().ToString().ToUpper() : db.InstitutionConfEndFlowByVirus.Where(j => j.id_InstCnf == institutionActualFlow.FirstOrDefault().ID && j.id_Cat_TestType == caselabtest.TestType && j.value_Cat_TestResult == caselabtest.TestResultID && j.id_Cat_VirusType == caselabtest.VirusTypeID).Any().ToString().ToUpper()) : "UNKNOWN",
                               // Orden de muestra
                               InstPriority = db.InstitutionsConfiguration.Where(i => i.InstitutionToID == caselabtest.LabID && i.InstitutionParentID == flucase.HospitalID).Any() ? db.InstitutionsConfiguration.Where(i=> i.InstitutionToID == caselabtest.LabID && i.InstitutionParentID == flucase.HospitalID).FirstOrDefault().ID : 0 ,
-                              OrderTestType = caselabtest.CatTestType != null ?  caselabtest.CatTestType.orden : 99
+                              OrderTestType = caselabtest.CatTestType != null ?  caselabtest.CatTestType.orden : 99,
+                              // Flujo de la muestra especifica
+                              flow_test = caselabtest.flow_test
                           }
                       )
                       .OrderBy(x => x.InstPriority)
@@ -2347,7 +2364,9 @@ namespace Paho.Controllers
                               EndFlow = institutionActualFlow.Any() ? ((caselabtest.TestResultID == "N") ? db.InstitutionConfEndFlowByVirus.Where(j => j.id_InstCnf == institutionActualFlow.FirstOrDefault().ID && j.id_Cat_TestType == caselabtest.TestType && j.value_Cat_TestResult == caselabtest.TestResultID).Any().ToString().ToUpper() : db.InstitutionConfEndFlowByVirus.Where(j => j.id_InstCnf == institutionActualFlow.FirstOrDefault().ID && j.id_Cat_TestType == caselabtest.TestType && j.value_Cat_TestResult == caselabtest.TestResultID && j.id_Cat_VirusType == caselabtest.VirusTypeID).Any().ToString().ToUpper()) : "UNKNOWN",
                               // Orden de muestra
                               InstPriority = db.InstitutionsConfiguration.Where(i => i.InstitutionToID == caselabtest.LabID && i.InstitutionParentID == flucase.HospitalID).Any() ? db.InstitutionsConfiguration.Where(i => i.InstitutionToID == caselabtest.LabID && i.InstitutionParentID == flucase.HospitalID).FirstOrDefault().ID : 0,
-                              OrderTestType = caselabtest.CatTestType != null ? caselabtest.CatTestType.orden : 99
+                              OrderTestType = caselabtest.CatTestType != null ? caselabtest.CatTestType.orden : 99,
+                              // Flujo de la muestra especifica
+                              flow_test = caselabtest.flow_test
                           }
                       )
                       .OrderBy(x => x.InstPriority)
@@ -2398,7 +2417,9 @@ namespace Paho.Controllers
                               EndFlow = institutionActualFlow.Any() ? ((caselabtest.TestResultID == "N") ? db.InstitutionConfEndFlowByVirus.Where(j => j.id_InstCnf == institutionActualFlow.FirstOrDefault().ID && j.id_Cat_TestType == caselabtest.TestType && j.value_Cat_TestResult == caselabtest.TestResultID).Any().ToString().ToUpper() : db.InstitutionConfEndFlowByVirus.Where(j => j.id_InstCnf == institutionActualFlow.FirstOrDefault().ID && j.id_Cat_TestType == caselabtest.TestType && j.value_Cat_TestResult == caselabtest.TestResultID && j.id_Cat_VirusType == caselabtest.VirusTypeID).Any().ToString().ToUpper()) : "UNKNOWN",
                               // Orden de muestra
                               InstPriority = db.InstitutionsConfiguration.Where(i => i.InstitutionToID == caselabtest.LabID && i.InstitutionParentID == flucase.HospitalID).Any() ? db.InstitutionsConfiguration.Where(i => i.InstitutionToID == caselabtest.LabID && i.InstitutionParentID == flucase.HospitalID).FirstOrDefault().ID : 0,
-                              OrderTestType = caselabtest.CatTestType != null ? caselabtest.CatTestType.orden : 99
+                              OrderTestType = caselabtest.CatTestType != null ? caselabtest.CatTestType.orden : 99,
+                              // Flujo de la muestra especifica
+                              flow_test = caselabtest.flow_test
                           }
                       )
                       .OrderBy(x => x.InstPriority)
@@ -2550,6 +2571,13 @@ namespace Paho.Controllers
                 int? FinalResultVirusSubTypeID_3,
                 int? FinalResultVirusLineageID_3,
                 int? DataStatement,
+                // Lab nacional solo para HN
+                DateTime? RecDate_National,
+                Decimal? TempSample_National,
+                string Identification_Test_National,
+                bool? Processed_National,
+                int? NoProRenId_National,
+                string NoProRen_National,
                 //AM Laboratorio intermedio
                 DateTime? Rec_Date_NPHL,
                 Decimal? Temp_NPHL,
@@ -2622,6 +2650,15 @@ namespace Paho.Controllers
             flucase.NoProRen3 = NoProRen3;
             flucase.NoProRenId3 = NoProRenId3;
             flucase.TempSample3 = TempSample3;
+
+            // Laboratorio Nacional, solo para HN
+            flucase.RecDate_National = RecDate_National;
+            flucase.Processed_National = Processed_National;
+            flucase.TempSample_National = TempSample_National;
+            flucase.Identification_Test_National = Identification_Test_National;
+            flucase.NoProRen_National = NoProRen_National;
+            flucase.NoProRenId_National = NoProRenId_National;
+
 
             // Laboratorio de intermedio
             flucase.Rec_Date_NPHL = Rec_Date_NPHL;

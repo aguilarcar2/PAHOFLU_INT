@@ -55,6 +55,7 @@ namespace Paho.Models
         public IEnumerable<LookupView<CatOccupation>> CatOccupations { get; set; }              //**** CAFQ
         public IEnumerable<LookupView<CatTrabSaludRama>> CatTrabSaludRamas { get; set; }        //**** CAFQ
         public IEnumerable<LookupView<CatTrabLaboRama>> CatTrabLaboRamas { get; set; }          //**** CAFQ
+        public IEnumerable<LookupView<CatHospitalizedIn>> CHIn { get; set; }
 
         public object date_format_ { get; set; }
     }
@@ -540,6 +541,17 @@ namespace Paho.Models
         [Display(Name = "Descripción:")]
         public string description { get; set; }
         public int? id_country { get; set; }
+        [Display(Name = "Orden:")]
+        public int? orden { get; set; }
+    }
+
+    public class CatHospitalizedIn
+    {
+        public int ID { get; set; }
+        [Display(Name = "Descripción SPA:")]
+        public string SPA { get; set; }
+        [Display(Name = "Descripción ENG:")]
+        public string ENG { get; set; }
         [Display(Name = "Orden:")]
         public int? orden { get; set; }
     }
@@ -1101,6 +1113,7 @@ namespace Paho.Models
         public DateTime? ICUAmDate { get; set; }
         public int? ICUEW { get; set; }
         public DateTime? ICUExDate { get; set; }
+        public int? HospitalizedIn { get; set; }
         [MaxLength(1)]
         public string Destin { get; set; }
         public string DestinICU { get; set; }
@@ -1154,6 +1167,15 @@ namespace Paho.Models
         public string NoProRen3 { get; set; }
         public int? NoProRenId3 { get; set; }
         public Decimal? TempSample3 { get; set; }
+
+        // AM Laboratorio Nacional solo para HN
+        public DateTime? RecDate_National { get; set; }
+        public string Identification_Test_National { get; set; }
+        public Decimal? TempSample_National { get; set; }
+        public bool? Processed_National { get; set; }
+        public int? NoProRenId_National { get; set; }
+        public string NoProRen_National { get; set; }
+
         // AM Laboratorio intermedio
         public DateTime? Rec_Date_NPHL { get; set; }
         public string Identification_Test_NPHL { get; set; }
@@ -1701,6 +1723,7 @@ namespace Paho.Models
         public DbSet<CatPopulationInstitution> CatPopulationInstitutions { get; set; }
         public DbSet<CatPopulationInstitutionDetail> CatPopulationInstitutionsDetails { get; set; }
         public DbSet<CatStatusCase> CatStatusCase { get; set; }
+        public DbSet<CatHospitalizedIn> CatHospitalizedIn { get; set; }
 
         public DbSet<CaseLabTest> CaseLabTests { get; set; }
         public DbSet<CaseSummary> CaseSummaries { get; set; }
@@ -1893,6 +1916,7 @@ namespace Paho.Models
                    p.ICUAmDate,
                    p.ICUEW,
                    p.ICUExDate,
+                   p.HospitalizedIn,
                    p.Destin,
                    p.DestinICU,
                    p.InstReferName,
@@ -1976,6 +2000,13 @@ namespace Paho.Models
                    p.NoProRenId3,
                    p.NoProRen3,
                    p.TempSample3,
+                   // AM Laboratorio Nacional solo para HN
+                    p.RecDate_National,
+                    p.Identification_Test_National,
+                    p.Processed_National,
+                    p.NoProRenId_National,
+                    p.NoProRen_National,
+                    p.TempSample_National,
 
                    //AM Laboratorio intermedio
                    p.Rec_Date_NPHL, 
