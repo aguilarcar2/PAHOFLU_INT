@@ -1,33 +1,36 @@
-﻿    
+﻿
 function SummaryYearItem(data) {
     var self = this;
+    //****
     self.ColHospTST = data.ColHospTST;
     self.ColUCITST = data.ColUCITST;
     self.ColFalleTST = data.ColFalleTST;
+    self.ColNeuTST = data.ColNeuTST;
+    //self.ColCCSariTST = data.ColCCSariTST;          //####CAFQ
+    self.ColCCSARITST = data.ColCCSARITST;          //####CAFQ
+    self.ColVentTST = data.ColVentTST;
 
     self.ColILICasesST = data.ColILICasesST;
     self.ColILISamplesTakenST = data.ColILISamplesTakenST;
     self.ColTotalVisitsST = data.ColTotalVisitsST;
 
-    self.ColEpiYear = data.EpiYear;
-    self.ColEpiWeek = data.EpiWeek;
-    self.ColEpiYearWeek = data.EpiYear + "-" + data.EpiWeek;
     self.ColETINumST = data.ColETINumST;
     self.ColETIDenoST = data.ColETIDenoST;
     self.ColETINumEmerFST = data.ColETINumEmerFST;
     self.ColETINumEmerMST = data.ColETINumEmerMST;
     self.ColETINumEmerST = data.ColETINumEmerST;
-    self.ColNeuTST = data.ColNeuTST;
-    self.ColCCSARITST = data.ColCCSARITST;          //####CAFQ
-    self.ColVentTST = data.ColVentTST;
+
+    self.ColEpiYear = data.EpiYear;
+    self.ColEpiWeek = data.EpiWeek;
+    self.ColEpiYearWeek = data.EpiYear + "-" + data.EpiWeek;
     self.StartDateOfWeek = data.StartDateOfWeek;
     self.WeekendDate = data.WeekendDate
 
     self.ColETIFST = ko.observable("");
     self.ColETIMST = ko.observable("");
 
-    self.UsrCountry = ko.observable(selcty); // Pais del usuario logueado
-
+    self.UsrCountry = ko.observable(selcty);                // Pais del usuario logueado
+    //****
     self.EnableCHI = ko.computed(function () {
         return (self.UsrCountry() != 7) ? true : false;
     }, self);
@@ -83,12 +86,17 @@ function SummaryYearItem(data) {
     self.NoActiveCAY = ko.computed(function () {
         return (self.UsrCountry() == 119) ? false : true;
     }, self);
+
+    self.ActiveHON = ko.computed(function () {
+        return (self.UsrCountry() == 15) ? true : false;
+    }, self);
 }
 
 function SummayItem(data) {
     var self = this;
+
     self.Id = data.Id;
-    self.UsrCountry = ko.observable(selcty); // Pais del usuario logueado
+    self.UsrCountry = ko.observable(selcty);                    // Pais del usuario logueado
     self.CaseSummaryId = data.CaseSummaryId;
     self.AgeGroup = data.AgeGroup;
 
@@ -101,7 +109,7 @@ function SummayItem(data) {
     //}
 
     self.AgeGroupDescription = CatAgeGroup[parseInt(self.AgeGroup) - 1].AgeGroup;
-
+    //****
     self.EnableCHI = ko.computed(function () {
         return (self.UsrCountry() != 7) ? true : false;
     }, self);
@@ -158,61 +166,90 @@ function SummayItem(data) {
         return (self.UsrCountry() == 119) ? false : true;
     }, self);
 
+    self.ActiveHON = ko.computed(function () {
+        return (self.UsrCountry() == 15) ? true : false;
+    }, self);
+
+    //****
+    self.ETIDenoFem = ko.observable(data.ETIDenoFem);
+    self.ETIDenoMaso = ko.observable(data.ETIDenoMaso);
+
+    if (self.DisableCHI() || self.ActiveBOL() || self.ActiveHON()) {
+        self.ETIDenoST = ko.computed(function () {
+            return parseInt(self.ETIDenoFem()) + parseInt(self.ETIDenoMaso());
+        }, self);
+
+    } else {
+        self.ETIDenoST = ko.observable(data.ETIDenoST);
+    }
+    /*/****
+    self.ETIDenoFem = ko.observable(data.ETIDenoFem);
+    self.ETIDenoMaso = ko.observable(data.ETIDenoMaso);
+    if (self.ActiveHON()) {
+        self.ETIDenoST = ko.observable(data.ETIDenoST);
+
+        //alert("3a");
+        self.ETIDenoST = ko.computed(function () {
+            //alert("3b");
+            return parseInt(self.ETIDenoFem()) + parseInt(self.ETIDenoMaso());
+        }, self);
+    } else {
+        if (self.DisableCHI() || self.ActiveBOL()) {
+            //alert("1a");
+            self.ETIDenoST = ko.computed(function () {
+                //alert("1c");
+                return parseInt(self.ETIDenoFem()) + parseInt(self.ETIDenoMaso());
+            }, self);
+
+        } else {
+            //alert("1b");
+            self.ETIDenoST = ko.observable(data.ETIDenoST);
+        }
+    }*/
+    //****
     self.ETINumFem = ko.observable(data.ETINumFem);
     self.ETINumMaso = ko.observable(data.ETINumMaso);
-    if (self.DisableCHI() || self.ActiveBOL()) {
+
+    if (self.DisableCHI() || self.ActiveBOL() || self.ActiveHON()) {
+        //alert("2a");
         self.ETINumST = ko.computed(function () {
+            //alert("2c");
             return parseInt(self.ETINumFem()) + parseInt(self.ETINumMaso());
         }, self);
 
     } else {
+        //alert("2b");
         self.ETINumST = ko.observable(data.ETINumST);
     }
-    
-
+    //****
     self.ETINumEmerFem = ko.observable(data.ETINumEmerFem);
     self.ETINumEmerMaso = ko.observable(data.ETINumEmerMaso);
 
     if (self.DisableCHI() || self.ActiveBOL()) {
         self.ETINumEmerST = ko.computed(function () {
-            //console.log(parseInt(self.ETINumEmerFem()));
             return parseInt(self.ETINumEmerFem()) + parseInt(self.ETINumEmerMaso());
         }, self);
 
     } else {
         self.ETINumEmerST = ko.observable(data.ETINumEmerST);
     }
-
-    self.ETIDenoFem = ko.observable(data.ETIDenoFem);
-    self.ETIDenoMaso = ko.observable(data.ETIDenoMaso);
-
-    if (self.DisableCHI() || self.ActiveBOL()) {
-        self.ETIDenoST = ko.computed(function () {
-            return parseInt(self.ETIDenoFem()) + parseInt(self.ETIDenoMaso());
-        }, self);
-
-    } else {
-            self.ETIDenoST = ko.observable(data.ETIDenoST);
-    }
-
-
+    //****
     self.HospFem = ko.observable(data.HospFem);
     self.HospMaso = ko.observable(data.HospMaso);
-    self.ILICases = ko.observable(data.ILICases);
-    if (self.DisableCHI() || self.ActiveBOL()) {
+
+    if (self.DisableCHI() || self.ActiveBOL() || self.ActiveHON()) {
         self.HospST = ko.computed(function () {
             return parseInt(self.HospFem()) + parseInt(self.HospMaso());
         }, self);
 
     } else {
         self.HospST = ko.observable(data.HospST);
-
     }
-
+    //****
     self.UCIFem = ko.observable(data.UCIFem);
     self.UCIMaso = ko.observable(data.UCIMaso);
-    self.ILISamplesTaken = ko.observable(data.ILISamplesTaken);
-    if (self.DisableCHI() || self.ActiveBOL()) {
+
+    if (self.DisableCHI() || self.ActiveBOL() || self.ActiveHON()) {
         self.UCIST = ko.computed(function () {
             return parseInt(self.UCIFem()) + parseInt(self.UCIMaso());
         }, self);
@@ -220,31 +257,44 @@ function SummayItem(data) {
         self.UCIST = ko.observable(data.UCIST);
 
     }
-
+    //****
     self.DefFem = ko.observable(data.DefFem);
     self.DefMaso = ko.observable(data.DefMaso);
-    self.TotalVisits = ko.observable(data.TotalVisits);
-    if (self.DisableCHI() || self.ActiveBOL()) {
+
+    if (self.DisableCHI() || self.ActiveBOL() || self.ActiveHON()) {
         self.DefST = ko.computed(function () {
             return parseInt(self.DefFem()) + parseInt(self.DefMaso());
         }, self);
     } else {
         self.DefST = ko.observable(data.DefST);
-
     }
-
+    //****
     self.NeuFem = ko.observable(data.NeuFem);
     self.NeuMaso = ko.observable(data.NeuMaso);
-    self.NeuST = ko.observable(data.NeuST);
 
+    self.NeuST = ko.observable(data.NeuST);
+    //****
     self.CCSARIFem = ko.observable(data.CCSARIFem);
     self.CCSARIMaso = ko.observable(data.CCSARIMaso);
-    self.CCSARIST = ko.observable(data.CCSARIST);
 
+    if (self.ActiveHON()) {
+        self.CCSARIST = ko.computed(function () {
+            return parseInt(self.CCSARIFem()) + parseInt(self.CCSARIMaso());
+        }, self);
+
+    } else {
+        self.CCSARIST = ko.observable(data.CCSARIST);
+    }
+    //****
     self.VentFem = ko.observable(data.VentFem);
     self.VentMaso = ko.observable(data.VentMaso);
-    self.VentST = ko.observable(data.VentST);
 
+    self.VentST = ko.observable(data.VentST);
+    //**** ILI Jamaica
+    self.ILICases = ko.observable(data.ILICases);
+    self.ILISamplesTaken = ko.observable(data.ILISamplesTaken);
+    self.TotalVisits = ko.observable(data.TotalVisits);
+    //****
     self.MakeValueOfSummayItem = function () {
         return {
             Id: self.Id,
@@ -475,6 +525,7 @@ function SummaryViewModel(app, dataModel) {
     self.SummayItems = ko.observableArray([]);
     self.SummaryForYearItems = ko.observableArray([]);
 
+    //****
     self.EnableCHI = ko.computed(function () {
         return (self.UsrCountry() != 7) ? true : false;
     }, self);
@@ -528,10 +579,14 @@ function SummaryViewModel(app, dataModel) {
         return (self.UsrCountry() == 119) ? true : false;
     }, self);
 
+    self.ActiveHON = ko.computed(function () {
+        return (self.UsrCountry() == 15) ? true : false;
+    }, self);
+
     self.NoActiveCAY = ko.computed(function () {
         return (self.UsrCountry() == 119) ? false : true;
     }, self);
-
+    //****
     self.PickFirstDay = function (date) {
         var day = date.getDay();
         return [day == 0, " "];
@@ -567,6 +622,7 @@ function SummaryViewModel(app, dataModel) {
     };
 
     // Esto es para calcular los totales de las columnas
+    //****
     self.ColETIDenoFST = ko.computed(function () {
         var numberofitems = 0;
         ko.utils.arrayForEach(self.SummayItems(), function (r) {
@@ -590,7 +646,7 @@ function SummaryViewModel(app, dataModel) {
         });
         return parseInt(numberofitems);
     }, self);
-
+    //****
     self.ColETIFST = ko.computed(function () {
         var numberofitems = 0;
         ko.utils.arrayForEach(self.SummayItems(), function (r) {
@@ -598,7 +654,7 @@ function SummaryViewModel(app, dataModel) {
         });
         return parseInt(numberofitems);
     }, self);
-    
+
     self.ColETIMST = ko.computed(function () {
         var numberofitems = 0;
         ko.utils.arrayForEach(self.SummayItems(), function (r) {
@@ -614,7 +670,7 @@ function SummaryViewModel(app, dataModel) {
         });
         return parseInt(numberofitems);
     }, self);
-
+    //****
     self.ColETINumEmerFST = ko.computed(function () {
         var numberofitems = 0;
         ko.utils.arrayForEach(self.SummayItems(), function (r) {
@@ -638,7 +694,7 @@ function SummaryViewModel(app, dataModel) {
         });
         return parseInt(numberofitems);
     }, self);
-
+    //****
     self.ColHospFST = ko.computed(function () {
         var numberofitems = 0;
         ko.utils.arrayForEach(self.SummayItems(), function (r) {
@@ -662,16 +718,7 @@ function SummaryViewModel(app, dataModel) {
         });
         return parseInt(numberofitems);
     }, self);
-
-    self.ColILICasesST = ko.computed(function () {                  // //#### CAFQ: ILI Jamaica
-        var numberofitems = 0;
-        ko.utils.arrayForEach(self.SummayItems(), function (r) {
-            if (r['ILICases'] != undefined)
-               numberofitems += parseInt(r.ILICases());            
-        });
-        return parseInt(numberofitems);
-    }, self);
-
+    //****
     self.ColUCIFST = ko.computed(function () {
         var numberofitems = 0;
         ko.utils.arrayForEach(self.SummayItems(), function (r) {
@@ -695,16 +742,7 @@ function SummaryViewModel(app, dataModel) {
         });
         return parseInt(numberofitems);
     }, self);
-
-    self.ColILISamplesTakenST = ko.computed(function () {               //#### CAFQ: ILI Jamaica
-        var numberofitems = 0;
-        ko.utils.arrayForEach(self.SummayItems(), function (r) {
-            if (r['ILISamplesTaken'] != undefined) 
-                numberofitems += parseInt(r.ILISamplesTaken());
-        });
-        return parseInt(numberofitems);
-    }, self);
-
+    //****
     self.ColFalleFST = ko.computed(function () {
         var numberofitems = 0;
         ko.utils.arrayForEach(self.SummayItems(), function (r) {
@@ -728,6 +766,64 @@ function SummaryViewModel(app, dataModel) {
         });
         return parseInt(numberofitems);
     }, self);
+    //****
+    self.ColNeuTST = ko.computed(function () {
+        var numberofitems = 0;
+        ko.utils.arrayForEach(self.SummayItems(), function (r) {
+            numberofitems += parseInt(r.NeuST());
+        });
+        return parseInt(numberofitems);
+    }, self);
+    //****
+    self.ColCCSARIFST = ko.computed(function () {
+        var numberofitems = 0;
+        ko.utils.arrayForEach(self.SummayItems(), function (r) {
+            numberofitems += parseInt(r.CCSARIFem());
+        });
+        return parseInt(numberofitems);
+    }, self);
+
+    self.ColCCSARIMST = ko.computed(function () {
+        var numberofitems = 0;
+        ko.utils.arrayForEach(self.SummayItems(), function (r) {
+            numberofitems += parseInt(r.CCSARIMaso());
+        });
+        return parseInt(numberofitems);
+    }, self);
+
+    self.ColCCSARITST = ko.computed(function () {
+        var numberofitems = 0;
+        ko.utils.arrayForEach(self.SummayItems(), function (r) {
+            numberofitems += parseInt(r.CCSARIST());
+        });
+        return parseInt(numberofitems);
+    }, self);
+    //****
+    self.ColVentTST = ko.computed(function () {
+        var numberofitems = 0;
+        ko.utils.arrayForEach(self.SummayItems(), function (r) {
+            numberofitems += parseInt(r.VentST());
+        });
+        return parseInt(numberofitems);
+    }, self);
+    //****
+    self.ColILICasesST = ko.computed(function () {                      //#### CAFQ: ILI Jamaica
+        var numberofitems = 0;
+        ko.utils.arrayForEach(self.SummayItems(), function (r) {
+            if (r['ILICases'] != undefined)
+                numberofitems += parseInt(r.ILICases());
+        });
+        return parseInt(numberofitems);
+    }, self);
+
+    self.ColILISamplesTakenST = ko.computed(function () {               //#### CAFQ: ILI Jamaica
+        var numberofitems = 0;
+        ko.utils.arrayForEach(self.SummayItems(), function (r) {
+            if (r['ILISamplesTaken'] != undefined)
+                numberofitems += parseInt(r.ILISamplesTaken());
+        });
+        return parseInt(numberofitems);
+    }, self);
 
     self.ColTotalVisitsST = ko.computed(function () {                   //#### CAFQ: ILI Jamaica
         var numberofitems = 0;
@@ -738,40 +834,7 @@ function SummaryViewModel(app, dataModel) {
         return parseInt(numberofitems);
     }, self);
 
-    self.ColNeuTST = ko.computed(function () {
-        var numberofitems = 0;
-        ko.utils.arrayForEach(self.SummayItems(), function (r) {
-            numberofitems += parseInt(r.NeuST());
-        });
-        return parseInt(numberofitems);
-    }, self);
-
-    /*self.ColIRAGTST = ko.computed(function () {
-        var numberofitems = 0;
-        ko.utils.arrayForEach(self.SummayItems(), function (r) {
-            numberofitems += parseInt(r.CCSARIST());
-        });
-        return parseInt(numberofitems);
-    }, self);*/
-
-    self.ColCCSARITST = ko.computed(function () {
-        var numberofitems = 0;
-        ko.utils.arrayForEach(self.SummayItems(), function (r) {
-            numberofitems += parseInt(r.CCSARIST());
-        });
-        return parseInt(numberofitems);
-    }, self);
-
-    self.ColVentTST = ko.computed(function () {
-        var numberofitems = 0;
-        ko.utils.arrayForEach(self.SummayItems(), function (r) {
-            numberofitems += parseInt(r.VentST());
-        });
-        return parseInt(numberofitems);
-    }, self);
-
-    // Aquí termina el calculo de los totales
-
+    //**** Aquí termina el calculo de los totales
     self.MakeValuesOfSummayItems = function () {
         var index;
         var ValuesOfSummayItems = [];
@@ -808,8 +871,6 @@ function SummaryViewModel(app, dataModel) {
         $("#LabelSummary").hide();
         $("#ButtonSummary").hide();
     };
-
- 
 
     self.GetYearSummaryForYearItems = function () {
         if ((typeof self.selectedHospitalId() != "undefined") && self.selectedHospitalId() != "") {
@@ -973,12 +1034,9 @@ function SummaryViewModel(app, dataModel) {
     };
 
     self.showEpiWeek_AM = function (option, item) {
-        console.log("aquí");
+        //console.log("aquí");
         console.log(self.HospitalDate());
     };
-
-
-
 
     return self;
 };

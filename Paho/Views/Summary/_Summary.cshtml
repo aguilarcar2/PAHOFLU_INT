@@ -93,38 +93,37 @@
     <!-- Cabecera Datos -->
     @if (ViewBag.ILI == true)
     {
-
         <!--Consultas-->
-        <div class="@((ViewBag.UsrCtry == 3 ) ?  "col-md-2" : "col-md-1")" data-bind="visible: EnableCHI()">
+        <div class="@((ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 15) ?  "col-md-2" : "col-md-1")" data-bind="visible: EnableCHI()">
             <!--Consultas .F-->
-            <div class='col-md-1 input-group' data-bind="visible: ActiveBOL()" style='@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 ) ? "padding-left:0; padding-right:0;" : "")'>
+            <div class='col-md-1 input-group' data-bind="visible: ActiveBOL() || ActiveHON()" style='@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 ) ? "padding-left:0; padding-right:0;" : "")'>
                 <span class="input-group-addon">
                     @(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelTotalConsFemale"))
                 </span>
             </div>
             <!--Consultas .M-->
-            <div class='col-md-1 input-group' data-bind="visible: ActiveBOL()" style='@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 ) ? "padding-left:0; padding-right:0;" : "")'>
+            <div class='col-md-1 input-group' data-bind="visible: ActiveBOL() || ActiveHON()" style='@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 ) ? "padding-left:0; padding-right:0;" : "")'>
                 <span class="input-group-addon">
                     @(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelTotalConsMale"))
                 </span>
             </div>
             <!-- "Pobl." : "Tot. Cons."-->
-            <div class="col-md-1 input-group" data-bind="visible: ActiveBOL() || ActiveCOS() || ActiveSUR()">
+            <div class="col-md-1 input-group" data-bind="visible: ActiveBOL() || ActiveCOS() || ActiveSUR() || ActiveHON()">
                 <span class="input-group-addon">
                     @(ViewBag.UsrCtry == 7 ? (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelPopulation")) : (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelTotalCons")))
                 </span>
             </div>
         </div>
         <!--ETI-->
-        <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 ) ?  "col-md-2" : "col-md-1")">
+        <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 15 ) ?  "col-md-2" : "col-md-1")">
             <!--ETI.F-->
-            <div class='col-md-1 input-group' data-bind="visible: DisableCHI() || ActiveBOL()" style='@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 ) ? "padding-left:0; padding-right:0;" : "")'>
+            <div class='col-md-1 input-group' data-bind="visible: DisableCHI() || ActiveBOL() || ActiveHON()" style='@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 ) ? "padding-left:0; padding-right:0;" : "")'>
                 <span class="input-group-addon">
                     @(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelILIFemale"))
                 </span>
             </div>
             <!--ETI.M-->
-            <div class='col-md-1 input-group' data-bind="visible: DisableCHI() || ActiveBOL()" style='@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 ) ? "padding-left:0; padding-right:0;" : "")'>
+            <div class='col-md-1 input-group' data-bind="visible: DisableCHI() || ActiveBOL() || ActiveHON()" style='@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 ) ? "padding-left:0; padding-right:0;" : "")'>
                 <span class="input-group-addon">
                     @(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelILIMale"))
                 </span>
@@ -137,23 +136,23 @@
             </div>
         </div>
         <!--Emergency-->
-        <div class="@((ViewBag.UsrCtry == 3 ) ?  "col-md-2" : "col-md-1")" data-bind="visible: EnableCHI() && NoActiveBOL()">
+        <div class="@((ViewBag.UsrCtry == 3 ) ?  "col-md-2" : "col-md-1")" data-bind="visible: EnableCHI() && NoActiveBOL() && !ActiveHON()">
             <!--ETI Emergency. F-->
             <div class='col-md-1 input-group' style='@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 ) ? "padding-left:0; padding-right:0;" : "")' data-bind="visible:DisableCHI() || ActiveBOL() || NoActiveSUR() || NoActiveJAM()">
                 <span class="input-group-addon" data-bind="visible: ActiveBOL()">
-                    @(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelILIEmerFem"))
+                    77@(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelILIEmerFem"))
                 </span>
             </div>
             <!--ETI Emergency. M-->
             <div class='col-md-1 input-group' style='@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 ) ? "padding-left:0; padding-right:0;" : "")' data-bind="visible:DisableCHI() || ActiveBOL() || NoActiveSUR() || NoActiveJAM()">
                 <span class="input-group-addon" data-bind="visible: ActiveBOL()">
-                    @(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelILIEmerMaso"))
+                    88@(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelILIEmerMaso"))
                 </span>
             </div>
             <!--"ETI" : "ETI Emer. Total-->
             <div class="col-md-1 input-group" data-bind="visible: EnableCHI() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY() ">
                 <span class="input-group-addon">
-                    @((ViewBag.UsrCtry == 7 ) ? (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelILI")) : (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelILIEmer")))
+                    99@((ViewBag.UsrCtry == 7) ? (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelILI")) : (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelILIEmer")))
                 </span>
             </div>
         </div>
@@ -162,15 +161,15 @@
     @if (ViewBag.SARI == true)
     {
         <!-- Hospitalizacion -->
-        <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ?  "col-md-2" : "col-md-1")">
-            <div class='col-md-1 input-group' style='@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "padding-left:0; padding-right:0;":"") ' data-bind="visible:DisableCHI() || ActiveBOL() || NoActiveSUR() || NoActiveJAM()">
-                <span class="input-group-addon font_12" data-bind="visible:DisableCHI() || ActiveBOL()">
+        <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 15) ?  "col-md-2" : "col-md-1")">
+            <div class='col-md-1 input-group' style='@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "padding-left:0; padding-right:0;":"") ' data-bind="visible:DisableCHI() || ActiveBOL() || NoActiveSUR() || NoActiveJAM() || ActiveHON()">
+                <span class="input-group-addon font_12" data-bind="visible:DisableCHI() || ActiveBOL() || ActiveHON()">
                     <!--Hosp.F-->
                     @(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelHospitalizedFemale"))
                 </span>
             </div>
-            <div class='col-md-1 input-group' style='@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "padding-left:0; padding-right:0;":"")' data-bind="visible:DisableCHI() || ActiveBOL() || NoActiveSUR() || NoActiveJAM()">
-                <span class="input-group-addon font_12" data-bind="visible:DisableCHI() || ActiveBOL()">
+            <div class='col-md-1 input-group' style='@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "padding-left:0; padding-right:0;":"") ' data-bind="visible:DisableCHI() || ActiveBOL() || NoActiveSUR() || NoActiveJAM() || ActiveHON()">
+                <span class="input-group-addon font_12" data-bind="visible:DisableCHI() || ActiveBOL() || ActiveHON()">
                     <!--Hosp.M-->
                     @(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelHospitalizedMale"))
                 </span>
@@ -182,16 +181,34 @@
                 </span>
             </div>
         </div>
+        <!-- IRAG -->
+        if (ViewBag.UsrCtry == 15)
+        {
+            <div class="@((ViewBag.UsrCtry == 15) ? "col-md-2" : "col-md-1")" data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY()">
+                <span class="input-group-addon" data-bind="visible: ActiveHON()">
+                    <!--IRAG F-->
+                    @(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelSARIFemale"))
+                </span>
+                <span class="input-group-addon" data-bind="visible: ActiveHON()">
+                    <!--IRAG M.-->
+                    @(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelSARIMale"))
+                </span>
+                <span class="input-group-addon" data-bind="visible: EnableCHI()">
+                    <!--IRAG T-->
+                    @(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelSARITotal"))
+                </span>
+            </div>
+        }
         <!-- UCI -->
-        <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ?  "col-md-2" : "col-md-1")">
-            <div class='col-md-1 input-group' style='@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "padding-left:0; padding-right:0;":"")' data-bind="visible:DisableCHI() || ActiveBOL() || NoActiveSUR() || NoActiveJAM()">
-                <span class="input-group-addon" data-bind="visible:DisableCHI() || ActiveBOL()">
+        <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 15) ?  "col-md-2" : "col-md-1")">
+            <div class='col-md-1 input-group' style='@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "padding-left:0; padding-right:0;":"")' data-bind="visible:DisableCHI() || ActiveBOL() || NoActiveSUR() || NoActiveJAM() || ActiveHON()">
+                <span class="input-group-addon" data-bind="visible:DisableCHI() || ActiveBOL() || ActiveHON()">
                     <!--"UPC" : "UCI"-->
                     @((ViewBag.UsrCtry == 7) ? (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelICUFemale")) : (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelUCIFemale")))
                 </span>
             </div>
-            <div class='col-md-1 input-group' style='@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "padding-left:0; padding-right:0;":"")' data-bind="visible:DisableCHI() || ActiveBOL() || NoActiveSUR() || NoActiveJAM()">
-                <span class="input-group-addon" data-bind="visible:DisableCHI() || ActiveBOL() ">
+            <div class='col-md-1 input-group' style='@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "padding-left:0; padding-right:0;":"")' data-bind="visible:DisableCHI() || ActiveBOL() || NoActiveSUR() || NoActiveJAM() || ActiveHON()">
+                <span class="input-group-addon" data-bind="visible:DisableCHI() || ActiveBOL() || ActiveHON()">
                     <!--"UPC" : "UCI"-->
                     @((ViewBag.UsrCtry == 7) ? (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelICUMale")) : (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelUCIMale")))
                 </span>
@@ -204,15 +221,15 @@
             </div>
         </div>
         <!-- Fallecidos -->
-        <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ?  "col-md-2" : "col-md-1")">
-            <div class='col-md-1 input-group' style='@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "padding-left:0; padding-right:0;":"")' data-bind="visible:DisableCHI() || ActiveBOL() || NoActiveSUR() || NoActiveJAM()">
-                <span class="input-group-addon font_12" data-bind="visible:DisableCHI() || ActiveBOL() ">
+        <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 15) ?  "col-md-2" : "col-md-1")">
+            <div class='col-md-1 input-group' style='@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "padding-left:0; padding-right:0;":"")' data-bind="visible:DisableCHI() || ActiveBOL() || NoActiveSUR() || NoActiveJAM() || ActiveHON()">
+                <span class="input-group-addon font_12" data-bind="visible:DisableCHI() || ActiveBOL() || ActiveHON()">
                     <!--Falle.F-->
                     @(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelDeceasedFemale"))
                 </span>
             </div>
-            <div class='col-md-1 input-group' style='@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "padding-left:0; padding-right:0;":"")' data-bind="visible:DisableCHI() || ActiveBOL() || NoActiveSUR() || NoActiveJAM()">
-                <span class="input-group-addon font_12" data-bind="visible:DisableCHI() || ActiveBOL() ">
+            <div class='col-md-1 input-group' style='@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "padding-left:0; padding-right:0;":"")' data-bind="visible:DisableCHI() || ActiveBOL() || NoActiveSUR() || NoActiveJAM() || ActiveHON()">
+                <span class="input-group-addon font_12" data-bind="visible:DisableCHI() || ActiveBOL() || ActiveHON()">
                     <!--Falle.M.-->
                     @(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelDeceasedMale"))
                 </span>
@@ -225,7 +242,7 @@
             </div>
         </div>
         <!-- Neumonía -->
-        <div class="col-md-1" data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY()">
+        <div class="col-md-1" data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY() && !ActiveHON()">
             <span class="input-group-addon" data-bind="visible:false">
                 <!--Neumonía F-->
                 @(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelPneumoniaFemale"))
@@ -240,22 +257,25 @@
             </span>
         </div>
         <!-- IRAG -->
-        <div class="col-md-1" data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY()">
-            <span class="input-group-addon" data-bind="visible:false">
-                <!--IRAG F-->
-                @(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelSARIFemale"))
-            </span>
-            <span class="input-group-addon" data-bind="visible:false">
-                <!--IRAG M.-->
-                @(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelSARIMale"))
-            </span>
-            <span class="input-group-addon" data-bind="visible:EnableCHI()">
-                <!--IRAG T-->
-                @(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelSARITotal"))
-            </span>
-        </div>
+        if (ViewBag.UsrCtry != 15)
+        {
+            <div class="@((ViewBag.UsrCtry == 15) ? "col-md-2" : "col-md-1")" data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY()">
+                <span class="input-group-addon" data-bind="visible: ActiveHON()">
+                    <!--IRAG F-->
+                    @(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelSARIFemale"))
+                </span>
+                <span class="input-group-addon" data-bind="visible: ActiveHON()">
+                    <!--IRAG M.-->
+                    @(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelSARIMale"))
+                </span>
+                <span class="input-group-addon" data-bind="visible: EnableCHI()">
+                    <!--IRAG T-->
+                    @(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelSARITotal"))
+                </span>
+            </div>
+        }
         <!-- Ventilación -->
-        <div class="col-md-1" data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY()">
+        <div class="col-md-1" data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY() && !ActiveHON()">
             <span class="input-group-addon" data-bind="visible:false">
                 <!--Vent.F-->
                 @(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelMechanicalVentFemale"))
@@ -281,46 +301,46 @@
 
     @if (ViewBag.ILI == true)
     {
-        <div class="@((ViewBag.UsrCtry == 3 ) ?  "col-md-2" : "col-md-1")" data-bind="visible: EnableCHI()">
+        <div class="@((ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 15 ) ?  "col-md-2" : "col-md-1")" data-bind="visible: EnableCHI()">
             <!-- T. Cons. -->
-            <div class='col-md-1 input-group' data-bind="visible: ActiveBOL()">
+            <div class='col-md-1 input-group' data-bind="visible: ActiveBOL() || ActiveHON()">
                 <input type='text' name="ETIDenoFem" id="ETIDenoFem" class="form-control" style="padding:6px;" data-bind="value: ETIDenoFem" />
             </div>
             <!--  -->
-            <div class='col-md-1 input-group' data-bind="visible: ActiveBOL()">
+            <div class='col-md-1 input-group' data-bind="visible: ActiveBOL() || ActiveHON()">
                 <input type='text' name="ETIDenoMaso" id="ETIDenoMaso" class="form-control" style="padding:6px;" data-bind="value: ETIDenoMaso" />
             </div>
-            <div class="col-md-1 input-group" data-bind="visible: ActiveSUR() || ActiveCOS() || ActiveBOL()">
+            <!--  -->
+            <div class="col-md-1 input-group" data-bind="visible: ActiveSUR() || ActiveCOS() || ActiveBOL() || ActiveHON()">
                 <input type='text' name="ETIDenoST" id="ETIDenoST" class="form-control" style="padding:6px;" @((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "readonly='readonly'" : "") data-bind="value: ETIDenoST" />
             </div>
         </div>
-        <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 ) ?  "col-md-2" : "col-md-1")">
+        <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 15 ) ?  "col-md-2" : "col-md-1")">
             <!--  -->
-            <div class='col-md-1 input-group' data-bind="visible:DisableCHI() || ActiveBOL()">
+            <div class='col-md-1 input-group' data-bind="visible:DisableCHI() || ActiveBOL() || ActiveHON()">
                 <input type='text' name="ETINumFem" id="ETINumFem" class="form-control" style="padding:6px;" data-bind="value: ETINumFem" />
             </div>
             <!--  -->
-            <div class='col-md-1 input-group' data-bind="visible:DisableCHI() || ActiveBOL()">
+            <div class='col-md-1 input-group' data-bind="visible:DisableCHI() || ActiveBOL() || ActiveHON()">
                 <input type='text' name="ETINumMaso" id="ETINumMaso" class="form-control" style="padding:6px;" data-bind="value: ETINumMaso" />
             </div>
             <!--  -->
-            <div class='col-md-1 input-group' data-bind="visible:(ActiveBOL() || ActiveCOS() || DisableCHI())">
+            <div class='col-md-1 input-group' data-bind="visible:(ActiveBOL() || ActiveCOS() || DisableCHI() || ActiveHON())">
                 <input type='text' name="ETINumST" id="ETINumST" class="form-control" style="padding:6px;" @((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "readonly='readonly'" : "") data-bind="value: ETINumST" />
             </div>
-
         </div>
-        <div class="@((ViewBag.UsrCtry == 3 ) ?  "col-md-2" : "col-md-1")" data-bind="visible: EnableCHI() && NoActiveBOL()">
+        <div class="@((ViewBag.UsrCtry == 3 ) ?  "col-md-2" : "col-md-1")" data-bind="visible: EnableCHI() && NoActiveBOL() && !ActiveHON()">
             <!--  -->
             <div class='col-md-1 input-group' data-bind="visible: ActiveBOL()">
-                <input type='text' name="ETINumEmerFem" id="ETINumEmerFem" class="form-control" style="padding:6px;" data-bind="value: ETINumEmerFem" />
+                gg<input type='text' name="ETINumEmerFem" id="ETINumEmerFem" class="form-control" style="padding:6px;" data-bind="value: ETINumEmerFem" />
             </div>
             <!--  -->
             <div class='col-md-1 input-group' data-bind="visible: ActiveBOL()">
-                <input type='text' name="ETINumEmerMaso" id="ETINumEmerMaso" class="form-control" style="padding:6px;" data-bind="value: ETINumEmerMaso" />
+                hh<input type='text' name="ETINumEmerMaso" id="ETINumEmerMaso" class="form-control" style="padding:6px;" data-bind="value: ETINumEmerMaso" />
             </div>
             <!--  -->
             <div class="col-md-1 input-group" id="ETINumEmerST" data-bind="visible: EnableCHI() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY()">
-                <input type='text' name="ETINumEmerST" id="ETINumEmerST" class="form-control" style="padding:6px;" @((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "readonly='readonly'" : "") data-bind="value: ETINumEmerST" />
+                ii<input type='text' name="ETINumEmerST" id="ETINumEmerST" class="form-control" style="padding:6px;" @((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "readonly='readonly'" : "") data-bind="value: ETINumEmerST" />
             </div>
         </div>
     }
@@ -328,23 +348,38 @@
     @if (ViewBag.SARI == true)
     {
         <!-- Hospitalizacion -->
-        <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "col-md-2" : "col-md-1")" id="Hosp">
-            <div class='col-md-1 input-group' data-bind="visible:DisableCHI() || ActiveBOL()">
+        <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 15) ? "col-md-2" : "col-md-1")" id="Hosp">
+            <div class='col-md-1 input-group' data-bind="visible:DisableCHI() || ActiveBOL() || ActiveHON()">
                 <input type='text' name="HospFem" id="HospFem" class="form-control" style="padding:6px;" data-bind="value: HospFem" />
             </div>
-            <div class='col-md-1 input-group' data-bind="visible:DisableCHI() || ActiveBOL()">
+            <div class='col-md-1 input-group' data-bind="visible:DisableCHI() || ActiveBOL() || ActiveHON()">
                 <input type='text' name="HospMaso" id="HospMaso" class="form-control" style="padding:6px;" data-bind="value: HospMaso" />
             </div>
             <div class='col-md-1 input-group'>
-                <input type='text' name="HospST" id="HospST" class="form-control" style="padding:6px;" @((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "readonly='readonly'" : "") data-bind="value: HospST" />
+                <input type='text' name="HospST" id="HospST" class="form-control" style="padding:6px;" data-bind="value: HospST" @((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "readonly='readonly'" : "") />
             </div>
         </div>
+        <!-- IRAG -->
+        if (ViewBag.UsrCtry == 15)
+        {
+            <div class="@((ViewBag.UsrCtry == 15) ? "col-md-2" : "col-md-1")" data-bind="visible: EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY()">
+                <div class="col-md-1 input-group" data-bind="visible: ActiveHON()">
+                    <input type='text' class="form-control" style="padding:6px;" data-bind="value: CCSARIFem" />
+                </div>
+                <div class="col-md-1 input-group" data-bind="visible: ActiveHON()">
+                    <input type='text' class="form-control" style="padding:6px;" data-bind="value: CCSARIMaso" />
+                </div>
+                <div class="col-md-1 input-group" data-bind="visible:EnableCHI() && NoActiveBOL()">
+                    <input type='text' name="CCSARIST" id="CCSARIST" class="form-control" style="padding:6px;" data-bind="value: CCSARIST" @((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "readonly='readonly'" : "") />
+                </div>
+            </div>
+        }
         <!-- UCI -->
-        <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "col-md-2" : "col-md-1")" id="UCI">
-            <div class='col-md-1 input-group' data-bind="visible:DisableCHI() || ActiveBOL()">
+        <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 15) ? "col-md-2" : "col-md-1")" id="UCI">
+            <div class='col-md-1 input-group' data-bind="visible:DisableCHI() || ActiveBOL() || ActiveHON()">
                 <input type='text' name="UCIFem" id="UCIFem" class="form-control" style="padding:6px;" data-bind="value: UCIFem" />
             </div>
-            <div class='col-md-1 input-group' data-bind="visible:DisableCHI() || ActiveBOL()">
+            <div class='col-md-1 input-group' data-bind="visible:DisableCHI() || ActiveBOL() || ActiveHON()">
                 <input type='text' name="UCIMaso" id="UCIMaso" class="form-control" style="padding:6px;" data-bind="value: UCIMaso" />
             </div>
             <div class='col-md-1 input-group'>
@@ -352,11 +387,11 @@
             </div>
         </div>
         <!-- Fallecidos -->
-        <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "col-md-2" : "col-md-1")" id="Def">
-            <div class='input-group col-md-1' data-bind="visible:DisableCHI() || ActiveBOL()">
+        <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 15) ? "col-md-2" : "col-md-1")" id="Def">
+            <div class='input-group col-md-1' data-bind="visible:DisableCHI() || ActiveBOL() || ActiveHON()">
                 <input type='text' class="form-control" style="padding:6px;" data-bind="value: DefFem" />
             </div>
-            <div class='input-group col-md-1' data-bind="visible:DisableCHI() || ActiveBOL()">
+            <div class='input-group col-md-1' data-bind="visible:DisableCHI() || ActiveBOL() || ActiveHON()">
                 <input type='text' class="form-control" style="padding:6px;" data-bind="value: DefMaso" />
             </div>
             <div class='input-group col-md-1'>
@@ -364,7 +399,7 @@
             </div>
         </div>
         <!-- Neumonía -->
-        <div class="col-md-1" data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY()">
+        <div class="col-md-1" data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY() && !ActiveHON()">
             <div class="row">
                 <div class="col-md-4" data-bind="visible:false">
                     <div class='input-group'>
@@ -384,27 +419,22 @@
             </div>
         </div>
         <!-- IRAG -->
-        <div class="col-md-1" data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY()">
-            <div class="row">
-                <div class="col-md-4" data-bind="visible:false">
-                    <div class='input-group'>
-                        <input type='text' class="form-control" style="padding:6px;" data-bind="value: CCSARIFem" />
-                    </div>
+        if (ViewBag.UsrCtry != 15)
+        {
+            <div class="@((ViewBag.UsrCtry == 15) ? "col-md-2" : "col-md-1")" data-bind="visible: EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY()">
+                <div class="col-md-1 input-group" data-bind="visible: ActiveHON()">
+                    <input type='text' class="form-control" style="padding:6px;" data-bind="value: CCSARIFem" />
                 </div>
-                <div class="col-md-4" data-bind="visible:false">
-                    <div class='input-group'>
-                        <input type='text' class="form-control" style="padding:6px;" data-bind="value: CCSARIMaso" />
-                    </div>
+                <div class="col-md-1 input-group" data-bind="visible: ActiveHON()">
+                    <input type='text' class="form-control" style="padding:6px;" data-bind="value: CCSARIMaso" />
                 </div>
-                <div class="col-md-4" data-bind="visible:EnableCHI() && NoActiveBOL()">
-                    <div class='input-group'>
-                        <input type='text' class="form-control" data-bind="value: CCSARIST" style="padding:6px;" @((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "readonly='readonly'" : "") />
-                    </div>
+                <div class="col-md-1 input-group" data-bind="visible:EnableCHI() && NoActiveBOL()">
+                    <input type='text' name="CCSARIST" id="CCSARIST" class="form-control" style="padding:6px;" data-bind="value: CCSARIST" @((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "readonly='readonly'" : "") />
                 </div>
             </div>
-        </div>
+        }
         <!-- Ventilación -->
-        <div class="col-md-1" data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY()">
+        <div class="col-md-1" data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY() && !ActiveHON()">
             <div class="row">
                 <div class="col-md-4" data-bind="visible:false">
                     <div class='input-group'>
@@ -426,7 +456,6 @@
     }
 </div>
 <!-- /ko -->
-
 <!-- Totales -->
 <div class="row rowform" id="TotalSummary">
     <!--Totales-->
@@ -438,27 +467,27 @@
 
     @if (ViewBag.ILI == true)
     {
-        <div class="@((ViewBag.UsrCtry == 3 ) ?  "col-md-2" : "col-md-1")" data-bind="visible: EnableCHI()">
+        <div class="@((ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 15) ?  "col-md-2" : "col-md-1")" data-bind="visible: EnableCHI() || ActiveHON()">
             <!--  -->
-            <span class='col-md-1 input-group' data-bind="visible: ActiveBOL()">
+            <span class='col-md-1 input-group' data-bind="visible: ActiveBOL() || ActiveHON()">
                 <input type='text' class="form-control" style="padding:6px;" readonly="readonly" id="ColETIDenoFST" data-bind="value: ColETIDenoFST" />
             </span>
             <!--  -->
-            <span class='col-md-1 input-group' data-bind="visible: ActiveBOL()">
+            <span class='col-md-1 input-group' data-bind="visible: ActiveBOL() || ActiveHON()">
                 <input type='text' class="form-control" style="padding:6px;" readonly="readonly" id="ColETIDenoMST" data-bind="value: ColETIDenoMST" />
             </span>
             <!-- T. Cons. -->
-            <span class="col-md-1 input-group" data-bind="visible: ActiveSUR() || ActiveCOS() || ActiveBOL()">
+            <span class="col-md-1 input-group" data-bind="visible: ActiveSUR() || ActiveCOS() || ActiveBOL() || ActiveHON()">
                 <input type='text' class="form-control" style="padding:6px;" readonly="readonly" id="ColETIDenoST" data-bind="value: ColETIDenoST" />
             </span>
         </div>
-        <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 ) ?  "col-md-2" : "col-md-1")">
+        <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 15 ) ?  "col-md-2" : "col-md-1")">
             <!--  -->
-            <span class='col-md-1 input-group' data-bind="visible:DisableCHI() || ActiveBOL()">
+            <span class='col-md-1 input-group' data-bind="visible:DisableCHI() || ActiveBOL() || ActiveHON()">
                 <input type='text' class="form-control" style="padding:6px;" readonly="readonly" id="ColETIFST" data-bind="value: ColETIFST" />
             </span>
             <!--  -->
-            <span class='col-md-1 input-group' data-bind="visible:DisableCHI() || ActiveBOL()">
+            <span class='col-md-1 input-group' data-bind="visible:DisableCHI() || ActiveBOL() || ActiveHON()">
                 <input type='text' class="form-control" style="padding:6px;" readonly="readonly" id="ColETIMST" data-bind="value: ColETIMST" />
             </span>
             <!--  -->
@@ -466,18 +495,18 @@
                 <input type='text' class="form-control" style="padding:6px;" readonly="readonly" id="ColETINumST" data-bind="value: ColETINumST" />
             </span>
         </div>
-        <div class="@((ViewBag.UsrCtry == 3 ) ?  "col-md-2" : "col-md-1")" data-bind="visible: EnableCHI() && NoActiveBOL()">
+        <div class="@((ViewBag.UsrCtry == 3 ) ?  "col-md-2" : "col-md-1")" data-bind="visible: EnableCHI() && NoActiveBOL() && !ActiveHON()">
             <!--  -->
             <span class='col-md-1 input-group' data-bind="visible: ActiveBOL()">
-                <input type='text' class="form-control" style="padding:6px;" readonly="readonly" id="ColETINumEmerFST" data-bind="value: ColETINumEmerFST" />
+                i1<input type='text' class="form-control" style="padding:6px;" readonly="readonly" id="ColETINumEmerFST" data-bind="value: ColETINumEmerFST" />
             </span>
             <!--  -->
             <span class='col-md-1 input-group' data-bind="visible: ActiveBOL()">
-                <input type='text' class="form-control" style="padding:6px;" readonly="readonly" id="ColETINumEmerMST" data-bind="value: ColETINumEmerMST" />
+                i2<input type='text' class="form-control" style="padding:6px;" readonly="readonly" id="ColETINumEmerMST" data-bind="value: ColETINumEmerMST" />
             </span>
             <!--  -->
             <span class="col-md-1 input-group" data-bind="visible: EnableCHI() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY()">
-                <input type='text' class="form-control" style="padding:6px;" readonly="readonly" id="ColETINumEmerST" data-bind="value: ColETINumEmerST" />
+                i3<input type='text' class="form-control" style="padding:6px;" readonly="readonly" id="ColETINumEmerST" data-bind="value: ColETINumEmerST" />
             </span>
         </div>
     }
@@ -485,23 +514,39 @@
     @if (ViewBag.SARI == true)
     {
         <!-- Hospitalizacion -->
-        <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "col-md-2" : "col-md-1")">
-            <span class='col-md-1 input-group' data-bind="visible:DisableCHI() || ActiveBOL()">
+        <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 15) ? "col-md-2" : "col-md-1")">
+            <span class='col-md-1 input-group' data-bind="visible:DisableCHI() || ActiveBOL() || ActiveHON()">
                 <input type='text' class="form-control" style="padding:6px;" readonly="readonly" id="ColHospFST" data-bind="value: ColHospFST" />
             </span>
-            <span class='col-md-1 input-group' data-bind="visible:DisableCHI() || ActiveBOL()">
+            <span class='col-md-1 input-group' data-bind="visible:DisableCHI() || ActiveBOL() || ActiveHON()">
                 <input type='text' class="form-control" style="padding:6px;" readonly="readonly" id="ColHospMST" data-bind="value: ColHospMST" />
             </span>
             <span class='col-md-1 input-group'>
                 <input type='text' class="form-control" style="padding:6px;" readonly="readonly" id="ColHospTST" data-bind="value: ColHospTST" />
             </span>
         </div>
+        <!-- IRAG -->
+        if (ViewBag.UsrCtry == 15)
+        {
+            <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 15) ? "col-md-2" : "col-md-1")" data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM()">
+                <span class='col-md-1 input-group' data-bind="visible: ActiveHON()">
+                    <input type='text' class="form-control" style="padding:6px;" readonly="readonly" id="ColCCSARIFST" data-bind="value: ColCCSARIFST" />
+                </span>
+                <span class='col-md-1 input-group' data-bind="visible: ActiveHON()">
+                    <input type='text' class="form-control" style="padding:6px;" readonly="readonly" id="ColCCSARIMST" data-bind="value: ColCCSARIMST" />
+                </span>
+
+                <span class='col-md-1 input-group' data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY()">
+                    <input type='text' class="form-control" style="padding:6px;" readonly="readonly" id="ColCCSARITST" data-bind="value: ColCCSARITST" />
+                </span>
+            </div>
+        }
         <!-- UCI -->
-        <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "col-md-2" : "col-md-1")">
-            <span class='col-md-1 input-group' data-bind="visible:DisableCHI() || ActiveBOL()">
+        <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 15) ? "col-md-2" : "col-md-1")">
+            <span class='col-md-1 input-group' data-bind="visible:DisableCHI() || ActiveBOL() || ActiveHON()">
                 <input type='text' class="form-control" style="padding:6px;" readonly="readonly" id="ColUCIFST" data-bind="value: ColUCIFST" />
             </span>
-            <span class='col-md-1 input-group' data-bind="visible:DisableCHI() || ActiveBOL()">
+            <span class='col-md-1 input-group' data-bind="visible:DisableCHI() || ActiveBOL() || ActiveHON()">
                 <input type='text' class="form-control" style="padding:6px;" readonly="readonly" id="ColUCIMST" data-bind="value: ColUCIMST" />
             </span>
             <span class='col-md-1 input-group'>
@@ -509,11 +554,11 @@
             </span>
         </div>
         <!-- Fallecidos -->
-        <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "col-md-2" : "col-md-1")">
-            <span class='col-md-1 input-group' data-bind="visible:DisableCHI() || ActiveBOL()">
+        <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 15) ? "col-md-2" : "col-md-1")">
+            <span class='col-md-1 input-group' data-bind="visible:DisableCHI() || ActiveBOL() || ActiveHON()">
                 <input type='text' class="form-control" style="padding:6px;" readonly="readonly" id="ColFalleFST" data-bind="value: ColFalleFST" />
             </span>
-            <span class='col-md-1 input-group' data-bind="visible:DisableCHI() || ActiveBOL()">
+            <span class='col-md-1 input-group' data-bind="visible:DisableCHI() || ActiveBOL() || ActiveHON()">
                 <input type='text' class="form-control" style="padding:6px;" readonly="readonly" id="ColFalleMST" data-bind="value: ColFalleMST" />
             </span>
             <span class='col-md-1 input-group'>
@@ -521,7 +566,7 @@
             </span>
         </div>
         <!-- Neumonía -->
-        <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "col-md-2" : "col-md-1")" data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM()">
+        <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "col-md-2" : "col-md-1")" data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && !ActiveHON()">
             <span class="col-md-1 input-group" data-bind="visible:false">
             </span>
             <span class="col-md-1 input-group" data-bind="visible:false">
@@ -531,18 +576,23 @@
             </span>
         </div>
         <!-- IRAG -->
-        <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "col-md-2" : "col-md-1")" data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM()">
-            <span class="input-group" data-bind="visible:false">
-            </span>
-            <span class="input-group" data-bind="visible:false">
-            </span>
-            <span class='col-md-1 input-group' data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY()">
-                <!-- <input type='text' class="form-control" style="padding:6px;" readonly="readonly" id="ColIRAGTST" data-bind="value: ColIRAGTST" /> -->
-                <input type='text' class="form-control" style="padding:6px;" readonly="readonly" id="ColCCSARITST" data-bind="value: ColCCSARITST" />
-            </span>
-        </div>
+        if (ViewBag.UsrCtry != 15)
+        {
+            <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 15) ? "col-md-2" : "col-md-1")" data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM()">
+                <span class='col-md-1 input-group' data-bind="visible: ActiveHON()">
+                    <input type='text' class="form-control" style="padding:6px;" readonly="readonly" id="ColCCSARIFST" data-bind="value: ColCCSARIFST" />
+                </span>
+                <span class='col-md-1 input-group' data-bind="visible: ActiveHON()">
+                    <input type='text' class="form-control" style="padding:6px;" readonly="readonly" id="ColCCSARIMST" data-bind="value: ColCCSARIMST" />
+                </span>
+
+                <span class='col-md-1 input-group' data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY()">
+                    <input type='text' class="form-control" style="padding:6px;" readonly="readonly" id="ColCCSARITST" data-bind="value: ColCCSARITST" />
+                </span>
+            </div>
+        }
         <!-- Ventilación -->
-        <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "col-md-2" : "col-md-1")" data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM()">
+        <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "col-md-2" : "col-md-1")" data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && !ActiveHON()">
             <span class="col-md-1 input-group" data-bind="visible:false">
             </span>
             <span class="col-md-1 input-group" data-bind="visible:false">
@@ -577,16 +627,16 @@
 
                 @if (ViewBag.ILI == true)
                 {
-                    <!--"Pobl." : "Tot. Cons."-->
-                    <th data-bind="visible:EnableCHI()  && (ActiveSUR() || ActiveBOL() || ActiveCOS())" class="col-md-1">
+                    <!--"Pobl." : "Tot. Cons." : "Atenc. Total"-->
+                    <th data-bind="visible:EnableCHI()  && (ActiveSUR() || ActiveBOL() || ActiveCOS() || ActiveHON())" class="col-md-1">
                         @(ViewBag.UsrCtry == 7 ? (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelPopulation")) : (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelTotalCons")))
                     </th>
-                    <!--"ETI T." : "ETI Ext."-->
+                    <!--"ETI T." : "ETI Ext." : "Atenc. ETI"-->
                     <th data-bind="visible:NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY()" class="col-md-1">
                         @((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelILITotal")) : (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelILIExt")))
                     </th>
                     <!--"ETI" : "ETI Emer."-->
-                    <th data-bind="visible:(EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY()) || ActiveCOS()" class="col-md-1">
+                    <th data-bind="visible:(EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY() && !ActiveHON()) || ActiveCOS()" class="col-md-1">
                         @((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelILI")) : (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelILIEmer")))
                     </th>
                 }
@@ -595,20 +645,28 @@
                 {
                     <!-- Hosp. T -->
                     <th class="col-md-1">@(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelHospitalizedTotal"))</th>
+                    <!--IRAG T-->
+                    if (ViewBag.UsrCtry == 15)
+                    {
+                        <th data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY()" class="col-md-1">@(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelSARITotal"))</th>
+                    }
                     <!-- "UPC" : "UCI" -->
                     <th class="col-md-1">@((ViewBag.UsrCtry == 7) ? (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelICUTotal")) : (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelUCITotal")))</th>
                     <!--Falle. T-->
                     <th class="col-md-1">@(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelDeceasedTotal"))</th>
                     <!--Neumonía T-->
-                    <th data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY()" class="col-md-1">@(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelPneumoniaTotal"))</th>
+                    <th data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY() && !ActiveHON()" class="col-md-1">@(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelPneumoniaTotal"))</th>
                     <!--IRAG T-->
-                    <th data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY()" class="col-md-1">@(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelSARITotal"))</th>
-                    <!--Vent. T-->
-                    <th data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY()" class="col-md-1">@(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelMechanicalVentTotal"))</th>
+                    if (ViewBag.UsrCtry != 15)
+                    {
+                        <th data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY()" class="col-md-1">@(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelSARITotal"))</th>
+                    }
+                     <!--Vent. T-->
+                    <th data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY() && !ActiveHON()" class="col-md-1">@(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelMechanicalVentTotal"))</th>
                 }
             </tr>
         </thead>
-        
+
         <!-- Cuerpo -->
         <tbody>
             <!-- ko foreach: SummaryForYearItems -->
@@ -621,16 +679,16 @@
 
                 @if (ViewBag.ILI == true)
                 {
-                    <!--"Pobl." : "Tot. Cons."-->
-                    <td data-bind="visible:EnableCHI() && (ActiveSUR() || ActiveBOL() || ActiveCOS())">
+                    <!--"Pobl." : "Tot. Cons." : Atenc. Total-->
+                    <td data-bind="visible:EnableCHI() && (ActiveSUR() || ActiveBOL() || ActiveCOS() || ActiveHON())">
                         <span data-bind="text: ColETIDenoST" />
                     </td>
-                    <!--"ETI T." : "ETI Ext."-->
+                    <!--"ETI T." : "ETI Ext." : "Atenc. ETI"-->
                     <td data-bind="visible:NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY()">
                         <span data-bind="text: ColETINumST" />
                     </td>
                     <!--"ETI" : "ETI Emer."-->
-                    <td data-bind="visible: (EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY()) || ActiveCOS()">
+                    <td data-bind="visible: (EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY() && !ActiveHON()) || ActiveCOS()">
                         <span data-bind="text: ColETINumEmerST" />
                     </td>
                 }
@@ -640,19 +698,28 @@
                     <td>
                         <span data-bind="text: ColHospTST" />
                     </td>
+                    if (ViewBag.UsrCtry == 15)
+                    {
+                        <td data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY()">
+                            <span data-bind="text: ColCCSARITST" />
+                        </td>
+                    }
                     <td>
                         <span data-bind="text: ColUCITST" />
                     </td>
                     <td>
                         <span data-bind="text: ColFalleTST" />
                     </td>
-                    <td data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY()">
+                    <td data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY() && !ActiveHON()">
                         <span data-bind="text: ColNeuTST" />
                     </td>
-                    <td data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY()">
-                        <span data-bind="text: ColCCSARITST" />
-                    </td>
-                    <td data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY()">
+                    if (ViewBag.UsrCtry != 15)
+                    {
+                        <td data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY()">
+                            <span data-bind="text: ColCCSARITST" />
+                        </td>
+                    }
+                    <td data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY() && !ActiveHON()">
                         <span data-bind="text: ColVentTST" />
                     </td>
                 }

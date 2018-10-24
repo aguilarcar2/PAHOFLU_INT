@@ -282,7 +282,8 @@ namespace Paho.Controllers
                         ColETIDenoST += casesummaryDetail.ETIDenoST;
                         ColETINumEmerST += casesummaryDetail.ETINumEmerST;
                         ColNeuTST += casesummaryDetail.NeuST.HasValue ? casesummaryDetail.NeuST.Value : 0;
-                        ColCCSARITST += casesummaryDetail.CCSARIST.HasValue ? casesummaryDetail.CCSARIST.Value : 0;
+                        //ColCCSARITST += casesummaryDetail.CCSARIST.HasValue ? casesummaryDetail.CCSARIST.Value : 0;
+                        ColCCSARITST += casesummaryDetail.CCSARIST.Value;
                         ColVentTST += casesummaryDetail.VentST.HasValue ? casesummaryDetail.VentST.Value : 0;
                     }
                 }
