@@ -19,8 +19,121 @@
         }
     });
     self.selectedCountryOrigin = ko.observable();
+    //****
+    self.Areas = ko.observableArray();
     self.selectedAreaId = ko.observable();
+    self.ReloadAreas = function (select) {
+        if (typeof self.selectedCountryId() === "undefined") {
+            self.Areas("");
+            return;
+        }
+        $.getJSON(app.dataModel.getAreasUrl, { CountryID: self.selectedCountryId() }, function (data, status) {
+            self.Areas(data);
+            if ($.isFunction(select)) select();
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            alert(errorThrown);
+        })
+    };
+    //****
+    self.States = ko.observableArray();
     self.selectedStateId = ko.observable();
+    self.ReloadStates = function (select) {
+        if (typeof self.selectedAreaId() === "undefined") {
+            self.States("");
+            return;
+        }
+        $.getJSON(app.dataModel.getStatesUrl, { AreaID: self.selectedAreaId() }, function (data, status) {
+            self.States(data);
+            if ($.isFunction(select)) select();
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            alert(errorThrown);
+        })
+
+        if (self.UsrCountry() == 17) {
+            self.ReloadParishPostOffice();
+        }
+    };
+    //****
+    self.Neighborhoods = ko.observableArray();
+    self.selectedNeighborhoodId = ko.observable();
+    self.ReloadNeighborhoods = function (select) {
+        if (typeof self.selectedStateId() === "undefined") {
+            self.Neighborhoods("");
+            return;
+        }
+        if (typeof self.selectedStateId() != "undefined" && self.selectedStateId() != "" && self.selectedStateId() > 0) {
+            $.getJSON(app.dataModel.getNeighborhoodsUrl, { StateID: self.selectedStateId() }, function (data, status) {
+                self.Neighborhoods(data);
+                if ($.isFunction(select)) select();
+            })
+            .fail(function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            })
+        }
+    };
+    self.ReloadLocalsAndNeighborhoods = function () {
+        //self.ReloadLocals();
+        self.ReloadNeighborhoods();
+    };
+    //#### CAFQ: 181018
+    self.Hamlets = ko.observableArray();
+    self.selectedHamletId = ko.observable();
+    self.ReloadHamlets = function (select) {
+        console.log("zzz1");
+        console.log(self.selectedNeighborhoodId());
+        console.log("zzz1a");
+        if (typeof self.selectedNeighborhoodId() === "undefined") {
+            console.log("zzz2");
+            self.Hamlets("");
+            return;
+        }
+        if (typeof self.selectedNeighborhoodId() != "undefined" && self.selectedNeighborhoodId() != "" && self.selectedNeighborhoodId() > 0) {
+            $.getJSON(app.dataModel.getHamletsUrl, { NeighborhoodId: self.selectedNeighborhoodId() }, function (data, status) {
+                self.Hamlets(data);
+                if ($.isFunction(select)) select();
+            })
+            .fail(function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            })
+        }
+    };
+    //#### CAFQ: 181018
+    self.Colonies = ko.observableArray();
+    self.selectedColonyId = ko.observable();
+    self.ReloadColonies = function (select) {
+        if (typeof self.selectedHamletId() === "undefined") {
+            self.Colonies("");
+            return;
+        }
+        if (typeof self.selectedHamletId() != "undefined" && self.selectedHamletId() != "" && self.selectedHamletId() > 0) {
+            $.getJSON(app.dataModel.getColoniesUrl, { HamletId: self.selectedHamletId() }, function (data, status) {
+                self.Colonies(data);
+                if ($.isFunction(select)) select();
+            })
+            .fail(function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            })
+        }
+    };
+    //****
+    self.Locals = ko.observableArray();
+    self.selectedLocalId = ko.observable();
+    self.ReloadLocals = function (select) {
+        if (typeof self.selectedStateId() === "undefined") {
+            self.Locals("");
+            return;
+        }
+        $.getJSON(app.dataModel.getLocalsUrl, { StateID: self.selectedStateId() }, function (data, status) {
+            self.Locals(data);
+            if ($.isFunction(select)) select();
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            alert(errorThrown);
+        })
+    };
+    //****
     self.selectedParishPostOfficeJMId = ko.observable();
 
     self.SearchUbicaResid = ko.observable("");              //####CAFQ: 180817
@@ -30,12 +143,10 @@
     self.StreetName = ko.observable();
     self.ApartmentSuiteLot = ko.observable();
     self.Address2 = ko.observable();
-    self.selectedLocalId = ko.observable();
-    self.selectedNeighborhoodId = ko.observable();
+    
     self.UrbanRural = ko.observable(0);
     self.Address = ko.observable("");
-    self.Areas = ko.observableArray();
-    self.States = ko.observableArray();
+    
     self.ParishPostOfficeJM = ko.observableArray();
     self.Areas2weeks = ko.observableArray();
     self.States2weeks = ko.observableArray();
@@ -43,9 +154,8 @@
     self.selectedAreaId2weeks = ko.observable();
     self.selectedStateId2weeks = ko.observable();
     self.selectedNeighborhoodId2weeks = ko.observable();
-    self.Neighborhoods = ko.observableArray();
     self.Neighborhoods2weeks = ko.observableArray();
-    self.Locals = ko.observableArray();
+    
     self.Locals2weeks = ko.observableArray();
     self.PhoneNumber = ko.observable("");
     self.Latitude = ko.observable("");
@@ -84,6 +194,8 @@
         self.selectedStateId("");
         self.selectedLocalId("");
         self.selectedNeighborhoodId("");
+        self.selectedHamletId("");                  //#### CAFQ: 181018
+        self.selectedColonyId("");                  //#### CAFQ: 181018
         self.UrbanRural(0);
         self.selectedCountryId2weeks("");
         self.selectedAreaId2weeks("");
@@ -164,10 +276,15 @@
                             self.StreetName(data.StreetName);
                             self.ApartmentSuiteLot(data.ApartmentSuiteLot);
                             self.Address2(data.Address2);
-
                         }
                         self.ReloadNeighborhoods(function () {
                             self.selectedNeighborhoodId(data.NeighborhoodID);
+                            self.ReloadHamlets(function () {
+                                self.selectedHamletId(data.HamletID);
+                                self.ReloadColonies(function () {
+                                    self.selectedColonyId(data.ColonyID);
+                                });
+                            });
                         });
                         //self.ReloadLocals(function () {
                         //    self.selectedLocalId(data.LocalID);
@@ -194,20 +311,6 @@
          })
     };
 
-    self.ReloadAreas = function (select) {
-        if (typeof self.selectedCountryId() === "undefined") {
-            self.Areas("");
-            return;
-        }
-        $.getJSON(app.dataModel.getAreasUrl, { CountryID: self.selectedCountryId() }, function (data, status) {
-            self.Areas(data);
-            if ($.isFunction(select)) select();
-            })
-        .fail(function (jqXHR, textStatus, errorThrown) {
-            alert(errorThrown);
-        })
-    };
-
     self.ReloadAreas2weeks = function (select) {
         if (self.UsrCountry() == 3) {
             if (typeof self.selectedCountryId2weeks() === "undefined") {
@@ -221,23 +324,6 @@
             .fail(function (jqXHR, textStatus, errorThrown) {
                 alert(errorThrown);
             });
-        }
-    };
-    self.ReloadStates = function (select) {    
-        if (typeof self.selectedAreaId() === "undefined") {
-            self.States("");
-            return;
-        }
-        $.getJSON(app.dataModel.getStatesUrl, { AreaID: self.selectedAreaId() }, function (data, status) {
-            self.States(data);
-            if ($.isFunction(select)) select();
-        })
-        .fail(function (jqXHR, textStatus, errorThrown) {
-            alert(errorThrown);
-        })
-
-        if (self.UsrCountry() == 17) {
-            self.ReloadParishPostOffice();
         }
     };
 
@@ -268,19 +354,6 @@
             alert(errorThrown);
         })
     };
-    self.ReloadLocals = function (select) {    
-        if (typeof self.selectedStateId() === "undefined") {
-            self.Locals("");
-            return;
-        }
-        $.getJSON(app.dataModel.getLocalsUrl, { StateID: self.selectedStateId() }, function (data, status) {
-            self.Locals(data);
-            if ($.isFunction(select)) select();
-        })
-        .fail(function (jqXHR, textStatus, errorThrown) {
-            alert(errorThrown);
-        })
-    };
 
     self.ReloadLocals2weeks = function (select) {
         if (typeof self.selectedStateId2weeks() === "undefined") {
@@ -294,21 +367,6 @@
         .fail(function (jqXHR, textStatus, errorThrown) {
             alert(errorThrown);
         })
-    };
-    self.ReloadNeighborhoods = function (select) {
-        if (typeof self.selectedStateId() === "undefined") {
-            self.Neighborhoods("");
-            return;
-        }
-        if (typeof self.selectedStateId() != "undefined" && self.selectedStateId() != "" && self.selectedStateId() > 0) {
-            $.getJSON(app.dataModel.getNeighborhoodsUrl, { StateID: self.selectedStateId() }, function (data, status) {
-                self.Neighborhoods(data);
-                if ($.isFunction(select)) select();
-            })
-            .fail(function (jqXHR, textStatus, errorThrown) {
-                alert(errorThrown);
-            })
-        }
     };
 
     self.ReloadNeighborhoods2weeks = function (select) {
@@ -325,10 +383,7 @@
         })
     };
 
-    self.ReloadLocalsAndNeighborhoods = function () {
-        //self.ReloadLocals();
-        self.ReloadNeighborhoods();
-    };
+    
 
     self.ReloadLocalsAndNeighborhoods2weeks = function () {
         //self.ReloadLocals2weeks();
@@ -375,7 +430,9 @@
         $("#Area").attr("disabled", false);
         $("#provincia").attr("disabled", false);
         $("#Neighborhoods").attr("disabled", false);
-         $.post(app.dataModel.saveGEOUrl,
+        $("#Hamlets").attr("disabled", false);                          //#### CAFQ: 181018
+        $("#Colonies").attr("disabled", false);                         //#### CAFQ: 181018
+        $.post(app.dataModel.saveGEOUrl,
             {
                 id: self.Id,
                 CountryId: self.selectedCountryId(),
@@ -388,6 +445,8 @@
                 Address2: self.Address2(),
                 LocalId: self.selectedLocalId(),
                 NeighborhoodId: self.selectedNeighborhoodId(),
+                HamletId: self.selectedHamletId(),                      //#### CAFQ: 181018
+                ColonyId: self.selectedColonyId(),                      //#### CAFQ: 181018
                 UrbanRural: self.UrbanRural(),
                 CountryId2weeks: self.selectedCountryId2weeks(),
                 AreaId2weeks: self.selectedAreaId2weeks(),

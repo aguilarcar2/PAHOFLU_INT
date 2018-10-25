@@ -345,6 +345,40 @@ namespace Paho.Controllers
             return Json(neighborhoods, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult GetHamlets(int NeighborhoodID)                  //#### CAFQ: 181018
+        {
+            var hamlets =
+                (
+                 from hamlet in db.Hamlets as IQueryable<Hamlet>
+                 where hamlet.NeighborhoodID == NeighborhoodID
+                 select new
+                 {
+                     Id = hamlet.ID,
+                     Name = hamlet.Name
+                 })
+                 .OrderBy(d => d.Name)
+                 .ToArray();
+
+            return Json(hamlets, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetColonies(int HamletID)                       //#### CAFQ: 181018
+        {
+            var colonies =
+                   (
+                    from colony in db.Colonies as IQueryable<Colony>
+                    where colony.HamletID == HamletID
+                    select new
+                    {
+                        Id = colony.ID,
+                        Name = colony.Name
+                    })
+                    .OrderBy(c => c.Name)
+                    .ToArray();
+
+            return Json(colonies, JsonRequestBehavior.AllowGet);
+        }
+
         // GET: FluCases
         public ActionResult GetFluCases(string sidx, string sord, int page, int rows,
                                         int institutionId,
@@ -1816,6 +1850,8 @@ namespace Paho.Controllers
                     ApartmentSuiteLot = flucase.ApartmentSuiteLot,
                     Address2 = flucase.Address2,
                     NeighborhoodID = flucase.NeighborhoodID,
+                    HamletID = flucase.HamletID,                        //#### CAFQ: 181018
+                    ColonyID = flucase.ColonyID,                        //#### CAFQ: 181018
                     UrbanRural = flucase.UrbanRural,
                     CountryID2weeks = flucase.CountryID2weeks,
                     AreaID2weeks = flucase.AreaID2weeks,
@@ -1837,6 +1873,8 @@ namespace Paho.Controllers
                 StateID = "",
                 LocalID = "",
                 NeighborhoodID = "",
+                HamletID = "",
+                ColonyID = "",                                              //#### CAFQ: 181008
                 UrbanRural = UrbanRural.Unknow,
                 Address = "",
                 StreetNo = "",
@@ -1864,6 +1902,8 @@ namespace Paho.Controllers
                 string Address2,
                 int? LocalId,
                 int? NeighborhoodId,
+                int? HamletID,                      //#### CAFQ: 181018
+                int? ColonyID,                      //#### CAFQ: 181018
                 UrbanRural UrbanRural,
                 int? CountryId2weeks,
                 int? AreaId2weeks,
@@ -1900,6 +1940,8 @@ namespace Paho.Controllers
             flucase.Address2 = Address2;
             flucase.LocalID = LocalId;
             flucase.NeighborhoodID = NeighborhoodId;
+            flucase.HamletID = HamletID;                        //#### CAFQ: 181018
+            flucase.ColonyID = ColonyID;                        //#### CAFQ: 181018
             flucase.UrbanRural = UrbanRural;
             flucase.CountryID2weeks = CountryId2weeks;
             flucase.AreaID2weeks = AreaId2weeks;
@@ -3306,7 +3348,7 @@ namespace Paho.Controllers
             int countryId = (int)user.Institution.CountryID;
             var search = term;
 
-            //**** AREA
+            /*/**** AREA
             var diagsArea = (from area in db.Areas //as IQueryable<Area>
                              where area.CountryID == countryId && area.Name.Contains(search)
                              select new
@@ -3319,32 +3361,39 @@ namespace Paho.Controllers
                                  stateID = 0,
                                  stateName = "",
                                  neighborhoodID = 0,
-                                 neighborhoodName = ""
+                                 neighborhoodName = "",
+                                 hamletID = 0,
+                                 hamletName = "",
+                                 colonyID = 0,
+                                 colonyName = ""
                              }).AsEnumerable();
 
-            var jsonDataArea = diagsArea.ToArray();
+            var jsonDataArea = diagsArea.ToArray();*/
 
-            //**** STATE
+            /*/**** STATE
             var diagsState = (from area in db.Areas
-                              join state in db.States
-                              on area.ID equals state.AreaID
+                              join state in db.States on area.ID equals state.AreaID
                               where state.Name.Contains(search) && area.CountryID == countryId
                               select new
                               {
                                   value = state.ID,
-                                  label = state.Name + " (" + area.Name + ")",
+                                  label = state.Name + " (DE: " + area.Name + ")",
                                   typeubic = "ST",
                                   areaID = area.ID,
                                   areaName = area.Name,
                                   stateID = state.ID,
                                   stateName = state.Name,
                                   neighborhoodID = 0,
-                                  neighborhoodName = ""
+                                  neighborhoodName = "",
+                                  hamletID = 0,
+                                  hamletName = "",
+                                  colonyID = 0,
+                                  colonyName = ""
                               }).AsEnumerable();
 
-            var jsonDataState = diagsState.ToArray();
+            var jsonDataState = diagsState.ToArray();*/
 
-            //**** Neighborhood
+            /*/**** Neighborhood
             var diagsNeighborhood = (from area in db.Areas
                                      join state in db.States on area.ID equals state.AreaID
                                      join neighborhood in db.Neighborhoods on state.ID equals neighborhood.StateID
@@ -3352,22 +3401,85 @@ namespace Paho.Controllers
                                      select new
                                      {
                                          value = neighborhood.ID,
-                                         label = neighborhood.Name + "(" + state.Name + " / " + area.Name + ")",
+                                         label = neighborhood.Name + " (MU: " + state.Name + " / DE: " + area.Name + ")",
                                          typeubic = "NE",
                                          areaID = area.ID,
                                          areaName = area.Name,
                                          stateID = state.ID,
                                          stateName = state.Name,
                                          neighborhoodID = neighborhood.ID,
-                                         neighborhoodName = neighborhood.Name
+                                         neighborhoodName = neighborhood.Name,
+                                         hamletID = 0,
+                                         hamletName = "",
+                                         colonyID = 0,
+                                         colonyName = ""
                                      }).AsEnumerable();
 
-            var jsonDataNeighborhood = diagsNeighborhood.ToArray();
+            var jsonDataNeighborhood = diagsNeighborhood.ToArray();*/
+
+            //**** Hamlet
+            var diagsHamlet = (from area in db.Areas
+                               join state in db.States on area.ID equals state.AreaID
+                               join neighborhood in db.Neighborhoods on state.ID equals neighborhood.StateID
+                               join hamlet in db.Hamlets on neighborhood.ID equals hamlet.NeighborhoodID
+                               where hamlet.Name.Contains(search) && area.CountryID == countryId
+                               select new
+                               {
+                                   value = hamlet.ID,
+                                   label = hamlet.Name + " (AL: " + neighborhood.Name + " / MU: " + state.Name + " / DE: " + area.Name + ")",
+                                   typeubic = "HA",
+                                   areaID = area.ID,
+                                   areaName = area.Name,
+                                   stateID = state.ID,
+                                   stateName = state.Name,
+                                   neighborhoodID = neighborhood.ID,
+                                   neighborhoodName = neighborhood.Name,
+                                   hamletID = hamlet.ID,
+                                   hamletName = hamlet.Name,
+                                   colonyID = 0,
+                                   colonyName = ""
+                               }).AsEnumerable();
+
+            var jsonDataHamlet = diagsHamlet.ToArray();
+
+            //**** Colony
+            var diagsColony = (from area in db.Areas
+                               join state in db.States on area.ID equals state.AreaID
+                               join neighborhood in db.Neighborhoods on state.ID equals neighborhood.StateID
+                               join hamlet in db.Hamlets on neighborhood.ID equals hamlet.NeighborhoodID
+                               join colony in db.Colonies on hamlet.ID equals colony.HamletID
+                               where colony.Name.Contains(search) && area.CountryID == countryId
+                               select new
+                               {
+                                   value = colony.ID,
+                                   label = colony.Name + " (CA: " + hamlet.Name + " / AL: " + neighborhood.Name + " / MU: " + state.Name + " / DE: " + area.Name + ")",
+                                   typeubic = "CO",
+                                   areaID = area.ID,
+                                   areaName = area.Name,
+                                   stateID = state.ID,
+                                   stateName = state.Name,
+                                   neighborhoodID = neighborhood.ID,
+                                   neighborhoodName = neighborhood.Name,
+                                   hamletID = hamlet.ID,
+                                   hamletName = hamlet.Name,
+                                   colonyID = colony.ID,
+                                   colonyName = colony.Name
+                               }).AsEnumerable();
+
+            var jsonDataColony = diagsColony.ToArray();
 
             //****
-            var jsonDataUnido = jsonDataArea.Concat(diagsState).Concat(jsonDataNeighborhood);
+            //var jsonDataUnido = jsonDataArea.Concat(diagsState).Concat(jsonDataNeighborhood);
+            //var jsonDataUnido = jsonDataArea.Concat(jsonDataState).Concat(jsonDataNeighborhood).Concat(jsonDataHamlet).Concat(jsonDataColony);
+            var jsonDataUnido = jsonDataHamlet.Concat(jsonDataColony);
+            //return Json(jsonDataUnido, JsonRequestBehavior.AllowGet);*/
             //****
-            return Json(jsonDataUnido, JsonRequestBehavior.AllowGet);
+            var sortedValues = from x in jsonDataUnido
+                               orderby x.label
+                               select x;
+            return Json(sortedValues, JsonRequestBehavior.AllowGet);
+            //****
+
         }
 
     }

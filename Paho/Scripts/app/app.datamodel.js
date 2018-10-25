@@ -6,6 +6,9 @@
     self.getStatesUrl = "/cases/GetStates";
     self.getParishPostOfficeUrl = "/cases/GetParishPostOffice";
     self.getNeighborhoodsUrl = "/cases/GetNeighborhoods";
+    //self.getNeighborhoodsUrl = "/cases/GetNeighborhoods";
+    self.getHamletsUrl = "/cases/GetHamlets";                        //#### CAFQ: 181018
+    self.getColoniesUrl = "/cases/GetColonies";                      //#### CAFQ: 181018
     self.getLocalsUrl = "/cases/GetNeighborhoods";
     self.getAreasUrl = "/cases/GetAreas"; 
     self.getContactUrl = "/cases/GetContact";

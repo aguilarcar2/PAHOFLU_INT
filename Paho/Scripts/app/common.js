@@ -243,7 +243,11 @@ $(document).ready(function () {
                             stateID: el.stateID,
                             stateName: el.stateName,
                             neighborhoodID: el.neighborhoodID,
-                            neighborhoodName: el.neighborhoodName
+                            neighborhoodName: el.neighborhoodName,
+                            hamletID: el.hamletID,
+                            hamletName: el.hamletName,
+                            colonyID: el.colonyID,
+                            colonyName: el.colonyName
                         };
                     }));
                 }
@@ -268,6 +272,10 @@ $(document).ready(function () {
             var stateName = ui.item.stateName;
             var neighborhoodID = ui.item.neighborhoodID;
             var neighborhoodName = ui.item.neighborhoodName;
+            var hamletID = ui.item.hamletID;
+            var hamletName = ui.item.hamletName;
+            var colonyID = ui.item.colonyID;
+            var colonyName = ui.item.colonyName;
 
             $('#SearchUbicaResid').val("").change();
             
@@ -280,6 +288,17 @@ $(document).ready(function () {
                 $('#Area').val(areaID).change();
                 $('#provincia').val(stateID).change();
                 $('#Neighborhoods').val(neighborhoodID).change();
+            } else if (typeUbic == "HA") {
+                $('#Area').val(areaID).change();
+                $('#provincia').val(stateID).change();
+                $('#Neighborhoods').val(neighborhoodID).change();
+                $('#Hamlets').val(hamletID).change();
+            } else if (typeUbic == "CO") {
+                $('#Area').val(areaID).change();
+                $('#provincia').val(stateID).change();
+                $('#Neighborhoods').val(neighborhoodID).change();
+                $('#Hamlets').val(hamletID).change();
+                $('#Colonies').val(colonyID).change();
             }
             //****
             return false;

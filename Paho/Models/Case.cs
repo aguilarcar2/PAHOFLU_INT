@@ -672,8 +672,28 @@ namespace Paho.Models
         public int? Code { get; set; }
         public string Name { get; set; }
         public virtual State State { get; set; }
+        //public virtual ICollection<Hamlet> Hamlets { get; set; }
+    }
+//}
+
+	public class Hamlet                             //#### CAFQ: 181018
+    {
+        public int ID { get; set; }
+        public int NeighborhoodID { get; set; }
+        public string Name { get; set; }
+        public string orig_country { get; set; }
+        public virtual Neighborhood Neighborhood { get; set; }
+        public virtual ICollection<Colony> Colonies { get; set; }
     }
 
+    public class Colony                                     //#### CAFQ: 181018
+    {
+        public int ID { get; set; }
+        public int HamletID { get; set; }
+        public string Name { get; set; }
+        public string orig_country { get; set; }
+        public virtual Hamlet Hamlet { get; set; }
+    }
     public abstract class Institution
     {
         public long ID { get; set; }
@@ -1002,6 +1022,8 @@ namespace Paho.Models
         public string Address2 { get; set; }
         public int? LocalID { get; set; }
         public int? NeighborhoodID { get; set; }
+		public int? HamletID { get; set; }                      //#### CAFQ: 181018
+        public int? ColonyID { get; set; }                      //#### CAFQ: 181018
         public UrbanRural UrbanRural { get; set; }
         public int? CountryID2weeks { get; set; }
         public int? AreaID2weeks { get; set; }
@@ -1691,6 +1713,8 @@ namespace Paho.Models
         public DbSet<State> States { get; set; }
         public DbSet<CatParishPostOfficeJM> CatParishPostOfficeJM { get; set; }
         public DbSet<Neighborhood> Neighborhoods { get; set; }
+		public DbSet<Hamlet> Hamlets { get; set; }                          //#### CAFQ: 181018
+        public DbSet<Colony> Colonies { get; set; }
         public DbSet<Institution> Institutions { get; set; }
         public DbSet<InstitutionConfiguration> InstitutionsConfiguration { get; set; }
         public DbSet<InstitutionConfEndFlowByVirus> InstitutionConfEndFlowByVirus { get; set; }
@@ -1801,6 +1825,8 @@ namespace Paho.Models
                    p.Address2,
                    p.LocalID,
                    p.NeighborhoodID,
+				   p.HamletID,                  //#### CAFQ: 181018
+                   p.ColonyID,                  //#### CAFQ: 181018
                    p.UrbanRural,
                    p.CountryID2weeks,
                    p.AreaID2weeks,

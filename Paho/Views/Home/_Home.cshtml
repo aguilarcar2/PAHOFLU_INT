@@ -696,11 +696,12 @@
                             @((ViewBag.UsrCtry == 17) ? "data-bind='visible:false'" : "data-bind='visible:true'")  *@
                         <span class="input-group-addon">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceState"))  <font color='#FF0000' id='mandatory_canton'>*</font></span>
                         <select id="provincia" class="form-control" data-bind="options: States,
-                        optionsText: 'Name',
-                        optionsValue: 'Id',
-                        value: selectedStateId,
-                        optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel"))',
-                        event:{ change: ReloadLocalsAndNeighborhoods}"></select>
+                            optionsText: 'Name',
+                            optionsValue: 'Id',
+                            value: selectedStateId,
+                            optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel"))',
+                            event:{ change: ReloadNeighborhoods }">
+                        </select>
                     </div>
                 </div>
             }
@@ -744,13 +745,48 @@
                             optionsText: 'Name',
                             optionsValue: 'Id',
                             value: selectedNeighborhoodId,
-                            optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel"))'">
+                            optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel"))',
+                            event:{ change: ReloadHamlets }">
                         </select>
                     </div>
                 </div>
             }
         </div>
+        <!-- Hamlet / Colony -->
+        @if (@ViewBag.UsrCtry == 15)
+        {
+            <div class="row rowform">
+                <div class="col-md-6">
+                    <div class='input-group'>
+                        <span class="input-group-addon">
+                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceHamlet")):
+                        </span>
+                        <select id="Hamlets" class="form-control" data-bind="options: Hamlets,
+                            optionsText: 'Name',
+                            optionsValue: 'Id',
+                            value: selectedHamletId,
+                            optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel"))',
+                            event:{ change: ReloadColonies }">
+                        </select>
+                    </div>
+                </div>
 
+                <div class="col-md-6">
+                    <div class='input-group'>
+                        <span class="input-group-addon">
+                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceColony")):
+                        </span>
+                        <select id="Colonies" class="form-control" data-bind="options: Colonies,
+                            optionsText: 'Name',
+                            optionsValue: 'Id',
+                            value: selectedColonyId,
+                            optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel"))' ">
+                        </select>
+                    </div>
+                </div>
+            </div>
+        }
+        <!-- StreetNo / StreetName - ApartmentSuiteLot / Address2 -->
         @if ( @ViewBag.UsrCtry == 17)
         {
             <div class="row rowform">
