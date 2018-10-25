@@ -296,7 +296,7 @@ $(document).ready(function () {
             } else if (typeUbic == "CO") {
                 $('#Area').val(areaID).change();
                 $('#provincia').val(stateID).change();
-                $('#Neighborhoods').val(neighborhoodID).change();
+                $('#Neighborhoods').val(neighborhoodID).change(); 
                 $('#Hamlets').val(hamletID).change();
                 $('#Colonies').val(colonyID).change();
             }

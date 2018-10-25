@@ -3449,7 +3449,7 @@ namespace Paho.Controllers
                                join hamlet in db.Hamlets on neighborhood.ID equals hamlet.NeighborhoodID
                                join colony in db.Colonies on hamlet.ID equals colony.HamletID
                                where colony.Name.Contains(search) && area.CountryID == countryId
-                               select new
+                               select new 
                                {
                                    value = colony.ID,
                                    label = colony.Name + " (CA: " + hamlet.Name + " / AL: " + neighborhood.Name + " / MU: " + state.Name + " / DE: " + area.Name + ")",

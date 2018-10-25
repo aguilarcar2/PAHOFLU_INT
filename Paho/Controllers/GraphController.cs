@@ -1288,6 +1288,9 @@ namespace Paho.Controllers
                                 case 11:
                                     myXmlNode0.InnerText = "DOI";
                                     break;
+                                case 15:
+                                    myXmlNode0.InnerText = "HN";                    // Honduras
+                                    break;
                                 case 119:
                                     myXmlNode0.InnerText = "CI";
                                     break;
@@ -1977,7 +1980,7 @@ namespace Paho.Controllers
                                             int indiceInicial = 0;
                                             int indiceInicial2 = 0;
 
-                                            if (CountryID_ == 3 || CountryID_ == 7 || CountryID_ == 9)
+                                            if (CountryID_ == 3 || CountryID_ == 7 || CountryID_ == 9 || CountryID_ == 15)
                                             {
                                                 qtyGruposEdad = 6;
                                                 filaInicialTabla2 = 208;        // Vigilancia de Influenza y otros Virus Respiratorios 
@@ -2253,7 +2256,7 @@ namespace Paho.Controllers
 
                                                 ////anotherAuxXmlNode4.InnerText = yr + "-" + ep.Workbook.Worksheets[1].Cells[6, 6 + i].Value.ToString();
                                                 //anotherAuxXmlNode4.InnerText = ep.Workbook.Worksheets[1].Cells["BJ" + i.ToString()].Value.ToString();
-                                                if (CountryID_ == 3 || CountryID_ == 7 || CountryID_ == 9)
+                                                if (CountryID_ == 3 || CountryID_ == 7 || CountryID_ == 9 || CountryID_ == 15)
                                                 {
                                                     anotherAuxXmlNode4.InnerText = ep.Workbook.Worksheets[1].Cells["BJ" + i.ToString()].Value.ToString();       //BJ: Columna con los grupos de edad en hoja tablas
                                                 }
@@ -2458,7 +2461,7 @@ namespace Paho.Controllers
                                         int indiceInicial4 = 0;
                                         int altoGrupo = 0;
 
-                                        if (CountryID_ == 3 || CountryID_ == 7 || CountryID_ == 9)
+                                        if (CountryID_ == 3 || CountryID_ == 7 || CountryID_ == 9 || CountryID_ == 15)
                                         {
                                             indiceInicial3 = 583;       // Influenza B
                                             indiceInicial4 = 883;       // Virus Otros
@@ -2969,6 +2972,8 @@ namespace Paho.Controllers
                 sheet = "Saint Lucia";
             else if (countryId == 11)
                 sheet = "Dominica";
+            else if (countryId == 15)
+                sheet = "Honduras";
             else if (countryId == 119)
                 sheet = "CaymanIslands";
             else
@@ -3528,14 +3533,27 @@ namespace Paho.Controllers
                     }
                     else
                     {
-                        jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + "0 a <2 años" + "\",";
-                        jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + "2 a <5 años" + "\",";
-                        jsonTextLB = jsonTextLB + "\"" + "graphSeries3Label" + "\":\"" + "5 a 19 años" + "\",";
-                        jsonTextLB = jsonTextLB + "\"" + "graphSeries4Label" + "\":\"" + "20 a 39 años" + "\",";
-                        jsonTextLB = jsonTextLB + "\"" + "graphSeries5Label" + "\":\"" + "40 a 59 años" + "\",";
-                        jsonTextLB = jsonTextLB + "\"" + "graphSeries6Label" + "\":\"" + "60 años y +" + "\",";
-                        jsonTextLB = jsonTextLB + "\"" + "graphSeries7Label" + "\":\"" + "Edad desconocida" + "\"";
-                        jsonTextLB = jsonTextLB + "}}";
+                        if(countryId == 15){
+                            jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + "0 a <1 año" + "\",";
+                            jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + "1 a 4 años" + "\",";
+                            jsonTextLB = jsonTextLB + "\"" + "graphSeries3Label" + "\":\"" + "5 a 14 años" + "\",";
+                            jsonTextLB = jsonTextLB + "\"" + "graphSeries4Label" + "\":\"" + "15 a 49 años" + "\",";
+                            jsonTextLB = jsonTextLB + "\"" + "graphSeries5Label" + "\":\"" + "50 a 59 años" + "\",";
+                            jsonTextLB = jsonTextLB + "\"" + "graphSeries6Label" + "\":\"" + "60 años y +" + "\",";
+                            jsonTextLB = jsonTextLB + "\"" + "graphSeries7Label" + "\":\"" + "Edad desconocida" + "\"";
+                            jsonTextLB = jsonTextLB + "}}";
+                        }
+                        else
+                        {
+                            jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + "0 a <2 años" + "\",";
+                            jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + "2 a <5 años" + "\",";
+                            jsonTextLB = jsonTextLB + "\"" + "graphSeries3Label" + "\":\"" + "5 a 19 años" + "\",";
+                            jsonTextLB = jsonTextLB + "\"" + "graphSeries4Label" + "\":\"" + "20 a 39 años" + "\",";
+                            jsonTextLB = jsonTextLB + "\"" + "graphSeries5Label" + "\":\"" + "40 a 59 años" + "\",";
+                            jsonTextLB = jsonTextLB + "\"" + "graphSeries6Label" + "\":\"" + "60 años y +" + "\",";
+                            jsonTextLB = jsonTextLB + "\"" + "graphSeries7Label" + "\":\"" + "Edad desconocida" + "\"";
+                            jsonTextLB = jsonTextLB + "}}";
+                        }
                     }
                 }
             }
@@ -3750,12 +3768,24 @@ namespace Paho.Controllers
                     }
                     else
                     {
-                        jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + "0 a <2 años" + "\",";
-                        jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + "2 a <5 años" + "\",";
-                        jsonTextLB = jsonTextLB + "\"" + "graphSeries3Label" + "\":\"" + "5 a 19 años" + "\",";
-                        jsonTextLB = jsonTextLB + "\"" + "graphSeries4Label" + "\":\"" + "20 a 39 años" + "\",";
-                        jsonTextLB = jsonTextLB + "\"" + "graphSeries5Label" + "\":\"" + "40 a 59 años" + "\",";
-                        jsonTextLB = jsonTextLB + "\"" + "graphSeries6Label" + "\":\"" + "60 años y +" + "\"";
+                        if (countryId == 15)
+                        {
+                            jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + "0 a <1 año" + "\",";
+                            jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + "1 a 4 años" + "\",";
+                            jsonTextLB = jsonTextLB + "\"" + "graphSeries3Label" + "\":\"" + "5 a 14 años" + "\",";
+                            jsonTextLB = jsonTextLB + "\"" + "graphSeries4Label" + "\":\"" + "15 a 49 años" + "\",";
+                            jsonTextLB = jsonTextLB + "\"" + "graphSeries5Label" + "\":\"" + "50 a 59 años" + "\",";
+                            jsonTextLB = jsonTextLB + "\"" + "graphSeries6Label" + "\":\"" + "60 años y +" + "\"";
+                        }
+                        else
+                        {
+                            jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + "0 a <2 años" + "\",";
+                            jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + "2 a <5 años" + "\",";
+                            jsonTextLB = jsonTextLB + "\"" + "graphSeries3Label" + "\":\"" + "5 a 19 años" + "\",";
+                            jsonTextLB = jsonTextLB + "\"" + "graphSeries4Label" + "\":\"" + "20 a 39 años" + "\",";
+                            jsonTextLB = jsonTextLB + "\"" + "graphSeries5Label" + "\":\"" + "40 a 59 años" + "\",";
+                            jsonTextLB = jsonTextLB + "\"" + "graphSeries6Label" + "\":\"" + "60 años y +" + "\"";
+                        }
                     }
                 }
 

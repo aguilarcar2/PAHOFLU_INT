@@ -5679,7 +5679,7 @@
                     "GN": [ "guineaLow" ],
                     "GY": [ "guyanaLow" ],
                     "HT": [ "haitiLow" ],
-                    "HN": [ "hondurasLow" ],
+                    "HN": [ "hondurasHigh" ],
                     "HK": [ "hongKongLow" ],
                     "HU": [ "hungaryLow" ],
                     "GL": [ "icelandLow" ],
@@ -5983,7 +5983,7 @@
                     "GN": [ "guineaLow" ],
                     "GY": [ "guyanaLow" ],
                     "HT": [ "haitiLow" ],
-                    "HN": [ "hondurasLow" ],
+                    "HN": [ "hondurasHigh" ],
                     "HK": [ "hongKongLow" ],
                     "HU": [ "hungaryLow" ],
                     "GL": [ "icelandLow" ],
@@ -6272,7 +6272,7 @@
                     "GN": [ "guineaLow" ],
                     "GY": [ "guyanaLow" ],
                     "HT": [ "haitiLow" ],
-                    "HN": [ "hondurasLow" ],
+                    "HN": [ "hondurasHigh" ],
                     "HK": [ "hongKongLow" ],
                     "HU": [ "hungaryLow" ],
                     "GL": [ "icelandLow" ],
@@ -6474,7 +6474,7 @@
                 GetMapData1();
             }
 
-            if(!(CountryIDM == 25 || CountryIDM == 119 || CountryIDM == 11 || CountryIDM == 18)){           // Suriname y Islas Cayman: No tienen region
+            if(!(CountryIDM == 25 || CountryIDM == 119 || CountryIDM == 11 || CountryIDM == 18 || CountryIDM == 15)){           // Suriname y Islas Cayman: No tienen region
                 GetMapData2();
             }
             if(CountryIDM == 9){
@@ -6504,7 +6504,7 @@
             <div id="mapDivGraph1"></div>
         </div>
 
-        @if (!(ViewBag.UsrCtry == 25 || ViewBag.UsrCtry == 119 || ViewBag.UsrCtry == 11 || ViewBag.UsrCtry == 18))
+        @if (!(ViewBag.UsrCtry == 25 || ViewBag.UsrCtry == 119 || ViewBag.UsrCtry == 11 || ViewBag.UsrCtry == 18 || ViewBag.UsrCtry == 15))
         {
             <div id="mapContainerGraph2">
                 <div id="mapDivGraph2"></div>

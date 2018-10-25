@@ -682,7 +682,7 @@ namespace Paho.Models
         public int NeighborhoodID { get; set; }
         public string Name { get; set; }
         public string orig_country { get; set; }
-        public virtual Neighborhood Neighborhood { get; set; }
+        public virtual Neighborhood Neighborhood { get; set; } 
         public virtual ICollection<Colony> Colonies { get; set; }
     }
 

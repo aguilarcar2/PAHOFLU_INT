@@ -103,7 +103,7 @@
     self.Colonies = ko.observableArray();
     self.selectedColonyId = ko.observable();
     self.ReloadColonies = function (select) {
-        if (typeof self.selectedHamletId() === "undefined") {
+        if (typeof self.selectedHamletId() === "undefined") { 
             self.Colonies("");
             return;
         }
