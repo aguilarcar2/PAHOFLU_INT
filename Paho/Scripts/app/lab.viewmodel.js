@@ -135,7 +135,7 @@
 
     self.EnableVirusTypes = ko.computed(function () {
         //if (((self.TestResultID() != "U" && self.TestResultID() != "N" && self.EnableCHI()) || (self.TestResultID() != "U" && self.DisableCHI())) && self.TestResultID() != "" && typeof self.TestResultID() != "undefined") { // Desactivado por requerimiento de RRR y Suriname porque si les interesa ingresar cuando es negativo
-        if (self.TestResultID() != "NA" && self.TestResultID() != "NB" && self.TestResultID() != "I" && self.TestResultID() != "V" && self.TestResultID() != "U" && self.TestResultID() != "" && typeof self.TestResultID() != "undefined") {
+        if (self.TestResultID() != "NA" && self.TestResultID() != "NB" && self.TestResultID() != "MI" && self.TestResultID() != "I" && self.TestResultID() != "V" && self.TestResultID() != "U" && self.TestResultID() != "" && typeof self.TestResultID() != "undefined") {
             if ((self.TestType() == 1 && self.TestResultID() == "N") || (self.UsrCountry() == 3 && self.TestResultID() == "N")) {
                 return false;
             } else {
@@ -509,13 +509,17 @@
         //console.log(app.Views.Lab.LabTests().length);
         if (typeof (item) != 'undefined' && app.Views.Home.UsrCountry() != 7)
         {
-                if (item.Id == 'NA' || item.Id == 'NB') {
+
+            if (item.Id == 'NA' || item.Id == 'NB' || (item.Id == 'MI' && app.Views.Home.UsrCountry() != 15)) {
                     ko.applyBindingsToNode(option, {
                         attr: {
                             'style': 'display:none'
                         }
                     }, item);
                 }
+
+
+
         } else if (typeof (item) != 'undefined' && app.Views.Home.UsrCountry() == 7) {
             if(app.Views.Lab.CanPCRLab() == true && app.Views.Lab.CanIFILab() == false)
             {
@@ -558,6 +562,7 @@ function LabViewModel(app, dataModel) {
     self.NPHL = ko.observable(false);
     self.ForeignLabCountry = ko.observable(false);
     self.ForeignLabLocal = ko.observable(false);
+    self.flow_max_record = ko.observable("");
     self.hasReset = ko.observable(false);
     self.hasGet = ko.observable(false);
 
@@ -1017,6 +1022,19 @@ function LabViewModel(app, dataModel) {
         self.FinalResultVirusLineageID_3("");
 
     };
+
+    self.EnableTestNational = function () {
+        //console.log("flow_max - " + self.flow_max_record());
+        //console.log("flow_institution - " + app.Views.Contact.flow_institution());
+        //console.log(" flow_record " + self.flow_max_record() == app.Views.Contact.flow_institution());
+        if ($("#ITy").val() == "2" && self.UsrCountry() == 15 && self.flow_max_record() == app.Views.Contact.flow_institution()) {
+            return true;
+            }
+        else {
+            return false;
+        }
+
+    }
 
 
     self.ShowProcessedNPHL = ko.computed(function () {
@@ -1758,7 +1776,9 @@ function LabViewModel(app, dataModel) {
 
                 self.ForeignLabCountry(data.ForeignLabCountry);
                 self.ForeignLabLocal(data.ForeignLabLocal);
-
+                self.flow_max_record(data.flow_max_record);
+                //console.log("max_flow " + self.flow_max_record());
+                //console.log("flow_institution " + app.Views.Contact.flow_institution());
 
                 self.LabTests([]);
                 if (data.LabTests != "") {                  

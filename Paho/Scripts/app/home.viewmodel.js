@@ -678,6 +678,45 @@
         //}
     };
 
+    self.EnableTestNationalGlobal = function () {
+        console.log("EnableTestNationalGlobal");
+        if ($("#ITy").val() == "2" && self.UsrCountry() == 15 && app.Views.Lab.flow_max_record() == app.Views.Contact.flow_institution() && app.Views.Contact.Flow_Local_Institution_Lab()) {
+            // Laboratorio Nacional
+            $("#RecDate_National").attr('disabled', false);
+            $("#TempSample_National").attr('disabled', false);
+            $('input[id="Processed_National"]').attr('disabled', false);
+            $("#NoProRenId_National").attr('disabled', false);
+            $("#NoProRen_National").attr('disabled', false);
+            $("#Identification_Test_National").attr('disabled', false);
+
+            // Laboratorio Regional
+            $("#RecDate").attr('disabled', true);
+            $("#TempSample1").attr('disabled', true);
+            $('input[id="Processed"]').attr('disabled', true);
+            $("#NoProRenId").attr('disabled', true);
+            $("#NoReason").attr('disabled', true);
+            $("#Identification_Test").attr('disabled', true);
+            }
+        else {
+
+            // Laboratorio Nacional
+            $("#RecDate_National").attr('disabled', true);
+            $("#TempSample_National").attr('disabled', true);
+            $('input[id="Processed_National"]').attr('disabled', true);
+            $("#NoProRenId_National").attr('disabled', true);
+            $("#NoProRen_National").attr('disabled', true);
+            $("#Identification_Test_National").attr('disabled', true);
+            // Laboratorio Regional
+            $("#RecDate").attr('disabled', false);
+            $("#TempSample1").attr('disabled', false);
+            $('input[id="Processed"]').attr('disabled', false);
+            $("#NoProRenId").attr('disabled', false);
+            $("#NoReason").attr('disabled', false);
+            $("#Identification_Test").attr('disabled', false);
+        }
+
+    }
+
     self.FlowDataLabAfter = function () {
 
         var flow_check = $.grep(app.Views.Lab.LabTests(), function (x) {         
@@ -710,6 +749,9 @@
         }
 
         //console.log("aqui _ LabAfter");
+        if ($("#ITy").val() == "2" && self.UsrCountry() == 15 ) {
+            self.EnableTestNationalGlobal();
+        }
 
         $("#PrintM1").prop('disabled', false);
         $("#PrintM2").prop('disabled', false);

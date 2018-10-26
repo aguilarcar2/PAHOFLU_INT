@@ -392,7 +392,17 @@ function ContactViewModel(app, dataModel) {
             if (self.Age() < 60) return "50 to 59 years";
             if (self.Age() < 65) return "60 to 64 years";
             return "65 years and over";
-        } else if (self.UsrCountry() != 7) {
+        } else if (self.UsrCountry() == 15) {
+            if (self.AMeasure() == "Day" || (self.AMeasure() == "Month" && self.Age() <= 12)) return "Niños menores de 1 año"
+            if (self.Age() < 1) return "Niños menores de 1 año";
+            if (self.Age() < 5) return "1 a 4 años";
+            if (self.Age() < 15) return "5 a 14 años";
+            if (self.Age() < 34) return "15 a 49 años";
+            if (self.Age() < 65) return "50 a 59 años";
+            return "60 años y más";
+        } 
+
+        else if (self.UsrCountry() != 7) {
             if (self.AMeasure() == "Day" || (self.AMeasure() == "Month" && self.Age() <= 12)) return "Niños menores de 2 años"
             if (self.Age() < 2) return "Niños menores de 2 años";
             if (self.Age() < 5) return "2 a 4 años";
@@ -934,15 +944,19 @@ function ContactViewModel(app, dataModel) {
         //console.log("Contact epi - frecord_lab -- " + self.flow_record() + ", finstitution_lab -- " + self.flow_institution() + ", dataStatement_lab -- " + self.DataStatement() + ", userRole " + app.Views.Home.UserRole() + ", Inst" + $("#ITy").val() + ", OpenAlways" + self.flow_open_always());
         //if ($("#ITy").val() == "2"  && app.Views.Home.UserRole() == "mod_lab") {
         if ($("#ITy").val() == "2" && app.Views.Home.URmod_lab() == true) {
+            //console.log("Flow Lab - true");
             return true;
         } else if ((self.flow_record() == (self.flow_institution() - 1) && (self.DataStatement() == 2 || self.DataStatement() == null || self.flow_open_always() == true) && app.Views.Home.SaveAndAdd_1() == true) || (self.flow_record() == self.flow_institution() && (self.DataStatement() == 1 || self.DataStatement() == null || self.flow_open_always() == true)) || (self.flow_close_case() == 99 && self.flow_open_always() == true)) {
+            //console.log("Flow Lab - true");
             return true;
         }
         else {
+            //console.log("Flow Lab - false");
             return false;
         }
 
     }
+
 
     self.Flow_Local_Institution_Lab_send = function () {
 
