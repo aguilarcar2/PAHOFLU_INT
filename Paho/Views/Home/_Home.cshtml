@@ -390,7 +390,7 @@
                 <div class="col-md-6">
                     <div class='input-group'>
                         <span class="input-group-addon">
-                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelIdType")) <font color="#FF0000">*</font>
+                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelIdType")) <font color="#FF0000" data-bind="visible:VisibleIdType()">*</font>
                         </span>
                         <select id="DocumentType" class="form-control" data-bind="value:DocumentType">
                         @if (ViewBag.UsrCtry != 7)
@@ -1414,7 +1414,22 @@
                     <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
                 </button>
                 <div id="vacunacion" class="collapse in">
+                @if (@ViewBag.UsrCtry == 7 || @ViewBag.UsrCtry == 9 || @ViewBag.UsrCtry == 15 || @ViewBag.UsrCtry == 3)
+                    {
+                        <div class="row rowform">
+                            <div class='input-group col-md-12'>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelVaccineSourceRecord")) <font color="#FF0000">*</font>
+                                </span>
 
+                                <select id="VaccinFuente" class="form-control" data-bind="options: CVS,
+                                    optionsText: 'Name',
+                                    optionsValue: 'Id',
+							        optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelVaccineSourceRecordSelect"))',
+                                    value: VaccinFuente"></select>
+                            </div>
+                        </div>
+                    }
                     <div class="row rowform">
                         <div class='col-md-12'>
                             <table class="table-hover table-bordered">
@@ -1619,22 +1634,7 @@
                             </table>
                         </div>
                     </div>
-                    @if (@ViewBag.UsrCtry == 7 || @ViewBag.UsrCtry == 9 || @ViewBag.UsrCtry == 15 || @ViewBag.UsrCtry == 3 )
-                    {
-                        <div class="row rowform">
-                            <div class='input-group col-md-12'>
-                                <span class="input-group-addon">
-                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelVaccineSourceRecord")) <font color="#FF0000">*</font>
-                                </span>
 
-                                <select id="nativepeople" class="form-control" data-bind="options: CVS,
-                                    optionsText: 'Name',
-                                    optionsValue: 'Id',
-							        optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelVaccineSourceRecordSelect"))',
-                                    value: VaccinFuente"></select>
-                            </div>
-                        </div>
-                    }
                 </div>
             </div>
         </div>
@@ -2285,7 +2285,7 @@
                             </label>
                         </div>
                         <!-- Dificultad respiratoria -->
-                        @if (ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 18 && ViewBag.UsrCtry != 17 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 119)
+                        @if (ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 15 && ViewBag.UsrCtry != 18 && ViewBag.UsrCtry != 17 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 119)
                         {
                             <div class="col-md-3" data-bind="visible: app.Views.Contact.SurvSARI">
                             <label class="btn btn-default">
@@ -2768,8 +2768,6 @@
             </div>
 
             <!-- UPC -->
-            @*@if (ViewBag.UsrCtry == 7) 
-            {*@
 
             <div class="row rowform">
                 <div class="input-group col-md-3">
@@ -2783,7 +2781,7 @@
                             optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel")) '"></select>
                 </div>
             </div>
-                <div class="row rowform">
+                <div class="row rowform" data-bind="visible:EnableICUHon()">
                     <div class="input-group col-md-3">
                         <span class="input-group-addon">
                             @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelUPC")) <font color="#FF0000">*</font>
@@ -2811,7 +2809,6 @@
                     <div class="col-md-4">
                     </div>
                 </div>
-            @* } *@
             <div class="row rowform" data-bind="visible:EnableICUDate">
                 <div class="col-md-2">
                     @(ViewBag.UsrCtry != 7 ? (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelICU")) : (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelUPC")))

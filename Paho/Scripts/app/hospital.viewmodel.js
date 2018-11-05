@@ -389,6 +389,21 @@
         //}
     }, self);
 
+    self.EnableICUHon = ko.computed(function () {
+        if (self.UsrCountry() != 15){
+            return true;
+        } else if (self.HospitalizedIn() == 2) {
+            self.ICU(1);
+            return true;
+        } else {
+            self.ICU("");
+            self.ICUAmDate("");
+            self.ICUExDate("");
+            return false;
+        }
+        //}
+    }, self);
+
     self.DestinICU = ko.observable("");
 
     self.HallRadio = ko.observable("");

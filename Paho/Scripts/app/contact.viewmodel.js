@@ -107,7 +107,12 @@ function ContactViewModel(app, dataModel) {
     self.NoActiveHON = ko.computed(function () {
         return (self.UsrCountry() == 15) ? false : true;
     }, self);
-    self.selectedNationalityID = ko.observable("");
+
+    self.VisibleIdType = ko.computed(function () {
+        return (self.UsrCountry() != 15) ? true : false;
+    }, self);
+
+    self.selectedNationalityID = ko.observable(app.Views.Home.UsrCountry());
     self.selectedNativepeopleID = ko.observable("");
 
     /*self.selectedOccupationId = ko.observable();            //**** CAFQ
@@ -580,7 +585,12 @@ function ContactViewModel(app, dataModel) {
         self.Gender("");
         self.HospitalDate(null);
         self.RegDate(new Date());
-        self.selectedNationalityID("");
+        if (self.UsrCountry() == 15) {
+            self.selectedNationalityID(app.Views.Home.UsrCountry());
+        } else {
+            self.selectedNationalityID("");
+        }
+
         self.selectedNativepeopleID("");
         self.hasHospitalID("");
         // esto es para resetear el flujo
@@ -666,7 +676,7 @@ function ContactViewModel(app, dataModel) {
 
         }
             
-        if (!self.DocumentType() && (self.UsrCountry() != 25 && self.UsrCountry() != 11 && self.UsrCountry() != 18 && self.UsrCountry() != 17))//agregado el 25 para que esta validación ignore SURINAME
+        if (!self.DocumentType() && (self.UsrCountry() != 25 && self.UsrCountry() != 11 && self.UsrCountry() != 18 && self.UsrCountry() != 17 && self.UsrCountry() != 15))//agregado el 25 para que esta validación ignore SURINAME
             msg += "\n" + msgValidationTypeOfDocument; // Este no esta en la base
 
         if (!self.NoExpediente()) {

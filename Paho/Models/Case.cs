@@ -712,7 +712,7 @@ namespace Paho.Models
         public bool Active { get; set; }
         public virtual Country Country { get; set; }
         public virtual Area Area { get; set; }
-        public bool? sentinel { get; set; }
+        public bool sentinel { get; set; }
         [DisplayName("IRAG:")]
         public bool SARI { get; set; }
         [DisplayName("ETI:")]
@@ -751,6 +751,9 @@ namespace Paho.Models
 
         public bool ForeignLab { get; set; }
         //****<
+
+        [DisplayName("Tipo Institución:")]
+        public int? InstitutionTypeID { get; set; }
     }
 
     public class InstitutionLocationType                    //#### CAFQ: 180911

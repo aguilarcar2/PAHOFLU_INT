@@ -1694,6 +1694,13 @@ namespace Paho.Controllers
             flucase.FeverEW = FeverEW;
             flucase.FeverEY = FeverEY;
             flucase.DiagDate = DiagDate;
+            if (flucase.DOB != null)
+            {
+               var months_age =  flucase.DOB.Value.Subtract(flucase.FeverDate.Value).Days / (365.25 / 12);
+            } else
+            {
+
+            }
             flucase.DiagEW = DiagEW;
             //flucase.Antiviral = Antiviral;
             flucase.AStartDate = AStartDate;
