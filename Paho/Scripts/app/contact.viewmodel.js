@@ -680,8 +680,12 @@ function ContactViewModel(app, dataModel) {
             msg += "\n" + msgValidationTypeOfDocument; // Este no esta en la base
 
         if (!self.NoExpediente()) {
-            if (!(self.UsrCountry() == 17 && self.SurvInusual() == 1))    //#### CAFQ: 180604 - Jamaica Universal
-                msg += "\n" + msgValidationDocumentIDRequired;
+            if (!(self.UsrCountry() == 17 && self.SurvInusual() == 1) )    //#### CAFQ: 180604 - Jamaica Universal
+            {
+                if (self.UsrCountry() != 15)
+                    msg += "\n" + msgValidationDocumentIDRequired;
+            }
+                
         }
             
 
