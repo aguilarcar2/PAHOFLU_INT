@@ -143,12 +143,21 @@ namespace Paho.Controllers
                             HospFem = 0,
                             HospMaso = 0,
                             HospST = 0,
+                            HospSARIFem = 0,           //#### CAFQ: 181101
+                            HospSARIMaso = 0,
+                            HospSARIST = 0,
                             UCIFem  = 0,
                             UCIMaso = 0,
                             UCIST = 0 ,
+                            UCISARIFem = 0,             //#### CAFQ: 181101
+                            UCISARIMaso = 0,
+                            UCISARIST = 0,
                             DefFem = 0,
                             DefMaso = 0,
                             DefST = 0 ,
+                            DefSARIFem = 0,             //#### CAFQ: 181101
+                            DefSARIMaso = 0,
+                            DefSARIST = 0,
                             NeuFem = 0 ,
                             NeuMaso = 0,
                             NeuST = 0,
@@ -206,12 +215,21 @@ namespace Paho.Controllers
                 dbcasesummaryDetail.HospFem = casesummaryDetail.HospFem;
                 dbcasesummaryDetail.HospMaso = casesummaryDetail.HospMaso;
                 dbcasesummaryDetail.HospST = casesummaryDetail.HospST;
+                dbcasesummaryDetail.HospSARIFem = casesummaryDetail.HospSARIFem;        //#### CAFQ: 181101
+                dbcasesummaryDetail.HospSARIMaso = casesummaryDetail.HospSARIMaso;
+                dbcasesummaryDetail.HospSARIST = casesummaryDetail.HospSARIST;
                 dbcasesummaryDetail.UCIFem = casesummaryDetail.UCIFem;
                 dbcasesummaryDetail.UCIMaso = casesummaryDetail.UCIMaso;
                 dbcasesummaryDetail.UCIST = casesummaryDetail.UCIST;
+                dbcasesummaryDetail.UCISARIFem = casesummaryDetail.UCISARIFem;          //#### CAFQ: 181101
+                dbcasesummaryDetail.UCISARIMaso = casesummaryDetail.UCISARIMaso;
+                dbcasesummaryDetail.UCISARIST = casesummaryDetail.UCISARIST;
                 dbcasesummaryDetail.DefFem = casesummaryDetail.DefFem;
                 dbcasesummaryDetail.DefMaso = casesummaryDetail.DefMaso;
                 dbcasesummaryDetail.DefST = casesummaryDetail.DefST;
+                dbcasesummaryDetail.DefSARIFem = casesummaryDetail.DefSARIFem;          //#### CAFQ: 181101
+                dbcasesummaryDetail.DefSARIMaso = casesummaryDetail.DefSARIMaso;
+                dbcasesummaryDetail.DefSARIST = casesummaryDetail.DefSARIST;
                 dbcasesummaryDetail.NeuFem = casesummaryDetail.NeuFem;
                 dbcasesummaryDetail.NeuMaso = casesummaryDetail.NeuMaso;
                 dbcasesummaryDetail.NeuST = casesummaryDetail.NeuST;
@@ -221,7 +239,6 @@ namespace Paho.Controllers
                 dbcasesummaryDetail.VentFem = casesummaryDetail.VentFem;
                 dbcasesummaryDetail.VentMaso = casesummaryDetail.VentMaso;
                 dbcasesummaryDetail.VentST = casesummaryDetail.VentST;
-
             }
             db.SaveChanges();
             return Json(getMsg("viewValidateSavedRecordSummary"));
@@ -242,12 +259,15 @@ namespace Paho.Controllers
             for (int i = nSemaActual; i >= 1; i--)
             {
                 Dictionary<string, int> dictionary = new Dictionary<string, int>();
-                var ColHospTST = 0;
-                var ColUCITST = 0;
-                var ColFalleTST = 0;
                 var ColETINumST = 0;
                 var ColETIDenoST = 0;
                 var ColETINumEmerST = 0;
+                var ColHospTST = 0;
+                var ColUCITST = 0;
+                var ColFalleTST = 0;
+                var ColHospSARITST = 0;             //#### CAFQ: 181101
+                var ColUCISARITST = 0;              //#### CAFQ: 181101
+                var ColFalleSARITST = 0;            //#### CAFQ: 181101
                 var ColNeuTST = 0;
                 var ColCCSARITST = 0;
                 var ColVentTST = 0;
@@ -275,12 +295,15 @@ namespace Paho.Controllers
                     StartDateOfWeek = casesummary.StartDateOfWeek;
                     foreach (CaseSummaryDetail casesummaryDetail in casesummaryDetails)
                     {//casesummaryDetails
-                        ColHospTST += casesummaryDetail.HospST;
-                        ColUCITST += casesummaryDetail.UCIST;
-                        ColFalleTST += casesummaryDetail.DefST;
                         ColETINumST += casesummaryDetail.ETINumST;
                         ColETIDenoST += casesummaryDetail.ETIDenoST;
                         ColETINumEmerST += casesummaryDetail.ETINumEmerST;
+                        ColHospTST += casesummaryDetail.HospST;
+                        ColUCITST += casesummaryDetail.UCIST;
+                        ColFalleTST += casesummaryDetail.DefST;
+                        ColHospSARITST += casesummaryDetail.HospSARIST;             //#### CAFQ: 181101
+                        ColUCISARITST += casesummaryDetail.UCISARIST;               //#### CAFQ: 181101
+                        ColFalleSARITST += casesummaryDetail.DefSARIST;             //#### CAFQ: 181101
                         ColNeuTST += casesummaryDetail.NeuST.HasValue ? casesummaryDetail.NeuST.Value : 0;
                         //ColCCSARITST += casesummaryDetail.CCSARIST.HasValue ? casesummaryDetail.CCSARIST.Value : 0;
                         ColCCSARITST += casesummaryDetail.CCSARIST.Value;
@@ -291,6 +314,9 @@ namespace Paho.Controllers
                 dictionary.Add("ColHospTST", ColHospTST);
                 dictionary.Add("ColUCITST", ColUCITST);
                 dictionary.Add("ColFalleTST", ColFalleTST);
+                dictionary.Add("ColHospSARITST", ColHospSARITST);           //#### CAFQ: 181101
+                dictionary.Add("ColUCISARITST", ColUCISARITST);             //#### CAFQ: 181101
+                dictionary.Add("ColFalleSARITST", ColFalleSARITST);         //#### CAFQ: 181101
                 dictionary.Add("ColETINumST", ColETINumST);
                 dictionary.Add("ColETIDenoST", ColETIDenoST);
                 dictionary.Add("ColETINumEmerST", ColETINumEmerST);

@@ -221,8 +221,6 @@ namespace Paho.Models
         public bool? Prematuridad { get; set; }
         public bool? BajoPesoNacer { get; set; }
         public bool? AusLacMat { get; set; }
-
-
         public string Pregnant { get; set; }
         public bool? Pperium { get; set; }
         public string Trimester { get; set; }
@@ -1431,12 +1429,21 @@ namespace Paho.Models
         public int HospFem { get; set; }
         public int HospMaso { get; set; }
         public int HospST { get; set; }
+        public int HospSARIFem { get; set; }                      //#### CAFQ: 181101
+        public int HospSARIMaso { get; set; }
+        public int HospSARIST { get; set; }
         public int UCIFem { get; set; }
         public int UCIMaso { get; set; }
         public int UCIST { get; set; }
+        public int UCISARIFem { get; set; }                      //#### CAFQ: 181101
+        public int UCISARIMaso { get; set; }
+        public int UCISARIST { get; set; }
         public int DefFem { get; set; }
         public int DefMaso { get; set; }
         public int DefST { get; set; }
+        public int DefSARIFem { get; set; }                     //#### CAFQ: 181101
+        public int DefSARIMaso { get; set; }
+        public int DefSARIST { get; set; }
         public int? NeuFem { get; set; }
         public int? NeuMaso { get; set; }
         public int? NeuST { get; set; }

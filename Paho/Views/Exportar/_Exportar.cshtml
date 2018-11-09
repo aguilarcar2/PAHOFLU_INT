@@ -54,6 +54,23 @@
     </div>
 </div>
 
+<!-- Centinela -->
+<div class="row" style="margin-bottom: 15px; margin-top: 1em;" data-bind="visible: ActiveHON()">
+    <div class="col-md-5">
+        <div class='input-group'>
+            <span class="input-group-addon">
+                @*(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarLabelMonth"))*@
+                Centinela
+            </span>
+            <select id="Sentinel" name="Sentinel" class="form-control" data-bind="value: Sentinel">
+                <option value="">Seleccione...</option>
+                <option value="1"> Si </option>
+                <option value="0"> No </option>
+            </select>
+        </div>
+    </div>
+</div>
+
 <!--Reportes:-->
 <div class="row" style="margin-bottom: 15px; margin-top: 1em;">
     <div class="col-md-5">
