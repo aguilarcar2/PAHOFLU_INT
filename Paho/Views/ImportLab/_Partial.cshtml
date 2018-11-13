@@ -73,3 +73,15 @@
         </table>
     </div>    
 }
+
+@using (@Html.BeginForm("Index", "ImportLab/LoadDirectDB", FormMethod.Post))
+{
+
+    <div class='input-group'>
+        <span class="input-group-addon">
+            @(((Paho.Controllers.ImportLabController)this.ViewContext.Controller).getMsg("viewImportLab_msgExcelFile"))
+        </span>
+         <input type="submit" class="btn btn-primary" name="Upload" value="Actualizar" />
+
+    </div>
+}

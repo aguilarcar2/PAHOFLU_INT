@@ -624,6 +624,13 @@ namespace Paho.Models
         public string ENG { get; set; }
         public int? orden { get; set; }
     }
+    public class CatInstitutionTypeHON
+    {
+        public int ID { get; set; }
+        public string SPA { get; set; }
+        public string ENG { get; set; }
+        public int orden { get; set; }
+    }
     // Termina catalogos generales
 
     public class Area
@@ -1770,6 +1777,9 @@ namespace Paho.Models
 
         //Laboratorios externos
         public DbSet<InstitutionForeignConf> InstitutionForeignConf { get; set; }
+        // Tipo de institución para HON
+        public DbSet<CatInstitutionTypeHON> CatInstitutionTypeHON { get; set; }
+
         
 
         // Graficas

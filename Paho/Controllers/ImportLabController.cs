@@ -119,6 +119,9 @@ namespace Paho.Controllers {
                     //fin de inserción
                 }
                 ms.Position = 0;
+
+                // Hasta aquí 
+
                 //ViewBag.Message = $"Archivo trabajado correctamente!";
                 //ViewBag.Message = "Archivo procesado. En la lista inferior podrá ver la lista de los registros que no fueron importados. Lo podrá localizar por la hora de subida y por su usuario. Puede hacer clic en la flecha azul para descargarlo.";
                 //return View();

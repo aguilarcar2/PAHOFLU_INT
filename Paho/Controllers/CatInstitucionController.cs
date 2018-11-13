@@ -165,7 +165,7 @@ namespace Paho.Controllers
             PopulateDepartmentsDropDownList(catalogo.AreaID, 
                 catalogo.AccessLevel, catalogo.InstType, catalogo.cod_region_institucional, 
                 catalogo.cod_region_salud, catalogo.cod_region_pais, catalogo.Father_ID, catalogo.InstType,
-                catalogo.LocationTypeID, catalogo.ForeignCountryID, catalogo.ForeignInstitutionAddress);
+                catalogo.LocationTypeID, catalogo.ForeignCountryID, catalogo.ForeignInstitutionAddress, catalogo.InstitutionTypeID);
             
             return View(catalogo);
         }
@@ -231,7 +231,7 @@ namespace Paho.Controllers
             PopulateDepartmentsDropDownList(catalogo.AreaID,
                 catalogo.AccessLevel, catalogo.InstType, catalogo.cod_region_institucional,
                 catalogo.cod_region_salud, catalogo.cod_region_pais, catalogo.Father_ID, catalogo.InstType,
-                catalogo.LocationTypeID);
+                catalogo.LocationTypeID, catalogo.InstitutionTypeID);
 
             return View(catalogo);
         }
@@ -294,7 +294,8 @@ namespace Paho.Controllers
             InstitutionType? instType = null,
             object selectedLocationTypeID = null,
             object selectedForeignCountriesID = null,
-            object SelectedForeignInstitutionAddress = null)
+            object SelectedForeignInstitutionAddress = null,
+            object selectedInstitutionTypeHONID = null)
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
             var countryId = user.Institution.CountryID ?? 0;
@@ -347,6 +348,22 @@ namespace Paho.Controllers
 
             regInstTypeLocaQuery.Insert(0, new InstitutionLocationTypeView { ID = 0, Name = "-- " + getMsg("msgSelect") + " -- " });
             ViewBag.cod_institution_type_location = new SelectList(regInstTypeLocaQuery, "ID", "Name", selectedLocationTypeID);
+
+
+            // Tipo de institución para Honduras
+            var regInstTypeHON = db.CatInstitutionTypeHON
+                                .Select(c => new InstitutionLocationTypeView()
+                                {
+                                    ID = c.ID,
+                                    Name = (user.Institution.Country.Language == "SPA") ? c.SPA : c.ENG,
+                                })
+                                .OrderBy(d => d.Name)
+                                .ToList();
+
+            regInstTypeHON.Insert(0, new InstitutionLocationTypeView { ID = 0, Name = "-- " + getMsg("msgSelect") + " -- " });
+
+            ViewBag.cod_institution_type_HON = new SelectList(regInstTypeHON, "ID", "Name", selectedInstitutionTypeHONID);
+
             //**** Paises
             var regCountries = db.Countries
                     .Select(c => new CountryView()
