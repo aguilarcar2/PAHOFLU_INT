@@ -40,6 +40,10 @@
 
     }, self);
 
+    self.EnableHON = ko.computed(function () {
+        return (self.UsrCountry() == 15) ? true : false;
+    }, self);
+
     self.CalculateEW = function (FieldDate, FieldAct, FieldActYear) {
         if ($("#" + FieldDate).val() != "") {
             var date_ew = new Date($("#" + FieldDate).datepicker('getDate',{

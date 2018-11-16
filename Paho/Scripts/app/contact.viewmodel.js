@@ -262,8 +262,11 @@ function ContactViewModel(app, dataModel) {
     self.DocumentType.subscribe(function (NewRUN) {
         if (self.UsrCountry() != 25 && self.UsrCountry() != 11 && self.UsrCountry() != 18 && self.UsrCountry() != 17) {//Solo ejecuta este subscribe si el país es diferente de Suriname
             self.NoExpediente("");
+            self.FName1("");
+            self.FName2("");
+            self.LName1("");
+            self.LName2("");
         }
-
     });
 
     self.NoExpediente.subscribe(function (NewRUN) {

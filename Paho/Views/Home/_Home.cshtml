@@ -234,6 +234,7 @@
         <text class="col-md-2" style="float: right; padding: 0.5em 1em; color:royalblue;"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRecord")) <text style="width:15px;color: royalblue ;" type="text" id="RecordNumber" disabled>1</text></text>
     </ul>
 
+    <!-- Contacto -->
     <div id="tab-contact" data-bind="with: app.Views.Contact">
         <div class="row rowform">
             <div class="col-md-6">
@@ -387,34 +388,33 @@
             <div class="row rowform">
                 @if (ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 18 && ViewBag.UsrCtry != 17)
                 {
-                <div class="col-md-6">
-                    <div class='input-group'>
-                        <span class="input-group-addon">
-                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelIdType")) <font color="#FF0000" data-bind="visible:VisibleIdType()">*</font>
-                        </span>
-                        <select id="DocumentType" class="form-control" data-bind="value:DocumentType">
-                        @if (ViewBag.UsrCtry != 7)
-                        {
-                            <option value=""></option>
-                            <option value="1"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelDocumentName"))</option>
-                            <option value="2"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelDocumentInsurancePassport"))</option>
-                            <option value="3" data-bind="visible:app.Views.Contact.NoActiveHON"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelInternalDocument"))</option>
-                            <option value="7" data-bind="visible:app.Views.Contact.ActiveBOL"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelClinicalHistory"))</option>
-                            <option value="8" data-bind="visible:app.Views.Contact.ActiveBOL"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelAnotherRecord"))</option>
-                            <option value="9" data-bind="visible:app.Views.Contact.ActiveDOM() || app.Views.Contact.ActiveCAY()"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelCaseNumber"))</option>
-                            <option value="10" data-bind="visible:app.Views.Contact.ActiveDOM() || app.Views.Contact.ActiveCAY()"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelMedicalRecordNumber"))</option>
-                        }
-                        else
-                        {
-                            <option value=""></option>
-                            <option value="4"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelRUN"))</option>
-                            <option value="5"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelPassport"))</option>
-                            <option value="6"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelOther"))</option>
-                        }
-
-                        </select>
+                    <div class="col-md-6">
+                        <div class='input-group'>
+                            <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelIdType")) <font color="#FF0000" data-bind="visible:VisibleIdType()">*</font>
+                            </span>
+                            <select id="DocumentType" class="form-control" data-bind="value:DocumentType">
+                                @if (ViewBag.UsrCtry != 7)
+                                {
+                                    <option value=""></option>
+                                    <option value="1"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelDocumentName"))</option>
+                                    <option value="2"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelDocumentInsurancePassport"))</option>
+                                    <option value="3" data-bind="visible:app.Views.Contact.NoActiveHON"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelInternalDocument"))</option>
+                                    <option value="7" data-bind="visible:app.Views.Contact.ActiveBOL"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelClinicalHistory"))</option>
+                                    <option value="8" data-bind="visible:app.Views.Contact.ActiveBOL"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelAnotherRecord"))</option>
+                                    <option value="9" data-bind="visible:app.Views.Contact.ActiveDOM() || app.Views.Contact.ActiveCAY()"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelCaseNumber"))</option>
+                                    <option value="10" data-bind="visible:app.Views.Contact.ActiveDOM() || app.Views.Contact.ActiveCAY()"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelMedicalRecordNumber"))</option>
+                                }
+                                else
+                                {
+                                    <option value=""></option>
+                                    <option value="4"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelRUN"))</option>
+                                    <option value="5"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelPassport"))</option>
+                                    <option value="6"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelOther"))</option>
+                                }
+                            </select>
+                        </div>
                     </div>
-                </div>
                 }
                 <div class="col-md-6">
                     <div class='input-group'>
@@ -429,7 +429,7 @@
                         @*Hace que si el pais no es Suriname, tenga una propiedad onBlur el campo NoExpediente*@
                         @if (ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 18 && ViewBag.UsrCtry != 17)
                         {
-                        <input id="NoExpediente" type='text' class="form-control case_letter" data-bind="value: NoExpediente, event: { blur: GetPatient }" />
+                            <input id="NoExpediente" type='text' class="form-control case_letter" data-bind="value: NoExpediente, event: { blur: GetPatient }" />
                         }
                         else
                         {
@@ -438,19 +438,18 @@
                         @*<button id="DatosPaciente" type="button" class="btn btn-primary btn-next " data-bind="click: GetPatient, visible:EnableCR">Datos paciente</button>*@
                     </div>
                 </div>
-
             </div>
         @if (ViewBag.UsrCtry == 25 || ViewBag.UsrCtry == 11 || ViewBag.UsrCtry == 18 || ViewBag.UsrCtry == 15)
         {
-        <div class="row rowform">
-            @*@if ( ViewBag.UsrCtry == 15)
-            {
-            <div class="col-md-6">
-                <div class='input-group'>
+            <div class="row rowform">
+                @*@if ( ViewBag.UsrCtry == 15)
+                {
+                <div class="col-md-6">
+                    <div class='input-group'>
 
+                    </div>
                 </div>
-            </div>
-            }*@
+                }*@
 
                 <div class="col-md-6">
                     <div class='input-group'>
@@ -460,8 +459,7 @@
                         <input id="Documento" type='text' class="form-control case_letter" data-bind="value: NationalId" />
                     </div>
                 </div>
-
-        </div>
+            </div>
         }
         <div class="row rowform">
             <div class="col-md-6">
@@ -484,7 +482,6 @@
 
                 </div>
             </div>
-
         </div>
 
         <div class="row rowform">
@@ -546,7 +543,6 @@
                     </label>
                 </div>
             </div>
-
         </div>
 
         <!-- Nacionalidad/Pueblo originario -->
@@ -2135,14 +2131,14 @@
                     <div id="exposicion" class="collapse in">							
                         <div class="row rowform">
                             <!-- Tabaquismo -->
-                            <div class="col-md-3">
+                            <div class="col-md-3" data-bind="visible: !UnderTeenYears()">
                                 <label class="btn btn-default">
                                     <input type="checkbox" name="Smoking" id="Smoking" data-bind="checked: Smoking" disabled> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelTabaquism"))
                                 </label>
                             </div>
 
                             <!-- Alcoholismo -->
-                            <div class="col-md-3">
+                            <div class="col-md-3" data-bind="visible: !UnderTeenYears()">
                                 <label class="btn btn-default">
                                     <input type="checkbox" name="Alcohol" id="Alcohol" data-bind="checked: Alcohol" disabled> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelAlcoholism"))
                                 </label>
@@ -2159,9 +2155,9 @@
                             }
 
                             <!-- Trabajador de salud -->
-                            <div class="col-md-1_5">
+                            <div class="col-md-1_5" data-bind="visible: !UnderTeenYears()">
                                 <label class="btn btn-default">
-                                    <input type="checkbox" name="TrabSalud" id="TrabSalud" data-bind="checked:  TrabSalud" disabled> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelHealthcareWorker"))
+                                    <input type="checkbox" name="TrabSalud" id="TrabSalud" data-bind="checked: TrabSalud" disabled> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelHealthcareWorker"))
                                 </label>
                             </div>
                         </div>
@@ -2648,287 +2644,289 @@
                     <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
                 </button>
         
-        <div id="Fechas" class="collapse in">
-			@if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 15 || ViewBag.UsrCtry ==3){
-                <!-- Servicio / Diagnóstico principal de ingreso -->
-                <div class="row rowform">
-                    <div class="col-md-4">
-                        <div class='input-group'>
-                            <span class="input-group-addon">
-                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelService"))
-                            </span>
-                            <input id="Salon" type='text' class="form-control case_letter" data-bind="value: Salon" style="max-width:200px;" />
-                            <input id="SalonVal" type='hidden' class="form-control" data-bind="value: SalonVal, valueUpdate:'change'" />
+                <div id="Fechas" class="collapse in">
+			        @if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 15 || ViewBag.UsrCtry ==3){
+                        <!-- Servicio / Diagnóstico principal de ingreso -->
+                        <div class="row rowform">
+                            <div class="col-md-4">
+                                <div class='input-group'>
+                                    <span class="input-group-addon">
+                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelService"))
+                                    </span>
+                                    <input id="Salon" type='text' class="form-control case_letter" data-bind="value: Salon" style="max-width:200px;" />
+                                    <input id="SalonVal" type='hidden' class="form-control" data-bind="value: SalonVal, valueUpdate:'change'" />
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <div class='input-group'>
+                                    <span class="input-group-addon">
+                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelPrincipalDiagnosisAdmission"))
+                                    </span>
+                                    <input id="DiagPrinAdm" type='text' class="form-control case_letter" data-bind="value: DiagPrinAdm" style="max-width:300px;" />
+                                    <input id="DiagPrinAdmVal" type='hidden' class="form-control" data-bind="value: DiagPrinAdmVal, valueUpdate:'change'" />
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-7">
-                        <div class='input-group'>
-                            <span class="input-group-addon">
-                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelPrincipalDiagnosisAdmission"))
-                            </span>
-                            <input id="DiagPrinAdm" type='text' class="form-control case_letter" data-bind="value: DiagPrinAdm" style="max-width:300px;" />
-                            <input id="DiagPrinAdmVal" type='hidden' class="form-control" data-bind="value: DiagPrinAdmVal, valueUpdate:'change'" />
+                        <!-- Otro diagnostico de admisión -->					
+                        <div class="row rowform" data-bind="visible:EnableCHI()">
+                            <div class="col-md-7">
+                                <div class='input-group'>
+                                    <span class="input-group-addon">
+                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOtherDiagnosisAdmission")) 
+                                    </span>
+                                    <input id="DiagOtroAdm" type='text' data-bind="value: DiagOtroAdm" class="form-control case_letter" style="max-width:300px;" />
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <!-- Otro diagnostico de admisión -->					
-                <div class="row rowform" data-bind="visible:EnableCHI()">
-                    <div class="col-md-7">
-                        <div class='input-group'>
-                            <span class="input-group-addon">
-                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOtherDiagnosisAdmission")) 
-                            </span>
-                            <input id="DiagOtroAdm" type='text' data-bind="value: DiagOtroAdm" class="form-control case_letter" style="max-width:300px;" />
-                        </div>
-                    </div>
-                </div>
-			}
-            @if (ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 18 && ViewBag.UsrCtry != 17)
-            {
-                <!-- Diagnóstico egreso rel. IRAG / Otro diagnostico de egreso -->
-                <div class="row rowform" data-bind="visible:app.Views.Contact.NoActiveBOL">
-                    <div class="col-md-6">
-                        <div class='input-group'>
-                            <span class="input-group-addon">
-                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelDiagnosisExitRelSARI")) 
-                            </span>
-                            <input id="DiagEg" type='text' class="form-control case_letter" data-bind="value: DiagEg" style="max-width:480px;" />
-                            <input id="DiagEgVal" type='hidden' class="form-control" data-bind="value: DiagEgVal, valueUpdate:'change'" />
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class='input-group'>
-                            <span class="input-group-addon">
-                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOtherDiagnosisExitRelSARI"))
-                            </span>
-                            <input id="DiagEgOtro" type='text' data-bind="value: DiagEgOtro" class="form-control case_letter" />
-                        </div>
-                    </div>
-                </div>
-            }
-
-            <div class="row rowform">
-                <div class="col-md-2">
-                </div>
-                <div class="col-md-2">
-                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelAdmissionDate"))
-                </div>
-                <div class="col-md-1" data-bind="visible:false">
-                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelEW"))
-                </div>
-                <div class="col-md-2">
-                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelExitDate"))
-                </div>
-                <div class="col-md-2">
-                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelExitCondition"))
-                </div>
-                <div class="col-md-2" data-bind="visible:ViewFallecido">
-                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelDeathDate"))
-                </div>
-            </div>
-
-            <div id="div_hospital" class="row rowform">
-                <div class="col-md-2">
-                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelHospitalization")) <font color="#FF0000">*</font>
-                </div>
-                <div class="col-md-2 input-group">
-                    <div>
-                        <input id="HospAmDate" type='text' class="form-control " data-bind='datepicker: HospAmDate, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
-                    </div>
-                </div>
-                <div class="col-md-1" data-bind="visible:false">
-                    <input id="HospEW" type='text' readonly="readonly" class="form-control" data-bind="value: HospEW" />
-                </div>
-                <div class="col-md-2 input-group">
-                    <input id="HospExDate" type='text' class="form-control " data-bind='datepicker: HospExDate, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
-                </div>
-                <div class="col-md-2">
-                    <div class='input-group'>
-                        <select id="Destin" class="form-control" data-bind="value: Destin" style="width:150px;">
-                            <option value="">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSelect"))</option>
-                            @if (ViewBag.UsrCtry == 3)
-                            {<option value="U">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelHealed"))</option>}
-                            else
-                            {<option value="A">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelMedicalDischarged"))</option>}
-                            <option value="D">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelDeceased"))</option>
-                            <option value="R">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelReferredAnotherInstitution"))</option>
-                            @if (ViewBag.UsrCtry == 3)
-                            {<option value="T">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelTrasnferredAnotherService")) </option>}
-                            @if (ViewBag.UsrCtry != 7)
-                            {<option value="O">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOther"))</option>}
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-2 input-group" data-bind="visible:ViewFallecido">
-                    <input id="FalleDate" type='text' class="form-control " data-bind='datepicker: FalleDate, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
-                </div>
-                <div class="col-md-2 input-group" data-bind="visible:ViewRefer">
-                    <input id="InstReferName" type='text' class="form-control " data-bind='value:InstReferName' />
-                </div>
-            </div>
-
-            <!-- UPC -->
-
-            <div class="row rowform">
-                <div class="input-group col-md-3">
-                    <span class="input-group-addon">
-                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelHospitalizedIn")) <font color="#FF0000">*</font>
-                    </span>
-                    <select id="HospitalizedIn" class="form-control" data-bind="options: CHIn,
-                            optionsText: 'Name',
-                            optionsValue: 'Id',
-                            value: HospitalizedIn,
-                            optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel")) '"></select>
-                </div>
-            </div>
-                <div class="row rowform" data-bind="visible:EnableICUHon()">
-                    <div class="input-group col-md-3">
-                        <span class="input-group-addon">
-                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelUPC")) <font color="#FF0000">*</font>
-                        </span>
-                        <select id="ICU" class="form-control" data-bind="value: ICU">
-                            <option value="">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSelect"))</option>
-                            <option value="1">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelYes"))</option>
-                            <option value="0">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNo"))</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row rowform" data-bind="visible:EnableICUDate">
-                    <div class="col-md-2">
-
-                    </div>
-                    <div class="col-md-2">
-                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelAdmissionDate"))
-                    </div>
-                    <div class="col-md-1" data-bind="visible:false">
-                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelEW"))
-                    </div>
-                    <div class="col-md-2">
-                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelExitDate"))
-                    </div>
-                    <div class="col-md-4">
-                    </div>
-                </div>
-            <div class="row rowform" data-bind="visible:EnableICUDate">
-                <div class="col-md-2">
-                    @(ViewBag.UsrCtry != 7 ? (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelICU")) : (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelUPC")))
-                </div>
-                <div class="col-md-2 input-group ">
-                    <input id="ICUAmDate" type='text' class="form-control " data-bind='datepicker: ICUAmDate, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
-                </div>
-                <div class="col-md-1" data-bind="visible:false">
-                    <input id="ICUEW" type='text' readonly="readonly" class="form-control" data-bind="value: ICUEW" />
-                </div>
-                <div class="col-md-2 input-group">
-                    <input id="ICUExDate" type='text' class="form-control " data-bind='datepicker: ICUExDate, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
-                </div>
-                <div class="col-md-4" data-bind="visible: false">
-                    <div class='input-group'>
-                        <select id="DestinICU" class="form-control" data-bind="value: DestinICU" style="width:250px;">
-                            <option value="">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSelect"))</option>
-                            <option value="A">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelMedicalDischarged"))</option>
-                            <option value="D">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelDeceased"))</option>
-                            <option value="R">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelReferredAnotherInstitution"))</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            @if (ViewBag.UsrCtry == 7)
-            {
-                <div class="row rowform">
-                    <div class="col-md-7">
-                        <div style="font-weight:bold;font-size:9px">
-                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelUPCDefinition")) Unidades de pacientes críticos (UPC) = Incluye pacientes UCI o intermedio<br />
-                            <hr style="margin-top:3px; margin-bottom:0px; border-width:1px  0  0; " />
-                        </div>
-                    </div>
-                </div>
-            }
-			@if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 15 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 11 || ViewBag.UsrCtry == 119)
-            {
-                <div class="row rowform">
-                    <!-- <div class="col-md-3" data-bind="visible:EnableCHI() && app.Views.Contact.NoActiveBOL()"> -->
-                    <div class="@((ViewBag.UsrCtry == 11 || ViewBag.UsrCtry == 119) ?  "col-md-2" : "col-md-3")" data-bind="visible:(EnableCHI() && app.Views.Contact.NoActiveBOL()) || app.Views.Contact.ActiveDOM() || app.Views.Contact.ActiveCAY()">
-                        <label class="btn btn-default">
-                            <input type="checkbox" name="HallRadio" id="HallRadio" value="1" data-bind="checked: HallRadio"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelRadiologicalFindings"))
-                        </label>
-                    </div>
-                    <div class="col-md-3" data-bind="visible:app.Views.Contact.NoActiveBOL() && app.Views.Contact.NoActiveDOM() && app.Views.Contact.NoActiveCAY()">
-                        <label class="btn btn-default">
-                            <input type="checkbox" name="MecVent" id="MecVent" value="1" data-bind="checked: MecVent"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelRespiratorySupport")) 
-                        </label>
-                    </div>
-                    <div class="col-md-3" data-bind="visible:EnableCHI() && app.Views.Contact.NoActiveBOL() && app.Views.Contact.NoActiveDOM() && app.Views.Contact.NoActiveCAY()">
-                        <label class="btn btn-default">
-                            <input type="checkbox" name="UCInt" id="UCInt" value="1" data-bind="checked: UCInt"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelTransitionalCareUnit"))
-                        </label>
-                    </div>
-                    <div class="col-md-3" data-bind="visible:EnableCHI() && app.Views.Contact.NoActiveBOL() && app.Views.Contact.NoActiveDOM() && app.Views.Contact.NoActiveCAY()">
-                        <label class="btn btn-default">
-                            <input type="checkbox" name="UCri" id="UCri" value="1" data-bind="checked: UCri"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelCriticalCareUnit"))
-                        </label>
-                    </div>
-                    <!-- Ventilacion mecanica no invasiva / ECMO / VAFO -->
-                    @if (ViewBag.UsrCtry == 7)
+			        }
+                    @if (ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 18 && ViewBag.UsrCtry != 17)
                     {
-                        <div class="col-md-3">
-                            <label class="btn btn-default">
-                                <input type="checkbox" name="MecVentNoInv" id="MecVentNoInv" value="1" data-bind="checked: MecVentNoInv"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNIMV"))
-                            </label>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="btn btn-default">
-                                <input type="checkbox" name="ECMO" id="ECMO" value="1" data-bind="checked: ECMO"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelECMO"))
-                            </label>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="btn btn-default">
-                                <input type="checkbox" name="VAFO" id="VAFO" value="1" data-bind="checked: VAFO"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelHFOV"))
-                            </label>
+                        <!-- Diagnóstico egreso rel. IRAG / Otro diagnostico de egreso -->
+                        <div class="row rowform" data-bind="visible:app.Views.Contact.NoActiveBOL">
+                            <div class="col-md-6">
+                                <div class='input-group'>
+                                    <span class="input-group-addon">
+                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelDiagnosisExitRelSARI")) 
+                                    </span>
+                                    <input id="DiagEg" type='text' class="form-control case_letter" data-bind="value: DiagEg" style="max-width:480px;" />
+                                    <input id="DiagEgVal" type='hidden' class="form-control" data-bind="value: DiagEgVal, valueUpdate:'change'" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class='input-group'>
+                                    <span class="input-group-addon">
+                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOtherDiagnosisExitRelSARI"))
+                                    </span>
+                                    <input id="DiagEgOtro" type='text' data-bind="value: DiagEgOtro" class="form-control case_letter" />
+                                </div>
+                            </div>
                         </div>
                     }
-                    <!-- Descripcion/Hallazgos -->
-                    @if (ViewBag.UsrCtry == 11 || ViewBag.UsrCtry == 119)
-                    {
-                        <div class="col-md-3" data-bind="visible: HallRadioFindingsShow">
+
+                    <!-- Labels Fecha de ingreso / Fecha de egreso, etc-->
+                    <div class="row rowform">
+                        <div class="col-md-2">
+                        </div>
+                        <div class="col-md-2">
+                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelAdmissionDate"))
+                        </div>
+                        <div class="col-md-1" data-bind="visible:false">
+                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelEW"))
+                        </div>
+                        <div class="col-md-2">
+                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelExitDate"))
+                        </div>
+                        <div class="col-md-2">
+                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelExitCondition"))
+                        </div>
+                        <div class="col-md-2" data-bind="visible:ViewFallecido">
+                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelDeathDate"))
+                        </div>
+                    </div>
+
+                    <div id="div_hospital" class="row rowform">
+                        <div class="col-md-2">
+                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelHospitalization")) <font color="#FF0000">*</font>
+                        </div>
+                        <div class="col-md-2 input-group">
+                            <div>
+                                <input id="HospAmDate" type='text' class="form-control " data-bind='datepicker: HospAmDate, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
+                            </div>
+                        </div>
+                        <div class="col-md-1" data-bind="visible:false">
+                            <input id="HospEW" type='text' readonly="readonly" class="form-control" data-bind="value: HospEW" />
+                        </div>
+                        <div class="col-md-2 input-group">
+                            <input id="HospExDate" type='text' class="form-control " data-bind='datepicker: HospExDate, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
+                        </div>
+                        <div class="col-md-2">
                             <div class='input-group'>
-                                <span class="input-group-addon">
-                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelHallRadioFindings"))
-                                </span>
-                                <input id="HallRadioFindings" type='text' class="form-control" data-bind="value: HallRadioFindings" />
+                                <select id="Destin" class="form-control" data-bind="value: Destin" style="width:150px;">
+                                    <option value="">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSelect"))</option>
+                                    @if (ViewBag.UsrCtry == 3)
+                                        {<option value="U">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelHealed"))</option>}
+                                    else
+                                    {<option value="A">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelMedicalDischarged"))</option>}
+                                    <option value="D">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelDeceased"))</option>
+                                    <option value="R">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelReferredAnotherInstitution"))</option>
+                                    @if (ViewBag.UsrCtry == 3)
+                                        {<option value="T">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelTrasnferredAnotherService")) </option>}
+                                    @if (ViewBag.UsrCtry != 7)
+                                        {<option value="O">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOther"))</option>}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2 input-group" data-bind="visible:ViewFallecido">
+                            <input id="FalleDate" type='text' class="form-control " data-bind='datepicker: FalleDate, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
+                        </div>
+                        <div class="col-md-2 input-group" data-bind="visible:ViewRefer">
+                            <input id="InstReferName" type='text' class="form-control " data-bind='value:InstReferName' />
+                        </div>
+                    </div>
+
+                    <!-- UPC -->
+
+                    <div class="row rowform" data-bind="visible: EnableHON()">
+                        <div class="input-group col-md-3">
+                            <span class="input-group-addon">
+                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelHospitalizedIn")) <font color="#FF0000">*</font>
+                            </span>
+                            <select id="HospitalizedIn" class="form-control" data-bind="options: CHIn,
+                                    optionsText: 'Name',
+                                    optionsValue: 'Id',
+                                    value: HospitalizedIn,
+                                    optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel")) '"></select>
+                        </div>
+                    </div>
+                
+                    <div class="row rowform" data-bind="visible: EnableICUHon()">
+                        <div class="input-group col-md-3">
+                            <span class="input-group-addon">
+                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelUPC")) <font color="#FF0000">*</font>
+                            </span>
+                            <select id="ICU" class="form-control" data-bind="value: ICU">
+                                <option value="">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSelect"))</option>
+                                <option value="1">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelYes"))</option>
+                                <option value="0">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNo"))</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row rowform" data-bind="visible:EnableICUDate">
+                        <div class="col-md-2">
+
+                        </div>
+                        <div class="col-md-2">
+                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelAdmissionDate"))
+                        </div>
+                        <div class="col-md-1" data-bind="visible:false">
+                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelEW"))
+                        </div>
+                        <div class="col-md-2">
+                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelExitDate"))
+                        </div>
+                        <div class="col-md-4">
+                        </div>
+                    </div>
+                    <div class="row rowform" data-bind="visible:EnableICUDate">
+                        <div class="col-md-2">
+                            @(ViewBag.UsrCtry != 7 ? (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelICU")) : (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelUPC")))
+                        </div>
+                        <div class="col-md-2 input-group ">
+                            <input id="ICUAmDate" type='text' class="form-control " data-bind='datepicker: ICUAmDate, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
+                        </div>
+                        <div class="col-md-1" data-bind="visible:false">
+                            <input id="ICUEW" type='text' readonly="readonly" class="form-control" data-bind="value: ICUEW" />
+                        </div>
+                        <div class="col-md-2 input-group">
+                            <input id="ICUExDate" type='text' class="form-control " data-bind='datepicker: ICUExDate, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
+                        </div>
+                        <div class="col-md-4" data-bind="visible: false">
+                            <div class='input-group'>
+                                <select id="DestinICU" class="form-control" data-bind="value: DestinICU" style="width:250px;">
+                                    <option value="">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSelect"))</option>
+                                    <option value="A">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelMedicalDischarged"))</option>
+                                    <option value="D">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelDeceased"))</option>
+                                    <option value="R">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelReferredAnotherInstitution"))</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    @if (ViewBag.UsrCtry == 7)
+                    {
+                        <div class="row rowform">
+                            <div class="col-md-7">
+                                <div style="font-weight:bold;font-size:9px">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelUPCDefinition")) Unidades de pacientes críticos (UPC) = Incluye pacientes UCI o intermedio<br />
+                                    <hr style="margin-top:3px; margin-bottom:0px; border-width:1px  0  0; " />
+                                </div>
+                            </div>
+                        </div>
+                    }
+			        @if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 15 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 11 || ViewBag.UsrCtry == 119)
+                    {
+                        <div class="row rowform">
+                            <!-- <div class="col-md-3" data-bind="visible:EnableCHI() && app.Views.Contact.NoActiveBOL()"> -->
+                            <div class="@((ViewBag.UsrCtry == 11 || ViewBag.UsrCtry == 119) ?  "col-md-2" : "col-md-3")" data-bind="visible:(EnableCHI() && app.Views.Contact.NoActiveBOL()) || app.Views.Contact.ActiveDOM() || app.Views.Contact.ActiveCAY()">
+                                <label class="btn btn-default">
+                                    <input type="checkbox" name="HallRadio" id="HallRadio" value="1" data-bind="checked: HallRadio"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelRadiologicalFindings"))
+                                </label>
+                            </div>
+                            <div class="col-md-3" data-bind="visible:app.Views.Contact.NoActiveBOL() && app.Views.Contact.NoActiveDOM() && app.Views.Contact.NoActiveCAY()">
+                                <label class="btn btn-default">
+                                    <input type="checkbox" name="MecVent" id="MecVent" value="1" data-bind="checked: MecVent"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelRespiratorySupport")) 
+                                </label>
+                            </div>
+                            <div class="col-md-3" data-bind="visible:EnableCHI() && app.Views.Contact.NoActiveBOL() && app.Views.Contact.NoActiveDOM() && app.Views.Contact.NoActiveCAY()">
+                                <label class="btn btn-default">
+                                    <input type="checkbox" name="UCInt" id="UCInt" value="1" data-bind="checked: UCInt"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelTransitionalCareUnit"))
+                                </label>
+                            </div>
+                            <div class="col-md-3" data-bind="visible:EnableCHI() && app.Views.Contact.NoActiveBOL() && app.Views.Contact.NoActiveDOM() && app.Views.Contact.NoActiveCAY()">
+                                <label class="btn btn-default">
+                                    <input type="checkbox" name="UCri" id="UCri" value="1" data-bind="checked: UCri"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelCriticalCareUnit"))
+                                </label>
+                            </div>
+                            <!-- Ventilacion mecanica no invasiva / ECMO / VAFO -->
+                            @if (ViewBag.UsrCtry == 7)
+                            {
+                                <div class="col-md-3">
+                                    <label class="btn btn-default">
+                                        <input type="checkbox" name="MecVentNoInv" id="MecVentNoInv" value="1" data-bind="checked: MecVentNoInv"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNIMV"))
+                                    </label>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="btn btn-default">
+                                        <input type="checkbox" name="ECMO" id="ECMO" value="1" data-bind="checked: ECMO"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelECMO"))
+                                    </label>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="btn btn-default">
+                                        <input type="checkbox" name="VAFO" id="VAFO" value="1" data-bind="checked: VAFO"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelHFOV"))
+                                    </label>
+                                </div>
+                            }
+                            <!-- Descripcion/Hallazgos -->
+                            @if (ViewBag.UsrCtry == 11 || ViewBag.UsrCtry == 119)
+                            {
+                                <div class="col-md-3" data-bind="visible: HallRadioFindingsShow">
+                                    <div class='input-group'>
+                                        <span class="input-group-addon">
+                                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelHallRadioFindings"))
+                                        </span>
+                                        <input id="HallRadioFindings" type='text' class="form-control" data-bind="value: HallRadioFindings" />
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+
+                    @if (ViewBag.UsrCtry == 17)
+                    {
+                        <!-- Diagnóstico egreso rel. IRAG / Otro diagnostico de egreso -->
+                        <div class="row rowform" data-bind="visible:app.Views.Contact.NoActiveBOL">
+                            <div class="col-md-6">
+                                <div class='input-group'>
+                                    <span class="input-group-addon">
+                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelDiagnosisExitRelSARI"))
+                                    </span>
+                                    <input id="DiagEg" type='text' class="form-control case_letter" data-bind="value: DiagEg" style="max-width:480px;" />
+                                    <input id="DiagEgVal" type='hidden' class="form-control" data-bind="value: DiagEgVal, valueUpdate:'change'" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class='input-group'>
+                                    <span class="input-group-addon">
+                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOtherDiagnosisExitRelSARI"))
+                                    </span>
+                                    <input id="DiagEgOtro" type='text' data-bind="value: DiagEgOtro" class="form-control case_letter" />
+                                </div>
                             </div>
                         </div>
                     }
                 </div>
-            }
-
-            @if (ViewBag.UsrCtry == 17)
-            {
-                <!-- Diagnóstico egreso rel. IRAG / Otro diagnostico de egreso -->
-                <div class="row rowform" data-bind="visible:app.Views.Contact.NoActiveBOL">
-                    <div class="col-md-6">
-                        <div class='input-group'>
-                            <span class="input-group-addon">
-                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelDiagnosisExitRelSARI"))
-                            </span>
-                            <input id="DiagEg" type='text' class="form-control case_letter" data-bind="value: DiagEg" style="max-width:480px;" />
-                            <input id="DiagEgVal" type='hidden' class="form-control" data-bind="value: DiagEgVal, valueUpdate:'change'" />
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class='input-group'>
-                            <span class="input-group-addon">
-                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOtherDiagnosisExitRelSARI"))
-                            </span>
-                            <input id="DiagEgOtro" type='text' data-bind="value: DiagEgOtro" class="form-control case_letter" />
-                        </div>
-                    </div>
-                </div>
-            }
+            </div>
         </div>
-    </div>
-        </div>
-
 
         <div class="row rowform">
             <div class="col-md-5" style="display:none">
@@ -2966,253 +2964,253 @@
         </div>
 
         <div id="NotSample" class="row rowform" data-target="#IsSample">
-        <div class="col-md-12">
-            <div id="Toma" class="collapse in">
-                <div class="row rowform" data-bind="visible:DisableCHI">
-                    <div class="col-md-12">
-                        <div style="font-weight:bold;font-size:11px">
-                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSample1"))<br />
-                            <hr style="margin-top:3px; margin-bottom:0px; border-width:1px  0  0; " />
+            <div class="col-md-12">
+                <div id="Toma" class="collapse in">
+                    <div class="row rowform" data-bind="visible:DisableCHI">
+                        <div class="col-md-12">
+                            <div style="font-weight:bold;font-size:11px">
+                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSample1"))<br />
+                                <hr style="margin-top:3px; margin-bottom:0px; border-width:1px  0  0; " />
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row rowform">
-                    <div class="col-md-5">
-                        <div class='input-group'>
-                            <span class="input-group-addon">
-                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSampleTakeDate")) <font color="#FF0000">*</font>
-                            </span>
-                            <input id="SampleDate" type='text' class="form-control " data-bind='datepicker: SampleDate, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
+                    <div class="row rowform">
+                        <div class="col-md-5">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSampleTakeDate")) <font color="#FF0000">*</font>
+                                </span>
+                                <input id="SampleDate" type='text' class="form-control " data-bind='datepicker: SampleDate, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-7">
-                        <div class='input-group'>
-                            <span class="input-group-addon">
-                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSampleType")) <font color="#FF0000">*</font>
-                            </span>
-                            <select id="SampleType" class="form-control" data-bind="value: SampleType">
-                                <option value="">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSelect"))</option>
-                                @if (ViewBag.UsrCtry != 7)
-                                {
-                                    <option value="1">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNasopharyngealSwabs")) </option>
-                                    <option value="2">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNasalSwabs")) </option>
-                                    <option value="3">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOropharyngealSwabs")) </option>
-                                    <option value="4">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelCombinedSwabs")) </option>
-                                    <option value="5">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNasopharyngealAspiration")) </option>
-                                    <option value="12">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelTrachealSwab")) </option>
-                                    <option value="6">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNasalIrrigation")) </option>
-                                    <option value="7">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelTrachealAspiration")) </option>
-                                    <option value="8">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelBronchoalveolarLavage")) </option>
-                                    <option value="9">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelLungBiopsy")) </option>
-                                    <option value="10">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSerum"))</option>
-                                    if (ViewBag.UsrCtry != 11)
+                        <div class="col-md-7">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSampleType")) <font color="#FF0000">*</font>
+                                </span>
+                                <select id="SampleType" class="form-control" data-bind="value: SampleType">
+                                    <option value="">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSelect"))</option>
+                                    @if (ViewBag.UsrCtry != 7)
                                     {
+                                        <option value="1">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNasopharyngealSwabs")) </option>
+                                        <option value="2">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNasalSwabs")) </option>
+                                        <option value="3">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOropharyngealSwabs")) </option>
+                                        <option value="4">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelCombinedSwabs")) </option>
+                                        <option value="5">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNasopharyngealAspiration")) </option>
+                                        <option value="12">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelTrachealSwab")) </option>
+                                        <option value="6">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNasalIrrigation")) </option>
+                                        <option value="7">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelTrachealAspiration")) </option>
+                                        <option value="8">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelBronchoalveolarLavage")) </option>
+                                        <option value="9">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelLungBiopsy")) </option>
+                                        <option value="10">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSerum"))</option>
+                                        if (ViewBag.UsrCtry != 11)
+                                        {
+                                            <option value="11">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOther"))</option>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <option value="1">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNasopharyngealSwabs"))</option>
+                                        <option value="5">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNasopharyngealAspiration"))</option>
+                                        <option value="7" data-bind="visible: app.Views.Contact.SurvSARI">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelTrachealAspiration"))</option>
+                                        <option value="9" data-bind="visible: app.Views.Contact.SurvSARI">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelLungBiopsy"))</option>
+                                        <option value="11" data-bind="visible: app.Views.Contact.SurvSARI">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOther"))</option>
+                                    }
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowform">
+                        <div class="col-md-5">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelShippingDate"))
+                                </span>
+                                <input id="ShipDate" type='text' class="form-control " data-bind='datepicker: ShipDate, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelLab"))
+                                </span>
+
+                                    <select id="ShipLab" class="form-control" data-bind="options: LabsHospital,
+                                    optionsText: 'Name',
+                                    optionsValue: 'Id',
+                                    value: LabId"></select>
+
+                            </div>
+                        </div>
+                    </div>
+                    @* Muestra 2 *@
+                    <div class="row rowform" data-bind="visible:VisibleMuestra2">
+                        <div class="col-md-12">
+                            <div style="font-weight:bold;font-size:11px">
+                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSample2"))<br />
+                                <hr style="margin-top:3px; margin-bottom:0px; border-width:1px  0  0; " />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowform" data-bind="visible:VisibleMuestra2">
+                        <div class="col-md-5">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSampleTakeDate2")) <font color="#FF0000">*</font>
+                                </span>
+                                <input id="SampleDate2" name="SampleDate2" type='text' class="form-control " data-bind='datepicker: SampleDate2, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSampleType2")) <font color="#FF0000">*</font>
+                                </span>
+                                <select id="SampleType2" name="SampleType2" class="form-control" data-bind="value: SampleType2">
+                                    <option value="">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSelect"))</option>
+                                    @if (ViewBag.UsrCtry != 7)
+                                    {
+                                        <option value="1">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNasopharyngealSwabs")) </option>
+                                        <option value="2">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNasalSwabs")) </option>
+                                        <option value="3">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOropharyngealSwabs")) </option>
+                                        <option value="4">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelCombinedSwabs")) </option>
+                                        <option value="5">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNasopharyngealAspiration")) </option>
+                                        <option value="6">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNasalIrrigation")) </option>
+                                        <option value="7">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelTrachealAspiration")) </option>
+                                        <option value="8">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelBronchoalveolarLavage")) </option>
+                                        <option value="9">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelLungBiopsy")) </option>
+                                        <option value="10">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSerum"))</option>
+                                        if (ViewBag.UsrCtry != 11)
+                                        {
+                                            <option value="11">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOther"))</option>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <option value="1">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNasopharyngealSwabs"))</option>
+                                        <option value="5">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNasopharyngealAspiration"))</option>
+                                        <option value="7">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelTrachealAspiration"))</option>
+                                        <option value="9">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelLungBiopsy"))</option>
                                         <option value="11">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOther"))</option>
                                     }
-                                }
-                                else
-                                {
-                                    <option value="1">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNasopharyngealSwabs"))</option>
-                                    <option value="5">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNasopharyngealAspiration"))</option>
-                                    <option value="7" data-bind="visible: app.Views.Contact.SurvSARI">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelTrachealAspiration"))</option>
-                                    <option value="9" data-bind="visible: app.Views.Contact.SurvSARI">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelLungBiopsy"))</option>
-                                    <option value="11" data-bind="visible: app.Views.Contact.SurvSARI">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOther"))</option>
-                                }
-
-                            </select>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row rowform">
-                    <div class="col-md-5">
-                        <div class='input-group'>
-                            <span class="input-group-addon">
-                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelShippingDate"))
-                            </span>
-                            <input id="ShipDate" type='text' class="form-control " data-bind='datepicker: ShipDate, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
+                    <div class="row rowform" data-bind="visible:VisibleMuestra2">
+                        <div class="col-md-5">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelShippingDate2"))
+                                </span>
+                                <input id="ShipDate2" name="ShipDate2" type='text' class="form-control " data-bind='datepicker: ShipDate2, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelLab2"))
+                                </span>
+                                <select id="ShipLab2" name="ShipLab2" class="form-control" data-bind="options: LabsHospital,
+                            optionsText: 'Name',
+                            optionsValue: 'Id',
+                            value: LabId2"></select>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-7">
-                        <div class='input-group'>
-                            <span class="input-group-addon">
-                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelLab"))
-                            </span>
-
-                                <select id="ShipLab" class="form-control" data-bind="options: LabsHospital,
-                                optionsText: 'Name',
-                                optionsValue: 'Id',
-                                value: LabId"></select>
-
+                    @* Muestra 3 *@
+                    <div class="row rowform" data-bind="visible:VisibleMuestra3">
+                        <div class="col-md-12">
+                            <div style="font-weight:bold;font-size:11px">
+                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSample3"))<br />
+                                <hr style="margin-top:3px; margin-bottom:0px; border-width:1px  0  0; " />
+                            </div>
                         </div>
                     </div>
-                </div>
-                @* Muestra 2 *@
-                <div class="row rowform" data-bind="visible:VisibleMuestra2">
-                    <div class="col-md-12">
-                        <div style="font-weight:bold;font-size:11px">
-                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSample2"))<br />
-                            <hr style="margin-top:3px; margin-bottom:0px; border-width:1px  0  0; " />
+                    <div class="row rowform" data-bind="visible:VisibleMuestra3">
+                        <div class="col-md-5">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSampleTakeDate3")) <font color="#FF0000">*</font>
+                                </span>
+                                <input id="SampleDate3" name="SampleDate3" type='text' class="form-control " data-bind='datepicker: SampleDate3, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="row rowform" data-bind="visible:VisibleMuestra2">
-                    <div class="col-md-5">
-                        <div class='input-group'>
-                            <span class="input-group-addon">
-                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSampleTakeDate2")) <font color="#FF0000">*</font>
-                            </span>
-                            <input id="SampleDate2" name="SampleDate2" type='text' class="form-control " data-bind='datepicker: SampleDate2, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
-                        </div>
-                    </div>
-                    <div class="col-md-7">
-                        <div class='input-group'>
-                            <span class="input-group-addon">
-                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSampleType2")) <font color="#FF0000">*</font>
-                            </span>
-                            <select id="SampleType2" name="SampleType2" class="form-control" data-bind="value: SampleType2">
-                                <option value="">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSelect"))</option>
-                                @if (ViewBag.UsrCtry != 7)
-                                {
-                                    <option value="1">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNasopharyngealSwabs")) </option>
-                                    <option value="2">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNasalSwabs")) </option>
-                                    <option value="3">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOropharyngealSwabs")) </option>
-                                    <option value="4">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelCombinedSwabs")) </option>
-                                    <option value="5">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNasopharyngealAspiration")) </option>
-                                    <option value="6">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNasalIrrigation")) </option>
-                                    <option value="7">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelTrachealAspiration")) </option>
-                                    <option value="8">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelBronchoalveolarLavage")) </option>
-                                    <option value="9">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelLungBiopsy")) </option>
-                                    <option value="10">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSerum"))</option>
-                                    if (ViewBag.UsrCtry != 11)
+                        <div class="col-md-7">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSampleType3")) <font color="#FF0000">*</font>
+                                </span>
+                                <select id="SampleType3" name="SampleType3" class="form-control" data-bind="value: SampleType3">
+                                    <option value="">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSelect"))</option>
+                                    @if (ViewBag.UsrCtry != 7)
                                     {
+                                        <option value="1">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNasopharyngealSwabs")) </option>
+                                        <option value="2">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNasalSwabs")) </option>
+                                        <option value="3">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOropharyngealSwabs")) </option>
+                                        <option value="4">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelCombinedSwabs")) </option>
+                                        <option value="5">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNasopharyngealAspiration")) </option>
+                                        <option value="6">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNasalIrrigation")) </option>
+                                        <option value="7">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelTrachealAspiration")) </option>
+                                        <option value="8">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelBronchoalveolarLavage")) </option>
+                                        <option value="9">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelLungBiopsy")) </option>
+                                        <option value="10">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSerum"))</option>
+                                        if (ViewBag.UsrCtry != 11)
+                                        {
+                                            <option value="11">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOther"))</option>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <option value="1">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNasopharyngealSwabs"))</option>
+                                        <option value="5">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNasopharyngealAspiration"))</option>
+                                        <option value="7">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelTrachealAspiration"))</option>
+                                        <option value="9">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelLungBiopsy"))</option>
                                         <option value="11">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOther"))</option>
                                     }
-                                }
-                                else
-                                {
-                                    <option value="1">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNasopharyngealSwabs"))</option>
-                                    <option value="5">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNasopharyngealAspiration"))</option>
-                                    <option value="7">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelTrachealAspiration"))</option>
-                                    <option value="9">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelLungBiopsy"))</option>
-                                    <option value="11">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOther"))</option>
-                                }
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row rowform" data-bind="visible:VisibleMuestra2">
-                    <div class="col-md-5">
-                        <div class='input-group'>
-                            <span class="input-group-addon">
-                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelShippingDate2"))
-                            </span>
-                            <input id="ShipDate2" name="ShipDate2" type='text' class="form-control " data-bind='datepicker: ShipDate2, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
-                        </div>
-                    </div>
-                    <div class="col-md-7">
-                        <div class='input-group'>
-                            <span class="input-group-addon">
-                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelLab2"))
-                            </span>
-                            <select id="ShipLab2" name="ShipLab2" class="form-control" data-bind="options: LabsHospital,
-                        optionsText: 'Name',
-                        optionsValue: 'Id',
-                        value: LabId2"></select>
-                        </div>
-                    </div>
-                </div>
-                @* Muestra 3 *@
-                <div class="row rowform" data-bind="visible:VisibleMuestra3">
-                    <div class="col-md-12">
-                        <div style="font-weight:bold;font-size:11px">
-                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSample3"))<br />
-                            <hr style="margin-top:3px; margin-bottom:0px; border-width:1px  0  0; " />
-                        </div>
-                    </div>
-                </div>
-                <div class="row rowform" data-bind="visible:VisibleMuestra3">
-                    <div class="col-md-5">
-                        <div class='input-group'>
-                            <span class="input-group-addon">
-                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSampleTakeDate3")) <font color="#FF0000">*</font>
-                            </span>
-                            <input id="SampleDate3" name="SampleDate3" type='text' class="form-control " data-bind='datepicker: SampleDate3, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
-                        </div>
-                    </div>
-                    <div class="col-md-7">
-                        <div class='input-group'>
-                            <span class="input-group-addon">
-                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSampleType3")) <font color="#FF0000">*</font>
-                            </span>
-                            <select id="SampleType3" name="SampleType3" class="form-control" data-bind="value: SampleType3">
-                                <option value="">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSelect"))</option>
-                                @if (ViewBag.UsrCtry != 7)
-                                {
-                                    <option value="1">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNasopharyngealSwabs")) </option>
-                                    <option value="2">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNasalSwabs")) </option>
-                                    <option value="3">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOropharyngealSwabs")) </option>
-                                    <option value="4">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelCombinedSwabs")) </option>
-                                    <option value="5">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNasopharyngealAspiration")) </option>
-                                    <option value="6">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNasalIrrigation")) </option>
-                                    <option value="7">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelTrachealAspiration")) </option>
-                                    <option value="8">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelBronchoalveolarLavage")) </option>
-                                    <option value="9">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelLungBiopsy")) </option>
-                                    <option value="10">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSerum"))</option>
-                                    if (ViewBag.UsrCtry != 11)
-                                    {
-                                        <option value="11">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOther"))</option>
-                                    }
-                                }
-                                else
-                                {
-                                    <option value="1">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNasopharyngealSwabs"))</option>
-                                    <option value="5">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNasopharyngealAspiration"))</option>
-                                    <option value="7">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelTrachealAspiration"))</option>
-                                    <option value="9">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelLungBiopsy"))</option>
-                                    <option value="11">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOther"))</option>
-                                }
 
-                            </select>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row rowform" data-bind="visible:VisibleMuestra3">
-                    <div class="col-md-5">
-                        <div class='input-group'>
-                            <span class="input-group-addon">
-                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelShippingDate3"))
-                            </span>
-                            <input id="ShipDate3" name="ShipDate3" type='text' class="form-control " data-bind='datepicker: ShipDate3, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
+                    <div class="row rowform" data-bind="visible:VisibleMuestra3">
+                        <div class="col-md-5">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelShippingDate3"))
+                                </span>
+                                <input id="ShipDate3" name="ShipDate3" type='text' class="form-control " data-bind='datepicker: ShipDate3, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-7">
-                        <div class='input-group'>
-                            <span class="input-group-addon">
-                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelLab3"))
-                            </span>
-                            <select id="ShipLab3" name="ShipLab3" class="form-control" data-bind="options: LabsHospital,
-                        optionsText: 'Name',
-                        optionsValue: 'Id',
-                        value: LabId3"></select>
+                        <div class="col-md-7">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelLab3"))
+                                </span>
+                                <select id="ShipLab3" name="ShipLab3" class="form-control" data-bind="options: LabsHospital,
+                            optionsText: 'Name',
+                            optionsValue: 'Id',
+                            value: LabId3"></select>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
         <div class="row rowform">
-        <div class="col-md-12">
-            @*<div class="btn-group">
-                <button id="saveHospital" type="button" class="btn btn-primary" data-bind="click: Save, visible:false">Guardar</button>
-                <span></span>
-                <button id="cancelHospital" type="button" class="btn btn-primary" data-bind="click: Cancel, visible:false">Regresar</button>
-            </div>*@
-            <button id="Atras" type="button" class="btn btn-primary btn-back" onclick="$('#tabs').tabs({ active: 2 });">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalBtnBack"))</button>
+            <div class="col-md-12">
+                @*<div class="btn-group">
+                    <button id="saveHospital" type="button" class="btn btn-primary" data-bind="click: Save, visible:false">Guardar</button>
+                    <span></span>
+                    <button id="cancelHospital" type="button" class="btn btn-primary" data-bind="click: Cancel, visible:false">Regresar</button>
+                </div>*@
+                <button id="Atras" type="button" class="btn btn-primary btn-back" onclick="$('#tabs').tabs({ active: 2 });">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalBtnBack"))</button>
 
-            <button id="Siguiente" type="button" class="btn btn-primary btn-next" onclick="if (app.Views.Hospital.validate() == true) $('#tabs').tabs({ active: 4 });">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalBtnNext"))</button>
+                <button id="Siguiente" type="button" class="btn btn-primary btn-next" onclick="if (app.Views.Hospital.validate() == true) $('#tabs').tabs({ active: 4 });">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalBtnNext"))</button>
+            </div>
         </div>
-    </div>
     </div>
 
     <!-- Estado del caso -->

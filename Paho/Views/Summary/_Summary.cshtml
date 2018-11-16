@@ -155,19 +155,19 @@
             <!--ETI Emergency. F-->
             <div class='col-md-1 input-group' style='@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 ) ? "padding-left:0; padding-right:0;" : "")' data-bind="visible:DisableCHI() || ActiveBOL() || NoActiveSUR() || NoActiveJAM()">
                 <span class="input-group-addon" data-bind="visible: ActiveBOL()">
-                    77@(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelILIEmerFem"))
+                    @(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelILIEmerFem"))
                 </span>
             </div>
             <!--ETI Emergency. M-->
             <div class='col-md-1 input-group' style='@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 ) ? "padding-left:0; padding-right:0;" : "")' data-bind="visible:DisableCHI() || ActiveBOL() || NoActiveSUR() || NoActiveJAM()">
                 <span class="input-group-addon" data-bind="visible: ActiveBOL()">
-                    88@(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelILIEmerMaso"))
+                    @(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelILIEmerMaso"))
                 </span>
             </div>
             <!--"ETI" : "ETI Emer. Total-->
             <div class="col-md-1 input-group" data-bind="visible: EnableCHI() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY() ">
                 <span class="input-group-addon">
-                    99@((ViewBag.UsrCtry == 7) ? (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelILI")) : (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelILIEmer")))
+                    @((ViewBag.UsrCtry == 7) ? (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelILI")) : (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelILIEmer")))
                 </span>
             </div>
         </div>
@@ -416,15 +416,15 @@
         <div class="@((ViewBag.UsrCtry == 3 ) ?  "col-md-2" : "col-md-1")" data-bind="visible: EnableCHI() && NoActiveBOL() && !ActiveHON()">
             <!--  -->
             <div class='col-md-1 input-group' data-bind="visible: ActiveBOL()">
-                gg<input type='text' name="ETINumEmerFem" id="ETINumEmerFem" class="form-control" style="padding:6px;" data-bind="value: ETINumEmerFem" />
+                <input type='text' name="ETINumEmerFem" id="ETINumEmerFem" class="form-control" style="padding:6px;" data-bind="value: ETINumEmerFem" />
             </div>
             <!--  -->
             <div class='col-md-1 input-group' data-bind="visible: ActiveBOL()">
-                hh<input type='text' name="ETINumEmerMaso" id="ETINumEmerMaso" class="form-control" style="padding:6px;" data-bind="value: ETINumEmerMaso" />
+                <input type='text' name="ETINumEmerMaso" id="ETINumEmerMaso" class="form-control" style="padding:6px;" data-bind="value: ETINumEmerMaso" />
             </div>
             <!--  -->
             <div class="col-md-1 input-group" id="ETINumEmerST" data-bind="visible: EnableCHI() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY()">
-                ii<input type='text' name="ETINumEmerST" id="ETINumEmerST" class="form-control" style="padding:6px;" @((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "readonly='readonly'" : "") data-bind="value: ETINumEmerST" />
+                <input type='text' name="ETINumEmerST" id="ETINumEmerST" class="form-control" style="padding:6px;" @((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "readonly='readonly'" : "") data-bind="value: ETINumEmerST" />
             </div>
         </div>
     }

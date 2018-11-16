@@ -81,11 +81,9 @@
     self.Hamlets = ko.observableArray();
     self.selectedHamletId = ko.observable();
     self.ReloadHamlets = function (select) {
-        console.log("zzz1");
-        console.log(self.selectedNeighborhoodId());
-        console.log("zzz1a");
+        //console.log(self.selectedNeighborhoodId());
         if (typeof self.selectedNeighborhoodId() === "undefined") {
-            console.log("zzz2");
+            //console.log("zzz2");
             self.Hamlets("");
             return;
         }
@@ -169,13 +167,15 @@
 
     self.EnableCHI = ko.computed(function () {
         return (self.UsrCountry() != 7) ? true : false;
-        
     }, self);
 
     self.EnableJAM = ko.computed(function () {
         return (self.UsrCountry() == 17) ? true : false;
-
     }, self);
+
+    /*self.EnableHON = ko.computed(function () {
+        return (self.UsrCountry() == 15) ? true : false;
+    }, self);*/
 
     self.ResetGEO = function () {
         self.hasReset(true);

@@ -251,6 +251,19 @@
         }
     }, self);
 
+    self.UnderTeenYears = ko.computed(function () {
+        if (app.Views.Contact.AMeasure() == "Month" || app.Views.Contact.AMeasure() == "Day" || (app.Views.Contact.AMeasure() == "Year" && app.Views.Contact.Age() < 10)) {
+            return true;
+        } else {
+            self.Smoking(false);
+            self.Alcohol(false);
+            self.TrabSalud(false);
+            //self.AusLacMat(false);
+            return false;
+        }
+    }, self);
+
+
     self.InfVacTR = ko.computed(function () {
         if ((app.Views.Contact.AMeasure() == "Month" && app.Views.Contact.Age() < 6) || app.Views.Contact.AMeasure() == "Day" ) {
             return false;

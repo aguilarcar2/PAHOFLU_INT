@@ -358,6 +358,12 @@ namespace Paho.Controllers
                     case "CC":
                         templateToUse = "ConsolidadoCargaTemplate";
                         break;
+                    case "LRD":
+                        templateToUse = "LibroReporteDiario";
+                        break;
+                    case "CPE":
+                        templateToUse = "CondicionesPreExistentes";
+                        break;
                     default:
                         templateToUse = "SariTemplate";
                         break;
@@ -387,7 +393,7 @@ namespace Paho.Controllers
                         }
                         //#### 
 
-                        if (reportTemplate == "R1" || reportTemplate == "R2" || reportTemplate == "R3" || reportTemplate == "R4" || reportTemplate == "D1" || reportTemplate == "B1")
+                        if (reportTemplate == "R1" || reportTemplate == "R2" || reportTemplate == "R3" || reportTemplate == "R4" || reportTemplate == "D1" || reportTemplate == "B1" || reportTemplate == "CPE")
                         {
                             insertRow = false;
                         }
@@ -1085,7 +1091,15 @@ namespace Paho.Controllers
             int excelColTota = 0, nPosiTipo = 0, nInicTip2 = 0, nPoSuViGr = 0;
             Dictionary<string, string> casosNHPLNumber = new Dictionary<string, string>();
 
-            _storedProcedure = (storedProcedure == "ML1") ? "MuestrasLabNPHL" : storedProcedure;      //#### CAFQ
+            //_storedProcedure = (storedProcedure == "ML1") ? "MuestrasLabNPHL" : storedProcedure;      //#### CAFQ
+            _storedProcedure = storedProcedure;
+            if (storedProcedure == "ML1")
+                _storedProcedure = "MuestrasLabNPHL";
+            else if (storedProcedure == "LRD")
+                _storedProcedure = "R9_LibroReporteDiario";
+            else if (storedProcedure == "CPE")
+                _storedProcedure = "R10_CondicionesPreexistentes";
+
             if (storedProcedure == "R5")
             {
                 if (countryId == 17 || countryId == 119 || countryId == 11)
@@ -2223,8 +2237,7 @@ namespace Paho.Controllers
                 }
             }
         }
-
-        //private static void AppendDataToExcel_IndDes(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string reportTemplate, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo)
+                
         private static void AppendDataToExcel_IndDes(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string reportTemplate, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId)         //#### CAFQ
         {
             ExcelWorksheet excelWorksheet1 = excelWorkBook.Worksheets["DatosPie"];
@@ -2566,8 +2579,7 @@ namespace Paho.Controllers
 
             return labelSemanas;
         }
-
-        //private static void recuperarDatosIndDes(string consString, string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, int? YearFrom, int? YearTo, int IRAG, int opcion, decimal[] nResuOut, string[,] aResuOut = null)
+                
         private static void recuperarDatosIndDes(string consString, string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int opcion, decimal[] nResuOut, string[,] aResuOut = null)         //#### CAFQ
         {
             using (var con = new SqlConnection(consString))
@@ -2879,6 +2891,7 @@ namespace Paho.Controllers
             // Apply only if it has a Total row at the end and hast SUM in range, i.e. SUM(A1:A4)
             //excelWorksheet.DeleteRow(row, 2);
         }
+
         private void ConfigToExcel_FLUID(int countryId, string languaje_country, int? regionId, int? year, int? hospitalId, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int sheet, bool? insert_row)
         {
             var excelWorksheet = excelWorkBook.Worksheets["Leyendas"];
