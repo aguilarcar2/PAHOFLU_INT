@@ -3728,7 +3728,7 @@
                     </label>
                 </div>
 
-                <div class="col-md-5" data-bind="visible:NotShowProcessed">
+                <div class="col-md-5" data-bind="visible:NotShowProcessed_National">
                     <div class='input-group'>
                         <span class="input-group-addon">
                             @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelCauseNotProcessed"))
@@ -3743,7 +3743,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-5" data-bind="visible:ShowProcessed">
+                <div class="col-md-5" data-bind="visible:ShowProcessed_National">
                     <div class='input-group'>
                         <span class="input-group-addon">
                             @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigLabIntLabelBarCode"))
@@ -3762,7 +3762,7 @@
             </div>
         </div>
 
-        <div data-bind="visible:ShowProcessed" style="padding-left:15px;">
+        <div data-bind="visible:ShowProcessed() || ShowProcessed_National()" style="padding-left:15px;">
             <div class="row rowform">
                 <div class="row rowform">
                     <div class="col-md-3">

@@ -601,8 +601,8 @@ namespace Paho.Controllers
                                  {
                                      surv_ID = flucase.Surv,
                                      surv_IDInusual = flucase.SurvInusual,    //#### CAFQ: 180604 - Jamaica Universal
-                                     ready_close = ((flucase.flow == db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID && i.Conclusion == true).OrderBy(x => x.Priority).FirstOrDefault().Priority && flucase.statement == 2) || (flucase.IsSample == false) || (flucase.Processed == false) || (flucase.Processed2 == false) || (flucase.Processed3 == false)) ? 1 : 0,
-                                     ready_close2 = ((flucase.flow == db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID).OrderByDescending(x => x.Priority).FirstOrDefault().Priority && flucase.statement == 2) || (flucase.IsSample == false) || (flucase.Processed == false) || (flucase.Processed2 == false) || (flucase.Processed3 == false)) ? 1 : 0,
+                                     ready_close = ((flucase.flow == db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID && i.Conclusion == true).OrderBy(x => x.Priority).FirstOrDefault().Priority && flucase.statement == 2) || (flucase.IsSample == false) || ((user.Institution.CountryID == 15) ? (flucase.Processed == false && flucase.Processed_National == false ) : (flucase.Processed == false) )|| (flucase.Processed2 == false) || (flucase.Processed3 == false)) ? 1 : 0,
+                                     ready_close2 = ((flucase.flow == db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID).OrderByDescending(x => x.Priority).FirstOrDefault().Priority && flucase.statement == 2) || (flucase.IsSample == false) || ((user.Institution.CountryID == 15) ? (flucase.Processed == false && flucase.Processed_National == false) : (flucase.Processed == false)) || (flucase.Processed2 == false) || (flucase.Processed3 == false)) ? 1 : 0,
                                      id_D = flucase.ID,
                                      H_D = flucase.HospitalDate,
                                      LN_D = flucase.LName1 + " " + flucase.LName2 ?? "",
@@ -614,6 +614,7 @@ namespace Paho.Controllers
                                      D_D = flucase.Destin,
                                      FRVT_D = flucase.FinalResultVirusTypeID,
                                      P_D = flucase.Processed,
+                                     P_D_N = flucase.Processed_National,
                                      CS_D = flucase.CaseStatus,
                                      CS_D_Cat = flucase.CatStatusCase,
                                      VR_IF_D = flucase.CaseLabTests.Where(e => e.TestType == 1 && e.Processed != null).OrderBy(y => y.CatVirusType.orden).ThenBy(d => d.SampleNumber).ThenBy(u => u.TestDate).FirstOrDefault(),
@@ -1983,6 +1984,7 @@ namespace Paho.Controllers
             var user = UserManager.FindById(User.Identity.GetUserId());
             institutions = db.Institutions.OfType<Lab>().Where(i => i.ID == user.Institution.ID);
             var institutionsIds = institutions.Select(x => (long?)x.ID).ToArray();
+            var user_cty = user.Institution.CountryID;
 
             var InstFlow_NPHL = false;
             var canConclude = true;
@@ -2049,7 +2051,20 @@ namespace Paho.Controllers
                     }
                     else if (((flucase.Processed == false || flucase.Processed == null) && (flucase.Processed2 == false || flucase.Processed2 == null) && (flucase.Processed3 == false || flucase.Processed3 == null) && flucase.IsSample != true) || flucase.IsSample == false )
                     {
-                        canConclude = true;
+                        if ( user_cty == 15)
+                        {
+                             if(  flucase.Processed_National == false)
+                            {
+                                canConclude = true;
+                            }else
+                            {
+                                canConclude = false;
+                            }
+
+                        } else
+                        {
+                            canConclude = true;
+                        }
                     }
 
 
@@ -2060,7 +2075,22 @@ namespace Paho.Controllers
                     canConclude = true;
                 } else if ((flucase.Processed == false  && (flucase.Processed2 == false || flucase.Processed2 == null) && (flucase.Processed3 == false || flucase.Processed3 == null)) && flucase.IsSample == true)
                 {
-                    canConclude = true;
+                    if (user_cty == 15)
+                    {
+                        if (flucase.Processed_National == false)
+                        {
+                            canConclude = true;
+                        }
+                        else
+                        {
+                            canConclude = false;
+                        }
+
+                    }
+                    else
+                    {
+                        canConclude = true;
+                    }
                 }
 
                
@@ -2094,6 +2124,9 @@ namespace Paho.Controllers
                             actual_flow = (Int32)Sample_test.flow_test;
                         //}
 
+                        if (user_cty == 17 && preview_flow == 0) preview_flow = 1;
+                        if (user_cty == 15 && preview_flow == 0 && flucase.Processed == false) preview_flow = 1;
+
                         if ((actual_flow - preview_flow) == 1 || (actual_flow - preview_flow) == 0)
                         {
                             flow_complete_Sample_1 = true;
@@ -2117,6 +2150,8 @@ namespace Paho.Controllers
                         preview_flow = actual_flow;
                         actual_flow = (Int32)Sample_test.flow_test;
                         //}
+
+                        if (user_cty == 17 && preview_flow == 0) preview_flow = 1;
 
                         if ((actual_flow - preview_flow) == 1 || (actual_flow - preview_flow) == 0)
                         {
@@ -2172,6 +2207,21 @@ namespace Paho.Controllers
                         canConclude_Sample_2 = true;
                         canConclude_Sample_3 = true;
                     }
+                    
+                    if (user_cty == 15)
+                    {
+                        if (((flucase.SampleDate == null && flucase.Processed == null) || flucase.Processed == false) &&
+                        ((flucase.SampleDate == null && flucase.Processed_National == null) || flucase.Processed_National == false) &&
+                       ((flucase.SampleDate2 == null && flucase.Processed2 == null) || flucase.Processed2 == false) &&
+                       ((flucase.SampleDate3 == null && flucase.Processed3 == null) || flucase.Processed3 == false))
+                        {
+                            canConclude_Sample_1 = true;
+                            canConclude_Sample_2 = true;
+                            canConclude_Sample_3 = true;
+                        }
+                    }
+
+                    
                 }
                     
 
