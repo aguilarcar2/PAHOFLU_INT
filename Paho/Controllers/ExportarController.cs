@@ -364,6 +364,9 @@ namespace Paho.Controllers
                     case "CPE":
                         templateToUse = "CondicionesPreExistentes";
                         break;
+                    case "CPV":
+                        templateToUse = "CasosPositivosConVacuna";
+                        break;
                     default:
                         templateToUse = "SariTemplate";
                         break;
@@ -404,6 +407,8 @@ namespace Paho.Controllers
                             AppendDataToExcel_REVELAC(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, AreaID_);        //#### CAFQ
                         else if (reportTemplate == "CC")
                             AppendDataToExcel_ConsolidadoCarga(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, Sentinel);        //#### CAFQ
+                        else if (reportTemplate == "CPV")
+                            AppendDataToExcel_CasosPositivosConVacuna(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, Sentinel);        //#### CAFQ
                         else if (reportTemplate.ToUpper() == "FLUID")
                         {
                             var contador = 0;
@@ -1099,6 +1104,8 @@ namespace Paho.Controllers
                 _storedProcedure = "R9_LibroReporteDiario";
             else if (storedProcedure == "CPE")
                 _storedProcedure = "R10_CondicionesPreexistentes";
+            else if (storedProcedure == "CPV")
+                _storedProcedure = "R11_CasosPositivosInfluenzaConVacuna";
 
             if (storedProcedure == "R5")
             {
@@ -3040,6 +3047,67 @@ namespace Paho.Controllers
                 }
             }
         }
+
+
+        private void AppendDataToExcel_CasosPositivosConVacuna(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string reportTemplate, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? Sentinel)
+        {
+            ExcelWorksheet excelWorksheet1 = excelWorkBook.Worksheets[1];
+            var row = startRow;
+            var column = startColumn;
+            var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+            using (var con = new SqlConnection(consString))
+            {
+                using (var command = new SqlCommand("R11_CasosPositivosInfluenzaConVacuna", con) { CommandType = CommandType.StoredProcedure, CommandTimeout = 600 })
+                {
+                    command.Parameters.Clear();
+                    command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
+                    command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
+                    command.Parameters.Add("@Languaje", SqlDbType.Text).Value = languaje_;
+                    command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
+                    command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
+                    command.Parameters.Add("@Mes_", SqlDbType.Int).Value = month;
+                    command.Parameters.Add("@SE", SqlDbType.Int).Value = se;
+                    command.Parameters.Add("@yearFrom", SqlDbType.Int).Value = YearFrom;
+                    command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
+                    command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
+                    command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
+                    command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;
+                    command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;
+                    command.Parameters.Add("@Sentinel", SqlDbType.Int).Value = Sentinel;
+
+                    con.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        int nFila = 0;
+                        while (reader.Read())
+                        {
+                            // Hospitalizaciones
+                            excelWorksheet1.Cells[row + nFila, column + 1].Value = reader.GetValue(1);
+                            excelWorksheet1.Cells[row + nFila, column + 2].Value = reader.GetValue(2);
+                            excelWorksheet1.Cells[row + nFila, column + 4].Value = reader.GetValue(3);
+
+                            excelWorksheet1.Cells[row + nFila, column + 6].Value = reader.GetValue(4);
+                            excelWorksheet1.Cells[row + nFila, column + 7].Value = reader.GetValue(5);
+                            excelWorksheet1.Cells[row + nFila, column + 9   ].Value = reader.GetValue(6);
+
+                            excelWorksheet1.Cells[row + nFila, column + 11].Value = reader.GetValue(7);
+                            excelWorksheet1.Cells[row + nFila, column + 12].Value = reader.GetValue(8);
+                            excelWorksheet1.Cells[row + nFila, column + 14].Value = reader.GetValue(9);
+                            //####
+                            ++nFila;
+                        }
+                    }
+
+                    command.Parameters.Clear();
+                    con.Close();
+                }
+            }
+
+            //****
+            reportLabels(consString, countryId, languaje_, ReportCountry, hospitalId, year, YearFrom, YearTo, se, startDate, endDate, excelWorkBook, excelWorksheet1);
+        }
+
 
         public string getMsg(string msgView)
         {
