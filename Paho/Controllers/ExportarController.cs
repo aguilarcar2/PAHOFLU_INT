@@ -1529,7 +1529,7 @@ namespace Paho.Controllers
             {
                 using (var con = new SqlConnection(consString))
                 {
-                    using (var command = new SqlCommand("R6_antecedentes", con) { CommandType = CommandType.StoredProcedure })
+                    using (var command = new SqlCommand("R6_antecedentes", con) { CommandType = CommandType.StoredProcedure, CommandTimeout = 1200 })
                     {
                         command.Parameters.Clear();
                         command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
