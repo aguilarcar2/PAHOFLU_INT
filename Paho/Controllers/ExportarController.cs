@@ -1383,7 +1383,7 @@ namespace Paho.Controllers
                                 }
                             }
                             /*Inicia llenado de Tabla2. Este reporte, en el mismo tab tiene 2 tablas, con aspectos diferentes entre ellas*/
-                            using (var command2 = new SqlCommand(storedProcedure + "_2", con) { CommandType = CommandType.StoredProcedure })
+                            using (var command2 = new SqlCommand(storedProcedure + "_2", con) { CommandType = CommandType.StoredProcedure, CommandTimeout = 1200 })
                             {
                                 command2.Parameters.Clear();
                                 command2.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
