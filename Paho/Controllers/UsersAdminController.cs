@@ -64,7 +64,8 @@ namespace Paho.Controllers
                 ListUser = await UserManager.Users.Where(j => j.InstitutionID == Institution_Id).OrderBy(s => s.Institution.Country.Code).ThenBy(s => s.Institution.Name).ThenBy(s => s.UserName).ThenBy(s => s.FirstName1).ToListAsync();
             } else if (user.Institution.AccessLevel == AccessLevel.Country )
             {
-                ListUser = await UserManager.Users.Where(j => j.Institution.CountryID == countryId).OrderBy(s => s.Institution.Country.Code).ThenBy(s => s.Institution.Name).ThenBy(s => s.UserName).ThenBy(s => s.FirstName1).ToListAsync();
+                //ListUser = await UserManager.Users.Where(j => j.Institution.CountryID == countryId).OrderBy(s => s.Institution.Country.Code).ThenBy(s => s.Institution.Name).ThenBy(s => s.UserName).ThenBy(s => s.FirstName1).ToListAsync();
+                ListUser = await UserManager.Users.Where(j => j.Institution.CountryID == countryId).OrderBy(s => s.UserName).ThenBy(s => s.FirstName1).ToListAsync();
             }
 
             setUserRolesListJoin(ListUser);     //#### CAFQ: 180530
