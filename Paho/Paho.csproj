@@ -284,6 +284,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AreasController.cs" />
+    <Compile Include="Controllers\AssignFinalResult.cs" />
     <Compile Include="Controllers\CatSampleReasonsNoProcessedController.cs" />
     <Compile Include="Controllers\CatVirusLinajesController.cs" />
     <Compile Include="Controllers\ImportPadronController.cs" />
@@ -2423,6 +2424,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Concrete\" />
+    <Folder Include="Views\AssignFinalResult\" />
     <Folder Include="Views\ExportGraphics\" />
     <Folder Include="Views\ExportLab\" />
     <Folder Include="Views\GetImportLab\" />
