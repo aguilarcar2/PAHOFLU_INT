@@ -1252,6 +1252,7 @@ namespace Paho.Models
         public int? FinalResultVirusTypeID_3 { get; set; }
         public int? FinalResultVirusSubTypeID_3 { get; set; }
         public int? FinalResultVirusLineageID_3 { get; set; }
+        public string GeneticGroup { get; set; }
         public int? CaseStatus { get; set; }
         public DateTime? CloseDate { get; set; }
         public string ObservationCase { get; set; }
@@ -1718,6 +1719,7 @@ namespace Paho.Models
             : base("DefaultConnection", throwIfV1Schema: false)
         {
         }
+
         public static PahoDbContext Create()
         {
             return new PahoDbContext();
@@ -2100,6 +2102,7 @@ namespace Paho.Models
                    p.FinalResultVirusTypeID_3,
                    p.FinalResultVirusSubTypeID_3,
                    p.FinalResultVirusLineageID_3,
+                   p.GeneticGroup,                              // Grupo genetico
                    p.CaseStatus,
                    p.CloseDate,
                    p.ObservationCase

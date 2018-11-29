@@ -25,7 +25,7 @@
         </div>
         <!-- Area (Parish) -->
         <div class="form-group vertical-align">
-            <label class="col-md-1_5 text-right" for="AreaID">@((string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelArea", ViewBag.UsrCtry, ViewBag.UsrCtryLang))</label>
+            <label class="col-md-1_5 text-right" for="AreaID">@((string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelArea", ViewBag.UsrCtry, ViewBag.UsrCtryLang)):</label>
             <div class="col-md-10">
                 @*@Html.DropDownList("AreaID", null, htmlAttributes: new { @class = "form-control" })*@
                 @Html.DropDownList("AreaID", null, new { @class = "form-control" })

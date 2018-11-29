@@ -2343,6 +2343,7 @@ namespace Paho.Controllers
                     FinalResultVirusTypeID_3 = flucase.FinalResultVirusTypeID_3,
                     FinalResultVirusSubTypeID_3 = flucase.FinalResultVirusSubTypeID_3,
                     FinalResultVirusLineageID_3 = flucase.FinalResultVirusLineageID_3,
+                    GeneticGroup = flucase.GeneticGroup,            // Grupo genetico
                     flow_record = flucase.flow,
                     flow_institution = flow_local_lab,
                     flow_open_always = flow_open_always,
@@ -2669,6 +2670,7 @@ namespace Paho.Controllers
                 int? FinalResultVirusTypeID_3,
                 int? FinalResultVirusSubTypeID_3,
                 int? FinalResultVirusLineageID_3,
+                string GeneticGroup,
                 int? DataStatement,
                 // Lab nacional solo para HN
                 DateTime? RecDate_National,
@@ -2800,8 +2802,10 @@ namespace Paho.Controllers
             flucase.FinalResultVirusTypeID_3 = FinalResultVirusTypeID_3;
             flucase.FinalResultVirusSubTypeID_3 = FinalResultVirusSubTypeID_3;
             flucase.FinalResultVirusLineageID_3 = FinalResultVirusLineageID_3;
-            //flucase.flow = 2;
 
+            flucase.GeneticGroup = GeneticGroup;
+            
+            //flucase.flow = 2;
             //if (db.CaseLabTests.Count() > 0) PCR_IFI_RecordHistory = true;
 
             db.CaseLabTests.RemoveRange(flucase.CaseLabTests);

@@ -3618,6 +3618,8 @@
             </div>
         }
 
+        @* Empieza muestra dos muestra 1 *@
+
         <div class="row rowform" data-bind="visible:DisableCHI">
             <div class="col-md-12">
                 <div style="font-weight:bold;font-size:11px">
@@ -4081,8 +4083,6 @@
                 </div>
             </div>
         </div>
-
-
 
         @* Empieza muestra dos muestra 2 *@
 
@@ -5459,6 +5459,19 @@
                 </div>
             </div>
         </div>
+
+        <!-- Grupo genetico -->
+        <div class="row rowform">
+            <div class="col-md-12">
+                <div class='input-group'>
+                    <span class="input-group-addon">
+                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelGeneticGroup"))
+                    </span>
+                    <input id="GeneticGroup" type='text' class="form-control case_letter" data-bind='value: GeneticGroup' />
+                </div>
+            </div>
+        </div>
+
         @*//}*@
 
         <!-- Boton: Atras -->

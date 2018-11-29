@@ -1037,6 +1037,8 @@ function LabViewModel(app, dataModel) {
     self.FinalResultVirusSubTypeID_3 = ko.observable("");
     self.FinalResultVirusLineageID_3 = ko.observable("");
 
+    self.GeneticGroup = ko.observable("");
+
     self.resetFinalResult = function () {
 
         self.FinalResult("");
@@ -1477,6 +1479,9 @@ function LabViewModel(app, dataModel) {
         self.FinalResultVirusTypeID_3("");
         self.FinalResultVirusSubTypeID_3("");
         self.FinalResultVirusLineageID_3("");
+
+        self.GeneticGroup("");
+        
         self.NoProRen("");
         self.NoProRen2("");
         self.NoProRen3("");
@@ -1827,7 +1832,10 @@ function LabViewModel(app, dataModel) {
                 self.FinalResultVirusTypeID_3(data.FinalResultVirusTypeID_3);
                 self.FinalResultVirusSubTypeID_3(data.FinalResultVirusSubTypeID_3);
                 self.FinalResultVirusLineageID_3(data.FinalResultVirusLineageID_3);
-            // Comentariado porque el laboratorio no puede cerrar el caso
+                
+                self.GeneticGroup(data.GeneticGroup);
+                
+                // Comentariado porque el laboratorio no puede cerrar el caso
                 //if (self.FinalResult() != "" ) {
                 //    $("#CaseStatus").attr("disabled", false);
                 //} else
@@ -2444,6 +2452,9 @@ function LabViewModel(app, dataModel) {
                 FinalResultVirusTypeID_3: self.FinalResultVirusTypeID_3(),
                 FinalResultVirusSubTypeID_3: self.FinalResultVirusSubTypeID_3(),
                 FinalResultVirusLineageID_3: self.FinalResultVirusLineageID_3(),
+
+                GeneticGroup: self.GeneticGroup(),
+
                 DataStatement: $("#o_S").val(),
                 LabTests: postData,
 
