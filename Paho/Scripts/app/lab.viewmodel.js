@@ -997,6 +997,10 @@ function LabViewModel(app, dataModel) {
 
     }, self);
 
+    self.ActiveCHI = ko.computed(function () {
+        return (self.UsrCountry() == 7) ? true : false;
+    }, self);
+
     self.EnableCHIPrint = ko.computed(function () {
         return (self.UsrCountry() == 7 && $("#ITy").val() == 2  ) ? true : false;
 

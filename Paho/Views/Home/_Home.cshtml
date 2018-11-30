@@ -107,9 +107,9 @@
 
 
              </div>
-         </div>
+        </div>
 
-         <div class="row" style="margin-bottom:7px; margin-top:7px;" data-bind="visible: shouldcaselist">
+        <div class="row" style="margin-bottom:7px; margin-top:7px;" data-bind="visible: shouldcaselist">
             <div class="col-md-4">
                 <div class='input-group'>
                     <span class="input-group-addon">
@@ -5461,7 +5461,7 @@
         </div>
 
         <!-- Grupo genetico -->
-        <div class="row rowform">
+        <div class="row rowform" data-bind="visible: ActiveCHI()">
             <div class="col-md-12">
                 <div class='input-group'>
                     <span class="input-group-addon">
@@ -5472,18 +5472,10 @@
             </div>
         </div>
 
-        @*//}*@
-
         <!-- Boton: Atras -->
         <div class="row rowform">
             <button id="Atras" type="button" class="btn btn-primary btn-back" onclick="$('#tabs').tabs({ active: 4 }); $('#botones').show();">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelBtnBack"))</button>
-            @*<div class="btn-group">
-                <button id="saveLab" type="button" class="btn btn-primary" data-bind="click: Save">Guardar</button>
-                <span></span>
-                <button id="cancelLab" type="button" class="btn btn-primary" data-bind="click: Cancel">Regresar</button>
-            </div>*@
         </div>
-
     </div>
 
     <!-- BITACORA -->

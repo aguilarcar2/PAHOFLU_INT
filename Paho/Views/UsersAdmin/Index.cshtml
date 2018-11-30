@@ -18,13 +18,15 @@
             @(Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminIndexName", ViewBag.UsrCtry, ViewBag.UsrCtryLang))
         </th>
         <th>
-            Roles
+            @(Paho.Controllers.ResourcesM.SgetMessage("msgInstitution", ViewBag.UsrCtry, ViewBag.UsrCtryLang))
+        </th>
+        <th>
+            @(Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminEditRoles", ViewBag.UsrCtry, ViewBag.UsrCtryLang))
         </th>
         <th>
             @(Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminIndexCountry", ViewBag.UsrCtry, ViewBag.UsrCtryLang))
         </th>
         <th>
-
         </th>
     </tr>
 
@@ -36,6 +38,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Institution.FullName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.UserRolesListJoin)
