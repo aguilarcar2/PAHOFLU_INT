@@ -402,13 +402,17 @@ namespace Paho.Controllers
                         }
 
                         if (reportTemplate == "I1")      //#### CAFQ
-                            AppendDataToExcel_IndDes(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, AreaID_);        //#### CAFQ
+                            AppendDataToExcel_IndDes(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, 
+                                reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, AreaID_);        //#### CAFQ
                         else if (reportTemplate == "RE1")
-                            AppendDataToExcel_REVELAC(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, AreaID_);        //#### CAFQ
+                            AppendDataToExcel_REVELAC(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, 
+                                reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, AreaID_);        //#### CAFQ
                         else if (reportTemplate == "CC")
-                            AppendDataToExcel_ConsolidadoCarga(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, Sentinel);        //#### CAFQ
+                            AppendDataToExcel_ConsolidadoCarga(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, 
+                                reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, AreaID_, Sentinel);        //#### CAFQ
                         else if (reportTemplate == "CPV")
-                            AppendDataToExcel_CasosPositivosConVacuna(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, Sentinel);        //#### CAFQ
+                            AppendDataToExcel_CasosPositivosConVacuna(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, 
+                                reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, AreaID_, Sentinel);        //#### CAFQ
                         else if (reportTemplate.ToUpper() == "FLUID")
                         {
                             var contador = 0;
@@ -1038,50 +1042,6 @@ namespace Paho.Controllers
                 //inserción de logo
                 InsertarLogoExcel(consString, excelWorksheet, ReportCountry);
             }
-        }
-
-        private static void InsertarLogoExcel(string consString, ExcelWorksheet excelWorksheet, int? ReportCountry)
-        {
-            //inserción de logo
-            using (var con = new SqlConnection(consString))
-            {
-                using (var command = new SqlCommand("select * from ReportCountry where ID = @ReportCountryID", con))
-                {
-                    command.Parameters.Clear();
-                    command.Parameters.Add("@ReportCountryID", SqlDbType.Int).Value = ReportCountry;
-
-                    con.Open();
-                    using (var reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            int insertrow = (int)reader["logoRow"];
-                            int insertcol = (int)reader["logoCol"];
-                            String imagurl = (String)reader["logo"];
-                            if (imagurl != "")
-                            {
-                                try
-                                {
-                                    WebClient wc = new WebClient();
-                                    byte[] bytes = wc.DownloadData(imagurl);
-                                    MemoryStream ms = new MemoryStream(bytes);
-                                    Bitmap newImage = new Bitmap(System.Drawing.Image.FromStream(ms));
-                                    excelWorksheet.Row(insertrow).Height = newImage.Height;
-                                    var picture = excelWorksheet.Drawings.AddPicture("reportlogo", newImage);
-                                    picture.SetPosition(insertrow, -(newImage.Height), insertcol, -100);
-                                    //picture.SetPosition(insertrow, 0, insertcol, 0);
-                                }
-                                catch (Exception e)
-                                {
-                                    //ViewBag.Message = "No se insertó el logo, porque no es accesible";
-                                }
-                            }
-                        }
-                    }
-                    command.Parameters.Clear();
-                    con.Close();
-                }
-            }   // End
         }
 
         //private static void AppendDataToExcel(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo)
@@ -2347,180 +2307,7 @@ namespace Paho.Controllers
             reportLabels(consString, countryId, languaje_, ReportCountry, hospitalId, year, YearFrom, YearTo, se, startDate, endDate, excelWorkBook, excelWorksheet2);
             InsertarImagenLogo(consString, reportTemplate, ReportCountry, excelWorksheet2);
         }
-
-        private static void reportLabels(string consString, int countryId, string languaje_, int? ReportCountry, int? hospitalId, int? year, int? YearFrom, int? YearTo, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, ExcelWorksheet excelWorksheet, int? AreaId = 0)
-        {
-            //inserción de labels
-            string labelWeekEpid = "";
-            labelWeekEpid = getSemanasEpidemiologicasReporte(year, YearFrom, YearTo, se, startDate, endDate);
-
-            using (var con = new SqlConnection(consString))
-            {
-                using (var command = new SqlCommand("select * from ReportCountryConfig where ReportCountryID = @ReportCountryID", con))
-                {
-                    command.Parameters.Clear();
-                    command.Parameters.Add("@ReportCountryID", SqlDbType.Int).Value = ReportCountry;
-
-                    con.Open();
-                    using (var reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            int insertrow = (int)reader["row"];
-                            int insertcol = (int)reader["col"];
-                            int tab = Int32.Parse((string)reader["tab"]);           // Hoja
-                            /**************Inicia inserción de labels automáticos*******************/
-                            /*Si en la base de datos, el label se encierra dentro de dobles llaves {{parametro}}, el parámetro se cambiará por el parámetro correspondiente de búsqueda ingresado en el formulario*/
-                            /*Llenado parámetros que vienen del formulario*/
-                            string labelCountry = "";
-                            string labelHospital = "";
-                            string labelArea = "";
-                            string labelYear = "";
-                            string labelSE = "";
-                            string labelStartDate = "";
-                            string labelEndDate = "";
-                            string labelCurrDate = "";
-                            //string labelWeekEpid = "";
-
-                            //Obtención del pais y llenado en la variable
-                            if (countryId > 0)
-                                labelCountry = getDescripcionDatoDesdeID(con, "select * from Country where ID = @ID", "Name", countryId);
-
-                            if (hospitalId > 0)
-                                labelHospital = getDescripcionDatoDesdeID(con, "select * from Institution where ID = @ID", "FullName", hospitalId);
-
-                            if (AreaId > 0)
-                                labelArea = getDescripcionDatoDesdeID(con, "select * from Area where ID = @ID", "Name", AreaId);
-
-                            if (year > 0)
-                            {
-                                labelYear += year;
-                            }
-                            if (YearFrom > 0)
-                            {
-                                //labelYear += "Desde " + YearFrom + " ";
-                                labelYear += SgetMsg("msgViewExportarLabelFromDesde", countryId, languaje_) + YearFrom + " ";
-                            }
-                            if (YearTo > 0)
-                            {
-                                //labelYear += "Hasta " + YearTo + " ";
-                                labelYear += SgetMsg("msgViewExportarLabelToHasta", countryId, languaje_) + YearTo + " ";
-                            }
-                            if (se > 0)
-                            {
-                                labelSE += se;
-                            }
-                            if (startDate.HasValue)
-                            {
-                                labelStartDate += startDate.ToString();
-                                DateTime oDate = Convert.ToDateTime(labelStartDate);
-                                labelStartDate = oDate.Date.ToString();
-                            }
-                            if (endDate.HasValue)
-                            {
-                                labelEndDate += endDate.ToString();
-                                DateTime oDate = Convert.ToDateTime(labelEndDate);
-                                labelEndDate = oDate.Date.ToString();
-                            }
-
-                            //labelWeekEpid = getSemanasEpidemiologicasReporte(year, YearFrom, YearTo, se, startDate, endDate);
-                            /*Fin llenado parámetros*/
-
-                            string label = reader["label"].ToString();
-                            if (label != "")
-                            {
-                                //if (label.StartsWith("{{") && label.EndsWith("}}"))
-                                string cOriginal = label;               //#### CAFQ: 
-                                int nResu1 = label.IndexOf("{{");       //#### CAFQ: 180415
-                                int nResu2 = label.IndexOf("}}");       //#### CAFQ: 180415
-                                if (nResu1 >= 0 && nResu2 >= 0)         //#### CAFQ: 180415
-                                {
-                                    label = cOriginal.Substring(nResu1, nResu2 - nResu1 + 2);       //#### CAFQ: 180415
-                                    //string cMensa = getMsg("msgViewExportarLabelYear");
-                                    //string cMensa = SgetMsg("msgViewExportarLabelYear", countryId, languaje_);
-                                    //SgetMsg(string msgView, int? countryDisp, string langDisp)
-
-                                    switch (label)
-                                    {
-                                        case "{{country}}":
-                                            label = (labelCountry != "" ? (SgetMsg("msgViewExportarLabelCountry", countryId, languaje_) + ": " + labelCountry) : "");
-                                            break;
-                                        case "{{institution}}":
-                                            label = (labelHospital != "" ? (SgetMsg("msgViewExportarLabelInstitutionShort", countryId, languaje_) + ": " + labelHospital) : "");
-                                            break;
-                                        case "{{Area}}":
-                                            label = (labelArea != "" ? (SgetMsg("msgViewExportarLabelArea", countryId, languaje_) + ": " + labelArea) : "");
-                                            break;
-                                        case "{{year}}":
-                                            //label = (labelYear != "" ? ("Año: " + labelYear) : "");
-                                            //label = (labelYear != "" ? (SgetMsg("msgViewExportarLabelEpidemiologicalYear", countryId, languaje_) + ": " + labelYear) : "");
-                                            label = (labelYear != "" ? (SgetMsg("msgViewExportarLabelYear", countryId, languaje_) + ": " + labelYear) : "");
-                                            break;
-                                        case "{{onlyYear}}":
-                                            label = (labelYear != "" ? labelYear : "");
-                                            break;
-                                        case "{{se}}":
-                                            //label = (labelSE != "" ? ("SE:" + labelSE) : "");
-                                            label = (labelSE != "" ? (SgetMsg("msgViewExportarLabelEW", countryId, languaje_) + ": " + labelSE) : "");
-                                            break;
-                                        case "{{startDate}}":
-                                            //label = (labelStartDate != "" ? ("Del:" + labelStartDate) : "");
-                                            label = (labelStartDate != "" ? (SgetMsg("msgViewExportarLabelFrom", countryId, languaje_) + ": " + labelStartDate) : "");
-                                            break;
-                                        case "{{endDate}}":
-                                            //label = (labelEndDate != "" ? ("Al:" + labelEndDate) : "");
-                                            label = (labelEndDate != "" ? (SgetMsg("msgViewExportarLabelTo", countryId, languaje_) + ": " + labelEndDate) : "");
-                                            break;
-                                        case "{{fullinstitution}}":
-                                            //label = (labelCountry != "" ? ("Pais:" + labelCountry) : "") + " " + (labelHospital != "" ? ("Inst:" + labelHospital) : "");
-                                            label = (labelCountry != "" ? (SgetMsg("msgViewExportarLabelCountry", countryId, languaje_) + ": " + labelCountry) : "") + " " + (labelHospital != "" ? (SgetMsg("msgViewExportarLabelInstitutionShort", countryId, languaje_) + ": " + labelHospital) : "");
-                                            break;
-                                        case "{{fulldate}}":
-                                            //label = (labelYear != "" ? ("Año:" + labelYear) : "") + " " + (labelSE != "" ? ("SE:" + labelSE) : "") + " " + (labelStartDate != "" ? ("Del:" + labelStartDate) : "") + " " + (labelEndDate != "" ? ("Al:" + labelEndDate) : "");
-                                            label = (labelYear != "" ? (SgetMsg("msgViewExportarLabelEpidemiologicalYear", countryId, languaje_) + ": " + labelYear) : "") + " " + (labelSE != "" ? (SgetMsg("msgViewExportarLabelEW", countryId, languaje_) + ": " + labelSE) : "") + " " + (labelStartDate != "" ? (SgetMsg("msgViewExportarLabelFrom", countryId, languaje_) + ": " + labelStartDate) : "") + " " + (labelEndDate != "" ? (SgetMsg("msgViewExportarLabelTo", countryId, languaje_) + ": " + labelEndDate) : "");
-                                            break;
-                                        case "{{currentDate}}":
-                                            DateTime oDate = DateTime.Today;
-                                            labelCurrDate = String.Format("{0:" + SgetMsg("msgDateFormatReporting", countryId, languaje_) + "}", oDate);
-                                            label = labelCurrDate;
-                                            break;
-                                        case "{{weekEpid}}":
-                                            //label = (labelYear != "" ? ("Año:" + labelYear) : "") + " " + (labelSE != "" ? ("SE:" + labelSE) : "") + " " + (labelStartDate != "" ? ("Del:" + labelStartDate) : "") + " " + (labelEndDate != "" ? ("Al:" + labelEndDate) : "");
-                                            //label = (labelWeekEpid != "" ? (SgetMsg("msgViewExportarLabelEpidemiologicalYear", countryId, languaje_) + ": " + labelWeekEpid) : "") + " " + (labelSE != "" ? (SgetMsg("msgViewExportarLabelEW", countryId, languaje_) + ": " + labelSE) : "") + " " + (labelStartDate != "" ? (SgetMsg("msgViewExportarLabelFrom", countryId, languaje_) + ": " + labelStartDate) : "") + " " + (labelEndDate != "" ? (SgetMsg("msgViewExportarLabelTo", countryId, languaje_) + ": " + labelEndDate) : "");
-                                            label = (labelWeekEpid != "" ? (SgetMsg("msgViewExportarLabelWeekEpidReporting", countryId, languaje_) + ": " + labelWeekEpid) : "");
-                                            break;
-                                        default:
-                                            label = "";
-                                            break;
-                                    }
-                                }
-                                else
-                                    label = "";
-
-                                var excelWs = excelWorksheet;
-                                if (tab != 1)
-                                {
-                                    excelWs = excelWorkBook.Worksheets[tab];
-                                }/*else
-                                    {
-                                        var excelWs = excelWorksheet;
-                                    }*/
-                                 //excelWorksheet.Cells[insertrow, insertcol].Value = label;
-                                if (label != "")
-                                    //excelWorksheet.Cells[insertrow, insertcol].Value = cOriginal;
-                                    //excelWs.Cells[insertrow, insertcol].Value = cOriginal;
-                                    //else
-                                    //excelWorksheet.Cells[insertrow, insertcol].Value = cOriginal.Substring(0, nResu1) + label + cOriginal.Substring(nResu2 + 2, cOriginal.Length - nResu2 - 2);
-                                    excelWs.Cells[insertrow, insertcol].Value = cOriginal.Substring(0, nResu1) + label + cOriginal.Substring(nResu2 + 2, cOriginal.Length - nResu2 - 2);
-                            }
-                        }
-                    }
-                    command.Parameters.Clear();
-                    con.Close();
-                }
-            }
-        }
-
+        
         private static string getDescripcionDatoDesdeID(SqlConnection con, string query, string columnName, int? nID)
         {
             string dato = "";
@@ -2636,55 +2423,6 @@ namespace Paho.Controllers
                         }
                     }
 
-                    command.Parameters.Clear();
-                    con.Close();
-                }
-            }
-        }
-
-        private static void InsertarImagenLogo(string consString, string reportTemplate, int? reportCountry, ExcelWorksheet excelWorksheet)
-        {
-            using (var con = new SqlConnection(consString))
-            {
-                using (var command = new SqlCommand("select * from ReportCountry where ID = @ReportCountryID", con))
-                {
-                    command.Parameters.Clear();
-                    command.Parameters.Add("@ReportCountryID", SqlDbType.Int).Value = reportCountry;
-
-                    con.Open();
-                    using (var reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            int insertrow = (int)reader["logoRow"];
-                            int insertcol = (int)reader["logoCol"];
-                            String imagurl = (String)reader["logo"];
-                            if (imagurl != "")
-                            {
-                                try
-                                {
-                                    /*
-                                    //imagurl = "file:///C:/CAFQSource/PAHO/PAHOFLUCR_CLON/Paho/Content/themes/base/images/logo_pahowho_blue-en.png";     //#### SOLO DESARROLLO: CAFQ
-                                    */
-                                    WebClient wc = new WebClient();
-                                    byte[] bytes = wc.DownloadData(imagurl);
-                                    MemoryStream ms = new MemoryStream(bytes);
-                                    Bitmap newImage = new Bitmap(System.Drawing.Image.FromStream(ms));
-                                    excelWorksheet.Row(insertrow).Height = newImage.Height;
-                                    var picture = excelWorksheet.Drawings.AddPicture("reportlogo", newImage);
-                                    if (reportTemplate == "I1")
-                                        picture.SetPosition(insertrow, -(newImage.Height), insertcol, 2);
-                                    else
-                                        picture.SetPosition(insertrow, -(newImage.Height), insertcol, -100);
-                                    //picture.SetPosition(insertrow, 0, insertcol, 0);
-                                }
-                                catch (Exception e)
-                                {
-                                    //ViewBag.Message = "No se insertó el logo, porque no es accesible";
-                                }
-                            }
-                        }
-                    }
                     command.Parameters.Clear();
                     con.Close();
                 }
@@ -2943,8 +2681,10 @@ namespace Paho.Controllers
             //var seriesCC = LineChart.Series.Add(ExcelRange.GetAddress(7, nCol, 59, nCol), ExcelRange.GetAddress(7, 2, 59, 2));
 
         }
-        
-        private void AppendDataToExcel_ConsolidadoCarga(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string reportTemplate, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? Sentinel)
+
+        private void AppendDataToExcel_ConsolidadoCarga(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se,
+            DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string reportTemplate, int startRow, int startColumn, int sheet, bool? insert_row,
+            int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId, int? Sentinel)
         {
 
             //int count = nombres.Count(n => n.EndsWith("o"));
@@ -3048,8 +2788,9 @@ namespace Paho.Controllers
             }
         }
 
-
-        private void AppendDataToExcel_CasosPositivosConVacuna(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string reportTemplate, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? Sentinel)
+        private void AppendDataToExcel_CasosPositivosConVacuna(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se,
+            DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string reportTemplate, int startRow, int startColumn, int sheet, bool? insert_row,
+            int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId, int? Sentinel)
         {
             ExcelWorksheet excelWorksheet1 = excelWorkBook.Worksheets[1];
             var row = startRow;
@@ -3074,6 +2815,7 @@ namespace Paho.Controllers
                     command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
                     command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;
                     command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;
+                    command.Parameters.Add("@Area_ID", SqlDbType.Int).Value = AreaId;
                     command.Parameters.Add("@Sentinel", SqlDbType.Int).Value = Sentinel;
 
                     con.Open();
@@ -3089,7 +2831,7 @@ namespace Paho.Controllers
 
                             excelWorksheet1.Cells[row + nFila, column + 6].Value = reader.GetValue(4);
                             excelWorksheet1.Cells[row + nFila, column + 7].Value = reader.GetValue(5);
-                            excelWorksheet1.Cells[row + nFila, column + 9   ].Value = reader.GetValue(6);
+                            excelWorksheet1.Cells[row + nFila, column + 9].Value = reader.GetValue(6);
 
                             excelWorksheet1.Cells[row + nFila, column + 11].Value = reader.GetValue(7);
                             excelWorksheet1.Cells[row + nFila, column + 12].Value = reader.GetValue(8);
@@ -3105,9 +2847,275 @@ namespace Paho.Controllers
             }
 
             //****
-            reportLabels(consString, countryId, languaje_, ReportCountry, hospitalId, year, YearFrom, YearTo, se, startDate, endDate, excelWorkBook, excelWorksheet1);
+            reportLabels(consString, countryId, languaje_, ReportCountry, hospitalId, year, YearFrom, YearTo, se, startDate, endDate, excelWorkBook, excelWorksheet1, AreaId);
         }
 
+        private static void reportLabels(string consString, int countryId, string languaje_, int? ReportCountry, int? hospitalId, int? year, int? YearFrom, 
+            int? YearTo, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, ExcelWorksheet excelWorksheet, int? AreaId = 0)
+        {
+            //inserción de labels
+            string labelWeekEpid = "";
+            labelWeekEpid = getSemanasEpidemiologicasReporte(year, YearFrom, YearTo, se, startDate, endDate);
+
+            using (var con = new SqlConnection(consString))
+            {
+                using (var command = new SqlCommand("select * from ReportCountryConfig where ReportCountryID = @ReportCountryID", con))
+                {
+                    command.Parameters.Clear();
+                    command.Parameters.Add("@ReportCountryID", SqlDbType.Int).Value = ReportCountry;
+
+                    con.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            int insertrow = (int)reader["row"];
+                            int insertcol = (int)reader["col"];
+                            int tab = Int32.Parse((string)reader["tab"]);           // Hoja
+                            /**************Inicia inserción de labels automáticos*******************/
+                            /*Si en la base de datos, el label se encierra dentro de dobles llaves {{parametro}}, el parámetro se cambiará por el parámetro correspondiente de búsqueda ingresado en el formulario*/
+                            /*Llenado parámetros que vienen del formulario*/
+                            string labelCountry = "";
+                            string labelHospital = "";
+                            string labelArea = "";
+                            string labelYear = "";
+                            string labelSE = "";
+                            string labelStartDate = "";
+                            string labelEndDate = "";
+                            string labelCurrDate = "";
+                            //string labelWeekEpid = "";
+
+                            //Obtención del pais y llenado en la variable
+                            if (countryId > 0)
+                                labelCountry = getDescripcionDatoDesdeID(con, "select * from Country where ID = @ID", "Name", countryId);
+
+                            if (hospitalId > 0)
+                                labelHospital = getDescripcionDatoDesdeID(con, "select * from Institution where ID = @ID", "FullName", hospitalId);
+
+                            if (AreaId > 0)
+                                labelArea = getDescripcionDatoDesdeID(con, "select * from Area where ID = @ID", "Name", AreaId);
+
+                            if (year > 0)
+                            {
+                                labelYear += year;
+                            }
+                            if (YearFrom > 0)
+                            {
+                                //labelYear += "Desde " + YearFrom + " ";
+                                labelYear += SgetMsg("msgViewExportarLabelFromDesde", countryId, languaje_) + YearFrom + " ";
+                            }
+                            if (YearTo > 0)
+                            {
+                                //labelYear += "Hasta " + YearTo + " ";
+                                labelYear += SgetMsg("msgViewExportarLabelToHasta", countryId, languaje_) + YearTo + " ";
+                            }
+                            if (se > 0)
+                            {
+                                labelSE += se;
+                            }
+                            if (startDate.HasValue)
+                            {
+                                labelStartDate += startDate.ToString();
+                                DateTime oDate = Convert.ToDateTime(labelStartDate);
+                                labelStartDate = oDate.Date.ToString();
+                            }
+                            if (endDate.HasValue)
+                            {
+                                labelEndDate += endDate.ToString();
+                                DateTime oDate = Convert.ToDateTime(labelEndDate);
+                                labelEndDate = oDate.Date.ToString();
+                            }
+
+                            //labelWeekEpid = getSemanasEpidemiologicasReporte(year, YearFrom, YearTo, se, startDate, endDate);
+                            /*Fin llenado parámetros*/
+
+                            string label = reader["label"].ToString();
+                            if (label != "")
+                            {
+                                //if (label.StartsWith("{{") && label.EndsWith("}}"))
+                                string cOriginal = label;               //#### CAFQ: 
+                                int nResu1 = label.IndexOf("{{");       //#### CAFQ: 180415
+                                int nResu2 = label.IndexOf("}}");       //#### CAFQ: 180415
+                                if (nResu1 >= 0 && nResu2 >= 0)         //#### CAFQ: 180415
+                                {
+                                    label = cOriginal.Substring(nResu1, nResu2 - nResu1 + 2);       //#### CAFQ: 180415
+                                    //string cMensa = getMsg("msgViewExportarLabelYear");
+                                    //string cMensa = SgetMsg("msgViewExportarLabelYear", countryId, languaje_);
+                                    //SgetMsg(string msgView, int? countryDisp, string langDisp)
+
+                                    switch (label)
+                                    {
+                                        case "{{country}}":
+                                            label = (labelCountry != "" ? (SgetMsg("msgViewExportarLabelCountry", countryId, languaje_) + ": " + labelCountry) : "");
+                                            break;
+                                        case "{{institution}}":
+                                            label = (labelHospital != "" ? (SgetMsg("msgViewExportarLabelInstitutionShort", countryId, languaje_) + ": " + labelHospital) : "");
+                                            break;
+                                        case "{{Area}}":
+                                            label = (labelArea != "" ? (SgetMsg("msgViewExportarLabelArea", countryId, languaje_) + ": " + labelArea) : "");
+                                            break;
+                                        case "{{year}}":
+                                            //label = (labelYear != "" ? ("Año: " + labelYear) : "");
+                                            //label = (labelYear != "" ? (SgetMsg("msgViewExportarLabelEpidemiologicalYear", countryId, languaje_) + ": " + labelYear) : "");
+                                            label = (labelYear != "" ? (SgetMsg("msgViewExportarLabelYear", countryId, languaje_) + ": " + labelYear) : "");
+                                            break;
+                                        case "{{onlyYear}}":
+                                            label = (labelYear != "" ? labelYear : "");
+                                            break;
+                                        case "{{se}}":
+                                            //label = (labelSE != "" ? ("SE:" + labelSE) : "");
+                                            label = (labelSE != "" ? (SgetMsg("msgViewExportarLabelEW", countryId, languaje_) + ": " + labelSE) : "");
+                                            break;
+                                        case "{{startDate}}":
+                                            //label = (labelStartDate != "" ? ("Del:" + labelStartDate) : "");
+                                            label = (labelStartDate != "" ? (SgetMsg("msgViewExportarLabelFrom", countryId, languaje_) + ": " + labelStartDate) : "");
+                                            break;
+                                        case "{{endDate}}":
+                                            //label = (labelEndDate != "" ? ("Al:" + labelEndDate) : "");
+                                            label = (labelEndDate != "" ? (SgetMsg("msgViewExportarLabelTo", countryId, languaje_) + ": " + labelEndDate) : "");
+                                            break;
+                                        case "{{fullinstitution}}":
+                                            //label = (labelCountry != "" ? ("Pais:" + labelCountry) : "") + " " + (labelHospital != "" ? ("Inst:" + labelHospital) : "");
+                                            label = (labelCountry != "" ? (SgetMsg("msgViewExportarLabelCountry", countryId, languaje_) + ": " + labelCountry) : "") + " " + (labelHospital != "" ? (SgetMsg("msgViewExportarLabelInstitutionShort", countryId, languaje_) + ": " + labelHospital) : "");
+                                            break;
+                                        case "{{fulldate}}":
+                                            //label = (labelYear != "" ? ("Año:" + labelYear) : "") + " " + (labelSE != "" ? ("SE:" + labelSE) : "") + " " + (labelStartDate != "" ? ("Del:" + labelStartDate) : "") + " " + (labelEndDate != "" ? ("Al:" + labelEndDate) : "");
+                                            label = (labelYear != "" ? (SgetMsg("msgViewExportarLabelEpidemiologicalYear", countryId, languaje_) + ": " + labelYear) : "") + " " + (labelSE != "" ? (SgetMsg("msgViewExportarLabelEW", countryId, languaje_) + ": " + labelSE) : "") + " " + (labelStartDate != "" ? (SgetMsg("msgViewExportarLabelFrom", countryId, languaje_) + ": " + labelStartDate) : "") + " " + (labelEndDate != "" ? (SgetMsg("msgViewExportarLabelTo", countryId, languaje_) + ": " + labelEndDate) : "");
+                                            break;
+                                        case "{{currentDate}}":
+                                            DateTime oDate = DateTime.Today;
+                                            labelCurrDate = String.Format("{0:" + SgetMsg("msgDateFormatReporting", countryId, languaje_) + "}", oDate);
+                                            label = labelCurrDate;
+                                            break;
+                                        case "{{weekEpid}}":
+                                            //label = (labelYear != "" ? ("Año:" + labelYear) : "") + " " + (labelSE != "" ? ("SE:" + labelSE) : "") + " " + (labelStartDate != "" ? ("Del:" + labelStartDate) : "") + " " + (labelEndDate != "" ? ("Al:" + labelEndDate) : "");
+                                            //label = (labelWeekEpid != "" ? (SgetMsg("msgViewExportarLabelEpidemiologicalYear", countryId, languaje_) + ": " + labelWeekEpid) : "") + " " + (labelSE != "" ? (SgetMsg("msgViewExportarLabelEW", countryId, languaje_) + ": " + labelSE) : "") + " " + (labelStartDate != "" ? (SgetMsg("msgViewExportarLabelFrom", countryId, languaje_) + ": " + labelStartDate) : "") + " " + (labelEndDate != "" ? (SgetMsg("msgViewExportarLabelTo", countryId, languaje_) + ": " + labelEndDate) : "");
+                                            label = (labelWeekEpid != "" ? (SgetMsg("msgViewExportarLabelWeekEpidReporting", countryId, languaje_) + ": " + labelWeekEpid) : "");
+                                            break;
+                                        default:
+                                            label = "";
+                                            break;
+                                    }
+                                }
+                                else
+                                    label = "";
+
+                                var excelWs = excelWorksheet;
+                                if (tab != 1)
+                                {
+                                    excelWs = excelWorkBook.Worksheets[tab];
+                                }/*else
+                                    {
+                                        var excelWs = excelWorksheet;
+                                    }*/
+                                 //excelWorksheet.Cells[insertrow, insertcol].Value = label;
+                                if (label != "")
+                                    //excelWorksheet.Cells[insertrow, insertcol].Value = cOriginal;
+                                    //excelWs.Cells[insertrow, insertcol].Value = cOriginal;
+                                    //else
+                                    //excelWorksheet.Cells[insertrow, insertcol].Value = cOriginal.Substring(0, nResu1) + label + cOriginal.Substring(nResu2 + 2, cOriginal.Length - nResu2 - 2);
+                                    excelWs.Cells[insertrow, insertcol].Value = cOriginal.Substring(0, nResu1) + label + cOriginal.Substring(nResu2 + 2, cOriginal.Length - nResu2 - 2);
+                            }
+                        }
+                    }
+                    command.Parameters.Clear();
+                    con.Close();
+                }
+            }
+        }
+
+        private static void InsertarLogoExcel(string consString, ExcelWorksheet excelWorksheet, int? ReportCountry)
+        {
+            //inserción de logo
+            using (var con = new SqlConnection(consString))
+            {
+                using (var command = new SqlCommand("select * from ReportCountry where ID = @ReportCountryID", con))
+                {
+                    command.Parameters.Clear();
+                    command.Parameters.Add("@ReportCountryID", SqlDbType.Int).Value = ReportCountry;
+
+                    con.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            int insertrow = (int)reader["logoRow"];
+                            int insertcol = (int)reader["logoCol"];
+                            String imagurl = (String)reader["logo"];
+                            if (imagurl != "")
+                            {
+                                try
+                                {
+                                    WebClient wc = new WebClient();
+                                    byte[] bytes = wc.DownloadData(imagurl);
+                                    MemoryStream ms = new MemoryStream(bytes);
+                                    Bitmap newImage = new Bitmap(System.Drawing.Image.FromStream(ms));
+                                    excelWorksheet.Row(insertrow).Height = newImage.Height;
+                                    var picture = excelWorksheet.Drawings.AddPicture("reportlogo", newImage);
+                                    picture.SetPosition(insertrow, -(newImage.Height), insertcol, -100);
+                                    //picture.SetPosition(insertrow, 0, insertcol, 0);
+                                }
+                                catch (Exception e)
+                                {
+                                    //ViewBag.Message = "No se insertó el logo, porque no es accesible";
+                                }
+                            }
+                        }
+                    }
+                    command.Parameters.Clear();
+                    con.Close();
+                }
+            }   // End
+        }
+
+        private static void InsertarImagenLogo(string consString, string reportTemplate, int? reportCountry, ExcelWorksheet excelWorksheet)
+        {
+            using (var con = new SqlConnection(consString))
+            {
+                using (var command = new SqlCommand("select * from ReportCountry where ID = @ReportCountryID", con))
+                {
+                    command.Parameters.Clear();
+                    command.Parameters.Add("@ReportCountryID", SqlDbType.Int).Value = reportCountry;
+
+                    con.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            int insertrow = (int)reader["logoRow"];
+                            int insertcol = (int)reader["logoCol"];
+                            String imagurl = (String)reader["logo"];
+                            if (imagurl != "")
+                            {
+                                try
+                                {
+                                    /*
+                                    //imagurl = "file:///C:/CAFQSource/PAHO/PAHOFLUCR_CLON/Paho/Content/themes/base/images/logo_pahowho_blue-en.png";     //#### SOLO DESARROLLO: CAFQ
+                                    */
+                                    WebClient wc = new WebClient();
+                                    byte[] bytes = wc.DownloadData(imagurl);
+                                    MemoryStream ms = new MemoryStream(bytes);
+                                    Bitmap newImage = new Bitmap(System.Drawing.Image.FromStream(ms));
+                                    excelWorksheet.Row(insertrow).Height = newImage.Height;
+                                    var picture = excelWorksheet.Drawings.AddPicture("reportlogo", newImage);
+                                    if (reportTemplate == "I1")
+                                        picture.SetPosition(insertrow, -(newImage.Height), insertcol, 2);
+                                    else
+                                        picture.SetPosition(insertrow, -(newImage.Height), insertcol, -100);
+                                    //picture.SetPosition(insertrow, 0, insertcol, 0);
+                                }
+                                catch (Exception e)
+                                {
+                                    //ViewBag.Message = "No se insertó el logo, porque no es accesible";
+                                }
+                            }
+                        }
+                    }
+                    command.Parameters.Clear();
+                    con.Close();
+                }
+            }
+        }
 
         public string getMsg(string msgView)
         {

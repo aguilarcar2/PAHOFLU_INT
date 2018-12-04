@@ -1253,6 +1253,8 @@ namespace Paho.Models
         public int? FinalResultVirusSubTypeID_3 { get; set; }
         public int? FinalResultVirusLineageID_3 { get; set; }
         public string GeneticGroup { get; set; }
+        public string GeneticGroup_2 { get; set; }
+        public string GeneticGroup_3 { get; set; }
         public int? CaseStatus { get; set; }
         public DateTime? CloseDate { get; set; }
         public string ObservationCase { get; set; }
@@ -1782,8 +1784,6 @@ namespace Paho.Models
         // Tipo de institución para HON
         public DbSet<CatInstitutionTypeHON> CatInstitutionTypeHON { get; set; }
 
-        
-
         // Graficas
         public DbSet<GraphCache> GraphCache { get; set; }
 
@@ -2103,6 +2103,8 @@ namespace Paho.Models
                    p.FinalResultVirusSubTypeID_3,
                    p.FinalResultVirusLineageID_3,
                    p.GeneticGroup,                              // Grupo genetico
+                   p.GeneticGroup_2,
+                   p.GeneticGroup_3,
                    p.CaseStatus,
                    p.CloseDate,
                    p.ObservationCase

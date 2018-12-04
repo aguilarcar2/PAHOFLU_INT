@@ -5248,6 +5248,7 @@
                             </div>
                         </div>
                     </div>
+
                     <!-- Label: Result 1 -->
                     <div class="row rowform">
                         <div class="col-md-12">
@@ -5269,14 +5270,8 @@
                                     optionsText: 'Name',
                                     optionsValue: 'Id',
 							        optionsCaption: '@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelResultSelect"))',
-                                    value: FinalResult" disabled></select>
-                                @*<select id="FinalResult" name="FinalResult" class="form-control" style="max-width: 300px" data-bind="value: FinalResult" disabled>
-                                    <option value="">Seleccionar...</option>
-                                    <option value="U">(No realizado)</option>
-                                    <option value="N">Negativo</option>
-                                    <option value="P">Positivo</option>
-                                    <option value="I">Indeterminado</option>
-                                </select>*@
+                                    value: FinalResult" disabled>
+                                </select>
                             </div>
                         </div>
                         <!-- Virus / Resultado -->
@@ -5320,7 +5315,17 @@
                                     value: FinalResultVirusLineageID" disabled></select>
                             </div>
                         </div>
+                        <!-- Grupo genetico 1 -->
+                        <div class="col-md-3" data-bind="visible: ActiveCHI() && EnableGeneticGroup()">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelGeneticGroup")):
+                                </span>
+                                <input id="GeneticGroup" type='text' class="form-control case_letter" data-bind='value: GeneticGroup' />
+                            </div>
+                        </div>
                     </div>
+                    
                     <!-- Label: Result 2 -->
                     <div class="row rowform">
                         <div class="col-md-12">
@@ -5387,7 +5392,17 @@
                                 </select>
                             </div>
                         </div>
+                        <!-- Grupo genetico 2 -->
+                        <div class="col-md-3" data-bind="visible: ActiveCHI() && EnableGeneticGroup_2()">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelGeneticGroup")):
+                                </span>
+                                <input id="GeneticGroup_2" type='text' class="form-control case_letter" data-bind='value: GeneticGroup_2' />
+                            </div>
+                        </div>
                     </div>
+                    
                     <!-- Label: Result 3 -->
                     <div class="row rowform">
                         <div class="col-md-12">
@@ -5455,19 +5470,16 @@
                                 </select>
                             </div>
                         </div>
+                        <!-- Grupo genetico 3 -->
+                        <div class="col-md-3" data-bind="visible: ActiveCHI() && EnableGeneticGroup_3()">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelGeneticGroup")):
+                                </span>
+                                <input id="GeneticGroup_3" type='text' class="form-control case_letter" data-bind='value: GeneticGroup_3' />
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Grupo genetico -->
-        <div class="row rowform" data-bind="visible: ActiveCHI()">
-            <div class="col-md-12">
-                <div class='input-group'>
-                    <span class="input-group-addon">
-                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelGeneticGroup"))
-                    </span>
-                    <input id="GeneticGroup" type='text' class="form-control case_letter" data-bind='value: GeneticGroup' />
                 </div>
             </div>
         </div>

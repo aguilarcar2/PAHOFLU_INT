@@ -1042,9 +1042,26 @@ function LabViewModel(app, dataModel) {
     self.FinalResultVirusLineageID_3 = ko.observable("");
 
     self.GeneticGroup = ko.observable("");
+    self.GeneticGroup_2 = ko.observable("");
+    self.GeneticGroup_3 = ko.observable("");
+
+    self.EnableGeneticGroup = ko.computed(function () {
+        var result = (self.FinalResultVirusTypeID() == "1" || self.FinalResultVirusTypeID() == "2");
+        if (!result) self.GeneticGroup("");
+        return result;
+    }, self);
+    self.EnableGeneticGroup_2 = ko.computed(function () {
+        var result = (self.FinalResultVirusTypeID_2() == "1" || self.FinalResultVirusTypeID_2() == "2");
+        if (!result) self.GeneticGroup_2("");
+        return result;
+    }, self);
+    self.EnableGeneticGroup_3 = ko.computed(function () {
+        var result = (self.FinalResultVirusTypeID_3() == "1" || self.FinalResultVirusTypeID_3() == "2");
+        if (!result) self.GeneticGroup_2("");
+        return result;
+    }, self);
 
     self.resetFinalResult = function () {
-
         self.FinalResult("");
         self.FinalResultVirusTypeID("");
         self.FinalResultVirusSubTypeID("");
@@ -1058,6 +1075,9 @@ function LabViewModel(app, dataModel) {
         self.FinalResultVirusSubTypeID_3("");
         self.FinalResultVirusLineageID_3("");
 
+        self.GeneticGroup("");
+        self.GeneticGroup_2("");
+        self.GeneticGroup_3("");
     };
 
     self.EnableTestNational = function () {
@@ -1241,9 +1261,11 @@ function LabViewModel(app, dataModel) {
         if (!result) self.FinalResultVirusSubTypeID_2("");
         return result;
     }, self);
-
     self.EnableFinalResultVirusLineageID_2 = ko.computed(function () {
-        var result = self.FinalResultVirusTypeID_2() == "2"; if (!result) self.FinalResultVirusLineageID_2(""); return result;
+        var result = self.FinalResultVirusTypeID_2() == "2";
+        if (!result)
+            self.FinalResultVirusLineageID_2(""); 
+        return result;
     }, self);
 
     self.EnableFinalResultVirusSubTypeID_3 = ko.computed(function () {
@@ -1251,7 +1273,6 @@ function LabViewModel(app, dataModel) {
         if (!result) self.FinalResultVirusSubTypeID_3("");
         return result;
     }, self);
-
     self.EnableFinalResultVirusLineageID_3 = ko.computed(function () {
         var result = self.FinalResultVirusTypeID_3() == "2"; if (!result) self.FinalResultVirusLineageID_3(""); return result;
     }, self);
@@ -1485,6 +1506,8 @@ function LabViewModel(app, dataModel) {
         self.FinalResultVirusLineageID_3("");
 
         self.GeneticGroup("");
+        self.GeneticGroup_2("");
+        self.GeneticGroup_3("");
         
         self.NoProRen("");
         self.NoProRen2("");
@@ -1838,6 +1861,8 @@ function LabViewModel(app, dataModel) {
                 self.FinalResultVirusLineageID_3(data.FinalResultVirusLineageID_3);
                 
                 self.GeneticGroup(data.GeneticGroup);
+                self.GeneticGroup_2(data.GeneticGroup_2);
+                self.GeneticGroup_3(data.GeneticGroup_3);
                 
                 // Comentariado porque el laboratorio no puede cerrar el caso
                 //if (self.FinalResult() != "" ) {
@@ -2458,6 +2483,8 @@ function LabViewModel(app, dataModel) {
                 FinalResultVirusLineageID_3: self.FinalResultVirusLineageID_3(),
 
                 GeneticGroup: self.GeneticGroup(),
+                GeneticGroup_2: self.GeneticGroup_2(),
+                GeneticGroup_3: self.GeneticGroup_3(),
 
                 DataStatement: $("#o_S").val(),
                 LabTests: postData,
