@@ -27,7 +27,7 @@ namespace Paho.Controllers
             return View();
         }
 
-        public void AssignFinalResult_Total(
+        public JsonResult AssignFinalResult_Total(
                                         int? SPinstitutionId,
                                         int? PRecordId,
                                         int? PYear,
@@ -80,24 +80,24 @@ namespace Paho.Controllers
                                                     .ThenBy(y => y.CatVirusLinaje == null ? 99 :  y.CatVirusLinaje.orden )
                                                     .ToList();
 
-                var List_Save = Record_.CaseLabTests.OfType<CaseLabTest>().ToArray();
+                //var List_Save = Record_.CaseLabTests.OfType<CaseLabTest>().ToArray();
 
-                foreach (CaseLabTest Test_ in List_Save.Where(z => z.inst_conf_end_flow_by_virus == 0)
-                      .OrderBy(x => x.SampleNumber )
-                      .ThenBy(z => z.TestDate)
-                      .ThenBy(y => y.LabID))
-                {
-                    var Institution_Conf_Original = db.InstitutionsConfiguration.Where(i => i.InstitutionToID == Test_.LabID && i.InstitutionParentID == Record_.HospitalID).Any() ? db.InstitutionsConfiguration.Where(i => i.InstitutionToID == Test_.LabID && i.InstitutionParentID == Record_.HospitalID).FirstOrDefault().ID : 0;
-                    var Inst_Conf_End_Flow_By_Virus = Test_.TestResultID == "P" ? db.InstitutionConfEndFlowByVirus.Where(j => j.id_Lab == Test_.LabID && j.id_Cat_TestType == Test_.TestType && j.value_Cat_TestResult == Test_.TestResultID && j.id_Cat_VirusType == Test_.VirusTypeID).Any() ? db.InstitutionConfEndFlowByVirus.Where(j => j.id_Lab == Test_.LabID && j.id_Cat_TestType == Test_.TestType && j.value_Cat_TestResult == Test_.TestResultID && j.id_Cat_VirusType == Test_.VirusTypeID).FirstOrDefault().ID : 0 : db.InstitutionConfEndFlowByVirus.Where(j => j.id_Lab == Test_.LabID && j.id_Cat_TestType == Test_.TestType && j.value_Cat_TestResult == Test_.TestResultID).Any() ? db.InstitutionConfEndFlowByVirus.Where(j => j.id_Lab == Test_.LabID && j.id_Cat_TestType == Test_.TestType && j.value_Cat_TestResult == Test_.TestResultID).FirstOrDefault().ID : db.InstitutionConfEndFlowByVirus.Where(j => j.id_Lab == Test_.LabID && j.id_Cat_TestType == Test_.TestType && j.value_Cat_TestResult == Test_.TestResultID).Any() ? db.InstitutionConfEndFlowByVirus.Where(j => j.id_Lab == Test_.LabID && j.id_Cat_TestType == Test_.TestType && j.value_Cat_TestResult == Test_.TestResultID).FirstOrDefault().ID : 0;
+                //foreach (CaseLabTest Test_ in List_Save.Where(z => z.inst_conf_end_flow_by_virus == 0)
+                //      .OrderBy(x => x.SampleNumber )
+                //      .ThenBy(z => z.TestDate)
+                //      .ThenBy(y => y.LabID))
+                //{
+                //    var Institution_Conf_Original = db.InstitutionsConfiguration.Where(i => i.InstitutionToID == Test_.LabID && i.InstitutionParentID == Record_.HospitalID).Any() ? db.InstitutionsConfiguration.Where(i => i.InstitutionToID == Test_.LabID && i.InstitutionParentID == Record_.HospitalID).FirstOrDefault().ID : 0;
+                //    var Inst_Conf_End_Flow_By_Virus = Test_.TestResultID == "P" ? db.InstitutionConfEndFlowByVirus.Where(j => j.id_Lab == Test_.LabID && j.id_Cat_TestType == Test_.TestType && j.value_Cat_TestResult == Test_.TestResultID && j.id_Cat_VirusType == Test_.VirusTypeID).Any() ? db.InstitutionConfEndFlowByVirus.Where(j => j.id_Lab == Test_.LabID && j.id_Cat_TestType == Test_.TestType && j.value_Cat_TestResult == Test_.TestResultID && j.id_Cat_VirusType == Test_.VirusTypeID).FirstOrDefault().ID : 0 : db.InstitutionConfEndFlowByVirus.Where(j => j.id_Lab == Test_.LabID && j.id_Cat_TestType == Test_.TestType && j.value_Cat_TestResult == Test_.TestResultID).Any() ? db.InstitutionConfEndFlowByVirus.Where(j => j.id_Lab == Test_.LabID && j.id_Cat_TestType == Test_.TestType && j.value_Cat_TestResult == Test_.TestResultID).FirstOrDefault().ID : db.InstitutionConfEndFlowByVirus.Where(j => j.id_Lab == Test_.LabID && j.id_Cat_TestType == Test_.TestType && j.value_Cat_TestResult == Test_.TestResultID).Any() ? db.InstitutionConfEndFlowByVirus.Where(j => j.id_Lab == Test_.LabID && j.id_Cat_TestType == Test_.TestType && j.value_Cat_TestResult == Test_.TestResultID).FirstOrDefault().ID : 0;
 
-                        Test_.inst_cnf_orig = Institution_Conf_Original;
-                        Test_.inst_conf_end_flow_by_virus = Inst_Conf_End_Flow_By_Virus;
+                //        Test_.inst_cnf_orig = Institution_Conf_Original;
+                //        Test_.inst_conf_end_flow_by_virus = Inst_Conf_End_Flow_By_Virus;
 
 
-                }
+                //}
 
-                if (List_Save.Count() > 0)
-                    db.SaveChanges();
+                //if (List_Save.Count() > 0)
+                //    db.SaveChanges();
 
 
                 if (List_Test.Count > 0)
@@ -266,21 +266,10 @@ namespace Paho.Controllers
 
                         db.SaveChanges();
                     }
-
-
                 }
-                
-
-
-
-
-
-
-
             }
 
-
-
+            return Json("Success");
         }
         }
 }

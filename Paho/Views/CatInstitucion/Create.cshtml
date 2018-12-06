@@ -75,7 +75,7 @@
             <div class="form-group vertical-align" data-bind="visible:@( ViewBag.UsrCtry == 15 )">
                 <label class="col-md-1_5 text-right" for="InstitutionType">@((string)Paho.Controllers.ResourcesM.SgetMessage("msgTypeHON", ViewBag.UsrCtry, ViewBag.UsrCtryLang)):</label>
                 <div class="col-md-10">
-                    @Html.DropDownList("cod_institution_type_HON", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.DropDownList("cod_institution_type", null, htmlAttributes: new { @class = "form-control" })
                 </div>
             </div>
         }

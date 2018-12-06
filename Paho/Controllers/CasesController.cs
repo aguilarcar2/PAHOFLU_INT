@@ -2627,7 +2627,7 @@ namespace Paho.Controllers
             else
             {
                 var ListVaccines = CatVirusSubtypeConfiguration.Select(i => i.id_CatSubType).ToList();
-                CVST_Test = db.CatVirusSubType.Where(k => ListVaccines.Contains(k.ID));
+                CVST_Test = db.CatVirusSubType.Where(k => ListVaccines.Contains(k.ID)).OrderBy(i => i.orden);
             }
 
             return (user.Institution.Country.Language == "SPA" ?  CVST_Test.Select(x => new { Id = x.ID.ToString(), Name = x.SPA }).ToList() : CVST_Test.Select(x => new { Id = x.ID.ToString(), Name = x.ENG }).ToList());

@@ -110,8 +110,8 @@ namespace Paho.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(
             [Bind(Include =
-            "AreaID, FullName, Name, AccessLevel, InstID, Father_ID, sentinel, SARI, ILI, surv_unusual, PCR, IFI, Active, orig_country, " + 
-            "cod_region_institucional, cod_region_salud, cod_region_pais, InstType, OrdenPrioritybyLab, NPHL, LocationTypeID, ForeignCountryID, " + 
+            "AreaID, FullName, Name, AccessLevel, cod_institution_type, InstID, Father_ID, sentinel, SARI, ILI, surv_unusual, PCR, IFI, Active, orig_country, " + 
+            "sentinel, cod_region_institucional, cod_region_salud, cod_region_pais, InstType, OrdenPrioritybyLab, NPHL, LocationTypeID, ForeignCountryID, " + 
             "ForeignInstitutionAddress")]
             Hospital catalog)
         {
@@ -167,7 +167,7 @@ namespace Paho.Controllers
             PopulateDepartmentsDropDownList(catalogo.AreaID, 
                 catalogo.AccessLevel, catalogo.InstType, catalogo.cod_region_institucional, 
                 catalogo.cod_region_salud, catalogo.cod_region_pais, catalogo.Father_ID, catalogo.InstType,
-                catalogo.LocationTypeID, catalogo.ForeignCountryID, catalogo.ForeignInstitutionAddress, catalogo.InstitutionTypeID);
+                catalogo.LocationTypeID, catalogo.ForeignCountryID, catalogo.ForeignInstitutionAddress, catalogo.cod_institution_type);
             
             return View(catalogo);
         }
@@ -184,7 +184,7 @@ namespace Paho.Controllers
             var catalog = db.Institutions.Find(id);
             if (TryUpdateModel(catalog, "",
                new string[] { "AreaID", "FullName", "Name", "AccessLevel", "InstID", "Father_ID", "SARI", "ILI", "surv_unusual", "PCR", "IFI",
-                   "Active", "sentinel", "orig_country","cod_region_institucional","cod_region_salud","cod_region_pais","InstType", "OrdenPrioritybyLab",
+                   "Active", "sentinel", "orig_country","cod_region_institucional","cod_region_salud","cod_region_pais","InstType", "cod_institution_type", "OrdenPrioritybyLab",
                    "NPHL", "LocationTypeID", "ForeignCountryID", "ForeignInstitutionAddress" }))
             {
                 try
@@ -297,7 +297,7 @@ namespace Paho.Controllers
             object selectedLocationTypeID = null,
             object selectedForeignCountriesID = null,
             object SelectedForeignInstitutionAddress = null,
-            object selectedInstitutionTypeHONID = null)
+            object selectedcodInstitutionTypeID = null)
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
             var countryId = user.Institution.CountryID ?? 0;
@@ -364,7 +364,7 @@ namespace Paho.Controllers
 
             regInstTypeHON.Insert(0, new InstitutionLocationTypeView { ID = 0, Name = "-- " + getMsg("msgSelect") + " -- " });
 
-            ViewBag.cod_institution_type_HON = new SelectList(regInstTypeHON, "ID", "Name", selectedInstitutionTypeHONID);
+            ViewBag.cod_institution_type = new SelectList(regInstTypeHON, "ID", "Name", selectedcodInstitutionTypeID);
 
             //**** Paises
             var regCountries = db.Countries

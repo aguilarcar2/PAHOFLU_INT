@@ -744,6 +744,7 @@ namespace Paho.Models
         public bool NPHL { get; set; }
         [NotMapped]
 		public InstitutionType InstType { get; set; }
+        public int? cod_institution_type { get; set; }
         //*****>                                            //#### CAFQ: 180911
         [DisplayName("Tipo Ubicación:")]
         public int? LocationTypeID { get; set; }
