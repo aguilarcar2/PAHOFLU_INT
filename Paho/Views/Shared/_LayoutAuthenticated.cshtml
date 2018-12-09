@@ -152,6 +152,13 @@
                                 {
 								    <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuDiccionarioView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Diccionario", new { area = "" }, null) </li>
                                     <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelArea", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Area", new { area = "" }, null)</li>
+                                    <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelState", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "State", new { area = "" }, null)</li>
+                                    <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelNeighborhood", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Neighborhood", new { area = "" }, null)</li>
+                                    if (@ViewBag.UsrCtry == 15)
+                                    {
+                                        <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelHamlet", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Hamlet", new { area = "" }, null)</li>
+                                        <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelColony", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Colony", new { area = "" }, null)</li>
+                                    }
                                     <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgRegion", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Regions", new { area = "" }, null)</li>         
                                     <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatVirusTypeView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "CatVirusType", new { area = "" }, null)</li>
                                     <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatVirusSubTypeView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "CatVirusSubTypes", new { area = "" }, null)</li>

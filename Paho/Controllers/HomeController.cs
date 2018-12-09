@@ -385,7 +385,7 @@ namespace Paho.Controllers
                 orden = i.orden.ToString()
             }).ToList());
 
-            CNP = db.CatNativePeople.OrderBy(i => i.description);
+            CNP = db.CatNativePeople.Where(i => i.id_country == user.Institution.CountryID).OrderBy(i => i.description);
             var CNPDisplay = CNP.Select(i => new LookupView<CatNativePeople>()
             {
                 Id = i.ID.ToString(),

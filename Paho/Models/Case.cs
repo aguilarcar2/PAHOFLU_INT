@@ -486,6 +486,7 @@ namespace Paho.Models
         public string description { get; set; }
         public int? orden { get; set; }
         public int? active { get; set; }
+        public int? id_country { get; set; }
     }
 
     public class CatServicios
@@ -645,9 +646,10 @@ namespace Paho.Models
 
     public class State
     {
-        public int ID { get; set; }
+        public int ID { get; set; }        
         public int AreaID { get; set; }
         public string Name { get; set; }
+        public string orig_country { get; set; }
         public virtual Area Area { get; set; }
         public virtual ICollection<Local> Locals { get; set; }
         public virtual ICollection<Neighborhood> Neighborhoods { get; set; }

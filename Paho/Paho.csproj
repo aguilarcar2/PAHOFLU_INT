@@ -287,10 +287,14 @@
     <Compile Include="Controllers\AssignFinalResult.cs" />
     <Compile Include="Controllers\CatSampleReasonsNoProcessedController.cs" />
     <Compile Include="Controllers\CatVirusLinajesController.cs" />
+    <Compile Include="Controllers\ColonyController.cs" />
+    <Compile Include="Controllers\HamletController.cs" />
     <Compile Include="Controllers\ImportPadronController.cs" />
+    <Compile Include="Controllers\NeighborhoodController.cs" />
     <Compile Include="Controllers\RegionsController.cs" />
     <Compile Include="Controllers\ResourcesM.cs" />
     <Compile Include="Controllers\DbResourceProvider.cs" />
+    <Compile Include="Controllers\StateController.cs" />
     <Compile Include="Controllers\SummaryJMController.cs" />
     <Compile Include="Controllers\TicketController.cs" />
     <Compile Include="Controllers\XmlResourceProvider.cs" />
@@ -2420,6 +2424,13 @@
     <Content Include="Views\CatSampleReasonsNoProcessed\Delete.cshtml" />
     <Content Include="Views\CatSampleReasonsNoProcessed\Edit.cshtml" />
     <Content Include="Views\CatSampleReasonsNoProcessed\Index.cshtml" />
+    <Content Include="Views\Colony\Index.cshtml" />
+    <Content Include="Views\Hamlet\Index.cshtml" />
+    <Content Include="Views\Neighborhood\Index.cshtml" />
+    <Content Include="Views\State\Index.cshtml" />
+    <Content Include="Views\State\Create.cshtml" />
+    <Content Include="Views\State\Edit.cshtml" />
+    <Content Include="Views\State\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

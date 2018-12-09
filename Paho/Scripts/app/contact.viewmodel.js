@@ -482,7 +482,7 @@ function ContactViewModel(app, dataModel) {
         }
     }, self);
     self.NacionalidadHON = ko.computed(function () {
-        if (self.selectedNationalityID() == "7") {
+        if (self.selectedNationalityID() == "15") {
             return true;
         } else {
             self.selectedNativepeopleID("");

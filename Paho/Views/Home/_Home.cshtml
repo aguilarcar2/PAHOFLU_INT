@@ -556,36 +556,22 @@
                         optionsText: 'Name',
                         optionsValue: 'Id',
                         value: selectedNationalityID,
-                        optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel"))'"></select>
+                        optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel"))'">
+                    </select>
                 </div>
             </div>
             <!--Pueblo originario-->
-            <div class="col-md-6" data-bind="visible:NacionalidadCHI">
+            <div class="col-md-6" data-bind="visible: NacionalidadCHI() || NacionalidadHON()">
                 <div class='input-group'>
                     <span class="input-group-addon">
                         @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelEthnicity"))
                     </span>
-                    @*<select id="nativepeople" class="form-control" data-bind="value:selectedNativepeopleID">
-                        <option value="">Seleccione...</option>
-                        <option value="0">Ninguno</option>
-                        <option value="1">Alacalufe o Kawashkar</option>
-                        <option value="2">Atacameño</option>
-                        <option value="3">Aimara</option>
-                        <option value="4">Colla</option>
-                        <option value="5">Diaguita</option>
-                        <option value="6">Mapuche</option>
-                        <option value="7">Quechua</option>
-                        <option value="8">Rapa Nui</option>
-                        <option value="9">Yámana o Yagán</option>
-                        <option value="10">No sabe</option>
-                        <option value="11">Otro pueblo originario declarado</option>
-                        <option value="12">No contesta</option>
-                    </select>*@
                     <select id="nativepeople" class="form-control" data-bind="options: CNP,
                                     optionsText: 'Name',
                                     optionsValue: 'Id',
 							        optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelEthnicityLabel"))',
-                                    value: selectedNativepeopleID"></select>
+                                    value: selectedNativepeopleID">
+                    </select>
                 </div>
             </div>
         </div>

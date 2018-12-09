@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Paho.Models.Hamlet>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>@(((Paho.Controllers.HamletController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelHamlet"))</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName((((Paho.Controllers.HamletController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelCountry")))
+        </th>
+        <th>
+            @Html.DisplayName((((Paho.Controllers.HamletController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelArea")))
+        </th>
+        <th>
+            @Html.DisplayName((((Paho.Controllers.HamletController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelState")))
+        </th>
+        <th>
+            @Html.DisplayName((((Paho.Controllers.HamletController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelNeighborhood")))
+        </th>
+        <th>
+            @Html.DisplayName((((Paho.Controllers.HamletController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelHamlet")))
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Neighborhood.State.Area.Country.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Neighborhood.State.Area.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Neighborhood.State.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Neighborhood.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<script type="text/javascript">
+    //***************************************
+    $('a#MaintenanceM').addClass("active");        //#### CAFQ: 180806
+    //***************************************
+</script>

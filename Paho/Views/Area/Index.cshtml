@@ -4,7 +4,7 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>@(((Paho.Controllers.AreaController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelArea"))</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -12,10 +12,10 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Country.Name)
+            @Html.DisplayName((((Paho.Controllers.AreaController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelCountry")))
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayName((((Paho.Controllers.AreaController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelArea")))
         </th>
         <th></th>
     </tr>
@@ -30,7 +30,6 @@
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.ID })
         </td>
     </tr>
