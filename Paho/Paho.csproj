@@ -2135,6 +2135,7 @@
     <None Include="Properties\PublishProfiles\CAFQ.pubxml" />
     <None Include="Properties\PublishProfiles\CAFQ01.pubxml" />
     <None Include="Properties\PublishProfiles\CAFQ_181024.pubxml" />
+    <None Include="Properties\PublishProfiles\CAFQ_1812.pubxml" />
     <None Include="Properties\PublishProfiles\CAFQ_CH.pubxml" />
     <None Include="Properties\PublishProfiles\CAFQ_PAHO.pubxml" />
     <None Include="Properties\PublishProfiles\CAFQ_PAHOFLU.pubxml" />
@@ -2431,6 +2432,12 @@
     <Content Include="Views\State\Create.cshtml" />
     <Content Include="Views\State\Edit.cshtml" />
     <Content Include="Views\State\Delete.cshtml" />
+    <Content Include="Views\Neighborhood\Edit.cshtml" />
+    <Content Include="Views\Neighborhood\Delete.cshtml" />
+    <Content Include="Views\Neighborhood\Create.cshtml" />
+    <Content Include="Views\Hamlet\Delete.cshtml" />
+    <Content Include="Views\Hamlet\Create.cshtml" />
+    <Content Include="Views\Hamlet\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

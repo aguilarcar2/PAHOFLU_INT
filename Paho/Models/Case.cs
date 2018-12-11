@@ -678,8 +678,14 @@ namespace Paho.Models
         public int StateID { get; set; }
         public int? Code { get; set; }
         public string Name { get; set; }
+        public int? RegionID { get; set; }
+        public string orig_country { get; set; }
+        public string latitude { get; set; }
+        public string longitude { get; set; }
+        public string x { get; set; }
+        public string y { get; set; }
         public virtual State State { get; set; }
-        //public virtual ICollection<Hamlet> Hamlets { get; set; }
+        public virtual ICollection<Hamlet> Hamlets { get; set; }
     }
 //}
 

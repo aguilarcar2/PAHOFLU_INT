@@ -41,6 +41,183 @@ namespace Paho.Controllers
             return View(neighborhood.ToList());
         }
 
+
+        // GET: Neighborhood/Create
+        public ActionResult Create()
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            var UsrLang = user.Institution.Country.Language;
+
+            //****
+            var cat_countries = from c in db.Countries select c;
+            if (user.Institution.AccessLevel == AccessLevel.Country || user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
+            {
+                if (user.Institution.AccessLevel == AccessLevel.Country)
+                {
+                    cat_countries = cat_countries.Where(s => s.ID == user.Institution.CountryID);
+                }
+                else if (user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
+                {
+                    cat_countries = cat_countries.Where(s => s.ID == user.Institution.CountryID);
+                }
+            }
+
+            ViewBag.Countries = new SelectList(cat_countries, "ID", "Name");
+
+            //****
+            var areas = db.Areas.Include(a => a.Country);
+
+            if (user.Institution.AccessLevel == AccessLevel.Country || user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
+            {
+                if (user.Institution.AccessLevel == AccessLevel.Country)
+                {
+                    areas = areas.Where(s => s.CountryID == user.Institution.CountryID)
+                                    .OrderBy(o => o.Country.Name).ThenBy(o => o.Name);
+                }
+                else if (user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
+                {
+                    areas = areas.Where(s => s.CountryID == user.Institution.CountryID)
+                                    .OrderBy(o => o.Country.Name).ThenBy(o => o.Name);
+                }
+            }
+
+            ViewBag.Areas = new SelectList(areas, "ID", "Name");
+
+            //****
+            return View();
+        }
+
+        // POST: Neighborhood/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "ID, StateID, Code, Name, RegionID, orig_country, latitude, longitude, x, y")] Neighborhood neighborhood)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Neighborhoods.Add(neighborhood);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            //ViewBag.CountryID = new SelectList(db.Countries, "ID", "Code", area.CountryID);           //???????
+            return View(neighborhood);
+        }
+
+        // GET: Neighborhood/Edit/5
+        public ActionResult Edit(int? id)
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            var UsrLang = user.Institution.Country.Language;
+            //****
+            var cat_countries = from c in db.Countries select c;
+            if (user.Institution.AccessLevel == AccessLevel.Country || user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
+            {
+                if (user.Institution.AccessLevel == AccessLevel.Country)
+                {
+                    cat_countries = cat_countries.Where(s => s.ID == user.Institution.CountryID);
+                }
+                else if (user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
+                {
+                    cat_countries = cat_countries.Where(s => s.ID == user.Institution.CountryID);
+                }
+            }
+
+            ViewBag.Countries = new SelectList(cat_countries, "ID", "Name");
+
+            //****
+            var cat_areas = db.Areas.Include(a => a.Country);
+
+            if (user.Institution.AccessLevel == AccessLevel.Country || user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
+            {
+                if (user.Institution.AccessLevel == AccessLevel.Country)
+                {
+                    cat_areas = cat_areas.Where(s => s.CountryID == user.Institution.CountryID)
+                                    .OrderBy(o => o.Country.Name).ThenBy(o => o.Name);
+                }
+                else if (user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
+                {
+                    cat_areas = cat_areas.Where(s => s.CountryID == user.Institution.CountryID)
+                                    .OrderBy(o => o.Country.Name).ThenBy(o => o.Name);
+                }
+            }
+
+            ViewBag.Areas = new SelectList(cat_areas, "ID", "Name");
+
+            /*/****
+            var cat_states = db.States.Include(a => a.Area);
+
+            if (user.Institution.AccessLevel == AccessLevel.Country || user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
+            {
+                if (user.Institution.AccessLevel == AccessLevel.Country)
+                {
+                    cat_states = cat_states.Where(s => s.Area.CountryID == user.Institution.CountryID)
+                                    .OrderBy(o => o.Area.Country.Name).ThenBy(o => o.Area.Name).ThenBy(o => o.Name);
+                }
+                else if (user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
+                {
+                    cat_states = cat_states.Where(s => s.Area.CountryID == user.Institution.CountryID)
+                                    .OrderBy(o => o.Area.Country.Name).ThenBy(o => o.Area.Name).ThenBy(o => o.Name);
+                }
+            }
+
+            ViewBag.States = new SelectList(cat_states, "ID", "Name");
+            */
+
+            //****
+            if (id == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            Neighborhood neighborhood = db.Neighborhoods.Find(id);
+            if (neighborhood == null)
+                return HttpNotFound();
+
+            return View(neighborhood);
+        }
+
+        // POST: Neighborhood/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "ID, StateID, Code, Name, RegionID, orig_country, latitude, longitude, x, y")] Neighborhood neighborhood)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(neighborhood).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            //ViewBag.CountryID = new SelectList(db.Countries, "ID", "Code", area.CountryID);           //??????
+            return View(neighborhood);
+        }
+
+        // GET: Neighborhood/Delete/5
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            Neighborhood neighborhood = db.Neighborhoods.Find(id);
+            if (neighborhood == null)
+                return HttpNotFound();
+
+            return View(neighborhood);
+        }
+
+        // POST: Neighborhood/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            Neighborhood neighborhood = db.Neighborhoods.Find(id);
+            db.Neighborhoods.Remove(neighborhood);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
         // GET: State/Details
         public ActionResult Details(int? id)
         {
@@ -57,9 +234,6 @@ namespace Paho.Controllers
 
             return View(neighborhood);
         }
-
-
-
 
         protected override void Dispose(bool disposing)
         {
@@ -83,5 +257,4 @@ namespace Paho.Controllers
             return searchedMsg;
         }
     }
-
 }
