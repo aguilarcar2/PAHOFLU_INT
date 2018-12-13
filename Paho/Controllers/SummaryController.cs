@@ -204,14 +204,23 @@ namespace Paho.Controllers
             {
                 var dbcasesummaryDetail = casesummary.CaseSummaryDetails.First(d => d.Id == casesummaryDetail.Id);
                 dbcasesummaryDetail.ETINumFem = casesummaryDetail.ETINumFem;
+                        System.Diagnostics.Debug.WriteLine(casesummaryDetail.ETINumFem);     //=> OKOK
                 dbcasesummaryDetail.ETINumMaso = casesummaryDetail.ETINumMaso;
+                        System.Diagnostics.Debug.WriteLine(casesummaryDetail.ETINumMaso);     //=> OKOK
                 dbcasesummaryDetail.ETINumST = casesummaryDetail.ETINumST;
+                        System.Diagnostics.Debug.WriteLine(casesummaryDetail.ETINumST);     //=> OKOK
+
                 dbcasesummaryDetail.ETINumEmerFem = casesummaryDetail.ETINumEmerFem;
                 dbcasesummaryDetail.ETINumEmerMaso = casesummaryDetail.ETINumEmerMaso;
                 dbcasesummaryDetail.ETINumEmerST = casesummaryDetail.ETINumEmerST;
+
                 dbcasesummaryDetail.ETIDenoFem = casesummaryDetail.ETIDenoFem;
+                        System.Diagnostics.Debug.WriteLine(casesummaryDetail.ETIDenoFem);     //=> OKOK
                 dbcasesummaryDetail.ETIDenoMaso = casesummaryDetail.ETIDenoMaso;
+                        System.Diagnostics.Debug.WriteLine(casesummaryDetail.ETIDenoMaso);     //=> OKOK
                 dbcasesummaryDetail.ETIDenoST = casesummaryDetail.ETIDenoST;
+                        System.Diagnostics.Debug.WriteLine(casesummaryDetail.ETIDenoST);     //=> OKOK
+
                 dbcasesummaryDetail.HospFem = casesummaryDetail.HospFem;
                 dbcasesummaryDetail.HospMaso = casesummaryDetail.HospMaso;
                 dbcasesummaryDetail.HospST = casesummaryDetail.HospST;

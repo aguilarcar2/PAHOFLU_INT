@@ -85,7 +85,7 @@
 }
 
 <script type="text/javascript">
-    function limpiarCampos(){
+    function limpiarCampos() {
         $("#Name").val("");
         $("#orig_country").val("");
     }
@@ -95,10 +95,6 @@
         var areaID = @(Model.Neighborhood.State.AreaID);
         var stateID = @(Model.Neighborhood.StateID);
         var neighborhoodID = @(Model.NeighborhoodID);
-        console.log(countryID);
-        console.log(areaID);
-        console.log(stateID);
-        console.log(neighborhoodID);
 
         if(countryID != ""){
             $.get("/cases/GetAreas", { CountryID: countryID }, function (data) {
@@ -110,6 +106,7 @@
                         $("#AreaID").append("<option value='" + row.Id + "'>" + row.Name + "</option>")
                 });
             });
+            //cargarListaAreas(countryID, areaID)
         }
 
         if(areaID != ""){
@@ -127,35 +124,41 @@
         if(stateID != ""){
             $.get("/cases/GetNeighborhoods", { stateID: stateID }, function (data) {
                 $("#NeighborhoodID").empty();
-                $("#NeighborhoodID").val("");
                 $.each(data, function (index, row) {
-                    if(neighborhoodID == row.Id){
-                        console.log(row.Id + "--" + row.Name);
-                        $("NeighborhoodID").append("<option value='" + row.Id + "' selected='selected'>" + row.Name + "</option>")
-                    }
-                    else{
-                        console.log(row.Id + "==" + row.Name);
-                        $("#NeighborhoodID").append("<option value='" + row.Id + "'>" + row.Name + "</option>")
-                    }
-                        
+                    $("#NeighborhoodID").append("<option value=" + row.Id + ">" + row.Name + "</option>")
                 });
+                $("#NeighborhoodID").val(neighborhoodID);
             });
         }
 
         $("#AreaID").change(function () {       // Area : Departamento
             $.get("/cases/GetStates", { AreaID: $("#AreaID").val() }, function (data) {
                 $("#StateID").empty();
-
                 $("#StateID").append("<option value=''>" + "@(((Paho.Controllers.HamletController)this.ViewContext.Controller).getMsg("msgSelectLabel"))" + "</option>")
                 $.each(data, function (index, row) {
                     $("#StateID").append("<option value='" + row.Id + "'>" + row.Name + "</option>")
+                });
+
+                $("#NeighborhoodID").empty();
+                $("#NeighborhoodID").append("<option value=''>" + "@(((Paho.Controllers.HamletController)this.ViewContext.Controller).getMsg("msgSelectLabel"))" + "</option>")
+
+                limpiarCampos();
+            });
+        });
+
+        $("#StateID").change(function () {          //  State : Municipio
+            $.get("/cases/GetNeighborhoods", { StateID: $("#StateID").val() }, function (data) {
+                $("#NeighborhoodID").empty();
+                $("#NeighborhoodID").append("<option value=''>" + "@(((Paho.Controllers.HamletController)this.ViewContext.Controller).getMsg("msgSelectLabel"))" + "</option>")
+                $.each(data, function (index, row) {
+                    $("#NeighborhoodID").append("<option value='" + row.Id + "'>" + row.Name + "</option>")
                 });
 
                 limpiarCampos();
             });
         });
 
-        $("#StateID").change(function () {      //  State : Municipio
+        $("#NeighborhoodID").change(function () {      //  Neighborhood : Aldea
             limpiarCampos();
         });
     });

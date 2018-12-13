@@ -175,7 +175,6 @@ namespace Paho.Controllers
             return View(hamlet);
         }
 
-
         // GET: Hamlet/Delete/5
         public ActionResult Delete(int? id)
         {

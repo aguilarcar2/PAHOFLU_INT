@@ -382,6 +382,21 @@ $(document).ready(function () {
             select.val(selectedValue).change();							// Seleccionando un elemento
     }// END updateSelect 
     */
-
 })
+
+/*
+function cargarListaAreas(countryID, areaID) {
+    console.log("cargarListaAreas->START");
+    $.get("/cases/GetAreas", { CountryID: countryID }, function (data) {
+        $("#AreaID").empty();
+        $.each(data, function (index, row) {
+            if (areaID == row.Id)
+                $("#AreaID").append("<option value='" + row.Id + "' selected='selected'>" + row.Name + "</option>")
+            else
+                $("#AreaID").append("<option value='" + row.Id + "'>" + row.Name + "</option>")
+        });
+    });
+    console.log("cargarListaAreas->END");
+}
+*/
 

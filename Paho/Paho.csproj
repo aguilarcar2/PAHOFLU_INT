@@ -2438,6 +2438,9 @@
     <Content Include="Views\Hamlet\Delete.cshtml" />
     <Content Include="Views\Hamlet\Create.cshtml" />
     <Content Include="Views\Hamlet\Edit.cshtml" />
+    <Content Include="Views\Colony\Create.cshtml" />
+    <Content Include="Views\Colony\Edit.cshtml" />
+    <Content Include="Views\Colony\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

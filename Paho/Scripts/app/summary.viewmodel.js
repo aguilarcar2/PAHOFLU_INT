@@ -320,6 +320,15 @@ function SummayItem(data) {
     self.TotalVisits = ko.observable(data.TotalVisits);
     //****
     self.MakeValueOfSummayItem = function () {
+        //var aaa = $("#NeighborhoodID").val("");
+        var aaa = $("#ETINumFem").val();
+        var bbb = $("#ETINumMaso").val();
+        var ccc = $("#ETINumST").val();
+        console.log("a111");
+        console.log(aaa);
+        console.log(bbb);
+        console.log(ccc);
+        console.log("a222");
         return {
             Id: self.Id,
             CaseSummaryId: self.CaseSummaryId,
@@ -327,12 +336,15 @@ function SummayItem(data) {
             ETINumFem: typeof (self.ETINumFem()) !== "number" ? parseInt(self.ETINumFem()) : self.ETINumFem(),
             ETINumMaso: typeof (self.ETINumMaso()) !== "number" ? parseInt(self.ETINumMaso()) : self.ETINumMaso(),
             ETINumST: typeof (self.ETINumST()) !== "number" ? parseInt(self.ETINumST()) : self.ETINumST(),
+
             ETINumEmerFem: typeof (self.ETINumEmerFem()) !== "number" ? parseInt(self.ETINumEmerFem()) : self.ETINumEmerFem(),
             ETINumEmerMaso: typeof (self.ETINumEmerMaso()) !== "number" ? parseInt(self.ETINumEmerMaso()) : self.ETINumEmerMaso(),
             ETINumEmerST: typeof (self.ETINumEmerST()) !== "number" ? parseInt(self.ETINumEmerST()) : self.ETINumEmerST(),
+
             ETIDenoFem: typeof (self.ETIDenoFem()) !== "number" ? parseInt(self.ETIDenoFem()) : self.ETIDenoFem(),
             ETIDenoMaso: typeof (self.ETIDenoMaso()) !== "number" ? parseInt(self.ETIDenoMaso()) : self.ETIDenoMaso(),
             ETIDenoST: typeof (self.ETIDenoST()) !== "number" ? parseInt(self.ETIDenoST()) : self.ETIDenoST(),
+
             HospFem: typeof (self.HospFem()) !== "number" ? parseInt(self.HospFem()) : self.HospFem(),
             HospMaso: typeof (self.HospMaso()) !== "number" ? parseInt(self.HospMaso()) : self.HospMaso(),
             HospST: typeof (self.HospST()) !== "number" ? parseInt(self.HospST()) : self.HospST(),
