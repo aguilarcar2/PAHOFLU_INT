@@ -553,6 +553,7 @@ function LabViewModel(app, dataModel) {
     //Orden para el resultado final automaticamente
 
     self.OrderDummy = ko.observableArray([]);
+    self.OrderDummy_existvirus = ko.observableArray([]);
     self.OrderArrayFinalResult = ko.observableArray([]);
 
     self.Id = "";
@@ -2140,6 +2141,7 @@ function LabViewModel(app, dataModel) {
         if (self.hasGet() == false) {
             self.OrderArrayFinalResult([]);
             self.OrderDummy([]);
+            self.OrderDummy_existvirus([]);
             self.resetFinalResult();
             self.OrderArrayFinalResult(self.LabTests().concat(self.LabTests_Sample2()).concat(self.LabTests_Sample3()));
             //console.log(self.OrderArrayFinalResult());
@@ -2152,7 +2154,9 @@ function LabViewModel(app, dataModel) {
                     self.otherviruses(true);
                 }
             });
+            self.OrderDummy_existvirus(self.OrderDummy())  ;
 
+            //console.log(self.OrderDummy_existvirus());
 
             self.OrderDummy().forEach(function (v, i) {
 
@@ -2181,11 +2185,29 @@ function LabViewModel(app, dataModel) {
                             self.OrderArrayFinalResult.push(v);
                         }
                     } else {
-                        self.OrderArrayFinalResult.push(v);
+
+                        self.virusexist = ko.observable(false);
+                        self.OrderDummy().forEach(function (d, j) {
+                            if (j < i) {
+                                if (d.VirusTypeID() == v.VirusTypeID()) {
+                                    //&& v.TestResultID_VirusSubType == 'undefined'
+                                    self.virusexist(true);
+                                }
+                            }
+                            
+                        });
+
+                        if (self.virusexist() == false)
+                        {
+                            self.OrderArrayFinalResult.push(v);
+                        }
+                        
                     }
                       
                 }
             });
+
+            
 
             self.OrderArrayFinalResult().forEach(function (v, i) {                
                 if (i == 0) {
@@ -2198,9 +2220,9 @@ function LabViewModel(app, dataModel) {
                             self.FinalResultVirusSubTypeID(v.VirusSubTypeID());
                         } else if (v.TestResultID_VirusSubType() != "N" && v.TestResultID_VirusSubType() != "NA" && v.TestResultID_VirusSubType() != "NB") {
                             self.FinalResultVirusSubTypeID(v.VirusSubTypeID());
-                            console.log("Virus subtype --")
-                            console.log(v.VirusSubTypeID());
-                            console.log(self.FinalResultVirusSubTypeID());
+                            //console.log("Virus subtype --")
+                            //console.log(v.VirusSubTypeID());
+                            //console.log(self.FinalResultVirusSubTypeID());
                         }
                             
                         if (v.TestResultID_VirusSubType_2() == "P" && self.UsrCountry() == 7) {
