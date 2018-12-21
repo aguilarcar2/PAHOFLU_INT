@@ -623,6 +623,7 @@ namespace Paho.Controllers
                                      FLOW_FLUCASE = flucase.flow,
                                      TEST_LAST = flucase.CaseLabTests.Where(e => e.Processed != null).OrderByDescending(d => d.flow_test).FirstOrDefault(),
                                      FLOW_VIRUS = db.InstitutionConfEndFlowByVirus.Where(i => i.ID == flucase.CaseLabTests.Where(e => e.Processed != null).OrderByDescending(d => d.flow_test).FirstOrDefault().inst_conf_end_flow_by_virus).FirstOrDefault(),
+                                     //FLOW_VIRUS = db.InstitutionConfEndFlowByVirus.Where(i => i.ID == flucase.CaseLabTests.Where(e => e.inst_conf_end_flow_by_virus != null).OrderByDescending(d => d.flow_test).FirstOrDefault().inst_conf_end_flow_by_virus).FirstOrDefault(),
                                      VI_OK = (from a in db.InstitutionConfEndFlowByVirus
                                               join p in db.InstitutionsConfiguration on a.id_InstCnf equals p.ID
                                               join dt in db.Institutions on p.InstitutionFromID equals dt.ID
@@ -655,12 +656,24 @@ namespace Paho.Controllers
                                         */
                                         x.VI_OK == true ?
                                             (x.FLOW_VIRUS != null ?
-                                                (x.FLOW_VIRUS.value_Cat_TestResult==x.TEST_LAST.TestResultID && x.FLOW_VIRUS.id_Cat_VirusType==x.TEST_LAST.VirusTypeID && x.FLOW_FLUCASE != 99 ?
-                                                    readyCloseHtml :
+                                               (x.TEST_LAST.TestResultID == "N") ? 
+                                                (x.FLOW_VIRUS.value_Cat_TestResult==x.TEST_LAST.TestResultID && x.FLOW_FLUCASE != 99 ?
+                                                     readyCloseHtml  :
                                                     (x.ready_close2 == 1 && x.FLOW_FLUCASE != 99 ?
-                                                        readyCloseHtml :
+                                                       readyCloseHtml :
                                                         (x.CS_D_Cat == null ?
-                                                            openHtml :
+                                                          openHtml :
+                                                            (user.Institution.Country.Language == "SPA" ? "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.SPA+"'/> " + x.CS_D_Cat.SPA : "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.ENG+"'/> " + x.CS_D_Cat.ENG )
+                                                        )
+                                                    )
+                                                )
+                                                :
+                                                (x.FLOW_VIRUS.value_Cat_TestResult==x.TEST_LAST.TestResultID && x.FLOW_VIRUS.id_Cat_VirusType==x.TEST_LAST.VirusTypeID && x.FLOW_FLUCASE != 99 ?
+                                                     readyCloseHtml  :
+                                                    (x.ready_close2 == 1 && x.FLOW_FLUCASE != 99 ?
+                                                       readyCloseHtml :
+                                                        (x.CS_D_Cat == null ?
+                                                          openHtml :
                                                             (user.Institution.Country.Language == "SPA" ? "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.SPA+"'/> " + x.CS_D_Cat.SPA : "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.ENG+"'/> " + x.CS_D_Cat.ENG )
                                                         )
                                                     )
@@ -669,16 +682,16 @@ namespace Paho.Controllers
                                                 (x.ready_close2 == 1 && x.FLOW_FLUCASE != 99 ?
                                                     readyCloseHtml :
                                                     (x.CS_D_Cat == null ?
-                                                        openHtml :
+                                                       openHtml :
                                                         (user.Institution.Country.Language == "SPA" ? "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.SPA+"'/> " + x.CS_D_Cat.SPA : "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.ENG+"'/> " + x.CS_D_Cat.ENG )
                                                     )
                                                 )
                                             )
                                             :
                                             (x.ready_close == 1 && x.FLOW_FLUCASE != 99 ?
-                                                    readyCloseHtml :
+                                                  readyCloseHtml :
                                                     (x.CS_D_Cat == null ?
-                                                        openHtml :
+                                                       openHtml :
                                                         (user.Institution.Country.Language == "SPA" ? "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.SPA+"'/> " + x.CS_D_Cat.SPA : "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.ENG+"'/> " + x.CS_D_Cat.ENG )
                                                     )
                                             )

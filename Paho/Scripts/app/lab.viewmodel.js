@@ -509,16 +509,13 @@
         //console.log(app.Views.Lab.LabTests().length);
         if (typeof (item) != 'undefined' && app.Views.Home.UsrCountry() != 7)
         {
-
-            if (item.Id == 'NA' || item.Id == 'NB' || (item.Id == 'MI' && app.Views.Home.UsrCountry() != 15)) {
+            if (item.Id == 'NA' || item.Id == 'NB' || (item.Id == 'MI')) {
                     ko.applyBindingsToNode(option, {
                         attr: {
                             'style': 'display:none'
                         }
                     }, item);
                 }
-
-
 
         } else if (typeof (item) != 'undefined' && app.Views.Home.UsrCountry() == 7) {
             if(app.Views.Lab.CanPCRLab() == true && app.Views.Lab.CanIFILab() == false)
