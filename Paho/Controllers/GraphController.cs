@@ -1250,10 +1250,15 @@ namespace Paho.Controllers
                                     myXmlNode0.InnerText = getMsg("viewSituationalMap1Title");
                                     break;
                                 case "GetMapData2":
-                                    myXmlNode0.InnerText = getMsg("viewSituationalMap2Title") + " INSTITUCIONAL";
+                                    /*if (CountryID_ == 9)
+                                        myXmlNode0.InnerText = getMsg("viewSituationalMap2Title") + " INSTITUCIONAL";
+                                    else
+                                        myXmlNode0.InnerText = getMsg("viewSituationalMap2Title");*/
+                                    myXmlNode0.InnerText = getMsg("viewSituationalMap2Title") + ((CountryID_ == 9) ? " INSTITUCIONAL" : "");
                                     break;
                                 case "GetMapData3":
-                                    myXmlNode0.InnerText = getMsg("viewSituationalMap2Title") + " SALUD";
+                                    //myXmlNode0.InnerText = getMsg("viewSituationalMap2Title") + " SALUD";
+                                    myXmlNode0.InnerText = getMsg("viewSituationalMap2Title") + ((CountryID_ == 9) ? " SALUD" : "");
                                     break;
                             }
                             myXmlDoc0.DocumentElement.AppendChild(myXmlNode0);
@@ -1267,11 +1272,9 @@ namespace Paho.Controllers
                                     myXmlNode0.InnerText = "CL";
                                     break;
                                 case 9:
-                                    //myXmlNode0.InnerText = "CR";
                                     if (GetMapDataSP == "GetMapData1")
                                         myXmlNode0.InnerText = "CR";
                                     else if (GetMapDataSP == "GetMapData2")
-                                        //myXmlNode0.InnerText = "CR";
                                         myXmlNode0.InnerText = "CRI";
                                     else if (GetMapDataSP == "GetMapData3")
                                         myXmlNode0.InnerText = "CRH";
@@ -1289,7 +1292,11 @@ namespace Paho.Controllers
                                     myXmlNode0.InnerText = "DOI";
                                     break;
                                 case 15:
-                                    myXmlNode0.InnerText = "HN";                    // Honduras
+                                    //myXmlNode0.InnerText = "HN";                    // Honduras
+                                    if (GetMapDataSP == "GetMapData1")
+                                        myXmlNode0.InnerText = "HN";
+                                    else if (GetMapDataSP == "GetMapData3")
+                                        myXmlNode0.InnerText = "HNH";
                                     break;
                                 case 119:
                                     myXmlNode0.InnerText = "CI";

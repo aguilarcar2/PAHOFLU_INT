@@ -1,35 +1,61 @@
-﻿@model IEnumerable<Paho.Models.Colony>
+﻿@model PagedList.IPagedList<Paho.Models.Colony>
+
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>@(((Paho.Controllers.ColonyController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelColony"))</h2>
+<h2>@(Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelColony", ViewBag.UsrCtry, ViewBag.UsrCtryLang))</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+
+@using (Html.BeginForm("Index", "Colony", FormMethod.Get))
+{
+    <p>
+        @(Paho.Controllers.ResourcesM.SgetMessage("msgSearchCriteria", ViewBag.UsrCtry, ViewBag.UsrCtryLang)): @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value=@(Paho.Controllers.ResourcesM.SgetMessage("viewHome_btnSearch", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) />
+    </p>
+}
+
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayName((((Paho.Controllers.ColonyController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelCountry")))
+            @Html.DisplayName((string)(Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelCountry", ViewBag.UsrCtry, ViewBag.UsrCtryLang)))
         </th>
         <th>
-            @Html.DisplayName((((Paho.Controllers.ColonyController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelArea")))
+            @*Html.DisplayName((((Paho.Controllers.ColonyController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelArea")))*@
+            @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelArea", ViewBag.UsrCtry, ViewBag.UsrCtryLang),
+                                "Index", "Colony", new { sortOrder = ViewBag.AreaParm, currentFilter = ViewBag.CurrentFilter }, null)
         </th>
         <th>
-            @Html.DisplayName((((Paho.Controllers.ColonyController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelState")))
+            @*Html.DisplayName((((Paho.Controllers.ColonyController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelState")))*@
+            @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelState", ViewBag.UsrCtry, ViewBag.UsrCtryLang),
+                                "Index", "Colony", new { sortOrder = ViewBag.StateParm, currentFilter = ViewBag.CurrentFilter }, null)
         </th>
         <th>
-            @Html.DisplayName((((Paho.Controllers.ColonyController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelNeighborhood")))
+            @*Html.DisplayName((((Paho.Controllers.ColonyController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelNeighborhood")))*@
+            @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelNeighborhood", ViewBag.UsrCtry, ViewBag.UsrCtryLang),
+                                "Index", "Colony", new { sortOrder = ViewBag.NeighborhoodParm, currentFilter = ViewBag.CurrentFilter }, null)
         </th>
         <th>
-            @Html.DisplayName((((Paho.Controllers.ColonyController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelHamlet")))
+            @*Html.DisplayName((((Paho.Controllers.ColonyController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelHamlet")))*@
+            @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelHamlet", ViewBag.UsrCtry, ViewBag.UsrCtryLang),
+                                "Index", "Colony", new { sortOrder = ViewBag.HamletParm, currentFilter = ViewBag.CurrentFilter }, null)
         </th>
         <th>
-            @Html.DisplayName((((Paho.Controllers.ColonyController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelColony")))
+            @*Html.DisplayName((((Paho.Controllers.ColonyController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelColony")))*@
+            @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelColony", ViewBag.UsrCtry, ViewBag.UsrCtryLang),
+                                "Index", "Colony", new { sortOrder = ViewBag.ColonyParm, currentFilter = ViewBag.CurrentFilter }, null)
         </th>
-        <th></th>
+        <th>
+            @Html.DisplayName((string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelOrigCountry", ViewBag.UsrCtry, ViewBag.UsrCtryLang))
+        </th>
+        <th>
+        </th>
     </tr>
 
     @foreach (var item in Model)
@@ -54,6 +80,9 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.orig_country)
+            </td>
+            <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
                 @Html.ActionLink("Delete", "Delete", new { id = item.ID })
             </td>
@@ -61,6 +90,13 @@
     }
 
 </table>
+
+<br />
+@(Paho.Controllers.ResourcesM.SgetMessage("msgPage", ViewBag.UsrCtry, ViewBag.UsrCtryLang))
+@(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+@(Paho.Controllers.ResourcesM.SgetMessage("msgViewCatPopulation_De", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
 
 <script type="text/javascript">
     //***************************************

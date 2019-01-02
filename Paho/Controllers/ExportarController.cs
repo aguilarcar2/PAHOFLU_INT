@@ -1864,353 +1864,88 @@ namespace Paho.Controllers
 
         private static void AppendDataToExcel_REVELAC(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string reportTemplate, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId)         //#### CAFQ
         {
-            ExcelWorksheet excelWorksheet1 = excelWorkBook.Worksheets["DatosReporte"];
+            ExcelWorksheet excelWorksheet = excelWorkBook.Worksheets["REVELAC_i"];
             var row = startRow;
-            var column = startColumn;
             var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
-            using (var con = new SqlConnection(consString))
+            try
             {
-                using (var command = new SqlCommand("REVELAC_i", con) { CommandType = CommandType.StoredProcedure, CommandTimeout = 600 })
+                using (var con = new SqlConnection(consString))
                 {
-                    command.Parameters.Clear();
-                    command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
-                    command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
-                    command.Parameters.Add("@Languaje", SqlDbType.Text).Value = languaje_;
-                    command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
-                    command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
-                    command.Parameters.Add("@Mes_", SqlDbType.Int).Value = month;
-                    command.Parameters.Add("@SE", SqlDbType.Int).Value = se;
-                    command.Parameters.Add("@yearFrom", SqlDbType.Int).Value = YearFrom;
-                    command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
-                    command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
-                    command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
-                    command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;
-                    command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;
-
-                    con.Open();
-                    using (var reader = command.ExecuteReader())
+                    using (var command = new SqlCommand("REVELAC_i", con) { CommandType = CommandType.StoredProcedure, CommandTimeout = 600 })
                     {
-                        int nFila = 0;
-                        while (reader.Read())
+                        command.Parameters.Clear();
+                        command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
+                        command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
+                        command.Parameters.Add("@Languaje", SqlDbType.Text).Value = languaje_;
+                        command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
+                        command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
+                        command.Parameters.Add("@Mes_", SqlDbType.Int).Value = month;
+                        command.Parameters.Add("@SE", SqlDbType.Int).Value = se;
+                        command.Parameters.Add("@yearFrom", SqlDbType.Int).Value = YearFrom;
+                        command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
+                        command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
+                        command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
+                        command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;
+                        command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;
+
+                        con.Open();
+                        using (var reader = command.ExecuteReader())
                         {
-                            excelWorksheet1.Cells[row + nFila, 1].Value = reader.GetValue(0);       // ID
-                            excelWorksheet1.Cells[row + nFila, 2].Value = reader.GetValue(5);       // Sexo
-                            excelWorksheet1.Cells[row + nFila, 3].Value = reader.GetValue(8);       // Edad en anios
-                            excelWorksheet1.Cells[row + nFila, 4].Value = reader.GetValue(9);       //
-                            excelWorksheet1.Cells[row + nFila, 5].Value = reader.GetValue(10);      //
+                            int excelColTota = 73;
+                            row = 2;
 
-                            //excelWorksheet1.Cells[row + nFila, 6].Value = reader.GetValue(11);      // FachaAdministracionAntiviral
-                            var vTemp = reader.GetValue(11);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 6].Value = vTemp;
-
-                            excelWorksheet1.Cells[row + nFila, 7].Value = reader.GetValue(14);      //
-                            excelWorksheet1.Cells[row + nFila, 8].Value = reader.GetValue(15);      //
-
-                            //excelWorksheet1.Cells[row + nFila, 9].Value = reader.GetValue(16);      // VacunaInfluenzaFecha
-                            vTemp = reader.GetValue(16);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 9].Value = vTemp;      // VacunaInfluenzaFecha
-
-                            //excelWorksheet1.Cells[row + nFila, 10].Value = reader.GetValue(17);     // VacunaInfluenza2daDosis
-                            vTemp = reader.GetValue(17);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 10].Value = vTemp;     // VacunaInfluenza2daDosis
-
-                            //excelWorksheet1.Cells[row + nFila, 11].Value = reader.GetValue(18);     // VacunaInfluenza2daDosisFecha
-                            vTemp = reader.GetValue(18);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 11].Value = vTemp;     // VacunaInfluenza2daDosisFecha
-
-                            excelWorksheet1.Cells[row + nFila, 12].Value = reader.GetValue(19);     //
-                            excelWorksheet1.Cells[row + nFila, 13].Value = reader.GetValue(21);     // FechaTomaMuestra
-
-
-                            //excelWorksheet1.Cells[row + nFila, 14].Value = reader.GetValue(24);     // ResultadoRT-PCR
-                            vTemp = reader.GetValue(24);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 14].Value = vTemp;     // ResultadoRT-PCR
-
-                            var VABT = reader.GetValue(25).ToString();
-                            var VABST = reader.GetValue(26).ToString();
-                            var VABL = reader.GetValue(27).ToString();
-                            if (VABT == "Influenza A" || VABT == "Influenza B")
+                            while (reader.Read())
                             {
-                                excelWorksheet1.Cells[row + nFila, 15].Value = VABT;                    // Tipo Virus
-                                excelWorksheet1.Cells[row + nFila, 16].Value = VABST;                   // Subtipo virus
-                                excelWorksheet1.Cells[row + nFila, 17].Value = VABL;                    // Linaje virus
-                            }
 
-                            vTemp = reader.GetValue(28);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 18].Value = vTemp;     // Embarazada
+                                var col = 1;
+                                var readercont = 0;
+                                System.Diagnostics.Debug.WriteLine(reader.GetValue(72).ToString()); //#############
+                                readercont = 0;     //###############
 
-                            vTemp = reader.GetValue(29);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 19].Value = vTemp;     // Semana embarazo
-
-                            vTemp = reader.GetValue(30);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 20].Value = vTemp;     // Trimestre vacunacion
-
-                            vTemp = reader.GetValue(31);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 21].Value = vTemp;     // Fecha ultima menstruac.
-
-                            excelWorksheet1.Cells[row + nFila, 22].Value = "";     // Estado
-                            excelWorksheet1.Cells[row + nFila, 23].Value = reader.GetValue(33);     // Region
-                            excelWorksheet1.Cells[row + nFila, 24].Value = reader.GetValue(34);     // Hospital
-                            excelWorksheet1.Cells[row + nFila, 25].Value = reader.GetValue(35);     // Tipo vigilancia
-
-                            vTemp = reader.GetValue(36);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 26].Value = vTemp;     // Tipo vacuna
-
-                            vTemp = reader.GetValue(37);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 27].Value = vTemp;     // Marca vacuna
-
-                            vTemp = reader.GetValue(38);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 28].Value = vTemp;     // Fecha ingreso
-
-                            vTemp = reader.GetValue(39);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 29].Value = vTemp;     // Fecha de egreso
-
-                            vTemp = reader.GetValue(40);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 30].Value = vTemp;     // UCI
-
-                            vTemp = reader.GetValue(41);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 31].Value = vTemp;     // Condicion de egreso
-
-                            vTemp = reader.GetValue(82);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 32].Value = vTemp;        // Tipo de antiviral
-
-                            vTemp = reader.GetValue(42);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 33].Value = vTemp;     // 1ra vacunacion niños 9 años
-
-                            vTemp = reader.GetValue(43);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 34].Value = vTemp;     // Vacunacion temporada previa
-
-                            vTemp = reader.GetValue(44);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 35].Value = vTemp;     // Vacunacion anterior temporada previa
-
-                            vTemp = reader.GetValue(45);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 36].Value = vTemp;     // Vacunacion neumococos
-
-                            /*excelWorksheet1.Cells[row + nFila, 37].Value = reader.GetValue(46);     // Otros virus
-                            excelWorksheet1.Cells[row + nFila, 38].Value = reader.GetValue(47);     // Otros virus tipo*/
-                            var OV1 = reader.GetValue(83);     // Otros virus 1
-                            var OV2 = reader.GetValue(84);     // Otros virus 2
-                            var OV3 = reader.GetValue(85);     // Otros virus 3
-                            if (OV1.ToString() != "")
-                            {
-                                excelWorksheet1.Cells[row + nFila, 37].Value = "Si";                   // Otros virus
-                                excelWorksheet1.Cells[row + nFila, 38].Value = OV1.ToString();      // Otros virus tipo
-                            }
-                            else if (OV2.ToString() != "")
-                            {
-                                excelWorksheet1.Cells[row + nFila, 37].Value = "Si";                   // Otros virus
-                                excelWorksheet1.Cells[row + nFila, 38].Value = OV2.ToString();      // Otros virus tipo
-                            }
-                            else if (OV3.ToString() != "")
-                            {
-                                excelWorksheet1.Cells[row + nFila, 37].Value = "Si";                   // Otros virus
-                                excelWorksheet1.Cells[row + nFila, 38].Value = OV3.ToString();      // Otros virus tipo
-                            }
-
-                            vTemp = reader.GetValue(48);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 39].Value = vTemp;     // Fiebre
-
-                            vTemp = reader.GetValue(49);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 40].Value = vTemp;     // Tos
-
-                            vTemp = reader.GetValue(50);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 41].Value = vTemp;     // Dolor de garganta
-
-                            vTemp = reader.GetValue(51);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 42].Value = vTemp;     // Dificultatd respiratoria
-
-                            if (reader.GetValue(52) != null && reader.GetValue(52) != DBNull.Value)
-                                excelWorksheet1.Cells[row + nFila, 43].Value = Convert.ToInt32(reader.GetValue(52));     // Acortamiento de la respiracion
-
-                            vTemp = reader.GetValue(53);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 44].Value = vTemp;     // Diagnostico egreso
-
-                            vTemp = reader.GetValue(54);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 45].Value = vTemp;     // Diagnostico ingreso
-                            //excelWorksheet1.Cells[row + nFila, 46].Value = "Calculado Asma + Bronquitis";     // Enfermedad Respiratoria (asma y/o Bronquitis cronica)
-
-                            vTemp = reader.GetValue(55);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 47].Value = vTemp;     // Asma
-
-                            vTemp = reader.GetValue(56);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 48].Value = vTemp;     // Bronquitis cronica o enfisema
-
-                            var Dato1 = excelWorksheet1.Cells[row + nFila, 47].Value.ToString();
-                            var Dato2 = excelWorksheet1.Cells[row + nFila, 48].Value.ToString();
-                            if (Dato1 == "Si" || Dato2 == "Si")
-                            {
-                                excelWorksheet1.Cells[row + nFila, 46].Value = "Si";                // Enfermedad Respiratoria (asma y/o Bronquitis cronica)
-                            }
-                            else if (Dato1 == "No" || Dato2 == "No")
-                            {
-                                excelWorksheet1.Cells[row + nFila, 46].Value = "No";
-                            }
-                            else
-                            {
-                                excelWorksheet1.Cells[row + nFila, 46].Value = "Sin información";
-                            }
-
-                            vTemp = reader.GetValue(57);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 49].Value = vTemp;     // Otras enfermedades respiratorias
-
-                            vTemp = reader.GetValue(58);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 50].Value = vTemp;     // Enfermedades cardiacas
-
-                            vTemp = reader.GetValue(59);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 51].Value = vTemp;     // Ateroesclerosis
-
-                            vTemp = reader.GetValue(60);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 52].Value = vTemp;     // Cardiomiopatia
-
-                            vTemp = reader.GetValue(61);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 53].Value = vTemp;     // Desordenes del neurodesarrollo
-
-                            vTemp = reader.GetValue(62);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 54].Value = vTemp;     // Paralisis cerebral
-
-                            vTemp = reader.GetValue(63);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 55].Value = vTemp;     // Distrofias musculares
-
-                            vTemp = reader.GetValue(64);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 56].Value = vTemp;     // Desordenes cogniticos
-
-                            vTemp = reader.GetValue(66);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 58].Value = vTemp;     // Diabetes
-
-                            Dato1 = excelWorksheet1.Cells[row + nFila, 58].Value.ToString();
-                            excelWorksheet1.Cells[row + nFila, 57].Value = Dato1;                   // Desordenes metabolicos
-
-                            vTemp = reader.GetValue(67);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 59].Value = vTemp;     // Desordenes del sistema inmune
-
-                            vTemp = reader.GetValue(68);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 60].Value = vTemp;     // VIH/SIDA
-
-                            vTemp = reader.GetValue(69);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 61].Value = vTemp;     // Quimioterapia
-
-                            vTemp = reader.GetValue(70);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 62].Value = vTemp;     // Pacientes trasplantados tomando inmunosupresores
-
-                            vTemp = reader.GetValue(71);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 63].Value = vTemp;     // Uso cronico corticoesteroides
-
-                            vTemp = reader.GetValue(72);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 64].Value = vTemp;     // Insuficiencia renal cronica
-
-                            vTemp = reader.GetValue(73);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 65].Value = vTemp;     // Enfermedad hepatica cronica
-
-                            vTemp = reader.GetValue(74);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 66].Value = vTemp;     // Obesidad morbida
-
-                            vTemp = reader.GetValue(75);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 67].Value = vTemp;     // Enfermedad hematologica
-
-                            vTemp = reader.GetValue(76);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 68].Value = vTemp;     // Anemia falciforme
-
-                            vTemp = reader.GetValue(77);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 69].Value = vTemp;     // Talasemia mayor
-
-                            vTemp = reader.GetValue(78);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 70].Value = vTemp;     // Terapia cronica aspirina
-
-                            vTemp = reader.GetValue(79);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 71].Value = vTemp;     // Tabaquismo
-
-                            vTemp = reader.GetValue(80);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 72].Value = vTemp;     // Sindrome down
-
-                            vTemp = reader.GetValue(81);
-                            if (vTemp.ToString() == "") vTemp = "";
-                            excelWorksheet1.Cells[row + nFila, 73].Value = vTemp;     // Indigena
-
-                            ++nFila;
-                        }
-                        if (nFila > 0)
-                        {
-                            ExcelWorksheet excelWS = excelWorkBook.Worksheets["REVELAC_i"];
-                            //**** Creando formulas en hoja REVELAC-i
-                            for (int nY = startRow + 1; nY <= nFila + 1; nY++)
-                            {
-                                for (int nX = 1; nX <= 73; ++nX)
+                                for (int j = 0; j < excelColTota; j++)                              // Total columnas retornadas x consulta
                                 {
-                                    string aa = excelWS.Cells[startRow, nX].FormulaR1C1;
-                                    excelWS.Cells[nY, nX].FormulaR1C1 = aa;
+                                    if (reader.GetValue(readercont) != null)
+                                    {
+                                        //System.Diagnostics.Debug.WriteLine(row.ToString() + " - " + j.ToString());
+                                        var datoColu = reader.GetValue(readercont);
+
+                                        double numberD;
+                                        //bool isNumber = double.TryParse(reader.GetValue(i).ToString(), out numberD);
+                                        bool isNumber = double.TryParse(datoColu.ToString(), out numberD);
+
+                                        DateTime dt;
+                                        //bool isDate = DateTime.TryParse(reader.GetValue(i).ToString(), out dt);
+                                        bool isDate = DateTime.TryParse(datoColu.ToString(), out dt);
+
+                                        if (isNumber)
+                                            excelWorksheet.Cells[row, col + j].Value = numberD;
+                                        else
+                                        {
+                                            if (isDate)
+                                                excelWorksheet.Cells[row, col + j].Value = dt;
+                                            else
+                                            {
+                                                excelWorksheet.Cells[row, col + j].Value = (string)datoColu.ToString();
+                                            }
+                                        }
+                                    }
+
+                                    readercont++;
                                 }
+                                row++;
                             }
-                            //**** Recalculando formulas excel
-                            excelWS.Calculate();
-
-                            /*for(int col=1; col<= 73; col++)
-                            {
-                                //excelWS.Cells[startRow + 53, startColumn + 1].Copy(excelWS.Cells[startRow, col]);
-                                ExcelRange rRang = excelWS.Cells[ExcelRange.GetAddress(startRow, col, nFila, col)];
-                                rRang.Copy(excelWS.Cells[startRow, col]);
-                            }*/
-
-                            foreach (var cell in excelWS.Cells.Where(cell => cell.Formula != null))
-                                cell.Value = cell.Value;
                         }
-                    }
 
-                    command.Parameters.Clear();
-                    con.Close();
+                        command.Parameters.Clear();
+                        con.Close();
+                    }
                 }
             }
+            catch (Exception e)
+            {
+                var msgError = "El reporte no se pudo generar, por favor intente de nuevo: " + e.Message;
+            }            
         }
                 
         private static void AppendDataToExcel_IndDes(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string reportTemplate, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId)         //#### CAFQ

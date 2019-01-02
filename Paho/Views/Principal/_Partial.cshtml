@@ -1403,7 +1403,15 @@
                                         $('<tr />', {id:'trdata'+index2,class:'table-trdata-own '+clase }).appendTo(container);
                                         var container2 = $('#trdata'+index2);
                                         $.each(element2.col, function(index3, element3) {
-                                            $('<td />', {id:'tddata',class:'table-tddata-own', text:element3 }).appendTo(container2);
+                                            if(index2 == 7)                     // Obesidad
+                                                if(index3 == 0)
+                                                    $('<td />', {id:'tddata',class:'table-tddata-own', text:element3 }).appendTo(container2);
+                                                else
+                                                    $('<td />', {id:'tddata',class:'table-tddata-own', text:'' }).appendTo(container2);
+                                            else
+                                                $('<td />', {id:'tddata',class:'table-tddata-own', text:element3 }).appendTo(container2);
+
+                                            ////////$('<td />', {id:'tddata',class:'table-tddata-own', text:element3 }).appendTo(container2);
                                             //alert (JSON.stringify(element2));
                                         });
                                     });
@@ -5680,6 +5688,7 @@
                     "GY": [ "guyanaLow" ],
                     "HT": [ "haitiLow" ],
                     "HN": [ "hondurasHigh" ],
+                    "HNH": [ "hondurasHighH" ],
                     "HK": [ "hongKongLow" ],
                     "HU": [ "hungaryLow" ],
                     "GL": [ "icelandLow" ],
@@ -5984,6 +5993,7 @@
                     "GY": [ "guyanaLow" ],
                     "HT": [ "haitiLow" ],
                     "HN": [ "hondurasHigh" ],
+                    "HNH": [ "hondurasHighH" ],
                     "HK": [ "hongKongLow" ],
                     "HU": [ "hungaryLow" ],
                     "GL": [ "icelandLow" ],
@@ -6273,6 +6283,7 @@
                     "GY": [ "guyanaLow" ],
                     "HT": [ "haitiLow" ],
                     "HN": [ "hondurasHigh" ],
+                    "HNH": [ "hondurasHighH" ],
                     "HK": [ "hongKongLow" ],
                     "HU": [ "hungaryLow" ],
                     "GL": [ "icelandLow" ],
@@ -6465,6 +6476,7 @@
         </script>
 
         <!---xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx MAPA 3 END xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx--->
+
         <!-- HTML -->
         <script>
             var CountryIDM = @Html.Raw(Model.CountryID);
@@ -6473,12 +6485,11 @@
             if(CountryIDM != 18){
                 GetMapData1();
             }
-
             if(!(CountryIDM == 25 || CountryIDM == 119 || CountryIDM == 11 || CountryIDM == 18 || CountryIDM == 15)){           // Suriname y Islas Cayman: No tienen region
-                GetMapData2();
+                GetMapData2();                              // Institucional
             }
-            if(CountryIDM == 9){
-                GetMapData3();
+            if(CountryIDM == 9 || CountryIDM == 15){
+                GetMapData3();                              // Health
             }
         </script>
 
@@ -6511,7 +6522,7 @@
             </div>
         }
 
-        @if (ViewBag.UsrCtry == 9)
+        @if (ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 15)
         {
             <div id="mapContainerGraph3">
                 <div id="mapDivGraph3"></div>

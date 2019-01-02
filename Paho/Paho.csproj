@@ -1584,6 +1584,7 @@
     <Content Include="Scripts\ammap\maps\svg\haitiHigh.svg" />
     <Content Include="Scripts\ammap\maps\svg\haitiLow.svg" />
     <Content Include="Scripts\ammap\maps\svg\hondurasHigh.svg" />
+    <Content Include="Scripts\ammap\maps\svg\hondurasHighH.svg" />
     <Content Include="Scripts\ammap\maps\svg\hondurasLow.svg" />
     <Content Include="Scripts\ammap\maps\svg\hongKongHigh.svg" />
     <Content Include="Scripts\ammap\maps\svg\hongKongLow.svg" />
@@ -2137,6 +2138,7 @@
     <None Include="Properties\PublishProfiles\CAFQ_181024.pubxml" />
     <None Include="Properties\PublishProfiles\CAFQ_1812.pubxml" />
     <None Include="Properties\PublishProfiles\CAFQ_CH.pubxml" />
+    <None Include="Properties\PublishProfiles\CAFQ_DIC26.pubxml" />
     <None Include="Properties\PublishProfiles\CAFQ_PAHO.pubxml" />
     <None Include="Properties\PublishProfiles\CAFQ_PAHOFLU.pubxml" />
     <None Include="Properties\PublishProfiles\INTERNATIONAL.pubxml" />

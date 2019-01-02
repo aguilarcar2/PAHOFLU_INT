@@ -16,27 +16,65 @@ namespace Paho.Controllers
     [Authorize(Roles = "Admin")]
     public class AreaController : ControllerBase
     {
+        private int _pageSize = 10;
+
         // GET: Areas
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
-            var areas = db.Areas.Include(a => a.Country);
+            var countryId = user.Institution.CountryID ?? 0;
+            //var areas = db.Areas.Include(a => a.Country);
+
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.AreaParm = "areaName";
+            //ViewBag.OrigCountryParm = "origCountry";
+
+            if (searchString != null)
+                page = 1;
+            else
+                searchString = currentFilter;
+
+            ViewBag.CurrentFilter = searchString;
+
+            var catalogo = from c in db.Areas where c.CountryID == countryId select c;
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                catalogo = catalogo.Where(s => s.Name.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "areaName":
+                    catalogo = catalogo.OrderBy(s => s.Name);
+                    break;
+                case "origCountry":
+                    catalogo = catalogo.OrderBy(s => s.orig_country);
+                    break;
+                default:
+                    catalogo = catalogo.OrderBy(s => s.Name);
+                    break;
+            }
+
 
             if (user.Institution.AccessLevel == AccessLevel.Country || user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
             {
                 if (user.Institution.AccessLevel == AccessLevel.Country)
                 {
-                    areas = areas.Where(s => s.CountryID == user.Institution.CountryID)
-                                    .OrderBy(o => o.Country.Name).ThenBy(o => o.Name);
+                    catalogo = catalogo.Where(s => s.CountryID == user.Institution.CountryID);
+                    //.OrderBy(o => o.Country.Name).ThenBy(o => o.Name);
                 }
                 else if (user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
                 {
-                    areas = areas.Where(s => s.CountryID == user.Institution.CountryID)
-                                    .OrderBy(o => o.Country.Name).ThenBy(o => o.Name);
+                    catalogo = catalogo.Where(s => s.CountryID == user.Institution.CountryID);
+                    //.OrderBy(o => o.Country.Name).ThenBy(o => o.Name);
                 }
             }
 
-            return View(areas.ToList());
+            int pageSize = _pageSize;
+            int pageNumber = (page ?? 1);
+
+            //return View(areas.ToList());
+            return View(catalogo.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: Areas/Details/5
@@ -98,7 +136,6 @@ namespace Paho.Controllers
         // GET: Areas/Edit/5
         public ActionResult Edit(int? id)
         {
-
             var user = UserManager.FindById(User.Identity.GetUserId());
             var UsrLang = user.Institution.Country.Language;
             var cat_countries = from c in db.Countries select c;

@@ -16,27 +16,67 @@ namespace Paho.Controllers
     [Authorize(Roles = "Admin")]
     public class StateController : ControllerBase
     {
+        private int _pageSize = 10;
+
         // GET: States
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
-            var states = db.States.Include(p => p.Area);
+            var countryId = user.Institution.CountryID ?? 0;
+
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.AreaParm = "areaName";
+            ViewBag.StateParm = "stateName";
+            //ViewBag.OrigCountryParm = "origCountry";
+
+            if (searchString != null)
+                page = 1;
+            else
+                searchString = currentFilter;
+
+            ViewBag.CurrentFilter = searchString;
+
+            var catalogo = from c in db.States where c.Area.CountryID == countryId select c;
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                catalogo = catalogo.Where(s => s.Name.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "areaName":
+                    catalogo = catalogo.OrderBy(s => s.Area.Name).ThenBy(s => s.Name);
+                    break;
+                case "stateName":
+                    catalogo = catalogo.OrderBy(s => s.Name);
+                    break;
+                case "origCountry":
+                    catalogo = catalogo.OrderBy(s => s.orig_country);
+                    break;
+                default:
+                    catalogo = catalogo.OrderBy(s => s.Area.Name).ThenBy(s => s.Name);
+                    break;
+            }
 
             if (user.Institution.AccessLevel == AccessLevel.Country || user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
             {
                 if (user.Institution.AccessLevel == AccessLevel.Country)
                 {
-                    states = states.Where(s => s.Area.CountryID == user.Institution.CountryID)
-                                    .OrderBy(o => o.Area.Country.Name).ThenBy(o => o.Area.Name).ThenBy(o => o.Name);
+                    catalogo = catalogo.Where(s => s.Area.CountryID == user.Institution.CountryID);
+                    //.OrderBy(o => o.Area.Country.Name).ThenBy(o => o.Area.Name).ThenBy(o => o.Name);
                 }
                 else if (user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
                 {
-                    states = states.Where(s => s.Area.CountryID == user.Institution.CountryID)
-                                    .OrderBy(o => o.Area.Country.Name).ThenBy(o => o.Area.Name).ThenBy(o => o.Name);
+                    catalogo = catalogo.Where(s => s.Area.CountryID == user.Institution.CountryID);
+                    //.OrderBy(o => o.Area.Country.Name).ThenBy(o => o.Area.Name).ThenBy(o => o.Name);
                 }
             }
 
-            return View(states.ToList());
+            int pageSize = _pageSize;
+            int pageNumber = (page ?? 1);
+
+            //return View(states.ToList());
+            return View(catalogo.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: Areas/Create

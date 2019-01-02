@@ -12,7 +12,7 @@
 
         <!-- Country -->
         <div class="form-group">
-            @Html.LabelFor(model => model.State.Area.CountryID, (((Paho.Controllers.NeighborhoodController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelCountry")), 
+            @Html.LabelFor(model => model.State.Area.CountryID, (((Paho.Controllers.NeighborhoodController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelCountry")),
                             htmlAttributes: new { @class = "control-label col-md-1_5" })
             <div class="col-md-7">
                 @Html.DropDownList("CountryID", ViewBag.Countries as SelectList, htmlAttributes: new { @class = "form-control" })
@@ -24,7 +24,7 @@
             @Html.LabelFor(model => model.State.AreaID, (((Paho.Controllers.NeighborhoodController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelArea")),
                             htmlAttributes: new { @class = "control-label col-md-1_5" })
             <div class="col-md-7">
-                @Html.DropDownList("AreaID", ViewBag.Areas as SelectList, (((Paho.Controllers.NeighborhoodController)this.ViewContext.Controller).getMsg("msgSelectLabel")), 
+                @Html.DropDownList("AreaID", ViewBag.Areas as SelectList, (((Paho.Controllers.NeighborhoodController)this.ViewContext.Controller).getMsg("msgSelectLabel")),
                             htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.State.AreaID, "", new { @class = "text-danger" })
             </div>
@@ -34,14 +34,14 @@
             @Html.LabelFor(model => model.StateID, (((Paho.Controllers.NeighborhoodController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelState")),
                             htmlAttributes: new { @class = "control-label col-md-1_5" })
             <div class="col-md-7">
-                @Html.DropDownList("StateID", new SelectList(" "), (((Paho.Controllers.NeighborhoodController)this.ViewContext.Controller).getMsg("msgSelectLabel")), 
+                @Html.DropDownList("StateID", new SelectList(" "), (((Paho.Controllers.NeighborhoodController)this.ViewContext.Controller).getMsg("msgSelectLabel")),
                             htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.StateID, "", new { @class = "text-danger" })
             </div>
         </div>
         <!-- Name -->
         <div class="form-group">
-            @Html.LabelFor(model => model.Name, (((Paho.Controllers.NeighborhoodController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelState")), 
+            @Html.LabelFor(model => model.Name, (((Paho.Controllers.NeighborhoodController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelNeighborhood")),
                             htmlAttributes: new { @class = "control-label col-md-1_5" })
             <div class="col-md-7">
                 @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
