@@ -1522,6 +1522,21 @@ function LabViewModel(app, dataModel) {
         
     };
 
+    self.ResetLabFinalResult = function () {
+        self.FinalResult("");
+        self.FinalResultVirusTypeID("");
+        self.FinalResultVirusSubTypeID("");
+        self.FinalResultVirusLineageID("");
+        self.FinalResult_2("");
+        self.FinalResultVirusTypeID_2("");
+        self.FinalResultVirusSubTypeID_2("");
+        self.FinalResultVirusLineageID_2("");
+        self.FinalResult_3("");
+        self.FinalResultVirusTypeID_3("");
+        self.FinalResultVirusSubTypeID_3("");
+        self.FinalResultVirusLineageID_3("");
+    };
+
     self.validate = function (nextStep) {
         var msg = "";
         rec_date = jQuery.type(self.RecDate()) === 'date' ? self.RecDate() : parseDate($("#RecDate").val(), date_format_);
@@ -2170,6 +2185,10 @@ function LabViewModel(app, dataModel) {
                     }
                     else if (v.TestResultID() == "N" && self.otherviruses() == false){
                         self.OrderArrayFinalResult.push(v);
+                    }
+                    else if (v.TestResultID() == "N" && self.otherviruses() == true) {
+                        if (v.VirusTypeID() == self.OrderDummy()[i + 1].VirusTypeID())
+                            self.OrderArrayFinalResult.push(v);
                     }
                     //else if ((self.OrderDummy()[i + 1].VirusTypeID() != 2 || self.OrderDummy()[i + 1].VirusTypeID() != 1) && self.OrderDummy()[i + 1].TestResultID() == "P" && v.TestType() != 1) {
                     //    self.OrderArrayFinalResult.push(v);
