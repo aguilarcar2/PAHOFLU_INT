@@ -483,7 +483,7 @@
                 </div>
             </div>
         </div>
-        <!-- Fecha de nacimiento / Edad / Medida edad -->
+
         <div class="row rowform">
             <div class="col-md-6">
                 <div class='input-group'>
@@ -517,7 +517,7 @@
                 </div>
             </div>
         </div>
-        <!-- Grupo de edad / Sexo -->
+
         <div class="row rowform">
             <div class="col-md-6" data-bind="visible:app.Views.Contact.NoActiveBOL">
                 <div class='input-group'>
@@ -541,17 +541,6 @@
                     <label class="btn btn-default">                                
 						<input type="radio" name="options" id="Sex" value="Unknown" data-bind="checked: Gender"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelSexUndefined"))
                     </label>
-                </div>
-            </div>
-        </div>
-        <!-- Responsable menor de edad -->
-        <div class="row rowform" data-bind="visible: ActiveHON() && IsMenorEdad()">
-            <div class="col-md-6">
-                <div class='input-group'>
-                    <span class="input-group-addon">
-                        Responsable del menor de edad
-                    </span>
-                    <input id="ResponsibleMinor" type='text' class="form-control case_letter" data-bind="value: ResponsibleMinor" />
                 </div>
             </div>
         </div>
@@ -1640,7 +1629,7 @@
                 <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
             </button>
             <div id="antiviral" class="collapse in">
-                <!-- Tratamiento de antiviral? / Fecha de administración de antiviral -->
+
                 <div class="row rowform">
                     <div class="col-md-7">
                         <div class='input-group'>
@@ -1673,28 +1662,27 @@
                 </div>
                 
                 @if (ViewBag.UsrCtry == 7)
-                {
-                    <!-- Fecha de inicio de antiviral / Fecha de fin de antiviral -->
-                    <div class="row rowform">
-                        <div class="col-md-4">
-                            <div class='input-group'>
-                                <span class="input-group-addon">
-                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentStartDate"))
-                                </span>
-                                <input id="AntiViralDate" type='text' class="form-control " data-bind='datepicker: AntiViralDate, enable: EnableAntiViralDate, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class='input-group'>
-                                <span class="input-group-addon">
-                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentEndDate"))
-                                </span>
-                                <input id="AntiViralDateEnd" type='text' class="form-control " data-bind='datepicker: AntiViralDateEnd, enable: EnableAntiViralDateEnd, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
-                            </div>
+                {<div class="row rowform">
+                    <div class="col-md-4">
+                        <div class='input-group'>
+                            <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentStartDate"))
+                            </span>
+                            <input id="AntiViralDate" type='text' class="form-control " data-bind='datepicker: AntiViralDate, enable: EnableAntiViralDate, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
                         </div>
                     </div>
+                    <div class="col-md-4">
+                        <div class='input-group'>
+                            <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentEndDate"))
+                            </span>
+                            <input id="AntiViralDateEnd" type='text' class="form-control " data-bind='datepicker: AntiViralDateEnd, enable: EnableAntiViralDateEnd, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
+                        </div>
+                    </div>
+                </div>
                 }
-                <!-- Tipo de antiviral / Dosis / Nro días tratamiento -->
+
+
                 <div class="row rowform">
                     <div class='input-group col-md-4'>
                         <span class="input-group-addon">
@@ -1713,39 +1701,25 @@
                     </div>
                     @if (ViewBag.UsrCtry != 7 && ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 18 && ViewBag.UsrCtry != 17)
                     {
-                        <div class='input-group col-md-3' id="DoseOseltamivir">
-                            <span class="input-group-addon">
-                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentOseltaDose"))
-                            </span>
-                            <select id="OseltaDose" name="OseltaDose" class="form-control" style="max-width: 150px" data-bind='value: OseltaDose, enable: EnableOseltamivir, visible:false'>
-                                <option value="0"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel"))</option>
-                                <option value="1">75 mg bid x 5 días</option>
-                                <option value="2">75 mg bid x 10 días</option>
-                                <option value="3">150 mg bid x 5 días</option>
-                                <option value="4">150 mg bid x 10 días</option>
-                                <option value="5">Dosis pediatríca</option>
-                                <option value="6">Otra</option>
-                            </select>
-                            <input id="AntiViralDose" type='text' class="form-control case_letter" data-bind='value: AntiViralDose, enable:EnableAntiviralDose' />
-                        </div>
-                    }
-                    @if (ViewBag.UsrCtry == 15)
-                    {
-                        <!-- Nº días de tratamiento -->
-                        <div class="col-md-3">
-                            <div class='input-group'>
-                                <span class="input-group-addon">
-                                    Nº días de tratamiento
-                                </span>
-                                <input id="AntiViralDays" type='text' class="form-control case_letter" data-bind="value: AntiViralDays, enable: EnableAntiViralDays" />
-                            </div>
-                        </div>
-                    }
+                    <div class='input-group col-md-5' id="DoseOseltamivir">
+                        <span class="input-group-addon">
+                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentOseltaDose"))
+                        </span>
+                        <select id="OseltaDose" name="OseltaDose" class="form-control" style="max-width: 150px" data-bind='value: OseltaDose, enable: EnableOseltamivir, visible:false'>
+                            <option value="0"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel"))</option>
+                            <option value="1">75 mg bid x 5 días</option>
+                            <option value="2">75 mg bid x 10 días</option>
+                            <option value="3">150 mg bid x 5 días</option>
+                            <option value="4">150 mg bid x 10 días</option>
+                            <option value="5">Dosis pediatríca</option>
+                            <option value="6">Otra</option>
+                        </select>
+                        <input id="AntiViralDose" type='text' class="form-control case_letter" data-bind='value: AntiViralDose, enable:EnableAntiviralDose' />
+                    </div>}
                 </div>
 
                 @if (ViewBag.UsrCtry == 11)
                 {
-                    <!-- Tratamiento antibiotico / Nombre antibiotico -->
                     <div class="row rowform">
                         <div class="col-md-5">
                             <div class='input-group'>
@@ -2026,7 +2000,7 @@
                                     </label>
                                 </div>
                             }
-                            <div class="col-md-6" data-bind="visible:EnableCHI() && app.Views.Contact.NoActiveBOL() && !app.Views.Contact.ActiveHON()">
+                            <div class="col-md-6" data-bind="visible:EnableCHI() && app.Views.Contact.NoActiveBOL()">
                                 <label class="btn btn-default">
                                     <input type="checkbox" name="Indigena" id="Indigena" data-bind="checked: Indigena" disabled>  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelNative"))
                                 </label>
@@ -2046,7 +2020,7 @@
                     </div>
                     }*@
 
-                    <!-- Obesidad / Otra comorbilidad -->
+                    <!-- aquí -->
                     <div class="row rowform">
                         <div class="col-md-4">
                             <div class='input-group'>
@@ -2194,7 +2168,6 @@
 
     <!-- INFORMACION CLINICA -->
     <div id="tab-hospital" data-bind="with: app.Views.Hospital">
-        <!-- Fecha de inicio de síntomas / S.E. inicio de síntomas / Año epidemiológico -->
         <div class="row rowform">
             <div class="col-md-5">
                 <div class='input-group'>
@@ -2732,7 +2705,7 @@
                         <div class="col-md-2">
                             @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelExitCondition"))
                         </div>
-                        <div class="col-md-2" data-bind="visible: ViewFallecido">
+                        <div class="col-md-2" data-bind="visible:ViewFallecido">
                             @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelDeathDate"))
                         </div>
                     </div>
@@ -2777,7 +2750,8 @@
                         </div>
                     </div>
 
-                    <!-- Hospitalizado en / Numero o identificacion -->
+                    <!-- UPC -->
+
                     <div class="row rowform" data-bind="visible: EnableHON()">
                         <div class="input-group col-md-3">
                             <span class="input-group-addon">
@@ -2787,19 +2761,8 @@
                                     optionsText: 'Name',
                                     optionsValue: 'Id',
                                     value: HospitalizedIn,
-                                    optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel")) '">
-                            </select>
+                                    optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel")) '"></select>
                         </div>
-
-                        <div class="col-md-3" data-bind="visible: IsHospitalizedIn">
-                            <div class='input-group'>
-                                <span class="input-group-addon">
-                                    Número o identificación
-                                </span>
-                                <input id="HospitalizedInNumber" type='text' class="form-control case_letter" data-bind="value: HospitalizedInNumber" />
-                            </div>
-                        </div>
-
                     </div>
                 
                     <div class="row rowform" data-bind="visible: EnableICUHon()">
@@ -2857,7 +2820,6 @@
                     </div>
                     @if (ViewBag.UsrCtry == 7)
                     {
-                        <!-- Unidades de pacientes críticos (UPC) = Incluye pacientes UCI o ... -->
                         <div class="row rowform">
                             <div class="col-md-7">
                                 <div style="font-weight:bold;font-size:9px">
@@ -2943,27 +2905,11 @@
                                     <span class="input-group-addon">
                                         @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOtherDiagnosisExitRelSARI"))
                                     </span>
-                                    <input id="DiagEgOtro" type='text' class="form-control case_letter" data-bind="value: DiagEgOtro" />
+                                    <input id="DiagEgOtro" type='text' data-bind="value: DiagEgOtro" class="form-control case_letter" />
                                 </div>
                             </div>
                         </div>
                     }
-                    <!-- Comentario -->
-                    @if (ViewBag.UsrCtry == 15)
-                    {
-                        <div class="row rowform">
-                            <div class="col-md-10">
-                                <div class='input-group'>
-                                    <span class="input-group-addon">
-                                        Comentario
-                                    </span>
-                                    <input id="Comments" type='text' class="form-control case_letter" data-bind="value: Comments" style="max-width:480px;" />
-                                </div>
-                            </div>
-                        </div>
-                    }
-
-                    
                 </div>
             </div>
         </div>
@@ -5879,10 +5825,10 @@
                 //colNames: [' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgCaselistVig"))',' ',' ', ' ', ' ', ' ',  ' ', ' ', ' ', ' ' , ' '],
                 colModel: [
                             { name: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgCaselistVig"))', index: 'VIG', width: 17, stype: 'html', sortable: false, editable: false },
-                            { name: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgCaselistIdReg"))', index: 'ID', width: 55, stype: 'text', sortable: false, editable: false },
+                            { name: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgCaselistIdReg"))', index: 'ID', width: 40, stype: 'text', sortable: false, editable: false },
                             { name: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgFechaNoti"))', index: 'DateHosp', width: 60, stype: 'text', sortable: false },
-                            { name: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgApellidos"))', index: 'LName', width: 115, stype: 'text', sortable: false, editable: false },
-                            { name: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgNombre"))', index: 'FName', width: 115, stype: 'text', sortable: false, editable: false },
+                            { name: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgApellidos"))', index: 'LName', width: 120, stype: 'text', sortable: false, editable: false },
+                            { name: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgNombre"))', index: 'FName', width: 120, stype: 'text', sortable: false, editable: false },
                             { name: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgDocuIdent"))', index: 'CaseNumber', width: 60, stype: 'text', sortable: false, editable: false },
                             { name: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgCaselistPrint"))', index: 'print', width: 22, stype: 'text', sortable: false, editable: false },
                             { name: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgIFI"))', index: 'IFI', width: 60, stype: 'text', sortable: false, editable: false },
@@ -6031,10 +5977,10 @@
                 //colNames: [' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgCaselistVig"))',' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgCaselistIdReg"))',' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgFechaNoti"))', ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgApellidos"))', ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgNombre"))', ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgDocuIdent"))',  ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgIFI"))', ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgPCR"))', ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgConclusion"))', ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgCaselistHealthCenter"))', ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgCaselistEstatus"))'],
                 colModel: [
                             { name: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgCaselistVig"))', index: 'VIG', width: 17, stype: 'html', sortable: false, editable: false },
-                            { name: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgCaselistIdReg"))', index: 'ID', width: 55, stype: 'text', sortable: false, editable: false },
+                            { name: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgCaselistIdReg"))', index: 'ID', width: 40, stype: 'text', sortable: false, editable: false },
                             { name: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgFechaNoti"))', index: 'DateHosp', width: 60, stype: 'text', sortable: false },
-                            { name: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgApellidos"))', index: 'LName', width: 115, stype: 'text', sortable: false, editable: false },
-                            { name: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgNombre"))', index: 'FName', width: 115, stype: 'text', sortable: false, editable: false },
+                            { name: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgApellidos"))', index: 'LName', width: 120, stype: 'text', sortable: false, editable: false },
+                            { name: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgNombre"))', index: 'FName', width: 120, stype: 'text', sortable: false, editable: false },
                             { name: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgDocuIdent"))', index: 'CaseNumber', width: 60, stype: 'text', sortable: false, editable: false },
                             { name: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgCaselistPrint"))', index: 'print', width: 22, stype: 'text', sortable: false, editable: false, hidden: true  },
                             { name: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgIFI"))', index: 'IFI', width: 60, stype: 'text', sortable: false, editable: false, hidden: true },

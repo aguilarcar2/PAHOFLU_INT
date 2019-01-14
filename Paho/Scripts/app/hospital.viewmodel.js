@@ -258,14 +258,6 @@
 
     self.ICU = ko.observable("");
     self.HospitalizedIn = ko.observable("");
-    self.HospitalizedInNumber = ko.observable("");
-    self.IsHospitalizedIn = ko.computed(function () {
-        var result = (typeof (self.HospitalizedIn()) === "undefined" || self.HospitalizedIn() == "");
-        if (result) {
-            self.HospitalizedInNumber("");
-        }            
-        return !result;
-    }, self);
     
     self.FalleDate.subscribe(function (newFalleDate) {
 
@@ -296,10 +288,10 @@
     });
 
     self.ViewFallecido = ko.computed(function () {
-        if (self.UsrCountry() != 9 && self.UsrCountry() != 15 && self.Destin() == 'D') {
+        if (self.UsrCountry() != 9 && self.Destin() == 'D') {
             return true;
         } 
-        else if ( (self.UsrCountry() == 9 || self.UsrCountry() == 15) && self.Destin() == 'D' )
+        else if (self.UsrCountry() == 9 && self.Destin() == 'D')
         {
             self.FalleDate(self.HospExDate());
             return false;
@@ -434,7 +426,6 @@
     self.MecVentNoInv = ko.observable("");
     self.ECMO = ko.observable("");
     self.VAFO = ko.observable("");
-    self.Comments = ko.observable("");                  //#### CAFQ: 190107
     self.DiagEg = ko.observable("");
     self.DiagEgVal = ko.observable("");
     self.DiagEgOtro = ko.observable("");                //#### CAFQ
@@ -931,7 +922,6 @@
        self.ICUEY("");
        self.ICUExDate(null);
        self.HospitalizedIn(null);
-       self.HospitalizedInNumber("");
        self.FalleDate(null);
        self.InstReferName("");
        self.Destin(null);
@@ -945,7 +935,6 @@
        self.MecVentNoInv("");
        self.ECMO("");
        self.VAFO("");
-       self.Comments("");                   //#### CAFQ: 190107
        self.DiagEg("");
        self.DiagEgVal("");
        self.DiagEgOtro("");                 //#### CAFQ
@@ -1183,6 +1172,7 @@
 
     self.GetHospital = function (id) {
         self.Id = id;
+
             
         $.getJSON(app.dataModel.getHospitalUrl, { id: id, institutionId: app.Views.Home.selectedInstitutionId() }, function (data, status) {
                 self.CHNum(data.CHNum);
@@ -1207,7 +1197,6 @@
 
                 self.ICU(data.ICU);
                 self.HospitalizedIn(data.HospitalizedIn);
-                self.HospitalizedInNumber(data.HospitalizedInNumber);
                 if (data.ICUAmDate)
                     self.ICUAmDate(moment(data.ICUAmDate).clone().toDate());
                 else self.ICUAmDate(null)
@@ -1292,7 +1281,7 @@
 
                 self.Temperatura(data.Temperatura);                         //#### CAFQ
                 self.DolorCabeza(data.DolorCabeza);                         //#### CAFQ
-                self.Mialgia(data.Mialgia);                                 //#### CAFQ
+                self.Mialgia(data.Mialgia);                               //#### CAFQ
                 self.Erupcion(data.Erupcion);                               //#### CAFQ
                 self.ErupcionLocaliz(data.ErupcionLocaliz);                 //#### CAFQ
                 self.DolorMuscular(data.DolorMuscular);                     //#### CAFQ
@@ -1316,14 +1305,14 @@
                 self.Nauseas(data.Nauseas);                    //#### CAFQ
                 self.RigidezNuca(data.RigidezNuca);                    //#### CAFQ
                 self.Paralisis(data.Paralisis);                    //#### CAFQ
-                self.RespiratSuperior(data.RespiratSuperior);                   //#### CAFQ
-                self.RespiratInferior(data.RespiratInferior);                   //#### CAFQ
-                self.DolorRetrorobitario(data.DolorRetrorobitario);             //#### CAFQ
-                self.PerdidaPeso(data.PerdidaPeso);                             //#### CAFQ
-                self.Otro(data.Otro);                                           //#### CAFQ
-                self.OtroDesc(data.OtroDesc);                                   //#### CAFQ
-                /*self.InfeccHospit(data.InfeccHospit);                         //#### CAFQ
-                self.InfeccHospitFecha(data.InfeccHospitFecha);                 //#### CAFQ*/
+                self.RespiratSuperior(data.RespiratSuperior);                    //#### CAFQ
+                self.RespiratInferior(data.RespiratInferior);                    //#### CAFQ
+                self.DolorRetrorobitario(data.DolorRetrorobitario);                    //#### CAFQ
+                self.PerdidaPeso(data.PerdidaPeso);                    //#### CAFQ
+                self.Otro(data.Otro);                    //#### CAFQ
+                self.OtroDesc(data.OtroDesc);                    //#### CAFQ
+                /*self.InfeccHospit(data.InfeccHospit);                    //#### CAFQ
+                self.InfeccHospitFecha(data.InfeccHospitFecha);                    //#### CAFQ*/
 
                 self.DifResp(data.DifResp);
                 self.MedSatOxig(data.MedSatOxig);
@@ -1336,7 +1325,6 @@
                 self.MecVentNoInv(data.MecVentNoInv);
                 self.ECMO(data.ECMO);
                 self.VAFO(data.VAFO);
-                self.Comments(data.Comments);                                   //#### CAFQ: 190107
                 self.DiagEgVal(data.DiagEgVal);
                 if (data.DiagEgVal != "" && data.DiagEgVal != null) {
                     $.getJSON("/cases/GetCIE10ID", { ID: data.DiagEgVal }, function (data, status) {
@@ -1434,7 +1422,6 @@
                 ICUEW: self.ICUEW(),
                 ICUExDate: $("#ICUExDate").val() == "" ? null : moment(date_ICU_disc).format(date_format_ISO),
                 HospitalizedIn: self.HospitalizedIn(),
-                HospitalizedInNumber: self.HospitalizedInNumber(),
                 Destin: self.Destin(),
                 FalleDate: $("#FalleDate").val() == "" ? null : moment(date_falle).format(date_format_ISO),
                 InstReferName: self.InstReferName(),
@@ -1464,7 +1451,7 @@
                 Tos: self.Tos() != true ? false : self.Tos(),
                 Temperatura: self.Temperatura().toString().replace('.', ','),                  //#### CAFQ
                 DolorCabeza: self.DolorCabeza() != true ? false : self.DolorCabeza(),
-                Mialgia: self.Mialgia(),                                    //#### CAFQ
+                Mialgia: self.Mialgia(),                                  //#### CAFQ
                 Erupcion: self.Erupcion(),                                  //#### CAFQ
                 ErupcionLocaliz: self.ErupcionLocaliz(),                    //#### CAFQ
                 DolorMuscular: self.DolorMuscular(),
@@ -1473,28 +1460,28 @@
                 SintomHemorrag: self.SintomHemorrag(),                      //#### CAFQ
                 SintomHemorragDesc: self.SintomHemorragDesc(),              //#### CAFQ
                 AlteracEstadoMental: self.AlteracEstadoMental(),            //#### CAFQ
-                Altralgia: self.Altralgia(),                                //#### CAFQ
-                Escalofrios: self.Escalofrios(),                            //#### CAFQ
-                Conjuntivitis: self.Conjuntivitis(),                        //#### CAFQ
-                Rinitis: self.Rinitis(),                                    //#### CAFQ
-                DiarreaAguda: self.DiarreaAguda(),                          //#### CAFQ
-                DiarreaCronica: self.DiarreaCronica(),                      //#### CAFQ
-                Mareo: self.Mareo(),                                        //#### CAFQ
-                FalloDesarrollo: self.FalloDesarrollo(),                    //#### CAFQ
-                Hepatomegalea: self.Hepatomegalea(),                        //#### CAFQ
-                Ictericia: self.Ictericia(),                                //#### CAFQ
-                Linfadenopatia: self.Linfadenopatia(),                      //#### CAFQ
-                Malestar: self.Malestar(),                                  //#### CAFQ
-                Nauseas: self.Nauseas(),                                    //#### CAFQ
-                RigidezNuca: self.RigidezNuca(),                            //#### CAFQ
-                Paralisis: self.Paralisis(),                                //#### CAFQ
+                Altralgia: self.Altralgia(),                  //#### CAFQ
+                Escalofrios: self.Escalofrios(),                  //#### CAFQ
+                Conjuntivitis: self.Conjuntivitis(),                  //#### CAFQ
+                Rinitis: self.Rinitis(),                  //#### CAFQ
+                DiarreaAguda: self.DiarreaAguda(),                  //#### CAFQ
+                DiarreaCronica: self.DiarreaCronica(),                  //#### CAFQ
+                Mareo: self.Mareo(),                  //#### CAFQ
+                FalloDesarrollo: self.FalloDesarrollo(),                  //#### CAFQ
+                Hepatomegalea: self.Hepatomegalea(),                  //#### CAFQ
+                Ictericia: self.Ictericia(),                  //#### CAFQ
+                Linfadenopatia: self.Linfadenopatia(),                  //#### CAFQ
+                Malestar: self.Malestar(),                  //#### CAFQ
+                Nauseas: self.Nauseas(),                  //#### CAFQ
+                RigidezNuca: self.RigidezNuca(),                  //#### CAFQ
+                Paralisis: self.Paralisis(),                  //#### CAFQ
                 RespiratSuperior: self.RespiratSuperior(),                  //#### CAFQ
                 RespiratInferior: self.RespiratInferior(),                  //#### CAFQ
-                DolorRetrorobitario: self.DolorRetrorobitario(),            //#### CAFQ
-                PerdidaPeso: self.PerdidaPeso(),                            //#### CAFQ
-                Otro: self.Otro(),                                          //#### CAFQ
-                OtroDesc: self.OtroDesc(),                                  //#### CAFQ
-                /*InfeccHospit: self.InfeccHospit(),                        //#### CAFQ
+                DolorRetrorobitario: self.DolorRetrorobitario(),                  //#### CAFQ
+                PerdidaPeso: self.PerdidaPeso(),                  //#### CAFQ
+                Otro: self.Otro(),                  //#### CAFQ
+                OtroDesc: self.OtroDesc(),                  //#### CAFQ
+                /*InfeccHospit: self.InfeccHospit(),                  //#### CAFQ
                 InfeccHospitFecha: $("#InfeccHospitFecha").val() == "" ? null : moment(date_InfeccHospitFecha).format(date_format_ISO),    //#### CAFQ*/
                 DifResp: self.DifResp() != true ? false : self.DifResp(),
                 MedSatOxig: self.MedSatOxig(),
@@ -1504,14 +1491,13 @@
                 DiagOtroAdm: self.DiagOtroAdm() == null ? "" : self.DiagOtroAdm().toLocaleUpperCase(),
                 DestinICU: self.DestinICU(),
                 HallRadio: self.HallRadio(),
-                HallRadioFindings: self.HallRadioFindings(),                    //#### CAFQ
+                HallRadioFindings: self.HallRadioFindings(),                //#### CAFQ
                 UCInt: self.UCInt(),
                 UCri: self.UCri(),
                 MecVent: self.MecVent(),
                 MecVentNoInv: self.MecVentNoInv(),
                 ECMO: self.ECMO(),
                 VAFO: self.VAFO(),
-                Comments: self.Comments,                                        //#### CAFQ: 190107
                 DiagEgVal: self.DiagEgVal(),
                 DiagEgOtro: self.DiagEgOtro() == null ? "" : self.DiagEgOtro().toLocaleUpperCase(),         //#### CAFQ
                 Tiraje: self.Tiraje(),

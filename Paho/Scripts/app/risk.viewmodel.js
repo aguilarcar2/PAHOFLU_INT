@@ -101,7 +101,6 @@
     self.AStartDate = ko.observable(new Date());
     self.OseltaDose = ko.observable("");
     self.AntiViralDose = ko.observable("");
-    self.AntiViralDays = ko.observable();
     // Antibiotic
     self.Antibiotic = ko.observable("");
     self.AntibioticName = ko.observable("");
@@ -191,11 +190,6 @@
     self.EnableAntiviralDose = ko.computed(function () {
         var result = (self.AntiViralType() == "" || self.AntiViralType() == "5");
         if (!result) self.AntiViralDose("");
-        return !result;
-    }, self);
-    self.EnableAntiViralDays = ko.computed(function () {
-        var result = (self.AntiViralType() == "" || self.AntiViralType() == "5");
-        if (!result) self.AntiViralDays("");
         return !result;
     }, self);
 
@@ -484,7 +478,6 @@
         self.AntiViralType("");
         self.OseltaDose("");
         self.AntiViralDose("");
-        self.AntiViralDays();
 
         self.Antibiotic("");
         self.AntibioticName("");
@@ -590,7 +583,6 @@
                 self.AntiViralType(data.AntiViralType);
                 self.OseltaDose(data.OseltaDose);
                 self.AntiViralDose(data.AntiViralDose);
-                self.AntiViralDays(data.AntiViralDays);
 
                 self.Antibiotic(data.Antibiotic);
                 self.AntibioticName(data.AntibioticName);
@@ -886,7 +878,6 @@
                 AntiViralType: self.AntiViralType(),
                 OseltaDose: self.OseltaDose(),
                 AntiViralDose: self.AntiViralDose(),
-                AntiViralDays: self.AntiViralDays(),
                 // Antibiotic
                 Antibiotic: self.Antibiotic(),
                 AntibioticName: self.AntibioticName(),

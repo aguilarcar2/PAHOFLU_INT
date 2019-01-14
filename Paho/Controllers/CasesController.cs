@@ -593,7 +593,6 @@ namespace Paho.Controllers
 
             var jsondata = new List<Object>();
 
-            string commentsHtml = " <img src='/Content/themes/base/images/Comentario2.png' alt='" + getMsg("msgFlucasesMessageReadytoClose") + "'/>";
             string readyCloseHtml = "<img src='/Content/themes/base/images/ReadyClose.png' alt='" + getMsg("msgFlucasesMessageReadytoClose") + "'/>";
             string openHtml = "<img src='/Content/themes/base/images/open.png' alt='" + getMsg("msgFlucasesMessageNoStatus") + "'/>" + getMsg("msgFlucasesMessageNoStatus");
 
@@ -625,7 +624,6 @@ namespace Paho.Controllers
                                      TEST_LAST = flucase.CaseLabTests.Where(e => e.Processed != null).OrderByDescending(d => d.flow_test).FirstOrDefault(),
                                      FLOW_VIRUS = db.InstitutionConfEndFlowByVirus.Where(i => i.ID == flucase.CaseLabTests.Where(e => e.Processed != null).OrderByDescending(d => d.flow_test).FirstOrDefault().inst_conf_end_flow_by_virus).FirstOrDefault(),
                                      //FLOW_VIRUS = db.InstitutionConfEndFlowByVirus.Where(i => i.ID == flucase.CaseLabTests.Where(e => e.inst_conf_end_flow_by_virus != null).OrderByDescending(d => d.flow_test).FirstOrDefault().inst_conf_end_flow_by_virus).FirstOrDefault(),
-                                     ICON_COMMEN = flucase.Comments == "" || flucase.Comments == null ? "" : commentsHtml,
                                      VI_OK = (from a in db.InstitutionConfEndFlowByVirus
                                               join p in db.InstitutionsConfiguration on a.id_InstCnf equals p.ID
                                               join dt in db.Institutions on p.InstitutionFromID equals dt.ID
@@ -642,7 +640,7 @@ namespace Paho.Controllers
                                      {
                                          //#### CAFQ: 180604 - Jamaica Universal
                                          "<img src='/Content/themes/base/images/" + ((UsrCtry==17 && (bool)x.surv_IDInusual==true) ? Convert.ToInt32((bool)x.surv_IDInusual).ToString() + "_" + "UNI" + ".png' alt='" + "UNIVERSAL" : x.surv_ID.ToString() + "_" + language + ".png' alt='" + (x.surv_ID == 1 ? "SARI":"ILI")) + "'/>",
-                                         x.id_D.ToString() + x.ICON_COMMEN,
+                                         x.id_D.ToString(),
                                          x.H_D.ToString((user.Institution.CountryID==17) ? "yyyy/MM/dd": "dd/MM/yyyy" ),
                                          x.LN_D,
                                          x.FN_D,
@@ -884,7 +882,6 @@ namespace Paho.Controllers
                      Age = flucase.Age,
                      AMeasure = flucase.AMeasure.ToString(),
                      Gender = flucase.Gender.ToString(),
-                     ResponsibleMinor = flucase.ResponsibleMinor.ToString(),
                      HospitalDate = flucase.HospitalDate.ToUniversalTime(),
                      RegDate = flucase.RegDate,
                      nationality = flucase.nationality,
@@ -901,6 +898,11 @@ namespace Paho.Controllers
                      region_pais = region_pais.FirstOrDefault(),
                      selectedServiceId = (db.Institutions.Where(j => j.ID == flucase.HospitalID).FirstOrDefault().AccessLevel == (AccessLevel)6) ? flucase.HospitalID : 0,
                      IntsFlow = CLOrdDisplay,
+                     /*Ocupacion = flucase.Ocupacion,                             //#### CAFQ
+                     TrabajoDirecc = flucase.TrabajoDirecc,                     //#### CAFQ
+                     TrabajoEstablec = flucase.TrabajoEstablec,                 //#### CAFQ
+                     ContactoAnimVivos = flucase.ContactoAnimVivos,             //#### CAFQ
+                     OcupacMercAnimVivos = flucase.OcupacMercAnimVivos          //#### CAFQ*/
                  };
             return Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -942,13 +944,17 @@ namespace Paho.Controllers
             int? Age,
             AMeasure? AMeasure,
             Gender Gender,
-            string ResponsibleMinor,
             DateTime HospitalDate,
             DateTime RegDate,
             int HospitalId,
             int? nativepeople,
             int? nationality,
             DateTime DateFeverDummy
+            /*int? Ocupacion,                         //#### CAFQ
+            string TrabajoDirecc,                   //#### CAFQ
+            string TrabajoEstablec,                 //#### CAFQ
+            int? ContactoAnimVivos,                 //#### CAFQ
+            int? OcupacMercAnimVivos                //#### CAFQ*/
             )
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
@@ -1031,7 +1037,6 @@ namespace Paho.Controllers
             flucase.Age = Age;
             flucase.AMeasure = AMeasure;
             flucase.Gender = Gender;
-            flucase.ResponsibleMinor = ResponsibleMinor;
             flucase.HospitalDate = HospitalDate;
             flucase.RegDate = RegDate;
             flucase.nativepeople = nativepeople;
@@ -1041,7 +1046,7 @@ namespace Paho.Controllers
             flucase.TrabajoEstablec = TrabajoEstablec;                          //#### CAFQ
             flucase.ContactoAnimVivos = ContactoAnimVivos;                      //#### CAFQ
             flucase.OcupacMercAnimVivos = OcupacMercAnimVivos;                  //#### CAFQ*/
-            flucase.InsertDate = DateTime.Now;
+                flucase.InsertDate = DateTime.Now;
             //flucase.UserID = User.Identity.Name;
             try
             {
@@ -1129,14 +1134,12 @@ namespace Paho.Controllers
                     VacHaemophilus = flucase.VacHaemophilus,
                     VacHaemophilusDate = flucase.VacHaemophilusDate,
                     VaccinFuente = flucase.VaccinFuente,
-
                     AntiViral = flucase.AntiViral,
                     AntiViralDate = flucase.AntiViralDate,
                     AntiViralDateEnd = flucase.AntiViralDateEnd,
                     AntiViralType = flucase.AntiViralType,
                     OseltaDose = flucase.OseltaDose,
                     AntiViralDose = flucase.AntiViralDose,
-                    AntiViralDays = flucase.AntiViralDays,
 
                     Antibiotic = flucase.Antibiotic,
                     AntibioticName = flucase.AntibioticName,
@@ -1246,18 +1249,16 @@ namespace Paho.Controllers
                 int? VacHaemophilus,
                 DateTime? VacHaemophilusDate,
                 int? VaccinFuente,
-
                 int? AntiViral,
                 DateTime? AntiViralDate,
                 DateTime? AntiViralDateEnd,
                 int? AntiViralType,
-                int? OseltaDose,
-                string AntiViralDose,
-                int? AntiViralDays,
-
                 // Antibiotic
                 int? Antibiotic,
                 string AntibioticName,
+
+                int? OseltaDose,
+                string AntiViralDose,
                 int? RiskFactors,
                 int? Comorbidities,
 
@@ -1358,7 +1359,6 @@ namespace Paho.Controllers
             flucase.AntiViralType = AntiViralType;
             flucase.OseltaDose = OseltaDose;
             flucase.AntiViralDose = AntiViralDose;
-            flucase.AntiViralDays = AntiViralDays;
 
             flucase.Antibiotic = Antibiotic;
             flucase.AntibioticName = AntibioticName;
@@ -1469,20 +1469,18 @@ namespace Paho.Controllers
                     ICUAmDate = flucase.ICUAmDate,
                     ICUExDate = flucase.ICUExDate,
                     HospitalizedIn = flucase.HospitalizedIn,
-                    HospitalizedInNumber = flucase.HospitalizedInNumber,
                     FalleDate = flucase.FalleDate,
                     InstReferName = flucase.InstReferName,
                     Destin = flucase.Destin,
                     DestinICU = flucase.DestinICU,
                     HallRadio = flucase.HallRadio,
                     HallRadioFindings = flucase.HallRadioFindings,      //#### CAFQ
-                    UCInt = flucase.UCInt,                              // Unidad de cuidados intermedios
-                    UCri = flucase.UCri,                                // Unidad critica
-                    MecVent = flucase.MecVent,                          // Ventilacion mecanica
-                    MecVentNoInv = flucase.MecVentNoInv,                // Ventilacion mecanica no invasiva
-                    ECMO = flucase.ECMO,                                // Oxigenación por membrana extracorpórea
-                    VAFO = flucase.VAFO,                                // Ventilación de alta frecuencia oscilatoria
-                    Comments = flucase.Comments,                        //#### CAFQ: 190107 Comentario
+                    UCInt = flucase.UCInt,
+                    UCri = flucase.UCri,
+                    MecVent = flucase.MecVent,
+                    MecVentNoInv = flucase.MecVentNoInv,
+                    ECMO = flucase.ECMO,
+                    VAFO = flucase.VAFO,
                     DiagEgVal = flucase.DiagEg,
                     DiagEgOtro = flucase.DiagEgOtro,        //#### CAFQ
                     IsSample = flucase.IsSample,
@@ -1550,7 +1548,6 @@ namespace Paho.Controllers
                     SatOxigPor = flucase.SatOxigPor,
                     Tiraje = flucase.Tiraje,
                     Odinofagia = flucase.Odinofagia,
-
                     CaseStatus = flucase.CaseStatus,
                     CloseDate = flucase.CloseDate,
                     ObservationCase = flucase.ObservationCase,
@@ -1600,7 +1597,6 @@ namespace Paho.Controllers
                 int? ICUEW,
                 DateTime? ICUExDate,
                 int? HospitalizedIn,
-                string HospitalizedInNumber,
                 string Destin,
                 bool? IsSample,
                 DateTime? SampleDate,
@@ -1677,7 +1673,6 @@ namespace Paho.Controllers
                 bool? MecVentNoInv,
                 bool? ECMO,
                 bool? VAFO,
-                string Comments,                                //#### CAFQ: 190107
                 int? DiagEgVal,
                 string DiagEgOtro,                              //#### CAFQ
                 bool? Tiraje,
@@ -1731,7 +1726,6 @@ namespace Paho.Controllers
             flucase.ICUEW = ICUEW;
             flucase.ICUExDate = ICUExDate;
             flucase.HospitalizedIn = HospitalizedIn;
-            flucase.HospitalizedInNumber = HospitalizedInNumber;
             flucase.Destin = Destin;
             flucase.FalleDate = FalleDate;
             flucase.InstReferName = InstReferName;
@@ -1810,7 +1804,6 @@ namespace Paho.Controllers
             flucase.MecVentNoInv = MecVentNoInv;
             flucase.ECMO = ECMO;
             flucase.VAFO = VAFO;
-            flucase.Comments = Comments;                            //#### CAFQ: 190107
             flucase.DiagEg = DiagEgVal;
             flucase.DiagEgOtro = DiagEgOtro;                        //#### CAFQ
             flucase.Tiraje = Tiraje;

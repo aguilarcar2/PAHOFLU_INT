@@ -960,7 +960,6 @@ namespace Paho.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public AgeGroup? AgeGroup { get; private set; }
         public Gender Gender { get; set; }
-        public string ResponsibleMinor { get; set; }
         public int? nativepeople { get;  set; }
         public int? nationality { get; set; }
 
@@ -1105,7 +1104,7 @@ namespace Paho.Models
         public int? AntiViralType { get; set; }
         public int? OseltaDose { get; set; }
         public string AntiViralDose { get; set; }
-        public int? AntiViralDays { get; set; }
+
         public int? Antibiotic { get; set; }
         public string AntibioticName { get; set; }
 
@@ -1153,7 +1152,6 @@ namespace Paho.Models
         public DateTime? ICUAmDate { get; set; }
         public int? ICUEW { get; set; }
         public DateTime? ICUExDate { get; set; }
-        public string HospitalizedInNumber { get; set; }
         public int? HospitalizedIn { get; set; }
         [MaxLength(1)]
         public string Destin { get; set; }
@@ -1832,7 +1830,6 @@ namespace Paho.Models
                    p.AMeasure,
                    p.AgeGroup,
                    p.Gender,
-                   p.ResponsibleMinor,
                    p.UserID,
                    p.InsertDate,
                    p.LastUpdate,
@@ -1923,7 +1920,6 @@ namespace Paho.Models
                    p.AntibioticName,
                    p.OseltaDose,
                    p.AntiViralDose,
-                   p.AntiViralDays,
                    p.ViajePrevSintoma,             //#### CAFQ
                    p.DestPrevSintoma1,             //#### CAFQ
                    p.DestFechaLlegada1,             //#### CAFQ
@@ -1978,7 +1974,6 @@ namespace Paho.Models
                    p.ICUEW,
                    p.ICUExDate,
                    p.HospitalizedIn,
-                   p.HospitalizedInNumber,
                    p.Destin,
                    p.DestinICU,
                    p.InstReferName,
