@@ -4,8 +4,8 @@ function SummaryYearItem(data) {
     //****
     self.ColETINumST = data.ColETINumST;
     self.ColETIDenoST = data.ColETIDenoST;
-    self.ColETINumEmerFST = data.ColETINumEmerFST;
-    self.ColETINumEmerMST = data.ColETINumEmerMST;
+    //self.ColETINumEmerFST = data.ColETINumEmerFST;
+    //self.ColETINumEmerMST = data.ColETINumEmerMST;
     self.ColETINumEmerST = data.ColETINumEmerST;
 
     self.ColHospTST = data.ColHospTST;
@@ -14,6 +14,7 @@ function SummaryYearItem(data) {
     self.ColHospSARITST = data.ColHospSARITST;          //#### CAFQ: 181101
     self.ColUCISARITST = data.ColUCISARITST;            //#### CAFQ: 181101
     self.ColFalleSARITST = data.ColFalleSARITST;        //#### CAFQ: 181101
+
     self.ColNeuTST = data.ColNeuTST;
     self.ColCCSARITST = data.ColCCSARITST;              //####CAFQ
     self.ColVentTST = data.ColVentTST;
@@ -28,8 +29,8 @@ function SummaryYearItem(data) {
     self.StartDateOfWeek = data.StartDateOfWeek;
     self.WeekendDate = data.WeekendDate
 
-    self.ColETIFST = ko.observable("");     //??
-    self.ColETIMST = ko.observable("");     //??
+    //self.ColETIFST = ko.observable("");     //??
+    //self.ColETIMST = ko.observable("");     //??
 
     self.UsrCountry = ko.observable(selcty);                // Pais del usuario logueado
     //****
@@ -175,25 +176,55 @@ function SummayItem(data) {
     //****
     self.ETIDenoFem = ko.observable(data.ETIDenoFem);
     self.ETIDenoMaso = ko.observable(data.ETIDenoMaso);
+    self.ETIDenoST = ko.observable(data.ETIDenoST);
+    self.ETIDenoST_HN = ko.observable(data.ETIDenoST);
+    self.ETIDenoST_HN_Tmp = ko.observable();
 
-    if (self.DisableCHI() || self.ActiveBOL() || self.ActiveHON()) {
+    self.ETIDenoST_HN_Tmp = ko.computed(function () {
+        var fem = parseInt(self.ETIDenoFem());
+        var mas = parseInt(self.ETIDenoMaso());
+        var tot = parseInt(self.ETIDenoST_HN());
+
+        (fem == 0 && mas == 0) ? self.ETIDenoST_HN(self.ETIDenoST_HN()) : self.ETIDenoST_HN(fem + mas)
+
+        return 0;
+    }, self);
+
+    if (self.DisableCHI() || self.ActiveBOL()) {
         self.ETIDenoST = ko.computed(function () {
             return parseInt(self.ETIDenoFem()) + parseInt(self.ETIDenoMaso());
         }, self);
     } else {
-        self.ETIDenoST = ko.observable(data.ETIDenoST);
+        if (!self.ActiveHON()) {
+            self.ETIDenoST = ko.observable(data.ETIDenoST);
+        }        
     }
     //****
     self.ETINumFem = ko.observable(data.ETINumFem);
     self.ETINumMaso = ko.observable(data.ETINumMaso);
+    self.ETINumST = ko.observable(data.ETINumST);
+    self.ETINumST_HN = ko.observable(data.ETINumST);
+    self.ETINumST_HN_Tmp = ko.observable();
 
-    if (self.DisableCHI() || self.ActiveBOL() || self.ActiveHON()) {
+    self.ETINumST_HN_Tmp = ko.computed(function () {
+        var fem = parseInt(self.ETINumFem());
+        var mas = parseInt(self.ETINumMaso());
+        var tot = parseInt(self.ETINumST_HN());
+
+        (fem == 0 && mas == 0) ? self.ETINumST_HN(self.ETINumST_HN()) : self.ETINumST_HN(fem + mas)
+
+        return 0;
+    }, self);
+
+    if (self.DisableCHI() || self.ActiveBOL()) {
         self.ETINumST = ko.computed(function () {
             return parseInt(self.ETINumFem()) + parseInt(self.ETINumMaso());
         }, self);
 
     } else {
-        self.ETINumST = ko.observable(data.ETINumST);
+        if (!self.ActiveHON()) {
+            self.ETINumST = ko.observable(data.ETINumST);
+        }        
     }
     //****
     self.ETINumEmerFem = ko.observable(data.ETINumEmerFem);
@@ -210,88 +241,129 @@ function SummayItem(data) {
     //****
     self.HospFem = ko.observable(data.HospFem);
     self.HospMaso = ko.observable(data.HospMaso);
+    self.HospST = ko.observable(data.HospST);   
+    self.HospST_HN = ko.observable(data.HospST);  
+    self.HospST_HN_Tmp = ko.observable();
 
-    console.log("m1");
-    if (self.DisableCHI() || self.ActiveBOL() || self.ActiveHON()) {    // || self.ActiveHON()
-        /*if (self.ActiveHON()) {
-            console.log("m2");
-            self.HospST = ko.observable(data.HospST);
-        }*/
+    self.HospST_HN_Tmp = ko.computed(function () {
+        var fem = parseInt(self.HospFem());
+        var mas = parseInt(self.HospMaso());
+        var tot = parseInt(self.HospST_HN());
 
-        console.log("m3");
+        (fem == 0 && mas == 0) ? self.HospST_HN(self.HospST_HN()) : self.HospST_HN(fem + mas)
+
+        return 0;
+    }, self);
+    
+    if (self.DisableCHI() || self.ActiveBOL()) {    // || self.ActiveHON()
         self.HospST = ko.computed(function () {
-            console.log("m4");
             return parseInt(self.HospFem()) + parseInt(self.HospMaso());
         }, self);
 
     } else {
-        console.log("m5");
-        self.HospST = ko.observable(data.HospST);
-
-        /*if (self.ActiveHON()) {
-            console.log("m6");
-            self.HospST = ko.computed(function () {
-                console.log("m7");
-                return parseInt(self.HospFem()) + parseInt(self.HospMaso());
-            }, self);
-        }*/
-
+        if (!self.ActiveHON()) {
+            self.HospST = ko.observable(data.HospST);
+        }        
     }
     //****
     self.HospSARIFem = ko.observable(data.HospSARIFem);
     self.HospSARIMaso = ko.observable(data.HospSARIMaso);
+    //self.HospSARIST = ko.observable(data.HospSARIST);
+    self.HospSARIST_HN = ko.observable(data.HospSARIST);
+    self.HospSARIST_HN_Tmp = ko.observable();
 
-    if (self.ActiveHON()) {
-        self.HospSARIST = ko.computed(function () {
-            return parseInt(self.HospSARIFem()) + parseInt(self.HospSARIMaso());
-        }, self);
-    } else {
-        self.HospSARIST = ko.observable(data.HospSARIST);
-    }
+    self.HospSARIST_HN_Tmp = ko.computed(function () {
+        var fem = parseInt(self.HospSARIFem());
+        var mas = parseInt(self.HospSARIMaso());
+        var tot = parseInt(self.HospSARIST_HN());
+
+        (fem == 0 && mas == 0) ? self.HospSARIST_HN(self.HospSARIST_HN()) : self.HospSARIST_HN(fem + mas)
+        return 0;
+    }, self);
     //****
     self.UCIFem = ko.observable(data.UCIFem);
     self.UCIMaso = ko.observable(data.UCIMaso);
+    self.UCIST = ko.observable(data.UCIST);
+    self.UCIST_HN = ko.observable(data.UCIST);
+    self.UCIST_HN_Tmp = ko.observable();
 
-    if (self.DisableCHI() || self.ActiveBOL() || self.ActiveHON()) {
+    self.UCIST_HN_Tmp = ko.computed(function () {
+        var fem = parseInt(self.UCIFem());
+        var mas = parseInt(self.UCIMaso());
+        var tot = parseInt(self.UCIST_HN());
+
+        (fem == 0 && mas == 0) ? self.UCIST_HN(self.UCIST_HN()) : self.UCIST_HN(fem + mas)
+
+        return 0;
+    }, self);
+    
+    if (self.DisableCHI() || self.ActiveBOL()) {
         self.UCIST = ko.computed(function () {
             return parseInt(self.UCIFem()) + parseInt(self.UCIMaso());
         }, self);
     } else {
-        self.UCIST = ko.observable(data.UCIST);
-    }
+        if (!self.ActiveHON()) {
+            self.UCIST = ko.observable(data.UCIST);
+        }        
+    }    
     //****
     self.UCISARIFem = ko.observable(data.UCISARIFem);
     self.UCISARIMaso = ko.observable(data.UCISARIMaso);
+    //self.UCISARIST = ko.observable(data.UCISARIST);
+    self.UCISARIST_HN = ko.observable(data.UCISARIST);
+    self.UCISARIST_HN_Tmp = ko.observable();
 
-    if (self.ActiveHON()) {
-        self.UCISARIST = ko.computed(function () {
-            return parseInt(self.UCISARIFem()) + parseInt(self.UCISARIMaso());
-        }, self);
-    } else {
-        self.UCISARIST = ko.observable(data.UCISARIST);
-    }
+    self.UCISARIST_HN_Tmp = ko.computed(function () {
+        var fem = parseInt(self.UCISARIFem());
+        var mas = parseInt(self.UCISARIMaso());
+        var tot = parseInt(self.UCISARIST_HN());
+
+        (fem == 0 && mas == 0) ? self.UCISARIST_HN(self.UCISARIST_HN()) : self.UCISARIST_HN(fem + mas)
+
+        return 0;
+    }, self);
     //****
     self.DefFem = ko.observable(data.DefFem);
     self.DefMaso = ko.observable(data.DefMaso);
+    self.DefST = ko.observable(data.DefST);
+    self.DefST_HN = ko.observable(data.DefST);
+    self.DefST_HN_Tmp = ko.observable();
 
-    if (self.DisableCHI() || self.ActiveBOL() || self.ActiveHON()) {
+    self.DefST_HN_Tmp = ko.computed(function () {
+        var fem = parseInt(self.DefFem());
+        var mas = parseInt(self.DefMaso());
+        var tot = parseInt(self.DefST_HN());
+
+        (fem == 0 && mas == 0) ? self.DefST_HN(self.DefST_HN()) : self.DefST_HN(fem + mas)
+
+        return 0;
+    }, self);
+
+    if (self.DisableCHI() || self.ActiveBOL()) {
         self.DefST = ko.computed(function () {
             return parseInt(self.DefFem()) + parseInt(self.DefMaso());
         }, self);
     } else {
-        self.DefST = ko.observable(data.DefST);
+        if (!self.ActiveHON()) {
+            self.DefST = ko.observable(data.DefST);
+        }        
     }
     //****
     self.DefSARIFem = ko.observable(data.DefSARIFem);
     self.DefSARIMaso = ko.observable(data.DefSARIMaso);
+    //self.DefSARIST = ko.observable(data.DefSARIST);
+    self.DefSARIST_HN = ko.observable(data.DefSARIST);
+    self.DefSARIST_HN_Tmp = ko.observable();
 
-    if (self.ActiveHON()) {
-        self.DefSARIST = ko.computed(function () {
-            return parseInt(self.DefSARIFem()) + parseInt(self.DefSARIMaso());
-        }, self);
-    } else {
-        self.DefSARIST = ko.observable(data.DefSARIST);
-    }
+    self.DefSARIST_HN_Tmp = ko.computed(function () {
+        var fem = parseInt(self.DefSARIFem());
+        var mas = parseInt(self.DefSARIMaso());
+        var tot = parseInt(self.DefSARIST_HN());
+
+        (fem == 0 && mas == 0) ? self.DefSARIST_HN(self.DefSARIST_HN()) : self.DefSARIST_HN(fem + mas)
+
+        return 0;
+    }, self);
     //****
     self.NeuFem = ko.observable(data.NeuFem);
     self.NeuMaso = ko.observable(data.NeuMaso);
@@ -320,64 +392,64 @@ function SummayItem(data) {
     self.TotalVisits = ko.observable(data.TotalVisits);
     //****
     self.MakeValueOfSummayItem = function () {
-        //var aaa = $("#NeighborhoodID").val("");
-        var aaa = $("#ETINumFem").val();
-        var bbb = $("#ETINumMaso").val();
-        var ccc = $("#ETINumST").val();
-        console.log("a111");
-        console.log(aaa);
-        console.log(bbb);
-        console.log(ccc);
-        console.log("a222");
         return {
             Id: self.Id,
             CaseSummaryId: self.CaseSummaryId,
             AgeGroup: self.AgeGroup,
+
             ETINumFem: typeof (self.ETINumFem()) !== "number" ? parseInt(self.ETINumFem()) : self.ETINumFem(),
             ETINumMaso: typeof (self.ETINumMaso()) !== "number" ? parseInt(self.ETINumMaso()) : self.ETINumMaso(),
-            ETINumST: typeof (self.ETINumST()) !== "number" ? parseInt(self.ETINumST()) : self.ETINumST(),
+            ETINumST: self.ActiveHON() ? ( typeof (self.ETINumST_HN()) !== "number" ? parseInt(self.ETINumST_HN()) : self.ETINumST_HN() ) :
+                                         ( typeof (self.ETINumST()) !== "number" ? parseInt(self.ETINumST()) : self.ETINumST() ),
+
+            ETIDenoFem: typeof (self.ETIDenoFem()) !== "number" ? parseInt(self.ETIDenoFem()) : self.ETIDenoFem(),
+            ETIDenoMaso: typeof (self.ETIDenoMaso()) !== "number" ? parseInt(self.ETIDenoMaso()) : self.ETIDenoMaso(),
+            ETIDenoST: self.ActiveHON() ? ( typeof (self.ETIDenoST_HN()) !== "number" ? parseInt(self.ETIDenoST_HN()) : self.ETIDenoST_HN() ) :
+                                          ( typeof (self.ETIDenoST()) !== "number" ? parseInt(self.ETIDenoST()) : self.ETIDenoST() ),
 
             ETINumEmerFem: typeof (self.ETINumEmerFem()) !== "number" ? parseInt(self.ETINumEmerFem()) : self.ETINumEmerFem(),
             ETINumEmerMaso: typeof (self.ETINumEmerMaso()) !== "number" ? parseInt(self.ETINumEmerMaso()) : self.ETINumEmerMaso(),
             ETINumEmerST: typeof (self.ETINumEmerST()) !== "number" ? parseInt(self.ETINumEmerST()) : self.ETINumEmerST(),
 
-            ETIDenoFem: typeof (self.ETIDenoFem()) !== "number" ? parseInt(self.ETIDenoFem()) : self.ETIDenoFem(),
-            ETIDenoMaso: typeof (self.ETIDenoMaso()) !== "number" ? parseInt(self.ETIDenoMaso()) : self.ETIDenoMaso(),
-            ETIDenoST: typeof (self.ETIDenoST()) !== "number" ? parseInt(self.ETIDenoST()) : self.ETIDenoST(),
-
             HospFem: typeof (self.HospFem()) !== "number" ? parseInt(self.HospFem()) : self.HospFem(),
             HospMaso: typeof (self.HospMaso()) !== "number" ? parseInt(self.HospMaso()) : self.HospMaso(),
-            HospST: typeof (self.HospST()) !== "number" ? parseInt(self.HospST()) : self.HospST(),
-            ILICases: typeof (self.ILICases()) !== "number" ? parseInt(self.ILICases()) : self.ILICases(),
-            UCIFem: typeof (self.UCIFem()) !== "number" ? parseInt(self.UCIFem()) : self.UCIFem(),
-            UCIMaso: typeof (self.UCIMaso()) !== "number" ? parseInt(self.UCIMaso()) : self.UCIMaso(),
-            UCIST: typeof (self.UCIST()) !== "number" ? parseInt(self.UCIST()) : self.UCIST(),
+            HospST: self.ActiveHON() ? (typeof (self.HospST_HN()) !== "number" ? parseInt(self.HospST_HN()) : self.HospST_HN()) :
+                                       (typeof (self.HospST()) !== "number" ? parseInt(self.HospST()) : self.HospST()),
 
             HospSARIFem: typeof (self.HospSARIFem()) !== "number" ? parseInt(self.HospSARIFem()) : self.HospSARIFem(),
             HospSARIMaso: typeof (self.HospSARIMaso()) !== "number" ? parseInt(self.HospSARIMaso()) : self.HospSARIMaso(),
-            HospSARIST: typeof (self.HospSARIST()) !== "number" ? parseInt(self.HospSARIST()) : self.HospSARIST(),
+            HospSARIST: self.ActiveHON() ? (typeof (self.HospSARIST_HN()) !== "number" ? parseInt(self.HospSARIST_HN()) : self.HospSARIST_HN()) : 0,
+
+            UCIFem: typeof (self.UCIFem()) !== "number" ? parseInt(self.UCIFem()) : self.UCIFem(),
+            UCIMaso: typeof (self.UCIMaso()) !== "number" ? parseInt(self.UCIMaso()) : self.UCIMaso(),
+            UCIST: self.ActiveHON() ? (typeof (self.UCIST_HN()) !== "number" ? parseInt(self.UCIST_HN()) : self.UCIST_HN()) :
+                                      (typeof (self.UCIST()) !== "number" ? parseInt(self.UCIST()) : self.UCIST()),
 
             UCISARIFem: typeof (self.UCISARIFem()) !== "number" ? parseInt(self.UCISARIFem()) : self.UCISARIFem(),
             UCISARIMaso: typeof (self.UCISARIMaso()) !== "number" ? parseInt(self.UCISARIMaso()) : self.UCISARIMaso(),
-            UCISARIST: typeof (self.UCISARIST()) !== "number" ? parseInt(self.UCISARIST()) : self.UCISARIST(),
+            UCISARIST: self.ActiveHON() ? (typeof (self.UCISARIST_HN()) !== "number" ? parseInt(self.UCISARIST_HN()) : self.UCISARIST_HN()) : 0,
 
             DefFem: typeof (self.DefFem()) !== "number" ? parseInt(self.DefFem()) : self.DefFem(),
             DefMaso: typeof (self.DefMaso()) !== "number" ? parseInt(self.DefMaso()) : self.DefMaso(),
-            DefST: typeof (self.DefST()) !== "number" ? parseInt(self.DefST()) : self.DefST(),
+            DefST: self.ActiveHON() ? (typeof (self.DefST_HN()) !== "number" ? parseInt(self.DefST_HN()) : self.DefST_HN()) :
+                                      (typeof (self.DefST()) !== "number" ? parseInt(self.DefST()) : self.DefST()),
 
             DefSARIFem: typeof (self.DefSARIFem()) !== "number" ? parseInt(self.DefSARIFem()) : self.DefSARIFem(),
             DefSARIMaso: typeof (self.DefSARIMaso()) !== "number" ? parseInt(self.DefSARIMaso()) : self.DefSARIMaso(),
-            DefSARIST: typeof (self.DefSARIST()) !== "number" ? parseInt(self.DefSARIST()) : self.DefSARIST(),
+            DefSARIST: self.ActiveHON() ? (typeof (self.DefSARIST_HN()) !== "number" ? parseInt(self.DefSARIST_HN()) : self.DefSARIST_HN()) : 0,
 
+            ILICases: typeof (self.ILICases()) !== "number" ? parseInt(self.ILICases()) : self.ILICases(),
             TotalVisits: typeof (self.TotalVisits()) !== "number" ? parseInt(self.TotalVisits()) : self.TotalVisits(),
             ILISamplesTaken: typeof (self.ILISamplesTaken()) !== "number" ? parseInt(self.ILISamplesTaken()) : self.ILISamplesTaken(),
 
             NeuFem: typeof (self.NeuFem()) !== "number" ? parseInt(self.NeuFem()) : self.NeuFem(),
             NeuMaso: typeof (self.NeuMaso()) !== "number" ? parseInt(self.NeuMaso()) : self.NeuMaso(),
             NeuST: typeof (self.NeuST()) !== "number" ? parseInt(self.NeuST()) : self.NeuST(),
+
             CCSARIFem: typeof (self.CCSARIFem()) !== "number" ? parseInt(self.CCSARIFem()) : self.CCSARIFem(),
             CCSARIMaso: typeof (self.CCSARIMaso()) !== "number" ? parseInt(self.CCSARIMaso()) : self.CCSARIMaso(),
             CCSARIST: typeof (self.CCSARIST()) !== "number" ? parseInt(self.CCSARIST()) : self.CCSARIST(),
+
             VentFem: typeof (self.VentFem()) !== "number" ? parseInt(self.VentFem()) : self.VentFem(),
             VentMaso: typeof (self.VentMaso()) !== "number" ? parseInt(self.VentMaso()) : self.VentMaso(),
             VentST: typeof (self.VentST()) !== "number" ? parseInt(self.VentST()) : self.VentST()
@@ -423,6 +495,8 @@ function SummaryViewModel(app, dataModel) {
 
     self.ColETIFST = ko.observable("");
     self.ColETIMST = ko.observable("");
+
+    //self.HospST = ko.observable();
 
     //self.CalculateEW = function (FieldDate, FieldAct, FieldActYear) {
     //    if ($("#" + FieldDate).val() != "") {
@@ -693,7 +767,11 @@ function SummaryViewModel(app, dataModel) {
     self.ColETIDenoST = ko.computed(function () {
         var numberofitems = 0;
         ko.utils.arrayForEach(self.SummayItems(), function (r) {
-            numberofitems += parseInt(r.ETIDenoST());
+            if (self.ActiveHON()) {
+                numberofitems += parseInt(r.ETIDenoST_HN());
+            } else {
+                numberofitems += parseInt(r.ETIDenoST());
+            }            
         });
         return parseInt(numberofitems);
     }, self);
@@ -717,7 +795,11 @@ function SummaryViewModel(app, dataModel) {
     self.ColETINumST = ko.computed(function () {
         var numberofitems = 0;
         ko.utils.arrayForEach(self.SummayItems(), function (r) {
-            numberofitems += parseInt(r.ETINumST());
+            if (self.ActiveHON()) {
+                numberofitems += parseInt(r.ETINumST_HN());
+            } else {
+                numberofitems += parseInt(r.ETINumST());
+            }            
         });
         return parseInt(numberofitems);
     }, self);
@@ -745,41 +827,36 @@ function SummaryViewModel(app, dataModel) {
         });
         return parseInt(numberofitems);
     }, self);
+
     //****
     self.ColHospFST = ko.computed(function () {
         var numberofitems = 0;
-        //console.log("a1a");
         ko.utils.arrayForEach(self.SummayItems(), function (r) {
-            //console.log("a1b");
             numberofitems += parseInt(r.HospFem());
         });
-        //console.log("a1c");
         return parseInt(numberofitems);
     }, self);
 
     self.ColHospMST = ko.computed(function () {
         var numberofitems = 0;
-        //console.log("a2a");
         ko.utils.arrayForEach(self.SummayItems(), function (r) {
-            //console.log("a2b");
             numberofitems += parseInt(r.HospMaso());
         });
-        //console.log("a2c");
         return parseInt(numberofitems);
     }, self);
 
     self.ColHospTST = ko.computed(function () {
         var numberofitems = 0;
-        console.log("a3a");
         ko.utils.arrayForEach(self.SummayItems(), function (r) {
-            console.log("a3b");
-            numberofitems += parseInt(r.HospST());
-            //console.log(numberofitems);
+            if (self.ActiveHON()) {
+                numberofitems += parseInt(r.HospST_HN());
+            } else {
+                numberofitems += parseInt(r.HospST());
+            }
         });
-        //console.log(numberofitems);
-        console.log("a3c");
         return parseInt(numberofitems);
     }, self);
+
     //****
     self.ColHospSARIFST = ko.computed(function () {
         var numberofitems = 0;
@@ -797,13 +874,19 @@ function SummaryViewModel(app, dataModel) {
         return parseInt(numberofitems);
     }, self);
 
-    self.ColHospSARITST = ko.computed(function () {
-        var numberofitems = 0;
-        ko.utils.arrayForEach(self.SummayItems(), function (r) {
-            numberofitems += parseInt(r.HospSARIST());
-        });
-        return parseInt(numberofitems);
-    }, self);
+    if (self.ActiveHON()) {
+        self.ColHospSARITST = ko.computed(function () {
+            var numberofitems = 0;
+            ko.utils.arrayForEach(self.SummayItems(), function (r) {
+                if (self.ActiveHON()) {
+                    numberofitems += parseInt(r.HospSARIST_HN());
+                } else {
+                    numberofitems += parseInt(r.HospSARIST());
+                }
+            });
+            return parseInt(numberofitems);
+        }, self);
+    }    
     //****
     self.ColUCIFST = ko.computed(function () {
         var numberofitems = 0;
@@ -824,7 +907,11 @@ function SummaryViewModel(app, dataModel) {
     self.ColUCITST = ko.computed(function () {
         var numberofitems = 0;
         ko.utils.arrayForEach(self.SummayItems(), function (r) {
-            numberofitems += parseInt(r.UCIST());
+            if (self.ActiveHON()) {
+                numberofitems += parseInt(r.UCIST_HN());
+            } else {
+                numberofitems += parseInt(r.UCIST());
+            }            
         });
         return parseInt(numberofitems);
     }, self);
@@ -845,13 +932,19 @@ function SummaryViewModel(app, dataModel) {
         return parseInt(numberofitems);
     }, self);
 
-    self.ColUCISARITST = ko.computed(function () {
-        var numberofitems = 0;
-        ko.utils.arrayForEach(self.SummayItems(), function (r) {
-            numberofitems += parseInt(r.UCISARIST());
-        });
-        return parseInt(numberofitems);
-    }, self);
+    if (self.ActiveHON()) {
+        self.ColUCISARITST = ko.computed(function () {
+            var numberofitems = 0;
+            ko.utils.arrayForEach(self.SummayItems(), function (r) {
+                if (self.ActiveHON()) {
+                    numberofitems += parseInt(r.UCISARIST_HN());
+                } else {
+                    numberofitems += parseInt(r.UCISARIST());
+                }
+            });
+            return parseInt(numberofitems);
+        }, self);
+    }    
     //****
     self.ColFalleFST = ko.computed(function () {
         var numberofitems = 0;
@@ -872,7 +965,11 @@ function SummaryViewModel(app, dataModel) {
     self.ColFalleTST = ko.computed(function () {
         var numberofitems = 0;
         ko.utils.arrayForEach(self.SummayItems(), function (r) {
-            numberofitems += parseInt(r.DefST());
+            if (self.ActiveHON()) {
+                numberofitems += parseInt(r.DefST_HN());
+            } else {
+                numberofitems += parseInt(r.DefST());
+            }            
         });
         return parseInt(numberofitems);
     }, self);
@@ -893,13 +990,19 @@ function SummaryViewModel(app, dataModel) {
         return parseInt(numberofitems);
     }, self);
 
-    self.ColFalleSARITST = ko.computed(function () {
-        var numberofitems = 0;
-        ko.utils.arrayForEach(self.SummayItems(), function (r) {
-            numberofitems += parseInt(r.DefSARIST());
-        });
-        return parseInt(numberofitems);
-    }, self);
+    if (self.ActiveHON()) {
+        self.ColFalleSARITST = ko.computed(function () {
+            var numberofitems = 0;
+            ko.utils.arrayForEach(self.SummayItems(), function (r) {
+                if (self.ActiveHON()) {
+                    numberofitems += parseInt(r.DefSARIST_HN());
+                } else {
+                    numberofitems += parseInt(r.DefSARIST());
+                }
+            });
+            return parseInt(numberofitems);
+        }, self);
+    }    
     //****
     self.ColNeuTST = ko.computed(function () {
         var numberofitems = 0;
@@ -1007,6 +1110,7 @@ function SummaryViewModel(app, dataModel) {
     };
 
     self.GetYearSummaryForYearItems = function () {
+        //console.log("self.GetYearSummaryForYearItems->START_1006");
         if ((typeof self.selectedHospitalId() != "undefined") && self.selectedHospitalId() != "") {
             $.postJSON(app.dataModel.getSummaryForYearUrl, { hospitalId: self.selectedHospitalId() })
                .success(function (data, textStatus, jqXHR) {
@@ -1043,6 +1147,7 @@ function SummaryViewModel(app, dataModel) {
     };
 
     self.GetSummaryExcel = function () {
+        //console.log("self.GetSummaryExcel->START_1043");
         //var namevalues = { Report: self.Report(), CountryID: self.selectedCountryId() ? self.selectedCountryId() : CountryID, HospitalID: self.selectedInstitutionId(), Year: self.Year(), Month: self.Month(), SE: self.SE(), StartDate: self.StartDate() ? moment(self.StartDate()).format(date_format_moment) : null, EndDate: self.EndDate() ? moment(self.EndDate()).format(date_format_moment) : null, ReportCountry: self.selectedReportCountryId() }
         //if (self.validate() == true)
         var namevalues = { hospitalId: self.selectedHospitalId(), hospitalDate: moment(self.HospitalDate()).format(date_format_ISO), EpiWeek: self.HospitalEW(), EpiYear: self.HospitalYE() };
@@ -1067,6 +1172,7 @@ function SummaryViewModel(app, dataModel) {
     }
 
     self.GetSummayItems = function () {
+        //console.log("self.GetSummayItems->START_1068");
         if ((typeof self.selectedHospitalId() != "undefined") && self.selectedHospitalId() != "" && (typeof self.HospitalDate() != "undefined") && self.HospitalDate() != "") {
             DatetoSend = jQuery.type(self.HospitalDate()) === 'date' ? self.HospitalDate() : parseDate($("#HospitalDate").val(), date_format_)
             $.postJSON(app.dataModel.getSummayDetailsUrl, { hospitalId: self.selectedHospitalId(), hospitalDate: moment(DatetoSend).format(date_format_ISO), EpiWeek: self.HospitalEW(), EpiYear: self.HospitalYE() })

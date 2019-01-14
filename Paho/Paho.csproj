@@ -369,6 +369,9 @@
     <Content Include="Content\themes\base\images\BlueHorizontalSPANISH.png" />
     <Content Include="Content\themes\base\images\blue_download.png" />
     <Content Include="Content\themes\base\images\close.png" />
+    <Content Include="Content\themes\base\images\Comentario.png" />
+    <Content Include="Content\themes\base\images\Comentario2.png" />
+    <Content Include="Content\themes\base\images\Comentario3.png" />
     <Content Include="Content\themes\base\images\CrossSmall.png" />
     <Content Include="Content\themes\base\images\download.png" />
     <Content Include="Content\themes\base\images\footer_logo-en.png" />

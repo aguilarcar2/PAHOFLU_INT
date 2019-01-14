@@ -70,10 +70,10 @@ function AppViewModel(dataModel) {
 
     // Other operations
     self.addViewModel = function (options) {
-        console.log(options);
+        //////////////////////////////////////////////////////////console.log(options);
         var viewItem = new options.factory(self, dataModel),
             navigator;
-        console.log(viewItem);
+        //////////////////////////////////////////////////////////console.log(viewItem);
         // Add view to AppViewModel.Views enum (for example, app.Views.Home).
         self.Views[options.name] = viewItem;
 
