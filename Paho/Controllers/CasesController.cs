@@ -949,7 +949,8 @@ namespace Paho.Controllers
             int HospitalId,
             int? nativepeople,
             int? nationality,
-            DateTime DateFeverDummy
+            DateTime DateFeverDummy,
+            bool? IsSample // Esto se agrego únicamente para la bitacora
             )
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
@@ -1057,7 +1058,15 @@ namespace Paho.Controllers
             if (!id.HasValue)
             {
                 HistoryRecord(flucase.ID, 1, flucase.flow, 1);
-                HistoryRecord(flucase.ID, 1, flucase.flow, 3);
+                if (IsSample == false)
+                {
+                    HistoryRecord(flucase.ID, 1, flucase.flow, 12);
+                }
+                else
+                {
+                    HistoryRecord(flucase.ID, 1, flucase.flow, 3);
+                }
+                
             }
             else
             {

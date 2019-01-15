@@ -937,6 +937,7 @@ function ContactViewModel(app, dataModel) {
                 nationality: self.selectedNationalityID(),
                 NoExpediente: self.NoExpediente() == null ? "" : self.NoExpediente().toLocaleUpperCase(),
                 DateFeverDummy: moment(date_fever_dummy).format(date_format_ISO),
+                IsSample: app.Views.Hospital.IsSample() === "true" ? true : (app.Views.Hospital.IsSample() === "false" ? false : null),
             },
             function (data) {
                 if (typeof data != "number") {
