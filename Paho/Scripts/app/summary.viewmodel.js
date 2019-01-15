@@ -112,6 +112,9 @@ function SummayItem(data) {
     //}
 
     self.AgeGroupDescription = CatAgeGroup[parseInt(self.AgeGroup) - 1].AgeGroup;
+    //console.log(self.AgeGroupDescription);
+    self.AgeGroupDesc = ko.observable(self.AgeGroupDescription);
+    //console.log(self.AgeGroupDesc());
     //****
     self.EnableCHI = ko.computed(function () {
         return (self.UsrCountry() != 7) ? true : false;
@@ -265,6 +268,7 @@ function SummayItem(data) {
             self.HospST = ko.observable(data.HospST);
         }
     }
+
     //****
     self.HospSARIFem = ko.observable(data.HospSARIFem);
     self.HospSARIMaso = ko.observable(data.HospSARIMaso);
@@ -280,53 +284,6 @@ function SummayItem(data) {
         (fem == 0 && mas == 0) ? self.HospSARIST_HN(self.HospSARIST_HN()) : self.HospSARIST_HN(fem + mas)
         return 0;
     }, self);
-
-    self.HospTotOK = ko.computed(function () {
-        var bResu = true;
-        /*
-        var fem = parseInt(self.HospFem());
-        var mas = parseInt(self.HospMaso());
-        var tot = parseInt(self.HospST_HN());
-
-        var femS = parseInt(self.HospSARIFem());
-        var masS = parseInt(self.HospSARIMaso());
-        var totS = parseInt(self.HospSARIST_HN());
-
-        //console.log(tot + " - " + totS);
-
-        if (totS > tot) {
-            //console.log(self.AgeGroupDescription());
-            alert("Hospitalizados IRAG no puede ser mayor que total IRAG");
-            bResu = false;
-        }
-
-        console.log(tot + " - " + totS + " - " + bResu);
-        */
-        return bResu
-    }, self);
-
-    self.HospFemOK = ko.computed(function () {
-        var bResu = true;
-        /*
-        var fem = parseInt(self.HospFem());
-        var mas = parseInt(self.HospMaso());
-        var tot = parseInt(self.HospST_HN());
-
-        var femS = parseInt(self.HospSARIFem());
-        var masS = parseInt(self.HospSARIMaso());
-        var totS = parseInt(self.HospSARIST_HN());
-
-        if (femS > fem) {
-            alert("Hospitalizados IRAG femenino no puede ser mayor que total IRAG femenino");
-            bResu = false;
-        }
-
-        console.log(fem + " - " + femS + " - " + bResu);
-        */
-        return bResu
-    }, self);
-
-
 
     //****
     self.UCIFem = ko.observable(data.UCIFem);
@@ -354,6 +311,7 @@ function SummayItem(data) {
             self.UCIST = ko.observable(data.UCIST);
         }
     }
+
     //****
     self.UCISARIFem = ko.observable(data.UCISARIFem);
     self.UCISARIMaso = ko.observable(data.UCISARIMaso);
@@ -396,6 +354,7 @@ function SummayItem(data) {
             self.DefST = ko.observable(data.DefST);
         }
     }
+
     //****
     self.DefSARIFem = ko.observable(data.DefSARIFem);
     self.DefSARIMaso = ko.observable(data.DefSARIMaso);
@@ -412,11 +371,13 @@ function SummayItem(data) {
 
         return 0;
     }, self);
+
     //****
     self.NeuFem = ko.observable(data.NeuFem);
     self.NeuMaso = ko.observable(data.NeuMaso);
 
     self.NeuST = ko.observable(data.NeuST);
+
     //****
     self.CCSARIFem = ko.observable(data.CCSARIFem);
     self.CCSARIMaso = ko.observable(data.CCSARIMaso);
@@ -429,15 +390,101 @@ function SummayItem(data) {
     } else {
         self.CCSARIST = ko.observable(data.CCSARIST);
     }
+
     //****
     self.VentFem = ko.observable(data.VentFem);
     self.VentMaso = ko.observable(data.VentMaso);
-
     self.VentST = ko.observable(data.VentST);
+
     //**** ILI Jamaica
     self.ILICases = ko.observable(data.ILICases);
     self.ILISamplesTaken = ko.observable(data.ILISamplesTaken);
     self.TotalVisits = ko.observable(data.TotalVisits);
+
+    //****
+    self.ValidarIngresoDatosOK = ko.computed(function () {
+        var bResu = true;
+
+        if (self.ActiveHON()) {
+            //----
+            var hFem = parseInt(self.HospFem());
+            var hMas = parseInt(self.HospMaso());
+            var hTot = parseInt(self.HospST_HN());
+
+            var hsFem = parseInt(self.HospSARIFem());
+            var hsMas = parseInt(self.HospSARIMaso());
+            var hsTot = parseInt(self.HospSARIST_HN());
+
+            var cErrorHosp;
+            cErrorHosp = "";
+
+            if (hsFem > hFem) {
+                cErrorHosp += "'Hospitalizados IRAG' FEMENINO no puede ser mayor que 'Hospitalizados' FEMENINO" + " en " + self.AgeGroupDesc() + "\n";
+            }
+            if (hsMas > hMas) {
+                cErrorHosp += "'Hospitalizados IRAG' MASCULINO no puede ser mayor que 'Hospitalizados' MASCULINO" + " en " + self.AgeGroupDesc() + "\n";
+            }
+            if (cErrorHosp == "") {
+                if (hsTot > hTot) {
+                    cErrorHosp += "TOTAL 'Hospitalizados IRAG' no puede ser mayor que TOTAL 'Hospitalizados'" + " en " + self.AgeGroupDesc() + "\n";
+                }
+            }
+            //----
+            var uFem = parseInt(self.UCIFem());
+            var uMas = parseInt(self.UCIMaso());
+            var uTot = parseInt(self.UCIST_HN());
+
+            var usFem = parseInt(self.UCISARIFem());
+            var usMas = parseInt(self.UCISARIMaso());
+            var usTot = parseInt(self.UCISARIST_HN());
+
+            var cErrorUCI;
+            cErrorUCI = "";
+
+            if (usFem > uFem) {
+                cErrorUCI += "'UCI IRAG' FEMENINO no puede ser mayor que 'UCI' FEMENINO" + " en " + self.AgeGroupDesc() + "\n";
+            }
+            if (usMas > uMas) {
+                cErrorUCI += "'UCI IRAG' MASCULINO no puede ser mayor que 'UCI' MASCULINO" + " en " + self.AgeGroupDesc() + "\n";
+            }
+            if (cErrorUCI == "") {
+                if (usTot > uTot) {
+                    cErrorUCI += "TOTAL 'UCI IRAG' no puede ser mayor que TOTAL 'UCI'" + " en " + self.AgeGroupDesc() + "\n";
+                }
+            }
+            //----
+            var dFem = parseInt(self.DefFem());
+            var dMas = parseInt(self.DefMaso());
+            var dTot = parseInt(self.DefST_HN());
+
+            var dsFem = parseInt(self.DefSARIFem());
+            var dsMas = parseInt(self.DefSARIMaso());
+            var dsTot = parseInt(self.DefSARIST_HN());
+
+            var cErrorDef;
+            cErrorDef = "";
+
+            if (dsFem > dFem) {
+                cErrorDef += "'Fallecidos IRAG' FEMENINO no puede ser mayor que 'Fallecidos' FEMENINO" + " en " + self.AgeGroupDesc() + "\n";
+            }
+            if (dsMas > dMas) {
+                cErrorDef += "'Fallecidos IRAG' MASCULINO no puede ser mayor que 'Fallecidos' MASCULINO" + " en " + self.AgeGroupDesc() + "\n";
+            }
+            if (cErrorDef == "") {
+                if (dsTot > dTot) {
+                    cErrorDef += "TOTAL 'Fallecidos IRAG' no puede ser mayor que TOTAL 'Fallecidos'" + " en " + self.AgeGroupDesc() + "\n";
+                }
+            }
+            //----
+            if (cErrorHosp != "" || cErrorUCI != "" || cErrorDef != "") {
+                alert(cErrorHosp + cErrorUCI + cErrorDef);
+                bResu = false;
+            }
+        }        
+
+        return bResu
+    }, self);
+
     //****
     self.MakeValueOfSummayItem = function () {
         return {
