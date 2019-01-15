@@ -412,8 +412,8 @@ function ContactViewModel(app, dataModel) {
             if (self.Age() < 1) return "Niños menores de 1 año";
             if (self.Age() < 5) return "1 a 4 años";
             if (self.Age() < 15) return "5 a 14 años";
-            if (self.Age() < 34) return "15 a 49 años";
-            if (self.Age() < 65) return "50 a 59 años";
+            if (self.Age() < 50) return "15 a 49 años";
+            if (self.Age() < 60) return "50 a 59 años";
             return "60 años y más";
         } 
 
