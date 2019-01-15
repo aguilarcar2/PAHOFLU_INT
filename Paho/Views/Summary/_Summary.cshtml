@@ -105,6 +105,7 @@
             @(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelAgeGroup"))
         </span>
     </div>
+
     <!-- Cabecera Datos -->
     @if (ViewBag.ILI == true)
     {
@@ -395,9 +396,18 @@
                 <input type='text' name="ETIDenoMaso" id="ETIDenoMaso" class="form-control" style="padding:6px;" data-bind="value: ETIDenoMaso" />
             </div>
             <!--  -->
-            <div class="col-md-1 input-group" data-bind="visible: ActiveSUR() || ActiveCOS() || ActiveBOL() || ActiveHON()">
-                <input type='text' name="ETIDenoST" id="ETIDenoST" class="form-control" style="padding:6px;" @((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "readonly='readonly'" : "") data-bind="value: ETIDenoST" />
-            </div>
+            @if (ViewBag.UsrCtry == 15)
+            {
+                <div class="col-md-1 input-group" data-bind="visible: ActiveHON()">
+                    <input type='text' name="ETIDenoST" id="ETIDenoST" class="form-control" style="padding:6px;" @((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "readonly='readonly'" : "") data-bind="value: ETIDenoST_HN" />
+                </div>
+            }
+            else
+            {
+                <div class="col-md-1 input-group" data-bind="visible: ActiveSUR() || ActiveCOS() || ActiveBOL()">
+                    <input type='text' name="ETIDenoST" id="ETIDenoST" class="form-control" style="padding:6px;" @((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "readonly='readonly'" : "") data-bind="value: ETIDenoST" />
+                </div>
+            }
         </div>
         <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 15 ) ?  "col-md-2" : "col-md-1")">
             <!--  -->
@@ -409,9 +419,18 @@
                 <input type='text' name="ETINumMaso" id="ETINumMaso" class="form-control" style="padding:6px;" data-bind="value: ETINumMaso" />
             </div>
             <!--  -->
-            <div class='col-md-1 input-group' data-bind="visible:(ActiveBOL() || ActiveCOS() || DisableCHI() || ActiveHON())">
-                <input type='text' name="ETINumST" id="ETINumST" class="form-control" style="padding:6px;" @((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "readonly='readonly'" : "") data-bind="value: ETINumST" />
-            </div>
+            @if (ViewBag.UsrCtry == 15)
+            {
+                <div class='col-md-1 input-group' data-bind="visible: ActiveHON()">
+                    <input type='text' name="ETINumST" id="ETINumST" class="form-control" style="padding:6px;" @((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "readonly='readonly'" : "") data-bind="value: ETINumST_HN" />
+                </div>
+            }
+            else
+            {
+                <div class='col-md-1 input-group' data-bind="visible: (ActiveBOL() || ActiveCOS() || DisableCHI())">
+                    <input type='text' name="ETINumST" id="ETINumST" class="form-control" style="padding:6px;" @((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "readonly='readonly'" : "") data-bind="value: ETINumST" />
+                </div>
+            }
         </div>
         <div class="@((ViewBag.UsrCtry == 3 ) ?  "col-md-2" : "col-md-1")" data-bind="visible: EnableCHI() && NoActiveBOL() && !ActiveHON()">
             <!--  -->
@@ -437,7 +456,7 @@
                 <div class="form-group">
                     <input type="text" name="HospFem" id="HospFem" class="inputHN" data-bind="value: HospFem" />
                     <input type="text" name="HospMaso" id="HospMaso" class="inputHN" data-bind="value: HospMaso" />
-                    <input type="text" name="HospST" id="HospST" class="inputHN" data-bind="value: HospST" />
+                    <input type="text" name="HospST" id="HospST" class="inputHN" data-bind="value: HospST_HN" />
                 </div>
             </div>
         }
@@ -456,14 +475,26 @@
             </div>
         }
         <!-- Hospitalizacion IRAG -->
-        <div class="col-md-1_5" id="HospSARI" data-bind="visible: ActiveHON()">
-            <div class="form-group">
-                <input type="text" name="HospSARIFem" id="HospSARIFem" class="inputHN" data-bind="value: HospSARIFem" />
-                <input type="text" name="HospSARIMaso" id="HospSARIMaso" class="inputHN" data-bind="value: HospSARIMaso" />
-                <input type="text" name="HospSARIST" id="HospSARIST" class="inputHN" data-bind="value: HospSARIST" />
+        if (ViewBag.UsrCtry == 15)
+        {
+            <div class="col-md-1_5" id="HospSARI" data-bind="visible: ActiveHON()">
+                <div class="form-group">
+                    <input type="text" name="HospSARIFem" id="HospSARIFem" class="inputHN" data-bind="value: HospSARIFem" />
+                    <input type="text" name="HospSARIMaso" id="HospSARIMaso" class="inputHN" data-bind="value: HospSARIMaso" />
+                    <input type="text" name="HospSARIST" id="HospSARIST" class="inputHN" data-bind="value: HospSARIST_HN" />
+                </div>
             </div>
-        </div>
-
+        }
+        else
+        {
+            <div class="col-md-1_5" id="HospSARI" data-bind="visible: false">
+                <div class="form-group">
+                    <input type="text" name="HospSARIFem" id="HospSARIFem" class="inputHN" data-bind="value: HospSARIFem" />
+                    <input type="text" name="HospSARIMaso" id="HospSARIMaso" class="inputHN" data-bind="value: HospSARIMaso" />
+                    <input type="text" name="HospSARIST" id="HospSARIST" class="inputHN" data-bind="value: HospSARIST" />
+                </div>
+            </div>
+        }
         <!-- UCI -->
         if (ViewBag.UsrCtry == 15)
         {
@@ -471,7 +502,7 @@
                 <div class="form-group">
                     <input type="text" name="UCIFem" id="UCIFem" class="inputHN" data-bind="value: UCIFem" />
                     <input type="text" name="UCIMaso" id="UCIMaso" class="inputHN" data-bind="value: UCIMaso" />
-                    <input type="text" name="UCIST" id="UCIST" class="inputHN" data-bind="value: UCIST" />
+                    <input type="text" name="UCIST" id="UCIST" class="inputHN" data-bind="value: UCIST_HN" />
                 </div>
             </div>
         }
@@ -494,7 +525,7 @@
             <div class="form-group">
                 <input type="text" name="UCISARIFem" id="UCISARIFem" class="inputHN" data-bind="value: UCISARIFem" />
                 <input type="text" name="UCISARIMaso" id="UCISARIMaso" class="inputHN" data-bind="value: UCISARIMaso" />
-                <input type="text" name="UCISARIST" id="UCISARIST" class="inputHN" data-bind="value: UCISARIST" />
+                <input type="text" name="UCISARIST" id="UCISARIST" class="inputHN" data-bind="value: UCISARIST_HN" />
             </div>
         </div>
 
@@ -505,7 +536,7 @@
                 <div class="form-group">
                     <input type="text" name="DefFem" id="DefFem" class="inputHN" data-bind="value: DefFem" />
                     <input type="text" name="DefMaso" id="DefMaso" class="inputHN" data-bind="value: DefMaso" />
-                    <input type="text" name="DefST" id="DefST" class="inputHN" data-bind="value: DefST" />
+                    <input type="text" name="DefST" id="DefST" class="inputHN" data-bind="value: DefST_HN" />
                 </div>
             </div>
         }
@@ -528,7 +559,7 @@
             <div class="form-group">
                 <input type="text" name="DefSARIFem" id="DefSARIFem" class="inputHN" data-bind="value: DefSARIFem" />
                 <input type="text" name="DefSARIMaso" id="DefSARIMaso" class="inputHN" data-bind="value: DefSARIMaso" />
-                <input type="text" name="DefSARIST" id="DefSARIST" class="inputHN" data-bind="value: DefSARIST" />
+                <input type="text" name="DefSARIST" id="DefSARIST" class="inputHN" data-bind="value: DefSARIST_HN" />
             </div>
         </div>
 

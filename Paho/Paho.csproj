@@ -369,6 +369,7 @@
     <Content Include="Content\themes\base\images\BlueHorizontalSPANISH.png" />
     <Content Include="Content\themes\base\images\blue_download.png" />
     <Content Include="Content\themes\base\images\close.png" />
+    <Content Include="Content\themes\base\images\Comentario2.png" />
     <Content Include="Content\themes\base\images\CrossSmall.png" />
     <Content Include="Content\themes\base\images\download.png" />
     <Content Include="Content\themes\base\images\footer_logo-en.png" />
@@ -2137,6 +2138,7 @@
     <None Include="Properties\PublishProfiles\CAFQ01.pubxml" />
     <None Include="Properties\PublishProfiles\CAFQ_181024.pubxml" />
     <None Include="Properties\PublishProfiles\CAFQ_1812.pubxml" />
+    <None Include="Properties\PublishProfiles\CAFQ_1901.pubxml" />
     <None Include="Properties\PublishProfiles\CAFQ_CH.pubxml" />
     <None Include="Properties\PublishProfiles\CAFQ_DIC26.pubxml" />
     <None Include="Properties\PublishProfiles\CAFQ_PAHO.pubxml" />

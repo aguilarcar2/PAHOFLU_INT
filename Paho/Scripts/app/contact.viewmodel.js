@@ -76,6 +76,7 @@ function ContactViewModel(app, dataModel) {
     self.AMeasure.subscribe(function(newmeasure){
         //self.CalculateDOB();
     });
+    self.ResponsibleMinor = ko.observable("");      //####CAFQ 
 
     self.ActiveBOL = ko.computed(function () {
         return (self.UsrCountry() == 3) ? true : false;
@@ -114,12 +115,6 @@ function ContactViewModel(app, dataModel) {
 
     self.selectedNationalityID = ko.observable(app.Views.Home.UsrCountry());
     self.selectedNativepeopleID = ko.observable("");
-
-    /*self.selectedOccupationId = ko.observable();            //**** CAFQ
-    self.TrabajoDirecc = ko.observable("");                 //**** CAFQ 
-    self.TrabajoEstablec = ko.observable("");                 //**** CAFQ
-    self.ContactoAnimVivos = ko.observable();                 //**** CAFQ
-    self.OcupacMercAnimVivos = ko.observable();                 //**** CAFQ*/
 
     self.ShowOnlyAdult = ko.computed(function () {
             return (self.AMeasure() == "Month" || self.AMeasure() == "Day" || (self.AMeasure() == "Year" && self.Age() < 15)) ? false : true;
@@ -373,6 +368,18 @@ function ContactViewModel(app, dataModel) {
             $("#AMeasure").prop("disabled", false);
         }
     });
+    //*//####CAFQ
+    self.IsMenorEdad = ko.computed(function () {
+        var rm = self.ResponsibleMinor();
+
+        if (self.AMeasure() == "Year" && self.Age() < 18) {
+            return true;
+        } else {
+            self.ResponsibleMinor("");
+            return false;
+        }
+    }, self);
+    //*/
     self.Gender = ko.observable("");
     self.HospitalDate = ko.observable(new Date());
     self.RegDate = ko.observable(new Date());
@@ -586,6 +593,7 @@ function ContactViewModel(app, dataModel) {
         self.Age("");
         self.AMeasure("");
         self.Gender("");
+        self.ResponsibleMinor("");
         self.HospitalDate(null);
         self.RegDate(new Date());
         if (self.UsrCountry() == 15) {
@@ -825,6 +833,7 @@ function ContactViewModel(app, dataModel) {
                 self.AMeasure(data.AMeasure);
                 if (data.Gender)
                     self.Gender(data.Gender);
+                self.ResponsibleMinor(data.ResponsibleMinor);
                 self.HospitalDate(moment(data.HospitalDate).clone().toDate());
                 //console.log ("Hospital DATe - ");
                 //console.log(moment(data.HospitalDate).clone().toDate());
@@ -894,6 +903,7 @@ function ContactViewModel(app, dataModel) {
         date_DOB = jQuery.type(self.DOB()) === 'date' ? self.DOB() : parseDate($("#DOB").val(), date_format_);
         //#### CAFQ: 180604 - Jamaica Universal
         //date_fever_dummy = jQuery.type(app.Views.Hospital.FeverDate()) === 'date' ? app.Views.Hospital.FeverDate() : parseDate($("#FeverDate").val(), date_format_);
+        //console.log("x1->" + self.ResponsibleMinor());
         if (self.UsrCountry() == 17 && self.SurvInusual() == 1) {
             date_fever_dummy = jQuery.type(self.HospitalDate()) === 'date' ? self.HospitalDate() : parseDate($("#HospitalDate").val(), date_format_);
         } else {
@@ -918,7 +928,7 @@ function ContactViewModel(app, dataModel) {
                 Age: self.Age(),
                 AMeasure: self.AMeasure(),
                 Gender: self.Gender(),
-                //HospitalDate: moment(date_hospital).format(date_format_ISO),
+                ResponsibleMinor: self.ResponsibleMinor(),
                 HospitalDate: moment(date_hospital).format(date_format_ISO),
                 RegDate: moment(date_reg_date).format(date_format_ISO),
                 //HospitalId: self.hasHospitalID() > 0 ? self.hasHospitalID() : self.selectedServiceId() > 0 ? self.selectedServiceId() : app.Views.Home.selectedInstitutionId(),
@@ -927,11 +937,6 @@ function ContactViewModel(app, dataModel) {
                 nationality: self.selectedNationalityID(),
                 NoExpediente: self.NoExpediente() == null ? "" : self.NoExpediente().toLocaleUpperCase(),
                 DateFeverDummy: moment(date_fever_dummy).format(date_format_ISO),
-                /*Ocupacion: self.selectedOccupationId(),                                //#### CAFQ 
-                TrabajoDirecc: self.TrabajoDirecc(),                                //#### CAFQ 
-                TrabajoEstablec: self.TrabajoEstablec(),                                //#### CAFQ
-                ContactoAnimVivos: self.ContactoAnimVivos(),                        //#### CAFQ
-                OcupacMercAnimVivos: self.OcupacMercAnimVivos()                     //#### CAFQ*/
             },
             function (data) {
                 if (typeof data != "number") {
