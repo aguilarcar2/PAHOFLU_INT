@@ -90,6 +90,11 @@
         //date_receive = typeof (date_receive) == "object" ? date_receive : parseDate(date_receive, date_format_);
         date_receive = (SampleNumber == 1) ? jQuery.type(app.Views.Lab.RecDate()) === 'date' ? app.Views.Lab.RecDate() : parseDate($("#RecDate").val(), date_format_) : (SampleNumber == 2) ? jQuery.type(app.Views.Lab.RecDate2()) === 'date' ? app.Views.Lab.RecDate2() : parseDate($("#RecDate2").val(), date_format_) : (SampleNumber == 3) ? jQuery.type(app.Views.Lab.RecDate3()) === 'date' ? app.Views.Lab.RecDate3() : parseDate($("#RecDate3").val(), date_format_) : null;
 
+        if (date_receive == null && self.UsrCountry() == 15)
+        {
+            date_receive = (SampleNumber == 1) ? jQuery.type(app.Views.Lab.RecDate_National()) === 'date' ? app.Views.Lab.RecDate_National() : parseDate($("#RecDate_National").val(), date_format_) :  null;
+        }
+
         if (date_receive == null || date_receive == "") {
             //alert("Por favor ingrese antes la fecha de recepción de muestra de la Muestra 1");
             alert(msgValidationTestDateInvalidDate);
