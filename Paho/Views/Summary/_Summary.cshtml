@@ -386,8 +386,9 @@
     </div>
     @if (ViewBag.ILI == true)
     {
+        <!-- Atenciones -->
         <div class="@((ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 15 ) ?  "col-md-2" : "col-md-1")" data-bind="visible: EnableCHI()">
-            <!-- T. Cons. -->
+            <!--  -->
             <div class='col-md-1 input-group' data-bind="visible: ActiveBOL() || ActiveHON()">
                 <input type='text' name="ETIDenoFem" id="ETIDenoFem" class="form-control" style="padding:6px;" data-bind="value: ETIDenoFem" />
             </div>
@@ -399,7 +400,7 @@
             @if (ViewBag.UsrCtry == 15)
             {
                 <div class="col-md-1 input-group" data-bind="visible: ActiveHON()">
-                    <input type='text' name="ETIDenoST" id="ETIDenoST" class="form-control" style="padding:6px;" @((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "readonly='readonly'" : "") data-bind="value: ETIDenoST_HN" />
+                    <input type='text' name="ETIDenoST" id="ETIDenoST" class="form-control" style="padding:6px;" data-bind="value: ETIDenoST_HN" />
                 </div>
             }
             else
@@ -409,6 +410,7 @@
                 </div>
             }
         </div>
+        <!-- Atenciones ETI -->
         <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 15 ) ?  "col-md-2" : "col-md-1")">
             <!--  -->
             <div class='col-md-1 input-group' data-bind="visible:DisableCHI() || ActiveBOL() || ActiveHON()">
@@ -422,7 +424,7 @@
             @if (ViewBag.UsrCtry == 15)
             {
                 <div class='col-md-1 input-group' data-bind="visible: ActiveHON()">
-                    <input type='text' name="ETINumST" id="ETINumST" class="form-control" style="padding:6px;" @((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "readonly='readonly'" : "") data-bind="value: ETINumST_HN" />
+                    <input type='text' name="ETINumST" id="ETINumST" class="form-control" style="padding:6px;" data-bind="value: ETINumST_HN" />
                 </div>
             }
             else
@@ -432,6 +434,7 @@
                 </div>
             }
         </div>
+        <!-- Emergencias -->
         <div class="@((ViewBag.UsrCtry == 3 ) ?  "col-md-2" : "col-md-1")" data-bind="visible: EnableCHI() && NoActiveBOL() && !ActiveHON()">
             <!--  -->
             <div class='col-md-1 input-group' data-bind="visible: ActiveBOL()">
