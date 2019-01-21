@@ -286,6 +286,8 @@ namespace Paho.Models
         public string DatePickerConfig { get; set; }
         public string DateFormatDP { get; set; }
         //public int? UsrCtry { get; set; }
+        public bool? SARI { get; set; }
+        public bool? ILI { get; set; }
     }
 
     public class SummaryJMViewModel             //#### CAFQ: Summary Jamaica

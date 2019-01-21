@@ -98,11 +98,13 @@ function SummaryYearItem(data) {
 function SummayItem(data) {
     var self = this;
 
+    //console.log(data);
     self.Id = data.Id;
-    self.UsrCountry = ko.observable(selcty);     
+    self.UsrCountry = ko.observable(selcty);
     self.CaseSummaryId = data.CaseSummaryId;
     self.AgeGroup = data.AgeGroup;
 
+    self.Surv = ko.observable(SurvGlobal);
     self.AgeGroupDescription = CatAgeGroup[parseInt(self.AgeGroup) - 1].AgeGroup;
     self.AgeGroupDesc = ko.observable(self.AgeGroupDescription);
     //****
@@ -164,6 +166,31 @@ function SummayItem(data) {
 
     self.ActiveHON = ko.computed(function () {
         return (self.UsrCountry() == 15) ? true : false;
+    }, self);
+
+    //****
+    self.ILI_OK = ko.computed(function () {
+        bResu = true;
+        //----
+        if (self.ActiveHON())
+            if (self.Surv() == "2")
+                bResu = true;
+            else
+                bResu = false;
+        //----
+        return bResu;
+    }, self);
+
+    self.SARI_OK = ko.computed(function () {
+        bResu = true;
+        //----
+        if (self.ActiveHON())
+            if (self.Surv() == "1")
+                bResu = true;
+            else
+                bResu = false;
+        //----
+        return bResu
     }, self);
 
     //****
@@ -248,7 +275,7 @@ function SummayItem(data) {
         return 0;
     }, self);
 
-    if (self.DisableCHI() || self.ActiveBOL()) { 
+    if (self.DisableCHI() || self.ActiveBOL()) {
         self.HospST = ko.computed(function () {
             return parseInt(self.HospFem()) + parseInt(self.HospMaso());
         }, self);
@@ -496,7 +523,7 @@ function SummayItem(data) {
                 alert(cErrorHosp + cErrorUCI + cErrorDef + cErrorEti);
                 bResu = false;
             }
-        }        
+        }
 
         return bResu
     }, self);
@@ -581,6 +608,22 @@ function SummaryViewModel(app, dataModel) {
     self.UsrCountry = ko.observable(selcty); // Pais del usuario logueado
     self.selectedCountryId = ko.observable("");
     self.countries = ko.observableArray(countries);
+    //self.Surv = ko.observable("1");
+    self.Surv = ko.observable(SurvGlobal);
+
+    //console.log("Vigb1->" + self.Surv())
+    /*
+            bResu = true;
+        //----
+        if (self.ActiveHON())
+            if (self.Surv() == "2")
+                bResu = true;
+            else
+                bResu = false;
+        //----
+        return bResu;
+    */
+
     self.activecountries = ko.computed(function () {
         return $.grep(self.countries(), function (v) {
             return v.Active === true;
@@ -822,6 +865,7 @@ function SummaryViewModel(app, dataModel) {
     self.NoActiveCAY = ko.computed(function () {
         return (self.UsrCountry() == 119) ? false : true;
     }, self);
+
     //****
     self.PickFirstDay = function (date) {
         var day = date.getDay();
@@ -857,7 +901,41 @@ function SummaryViewModel(app, dataModel) {
         self.SummaryForYearItems.push(new SummaryYearItem(element));
     };
 
-    // Esto es para calcular los totales de las columnas
+    self.ILI_OK = ko.computed(function () {
+        bResu = true;
+        //----
+        if (self.ActiveHON()) {
+            if (self.Surv() == "2") {
+                SurvGlobal = "2";
+                bResu = true;
+            }
+            else {
+                SurvGlobal = "1";
+                bResu = false;
+            }
+        }
+        //----
+        return bResu;
+    }, self);
+
+    self.SARI_OK = ko.computed(function () {
+        bResu = true;
+        //----
+        if (self.ActiveHON()) {
+            if (self.Surv() == "1") {
+                SurvGlobal = "1";
+                bResu = true;
+            }
+            else {
+                SurvGlobal = "2";
+                bResu = false;
+            }
+        }
+        //----
+        return bResu;
+    }, self);
+
+    //***********************  Esto es para calcular los totales de las columnas
     //****
     self.ColETIDenoFST = ko.computed(function () {
         var numberofitems = 0;
@@ -1181,8 +1259,9 @@ function SummaryViewModel(app, dataModel) {
         });
         return parseInt(numberofitems);
     }, self);
+    //*********************** Aquí termina el calculo de los totales
 
-    //**** Aquí termina el calculo de los totales
+    //****
     self.MakeValuesOfSummayItems = function () {
         var index;
         var ValuesOfSummayItems = [];
@@ -1198,6 +1277,7 @@ function SummaryViewModel(app, dataModel) {
         $("#TotalSummary").hide();
         $("#LabelSummary").hide();
         $("#ButtonSummary").hide();
+        $("#SurvContainer").show();
     };
 
     self.CancelarItems = function () {
@@ -1218,6 +1298,8 @@ function SummaryViewModel(app, dataModel) {
         $("#TotalSummary").hide();
         $("#LabelSummary").hide();
         $("#ButtonSummary").hide();
+        $("#SurvContainer").show();
+
     };
 
     self.GetYearSummaryForYearItems = function () {
@@ -1283,13 +1365,18 @@ function SummaryViewModel(app, dataModel) {
         //console.log("self.GetSummayItems->START_1068");
         if ((typeof self.selectedHospitalId() != "undefined") && self.selectedHospitalId() != "" && (typeof self.HospitalDate() != "undefined") && self.HospitalDate() != "") {
             DatetoSend = jQuery.type(self.HospitalDate()) === 'date' ? self.HospitalDate() : parseDate($("#HospitalDate").val(), date_format_)
-            $.postJSON(app.dataModel.getSummayDetailsUrl, { hospitalId: self.selectedHospitalId(), hospitalDate: moment(DatetoSend).format(date_format_ISO), EpiWeek: self.HospitalEW(), EpiYear: self.HospitalYE() })
+            $.postJSON(app.dataModel.getSummayDetailsUrl, {
+                hospitalId: self.selectedHospitalId(),
+                hospitalDate: moment(DatetoSend).format(date_format_ISO),
+                EpiWeek: self.HospitalEW(), EpiYear: self.HospitalYE()
+            })
             .success(function (data, textStatus, jqXHR) {
                 self.SummayItems([]);
                 data.forEach(self.AddSummayItem);
                 $("#LabelSummary").show();
                 $("#TotalSummary").show();
                 $("#ButtonSummary").show();
+                $("#SurvContainer").hide();
             })
             .fail(function (jqXHR, textStatus, errorThrown) {
                 alert(errorThrown);
@@ -1381,14 +1468,14 @@ function SummaryViewModel(app, dataModel) {
             var usTot = parseInt(item.UCISARIST);
 
             cTemp = "";
-            if (usFem > uFem) 
+            if (usFem > uFem)
                 cTemp += "'UCI IRAG' FEMENINO no puede ser mayor que 'UCI' FEMENINO" + " en " + item.AgeGroupDescription + "\n";
-           
-            if (usMas > uMas) 
+
+            if (usMas > uMas)
                 cTemp += "'UCI IRAG' MASCULINO no puede ser mayor que 'UCI' MASCULINO" + " en " + item.AgeGroupDescription + "\n";
-            
+
             console.log("1->" + cTemp + "<-" + usTot + " - " + uTot);
-            if (cTemp === "") 
+            if (cTemp === "")
                 if (usTot > uTot)
                     cTemp += "TOTAL 'UCI IRAG' no puede ser mayor que TOTAL 'UCI'" + " en " + item.AgeGroupDescription + "\n";
 
@@ -1404,14 +1491,14 @@ function SummaryViewModel(app, dataModel) {
             var dsTot = parseInt(item.DefSARIST);
 
             cTemp = "";
-            if (dsFem > dFem) 
+            if (dsFem > dFem)
                 cTemp += "'Fallecidos IRAG' FEMENINO no puede ser mayor que 'Fallecidos' FEMENINO" + " en " + item.AgeGroupDescription + "\n";
- 
-            if (dsMas > dMas) 
+
+            if (dsMas > dMas)
                 cTemp += "'Fallecidos IRAG' MASCULINO no puede ser mayor que 'Fallecidos' MASCULINO" + " en " + item.AgeGroupDescription + "\n";
-   
-            if (cTemp === "") 
-                if (dsTot > dTot) 
+
+            if (cTemp === "")
+                if (dsTot > dTot)
                     cTemp += "TOTAL 'Fallecidos IRAG' no puede ser mayor que TOTAL 'Fallecidos'" + " en " + item.AgeGroupDescription + "\n";
 
             cError += cTemp
@@ -1426,16 +1513,16 @@ function SummaryViewModel(app, dataModel) {
             var aeTot = parseInt(item.ETINumST);
 
             cTemp = "";
-            if (aeFem > aFem) 
+            if (aeFem > aFem)
                 cTemp += "'Atenciones ETI' FEMENINO no puede ser mayor que 'Atenciones' FEMENINO" + " en " + item.AgeGroupDescription + "\n";
-            
-            if (aeMas > aMas) 
+
+            if (aeMas > aMas)
                 cTemp += "'Atenciones ETI' MASCULINO no puede ser mayor que 'Atenciones' MASCULINO" + " en " + item.AgeGroupDescription + "\n";
-            
+
             if (cTemp === "")
-                if (aeTot > aTot) 
+                if (aeTot > aTot)
                     cTemp += "TOTAL 'Atenciones ETI' no puede ser mayor que TOTAL 'Atenciones'" + " en " + item.AgeGroupDescription + "\n";
-                
+
             cError += cTemp
 
             //**** 
@@ -1458,7 +1545,7 @@ function SummaryViewModel(app, dataModel) {
                 return 0;
             }
         }
-        
+
         //****
         $.ajax({
             type: 'POST',

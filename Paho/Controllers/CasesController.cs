@@ -643,7 +643,7 @@ namespace Paho.Controllers
                                          //#### CAFQ: 180604 - Jamaica Universal
                                          "<img src='/Content/themes/base/images/" + ((UsrCtry==17 && (bool)x.surv_IDInusual==true) ? Convert.ToInt32((bool)x.surv_IDInusual).ToString() + "_" + "UNI" + ".png' alt='" + "UNIVERSAL" : x.surv_ID.ToString() + "_" + language + ".png' alt='" + (x.surv_ID == 1 ? "SARI":"ILI")) + "'/>",
                                          //x.id_D.ToString(),
-                                         x.id_D.ToString() + x.ICON_COMMEN,
+                                         x.id_D.ToString() + ((user.Institution.CountryID==15) ? x.ICON_COMMEN : ""),
                                          x.H_D.ToString((user.Institution.CountryID==17) ? "yyyy/MM/dd": "dd/MM/yyyy" ),
                                          x.LN_D,
                                          x.FN_D,
