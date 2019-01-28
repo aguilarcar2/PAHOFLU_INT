@@ -14,6 +14,27 @@
     self.selectedInstitutionId = ko.observable("");
     self.selectedRegionId = ko.observable("");
     self.selectedReportCountryId = ko.observable("");
+    self.selectedReportCountryId.subscribe(function (newValue) {
+        // Reporte epidemiologico, Número de casos y % de hospitalizaciones por IRAG, Total fallecidos por IRAG y Casos por IRAG y Hospitalizaciones Totales
+        var reportID = ["2", "3", "4", "6"];
+        bDisable = false;
+        self.Surv("0");                 // Seleccione
+
+        jQuery.each(reportsCountries, function (i, oRepo) {
+            if (self.selectedReportCountryId() == oRepo.Id) {
+                if (reportID.indexOf(oRepo.orden) != -1) {
+                    bDisable = true;
+                    self.Surv("1");                     // IRAG
+                    return true;                        // Sale del each
+                }
+            }
+        });
+
+        $("#Surv").prop("disabled", bDisable);
+    });
+    self.Surv = ko.observable("");
+    self.SurvInusual = ko.observable(false);
+    self.Sentinel = ko.observable("");
 
     self.activecountries = ko.computed(function () {
         return $.grep(self.countries(), function (v) {
@@ -36,18 +57,16 @@
     self.loadInstitutions = function () {
         $.getJSON(app.dataModel.getInstitutionsUrl, { CountryID: self.selectedCountryId(), RegionID: self.selectedRegionId() }, function (data, status) {
             self.institutions(data);
-            })
-            .fail(function(jqXHR, textStatus, errorThrown) {
+        })
+            .fail(function (jqXHR, textStatus, errorThrown) {
                 alert(errorThrown);
             });
     };
 
     self.selectedAreaId.subscribe(function (NewAreaID) {
-
         if (NewAreaID > 0) {
             //("#Regionals").attr('disabled', true);
             self.selectedRegionId(0);
-
         }
 
         self.loadInstitutions();
@@ -57,22 +76,19 @@
         if (NewAreaID == 0 && self.institutions().length > 1) {
             self.selectedInstitutionId(0);
         }
-
     });
 
     self.Report = ko.observable("Cases");
 
-    self.YearFrom =  ko.observable("");
-    self.YearTo =  ko.observable("");
+    self.YearFrom = ko.observable("");
+    self.YearTo = ko.observable("");
 
-    self.Year =  ko.observable("");
-    self.Month =  ko.observable("");
-    self.SE =  ko.observable("");
+    self.Year = ko.observable("");
+    self.Month = ko.observable("");
+    self.SE = ko.observable("");
     self.StartDate = ko.observable(null);
     self.EndDate = ko.observable(null);
-    self.Surv = ko.observable("");
-    self.SurvInusual = ko.observable(false);
-    self.Sentinel = ko.observable("");
+
 
     self.validate = function (nextStep) {
         var msg = "";
@@ -86,8 +102,8 @@
             msg += "\n" + " - " + msgViewExportarValidateSelectionHospital;
         }
 
-        if ($("#Report").val() == "R1" || $("#Report").val() == "R2" || $("#Report").val() == "R3" || $("#Report").val() == "R4" ){
-            if ( self.Year() == "" )
+        if ($("#Report").val() == "R1" || $("#Report").val() == "R2" || $("#Report").val() == "R3" || $("#Report").val() == "R4") {
+            if (self.Year() == "")
                 msg += "\n" + " - " + msgViewExportarValidateSelectionYear;
 
             if (self.Month() == "" && self.SE() == "" && self.StartDate() == "" && self.EndDate() == "" && self.Year() == "")
@@ -109,8 +125,8 @@
             EndDate: self.EndDate() ? moment(self.EndDate()).format(date_format_moment) : null, ReportCountry: self.selectedReportCountryId(),
             RegionID: self.selectedRegionId(), YearFrom: self.YearFrom(), YearTo: self.YearTo(), Surv: self.Surv(), Inusual: self.SurvInusual(),
             Area: self.selectedAreaId(), Sentinel: self.Sentinel()
-        }  
-        if(self.validate() == true)
+        }
+        if (self.validate() == true)
             window.open(app.dataModel.getExportar + "?" + $.param(namevalues, true), "_blank");
     };
 
@@ -249,7 +265,7 @@
     //};
 
 
- };
+};
 
 app.addViewModel({
     name: "Exportar",

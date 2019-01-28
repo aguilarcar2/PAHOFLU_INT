@@ -2,14 +2,29 @@
 
 <!-- ko with: app.Views.Exportar -->
 <div class="row" style="margin-bottom:15px; margin-top:1em;">
-
     <div class='input-group'>
         <span class="input-group-addon">
             <!--<b>Generación de reportes</b>-->
             <b>@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarLabelReportsGeneration"))</b>
         </span>
     </div>
+</div>
 
+<!--Reportes:-->
+<div class="row" style="margin-bottom: 15px; margin-top: 1em;">
+    <div class="col-md-5">
+        <div class='input-group'>
+            <span class="input-group-addon">
+                @(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarLabelReports"))
+            </span>
+            <select id="Reports" class="form-control" data-bind="options: reportsCountries,
+                       optionsText: 'Name',
+                       optionsValue: 'Id',
+                       value: selectedReportCountryId,
+                       optionsCaption: '@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarFieldSelect"))',
+                       valueUpdate:'change'"></select>
+        </div>
+    </div>
 </div>
 
 <!-- Vigilancia -->
@@ -67,23 +82,6 @@
                 <option value="1"> Si </option>
                 <option value="0"> No </option>
             </select>
-        </div>
-    </div>
-</div>
-
-<!--Reportes:-->
-<div class="row" style="margin-bottom: 15px; margin-top: 1em;">
-    <div class="col-md-5">
-        <div class='input-group'>
-            <span class="input-group-addon">
-                @(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarLabelReports"))
-            </span>
-            <select id="Reports" class="form-control" data-bind="options: reportsCountries,
-                       optionsText: 'Name',
-                       optionsValue: 'Id',
-                       value: selectedReportCountryId,
-                       optionsCaption: '@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarFieldSelect"))',
-                       valueUpdate:'change'"></select>
         </div>
     </div>
 </div>
@@ -160,11 +158,11 @@
                     @(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarLabelHospital"))
                 </span>
                 @*<select id="Hospitals" class="form-control" data-bind="options: institutions,
-                       optionsText: 'Name',
-                       optionsValue: 'Id',
-                       value: selectedInstitutionId,
-                       optionsCaption: '@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarFieldSelect"))',
-                       valueUpdate:'change'"></select>*@
+                    optionsText: 'Name',
+                    optionsValue: 'Id',
+                    value: selectedInstitutionId,
+                    optionsCaption: '@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarFieldSelect"))',
+                    valueUpdate:'change'"></select>*@
 
                 <select id="Hospitals" class="form-control" data-bind="options: institutions,
                        optionsText: 'Name',
@@ -347,6 +345,7 @@
     var regions= @Html.Raw(Json.Encode(Model.Regions));
     var institutions = @Html.Raw(Json.Encode(Model.Institutions));
     var reportsCountries = @Html.Raw(Json.Encode(Model.ReportsCountries));
+    //console.log(reportsCountries);
     var CountryID = @Html.Raw(Model.CountryID);
     var selcty = @ViewBag.UsrCtry;
     var PAHOFLU_date_format = "@(Html.Raw(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgDateFormat")))";
