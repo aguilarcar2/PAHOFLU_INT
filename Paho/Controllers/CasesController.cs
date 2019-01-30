@@ -626,6 +626,7 @@ namespace Paho.Controllers
                                      FLOW_VIRUS = db.InstitutionConfEndFlowByVirus.Where(i => i.ID == flucase.CaseLabTests.Where(e => e.Processed != null).OrderByDescending(d => d.flow_test).FirstOrDefault().inst_conf_end_flow_by_virus).FirstOrDefault(),
                                      //FLOW_VIRUS = db.InstitutionConfEndFlowByVirus.Where(i => i.ID == flucase.CaseLabTests.Where(e => e.inst_conf_end_flow_by_virus != null).OrderByDescending(d => d.flow_test).FirstOrDefault().inst_conf_end_flow_by_virus).FirstOrDefault(),
                                      ICON_COMMEN = flucase.Comments == "" || flucase.Comments == null ? "" : commentsHtml,
+                                     ICON_COMMEN_CLOSE = flucase.ObservationCase == "" || flucase.ObservationCase == null ? "" : commentsHtml,
                                      VI_OK = (from a in db.InstitutionConfEndFlowByVirus
                                               join p in db.InstitutionsConfiguration on a.id_InstCnf equals p.ID
                                               join dt in db.Institutions on p.InstitutionFromID equals dt.ID
@@ -643,7 +644,7 @@ namespace Paho.Controllers
                                          //#### CAFQ: 180604 - Jamaica Universal
                                          "<img src='/Content/themes/base/images/" + ((UsrCtry==17 && (bool)x.surv_IDInusual==true) ? Convert.ToInt32((bool)x.surv_IDInusual).ToString() + "_" + "UNI" + ".png' alt='" + "UNIVERSAL" : x.surv_ID.ToString() + "_" + language + ".png' alt='" + (x.surv_ID == 1 ? "SARI":"ILI")) + "'/>",
                                          //x.id_D.ToString(),
-                                         x.id_D.ToString() + ((user.Institution.CountryID==15) ? x.ICON_COMMEN : ""),
+                                         x.id_D.ToString() + ((user.Institution.CountryID==15) ? x.ICON_COMMEN : x.ICON_COMMEN_CLOSE),
                                          x.H_D.ToString((user.Institution.CountryID==17) ? "yyyy/MM/dd": "dd/MM/yyyy" ),
                                          x.LN_D,
                                          x.FN_D,
