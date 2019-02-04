@@ -42,6 +42,9 @@ namespace Paho.Models
         public string reg_salu_usr { get; set; }
         public string reg_pais_usr { get; set; }
 
+        // Usuario de laboratorio NIC
+        public bool lab_NIC_usr { get; set; }
+
         // Catalogos de laboratorio
         public IEnumerable<LookupView<CatSampleNoProcessed>> CSNP { get; set; }
         public IEnumerable<LookupView<CatTestType>> CTT { get; set; }
@@ -767,9 +770,10 @@ namespace Paho.Models
 
         public bool ForeignLab { get; set; }
         //****<
-
         [DisplayName("Tipo Institución:")]
         public int? InstitutionTypeID { get; set; }
+        [DisplayName("Laboratorio NIC:")]
+        public bool LabNIC { get; set; }
     }
 
     public class InstitutionLocationType                    //#### CAFQ: 180911
@@ -802,11 +806,16 @@ namespace Paho.Models
         public Lab(Institution catalog)
         {
             CountryID = catalog.CountryID;
+
+            LocationTypeID = catalog.LocationTypeID;
+            ForeignCountryID = catalog.ForeignCountryID;
             AreaID = catalog.AreaID;
             FullName = catalog.FullName;
             Name = catalog.Name;
+            ForeignInstitutionAddress = catalog.ForeignInstitutionAddress;
             AccessLevel = catalog.AccessLevel;
             InstID = catalog.InstID;
+            cod_institution_type = catalog.cod_institution_type;
             Father_ID = catalog.Father_ID;
             orig_country = catalog.orig_country;
             cod_region_institucional = catalog.cod_region_institucional;
@@ -814,9 +823,13 @@ namespace Paho.Models
             cod_region_pais = catalog.cod_region_pais;
             SARI = catalog.SARI;
             ILI = catalog.ILI;
+            surv_unusual = catalog.surv_unusual;
+            sentinel = catalog.sentinel;
             PCR = catalog.PCR;
             IFI = catalog.IFI;
             Active = catalog.Active;
+            NPHL = catalog.NPHL;
+            LabNIC = catalog.LabNIC;
         }
     }
 

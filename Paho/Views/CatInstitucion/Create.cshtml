@@ -63,13 +63,14 @@
                 @Html.DropDownList("AccessLevel", null, htmlAttributes: new { @class = "form-control" })
             </div>
         </div>
-
+        <!-- Tipo institucion -->
         <div class="form-group vertical-align">
             <label class="col-md-1_5 text-right" for="InstitutionType">@((string)Paho.Controllers.ResourcesM.SgetMessage("msgType", ViewBag.UsrCtry, ViewBag.UsrCtryLang)):</label>
             <div class="col-md-10">
                 @Html.DropDownList("InstitutionType", null, htmlAttributes: new { @class = "form-control" })
             </div>
         </div>
+        <!-- Tipo institucion HN -->
         @if (ViewBag.UsrCtry == 15)
         {
             <div class="form-group vertical-align" data-bind="visible:@( ViewBag.UsrCtry == 15 )">
@@ -79,6 +80,7 @@
                 </div>
             </div>
         }
+        <!-- No se utiliza?? -->
         <div class="form-group vertical-align" style="display:none">
             @Html.LabelFor(model => model.InstID, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgPersonalizeInstitutionId", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
             <div class="col-md-10">
@@ -86,12 +88,14 @@
                 @Html.ValidationMessageFor(model => model.InstID, "", new { @class = "text-danger" })
             </div>
         </div>
+        <!-- Institucion padre -->
         <div class="form-group vertical-align" id="div-father">
             @Html.LabelFor(model => model.Father_ID, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgParentInstitution", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
             <div class="col-md-10">
                 @Html.DropDownList("Father_ID", null, htmlAttributes: new { @class = "form-control" })
             </div>
         </div>
+
         <div class="form-group vertical-align" >
             @Html.LabelFor(model => model.SARI, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgIrag", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
             <div class="col-md-1">
@@ -112,21 +116,21 @@
                 @Html.EditorFor(model => model.surv_unusual, new { htmlAttributes = new { @class = "form-control" } })
             </div>
         </div>
-
+        <!-- PCR -->
         <div class="form-group vertical-align" id="div-PCR">
             @Html.LabelFor(model => model.PCR, htmlAttributes: new { @class = "col-md-1_5 text-right" })
             <div class="col-md-1">
                 @Html.EditorFor(model => model.PCR, new { htmlAttributes = new { @class = "form-control" } })
             </div>
         </div>
-
+        <!-- IFI -->
         <div class="form-group vertical-align" id="div-IFI">
             @Html.LabelFor(model => model.IFI, htmlAttributes: new { @class = "col-md-1_5 text-right" })
             <div class="col-md-1">
                 @Html.EditorFor(model => model.IFI, new { htmlAttributes = new { @class = "form-control" } })
             </div>
         </div>
-
+        <!-- Activo -->
         <div class="form-group vertical-align">
             @Html.LabelFor(model => model.Active, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgActive", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
             <div class="col-md-1">
@@ -145,6 +149,14 @@
             @Html.LabelFor(model => model.NPHL, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgNPHL", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
             <div class="col-md-1">
                 @Html.EditorFor(model => model.NPHL, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <!-- Laboratorio NIC -->
+        <div class="form-group vertical-align" id="div-LabNIC">
+            @Html.LabelFor(model => model.LabNIC, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgLabNIC", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
+            <div class="col-md-1">
+                @Html.EditorFor(model => model.LabNIC, new { htmlAttributes = new { @class = "form-control" } })
             </div>
         </div>
 

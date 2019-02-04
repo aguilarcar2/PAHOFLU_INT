@@ -10,8 +10,8 @@
     
     self.OrderArray
     self.Id = "";
-    self.UsrCountry = ko.observable(app.Views.Home.UsrCountry()); // Pais del usuario logueado
-    self.UsrInstID = ko.observable($('#IIDL').val()); // ID de la institucion del usuario
+    self.UsrCountry = ko.observable(app.Views.Home.UsrCountry());   // Pais del usuario logueado
+    self.UsrInstID = ko.observable($('#IIDL').val());               // ID de la institucion del usuario
     self.CaseLabID = "";
     self.OrdenLabID = 99;
     self.LabDummy = ko.observable("");
@@ -559,9 +559,9 @@ function LabViewModel(app, dataModel) {
     self.OrderArrayFinalResult = ko.observableArray([]);
 
     self.Id = "";
-    self.UsrCountry = ko.observable(app.Views.Home.UsrCountry()); // Pais del usuario logueado
-    self.UsrInstID = ko.observable($('#IIDL').val()); // ID de la institucion del usuario
-    self.ISPID = ko.observable(97);  //Es 97 porque es el ID de la tabla institución
+    self.UsrCountry = ko.observable(app.Views.Home.UsrCountry());       // Pais del usuario logueado
+    self.UsrInstID = ko.observable($('#IIDL').val());                   // ID de la institucion del usuario
+    self.ISPID = ko.observable(97);                                     //Es 97 porque es el ID de la tabla institución
     self.NPHL = ko.observable(false);
     self.ForeignLabCountry = ko.observable(false);
     self.ForeignLabLocal = ko.observable(false);
@@ -1050,17 +1050,43 @@ function LabViewModel(app, dataModel) {
 
     self.EnableGeneticGroup = ko.computed(function () {
         var result = (self.FinalResultVirusTypeID() == "1" || self.FinalResultVirusTypeID() == "2");
-        if (!result) self.GeneticGroup("");
+        if (result) {
+            if (lab_NIC_usr)
+                $('#GeneticGroup').removeAttr('disabled');              // Enable
+            else
+                $('#GeneticGroup').attr('disabled', 'disabled');
+        } else {
+            self.GeneticGroup("");
+        }
+            
         return result;
     }, self);
     self.EnableGeneticGroup_2 = ko.computed(function () {
         var result = (self.FinalResultVirusTypeID_2() == "1" || self.FinalResultVirusTypeID_2() == "2");
-        if (!result) self.GeneticGroup_2("");
+        //if (!result) self.GeneticGroup_2("");
+        if (result) {
+            if (lab_NIC_usr)
+                $('#GeneticGroup_2').removeAttr('disabled');              // Enable
+            else
+                $('#GeneticGroup_2').attr('disabled', 'disabled');
+        } else {
+            self.GeneticGroup_2("");
+        }
+
         return result;
     }, self);
     self.EnableGeneticGroup_3 = ko.computed(function () {
         var result = (self.FinalResultVirusTypeID_3() == "1" || self.FinalResultVirusTypeID_3() == "2");
-        if (!result) self.GeneticGroup_2("");
+        //if (!result) self.GeneticGroup_3("");
+        if (result) {
+            if (lab_NIC_usr)
+                $('#GeneticGroup_3').removeAttr('disabled');              // Enable
+            else
+                $('#GeneticGroup_3').attr('disabled', 'disabled');
+        } else {
+            self.GeneticGroup_3("");
+        }
+
         return result;
     }, self);
 

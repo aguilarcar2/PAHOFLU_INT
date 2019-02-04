@@ -2971,6 +2971,7 @@
             </div>
         </div>
 
+        <!-- Se utiliza??? -->
         <div class="row rowform">
             <div class="col-md-5" style="display:none">
                 <div class='input-group'>
@@ -2980,9 +2981,9 @@
                     <input id="CHNum" type='text' class="form-control" data-bind="value: CHNum" />
                 </div>
             </div>
-
         </div>
 
+        <!-- Toma de muestra-->
         <div class="row rowform">
 	        @*@if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 3 ){*@
             <div class="col-md-12">
@@ -3006,6 +3007,7 @@
             </div>
         </div>
 
+        <!-- Fecha toma de muestra/ Tipo de muestra / ... -->
         <div id="NotSample" class="row rowform" data-target="#IsSample">
             <div class="col-md-12">
                 <div id="Toma" class="collapse in">
@@ -3242,6 +3244,7 @@
             </div>
         </div>
 
+        <!-- Botones Atras / Siguiente -->
         <div class="row rowform">
             <div class="col-md-12">
                 @*<div class="btn-group">
@@ -5291,7 +5294,7 @@
                             </div>
                         </div>
                     </div>
-
+                    
                     <!-- Label: Result 1 -->
                     <div class="row rowform">
                         <div class="col-md-12">
@@ -5359,7 +5362,8 @@
                             </div>
                         </div>
                         <!-- Grupo genetico 1 -->
-                        <div class="col-md-3" data-bind="visible: ActiveCHI() && EnableGeneticGroup()">
+                        <!--<div class="col-md-3" data-bind="visible: ActiveCHI() && EnableGeneticGroup()">-->
+                        <div class="col-md-3" data-bind="visible: EnableGeneticGroup()">
                             <div class='input-group'>
                                 <span class="input-group-addon">
                                     @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelGeneticGroup")):
@@ -5436,7 +5440,7 @@
                             </div>
                         </div>
                         <!-- Grupo genetico 2 -->
-                        <div class="col-md-3" data-bind="visible: ActiveCHI() && EnableGeneticGroup_2()">
+                        <div class="col-md-3" data-bind="visible: EnableGeneticGroup_2()">
                             <div class='input-group'>
                                 <span class="input-group-addon">
                                     @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelGeneticGroup")):
@@ -5514,7 +5518,7 @@
                             </div>
                         </div>
                         <!-- Grupo genetico 3 -->
-                        <div class="col-md-3" data-bind="visible: ActiveCHI() && EnableGeneticGroup_3()">
+                        <div class="col-md-3" data-bind="visible: EnableGeneticGroup_3()">
                             <div class='input-group'>
                                 <span class="input-group-addon">
                                     @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelGeneticGroup")):
@@ -5652,7 +5656,7 @@
     var labs = @Html.Raw(Json.Encode(Model.Labs));
     var labsExternal = @Html.Raw(Json.Encode(Model.LabsExternal));
     var institutions = @Html.Raw(Json.Encode(Model.Institutions));
-    //var selcty = @ViewBag.UsrCtry;
+    //var selcty = @*ViewBag.UsrCtry*@;
     var selcty = @(ViewBag.UsrCtry);
     var reg_inst_usr = @Html.Raw(Json.Encode(Model.reg_inst_usr));
     var reg_salu_usr = @Html.Raw(Json.Encode(Model.reg_salu_usr));
@@ -5661,6 +5665,7 @@
     var moment_date_format = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgDateFormatMoment")))";
     var ISO_date_format = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgDateFormatISO")))";
     var DatePicker_date_format = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgDateFormatDP")))";
+    var lab_NIC_usr = @Html.Raw(Json.Encode(Model.lab_NIC_usr));
 
     /*   Mensajes de alerta de validaciones    */
     var msgviewHome_btnNew = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_btnNew")))";

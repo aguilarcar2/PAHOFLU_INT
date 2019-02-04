@@ -112,7 +112,7 @@ namespace Paho.Controllers
             [Bind(Include =
             "AreaID, FullName, Name, AccessLevel, cod_institution_type, InstID, Father_ID, sentinel, SARI, ILI, surv_unusual, PCR, IFI, Active, orig_country, " + 
             "sentinel, cod_region_institucional, cod_region_salud, cod_region_pais, InstType, OrdenPrioritybyLab, NPHL, LocationTypeID, ForeignCountryID, " + 
-            "ForeignInstitutionAddress")]
+            "ForeignInstitutionAddress, LabNIC")]
             Hospital catalog)
         {
             try
@@ -184,8 +184,7 @@ namespace Paho.Controllers
             var catalog = db.Institutions.Find(id);
             if (TryUpdateModel(catalog, "",
                new string[] { "AreaID", "FullName", "Name", "AccessLevel", "InstID", "Father_ID", "SARI", "ILI", "surv_unusual", "PCR", "IFI",
-                   "Active", "sentinel", "orig_country","cod_region_institucional","cod_region_salud","cod_region_pais","InstType", "cod_institution_type", "OrdenPrioritybyLab",
-                   "NPHL", "LocationTypeID", "ForeignCountryID", "ForeignInstitutionAddress" }))
+                   "Active", "sentinel", "orig_country","cod_region_institucional","cod_region_salud","cod_region_pais","InstType", "cod_institution_type", "OrdenPrioritybyLab", "NPHL", "LocationTypeID", "ForeignCountryID", "ForeignInstitutionAddress", "LabNIC" }))
             {
                 try
                 {
@@ -233,7 +232,7 @@ namespace Paho.Controllers
             PopulateDepartmentsDropDownList(catalogo.AreaID,
                 catalogo.AccessLevel, catalogo.InstType, catalogo.cod_region_institucional,
                 catalogo.cod_region_salud, catalogo.cod_region_pais, catalogo.Father_ID, catalogo.InstType,
-                catalogo.LocationTypeID, catalogo.InstitutionTypeID);
+                catalogo.LocationTypeID, catalogo.InstitutionTypeID, catalogo.LabNIC);
 
             return View(catalogo);
         }
@@ -372,7 +371,6 @@ namespace Paho.Controllers
                     {
                         Id = c.ID.ToString(),
                         Name = (user.Institution.Country.Language == "SPA") ? c.Name : c.ENG,
-                        //Active = c.Active
                     })
                     .OrderBy(d => d.Name)
                     .ToList();

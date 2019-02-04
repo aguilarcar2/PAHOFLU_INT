@@ -3,6 +3,9 @@
     onLoad();    
 
     function onLoad() {
+        var isVisibleButtonDelete = $("#DeleteInst").is(":visible");
+        //console.log("Visible boton delete->" + isVisible);
+        //****
         var isEdit = $("#ID").val() != undefined;
         //toggleAccessLevel();
         toggleRegion(isEdit);
@@ -27,14 +30,29 @@
         toggleAccessLevel();
         toggleLocationTypeID();            //#### CAFQ: 180911
 
-        //$("#OrdenPrioritybyLab").ForceNumericOnly();
-        //$('#OrdenPrioritybyLab').keyup(function (e) {
-        //    if (/\D/g.test(this.value)) {
-        //        // Filter non-digits from input value.
-        //        this.value = this.value.replace(/\D/g, '');
-        //    }
-        //});
-
+        if (isVisibleButtonDelete) {
+            $('#LocationTypeID').attr('disabled', 'disabled');
+            $('#AreaID').attr('disabled', 'disabled');
+            $('#FullName').attr('disabled', 'disabled');
+            $('#Name').attr('disabled', 'disabled');
+            $('#InstitutionType').attr('disabled', 'disabled');
+            $('#AccessLevel').attr('disabled', 'disabled');
+            $('#InstID').attr('disabled', 'disabled');
+            $('#Father_ID').attr('disabled', 'disabled');
+            $('#SARI').attr('disabled', 'disabled');
+            $('#ILI').attr('disabled', 'disabled');
+            $('#surv_unusual').attr('disabled', 'disabled');
+            $('#IFI').attr('disabled', 'disabled');
+            $('#PCR').attr('disabled', 'disabled');
+            $('#Active').attr('disabled', 'disabled');
+            $('#sentinel').attr('disabled', 'disabled');
+            $('#LabNIC').attr('disabled', 'disabled');
+            $('#orig_country').attr('disabled', 'disabled');
+            $('#cod_region_institucional').attr('disabled', 'disabled');
+            $('#cod_region_salud').attr('disabled', 'disabled');
+            $('#cod_region_pais').attr('disabled', 'disabled');
+            //InstType
+        }
     }
 
     function toggleAccessLevel(isEdit) {
@@ -73,12 +91,14 @@
             $("#div-PCR").show();
             $("#div-IFI").show();
             $("#div-NPHL").show();
-            $("#div-OPbL").show();     
+            $("#div-OPbL").show();
+            $("#div-LabNIC").show();
         } else {
             $("#div-PCR").hide();
             $("#div-IFI").hide();
             $("#div-NPHL").hide();
             $("#div-OPbL").hide();
+            $("#div-LabNIC").hide();
         }
     }
 

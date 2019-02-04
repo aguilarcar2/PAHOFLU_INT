@@ -135,28 +135,35 @@
                 @Html.EditorFor(model => model.IFI, new { htmlAttributes = new { @class = "form-control" } })
             </div>
         </div>
-
+        <!-- Activo -->
         <div class="form-group vertical-align">
             @Html.LabelFor(model => model.Active, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgActive", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
             <div class="col-md-1">
                 @Html.EditorFor(model => model.Active, new { htmlAttributes = new { @class = "form-control" } })
             </div>
         </div>
-
+        <!-- Centinela -->
         <div class="form-group vertical-align">
             @Html.LabelFor(model => model.sentinel, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgSentinel", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
             <div class="col-md-1">
                 @Html.EditorFor(model => model.sentinel, new { htmlAttributes = new { @class = "form-control" } })
             </div>
         </div>
-
+        <!-- Laboratorio intermedio -->
         <div class="form-group vertical-align" id="div-NPHL">
             @Html.LabelFor(model => model.NPHL, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgNPHL", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
             <div class="col-md-1">
                 @Html.EditorFor(model => model.NPHL, new { htmlAttributes = new { @class = "form-control" } })
             </div>
         </div>
-
+        <!-- Laboratorio NIC -->
+        <div class="form-group vertical-align" id="div-LabNIC">
+            @Html.LabelFor(model => model.LabNIC, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgLabNIC", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
+            <div class="col-md-1">
+                @Html.EditorFor(model => model.LabNIC, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+        <!-- Código original país -->
         <div class="form-group vertical-align">
             @Html.LabelFor(model => model.orig_country, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgOriginalCountryCode", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
             <div class="col-md-10">
@@ -164,7 +171,7 @@
                 @Html.ValidationMessageFor(model => model.orig_country, "", new { @class = "text-danger" })
             </div>
         </div>
-
+        <!-- Región salud -->
         <div class="form-group vertical-align" id="RegionInstitucionalGroup">
             @Html.LabelFor(model => model.cod_region_institucional, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgInstitutionalRegion", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
             <div class="col-md-10">

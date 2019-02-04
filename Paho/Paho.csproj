@@ -2134,6 +2134,7 @@
     <None Include="Properties\PublishProfiles\AAA1.pubxml" />
     <None Include="Properties\PublishProfiles\aaa2.pubxml" />
     <None Include="Properties\PublishProfiles\aaaa.pubxml" />
+    <None Include="Properties\PublishProfiles\CAFQ-1901.pubxml" />
     <None Include="Properties\PublishProfiles\CAFQ.pubxml" />
     <None Include="Properties\PublishProfiles\CAFQ01.pubxml" />
     <None Include="Properties\PublishProfiles\CAFQ_01.pubxml" />
