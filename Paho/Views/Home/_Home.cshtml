@@ -3338,7 +3338,7 @@
     <div id="tab-lab" data-bind="with: app.Views.Lab" >
         @if (ViewBag.NPHL_exist == true)
         {
-            <div class="row rowform" id="NPHL_section">
+            <div class="row rowform" id="NPHL_section" data-bind="visible:NPHL_FlowExist" >
                 <div class="col-md-12">
                     <button type="button" style="background-color:#B2BABB; color:#000000" class="btn btn-group-justified" data-toggle="collapse" data-target="#statuscaso">
                         @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabInt"))

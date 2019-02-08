@@ -2017,7 +2017,8 @@ namespace Paho.Controllers
             var institutionsIds = institutions.Select(x => (long?)x.ID).ToArray();
             var user_cty = user.Institution.CountryID;
 
-            var InstFlow_NPHL = false;
+            //var InstFlow_NPHL = false;
+            //var ExistInstitutionFlow_NPHL = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where( i => i.InstitutionParentID == flucase.HospitalID && i.InstitutionTo.NPHL == true).Any();
             var canConclude = true;
             var canConclude_Sample_1 = false;
             var canConclude_Sample_2 = false;
@@ -2385,8 +2386,9 @@ namespace Paho.Controllers
                     CanPCRLab = CanPCRLab,
                     CanIFILab = CanIFILab,
                     InstFlow_NPHL = user.Institution.NPHL != null ? (bool)user.Institution.NPHL : false,
-                    // Lab Foreign
-                    ForeignLabCountry = LabForeignCountry,
+                    ExistAnyInstitutionFlow_NPHL = user.Institution.CountryID != 15 ? db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(i => i.InstitutionParentID == flucase.HospitalID && i.InstitutionTo.NPHL == true).Any() : false,
+                // Lab Foreign
+                ForeignLabCountry = LabForeignCountry,
                     ForeignLabLocal = LabForeignInstitutionLocal,
                 LabTests = (
                           from caselabtest in flucase.CaseLabTests
