@@ -2046,7 +2046,7 @@ namespace Paho.Controllers
             var list_by_virus_endflow_byActualFlow = db.InstitutionConfEndFlowByVirus.Where(y=> institucionActualAndPreviousFlow.Contains(y.id_InstCnf));
 
 
-            if (user.Institution is Hospital)
+            if (user.Institution is Hospital  || user.Institution is AdminInstitution)
             {
                 var list_institution_conf = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(i => i.InstitutionParentID == flucase.HospitalID && i.Conclusion == true).OrderBy(x=> x.Priority).Select(t => t.InstitutionToID).ToList();
                 if (list_institution_conf.Any())

@@ -528,7 +528,7 @@
             $("#tabs").tabs("refresh");
         }
         if (($("#ITy").val() != 2) && self.URmod_epi() == true && app.Views.Hospital.CaseStatus() == "3") {
-            console.log("aqui _ CaseStatus 1"); //
+            console.log("aqui _ CaseStatus 2"); //
             $("#tab-contact :input, #tab-GEO :input, #tab-hospital :input, #tab-risk :input, #tab-case :input").attr('disabled', false);
             $("#tab-lab :input").prop('disabled', true);
             $("a[href*='tab-case']").show();
@@ -595,6 +595,8 @@
             $("#tabs").tabs("refresh");
         }
 
+        console.log("Value - CanConclude - ")
+        console.log(app.Views.Lab.CanConclude());
         if (app.Views.Lab.CanConclude() == true && ($("#ITy").val() == "1" || (app.Views.Hospital.CaseStatus() == "" && self.URclo_case() == true) || (app.Views.Hospital.CaseStatus() == "" && self.URmod_epi() == true))) {
             console.log("aqui _ CaseStatus IT = 1"); //
             console.log(app.Views.Lab.CanConclude());
@@ -614,8 +616,16 @@
         } else
         {
             console.log("aqui _ CaseStatus else"); //
-            $("#HospExDate").attr("disabled", true);
-            $("#Destin").attr("disabled", true)
+            // Para Jamaica activar la fecha de egreso de hospitalización y el Destino para que lo puedan ingresar en cualquier momento
+            if (self.UsrCountry() == 17) {
+                $("#HospExDate").attr("disabled", false);
+                $("#Destin").attr("disabled", false)
+            }
+            else {
+                $("#HospExDate").attr("disabled", true);
+                $("#Destin").attr("disabled", true)
+            }
+
         }
 
         if ($("#ITy").val() == "2" && app.Views.Lab.NPHL() == true) {

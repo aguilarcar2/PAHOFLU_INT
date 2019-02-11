@@ -1012,6 +1012,7 @@ function ContactViewModel(app, dataModel) {
             return true;
             //} else if ($("#ITy").val() != "2" && app.Views.Home.UserRole() == "clo_case" && app.Views.Hospital.CaseStatus() == "") {
         } else if ($("#ITy").val() != "2" && app.Views.Home.URclo_case() == true && app.Views.Hospital.CaseStatus() == "") {
+            console.log("Flow_Local_Institution_Epi _ URclo_case");
             return true;
         } 
         //else if ((self.flow_record() == 0 && self.DataStatement() == 1) ||  (self.flow_record() == self.flow_institution() && self.DataStatement() == 2) || (self.Id() == "") || (self.flow_record() == self.flow_max() && (self.DataStatement() == 2 || self.DataStatement() == null))) {  // Case Status ==3 cuando esta cerrado  -- Modificacion requerida por RRR 20170924 no desactivar en caso cerrado
