@@ -1923,7 +1923,7 @@ namespace Paho.Controllers
                         con.Open();
                         using (var reader = command.ExecuteReader())
                         {
-                            int excelColTota = 73;
+                            int excelColTota = reader.FieldCount; 
                             row = 2;
 
                             while (reader.Read())
@@ -1931,22 +1931,18 @@ namespace Paho.Controllers
 
                                 var col = 1;
                                 var readercont = 0;
-                                System.Diagnostics.Debug.WriteLine(reader.GetValue(72).ToString()); //#############
-                                readercont = 0;     //###############
+                                readercont = 0;
 
                                 for (int j = 0; j < excelColTota; j++)                              // Total columnas retornadas x consulta
                                 {
                                     if (reader.GetValue(readercont) != null)
                                     {
-                                        //System.Diagnostics.Debug.WriteLine(row.ToString() + " - " + j.ToString());
                                         var datoColu = reader.GetValue(readercont);
 
                                         double numberD;
-                                        //bool isNumber = double.TryParse(reader.GetValue(i).ToString(), out numberD);
                                         bool isNumber = double.TryParse(datoColu.ToString(), out numberD);
 
                                         DateTime dt;
-                                        //bool isDate = DateTime.TryParse(reader.GetValue(i).ToString(), out dt);
                                         bool isDate = DateTime.TryParse(datoColu.ToString(), out dt);
 
                                         if (isNumber)
@@ -1973,9 +1969,9 @@ namespace Paho.Controllers
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception er)
             {
-                var msgError = "El reporte no se pudo generar, por favor intente de nuevo: " + e.Message;
+                var msgError = "El reporte no se pudo generar, por favor intente de nuevo: " + er.Message;
             }
         }
 
