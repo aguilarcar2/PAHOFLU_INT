@@ -1032,18 +1032,6 @@
 
     self.validate = function (nextStep) {
         var msg = "";
-        //date_notification = parseDate($("#HospDate").val(), date_format_);
-        //date_fever = parseDate($("#FeverDate").val(), date_format_);
-        //date_diagnostic = parseDate($("#DiagDate").val(), date_format_);
-        //date_hosp_adm =  parseDate($("#HospAmDate").val(), date_format_);
-        //date_hosp_disc =   parseDate($("#HospExDate").val(), date_format_);
-        //date_ICU_adm =  parseDate($("#ICUAmDate").val(), date_format_);
-        //date_ICU_disc = parseDate($("#ICUExDate").val(), date_format_);
-        //date_falle = parseDate($("#FalleDate").val(), date_format_);
-        //date_hospital = parseDate($("#HospDate").val(), date_format_);
-        //date_sample =  parseDate($("#SampleDate").val(), date_format_);
-        //date_ship = parseDate($("#ShipDate").val(), date_format_);
-        //date_close_case = parseDate($("#CloseDate").val(), date_format_);
 
         date_fever = jQuery.type(self.FeverDate()) === 'date' ? self.FeverDate() : parseDate($("#FeverDate").val(), date_format_);
         date_notification = jQuery.type(app.Views.Contact.HospitalDate()) === 'date' ? app.Views.Contact.HospitalDate() : parseDate($("#HospDate").val(), date_format_);
@@ -1090,9 +1078,31 @@
                 $("#HospAmDate").focus();
             }
 
-            if (date_hosp_adm != null && date_hosp_disc != null && moment(date_hosp_disc).isBefore(moment(date_hosp_adm), "days")) {
+            if (date_hosp_adm != null && date_hosp_disc != null && moment(date_hosp_disc).isBefore(moment(date_hosp_adm), "days") && self.UsrCountry() != 17) {
                 msg += "\n" + viewValidateHospExitDateGtHospDate;
                 $("#HospExDate").focus();
+            } else if (self.UsrCountry() == 17) {
+                if ($("#HospExDate").val() == "")
+                {
+                    msg += "\n" + viewValidateHospDateRequired;
+                    $("#HospExDate").focus();
+                }
+                    
+                if ($("#HospExDate").val() != "" && !moment(moment(date_hosp_disc).format(date_format_moment), [date_format_moment], true).isValid())
+                {
+                    msg += "\n" + viewValidateHospDateInvalid;
+                    $("#HospExDate").focus();
+                }
+                    
+            }
+
+            if (self.UsrCountry() == 17) {
+                if ($("#Destin").val() == "")
+                {
+                    msg += "\n" + ((viewValidateDestin != "") ? viewValidateDestin : 'It is required to enter Destination');
+                    $("#Destin").focus();
+                }
+                   
             }
         }
 
@@ -1149,14 +1159,11 @@
                 $("#SampleDate").focus()
             }
                 
-
             if (date_sample != null && date_ship != null && moment(date_ship).isBefore(moment(date_sample), "days")) {
                 msg += "\n" + viewValidateSentSampleDateGtSampleDate;
                 $("#ShipDate").focus()
             }
                 
-            //if (self.HospAmDate() && self.SampleDate() && moment(self.HospAmDate()).isBefore(moment(self.SampleDate())))
-            //    msg += "\n" + "Fecha de toma de muestra no puede ser posterior a la de hospitalización";
             if (!self.SampleType() || self.SampleType() == "")
                 msg += "\n" + viewValidateSampleTypeRequired;
 

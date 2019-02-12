@@ -401,9 +401,10 @@ namespace Paho.Controllers
                         //#### 
 
                         if (reportTemplate == "R1" || reportTemplate == "R2" || reportTemplate == "R3" || reportTemplate == "R4" || reportTemplate == "D1" || reportTemplate == "B1" || reportTemplate == "CPE" || reportTemplate == "C1")
-                        {
+                        { 
                             insertRow = false;
-                        }
+                        } // R4 = Virus detectados
+
 
                         if (reportTemplate == "I1")      //#### CAFQ
                             AppendDataToExcel_IndDes(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook,
@@ -1454,7 +1455,7 @@ namespace Paho.Controllers
                                 /*Termina llenado de Tabla2*/
                             }
                         }
-                        else        // R1, R2, R3, R4 etc
+                        else        // R1, R2, R3, R4 etc   // R4 Virus detectados
                         {
                             bool procesarFila;
 
