@@ -427,6 +427,30 @@ namespace Paho.Controllers
             CaseViewModel.CatOccupations = occupationsDisplay;                  //**** CAFQ
             CaseViewModel.CatTrabSaludRamas = trabsaludramaDisplay;             //**** CAFQ
             CaseViewModel.CatTrabLaboRamas = trablaboramaDisplay;               //**** CAFQ
+            int[] _interval_1 = {};
+            int[] _interval_2 = {};
+
+            // activar paginador para Jamaica
+            if (user.Institution.CountryID == 17)
+            {
+                _interval_1 = new int[] { 10, 20, 30 };
+            } else
+            {
+                _interval_1 = new int[] { 10, 20, 30 };
+            }
+
+            // activar paginador segunda bandeja para Jamaica
+            if (user.Institution.CountryID == 17)
+            {
+                _interval_2 = new int[] { 10, 30, 50, 100 };
+            } else
+            {
+                _interval_2 = new int[] { 10, 20, 30 };
+            }
+
+
+            CaseViewModel.caselist_interval_1 =  _interval_1;
+            CaseViewModel.caselist_interval_2 = _interval_2;
 
             // Laboratorios de la ficha
             // *** DELETE ***

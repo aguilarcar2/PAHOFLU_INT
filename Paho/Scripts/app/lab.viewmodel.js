@@ -2612,14 +2612,12 @@ function LabViewModel(app, dataModel) {
                         if (v.TestResultID_VirusSubType() == "P" && self.UsrCountry() == 7) {
                             self.FinalResultVirusSubTypeID(v.VirusSubTypeID());
                         } else if (v.TestResultID_VirusSubType() != "N" && v.TestResultID_VirusSubType() != "NA" && v.TestResultID_VirusSubType() != "NB") {
-                            console.log('aqui');
                             self.FinalResultVirusSubTypeID(v.VirusSubTypeID());
                         }
                             
                         if (v.TestResultID_VirusSubType_2() == "P" && self.UsrCountry() == 7) {
                             self.FinalResultVirusSubTypeID(v.VirusSubTypeID_2());
                         } else if (v.TestResultID_VirusSubType_2() != "N" && v.TestResultID_VirusSubType_2() != "NA" && v.TestResultID_VirusSubType_2() != "NB" && self.UsrCountry() == 7) {
-                            console.log('Aquí 2')
                             self.FinalResultVirusSubTypeID(v.VirusSubTypeID_2());
                         }
 

@@ -5662,6 +5662,7 @@
     var reg_salu_usr = @Html.Raw(Json.Encode(Model.reg_salu_usr));
     var reg_pais_usr = @Html.Raw(Json.Encode(Model.reg_pais_usr));
     var PAHOFLU_date_format = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgDateFormat")))";
+
     var moment_date_format = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgDateFormatMoment")))";
     var ISO_date_format = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgDateFormatISO")))";
     var DatePicker_date_format = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgDateFormatDP")))";
@@ -5750,7 +5751,7 @@
     var viewValidateSelectSypmtom = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSelectSypmtom")))";
     var viewValidateHospDateRequired = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateHospDateRequired")))";
     var viewValidateHospDateInvalid = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateHospDateInvalid")))";
-    var viewValidateDestin = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateDestin")))";
+
     var viewValidateHospDateGtOnsetDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateHospDateGtOnsetDate")))";
     var viewValidateHospExitDateGtHospDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateHospExitDateGtHospDate")))";
     var viewValidateDeathDateRequired = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateDeathDateRequired")))";
@@ -5856,6 +5857,9 @@
     var catoccupations = @Html.Raw(Json.Encode(Model.CatOccupations));                  //**** CAFQ
     var cattrabsaludrama = @Html.Raw(Json.Encode(Model.CatTrabSaludRamas));             //**** CAFQ
     var cattrablaborama = @Html.Raw(Json.Encode(Model.CatTrabLaboRamas));               //**** CAFQ
+    var caselist_interval_1 = @(Json.Encode(Model.caselist_interval_1)) ;
+    var caselist_interval_2 = @(Json.Encode(Model.caselist_interval_2)) ;
+     
 
     $("button[data-toggle='collapse']").on('shown', function () {
         $(this).child.removeClass("glyphicon-chevron-down").addClass("glyphicon-chevron-up");
@@ -5902,7 +5906,7 @@
                 ],
                 rowNum: 10,
                 mtype: 'POST',
-                rowList: [10, 20, 30],
+                rowList: caselist_interval_1  ,
                 pager: '#caselistPager',
                 sortname: 'DateHosp',
                 viewrecords: true,
@@ -6054,7 +6058,7 @@
                 ],
                 rowNum: 10,
                 mtype: 'POST',
-                rowList: [10, 20, 30],
+                rowList: caselist_interval_2,
                 pager: '#caselistPager_pend',
                 sortname: 'DateHosp',
                 viewrecords: true,

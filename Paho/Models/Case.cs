@@ -61,6 +61,10 @@ namespace Paho.Models
         public IEnumerable<LookupView<CatHospitalizedIn>> CHIn { get; set; }
 
         public object date_format_ { get; set; }
+
+        // Paginador
+        public Array caselist_interval_1 { get; set; }
+        public Array caselist_interval_2 { get; set; }
     }
 
     public class LabTestViewModel : CaseBase

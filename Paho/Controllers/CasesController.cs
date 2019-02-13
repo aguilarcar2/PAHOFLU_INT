@@ -595,6 +595,7 @@ namespace Paho.Controllers
 
             string commentsHtml = " <img src='/Content/themes/base/images/Comentario2.png' alt='" + getMsg("msgFlucasesMessageReadytoClose") + "'/>";
             string readyCloseHtml = "<img src='/Content/themes/base/images/ReadyClose.png' alt='" + getMsg("msgFlucasesMessageReadytoClose") + "'/>";
+            string MissingDischargeHtml = " <img src='/Content/themes/base/images/MissingDischarge.png' alt='" + getMsg("msgFlucasesMessageReadytoClose") + "'/>";
             string openHtml = "<img src='/Content/themes/base/images/open.png' alt='" + getMsg("msgFlucasesMessageNoStatus") + "'/>" + getMsg("msgFlucasesMessageNoStatus");
 
             var  Arrayrows = (from flucase in flucases
@@ -602,8 +603,10 @@ namespace Paho.Controllers
                                  {
                                      surv_ID = flucase.Surv,
                                      surv_IDInusual = flucase.SurvInusual,    //#### CAFQ: 180604 - Jamaica Universal
-                                     ready_close = ((flucase.flow == db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID && i.Conclusion == true).OrderBy(x => x.Priority).FirstOrDefault().Priority && flucase.statement == 2) || (flucase.IsSample == false) || ((user.Institution.CountryID == 15) ? (flucase.Processed == false && flucase.Processed_National == false ) : (flucase.Processed == false) )|| (flucase.Processed2 == false) || (flucase.Processed3 == false)) ? 1 : 0,
-                                     ready_close2 = ((flucase.flow == db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID).OrderByDescending(x => x.Priority).FirstOrDefault().Priority && flucase.statement == 2) || (flucase.IsSample == false) || ((user.Institution.CountryID == 15) ? (flucase.Processed == false && flucase.Processed_National == false) : (flucase.Processed == false)) || (flucase.Processed2 == false) || (flucase.Processed3 == false)) ? 1 : 0,
+                                     ready_close = ((flucase.flow == db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID && i.Conclusion == true).OrderBy(x => x.Priority).FirstOrDefault().Priority && flucase.statement == 2) || (flucase.IsSample == false) || ((user.Institution.CountryID == 15) ? (flucase.Processed == false && flucase.Processed_National == false ) : (flucase.Processed == false) ) || ((user.Institution.CountryID == 17) ? (flucase.Processed == false && flucase.NPHL_Processed == false) : (flucase.Processed == false)) || (flucase.Processed2 == false) || (flucase.Processed3 == false)) ? 1 : 0,
+                                     ready_close2 = ((flucase.flow == db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID).OrderByDescending(x => x.Priority).FirstOrDefault().Priority && flucase.statement == 2) || (flucase.IsSample == false) || ((user.Institution.CountryID == 15) ? (flucase.Processed == false && flucase.Processed_National == false) : (flucase.Processed == false)) || ((user.Institution.CountryID == 17) ? (flucase.Processed == false && flucase.NPHL_Processed == false) : (flucase.Processed == false)) || (flucase.Processed2 == false) || (flucase.Processed3 == false)) ? 1 : 0,
+                                     ready_close_missing_Discharge = ((flucase.Destin == null || flucase.Destin == "" ) ? 1 : 0),
+                                     ready_close_missing_DateEx = ((flucase.HospExDate == null) ? 1 : 0),
                                      id_D = flucase.ID,
                                      H_D = flucase.HospitalDate,
                                      LN_D = flucase.LName1 + " " + flucase.LName2 ?? "",
@@ -659,23 +662,24 @@ namespace Paho.Controllers
                                                                 (user.Institution.Country.Language == "SPA" ? "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.SPA+"'/> " + x.CS_D_Cat.SPA : "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.ENG+"'/> " + x.CS_D_Cat.ENG ))
                                         */
                                         x.VI_OK == true ?
+                                           // Los que tienen configuración de Virus para el cierre de caso
                                             (x.FLOW_VIRUS != null ?
                                                (x.TEST_LAST.TestResultID == "N") ? 
                                                 (x.FLOW_VIRUS.value_Cat_TestResult==x.TEST_LAST.TestResultID && x.FLOW_FLUCASE != 99 ?
-                                                     readyCloseHtml  :
+                                                     readyCloseHtml + ( ((x.ready_close_missing_Discharge == 1 || x.ready_close_missing_DateEx == 1 ) && user.Institution.CountryID == 17) ? MissingDischargeHtml : "") :
                                                     (x.ready_close2 == 1 && x.FLOW_FLUCASE != 99 ?
-                                                       readyCloseHtml :
+                                                       readyCloseHtml  + ( ((x.ready_close_missing_Discharge == 1 || x.ready_close_missing_DateEx == 1 ) && user.Institution.CountryID == 17) ? MissingDischargeHtml : "")  :
                                                         (x.CS_D_Cat == null ?
-                                                          openHtml :
+                                                          openHtml  :
                                                             (user.Institution.Country.Language == "SPA" ? "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.SPA+"'/> " + x.CS_D_Cat.SPA : "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.ENG+"'/> " + x.CS_D_Cat.ENG )
                                                         )
                                                     )
                                                 )
                                                 :
                                                 (x.FLOW_VIRUS.value_Cat_TestResult==x.TEST_LAST.TestResultID && x.FLOW_VIRUS.id_Cat_VirusType==x.TEST_LAST.VirusTypeID && x.FLOW_FLUCASE != 99 ?
-                                                     readyCloseHtml  :
+                                                     readyCloseHtml + ( ((x.ready_close_missing_Discharge == 1 || x.ready_close_missing_DateEx == 1 ) && user.Institution.CountryID == 17) ? MissingDischargeHtml : "")  :
                                                     (x.ready_close2 == 1 && x.FLOW_FLUCASE != 99 ?
-                                                       readyCloseHtml :
+                                                       readyCloseHtml + ( ((x.ready_close_missing_Discharge == 1 || x.ready_close_missing_DateEx == 1 ) && user.Institution.CountryID == 17) ? MissingDischargeHtml : "") :
                                                         (x.CS_D_Cat == null ?
                                                           openHtml :
                                                             (user.Institution.Country.Language == "SPA" ? "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.SPA+"'/> " + x.CS_D_Cat.SPA : "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.ENG+"'/> " + x.CS_D_Cat.ENG )
@@ -684,7 +688,7 @@ namespace Paho.Controllers
                                                 )
                                                 :
                                                 (x.ready_close2 == 1 && x.FLOW_FLUCASE != 99 ?
-                                                    readyCloseHtml :
+                                                    readyCloseHtml + ( ((x.ready_close_missing_Discharge == 1 || x.ready_close_missing_DateEx == 1 ) && user.Institution.CountryID == 17) ? MissingDischargeHtml : "")  :
                                                     (x.CS_D_Cat == null ?
                                                        openHtml :
                                                         (user.Institution.Country.Language == "SPA" ? "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.SPA+"'/> " + x.CS_D_Cat.SPA : "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.ENG+"'/> " + x.CS_D_Cat.ENG )
@@ -692,8 +696,9 @@ namespace Paho.Controllers
                                                 )
                                             )
                                             :
+                                            
                                             (x.ready_close == 1 && x.FLOW_FLUCASE != 99 ?
-                                                  readyCloseHtml :
+                                                  readyCloseHtml + ( ((x.ready_close_missing_Discharge == 1 || x.ready_close_missing_DateEx == 1 ) && user.Institution.CountryID == 17) ? MissingDischargeHtml : "")  :
                                                     (x.CS_D_Cat == null ?
                                                        openHtml :
                                                         (user.Institution.Country.Language == "SPA" ? "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.SPA+"'/> " + x.CS_D_Cat.SPA : "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.ENG+"'/> " + x.CS_D_Cat.ENG )
@@ -3137,8 +3142,11 @@ namespace Paho.Controllers
                     //        flucase.flow = flow_temp;
                     //    }
                     //}  
-
-                    if (flow_complete_Sample_1 == true && flow_complete_Sample_2 == true && flow_complete_Sample_3 == true)
+                    if (ifclosecase == true)
+                    {
+                        flucase.flow = flow_original_flucase;
+                    }
+                    else if (flow_complete_Sample_1 == true && flow_complete_Sample_2 == true && flow_complete_Sample_3 == true)
                     {
                         flucase.flow = flow_temp;
                     }
