@@ -523,9 +523,17 @@
             $("#tab-contact :input, #tab-GEO :input, #tab-hospital :input, #tab-risk :input, #tab-case :input").attr('disabled', false);
             $("#tab-lab :input").prop('disabled', true);
             $("a[href*='tab-case']").show();
-            $("#tab-case").show();
+            $("#tab-case").show()
             $("#CaseStatus").attr("disabled", true);
             $("#tabs").tabs("refresh");
+            if (app.Views.Hospital.Destin() != "" && app.Views.Lab.CanConclude() == true && app.Views.Hospital.HospExDate() != null) {
+                $("#CaseStatus").attr("disabled", false);
+                $('a[href="#tab-case"]').click();
+            } else {
+                $('a[href="#tab-hospital"]').click();
+            }
+            
+            //$('#tab-case').tabs({ active:  });
         }
         if (($("#ITy").val() != 2) && self.URmod_epi() == true && app.Views.Hospital.CaseStatus() == "3") {
             console.log("aqui _ CaseStatus 2"); //
@@ -535,6 +543,7 @@
             $("#tab-case").show();
             $("#CaseStatus").attr("disabled", true);
             $("#tabs").tabs("refresh");
+            $('a[href="#tab-case"]').click();
 
             //} else if (app.Views.Hospital.CaseStatus() == "3" && self.UserRole() != "adm") {
         } else if (app.Views.Hospital.CaseStatus() == "3" && self.URmod_epi() != true) {
@@ -554,6 +563,7 @@
             $("#tab-case").show();
             $("#CaseStatus").attr("disabled", true);
             $("#tabs").tabs("refresh");
+            $('a[href="#tab-case"]').click();
         }
         //else if (flow_check.length > 0 && app.Views.Contact.DataStatement() == 2) {
         //    console.log("aqui _  Flow_check");
@@ -568,6 +578,7 @@
             $("#tab-case").show();
             $("#CaseStatus").attr("disabled", false);
             $("#tabs").tabs("refresh");
+            $('a[href="#tab-case"]').click();
         }
         else if (app.Views.Contact.SurvSARI() == true && app.Views.Hospital.IsSample() === "true" && (app.Views.Lab.FinalResult() == "" || app.Views.Hospital.Destin() == "" || app.Views.Hospital.HospExDate() == "" || app.Views.Hospital.HospExDate() == null || app.Views.Lab.CanConclude() == false)) {
             console.log("aqui _ no processed 3"); //
@@ -582,6 +593,7 @@
             $("#tab-case").show();
             $("#CaseStatus").attr("disabled", false);
             $("#tabs").tabs("refresh");
+            $('a[href="#tab-hospital"]').click();
         }
         else if ($("#ITy").val() == "1" && (app.Views.Hospital.CaseStatus() != "" && app.Views.Hospital.CaseStatus() != null)) {
             console.log("aqui _ CaseStatus"); //
@@ -599,18 +611,28 @@
         console.log(app.Views.Lab.CanConclude());
         if (app.Views.Lab.CanConclude() == true && ($("#ITy").val() == "1" || (app.Views.Hospital.CaseStatus() == "" && self.URclo_case() == true) || (app.Views.Hospital.CaseStatus() == "" && self.URmod_epi() == true))) {
             console.log("aqui _ CaseStatus IT = 1"); //
-            console.log(app.Views.Lab.CanConclude());
-            console.log(app.Views.Hospital.CaseStatus());
-            console.log(self.URmod_epi() == true);
-            console.log(self.URclo_case() == true);
+            //console.log(app.Views.Lab.CanConclude());
+            //console.log(app.Views.Hospital.CaseStatus());
+            //console.log(self.URmod_epi() == true);
+            //console.log(self.URclo_case() == true);
             $("#HospExDate").attr("disabled", false);
             $("#Destin").attr("disabled", false)
+
+            if (app.Views.Hospital.Destin() != "" && app.Views.Lab.CanConclude() == true && app.Views.Hospital.HospExDate() != null) {
+                $("#CaseStatus").attr("disabled", false);
+                $("#tab-case").show();
+                $("#tabs").tabs("refresh");
+                $('a[href="#tab-case"]').click();
+            } else {
+                $('a[href="#tab-hospital"]').click();
+            }
 
             if (app.Views.Contact.SurvILI() == true) {
                 $("a[href*='tab-case']").show();
                 $("#tab-case").show();
                 $("#CaseStatus").attr("disabled", false);
                 $("#tabs").tabs("refresh");
+                $('a[href="#tab-case"]').click();
             }
 
         } else

@@ -603,8 +603,28 @@ namespace Paho.Controllers
                                  {
                                      surv_ID = flucase.Surv,
                                      surv_IDInusual = flucase.SurvInusual,    //#### CAFQ: 180604 - Jamaica Universal
-                                     ready_close = ((flucase.flow == db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID && i.Conclusion == true).OrderBy(x => x.Priority).FirstOrDefault().Priority && flucase.statement == 2) || (flucase.IsSample == false) || ((user.Institution.CountryID == 15) ? (flucase.Processed == false && flucase.Processed_National == false ) : (flucase.Processed == false) ) || ((user.Institution.CountryID == 17) ? (flucase.Processed == false && flucase.NPHL_Processed == false) : (flucase.Processed == false)) || (flucase.Processed2 == false) || (flucase.Processed3 == false)) ? 1 : 0,
-                                     ready_close2 = ((flucase.flow == db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID).OrderByDescending(x => x.Priority).FirstOrDefault().Priority && flucase.statement == 2) || (flucase.IsSample == false) || ((user.Institution.CountryID == 15) ? (flucase.Processed == false && flucase.Processed_National == false) : (flucase.Processed == false)) || ((user.Institution.CountryID == 17) ? (flucase.Processed == false && flucase.NPHL_Processed == false) : (flucase.Processed == false)) || (flucase.Processed2 == false) || (flucase.Processed3 == false)) ? 1 : 0,
+                                     ready_close = ( // revisar si ya existe un resultado con el flujo y existe un laboratorio con el campo conclusion que ya ingreso los resultados
+                                                    (flucase.flow == db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID && i.Conclusion == true).OrderBy(x => x.Priority).FirstOrDefault().Priority && flucase.statement == 2) 
+                                                     // si la muestra no fue tomada
+                                                    || (flucase.IsSample == false) 
+                                                     // Para honduras si el laboratorio regional no proceso la muestra
+                                                    || ((user.Institution.CountryID == 15) ? (flucase.Processed_National == false ) : (flucase.Processed == false) ) 
+                                                     // Para Jamaica si el NPHL no proceso la muestra
+                                                    || ((user.Institution.CountryID == 17) ? (flucase.NPHL_Processed == false) : (flucase.Processed == false))
+                                                    || (flucase.Processed == false)
+                                                    // La segunda y tercera muestra tampoco fueron tomadas
+                                                    || (flucase.Processed2 == false) || (flucase.Processed3 == false)) ? 1 : 0,
+                                     ready_close2 = ( // revisar si ya existe un resultado con el flujo
+                                                    (flucase.flow == db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID).OrderByDescending(x => x.Priority).FirstOrDefault().Priority && flucase.statement == 2)
+                                                    // si la muestra no fue tomada
+                                                    || (flucase.IsSample == false)
+                                                    // Para honduras si el laboratorio regional no proceso la muestra
+                                                    || ((user.Institution.CountryID == 15) ? ( flucase.Processed_National == false) : (flucase.Processed == false))
+                                                    // Para Jamaica si el NPHL no proceso la muestra
+                                                    || ((user.Institution.CountryID == 17) ? ( flucase.NPHL_Processed == false) : (flucase.Processed == false))
+                                                    || (flucase.Processed2 == false)
+                                                    // La segunda y tercera muestra tampoco fueron tomadas
+                                                    || (flucase.Processed2 == false) || (flucase.Processed3 == false)) ? 1 : 0,
                                      ready_close_missing_Discharge = ((flucase.Destin == null || flucase.Destin == "" ) ? 1 : 0),
                                      ready_close_missing_DateEx = ((flucase.HospExDate == null) ? 1 : 0),
                                      id_D = flucase.ID,
@@ -613,12 +633,13 @@ namespace Paho.Controllers
                                      FN_D = flucase.FName1 + " " + flucase.FName2 ?? "",
                                      NE_D = flucase.NoExpediente ?? "",
                                      IS_D = flucase.IsSample,
-                                     FR_D = flucase.FinalResult,
+                                     FR_ID = flucase.FinalResult,
                                      FR_D_C = flucase.CatVirusType_FR1,
                                      D_D = flucase.Destin,
-                                     FRVT_D = flucase.FinalResultVirusTypeID,
+                                     FRVT_ID = flucase.FinalResultVirusTypeID,
                                      P_D = flucase.Processed,
                                      P_D_N = flucase.Processed_National,
+                                     P_D_NPHL = flucase.NPHL_Processed,
                                      CS_D = flucase.CaseStatus,
                                      CS_D_Cat = flucase.CatStatusCase,
                                      VR_IF_D = flucase.CaseLabTests.Where(e => e.TestType == 1 && e.Processed != null).OrderBy(y => y.CatVirusType.orden).ThenBy(d => d.SampleNumber).ThenBy(u => u.TestDate).FirstOrDefault(),
@@ -632,8 +653,9 @@ namespace Paho.Controllers
                                      ICON_COMMEN_CLOSE = flucase.ObservationCase == "" || flucase.ObservationCase == null ? "" : commentsHtml,
                                      VI_OK = (from a in db.InstitutionConfEndFlowByVirus
                                               join p in db.InstitutionsConfiguration on a.id_InstCnf equals p.ID
-                                              join dt in db.Institutions on p.InstitutionFromID equals dt.ID
-                                              where dt.CountryID == flucase.CountryID && p.InstitutionParentID == flucase.HospitalID
+                                              //join dt in db.Institutions on p.InstitutionFromID equals dt.ID
+                                              where  p.InstitutionParentID == flucase.HospitalID
+                                              //dt.CountryID == flucase.CountryID &&  // AM desactivar este parametro del país porque no pertenece al parametro del país de la institución, sino a la residencia del paciente.
                                               select new
                                               {
                                                   ID = a.ID
@@ -655,7 +677,7 @@ namespace Paho.Controllers
                                          "<img src='/Content/themes/base/images/PDF.png' alt='print'/>",
                                          x.VR_IF_D == null ? "" :  x.VR_IF_D.TestResultID == null ? "": x.VR_IF_D.TestResultID.ToString() == "P" ? x.VR_IF_D.CatVirusType == null ? "" : (user.Institution.Country.Language == "SPA" ? x.VR_IF_D.CatVirusType.SPA : x.VR_IF_D.CatVirusType.ENG) :  x.VR_IF_D.TestResultID == null  ? ""  : user.Institution.Country.Language == "SPA" ? db.CatTestResult.Where(j=> j.value == x.VR_IF_D.TestResultID.ToString()).FirstOrDefault().description : db.CatTestResult.Where(j=> j.value == x.VR_IF_D.TestResultID.ToString()).FirstOrDefault().ENG ,
                                          x.VR_PCR_D == null ? "" : x.VR_PCR_D.TestResultID == null ? "": x.VR_PCR_D.TestResultID.ToString() == "P" ?  x.VR_PCR_D.CatVirusType == null ? "" : x.VR_PCR_D.CatVirusType.SPA.Contains("Influenza A") == true ? x.VR_PCR_D.CatVirusSubType == null ? "" : (user.Institution.Country.Language == "SPA" ?  x.VR_PCR_D.CatVirusSubType.SPA : x.VR_PCR_D.CatVirusSubType.ENG ): (user.Institution.Country.Language == "SPA" ? x.VR_PCR_D.CatVirusType.SPA : x.VR_PCR_D.CatVirusType.ENG) :  x.VR_PCR_D.TestResultID == null ? "" : user.Institution.Country.Language == "SPA" ? db.CatTestResult.Where(j=> j.value == x.VR_PCR_D.TestResultID.ToString()).FirstOrDefault().description : db.CatTestResult.Where(j=> j.value == x.VR_PCR_D.TestResultID.ToString()).FirstOrDefault().ENG,
-                                         x.IS_D == false ? getMsg("msgFlucasesMessageNoSample") : x.FR_D == "P" ? x.FR_D_C == null ? "" : (user.Institution.Country.Language == "SPA" ? x.FR_D_C.SPA : x.FR_D_C.ENG) : (x.P_D == false) ? getMsg("msgFlucasesMessageNotProcessed") : x.FR_D == "N" ? getMsg("msgFlucasesMessageNegative") : x.FR_D == "I" ? getMsg("msgFlucasesMessageIndeterminated") : ""  ,
+                                         x.IS_D == false ? getMsg("msgFlucasesMessageNoSample") : x.FR_ID == "P" ? x.FR_D_C == null ? "" : (user.Institution.Country.Language == "SPA" ? x.FR_D_C.SPA : x.FR_D_C.ENG) : (x.P_D == false) ? getMsg("msgFlucasesMessageNotProcessed") : x.FR_ID == "N" ? getMsg("msgFlucasesMessageNegative") : x.FR_ID == "I" ? getMsg("msgFlucasesMessageIndeterminated") : (x.P_D_N == false) ? getMsg("msgFlucasesMessageNotProcessed") : (x.P_D_NPHL == false) ? getMsg("msgFlucasesMessageNotProcessed") : ""  ,
                                          x.HEALTH_INST ?? "",
                                          /*
                                          x.ready_close == 1 && x.FLOW_FLUCASE != 99 ?   "<img src='/Content/themes/base/images/ReadyClose.png' alt='"+getMsg("msgFlucasesMessageReadytoClose")+"'/> "  : "" + (x.CS_D_Cat == null ? "<img src='/Content/themes/base/images/open.png' alt='"+getMsg("msgFlucasesMessageNoStatus")+"'/>" +  getMsg("msgFlucasesMessageNoStatus") :
@@ -664,19 +686,19 @@ namespace Paho.Controllers
                                         x.VI_OK == true ?
                                            // Los que tienen configuración de Virus para el cierre de caso
                                             (x.FLOW_VIRUS != null ?
-                                               (x.TEST_LAST.TestResultID == "N") ? 
-                                                (x.FLOW_VIRUS.value_Cat_TestResult==x.TEST_LAST.TestResultID && x.FLOW_FLUCASE != 99 ?
-                                                     readyCloseHtml + ( ((x.ready_close_missing_Discharge == 1 || x.ready_close_missing_DateEx == 1 ) && user.Institution.CountryID == 17) ? MissingDischargeHtml : "") :
-                                                    (x.ready_close2 == 1 && x.FLOW_FLUCASE != 99 ?
-                                                       readyCloseHtml  + ( ((x.ready_close_missing_Discharge == 1 || x.ready_close_missing_DateEx == 1 ) && user.Institution.CountryID == 17) ? MissingDischargeHtml : "")  :
-                                                        (x.CS_D_Cat == null ?
-                                                          openHtml  :
-                                                            (user.Institution.Country.Language == "SPA" ? "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.SPA+"'/> " + x.CS_D_Cat.SPA : "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.ENG+"'/> " + x.CS_D_Cat.ENG )
-                                                        )
-                                                    )
-                                                )
+                                               ((x.FR_ID == "N") ? 
+                                                    (x.FLOW_VIRUS.value_Cat_TestResult==x.FR_ID && x.FLOW_FLUCASE != 99 ?
+                                                        readyCloseHtml + ( ((x.ready_close_missing_Discharge == 1 || x.ready_close_missing_DateEx == 1 ) && user.Institution.CountryID == 17) ? MissingDischargeHtml : "")
+                                                        : (x.ready_close2 == 1 && x.FLOW_FLUCASE != 99 ?
+                                                                readyCloseHtml  + ( ((x.ready_close_missing_Discharge == 1 || x.ready_close_missing_DateEx == 1 ) && user.Institution.CountryID == 17) ? MissingDischargeHtml : "") 
+                                                                : (x.CS_D_Cat == null ?
+                                                                            openHtml 
+                                                                            : (user.Institution.Country.Language == "SPA" ? "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.SPA+"'/> " + x.CS_D_Cat.SPA : "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.ENG+"'/> " + x.CS_D_Cat.ENG )
+                                                                    )
+                                                            )
+                                                    ) // Cuando el resultado final
                                                 :
-                                                (x.FLOW_VIRUS.value_Cat_TestResult==x.TEST_LAST.TestResultID && x.FLOW_VIRUS.id_Cat_VirusType==x.TEST_LAST.VirusTypeID && x.FLOW_FLUCASE != 99 ?
+                                                (x.FLOW_VIRUS.value_Cat_TestResult==x.FR_ID && x.FLOW_VIRUS.id_Cat_VirusType==x.FRVT_ID && x.FLOW_FLUCASE != 99 ?
                                                      readyCloseHtml + ( ((x.ready_close_missing_Discharge == 1 || x.ready_close_missing_DateEx == 1 ) && user.Institution.CountryID == 17) ? MissingDischargeHtml : "")  :
                                                     (x.ready_close2 == 1 && x.FLOW_FLUCASE != 99 ?
                                                        readyCloseHtml + ( ((x.ready_close_missing_Discharge == 1 || x.ready_close_missing_DateEx == 1 ) && user.Institution.CountryID == 17) ? MissingDischargeHtml : "") :
@@ -685,8 +707,9 @@ namespace Paho.Controllers
                                                             (user.Institution.Country.Language == "SPA" ? "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.SPA+"'/> " + x.CS_D_Cat.SPA : "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.ENG+"'/> " + x.CS_D_Cat.ENG )
                                                         )
                                                     )
-                                                )
+                                                ))
                                                 :
+                                                // Aquí entra cuando no tiene flujo por tipo de virus y ningún laboratorio del flujo tiene marcada la opción de conclusión, únicamente por laboratorios
                                                 (x.ready_close2 == 1 && x.FLOW_FLUCASE != 99 ?
                                                     readyCloseHtml + ( ((x.ready_close_missing_Discharge == 1 || x.ready_close_missing_DateEx == 1 ) && user.Institution.CountryID == 17) ? MissingDischargeHtml : "")  :
                                                     (x.CS_D_Cat == null ?
@@ -700,7 +723,7 @@ namespace Paho.Controllers
                                             (x.ready_close == 1 && x.FLOW_FLUCASE != 99 ?
                                                   readyCloseHtml + ( ((x.ready_close_missing_Discharge == 1 || x.ready_close_missing_DateEx == 1 ) && user.Institution.CountryID == 17) ? MissingDischargeHtml : "")  :
                                                     (x.CS_D_Cat == null ?
-                                                       openHtml :
+                                                       openHtml  :
                                                         (user.Institution.Country.Language == "SPA" ? "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.SPA+"'/> " + x.CS_D_Cat.SPA : "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.ENG+"'/> " + x.CS_D_Cat.ENG )
                                                     )
                                             )
@@ -2257,8 +2280,26 @@ namespace Paho.Controllers
                             canConclude_Sample_3 = true;
                         }
                     }
+                    if (user_cty == 17)
+                    {
+                        if (flucase.NPHL_Processed == false)
+                        {
+                            canConclude_Sample_1 = true;
+                            canConclude_Sample_2 = true;
+                            canConclude_Sample_3 = true;
+                        }
 
-                    
+                        if (((flucase.SampleDate == null && flucase.Processed == null) || flucase.Processed == false) &&
+                        ((flucase.SampleDate == null && flucase.NPHL_Processed == null) || flucase.NPHL_Processed == false) &&
+                       ((flucase.SampleDate2 == null && flucase.Processed2 == null) || flucase.Processed2 == false) &&
+                       ((flucase.SampleDate3 == null && flucase.Processed3 == null) || flucase.Processed3 == false))
+                        {
+                            canConclude_Sample_1 = true;
+                            canConclude_Sample_2 = true;
+                            canConclude_Sample_3 = true;
+                        }
+                    }
+
                 }
                     
 

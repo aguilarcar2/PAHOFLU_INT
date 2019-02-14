@@ -1818,7 +1818,7 @@ function LabViewModel(app, dataModel) {
         ArrayValidate = $.grep(self.ArrayValidate(), function (v) {
             return (v.TestType() === "1" && v.ProcLab() == self.UsrInstID());
         });
-        if (ArrayValidate.length >= 3)
+        if (ArrayValidate.length >= 4)
             msg += "\n" + msgValidateProcessIFI3times;
                 //For IF it can not be more than 3 processes for the same laboratory
                 //"Para IF no puede ser mayor a 3 procesos para el mismo laboratorio";
