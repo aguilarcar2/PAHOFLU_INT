@@ -225,13 +225,13 @@
             }
 
             if (app.Views.Lab.CanConclude() == true) {
-                console.log("HospExDate - CanConclude igual a true")
+                //console.log("HospExDate - CanConclude igual a true")
                 $("a[href*='tab-case']").show();
                 $("#tab-case").show();
                 $("#tabs").tabs("refresh");
                 $("#CaseStatus").attr("disabled", false);
             } else {
-            console.log("HospExDate - CanConclude igual a false")
+            //console.log("HospExDate - CanConclude igual a false")
                 $("a[href*='tab-case']").hide();
                 $("#tab-case").hide();
                 $("#CaseStatus").attr("disabled", true);
