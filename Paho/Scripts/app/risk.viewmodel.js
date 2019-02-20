@@ -228,6 +228,7 @@
     self.Alcohol = ko.observable(false);
     self.DownSyn = ko.observable(false);
     self.Obesity = ko.observable("");
+    self.OtherComment = ko.observable("");    
     self.OtherRisk = ko.observable("");
     self.IsFemal = ko.computed(function () {
         return app.Views.Contact.Gender() === "Female" && app.Views.Contact.AMeasure() == "Year" && app.Views.Contact.Age() >= 10 && app.Views.Contact.Age() <= 50;
@@ -465,6 +466,7 @@
         self.DownSyn(false);
         self.Obesity("");
         self.OtherRisk("");
+        self.OtherComment("");
         self.AStartDate(null);
         self.VacInfluenza("");
         self.VacInfluenzaDateFirst(null);
@@ -568,7 +570,7 @@
                 self.DownSyn(data.DownSyn);
                 self.Obesity(data.Obesity);
                 self.OtherRisk(data.OtherRisk);
-
+                self.OtherComment(data.OtherComment);
 
                 if (data.VacInfluenza) self.VacInfluenza(data.VacInfluenza);
                 if (data.VacInfluenzaDateFirst) self.VacInfluenzaDateFirst(moment(data.VacInfluenzaDateFirst).clone().toDate()); else self.VacInfluenzaDateFirst(null);
@@ -868,6 +870,7 @@
                 DownSyn: self.DownSyn() != true ? false : self.DownSyn(),
                 Obesity: self.Obesity(),
                 OtherRisk: self.OtherRisk() == null ? "" : self.OtherRisk().toLocaleUpperCase(),
+                OtherComment: self.OtherComment() == null ? "" : self.OtherComment().toLocaleUpperCase(),
                 VacInfluenza: self.VacInfluenza(),
                 VacInfluenzaDateFirst: $("#VacInfluenzaDateFirst").val() == "" ? null : moment(date_influenza_1).format(date_format_ISO),
                 VacInfluenzaDateSecond: $("#VacInfluenzaDateSecond").val() == "" ? null : moment(date_influenza_2).format(date_format_ISO),

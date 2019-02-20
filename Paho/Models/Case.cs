@@ -1136,6 +1136,7 @@ namespace Paho.Models
         public bool? DownSyn { get; set; }
         public Obesity? Obesity { get; set; }
         public string OtherRisk { get; set; }
+        public string OtherComment { get; set; }
         // public class CaseHospital : CaseBase
         [MaxLength(15)]
         public string CHNum { get; set; }
@@ -1919,6 +1920,7 @@ namespace Paho.Models
                    p.DownSyn,
                    p.Obesity,
                    p.OtherRisk,
+                   p.OtherComment,
                    p.VacInfluenza,
                    p.VacInfluenzaDateFirst,
                    p.VacInfluenzaDateSecond,

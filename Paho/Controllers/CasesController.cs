@@ -1151,6 +1151,7 @@ namespace Paho.Controllers
                     DownSyn = flucase.DownSyn,
                     Obesity = flucase.Obesity,
                     OtherRisk = flucase.OtherRisk,
+                    OtherComment = flucase.OtherComment,
                     RiskFactors = flucase.RiskFactors,
                     Comorbidities = flucase.Comorbidities,
                     VacInfluenza = flucase.VacInfluenza,
@@ -1269,6 +1270,7 @@ namespace Paho.Controllers
                 bool? DownSyn,
                 Obesity? Obesity,
                 string OtherRisk,
+                string OtherComment,
                 int? VacInfluenza,
                 DateTime? VacInfluenzaDateFirst,
                 DateTime? VacInfluenzaDateSecond,
@@ -1371,6 +1373,7 @@ namespace Paho.Controllers
             flucase.DownSyn = DownSyn;
             flucase.Obesity = Obesity;
             flucase.OtherRisk = OtherRisk;
+            flucase.OtherComment = OtherComment;
             flucase.InsertDate = DateTime.Now;
             //flucase.UserID = User.Identity.Name;
 

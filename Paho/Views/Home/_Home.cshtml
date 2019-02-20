@@ -2178,7 +2178,23 @@
                                     <input type="checkbox" name="TrabSalud" id="TrabSalud" data-bind="checked: TrabSalud" disabled> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelHealthcareWorker"))
                                 </label>
                             </div>
+                            <!-- Otros(Comentario) -->
+                            @if (ViewBag.UsrCtry == 9)
+                            {
+                                <div class="col-md-5">
+                                    <div class='input-group'>
+                                        <span class="input-group-addon">
+                                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsPresenceLabelOtherComment"))
+                                        </span>
+                                        <input id="OtherComment" type='text' class="form-control case_letter" data-bind="value: OtherComment" />
+                                    </div>
+                                </div>
+
+
+
+                            }
                         </div>
+                        
                     </div>
                 </div>
             </div>
