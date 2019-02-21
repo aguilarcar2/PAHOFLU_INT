@@ -13,6 +13,9 @@ using Owin;
 using Paho.Models;
 using System.Data.Entity.Validation;
 using System.Text;
+using System.Net;
+using Newtonsoft.Json.Linq;
+using System.Configuration;
 
 namespace Paho.Controllers
 {
@@ -47,8 +50,28 @@ namespace Paho.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
+            // Recaptcha - activar cuando se compile el proyecto
+            if (ConfigurationManager.AppSettings["recaptchaActivate"] == Convert.ToString('1'))
+            {
+                //Validate Google reCAPTCHA here
+                var response = Request["g-recaptcha-response"];
+                string secretKey = ConfigurationManager.AppSettings["recaptchaPrivatekey"];
+                var client = new WebClient();
+                var recaptchaResult = client.DownloadString(string.Format("https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}", secretKey, response));
+                var obj = JObject.Parse(recaptchaResult);
+                var status = (bool)obj.SelectToken("success");
+                //ViewBag.Message = status ? "Google reCaptcha validation success" : "Google reCaptcha validation failed";
+
+                if (!status)
+                {
+                    ModelState.AddModelError("", "The user or password is incorrect.");
+                }
+            }
+
+
             if (ModelState.IsValid)
             {
+
                 var user = await UserManager.FindAsync(model.UserName, model.Password);
                 if (user != null)
                 {

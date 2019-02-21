@@ -15,9 +15,10 @@ namespace Paho
                 "~/Scripts/jquery-ui-1.10.4.js",
                 "~/Scripts/moment.js",
                 "~/Scripts/moment-timezone-with-data.js"
-                //"~/Scripts/moment-timezone.js"
-                //"moment-timezone-with-data.js"
                 ));
+
+            //bundles.Add(new ScriptBundle("~/bundles/recaptcha").Include(
+            //  "https://www.google.com/recaptcha/api.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                 "~/Scripts/jquery.unobtrusive*",
