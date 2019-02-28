@@ -104,7 +104,9 @@ function SummayItem(data) {
     self.CaseSummaryId = data.CaseSummaryId;
     self.AgeGroup = data.AgeGroup;
 
-    self.Surv = ko.observable(SurvGlobal);
+    if (self.UsrCountry() != 17)                             // 17: Jamaica #### CAFQ: 190227
+        self.Surv = ko.observable(SurvGlobal);
+
     self.AgeGroupDescription = CatAgeGroup[parseInt(self.AgeGroup) - 1].AgeGroup;
     self.AgeGroupDesc = ko.observable(self.AgeGroupDescription);
     //****
@@ -609,7 +611,8 @@ function SummaryViewModel(app, dataModel) {
     self.selectedCountryId = ko.observable("");
     self.countries = ko.observableArray(countries);
     //self.Surv = ko.observable("1");
-    self.Surv = ko.observable(SurvGlobal);
+    if(self.UsrCountry() != 17)                             // 17: Jamaica #### CAFQ: 190227
+        self.Surv = ko.observable(SurvGlobal);
 
     //console.log("Vigb1->" + self.Surv())
     /*
