@@ -401,7 +401,7 @@ namespace Paho.Controllers
                         //#### 
 
                         if (reportTemplate == "R1" || reportTemplate == "R2" || reportTemplate == "R3" || reportTemplate == "R4" || reportTemplate == "D1" || reportTemplate == "B1" || reportTemplate == "CPE" || reportTemplate == "C1")
-                        { 
+                        {
                             insertRow = false;
                         } // R4 = Virus detectados
 
@@ -418,6 +418,42 @@ namespace Paho.Controllers
                         else if (reportTemplate == "CPV")
                             AppendDataToExcel_CasosPositivosConVacuna(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook,
                                 reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, AreaID_, Sentinel);        //#### CAFQ
+                        else if (reportTemplate.ToUpper() == "R4")
+                        {
+                            var contador = 0;
+                            var YearBegin = 0;
+                            var YearEnd = 0;
+
+                            if (YearFrom != null && YearTo != null)
+                            {
+                                YearBegin = (int)YearFrom;
+                                YearEnd = (int)YearTo;
+                                if (YearEnd > DateTime.Now.Year) YearEnd = DateTime.Now.Year;
+                            }
+                            else if (Year != null)
+                            {
+                                YearBegin = (int)Year;
+                                YearEnd = (int)Year;
+                                if (YearEnd > DateTime.Now.Year)
+                                {
+                                    YearBegin = DateTime.Now.Year;
+                                    YearEnd = DateTime.Now.Year;
+                                }
+                            }
+
+                            var excelWs_VIRUSES_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Virus" : "Virus"];
+                            AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4", 6, 1, excelWs_VIRUSES_IRAG.Index, false, ReportCountry, YearEnd, YearEnd, 1, Inusual, AreaID_, Sentinel);
+
+                            var excelWs_VIRUSES_INF_Geographic = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Virus_INF_GEO" : "Virus_INF_GEO"];
+                            if (excelWs_VIRUSES_INF_Geographic != null)
+                                AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", 5, 1, excelWs_VIRUSES_INF_Geographic.Index, false, ReportCountry, YearEnd, YearEnd, 1, Inusual, AreaID_, Sentinel);
+
+
+                            var excelWs_VIRUSES_RSV_Geographic = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Virus_RSV_GEO" : "Virus_VRS_GEO"];
+                            if (excelWs_VIRUSES_RSV_Geographic != null)
+                                AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", 5, 1, excelWs_VIRUSES_INF_Geographic.Index, false, ReportCountry, YearEnd, YearEnd, 1, Inusual, AreaID_, Sentinel);
+
+                        }
                         else if (reportTemplate.ToUpper() == "FLUID")
                         {
                             var contador = 0;
@@ -428,27 +464,33 @@ namespace Paho.Controllers
                             {
                                 YearBegin = (int)YearFrom;
                                 YearEnd = (int)YearTo;
+                                if (YearEnd > DateTime.Now.Year) YearEnd = DateTime.Now.Year;
                             }
                             else if (Year != null)
                             {
                                 YearBegin = (int)Year;
                                 YearEnd = (int)Year;
+                                if (YearEnd > DateTime.Now.Year)
+                                {
+                                    YearBegin = DateTime.Now.Year;
+                                    YearEnd = DateTime.Now.Year;
+                                }
                             }
 
                             var excelWs_VIRUSES_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "NATIONAL VIRUSES" : "Virus Identificados"];
-                            AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_NATIONAL_VIRUSES", 6, 1, excelWs_VIRUSES_IRAG.Index, false, ReportCountry, YearEnd, YearEnd, 1, Inusual, AreaID_, Sentinel);
+                            AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_NATIONAL_VIRUSES", 6, 1, excelWs_VIRUSES_IRAG.Index, false, ReportCountry, YearEnd, YearEnd, 1, Inusual, AreaID_, Sentinel);
                             var excelWs_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "SARI" : "IRAG"];
-                            AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_IRAG", 8, 1, excelWs_IRAG.Index, false, ReportCountry, YearBegin, YearEnd, 1, Inusual, AreaID_, Sentinel);
+                            AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_IRAG", 8, 1, excelWs_IRAG.Index, false, ReportCountry, YearBegin, YearEnd, 1, Inusual, AreaID_, Sentinel);
                             var excelWs_DEATHS_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "DEATHS Sentinel Sites" : "Fallecidos IRAG"];
-                            AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_DEATHS_IRAG", 8, 1, excelWs_DEATHS_IRAG.Index, false, ReportCountry, YearEnd, YearEnd, 1, Inusual, AreaID_, Sentinel);
+                            AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_DEATHS_IRAG", 8, 1, excelWs_DEATHS_IRAG.Index, false, ReportCountry, YearEnd, YearEnd, 1, Inusual, AreaID_, Sentinel);
                             var excelWs_ILI = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "ILI" : "ETI"];
-                            AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_ETI", 8, 1, excelWs_ILI.Index, false, ReportCountry, YearBegin, YearEnd, 2, Inusual, AreaID_, Sentinel);
+                            AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_ETI", 8, 1, excelWs_ILI.Index, false, ReportCountry, YearBegin, YearEnd, 2, Inusual, AreaID_, Sentinel);
                             var excelWs_VIRUSES_ILI = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "ILI VIRUSES - Sentinel" : "Virus ETI Identificados"];
-                            AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_NATIONAL_VIRUSES", 6, 1, excelWs_VIRUSES_ILI.Index, false, ReportCountry, YearEnd, YearEnd, 2, Inusual, AreaID_, Sentinel);
+                            AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_NATIONAL_VIRUSES", 6, 1, excelWs_VIRUSES_ILI.Index, false, ReportCountry, YearEnd, YearEnd, 2, Inusual, AreaID_, Sentinel);
 
                             // Leyendas
                             var excelWs_Leyendas = excelWorkBook.Worksheets["Leyendas"];
-                            ConfigToExcel_FLUID(CountryID, Languaje_, RegionID, Year, HospitalID, excelWorkBook, "Leyendas", 1, excelWs_Leyendas.Index, false);
+                            ConfigToExcel_FLUID(CountryID, Languaje_, RegionID_, Year, YearBegin ,  YearEnd, StartDate, EndDate, HospitalID_, excelWorkBook, "Leyendas", 1, excelWs_Leyendas.Index, false);
 
                             // Manejo de graficas 
 
@@ -469,24 +511,70 @@ namespace Paho.Controllers
                             var YearEnd = 0;
                             var Year_only = 0;
 
-                            if (Year != null)
-                            {
-                                YearBegin = (int)Year - 1;
-                                YearEnd = (int)Year;
-                            }
-                            else if (YearFrom != null && YearTo != null)
+                            if (YearFrom != null && YearTo != null)
                             {
                                 YearBegin = (int)YearFrom;
                                 YearEnd = (int)YearTo;
+                                if (YearEnd > DateTime.Now.Year) YearEnd = DateTime.Now.Year;
+                            }
+                            else if (Year != null)
+                            {
+                                YearBegin = (int)Year;
+                                YearEnd = (int)Year;
+                                if (YearEnd > DateTime.Now.Year)
+                                {
+                                    YearBegin = DateTime.Now.Year;
+                                    YearEnd = DateTime.Now.Year;
+                                }
                             }
 
 
                             var excelWs_VIRUSESA_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Virus IdentificadosA" : "Virus IdentificadosA"];
-                            AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "CONSDATA_NATIONAL_VIRUSES", 6, 2, excelWs_VIRUSESA_IRAG.Index, false, ReportCountry, YearBegin, YearEnd, 1, Inusual, AreaID_, Sentinel);
+                            AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "CONSDATA_NATIONAL_VIRUSES", 6, 2, excelWs_VIRUSESA_IRAG.Index, false, ReportCountry, YearBegin, YearEnd, 1, Inusual, AreaID_, Sentinel);
 
                             var excelWs_VIRUSES_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Virus Identificados" : "Virus Identificados"];
-                            AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID, Month, SE, StartDate, EndDate, excelWorkBook, "CONSDATA_NATIONAL_VIRUSES", 6, 2, excelWs_VIRUSES_IRAG.Index, false, ReportCountry, YearEnd, YearEnd, 1, Inusual, AreaID_, Sentinel);
+                            AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "CONSDATA_NATIONAL_VIRUSES", 6, 2, excelWs_VIRUSES_IRAG.Index, false, ReportCountry, YearEnd, YearEnd, 1, Inusual, AreaID_, Sentinel);
 
+                            var excelWs_Graficos_Gravedad = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Grafico Gravedad" : "Grafico Gravedad"];
+                            AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "CONSDATA_GRAVEDAD", 3, 3, excelWs_Graficos_Gravedad.Index, false, ReportCountry, YearEnd, YearEnd, 1, Inusual, AreaID_, Sentinel);
+
+
+                            var excelWs_Graficos_Edad = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Graficos EDAD" : "Graficos EDAD"];
+                            AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "CONSDATA_GRAVEDAD_by_AGE", 3, 3, excelWs_Graficos_Edad.Index, false, ReportCountry, YearEnd, YearEnd, 1, Inusual, AreaID_, Sentinel);
+
+                            var excelWs_Comorbilidades = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Comorbilidades" : "Comorbilidades"];
+                            AppendDataToExcel_CONSDATA(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "CONSDATA_COMORBILIDADES", 3, 2, excelWs_Comorbilidades.Index, false, ReportCountry, YearEnd, YearEnd, 1, Inusual, AreaID_, Sentinel, 0, 0);
+                            AppendDataToExcel_CONSDATA(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "CONSDATA_COMORBILIDADES", 3, 13, excelWs_Comorbilidades.Index, false, ReportCountry, YearEnd, YearEnd, 1, Inusual, AreaID_, Sentinel, 1, 0);
+                            AppendDataToExcel_CONSDATA(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "CONSDATA_COMORBILIDADES", 3, 24, excelWs_Comorbilidades.Index, false, ReportCountry, YearEnd, YearEnd, 1, Inusual, AreaID_, Sentinel, 0, 1);
+
+
+                            var excelWs_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "IRAG" : "IRAG"];
+                            // Del Torax
+                            var id_hospital = db.Institutions.Where(z => z.CountryID == 15 && z.FullName.Contains("del Torax")).FirstOrDefault().ID;
+                            AppendDataToExcel_CONSDATA(Languaje_, CountryID_, RegionID_, null, Convert.ToInt32(id_hospital), Month, SE, StartDate, EndDate, excelWorkBook, "CONSDATA_IRAG", 6, 1, excelWs_IRAG.Index, false, ReportCountry, YearEnd, YearEnd, 1, Inusual, AreaID_, Sentinel, 0, 0);
+
+                            // SAN PEDRO SULA IHSS
+                            id_hospital = db.Institutions.Where(z => z.CountryID == 15 && z.FullName.Contains("SULA IHSS")).FirstOrDefault().ID;
+                            AppendDataToExcel_CONSDATA(Languaje_, CountryID_, RegionID_, null, Convert.ToInt32(id_hospital), Month, SE, StartDate, EndDate, excelWorkBook, "CONSDATA_IRAG", 6, 12, excelWs_IRAG.Index, false, ReportCountry, YearEnd, YearEnd, 1, Inusual, AreaID_, Sentinel, 0, 0);
+
+                            // HOSPITAL MARIO CATARINO RIVAS
+                            id_hospital = db.Institutions.Where(z => z.CountryID == 15 && z.FullName.Contains("Catarino Rivas")).FirstOrDefault().ID;
+                            AppendDataToExcel_CONSDATA(Languaje_, CountryID_, RegionID_, null, Convert.ToInt32(id_hospital), Month, SE, StartDate, EndDate, excelWorkBook, "CONSDATA_IRAG", 6, 23, excelWs_IRAG.Index, false, ReportCountry, YearEnd, YearEnd, 1, Inusual, AreaID_, Sentinel, 0, 0);
+
+                            //HOSPITAL MILITAR
+                            id_hospital = db.Institutions.Where(z => z.CountryID == 15 && z.FullName.Contains("Militar")).FirstOrDefault().ID;
+                            AppendDataToExcel_CONSDATA(Languaje_, CountryID_, RegionID_, null, Convert.ToInt32(id_hospital), Month, SE, StartDate, EndDate, excelWorkBook, "CONSDATA_IRAG", 6, 34, excelWs_IRAG.Index, false, ReportCountry, YearEnd, YearEnd, 1, Inusual, AreaID_, Sentinel, 0, 0);
+
+                            //IHSS Tegucigalpa
+                            id_hospital = db.Institutions.Where(z => z.CountryID == 15 && z.FullName.Contains("ESPECIALIDADES IHSS")).FirstOrDefault().ID;
+                            AppendDataToExcel_CONSDATA(Languaje_, CountryID_, RegionID_, null, Convert.ToInt32(id_hospital), Month, SE, StartDate, EndDate, excelWorkBook, "CONSDATA_IRAG", 6, 45, excelWs_IRAG.Index, false, ReportCountry, YearEnd, YearEnd, 1, Inusual, AreaID_, Sentinel, 0, 0);
+
+                            // Nacional
+                            //AppendDataToExcel_CONSDATA(Languaje_, CountryID_, RegionID_, null, 0, Month, SE, StartDate, EndDate, excelWorkBook, "CONSDATA_IRAG", 6, 35, excelWs_IRAG.Index, false, ReportCountry, YearEnd, YearEnd, 1, Inusual, AreaID_, Sentinel, 0, 0);
+
+                            // Leyendas
+                            var excelWs_Leyendas = excelWorkBook.Worksheets["Leyendas"];
+                            ConfigToExcel_FLUID(CountryID, Languaje_, RegionID_, Year, YearBegin, YearEnd, StartDate, EndDate, HospitalID_, excelWorkBook, "Leyendas", 1, excelWs_Leyendas.Index, false);
 
                         }
                         else if (reportTemplate == "FM1")
@@ -2371,7 +2459,8 @@ namespace Paho.Controllers
                     {
                         while (reader.Read())
                         {
-                            var col = 1;
+                            //var col = 1;
+                            var col = startColumn;
                             //&& insert_row == true
                             if (row > startRow && insert_row == true) excelWorksheet.InsertRow(row, 1);
 
@@ -2410,7 +2499,7 @@ namespace Paho.Controllers
             //excelWorksheet.DeleteRow(row, 2);
         }
 
-        private void ConfigToExcel_FLUID(int countryId, string languaje_country, int? regionId, int? year, int? hospitalId, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int sheet, bool? insert_row)
+        private void ConfigToExcel_FLUID(int countryId, string languaje_country, int? regionId, int? year, int? yearBegin, int? yearEnd, DateTime? StartDate, DateTime? EndDate,  int? hospitalId, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int sheet, bool? insert_row)
         {
             var excelWorksheet = excelWorkBook.Worksheets["Leyendas"];
             //var excelWorksheet = excelWorkBook.Worksheets[sheet];
@@ -2418,6 +2507,15 @@ namespace Paho.Controllers
             if (year != null)
             {
                 excelWorksheet.Cells[2, 1].Value = year.ToString();
+            }
+
+            if (yearBegin != null)
+            {
+                excelWorksheet.Cells[2, 10].Value = yearBegin.ToString();
+            }
+            if (yearEnd != null)
+            {
+                excelWorksheet.Cells[2, 11].Value = yearEnd.ToString();
             }
 
             if (hospitalId != null && hospitalId > 0)
@@ -2440,6 +2538,57 @@ namespace Paho.Controllers
                 excelWorksheet.Cells[2, 3].Value = Pais.Name.ToString();
             }
 
+            // EW calculate
+
+            if (StartDate != null && EndDate != null)
+            {
+                if (StartDate.Value.Year == EndDate.Value.Year)
+                {
+                    excelWorksheet.Cells[2, 13].Value = GetWeekNumber (Convert.ToDateTime(StartDate));
+                    excelWorksheet.Cells[2, 14].Value = GetWeekNumber(Convert.ToDateTime(EndDate));
+                }
+                else if (EndDate != null)
+                {
+                    excelWorksheet.Cells[2, 13].Value = 1;
+                    excelWorksheet.Cells[2, 14].Value = GetWeekNumber(Convert.ToDateTime(EndDate));
+                }
+            }  else if ( yearEnd != null)
+            {
+                excelWorksheet.Cells[2, 13].Value = 1;
+                if (yearEnd < DateTime.Now.Year )
+                {
+                    var date_dummy = new DateTime(Convert.ToInt16( yearEnd), 12, 26); 
+                    
+                    excelWorksheet.Cells[2, 14].Value = GetWeekNumber(date_dummy);
+                } else
+                {
+                    excelWorksheet.Cells[2, 14].Value = GetWeekNumber(DateTime.Now);
+                }
+                
+            } else if (year != null)
+            {
+                excelWorksheet.Cells[2, 13].Value = 1;
+                if (year < DateTime.Now.Year)
+                {
+                    var date_dummy = new DateTime(Convert.ToInt16(year), 12, 26); ;
+
+                    excelWorksheet.Cells[2, 14].Value = GetWeekNumber(date_dummy);
+                }
+                else
+                {
+                    excelWorksheet.Cells[2, 14].Value = GetWeekNumber(DateTime.Now);
+                }
+
+            }
+
+        }
+
+        public static int GetWeekNumber( DateTime date)
+        {
+            int daysToAdd = date.DayOfWeek != DayOfWeek.Sunday ? DayOfWeek.Thursday - date.DayOfWeek : (int)DayOfWeek.Thursday - 7;
+            date = date.AddDays(daysToAdd);
+            var currentCulture = CultureInfo.CurrentCulture;
+            return currentCulture.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
         }
 
         private void ConfigGraph_FLUID(int? year, ExcelWorkbook excelWorkBook, int sheet)
@@ -2453,6 +2602,158 @@ namespace Paho.Controllers
 
             //var seriesCC = LineChart.Series.Add(ExcelRange.GetAddress(7, nCol, 59, nCol), ExcelRange.GetAddress(7, 2, 59, 2));
 
+        }
+
+        private static void AppendDataToExcel_CONSDATA(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId = null, int? Sentinel = null, int? UCI = null, int? Fallecidos = null)
+        {
+
+            var excelWorksheet = excelWorkBook.Worksheets[sheet];
+            var row = startRow;
+
+            var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            using (var con = new SqlConnection(consString))
+            {
+                using (var command = new SqlCommand(storedProcedure, con) { CommandType = CommandType.StoredProcedure })
+                {
+                    command.Parameters.Clear();
+                    command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
+                    command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
+                    command.Parameters.Add("@Languaje", SqlDbType.Text).Value = languaje_;
+                    command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
+                    command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
+                    command.Parameters.Add("@Mes_", SqlDbType.Int).Value = month;
+                    command.Parameters.Add("@SE", SqlDbType.Int).Value = se;
+                    command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
+                    command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
+                    command.Parameters.Add("@yearFrom", SqlDbType.Int).Value = YearFrom;
+                    command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
+                    command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;
+                    command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;
+                    if (UCI > 0)
+                        command.Parameters.Add("@UCI", SqlDbType.Int).Value = UCI;
+                    if (Fallecidos > 0)
+                        command.Parameters.Add("@Fallecidos", SqlDbType.Int).Value = Fallecidos;
+
+                    con.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            //var col = 1;
+                            var col = startColumn;
+                            //&& insert_row == true
+                            if (row > startRow && insert_row == true) excelWorksheet.InsertRow(row, 1);
+
+                            for (var i = 0; i < reader.FieldCount; i++)
+                            {
+                                var cell = excelWorksheet.Cells[startRow, col];
+                                if (reader.GetValue(i) != null)
+                                {
+                                    int number;
+                                    bool isNumber = int.TryParse(reader.GetValue(i).ToString(), out number);
+
+                                    if (isNumber)
+                                    {
+                                        excelWorksheet.Cells[row, col].Value = number;
+                                    }
+                                    else
+                                    {
+                                        excelWorksheet.Cells[row, col].Value = reader.GetValue(i).ToString();
+                                    }
+                                    excelWorksheet.Cells[row, col].StyleID = cell.StyleID;
+
+                                }
+                                col++;
+                            }
+
+                            row++;
+                        }
+                    }
+                    command.Parameters.Clear();
+                    con.Close();
+
+                }
+            }
+
+            // Apply only if it has a Total row at the end and hast SUM in range, i.e. SUM(A1:A4)
+            //excelWorksheet.DeleteRow(row, 2);
+        }
+
+        private static void AppendDataToExcel_R4(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId = null, int? Sentinel = null)
+        {
+
+            var excelWorksheet = excelWorkBook.Worksheets[sheet];
+            var row = startRow;
+
+            var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            using (var con = new SqlConnection(consString))
+            {
+                using (var command = new SqlCommand(storedProcedure, con) { CommandType = CommandType.StoredProcedure })
+                {
+                    command.Parameters.Clear();
+                    command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
+                    command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
+                    command.Parameters.Add("@Languaje", SqlDbType.Text).Value = languaje_;
+                    command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
+                    command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
+                    command.Parameters.Add("@Mes_", SqlDbType.Int).Value = month;
+                    command.Parameters.Add("@SE", SqlDbType.Int).Value = se;
+                    command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
+                    command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
+                    command.Parameters.Add("@yearFrom", SqlDbType.Int).Value = YearFrom;
+                    command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
+                    command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;
+                    command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;
+                    command.Parameters.Add("@Area_ID", SqlDbType.Int).Value = AreaId;
+                    command.Parameters.Add("@Sentinel", SqlDbType.Int).Value = Sentinel;
+
+                    if (excelWorksheet.Name.IndexOf("_INF_") > 0)
+                        command.Parameters.Add("@VirusType", SqlDbType.Text).Value = "INF";
+                    else if (excelWorksheet.Name.IndexOf("_VRS_") > 0 || excelWorksheet.Name.IndexOf("_RSV_") > 0)
+                        command.Parameters.Add("@VirusType", SqlDbType.Text).Value = "VRS";
+
+                    con.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var col = 1;
+                            //&& insert_row == true
+                            if (row > startRow && insert_row == true) excelWorksheet.InsertRow(row, 1);
+
+                            for (var i = 0; i < reader.FieldCount; i++)
+                            {
+                                var cell = excelWorksheet.Cells[startRow, col];
+                                if (reader.GetValue(i) != null)
+                                {
+                                    int number;
+                                    bool isNumber = int.TryParse(reader.GetValue(i).ToString(), out number);
+
+                                    if (isNumber)
+                                    {
+                                        excelWorksheet.Cells[row, col].Value = number;
+                                    }
+                                    else
+                                    {
+                                        excelWorksheet.Cells[row, col].Value = reader.GetValue(i).ToString();
+                                    }
+                                    excelWorksheet.Cells[row, col].StyleID = cell.StyleID;
+
+                                }
+                                col++;
+                            }
+
+                            row++;
+                        }
+                    }
+                    command.Parameters.Clear();
+                    con.Close();
+
+                }
+            }
+
+            // Apply only if it has a Total row at the end and hast SUM in range, i.e. SUM(A1:A4)
+            //excelWorksheet.DeleteRow(row, 2);
         }
 
         private void AppendDataToExcel_ConsolidadoCarga(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se,
