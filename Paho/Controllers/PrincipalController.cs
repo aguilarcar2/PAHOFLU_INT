@@ -165,6 +165,7 @@ namespace Paho.Controllers
 
             ViewBag.DashbUrl = dashbUrl;
             ViewBag.DashbTitle = dashbTitle;
+            ViewBag.DisclaimerMap = "The designations employed and the presentation of the material in these maps do not imply the expression of any opinion whatsoever on the part of the Secretariat of the Pan American Health Organization concerning the legal status of any country, territory, city or area or of its authorities, or concerning the delimitation of its frontiers or boundaries. Dotted and dashed lines on maps represent approximate border lines for which there may not yet be full agreement.";
             //****
 
             return View(PrincipalViewModel);
