@@ -295,6 +295,7 @@ namespace Paho.Models
         //public int? UsrCtry { get; set; }
         public bool? SARI { get; set; }
         public bool? ILI { get; set; }
+        public IEnumerable<LookupView<Institution>> InstitutionsWithServices { get; set; }
     }
 
     public class SummaryJMViewModel             //#### CAFQ: Summary Jamaica
@@ -696,7 +697,6 @@ namespace Paho.Models
         public virtual State State { get; set; }
         public virtual ICollection<Hamlet> Hamlets { get; set; }
     }
-//}
 
 	public class Hamlet                             //#### CAFQ: 181018
     {
@@ -1122,6 +1122,7 @@ namespace Paho.Models
         public DateTime? AntiViralDate { get; set; }
         public DateTime? AntiViralDateEnd { get; set; }
         public int? AntiViralType { get; set; }
+        public string AntiViralTypeOther { get; set; }
         public int? OseltaDose { get; set; }
         public string AntiViralDose { get; set; }
         public int? AntiViralDays { get; set; }
@@ -1940,6 +1941,7 @@ namespace Paho.Models
                    p.AntiViralDate,
                    p.AntiViralDateEnd,
                    p.AntiViralType,
+                   p.AntiViralTypeOther,
                    p.Antibiotic,
                    p.AntibioticName,
                    p.OseltaDose,

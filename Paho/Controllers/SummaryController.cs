@@ -55,7 +55,7 @@ namespace Paho.Controllers
                 else
                 {
                     institutions = db.Institutions.OfType<Hospital>()
-                                   .Where(i => i.ID == user.Institution.ID);
+                                   .Where(i => i.ID == user.Institution.ID || (i.Father_ID == user.Institution.ID));
                 }
             }
 
@@ -78,15 +78,31 @@ namespace Paho.Controllers
 
                 if (institutionsDisplay.Count() > 1)
                 {
-                    //var all = new LookupView<Institution> { Id = "0", Name = "-- Todo(a)s --" };
-                    var all = new LookupView<Institution> { Id = "0", Name = getMsg("msgGeneralMessageAll") };
+                    var all = new LookupView<Institution> { Id = "0", Name = getMsg("msgGeneralSelect") };
                     institutionsDisplay.Insert(0, all);
-
                 }
 
                 SummaryViewModel.Institutions = institutionsDisplay;
-            };
 
+                //****
+                var instWithServ = db.Institutions.OfType<Hospital>()
+                                        .Where(i => i.CountryID == user.Institution.CountryID && i.AccessLevel == AccessLevel.Service)
+                                        .Select(c => new
+                                        {
+                                            Id = c.Father_ID
+                                        })
+                                        .Distinct()
+                                        .ToArray();
+
+                SummaryViewModel.InstitutionsWithServices = db.Institutions.OfType<Hospital>()
+                                                                .Where(i => i.CountryID == user.Institution.CountryID && i.AccessLevel == AccessLevel.Service)
+                                                                .Select(c => new LookupView<Institution>
+                                                                {
+                                                                    Id = c.Father_ID.ToString()
+                                                                })
+                                                                .Distinct()
+                                                                .ToArray();
+            };
 
             var AgeGroupDisplay = db.CatAgeGroup.Where(y => y.id_country == user.Institution.CountryID).OrderBy(z => z.id_conf_country).ToList();
             //.Select(x => x.AgeGroup)

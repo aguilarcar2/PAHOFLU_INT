@@ -1364,8 +1364,30 @@ function SummaryViewModel(app, dataModel) {
         }
     }
 
+    self.IsTieneServicios = function (myArray, Valor) {
+        var vOK = false;
+        for (var i = 0; i < myArray.length; i++) {
+            if (myArray[i].Id === Valor) {
+                vOK = true;
+            }
+        }
+        return vOK
+    };
+
     self.GetSummayItems = function () {
-        //console.log("self.GetSummayItems->START_1068");
+        if (self.selectedHospitalId() == 0) {
+            alert(msgViewSummaryAlertSelectHospital);
+            return;
+        }
+        if ((typeof self.HospitalDate() == "undefined") || self.HospitalDate() == "" || self.HospitalDate() == null) {
+            alert(msgViewSummaryAlertSelectDate);
+            return;
+        }
+        if (self.IsTieneServicios(institutionsWithServ, self.selectedHospitalId())) {
+            alert(msgViewSummaryAlertServices);
+            return
+        }
+
         if ((typeof self.selectedHospitalId() != "undefined") && self.selectedHospitalId() != "" && (typeof self.HospitalDate() != "undefined") && self.HospitalDate() != "") {
             DatetoSend = jQuery.type(self.HospitalDate()) === 'date' ? self.HospitalDate() : parseDate($("#HospitalDate").val(), date_format_)
             $.postJSON(app.dataModel.getSummayDetailsUrl, {

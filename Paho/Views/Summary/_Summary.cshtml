@@ -970,29 +970,36 @@
 </div>
 
 
-
-
-
-
-
 <script type="text/javascript">
+    function searchTieneServicios(myArray, Valor){
+        var vOK = false;
+        for (var i=0; i < myArray.length; i++) {
+            if (myArray[i].Id === Valor) {
+                vOK = true;
+            }
+        }
+        return vOK
+    }
+
     var countries = @Html.Raw(Json.Encode(Model.Countries));
     var institutions = @Html.Raw(Json.Encode(Model.Institutions));
     var CatAgeGroup = @Html.Raw(Json.Encode(Model.CatAgeGroup));
     var selcty = @ViewBag.UsrCtry;
     var SARI = @Html.Raw(Json.Encode(Model.SARI));
     var ILI = @Html.Raw(Json.Encode(Model.ILI));
-    //var SurvDefecto =
+    var institutionsWithServ =  @Html.Raw(Json.Encode(Model.InstitutionsWithServices));
 
     var SurvGlobal = (SARI == true && ILI == true) ?
         "1" : ( (SARI == true) ? "1" : ((ILI == true) ? "2" : "0") );
 
+    //**** Mensajes en tabla Resource
     var PAHOFLU_date_format = "@(Html.Raw(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgDateFormat")))";
     var moment_date_format = "@(Html.Raw(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgDateFormatMoment")))";
     var ISO_date_format = "@(Html.Raw(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgDateFormatISO")))";
     var DatePicker_date_format = "@(Html.Raw(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgDateFormatDP")))";
-
-    // Mensajes en tabla Resource
+    var msgViewSummaryAlertSelectHospital = "@(Html.Raw(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryAlertSelectHospital")))";
+    var msgViewSummaryAlertSelectDate = "@(Html.Raw(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryAlertSelectDate")))";
+    var msgViewSummaryAlertServices = "@(Html.Raw(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryAlertServices")))";    
 
     //***************************************
     $('a#SummaryM').addClass("active");        //#### CAFQ: 180806

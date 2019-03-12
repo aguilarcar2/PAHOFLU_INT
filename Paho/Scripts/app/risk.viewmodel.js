@@ -98,6 +98,19 @@
 
     self.AntiViralDateEnd = ko.observable(new Date());
     self.AntiViralType = ko.observable(null);
+    self.AntiViralTypeOther = ko.observable(null);
+    self.AntiViralTypeOtherVisible = ko.computed(function () {
+        var bResu = false;
+
+        if (self.UsrCountry() == 25) {              // 25: Suriname
+            if (self.AntiViralType() == 6)
+                bResu = true;
+        }
+        if (bResu == false)
+            self.AntiViralTypeOther(null);
+
+        return bResu;
+    }, self);
     self.AStartDate = ko.observable(new Date());
     self.OseltaDose = ko.observable("");
     self.AntiViralDose = ko.observable("");
@@ -487,6 +500,7 @@
         self.AntiViralDate(null);
         self.AntiViralDateEnd(null);
         self.AntiViralType("");
+        self.AntiViralTypeOther(null);
         self.OseltaDose("");
         self.AntiViralDose("");
         self.AntiViralDays();
@@ -593,6 +607,7 @@
                 if (data.AntiViralDateEnd) self.AntiViralDateEnd(moment(data.AntiViralDateEnd).clone().toDate()); else self.AntiViralDateEnd(null);
                 
                 self.AntiViralType(data.AntiViralType);
+                self.AntiViralTypeOther(data.AntiViralTypeOther);
                 self.OseltaDose(data.OseltaDose);
                 self.AntiViralDose(data.AntiViralDose);
                 self.AntiViralDays(data.AntiViralDays);
@@ -890,6 +905,7 @@
                 AntiViralDate: $("#AntiViralDate").val() == "" ? null : moment(date_antiviral).format(date_format_ISO),
                 AntiViralDateEnd: $("#AntiViralDateEnd").val() == "" ? null : moment(date_antiviral_end).format(date_format_ISO),
                 AntiViralType: self.AntiViralType(),
+                AntiViralTypeOther: self.AntiViralTypeOther() == null ? null : self.AntiViralTypeOther().toLocaleUpperCase(),
                 OseltaDose: self.OseltaDose(),
                 AntiViralDose: self.AntiViralDose(),
                 AntiViralDays: self.AntiViralDays(),

@@ -1,7 +1,9 @@
 ﻿@model Paho.Models.CaseViewModel
 <!-- ko with: home -->
 <div class="row">
+    <!-- Parametros para busqueda -->
     <div class="col-md-12" data-bind="with: app.Views.Home">
+        <!-- Pais / Areas / Region / Establecimientos / Labs -->
         <div class="row" style="margin-bottom:7px; margin-top:1em;">
             @if (Model.DisplayCountries)
             {
@@ -69,7 +71,7 @@
                 </div>
             }
         </div>
-
+        <!-- Numero de documento / Condición de egreso -->
         <div class="row" style="margin-bottom:7px; margin-top:7px;" data-bind="visible: shouldcaselist">
             <div class="col-md-4">
                 <div class='input-group'>
@@ -98,17 +100,11 @@
                         <option value = "D">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgSCaseStatusEgressMedicalDeceased"))</option>
                         <option value="R">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgSCaseStatusEgressMedicalReferred"))</option>
                         <option value = "O">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_msgSCaseStatusEgressMedicalOther"))</option>
-
-
                      </select>
-
-
                  </div>
-
-
              </div>
         </div>
-
+        <!-- Nombre / Apellidos -->
         <div class="row" style="margin-bottom:7px; margin-top:7px;" data-bind="visible: shouldcaselist">
             <div class="col-md-4">
                 <div class='input-group'>
@@ -149,6 +145,7 @@
             </div>
         </div>
 		}*@
+        <!-- Fecha de Notificacion START / Fecha de Notificacion END -->
         @if(ViewBag.UsrCtry != 7)
         {
             <div class="row" style="margin-bottom:7px; margin-top:7px;" data-bind="visible: shouldcaselist">
@@ -170,9 +167,8 @@
                 </div>
             </div>
         }
-
+        <!-- Record ID / Boton Search -->
         <div class="row" style="margin-bottom:7px; margin-top:7px;" data-bind="visible: shouldcaselist">
-
 			<div class="col-md-4">
                 <div class='input-group'>
                     <span class="input-group-addon">
@@ -1710,7 +1706,13 @@
                                 <option value="4">Rimantadine</option>
 							}
                             <option value="5"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentTypeNoInfo"))</option>
+                            @if (ViewBag.UsrCtry == 25)
+                            {
+                                <option value="6">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentTypeOther"))</option>
+                            }
                         </select>
+                        &nbsp;&nbsp;
+                        <input id="AntiViralTypeOther" name="AntiViralTypeOther" type='text' class="form-control case_letter" data-bind='value: AntiViralTypeOther, visible: AntiViralTypeOtherVisible()' />
                     </div>
                     @if (ViewBag.UsrCtry != 7 && ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 18 && ViewBag.UsrCtry != 17)
                     {

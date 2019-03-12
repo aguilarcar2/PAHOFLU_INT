@@ -1175,6 +1175,7 @@ namespace Paho.Controllers
                     AntiViralDate = flucase.AntiViralDate,
                     AntiViralDateEnd = flucase.AntiViralDateEnd,
                     AntiViralType = flucase.AntiViralType,
+                    AntiViralTypeOther = flucase.AntiViralTypeOther,
                     OseltaDose = flucase.OseltaDose,
                     AntiViralDose = flucase.AntiViralDose,
                     AntiViralDays = flucase.AntiViralDays,
@@ -1293,6 +1294,7 @@ namespace Paho.Controllers
                 DateTime? AntiViralDate,
                 DateTime? AntiViralDateEnd,
                 int? AntiViralType,
+                string AntiViralTypeOther,
                 int? OseltaDose,
                 string AntiViralDose,
                 int? AntiViralDays,
@@ -1400,6 +1402,7 @@ namespace Paho.Controllers
             flucase.AntiViralDate = AntiViralDate;
             flucase.AntiViralDateEnd = AntiViralDateEnd;
             flucase.AntiViralType = AntiViralType;
+            flucase.AntiViralTypeOther = AntiViralTypeOther;
             flucase.OseltaDose = OseltaDose;
             flucase.AntiViralDose = AntiViralDose;
             flucase.AntiViralDays = AntiViralDays;
