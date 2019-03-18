@@ -14,6 +14,7 @@
     var date_sample = new Date();
     var date_ship = new Date();
     var date_close_case = new Date();
+    var date_MaxDateSystem = MaxDateSystem;
     
     //alert(app.dataModel.date_format_);
     //alert(date_format_moment);
@@ -568,7 +569,11 @@
             if (date_fever_ == null || date_fever_ == "") {
                 alert(viewValidateOnsetFeverDate);
                 self.SampleDate(null);
-            } else {
+            } else if (current_value > date_MaxDateSystem) {
+                alert(viewValidateDateEnterDateToday);
+                self.SampleDate(null);
+            }
+            else {
                 if (moment(current_value).diff(date_fever_, 'days', false) < 0) {
                     alert(viewValidateSampleDateGtOnsetFeverDate);
                     self.SampleDate(null);

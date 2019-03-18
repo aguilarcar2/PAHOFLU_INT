@@ -13,7 +13,7 @@ function ContactViewModel(app, dataModel) {
     var date_hospital = new Date();
     var date_reg_date = new Date();
     var date_DOB = new Date();
-    //var date_DOB_dummy = new Date();
+    //var date_Server = new Date();
 
     // autocomplete
     self.firstName = ko.observable();

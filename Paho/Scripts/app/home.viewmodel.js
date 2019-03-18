@@ -37,6 +37,12 @@
     self.URrpt = ko.observable(URlerpt);
 
     self.UsrCountry = ko.observable(selcty);
+    // Date of server
+    var date_format_ = app.dataModel.date_format_;
+    //var DoS_temp = (jQuery.type($("#DSrv").val()) === 'date') ? parseDate($("#DSrv").val(), date_format_) : null;
+    //self.DoS = ko.observable(DoS_temp); // Date of server
+    //console.log("Fecha del server")
+    //console.log(jQuery.type($("#DSrv").val()));
     self.UsrRegInst = ko.observable(reg_inst_usr);
     self.UsrRegSalud = ko.observable(reg_salu_usr);
     self.UsrRegPais = ko.observable(reg_pais_usr);
