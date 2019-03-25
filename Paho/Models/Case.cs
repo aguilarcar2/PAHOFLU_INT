@@ -295,6 +295,8 @@ namespace Paho.Models
         //public int? UsrCtry { get; set; }
         public bool? SARI { get; set; }
         public bool? ILI { get; set; }
+        //public int? AccessLevel_InstLogin { get; set; }
+        //public string Name_InstLogin { get; set; }
         public IEnumerable<LookupView<Institution>> InstitutionsWithServices { get; set; }
     }
 

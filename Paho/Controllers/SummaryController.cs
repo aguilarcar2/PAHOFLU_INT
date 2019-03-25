@@ -23,6 +23,8 @@ namespace Paho.Controllers
             var user = UserManager.FindById(User.Identity.GetUserId());
             var sari = user.Institution.SARI;
             var ili = user.Institution.ILI;
+            //var AccessLevel_InstLogin = user.Institution.AccessLevel;
+            //var Name_InstLogin = user.Institution.FullName;
             var DoS = DateTime.Now.ToString(getMsg("msgDatePickerConfig"));
             var date_format = getMsg("msgDateFormatDP");
 

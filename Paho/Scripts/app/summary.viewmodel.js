@@ -93,6 +93,44 @@ function SummaryYearItem(data) {
     self.ActiveHON = ko.computed(function () {
         return (self.UsrCountry() == 15) ? true : false;
     }, self);
+    //****
+    self.selectedHospitalId = ko.observable();      //####AAAA
+
+    self.UCI_OK = ko.computed(function () {
+        bResu = true;
+
+        if (self.ActiveSUR()) {
+            for (var i = 0; i < institutions.length; i++) {
+                if (institutions[i].Id === $("#combHospital1").val()) {         // Codigo de Hospital
+                    var institSelect = institutions[i].Name.toUpperCase();
+                    if (institSelect.indexOf("OTHERS") > 0)
+                        bResu = false;
+                    break;
+                }
+            }
+        }
+
+        return bResu;
+    }, self);
+
+    self.Hospitalizacion_OK = ko.computed(function () {
+        bResu = true;
+
+        if (self.ActiveSUR()) {
+            for (var i = 0; i < institutions.length; i++) {
+                if (institutions[i].Id === $("#combHospital1").val()) {         // Codigo de Hospital
+                    var institSelect = institutions[i].Name.toUpperCase();
+                    if (institSelect.indexOf("- ICU") > 0)
+                        bResu = false;
+                    break;
+                }
+            }
+        }
+
+        return bResu;
+    }, self);
+
+    //****
 }
 
 function SummayItem(data) {
@@ -103,6 +141,7 @@ function SummayItem(data) {
     self.UsrCountry = ko.observable(selcty);
     self.CaseSummaryId = data.CaseSummaryId;
     self.AgeGroup = data.AgeGroup;
+    //self.selectedHospitalId()
 
     if (self.UsrCountry() != 17)                             // 17: Jamaica #### CAFQ: 190227
         self.Surv = ko.observable(SurvGlobal);
@@ -168,6 +207,40 @@ function SummayItem(data) {
 
     self.ActiveHON = ko.computed(function () {
         return (self.UsrCountry() == 15) ? true : false;
+    }, self);
+    //****
+    self.UCI_OK = ko.computed(function () {
+        bResu = true;
+
+        if (self.ActiveSUR()) {
+            for (var i = 0; i < institutions.length; i++) {
+                if (institutions[i].Id === $("#combHospital1").val()) {         // Codigo de Hospital
+                    var institSelect = institutions[i].Name.toUpperCase();
+                    if (institSelect.indexOf("OTHERS") > 0)
+                        bResu = false;
+                    break;
+                }
+            }
+        }
+
+        return bResu;
+    }, self);
+
+    self.Hospitalizacion_OK = ko.computed(function () {
+        bResu = true;
+
+        if (self.ActiveSUR()) {
+            for (var i = 0; i < institutions.length; i++) {
+                if (institutions[i].Id === $("#combHospital1").val()) {         // Codigo de Hospital
+                    var institSelect = institutions[i].Name.toUpperCase();
+                    if (institSelect.indexOf("- ICU") > 0)
+                        bResu = false;
+                    break;
+                }
+            }
+        }
+
+        return bResu;
     }, self);
 
     //****
@@ -614,19 +687,6 @@ function SummaryViewModel(app, dataModel) {
     if(self.UsrCountry() != 17)                             // 17: Jamaica #### CAFQ: 190227
         self.Surv = ko.observable(SurvGlobal);
 
-    //console.log("Vigb1->" + self.Surv())
-    /*
-            bResu = true;
-        //----
-        if (self.ActiveHON())
-            if (self.Surv() == "2")
-                bResu = true;
-            else
-                bResu = false;
-        //----
-        return bResu;
-    */
-
     self.activecountries = ko.computed(function () {
         return $.grep(self.countries(), function (v) {
             return v.Active === true;
@@ -652,79 +712,6 @@ function SummaryViewModel(app, dataModel) {
 
     self.ColETIFST = ko.observable("");
     self.ColETIMST = ko.observable("");
-
-    //self.HospST = ko.observable();
-
-    //self.CalculateEW = function (FieldDate, FieldAct, FieldActYear) {
-    //    if ($("#" + FieldDate).val() != "") {
-    //        ////////var date_ew = new Date($("#" + FieldDate).datepicker('getDate', { dateFormat: date_format_DatePicker }));
-    //        var date_ew = new Date($("#" + FieldDate).val());
-    //        var fwky_date = new Date(moment(date_ew).year(), 0, 1).getDay();
-    //        var weekno = moment(date_ew).week();
-    //        var weeknoISO = moment(date_ew).isoWeek();
-
-    //        if (date_ew == null) {
-    //            FieldAct(null);
-    //            FieldActYear(null);
-
-    //        } else {
-
-    //            if (fwky_date > 3) {
-    //                var month = 11, day = 31;
-    //                var end_date_year_ant = new Date(moment(date_ew).year() - 1, month, day--);
-
-    //                if (weekno == 1 && moment(date_ew).month() == 0) {
-    //                    var fwky_date_ant = new Date(moment(date_ew).year() - 1, 0, 1).getDay();
-    //                    var fwdoyant = moment(end_date_year_ant).isoWeek();
-    //                    if (fwky_date_ant > 3) {
-
-    //                        FieldAct(fwdoyant - 1);
-
-    //                    } else {
-
-    //                        if (weekno == 1 && moment(date_ew).month() == 0 && fwky_date_ant <= 3) {
-    //                            FieldAct(53);
-    //                            fwdoyant = 53;
-    //                        }
-    //                        else
-    //                            FieldAct(fwdoyant);
-    //                    }
-    //                    if (FieldActYear != "")
-    //                        if (fwdoyant == 52 || fwdoyant == 53)
-    //                            FieldActYear(date_ew.getFullYear() - 1);
-    //                        else
-    //                            FieldActYear(date_ew.getFullYear());
-    //                }
-    //                else if (weekno == 1 && moment(date_ew).month() != 0) {
-    //                    FieldAct(moment(date_ew).isoWeek() - 1);
-    //                    if (FieldActYear != "")
-    //                        FieldActYear(date_ew.getFullYear());
-    //                }
-    //                else {
-    //                    FieldAct(weekno - 1);
-    //                    if (FieldActYear != "")
-    //                        FieldActYear(date_ew.getFullYear());
-    //                }
-    //            } else {
-    //                if (weekno == 1 && moment(date_ew).month() == 11) {
-    //                    var fwky_date_prox = new Date(moment(date_ew).getFullYear() + 1, 0, 1).getDay();
-
-    //                    if (fwky_date_prox > 3) {
-    //                        FieldAct(53);
-    //                        FieldActYear(date_ew.getFullYear());
-    //                    } else {
-    //                        FieldAct(weekno);
-    //                        FieldActYear(date_ew.getFullYear() + 1);
-    //                    }
-    //                } else {
-    //                    FieldAct(weekno);
-    //                    if (FieldActYear != "")
-    //                        FieldActYear(date_ew.getFullYear());
-    //                }
-    //            }
-    //        }
-    //    }
-    //};
 
     self.CalculateEW = function (FieldDate, FieldAct, FieldActYear) {
         if ($("#" + FieldDate).val() != "") {
@@ -937,6 +924,58 @@ function SummaryViewModel(app, dataModel) {
         //----
         return bResu;
     }, self);
+
+    self.UCI_OK = ko.computed(function () {
+        bResu = true;
+
+        if (self.ActiveSUR()) {
+            for (var i = 0; i < institutions.length; i++) {
+                if (institutions[i].Id === self.selectedHospitalId()) {
+                    var institSelect = institutions[i].Name.toUpperCase();
+                    if (institSelect.indexOf("- OTHERS") > 0)
+                        bResu = false;
+                    break;
+                }
+            }
+        }
+
+        return bResu;
+    }, self);
+
+    self.Hospitalizacion_OK = ko.computed(function () {
+        bResu = true;
+
+        if (self.ActiveSUR()) {
+            for (var i = 0; i < institutions.length; i++) {
+                if (institutions[i].Id === self.selectedHospitalId()) {
+                    var institSelect = institutions[i].Name.toUpperCase();
+                    if (institSelect.indexOf("- ICU") > 0)
+                        bResu = false;
+                    break;
+                }
+            }
+        }
+
+        return bResu;
+    }, self);
+
+    self.ServPedriatic_SURI = ko.computed(function () {
+        bResu = false;
+
+        if (self.ActiveSUR()) {
+            for (var i = 0; i < institutions.length; i++) {
+                if (institutions[i].Id === self.selectedHospitalId()) {
+                    var institSelect = institutions[i].Name.toUpperCase();
+                    if (institSelect.indexOf("- PEDIATRIC") > 0)  
+                        bResu = true;
+                    break;
+                }
+            }
+        }
+
+        return bResu;
+    }, self);
+
 
     //***********************  Esto es para calcular los totales de las columnas
     //****

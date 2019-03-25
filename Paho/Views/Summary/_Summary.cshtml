@@ -211,7 +211,7 @@
         }
         else
         {
-            <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 15) ?  "col-md-2" : "col-md-1")">
+            <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 15) ?  "col-md-2" : "col-md-1")" data-bind="visible: Hospitalizacion_OK()">
                 <div class='col-md-1 input-group' style='@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "padding-left:0; padding-right:0;":"") ' data-bind="visible:DisableCHI() || ActiveBOL() || NoActiveSUR() || NoActiveJAM() || ActiveHON()">
                     <span class="input-group-addon font_12" data-bind="visible:DisableCHI() || ActiveBOL() || ActiveHON()">
                         @(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelHospitalizedFemale"))
@@ -259,23 +259,26 @@
         }
         else
         {
-            <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ?  "col-md-2" : "col-md-1")">
+            <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ?  "col-md-2" : "col-md-1")" data-bind="visible: UCI_OK()">
+                <!--"UPC Femenino" : "UCI Femenino"-->
                 <div class='col-md-1 input-group' style='@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "padding-left:0; padding-right:0;":"")' data-bind="visible:DisableCHI() || ActiveBOL() || NoActiveSUR() || NoActiveJAM()">
                     <span class="input-group-addon" data-bind="visible:DisableCHI() || ActiveBOL()">
-                        <!--"UPC" : "UCI"-->
                         @((ViewBag.UsrCtry == 7) ? (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelICUFemale")) : (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelUCIFemale")))
                     </span>
                 </div>
+                <!--"UPC Masculino" : "UCI Masculino"-->
                 <div class='col-md-1 input-group' style='@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "padding-left:0; padding-right:0;":"")' data-bind="visible:DisableCHI() || ActiveBOL() || NoActiveSUR() || NoActiveJAM()">
                     <span class="input-group-addon" data-bind="visible:DisableCHI() || ActiveBOL()">
-                        <!--"UPC" : "UCI"-->
                         @((ViewBag.UsrCtry == 7) ? (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelICUMale")) : (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelUCIMale")))
                     </span>
                 </div>
+                <!--"UPC Total" : "UCI Total"-->
                 <div class='col-md-1 input-group' style='@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "padding-left:0; padding-right:0;":"")'>
-                    <span class="input-group-addon">
-                        <!--"UPC" : "UCI"-->
+                    <span class="input-group-addon" data-bind="visible: !ServPedriatic_SURI()">
                         @((ViewBag.UsrCtry == 7) ? (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelICUTotal")) : (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelUCITotal")))
+                    </span>
+                    <span class="input-group-addon" data-bind="visible: ServPedriatic_SURI()">
+                        @( (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelUCINeonatesTotal")) )
                     </span>
                 </div>
             </div>
@@ -484,7 +487,7 @@
         }
         else
         {
-            <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "col-md-2" : "col-md-1")" id="Hosp">
+            <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "col-md-2" : "col-md-1")" id="Hosp" data-bind="visible: Hospitalizacion_OK()">
                 <div class='col-md-1 input-group' data-bind="visible:DisableCHI() || ActiveBOL()">
                     <input type='text' name="HospFem" id="HospFem" class="form-control" style="padding:6px;" data-bind="value: HospFem" />
                 </div>
@@ -530,7 +533,7 @@
         }
         else
         {
-            <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "col-md-2" : "col-md-1")" id="UCI">
+            <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "col-md-2" : "col-md-1")" id="UCI" data-bind="visible: UCI_OK()">
                 <div class='col-md-1 input-group' data-bind="visible:DisableCHI() || ActiveBOL()">
                     <input type='text' name="UCIFem" id="UCIFem" class="form-control" style="padding:6px;" data-bind="value: UCIFem" />
                 </div>
@@ -712,7 +715,7 @@
         }
         else
         {
-            <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "col-md-2" : "col-md-1")">
+            <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3) ? "col-md-2" : "col-md-1")" data-bind="visible: Hospitalizacion_OK()">
                 <span class='col-md-1 input-group' data-bind="visible:DisableCHI() || ActiveBOL()">
                     <input type='text' class="form-control" style="padding:6px;" readonly="readonly" id="ColHospFST" data-bind="value: ColHospFST" />
                 </span>
@@ -746,7 +749,7 @@
         }
         else
         {
-            <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 15) ? "col-md-2" : "col-md-1")">
+            <div class="@((ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 15) ? "col-md-2" : "col-md-1")" data-bind="visible: UCI_OK()">
                 <span class='col-md-1 input-group' data-bind="visible:DisableCHI() || ActiveBOL() || ActiveHON()">
                     <input type='text' class="form-control" style="padding:6px;" readonly="readonly" id="ColUCIFST" data-bind="value: ColUCIFST" />
                 </span>
@@ -877,14 +880,15 @@
                 @if (ViewBag.SARI == true)
                 {
                     <!-- Hosp. T -->
-                    <th class="col-md-1">@(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelHospitalizedTotal"))</th>
+                    <th data-bind="visible: Hospitalizacion_OK()" class="col-md-1">@(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelHospitalizedTotal"))</th>
                     <!--IRAG T-->
                     if (ViewBag.UsrCtry == 15)
                     {
                         <th data-bind="visible: ActiveHON()" class="col-md-1">@(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelSARITotal"))</th>
                     }
                     <!-- "UPC" : "UCI" -->
-                    <th class="col-md-1">@((ViewBag.UsrCtry == 7) ? (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelICUTotal")) : (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelUCITotal")))</th>
+                    <th data-bind="visible: ServPedriatic_SURI()" class="col-md-1">@( (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelUCINeonatesTotal")) )</th>
+                    <th data-bind="visible: UCI_OK() && !ServPedriatic_SURI()" class="col-md-1">@((ViewBag.UsrCtry == 7) ? (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelICUTotal")) : (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelUCITotal")))</th>
                     <!-- "UCI IRAG" -->
                     <th data-bind="visible: ActiveHON()" class="col-md-1">@( (((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelUCISARITotal")) )</th>
                     <!--Falle. T-->
@@ -929,7 +933,7 @@
                 }
                 @if (ViewBag.SARI == true)
                 {
-                    <td>
+                    <td data-bind="visible: Hospitalizacion_OK()">
                         <span data-bind="text: ColHospTST" />
                     </td>
                     if (ViewBag.UsrCtry == 15)
@@ -938,7 +942,7 @@
                             <span data-bind="text: ColHospSARITST" />
                         </td>
                     }
-                    <td>
+                    <td data-bind="visible: UCI_OK()">
                         <span data-bind="text: ColUCITST" />
                     </td>
                     <td data-bind="visible: ActiveHON()">
@@ -947,12 +951,12 @@
                     <td>
                         <span data-bind="text: ColFalleTST" />
                     </td>
-                        <td data-bind="visible: ActiveHON()">
-                            <span data-bind="text: ColFalleSARITST" />
-                        </td>
-                        <td data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY() && !ActiveHON()">
-                            <span data-bind="text: ColNeuTST" />
-                        </td>
+                    <td data-bind="visible: ActiveHON()">
+                        <span data-bind="text: ColFalleSARITST" />
+                    </td>
+                    <td data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY() && !ActiveHON()">
+                        <span data-bind="text: ColNeuTST" />
+                    </td>
                     if (ViewBag.UsrCtry != 15)
                     {
                         <td data-bind="visible:EnableCHI() && NoActiveBOL() && NoActiveSUR() && NoActiveJAM() && NoActiveDOM() && NoActiveCAY()">
@@ -983,6 +987,7 @@
 
     var countries = @Html.Raw(Json.Encode(Model.Countries));
     var institutions = @Html.Raw(Json.Encode(Model.Institutions));
+    //console.log(institutions);
     var CatAgeGroup = @Html.Raw(Json.Encode(Model.CatAgeGroup));
     var selcty = @ViewBag.UsrCtry;
     var SARI = @Html.Raw(Json.Encode(Model.SARI));
@@ -999,7 +1004,7 @@
     var DatePicker_date_format = "@(Html.Raw(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgDateFormatDP")))";
     var msgViewSummaryAlertSelectHospital = "@(Html.Raw(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryAlertSelectHospital")))";
     var msgViewSummaryAlertSelectDate = "@(Html.Raw(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryAlertSelectDate")))";
-    var msgViewSummaryAlertServices = "@(Html.Raw(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryAlertServices")))";    
+    var msgViewSummaryAlertServices = "@(Html.Raw(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryAlertServices")))";
 
     //***************************************
     $('a#SummaryM').addClass("active");        //#### CAFQ: 180806
