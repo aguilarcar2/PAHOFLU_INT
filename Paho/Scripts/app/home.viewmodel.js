@@ -533,10 +533,17 @@
             $("#CaseStatus").attr("disabled", true);
             $("#tabs").tabs("refresh");
             if (app.Views.Hospital.Destin() != "" && app.Views.Lab.CanConclude() == true && app.Views.Hospital.HospExDate() != null) {
+                //console.log("aqui _ CaseStatus 1"); //
                 $("#CaseStatus").attr("disabled", false);
                 $('a[href="#tab-case"]').click();
             } else {
-                $('a[href="#tab-hospital"]').click();
+              //console.log("aqui _ CaseStatus2"); //
+              if (app.Views.Hospital.CaseStatus() != "") {
+                    $('a[href="#tab-contact"]').click();
+                } else {
+                    $('a[href="#tab-hospital"]').click();
+                }
+                
             }
             
             //$('#tab-case').tabs({ active:  });
@@ -549,7 +556,14 @@
             $("#tab-case").show();
             $("#CaseStatus").attr("disabled", true);
             $("#tabs").tabs("refresh");
-            $('a[href="#tab-case"]').click();
+            //console.log("aqui _ CaseStatus 3"); //
+            if(app.Views.Hospital.CaseStatus() != "") {
+                    $('a[href="#tab-contact"]').click();
+                }
+                else {
+                    $('a[href="#tab-case"]').click();
+                }
+            
 
             //} else if (app.Views.Hospital.CaseStatus() == "3" && self.UserRole() != "adm") {
         } else if (app.Views.Hospital.CaseStatus() == "3" && self.URmod_epi() != true) {
@@ -569,7 +583,13 @@
             $("#tab-case").show();
             $("#CaseStatus").attr("disabled", true);
             $("#tabs").tabs("refresh");
-            $('a[href="#tab-case"]').click();
+            //console.log("aqui _ CaseStatus 4"); //
+            if(app.Views.Hospital.CaseStatus() != "") {
+                    $('a[href="#tab-contact"]').click();
+                }
+                else {
+                    $('a[href="#tab-case"]').click();
+                }
         }
         //else if (flow_check.length > 0 && app.Views.Contact.DataStatement() == 2) {
         //    console.log("aqui _  Flow_check");
@@ -584,7 +604,13 @@
             $("#tab-case").show();
             $("#CaseStatus").attr("disabled", false);
             $("#tabs").tabs("refresh");
-            $('a[href="#tab-case"]').click();
+            //console.log("aqui _ CaseStatus 5"); //
+            if (app.Views.Hospital.CaseStatus() != "") {
+                $('a[href="#tab-contact"]').click();
+            }
+            else {
+                $('a[href="#tab-case"]').click();
+            }
         }
         else if (app.Views.Contact.SurvSARI() == true && app.Views.Hospital.IsSample() === "true" && (app.Views.Lab.FinalResult() == "" || app.Views.Hospital.Destin() == "" || app.Views.Hospital.HospExDate() == "" || app.Views.Hospital.HospExDate() == null || app.Views.Lab.CanConclude() == false)) {
             //console.log("aqui _ no processed 3"); //
@@ -623,12 +649,17 @@
             //console.log(self.URclo_case() == true);
             $("#HospExDate").attr("disabled", false);
             $("#Destin").attr("disabled", false)
-
+            //console.log("aqui _ CaseStatus 6"); //
             if (app.Views.Hospital.Destin() != "" && app.Views.Lab.CanConclude() == true && app.Views.Hospital.HospExDate() != null) {
                 $("#CaseStatus").attr("disabled", false);
                 $("#tab-case").show();
                 $("#tabs").tabs("refresh");
-                $('a[href="#tab-case"]').click();
+                if (app.Views.Hospital.CaseStatus() != "") {
+                    $('a[href="#tab-contact"]').click();
+                }
+                else {
+                    $('a[href="#tab-case"]').click();
+                }
             } else {
                 $('a[href="#tab-hospital"]').click();
             }
@@ -638,7 +669,12 @@
                 $("#tab-case").show();
                 $("#CaseStatus").attr("disabled", false);
                 $("#tabs").tabs("refresh");
-                $('a[href="#tab-case"]').click();
+                if (app.Views.Hospital.CaseStatus() != "") {
+                    $('a[href="#tab-contact"]').click();
+                }
+                else {
+                    $('a[href="#tab-case"]').click();
+                }
             }
 
         } else
@@ -656,7 +692,7 @@
 
         }
 
-        if ($("#ITy").val() == "2" && app.Views.Lab.NPHL() == true) {
+        if ($("#ITy").val() == "2" && app.Views.Lab.NPHL() == true && self.UsrCountry() != 25) {
             //console.log("aqui _ CaseStatus 2 and NPHL"); //
             $("#tab-lab :input").prop('disabled', true);
             $("#Rec_Date_NPHL").prop('disabled', false);
@@ -716,9 +752,34 @@
         //}
     };
 
+    self.EnableTestBiologicalSUR = function () {
+        //console.log("EnableTestBiologicalSUR");
+        if ($("#ITy").val() == "2" && (self.UsrCountry() == 25 && app.Views.Lab.NPHL()) && self.CanConclude() == false) {
+            // Laboratorio Nacional
+            $("#RecDate_National").attr('disabled', true);
+            $("#TempSample_National").attr('disabled', true);
+            $('input[id="Processed_National"]').attr('disabled', true);
+            $("#NoProRenId_National").attr('disabled', true);
+            $("#NoProRen_National").attr('disabled', true);
+            $("#Identification_Test_National").attr('disabled', true);
+
+            //console.log("Si cumple condiciones")
+            // Laboratorio Regional
+            $("#RecDate").attr('disabled', false);
+            $("#TempSample1").attr('disabled', false);
+            $('input[id="Processed"]').attr('disabled', false);
+            $("#NoProRenId").attr('disabled', false);
+            $("#NoReason").attr('disabled', false);
+            $("#Identification_Test").attr('disabled', false);
+        }
+
+
+    }
+
     self.EnableTestNationalGlobal = function () {
-        //console.log("EnableTestNationalGlobal");
-        if ($("#ITy").val() == "2" && self.UsrCountry() == 15 && app.Views.Lab.flow_max_record() == app.Views.Contact.flow_institution() && app.Views.Contact.Flow_Local_Institution_Lab()) {
+        console.log("EnableTestNationalGlobal");
+        console.log(app.Views.Lab.NPHL_FlowExist());
+        if ($("#ITy").val() == "2" && ( self.UsrCountry() == 15 || (self.UsrCountry() == 25 && app.Views.Lab.NPHL_FlowExist() ))  && app.Views.Lab.flow_max_record() == app.Views.Contact.flow_institution() && app.Views.Contact.Flow_Local_Institution_Lab()) {
             // Laboratorio Nacional
             $("#RecDate_National").attr('disabled', false);
             $("#TempSample_National").attr('disabled', false);
@@ -727,6 +788,7 @@
             $("#NoProRen_National").attr('disabled', false);
             $("#Identification_Test_National").attr('disabled', false);
 
+            //console.log("Opcion verdadera");
             // Laboratorio Regional
             $("#RecDate").attr('disabled', true);
             $("#TempSample1").attr('disabled', true);
@@ -737,6 +799,7 @@
             }
         else {
 
+            //console.log("Opcion falsa");
             // Laboratorio Nacional
             $("#RecDate_National").attr('disabled', true);
             $("#TempSample_National").attr('disabled', true);
@@ -787,8 +850,14 @@
         }
 
         //console.log("aqui _ LabAfter");
-        if ($("#ITy").val() == "2" && self.UsrCountry() == 15 ) {
+        //console.log(app.Views.Contact.flow_record());
+        if ($("#ITy").val() == "2" && (self.UsrCountry() == 15 || (self.UsrCountry() == 25 ) )) {
             self.EnableTestNationalGlobal();
+            //console.log(app.Views.Lab.NPHL());
+            //if (app.Views.Lab.NPHL()) {
+            //    self.EnableTestBiologicalSUR();
+            //}
+            
         }
 
         $("#PrintM1").prop('disabled', false);

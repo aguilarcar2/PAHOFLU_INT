@@ -484,13 +484,13 @@ namespace Paho.Controllers
                             var excelWs_DEATHS_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "DEATHS Sentinel Sites" : "Fallecidos IRAG"];
                             AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_DEATHS_IRAG", 8, 1, excelWs_DEATHS_IRAG.Index, false, ReportCountry, YearEnd, YearEnd, 1, Inusual, AreaID_, Sentinel);
                             var excelWs_ILI = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "ILI" : "ETI"];
-                            AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_ETI", 8, 1, excelWs_ILI.Index, false, ReportCountry, YearBegin, YearEnd, 2, Inusual, AreaID_, Sentinel);
+                            AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_ETI", 8, 1, excelWs_ILI.Index, false, ReportCountry, YearEnd, YearEnd, 2, Inusual, AreaID_, Sentinel);
                             var excelWs_VIRUSES_ILI = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "ILI VIRUSES - Sentinel" : "Virus ETI Identificados"];
                             AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_NATIONAL_VIRUSES", 6, 1, excelWs_VIRUSES_ILI.Index, false, ReportCountry, YearEnd, YearEnd, 2, Inusual, AreaID_, Sentinel);
 
                             // Leyendas
                             var excelWs_Leyendas = excelWorkBook.Worksheets["Leyendas"];
-                            ConfigToExcel_FLUID(CountryID, Languaje_, RegionID_, Year, YearBegin ,  YearEnd, StartDate, EndDate, HospitalID_, excelWorkBook, "Leyendas", 1, excelWs_Leyendas.Index, false);
+                            ConfigToExcel_FLUID(CountryID, Languaje_, RegionID_, YearEnd, YearBegin ,  YearEnd, StartDate, EndDate, HospitalID_, excelWorkBook, "Leyendas", 1, excelWs_Leyendas.Index, false);
 
                             // Manejo de graficas 
 
@@ -498,9 +498,11 @@ namespace Paho.Controllers
                             if (contador > 0)
                             {
                                 var excelWs_Graph_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "SARI Graphs" : "Gráficos IRAG"];
-                                for (int i = contador; i >= 0; i--)
+                                var excelWs_data_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "SARI" : "IRAG"];
+
+                                for (int i = 1; i <= contador; i++)
                                 {
-                                    ConfigGraph_FLUID(YearEnd - contador, excelWorkBook, excelWs_Graph_IRAG.Index);
+                                    ConfigGraph_FLUID(YearEnd - i, i, excelWorkBook, excelWs_Graph_IRAG.Index, excelWs_data_IRAG.Index);
                                 }
                             }
                         }
@@ -2591,16 +2593,23 @@ namespace Paho.Controllers
             return currentCulture.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
         }
 
-        private void ConfigGraph_FLUID(int? year, ExcelWorkbook excelWorkBook, int sheet)
+        private void ConfigGraph_FLUID(int? year, int count, ExcelWorkbook excelWorkBook, int sheet_graph, int sheet_data)
         {
-            var excelWorksheet = excelWorkBook.Worksheets[sheet];
+            var excelWorksheet_graph = excelWorkBook.Worksheets[sheet_graph];
+            var excelWorksheet_data = excelWorkBook.Worksheets[sheet_data];
 
-            var LineChart = excelWorksheet.Drawings["GS1"] as ExcelLineChart;
-            var series = LineChart.Series[0];
+            var LineChart = excelWorksheet_graph.Drawings["GS1"] as ExcelLineChart;
+            var RangeStr =  "C"+ Convert.ToString(8 + (count * 52)) + ":" +"C" + Convert.ToString(59 + (count * 52));
+            var RangeStr_2 = "E" + Convert.ToString(8 + (count * 52)) + ":" + "E" + Convert.ToString(59 + (count * 52));
+            var Rangedata_X = excelWorksheet_data.Cells[RangeStr];
+            var Rangedata_Y = excelWorksheet_data.Cells[RangeStr_2];
+            //var series = LineChart.Series[0];
 
-            series.Header = year.ToString();
+            //series.Header = year.ToString();
 
             //var seriesCC = LineChart.Series.Add(ExcelRange.GetAddress(7, nCol, 59, nCol), ExcelRange.GetAddress(7, 2, 59, 2));
+            var seriesCC = LineChart.Series.Add( Rangedata_Y, Rangedata_X);
+            seriesCC.Header = year.ToString();
 
         }
 

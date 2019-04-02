@@ -3350,7 +3350,7 @@
 
     <!-- LABORATORIO -->
     <div id="tab-lab" data-bind="with: app.Views.Lab" >
-        @if (ViewBag.NPHL_exist == true)
+        @if (ViewBag.NPHL_exist == true && ViewBag.UsrCtry != 25 )
         {
             <div class="row rowform" id="NPHL_section" data-bind="visible:NPHL_FlowExist" >
                 <div class="col-md-12">
@@ -3601,75 +3601,7 @@
 
                     </div>
                     <br />
-                    @*<div id="statuscaso2" class="collapse in">
-            <div class="row rowform">
-                <div class="col-md-3_5">
-                    <div class='input-group'>
-                        <span class="input-group-addon">
-                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabIntRecDate_2"))
-                        </span>
-                        <input id="Rec_Date_NPHL_2" name="Rec_Date_NPHL_2" type='text' class="form-control " data-bind='datepicker: Rec_Date_NPHL_2, datepickerOptions: { maxDate:@Model.DatePickerConfig,  dateFormat:"@Model.DateFormatDP"}' />
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class='input-group'>
-                        <span class="input-group-addon">
-                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigLabIntLabelTemp_2"))
-                        </span>
-                        <input id="Temp_NPHL_2" name="Tem p_NPHL_2" type='text' class="form-control case_letter" data-bind="value: Temp_NPHL_2" />
-                    </div>
-                </div>
-            </div>
-            <div class="row rowform">
-                <div class="col-md-4">
-                    <div class='input-group'>
-                        <span class="input-group-addon">
-                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabIntShipDate_2"))
-                        </span>
-                        <input id="Ship_Date_NPHL_2" name="Ship_Date_NPHL_2" type='text' class="form-control " data-bind='datepicker: Ship_Date_NPHL_2, datepickerOptions: { maxDate:@Model.DatePickerConfig,  dateFormat:"@Model.DateFormatDP"}' />
-                    </div>
-                </div>
-            </div>
-            <div class="row rowform">
-                <div class="col-md-8">
-                    <div class='input-group'>
-                        <span class="input-group-addon">
-                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabIntObservationsNPHL_2"))
-                        </span>
-                        <textarea class="form-control case_letter" rows="1" style="max-width: 900px;" id="Observation_NPHL_2" name="Observation_NPHL_2" data-bind="value: Observation_NPHL_2"></textarea>
-                    </div>
-                </div>
-            </div>
-            <div class="row rowform">
-                <div class="col-md-5">
-                    <span>
-                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabNPHLLabelProcessed_2"))
-                    </span>
-                    <label class="btn btn-default">
-                        <input type="radio" name="NPHL_Processed_2" id="NPHL_Processed_2" value="true" data-bind="checked: NPHL_Processed_2"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabNPHLLabelYes_2"))
-                    </label>
-                    <label class="btn btn-default">
-                        <input type="radio" name="NPHL_Processed_2" id="NPHL_Processed_2" value="false" checked data-bind="checked: NPHL_Processed_2"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabNPHLLabelNo_2"))
-                    </label>
-                </div>
-                <div class="col-md-5" data-bind="visible:NotShowNPHL_Processed_2">
-                    <div class='input-group'>
-                        <span class="input-group-addon">
-                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabNPHLLabelCauseNotProcessed_2"))
-                        </span>
-                        <select id="NPHL_NoProRenId_2" class="form-control" data-bind="options: CSNP,
-                optionsText: 'Name',
-                optionsValue: 'Id',
-                optionsCaption: 'Select...',
-                value: NPHL_NoProRenId_2"></select>
-                        <input id="NPHL_NoReason_2" type='text' class="form-control case_letter" data-bind="value: NPHL_NoProRen_2 , visible:NotShowNPHL_ProcessedOther_2" />
-                    </div>
-                </div>
-            </div>
-        </div>
-        <br/>*@
-                    @*
-                    <hr style="margin-top:3px; margin-bottom:3px; border-width:1px  0  0; " />*@
+ 
                     <button type="button" style="background-color:#B2BABB; color:#000000" class="btn btn-group-justified" data-toggle="collapse" data-target="#statuscaso">
                         @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabTest"))
                         <span class="glyphicon glyphicon-chevron-up span_arrow"></span>

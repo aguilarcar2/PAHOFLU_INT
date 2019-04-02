@@ -90,7 +90,7 @@
         //date_receive = typeof (date_receive) == "object" ? date_receive : parseDate(date_receive, date_format_);
         date_receive = (SampleNumber == 1) ? jQuery.type(app.Views.Lab.RecDate()) === 'date' ? app.Views.Lab.RecDate() : parseDate($("#RecDate").val(), date_format_) : (SampleNumber == 2) ? jQuery.type(app.Views.Lab.RecDate2()) === 'date' ? app.Views.Lab.RecDate2() : parseDate($("#RecDate2").val(), date_format_) : (SampleNumber == 3) ? jQuery.type(app.Views.Lab.RecDate3()) === 'date' ? app.Views.Lab.RecDate3() : parseDate($("#RecDate3").val(), date_format_) : null;
 
-        if (date_receive == null && (self.UsrCountry() == 15 || self.UsrCountry() == 25))
+        if (date_receive == null && (self.UsrCountry() == 15 || (self.UsrCountry() == 25 )))
         {
             date_receive = (SampleNumber == 1) ? jQuery.type(app.Views.Lab.RecDate_National()) === 'date' ? app.Views.Lab.RecDate_National() : parseDate($("#RecDate_National").val(), date_format_) :  null;
         }
@@ -789,7 +789,7 @@ function LabViewModel(app, dataModel) {
             var date_shipping_date = $("#ShipDate").val() == "" ? null : jQuery.type(app.Views.Hospital.ShipDate()) === 'date' ? app.Views.Hospital.ShipDate() : parseDate(app.Views.Hospital.ShipDate(), date_format_);
 
 
-            if ($("#Rec_Date_NPHL").length > 0 && self.NPHL_FlowExist == true) {
+            if ($("#Rec_Date_NPHL").length > 0 && self.NPHL_FlowExist() == true) {
 
                 var date_Ship_Date_NPHL = jQuery.type(self.Ship_Date_NPHL()) === 'date' ? self.Ship_Date_NPHL() : parseDate(self.Ship_Date_NPHL(), date_format_);
 
@@ -937,7 +937,7 @@ function LabViewModel(app, dataModel) {
     });
 
     self.RecDate_National.subscribe(function (newRecDate_National) {
-        if (self.UsrCountry() == 15 || self.UsrCountry() == 25) {
+        if (self.UsrCountry() == 15 || (self.UsrCountry() == 25 && self.NPHL_FlowExist())) {
             if (self.hasReset() != true && newRecDate_National != "") {
                 var current_value = jQuery.type(newRecDate_National) === 'date' ? newRecDate_National : parseDate(newRecDate_National, date_format_);
                 var date_sample_date_ = jQuery.type(app.Views.Hospital.SampleDate()) === 'date' ? app.Views.Hospital.SampleDate() : parseDate(app.Views.Hospital.SampleDate(), date_format_);
@@ -1114,7 +1114,7 @@ function LabViewModel(app, dataModel) {
         //console.log("flow_max - " + self.flow_max_record());
         //console.log("flow_institution - " + app.Views.Contact.flow_institution());
         //console.log(" flow_record " + self.flow_max_record() == app.Views.Contact.flow_institution());
-        if ($("#ITy").val() == "2" && (self.UsrCountry() == 15 || self.UsrCountry() == 25) && self.flow_max_record() == app.Views.Contact.flow_institution()) {
+        if ($("#ITy").val() == "2" && (self.UsrCountry() == 15 || (self.UsrCountry() == 25 && self.NPHL_FlowExist())) && self.flow_max_record() == app.Views.Contact.flow_institution()) {
             return true;
             }
         else {

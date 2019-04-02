@@ -2958,14 +2958,9 @@ namespace Paho.Controllers
                             CTSubType_2 = labTestViewModel.CTSubType_2,
                             CTRLSubType_2 = labTestViewModel.CTRLSubType_2,
                             TestResultID_VirusSubType_2 = labTestViewModel.TestResultID_VirusSubType_2,
-
-                            //InfB = labTestViewModel.InfB,
                             VirusLineageID = labTestViewModel.VirusLineageID,
                             CTLineage = labTestViewModel.CTLineage,
                             CTRLLineage = labTestViewModel.CTRLLineage,
-                            //ParaInfI = labTestViewModel.ParaInfI,
-                            //ParaInfII = labTestViewModel.ParaInfII,
-                            //ParaInfIII = labTestViewModel.ParaInfIII,
                             RNP = labTestViewModel.RNP,
                             CTRLRNP = labTestViewModel.CTRLRNP,
                             CTRLNegative = labTestViewModel.CTRLNegative,
@@ -2977,9 +2972,7 @@ namespace Paho.Controllers
                             statement_flucase = Statement_Flucase,
                             inst_cnf_orig = Institution_Conf_Original,
                             inst_conf_end_flow_by_virus = Inst_Conf_End_Flow_By_Virus,
-                            //RSV = labTestViewModel.RSV,
-                            //Adenovirus = labTestViewModel.Adenovirus,
-                            //Metapneumovirus = labTestViewModel.Metapneumovirus,
+ 
                             FluCaseID = flucase.ID
                         }
                     );
@@ -3004,7 +2997,7 @@ namespace Paho.Controllers
             var Sample_3_process = flucase.CaseLabTests.Where(x => x.SampleNumber == 3).OrderBy(y => y.flow_test);
             var flow_complete_Sample_3 = (Sample_3_process.Count() > 0) ? false : (flucase.SampleDate3 != null && flucase.Processed3 != null) ? (flucase.Processed3 == false) ? true : false : true;
 
-            var any_lab_nphl_in_flow = db.InstitutionsConfiguration.Where(z => z.InstitutionParentID == flucase.HospitalID && z.InstitutionTo.NPHL == true).Any();
+            var any_lab_nphl_in_flow = db.InstitutionsConfiguration.Where(z => z.InstitutionParentID == flucase.HospitalID && z.InstitutionTo.NPHL == true && z.InstitutionParent.CountryID != 25).Any();
 
             var actual_flow_Sample_1 =  0;
             var preview_flow_sample_1 = 0;
@@ -3081,7 +3074,7 @@ namespace Paho.Controllers
 
             if (flucase.SampleDate != null)
             {
-                if  (user.Institution.NPHL == true) {
+                if  (user.Institution.NPHL == true  && user.Institution.CountryID != 25) {
                     if (flucase.NPHL_Processed != null)
                     {
                         data_sample_1 = true;
@@ -3110,7 +3103,7 @@ namespace Paho.Controllers
 
             if (flucase.SampleDate2 != null)
             {
-                if (user.Institution.NPHL == true)
+                if (user.Institution.NPHL == true && user.Institution.CountryID != 25)
                 {
                     if (flucase.NPHL_Processed_2 != null)
                     {
@@ -3140,7 +3133,7 @@ namespace Paho.Controllers
 
             if (flucase.SampleDate3 != null)
             {
-                if (user.Institution.NPHL == true)
+                if (user.Institution.NPHL == true && user.Institution.CountryID != 25)
                 {
                     if (flucase.NPHL_Processed_3 != null)
                     {
@@ -3171,7 +3164,7 @@ namespace Paho.Controllers
             data_sample = data_sample_1 & data_sample_2 & data_sample_3;
 
 
-            if ((user.Institution is Lab && existrecordlabtest == true) || user.Institution.NPHL == true)
+            if ((user.Institution is Lab && existrecordlabtest == true) || (user.Institution.NPHL == true && user.Institution.CountryID != 25))
             {
                 var institutionsConfiguration = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(i => i.InstitutionToID == user.Institution.ID && i.InstitutionParentID == flucase.HospitalID);
                 var flow_temp = institutionsConfiguration.First().Priority;

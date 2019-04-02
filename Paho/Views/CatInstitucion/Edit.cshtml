@@ -93,6 +93,9 @@
             @Html.LabelFor(model => model.Father_ID, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgParentInstitution", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
             <div class="col-md-10">
                 @Html.DropDownList("Father_ID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.EditorFor(model => model.Father_ID, null,  "Father_ID_hidd" )
+                
+                @*@Html.ValidationMessageFor(model => model.Father_ID, "", new { @class = "text-danger" })*@
             </div>
         </div>
         <!-- SARI -->

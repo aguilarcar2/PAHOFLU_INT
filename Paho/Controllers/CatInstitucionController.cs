@@ -329,8 +329,10 @@ namespace Paho.Controllers
             var regPaisQuery = (from d in db.Regions where d.tipo_region == 3 && d.CountryID == countryId orderby d.Name select d).ToList();
             regPaisQuery.Insert(0, new Region { ID = 0, Name = "-- " + getMsg("msgSelect") + " -- " });
             ViewBag.cod_region_pais = new SelectList(regPaisQuery, "orig_country", "Name", selectedRePais);
-            
-            if (instType == InstitutionType.Lab) {
+
+            ViewBag.Father_ID_value = selectedFather;
+            if (instType == InstitutionType.Lab)
+            {
                 var instQuery = db.Institutions.OfType<Hospital>().Where(x => x.CountryID == countryId).OrderBy(x => x.Name).ToList();
                 instQuery.Insert(0, new Hospital { ID = 0, Name = "-- " + getMsg("msgSelect") + " -- " });
                 ViewBag.Father_ID = new SelectList(instQuery, "ID", "Name", selectedFather);

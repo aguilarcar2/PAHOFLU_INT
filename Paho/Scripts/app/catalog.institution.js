@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
-
+        $('#Father_ID_hidd').attr('disabled', 'disabled');
+        $('#Father_ID_hidd').hide();
     onLoad();    
-
     function onLoad() {
         var isVisibleButtonDelete = $("#DeleteInst").is(":visible");
         //console.log("Visible boton delete->" + isVisible);
@@ -138,6 +138,8 @@
     });
 
     function loadFatherInst() {
+        //console.log($("#Father_ID").val());
+
         $("#Father_ID").empty();
         $.ajax({
             type: 'POST',
@@ -147,9 +149,13 @@
             success: function (instituciones) {
                 $.each(instituciones, function (i, institucion) {
                     $("#Father_ID").append('<option value="'
-                                        + institucion.Value + '">'
+                                        + institucion.Value + '" ' + ((institucion.Value == $("#Father_ID_hidd").val() ) ?  'selected' : '')  +'>'
                                         + institucion.Text + '</option>');
                 });
+                //console.log(TempFatherID);
+                //console.log($("#Father_ID").val());
+                //$("#Father_ID").val(TempFatherID);
+
             },
             error: function (ex) {
                 console.log('Failed to retrieve states.' + ex);
