@@ -112,7 +112,6 @@
             </label>
         </div>
     </div>
-
 }
 
 <!-- Cabecera Ingreso de Datos -->
@@ -854,8 +853,21 @@
     </div>
 </div>
 
+<hr>
 <!-- Bandeja -->
 <div class="container" style="margin-bottom:15px; margin-top:1em;">
+    <div class="col-md-2">
+        <div class='input-group'>
+            <span class="input-group-addon">
+                @(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgGeneralYear"))
+            </span>
+            <select id="EpiYear" class="form-control" data-bind="options: availableYears,
+                    value: EpiYear,
+					event:{change: GetYearSummaryForYearItems}">
+            </select>
+        </div>
+    </div>
+
     <table class="table table-hover table-responsive" style="width:480px;">
         <!-- Cabecera -->
         <thead id="LabelBandeja">

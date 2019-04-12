@@ -19,7 +19,7 @@ namespace Paho.Controllers
         {
             var SummaryViewModel = new SummaryViewModel();
             IQueryable<Institution> institutions = null;
-            IQueryable<CatAgeGroup> CatAgeGroupQuery = null;
+            //IQueryable<CatAgeGroup> CatAgeGroupQuery = null;
             var user = UserManager.FindById(User.Identity.GetUserId());
             var sari = user.Institution.SARI;
             var ili = user.Institution.ILI;
@@ -274,17 +274,115 @@ namespace Paho.Controllers
             db.SaveChanges();
             return Json(getMsg("viewValidateSavedRecordSummary"));
         }
-                        
-        public JsonResult GetSummaryForYear(int hospitalId)
+
+        //public JsonResult GetSummaryForYear(int hospitalId)
+        //{
+        //    var epiYear = DateTime.Now.Year.ToString();
+        //    int intEpiYear = Int32.Parse(epiYear);
+        //    List<Dictionary<string, int>> summaryPerYear = new List<Dictionary<string, int>>();
+        //    //DateTime dFech = fechaInicioPrimeraSemanaEpidemiologica(DateTime.UtcNow.Year);
+        //    DateTime dFech = PAHOClassUtilities.fechaInicioPrimeraSemanaEpidemiologica(DateTime.Today.Year);
+        //    int nSemaActual = PAHOClassUtilities.NumeroActualSE();
+        //    DateTime dSEHoy;
+        //    dSEHoy = dFech.AddDays((nSemaActual - 1) * 7).AddDays(6);
+
+        //    //for (int i = 52; i >= 1; i--)
+        //    for (int i = nSemaActual; i >= 1; i--)
+        //    {
+        //        Dictionary<string, int> dictionary = new Dictionary<string, int>();
+        //        var ColETINumST = 0;
+        //        var ColETIDenoST = 0;
+        //        var ColETINumEmerST = 0;
+        //        var ColHospTST = 0;
+        //        var ColUCITST = 0;
+        //        var ColFalleTST = 0;
+        //        var ColHospSARITST = 0;             //#### CAFQ: 181101
+        //        var ColUCISARITST = 0;              //#### CAFQ: 181101
+        //        var ColFalleSARITST = 0;            //#### CAFQ: 181101
+        //        var ColNeuTST = 0;
+        //        var ColCCSARITST = 0;
+        //        var ColVentTST = 0;
+        //        DateTime StartDateOfWeek = DateTime.UtcNow;
+
+        //        var casesummary = db.CaseSummaries.FirstOrDefault(s => s.HosiptalId == hospitalId && s.EW == i && s.EpiYear == intEpiYear);
+        //        if (casesummary == null)
+        //        {
+        //            DateTime vFeIn = dFech.AddDays(7 * (i - 1));
+        //            DateTime vFeFi = vFeIn.AddDays(6);
+
+        //            if (StartDateOfWeek >= vFeIn && StartDateOfWeek <= vFeFi)
+        //                StartDateOfWeek = vFeFi;
+        //            else
+        //            {
+        //                if (vFeFi < StartDateOfWeek)
+        //                    StartDateOfWeek = dFech.AddDays(7 * (i - 1) + 6);
+        //                else
+        //                    StartDateOfWeek = dSEHoy;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            var casesummaryDetails = casesummary.CaseSummaryDetails.ToArray();
+        //            StartDateOfWeek = casesummary.StartDateOfWeek;
+        //            foreach (CaseSummaryDetail casesummaryDetail in casesummaryDetails)
+        //            {//casesummaryDetails
+        //                ColETINumST += casesummaryDetail.ETINumST;
+        //                ColETIDenoST += casesummaryDetail.ETIDenoST;
+        //                ColETINumEmerST += casesummaryDetail.ETINumEmerST;
+        //                ColHospTST += casesummaryDetail.HospST;
+        //                ColUCITST += casesummaryDetail.UCIST;
+        //                ColFalleTST += casesummaryDetail.DefST;
+        //                ColHospSARITST += casesummaryDetail.HospSARIST;             //#### CAFQ: 181101
+        //                ColUCISARITST += casesummaryDetail.UCISARIST;               //#### CAFQ: 181101
+        //                ColFalleSARITST += casesummaryDetail.DefSARIST;             //#### CAFQ: 181101
+        //                ColNeuTST += casesummaryDetail.NeuST.HasValue ? casesummaryDetail.NeuST.Value : 0;
+        //                //ColCCSARITST += casesummaryDetail.CCSARIST.HasValue ? casesummaryDetail.CCSARIST.Value : 0;
+        //                ColCCSARITST += casesummaryDetail.CCSARIST.Value;
+        //                ColVentTST += casesummaryDetail.VentST.HasValue ? casesummaryDetail.VentST.Value : 0;
+        //            }
+        //        }
+        //        dictionary.Add("EpiWeek", i);
+        //        dictionary.Add("ColHospTST", ColHospTST);
+        //        dictionary.Add("ColUCITST", ColUCITST);
+        //        dictionary.Add("ColFalleTST", ColFalleTST);
+        //        dictionary.Add("ColHospSARITST", ColHospSARITST);           //#### CAFQ: 181101
+        //        dictionary.Add("ColUCISARITST", ColUCISARITST);             //#### CAFQ: 181101
+        //        dictionary.Add("ColFalleSARITST", ColFalleSARITST);         //#### CAFQ: 181101
+        //        dictionary.Add("ColETINumST", ColETINumST);
+        //        dictionary.Add("ColETIDenoST", ColETIDenoST);
+        //        dictionary.Add("ColETINumEmerST", ColETINumEmerST);
+        //        dictionary.Add("ColNeuTST", ColNeuTST);
+        //        dictionary.Add("ColCCSARITST", ColCCSARITST);
+        //        dictionary.Add("ColVentTST", ColVentTST);
+        //        Int32 unixTimestamp = (Int32)(StartDateOfWeek.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+        //        dictionary.Add("StartDateOfWeek", unixTimestamp);
+        //        dictionary.Add("EpiYear", intEpiYear);
+        //        summaryPerYear.Add(dictionary);
+        //    }
+
+        //    return Json(summaryPerYear, JsonRequestBehavior.AllowGet);
+        //}
+
+        public JsonResult GetSummaryForYear(int hospitalId, int epiYear)
         {
-            var epiYear = DateTime.Now.Year.ToString();
-            int intEpiYear = Int32.Parse(epiYear);
-            List<Dictionary<string, int>> summaryPerYear = new List<Dictionary<string, int>>();
-            //DateTime dFech = fechaInicioPrimeraSemanaEpidemiologica(DateTime.UtcNow.Year);
-            DateTime dFech = PAHOClassUtilities.fechaInicioPrimeraSemanaEpidemiologica(DateTime.Today.Year);
-            int nSemaActual = PAHOClassUtilities.NumeroActualSE();
+            int nSemaActual;
             DateTime dSEHoy;
-            dSEHoy = dFech.AddDays((nSemaActual - 1) * 7).AddDays(6);
+            //var epiYear = DateTime.Now.Year.ToString();
+            //int intEpiYear = Int32.Parse(epiYear);
+            List<Dictionary<string, int>> summaryPerYear = new List<Dictionary<string, int>>();
+            //DateTime dFech = PAHOClassUtilities.fechaInicioPrimeraSemanaEpidemiologica(DateTime.Today.Year);
+            DateTime dFech = PAHOClassUtilities.fechaInicioPrimeraSemanaEpidemiologica(epiYear);
+            if (DateTime.Today.Year == epiYear)
+            {
+                nSemaActual = PAHOClassUtilities.NumeroActualSE();
+                dSEHoy = dFech.AddDays((nSemaActual - 1) * 7).AddDays(6);
+            }
+            else
+            {
+                nSemaActual = 52;
+                dSEHoy = PAHOClassUtilities.fechaInicioPrimeraSemanaEpidemiologica(epiYear);
+                dSEHoy = dSEHoy.AddDays(-1);
+            }
 
             //for (int i = 52; i >= 1; i--)
             for (int i = nSemaActual; i >= 1; i--)
@@ -304,7 +402,7 @@ namespace Paho.Controllers
                 var ColVentTST = 0;
                 DateTime StartDateOfWeek = DateTime.UtcNow;
 
-                var casesummary = db.CaseSummaries.FirstOrDefault(s => s.HosiptalId == hospitalId && s.EW == i && s.EpiYear == intEpiYear);
+                var casesummary = db.CaseSummaries.FirstOrDefault(s => s.HosiptalId == hospitalId && s.EW == i && s.EpiYear == epiYear);
                 if (casesummary == null)
                 {
                     DateTime vFeIn = dFech.AddDays(7 * (i - 1));
@@ -356,13 +454,13 @@ namespace Paho.Controllers
                 dictionary.Add("ColVentTST", ColVentTST);
                 Int32 unixTimestamp = (Int32)(StartDateOfWeek.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
                 dictionary.Add("StartDateOfWeek", unixTimestamp);
-                dictionary.Add("EpiYear", intEpiYear);
+                dictionary.Add("EpiYear", epiYear);
                 summaryPerYear.Add(dictionary);
             }
 
             return Json(summaryPerYear, JsonRequestBehavior.AllowGet);
         }
-        
+
         public string getMsg(string msgView)
         {
             var user = UserManager.FindById(User.Identity.GetUserId());

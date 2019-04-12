@@ -137,7 +137,7 @@ function SummayItem(data) {
     var self = this;
 
     //console.log(data);
-    self.Id = data.Id;
+    self.Id = data.Id;                                      // Id del denominador
     self.UsrCountry = ko.observable(selcty);
     self.CaseSummaryId = data.CaseSummaryId;
     self.AgeGroup = data.AgeGroup;
@@ -701,6 +701,18 @@ function SummaryViewModel(app, dataModel) {
     self.HospitalDate = ko.observable(null);
     self.HospitalEW = ko.observable("");
     self.HospitalYE = ko.observable("");
+
+    self.availableYears = ko.computed(function () {
+        var years = [];
+        var yearCurr = (new Date).getFullYear();
+
+        for (var i = yearCurr; i >= 2010; i--) {
+            years.push(i.toString());
+        }
+
+        return years;
+    }, self);
+    self.EpiYear = ko.observable((new Date).getFullYear().toString());
 
     self.ColHospTST01 = ko.observable("");
     self.ColUCITST01 = ko.observable("");
@@ -1333,7 +1345,7 @@ function SummaryViewModel(app, dataModel) {
             self.Id = "";
         }
 
-        self.selectedHospitalId("");
+        //self.selectedHospitalId("");
         self.HospitalDate("");
         self.HospitalEW("");
         self.HospitalYE("");
@@ -1341,21 +1353,17 @@ function SummaryViewModel(app, dataModel) {
         $("#LabelSummary").hide();
         $("#ButtonSummary").hide();
         $("#SurvContainer").show();
-
     };
 
     self.GetYearSummaryForYearItems = function () {
-        //console.log("self.GetYearSummaryForYearItems->START_1006");
         if ((typeof self.selectedHospitalId() != "undefined") && self.selectedHospitalId() != "") {
-            $.postJSON(app.dataModel.getSummaryForYearUrl, { hospitalId: self.selectedHospitalId() })
+            //$.postJSON(app.dataModel.getSummaryForYearUrl, { hospitalId: self.selectedHospitalId() })
+            $.postJSON(app.dataModel.getSummaryForYearUrl, { hospitalId: self.selectedHospitalId(), epiYear: self.EpiYear() })       // self.EpiYear
                .success(function (data, textStatus, jqXHR) {
                    $("#LabelBandeja").show();
                    $("#TotalBandeja").show();
                    self.SummaryForYearItems([]);
                    data.forEach(self.AddSummaryForYearItems);
-                   //console.log(data);
-                   //self.SummayItems([]);
-                   //data.forEach(self.AddSummayItem);                             
                })
                .fail(function (jqXHR, textStatus, errorThrown) {
                    alert(errorThrown);
@@ -1624,6 +1632,7 @@ function SummaryViewModel(app, dataModel) {
                 else
                     alert(data);
                 self.CancelarItems();
+                self.GetYearSummaryForYearItems();  //***********
             },
         })
     };
