@@ -482,7 +482,7 @@ namespace Paho.Controllers
                             var excelWs_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "SARI" : "IRAG"];
                             AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_IRAG", 8, 1, excelWs_IRAG.Index, false, ReportCountry, YearBegin, YearEnd, 1, Inusual, AreaID_, Sentinel);
                             var excelWs_DEATHS_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "DEATHS Sentinel Sites" : "Fallecidos IRAG"];
-                            AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_DEATHS_IRAG", 8, 1, excelWs_DEATHS_IRAG.Index, false, ReportCountry, YearEnd, YearEnd, 1, Inusual, AreaID_, Sentinel);
+                            AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_DEATHS_IRAG", 8, 1, excelWs_DEATHS_IRAG.Index, false, ReportCountry, YearBegin, YearEnd, 1, Inusual, AreaID_, Sentinel);
                             var excelWs_ILI = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "ILI" : "ETI"];
                             AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_ETI", 8, 1, excelWs_ILI.Index, false, ReportCountry, YearEnd, YearEnd, 2, Inusual, AreaID_, Sentinel);
                             var excelWs_VIRUSES_ILI = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "ILI VIRUSES - Sentinel" : "Virus ETI Identificados"];
@@ -493,7 +493,7 @@ namespace Paho.Controllers
                             ConfigToExcel_FLUID(CountryID, Languaje_, RegionID_, YearEnd, YearBegin ,  YearEnd, StartDate, EndDate, HospitalID_, excelWorkBook, "Leyendas", 1, excelWs_Leyendas.Index, false);
 
                             // Manejo de graficas 
-
+                            // SARI
                             contador = YearEnd - YearBegin;
                             if (contador > 0)
                             {
@@ -502,7 +502,20 @@ namespace Paho.Controllers
 
                                 for (int i = 1; i <= contador; i++)
                                 {
-                                    ConfigGraph_FLUID(YearEnd - i, i, excelWorkBook, excelWs_Graph_IRAG.Index, excelWs_data_IRAG.Index);
+                                    ConfigGraph_FLUID(YearEnd - i, i, excelWorkBook, excelWs_Graph_IRAG.Index, excelWs_data_IRAG.Index, "GS1", "C" , "E");
+                                }
+                            }
+
+                            // DEATHS
+                            contador = YearEnd - YearBegin;
+                            if (contador > 0)
+                            {
+                                var excelWs_Graph_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "DEATHS Sentinel Sites" : "Fallecidos IRAG"];
+                                var excelWs_data_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "DEATHS Sentinel Sites" : "Fallecidos IRAG"];
+
+                                for (int i = 1; i <= contador; i++)
+                                {
+                                    ConfigGraph_FLUID(YearEnd - i, i, excelWorkBook, excelWs_Graph_IRAG.Index, excelWs_data_IRAG.Index, "GS2", "C", "K");
                                 }
                             }
                         }
@@ -2430,7 +2443,9 @@ namespace Paho.Controllers
             return Json(jsonDatosLabNPHL);
         }
 
-        private static void AppendDataToExcel_FLUID(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId = null, int? Sentinel = null)
+        private static void AppendDataToExcel_FLUID(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se,
+            DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row,
+            int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId = null, int? Sentinel = null)
         {
 
             var excelWorksheet = excelWorkBook.Worksheets[sheet];
@@ -2443,7 +2458,6 @@ namespace Paho.Controllers
                 {
                     command.Parameters.Clear();
                     command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
-                    command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
                     command.Parameters.Add("@Languaje", SqlDbType.Text).Value = languaje_;
                     command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
                     command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
@@ -2453,8 +2467,11 @@ namespace Paho.Controllers
                     command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
                     command.Parameters.Add("@yearFrom", SqlDbType.Int).Value = YearFrom;
                     command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
-                    command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;
+                    command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
                     command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;
+                    command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;
+                    command.Parameters.Add("@Area_ID", SqlDbType.Int).Value = AreaId;
+                    command.Parameters.Add("@Sentinel", SqlDbType.Int).Value = Sentinel;
 
                     con.Open();
                     using (var reader = command.ExecuteReader())
@@ -2593,23 +2610,22 @@ namespace Paho.Controllers
             return currentCulture.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
         }
 
-        private void ConfigGraph_FLUID(int? year, int count, ExcelWorkbook excelWorkBook, int sheet_graph, int sheet_data)
+        private void ConfigGraph_FLUID(int? year, int count, ExcelWorkbook excelWorkBook, int sheet_graph, int sheet_data, string graph_name, string range_x, string range_y)
         {
             var excelWorksheet_graph = excelWorkBook.Worksheets[sheet_graph];
             var excelWorksheet_data = excelWorkBook.Worksheets[sheet_data];
 
-            var LineChart = excelWorksheet_graph.Drawings["GS1"] as ExcelLineChart;
-            var RangeStr =  "C"+ Convert.ToString(8 + (count * 52)) + ":" +"C" + Convert.ToString(59 + (count * 52));
-            var RangeStr_2 = "E" + Convert.ToString(8 + (count * 52)) + ":" + "E" + Convert.ToString(59 + (count * 52));
+            var LineChart = excelWorksheet_graph.Drawings[graph_name] as ExcelLineChart;
+            var RangeStr = range_x + Convert.ToString(8 + (count * 52)) + ":" + range_x + Convert.ToString(59 + (count * 52));
+            var RangeStr_2 = range_y + Convert.ToString(8 + (count * 52)) + ":" + range_y + Convert.ToString(59 + (count * 52));
             var Rangedata_X = excelWorksheet_data.Cells[RangeStr];
             var Rangedata_Y = excelWorksheet_data.Cells[RangeStr_2];
-            //var series = LineChart.Series[0];
 
-            //series.Header = year.ToString();
-
-            //var seriesCC = LineChart.Series.Add(ExcelRange.GetAddress(7, nCol, 59, nCol), ExcelRange.GetAddress(7, 2, 59, 2));
-            var seriesCC = LineChart.Series.Add( Rangedata_Y, Rangedata_X);
-            seriesCC.Header = year.ToString();
+            if (LineChart != null)
+            {
+                var seriesCC = LineChart.Series.Add(Rangedata_Y, Rangedata_X);
+                seriesCC.Header = year.ToString();
+            }  
 
         }
 

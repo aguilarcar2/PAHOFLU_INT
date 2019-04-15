@@ -3700,7 +3700,7 @@
                 <div class="col-md-3">
                     <div class='input-group'>
                         <span class="input-group-addon">
-                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelTemp"))
+                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelTempNational"))
                         </span>
                         <input id="TempSample_National" type='text' class="form-control case_letter" data-bind="value: TempSample_National" />
 
@@ -3712,7 +3712,7 @@
             <div class="row rowform" id="Test_National">
                 <div class="col-md-3_5">
                     <span>
-                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelProcessed"))
+                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelProcessedNational"))
                     </span>
                     <label class="btn btn-default">
                         <input type="radio" name="Processed_National" id="Processed_National" value="true" data-bind="checked: Processed_National"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelYes"))
@@ -3725,7 +3725,7 @@
                 <div class="col-md-5" data-bind="visible:NotShowProcessed_National">
                     <div class='input-group'>
                         <span class="input-group-addon">
-                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelCauseNotProcessed"))
+                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelCauseNotProcessedNational"))
                         </span>
                         <select id="NoProRenId_National" class="form-control" data-bind="options: CSNP,
                             optionsText: 'Name',
@@ -3740,7 +3740,7 @@
                 <div class="col-md-5" data-bind="visible:ShowProcessed_National">
                     <div class='input-group'>
                         <span class="input-group-addon">
-                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigLabIntLabelBarCode"))
+                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigLabIntLabelBarCodeNational"))
                         </span>
                         <input id="Identification_Test_National" name="Identification_Test_National" type='text' class="form-control case_letter" data-bind="value: Identification_Test_National" />
                     </div>
