@@ -442,16 +442,31 @@ namespace Paho.Controllers
                             }
 
                             var excelWs_VIRUSES_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Virus" : "Virus"];
-                            AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4", 6, 1, excelWs_VIRUSES_IRAG.Index, false, ReportCountry, YearEnd, YearEnd, 1, Inusual, AreaID_, Sentinel);
+                            var excelWs_VIRUSES_Chart = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Graph Virus" : "Graficos"];
+                            contador = YearEnd - YearBegin;
+                            var YearEnd_report = DateTime.Now.Year;
+                            
+                            for (int i = 0; i <= contador; i++)
+                            {
+                                if (i > 0)
+                                {
+                                    CopyAndPasteRange(excelWorkBook, excelWs_VIRUSES_IRAG.Index, excelWorkBook, excelWs_VIRUSES_IRAG.Index, "A4:AZ58", "A" + Convert.ToString(4 + (57 * i)) + ":AZ" + Convert.ToString(4 + (57 * i) + 55));
+                                }
+                                YearEnd_report = YearEnd - i;
+                                AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4", (i > 0 ? (6 + (57 * i)) : 6), 1, excelWs_VIRUSES_IRAG.Index, false, ReportCountry, YearEnd_report, YearEnd_report, 1, Inusual, AreaID_, Sentinel);
+                                if (i > 0)
+                                {
+                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV1", (6 + (57 * i)), (6 + (57 * i)) + 51);
+                                }
+                            }
 
                             var excelWs_VIRUSES_INF_Geographic = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Virus_INF_GEO" : "Virus_INF_GEO"];
                             if (excelWs_VIRUSES_INF_Geographic != null)
-                                AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", 5, 1, excelWs_VIRUSES_INF_Geographic.Index, false, ReportCountry, YearEnd, YearEnd, 1, Inusual, AreaID_, Sentinel);
-
+                                AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", 5, 1, excelWs_VIRUSES_INF_Geographic.Index, false, ReportCountry, YearBegin, YearEnd, 1, Inusual, AreaID_, Sentinel);
 
                             var excelWs_VIRUSES_RSV_Geographic = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Virus_RSV_GEO" : "Virus_VSR_GEO"];
                             if (excelWs_VIRUSES_RSV_Geographic != null)
-                                AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", 5, 1, excelWs_VIRUSES_INF_Geographic.Index, false, ReportCountry, YearEnd, YearEnd, 1, Inusual, AreaID_, Sentinel);
+                                AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", 5, 1, excelWs_VIRUSES_INF_Geographic.Index, false, ReportCountry, YearBegin, YearEnd, 1, Inusual, AreaID_, Sentinel);
 
                         }
                         else if (reportTemplate.ToUpper() == "FLUID")
@@ -2628,6 +2643,63 @@ namespace Paho.Controllers
             }  
 
         }
+
+        private void ConfigGraph_Bars_Histogram(int? year, ExcelWorkbook excelWorkBook, int sheet_graph, int sheet_data, string graph_name, int range_begin, int range_end)
+        {
+            var excelWorksheet_graph = excelWorkBook.Worksheets[sheet_graph];
+            var excelWorksheet_data = excelWorkBook.Worksheets[sheet_data];
+
+            var LineChart = excelWorksheet_graph.Drawings[graph_name] as ExcelChart;
+            //LineChart.UseSecondaryAxis = true;
+            var cs = LineChart.Series;
+            var Secundary_cs = LineChart.PlotArea.ChartTypes;
+            
+
+            var begin_str = "";
+            var letter_range_str = "";
+
+            foreach (ExcelChartSerie element in cs)
+            {
+                begin_str = element.Series.Substring(0, element.Series.IndexOf(":") - (element.Series.Substring(0, element.Series.IndexOf(":")).Length - element.Series.Substring(0, element.Series.IndexOf(":")).LastIndexOf("$") - 1));
+                letter_range_str = element.Series.Substring(element.Series.IndexOf("$") + 1 , element.Series.Substring(element.Series.IndexOf("$") + 1).IndexOf("$"));
+                element.Series = begin_str + Convert.ToString(range_begin) + ":$" + letter_range_str + Convert.ToString(range_end) + ", " + element.Series ; 
+
+            }
+
+
+            foreach (ExcelChart TypeChart in Secundary_cs)
+            {
+                if (TypeChart.GetType().Name == "ExcelLineChart")
+                {
+                    var secundary_cs = TypeChart.Series;
+                    foreach (ExcelChartSerie element_2 in secundary_cs)
+                    {
+                        begin_str = element_2.Series.Substring(0, element_2.Series.IndexOf(":") - (element_2.Series.Substring(0, element_2.Series.IndexOf(":")).Length - element_2.Series.Substring(0, element_2.Series.IndexOf(":")).LastIndexOf("$") - 1));
+                        letter_range_str = element_2.Series.Substring(element_2.Series.IndexOf("$") + 1, element_2.Series.Substring(element_2.Series.IndexOf("$") + 1).IndexOf("$"));
+                        element_2.Series = begin_str + Convert.ToString(range_begin) + ":$" + letter_range_str + Convert.ToString(range_end) + ", " + element_2.Series;
+
+                    }
+                }
+            }
+
+            // AR y AS -> Para el eje X
+
+        }
+
+        private void CopyAndPasteRange( ExcelWorkbook excelWorkBook_Copy, int sheet_data_copy , ExcelWorkbook excelWorkBook_Paste, int sheet_data_paste, string range_copy, string range_paste)
+        {
+            var excelWorksheet_copy = excelWorkBook_Copy.Worksheets[sheet_data_copy];
+            var excelWorksheet_paste = excelWorkBook_Paste.Worksheets[sheet_data_paste];
+
+            //var LineChart = excelWorksheet_graph.Drawings[graph_name] as ExcelLineChart;
+            var RangeStr = range_copy;
+            var RangeStr_2 = range_paste;
+            var Rangedata_copy = excelWorksheet_copy.Cells[RangeStr];
+            var Rangedata_Y = excelWorksheet_paste.Cells[RangeStr_2];
+
+            excelWorksheet_copy.Cells[range_copy].Copy(excelWorksheet_paste.Cells[RangeStr_2]);
+        }
+
 
         private static void AppendDataToExcel_CONSDATA(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId = null, int? Sentinel = null, int? UCI = null, int? Fallecidos = null)
         {
