@@ -380,6 +380,7 @@ namespace Paho.Models
         [Display(Name = "Country")]
         public string Name { get; set; }
         public string ENG { get; set; }
+        public int? NumberAdminisDivision { get; set; }
         public bool Active { get; set; }
         public virtual ICollection<Area> Areas { get; set; }
         public string Language { get; set; }
@@ -718,6 +719,24 @@ namespace Paho.Models
         public string orig_country { get; set; }
         public virtual Hamlet Hamlet { get; set; }
     }
+
+    public class SearchGeoReference
+    {
+        public string value { get; set; }
+        public string label { get; set; }
+        public string typeubic { get; set; }
+        public int areaID { get; set; }
+        public string areaName { get; set; }
+        public int stateID { get; set; }
+        public string stateName { get; set; }
+        public int neighborhoodID { get; set; }
+        public string neighborhoodName { get; set; }
+        public int hamletID { get; set; }
+        public string hamletName { get; set; }
+        public int colonyID { get; set; }
+        public string colonyName { get; set; }
+    }
+
     public abstract class Institution
     {
         public long ID { get; set; }

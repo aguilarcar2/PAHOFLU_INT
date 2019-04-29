@@ -3332,19 +3332,6 @@ namespace Paho.Controllers
             }
         }
 
-        public string getMsg(string msgView)
-        {
-            var user = UserManager.FindById(User.Identity.GetUserId());
-            string searchedMsg = msgView;
-            int? countryID = user.Institution.CountryID;
-            string countryLang = user.Institution.Country.Language;
-
-            ResourcesM myR = new ResourcesM();
-            searchedMsg = myR.getMessage(searchedMsg, countryID, countryLang);
-            //searchedMsg = myR.getMessage(searchedMsg, 0, "ENG");
-            return searchedMsg;
-        }
-
         //public List<T> ProcedureExecute<T>(string NameProcedure, string Parameter1, int ValuePar1) where T : new()
         //{
         //    List<T> res = new List<T>();
@@ -3504,6 +3491,201 @@ namespace Paho.Controllers
             //System.Diagnostics.Debug.WriteLine("ActionResult GetCIE10X->START");
             var user = UserManager.FindById(User.Identity.GetUserId());
             int countryId = (int)user.Institution.CountryID;
+            string language = user.Institution.Area.Country.Language;
+            int? numberAdmiDiv = user.Institution.Area.Country.NumberAdminisDivision;
+            numberAdmiDiv = numberAdmiDiv ?? 0;
+            var search = term;
+
+            string areaAcron = SgetMsg("msgCaselistVigTabGeoAreaAcronym", countryId, language);
+            string statAcron = SgetMsg("msgCaselistVigTabGeoStateAcronym", countryId, language);
+            string neigAcron = SgetMsg("msgCaselistVigTabGeoNeighborhoodsAcronym", countryId, language);
+            string hamlAcron = SgetMsg("msgCaselistVigTabGeoHamletAcronym", countryId, language);
+
+            if (numberAdmiDiv == 2)
+            {
+                //*/**** AREA
+                var diagsArea = (from area in db.Areas //as IQueryable<Area>
+                                 where area.CountryID == countryId && area.Name.Contains(search)
+                                 select new
+                                 {
+                                     value = area.ID,
+                                     label = area.Name,
+                                     typeubic = "AR",
+                                     areaID = area.ID,
+                                     areaName = area.Name,
+                                     stateID = 0,
+                                     stateName = "",
+                                     neighborhoodID = 0,
+                                     neighborhoodName = "",
+                                     hamletID = 0,
+                                     hamletName = "",
+                                     colonyID = 0,
+                                     colonyName = ""
+                                 }).AsEnumerable();
+
+                var jsonDataArea = diagsArea.ToArray();
+
+                //*/**** STATE
+                var diagsState = (from area in db.Areas
+                                  join state in db.States on area.ID equals state.AreaID
+                                  where state.Name.Contains(search) && area.CountryID == countryId
+                                  select new
+                                  {
+                                      value = state.ID,
+                                      label = state.Name + " (" + areaAcron + ": " + area.Name + ")",
+                                      typeubic = "ST",
+                                      areaID = area.ID,
+                                      areaName = area.Name,
+                                      stateID = state.ID,
+                                      stateName = state.Name,
+                                      neighborhoodID = 0,
+                                      neighborhoodName = "",
+                                      hamletID = 0,
+                                      hamletName = "",
+                                      colonyID = 0,
+                                      colonyName = ""
+                                  }).AsEnumerable();
+
+                var jsonDataState = diagsState.ToArray();
+                //****
+                var jsonDataUnido = jsonDataArea.Concat(jsonDataState);
+
+                var sortedValues = from x in jsonDataUnido
+                                   orderby x.label
+                                   select x;
+
+                return Json(sortedValues, JsonRequestBehavior.AllowGet);
+            }
+            else if (numberAdmiDiv == 3)
+            {
+                //*/**** STATE
+                var diagsState = (from area in db.Areas
+                                  join state in db.States on area.ID equals state.AreaID
+                                  where state.Name.Contains(search) && area.CountryID == countryId
+                                  select new
+                                  {
+                                      value = state.ID,
+                                      label = state.Name + " (" + areaAcron + ": " + area.Name + ")",
+                                      typeubic = "ST",
+                                      areaID = area.ID,
+                                      areaName = area.Name,
+                                      stateID = state.ID,
+                                      stateName = state.Name,
+                                      neighborhoodID = 0,
+                                      neighborhoodName = "",
+                                      hamletID = 0,
+                                      hamletName = "",
+                                      colonyID = 0,
+                                      colonyName = ""
+                                  }).AsEnumerable();
+
+                var jsonDataState = diagsState.ToArray();
+
+                //*/**** Neighborhood
+                var diagsNeighborhood = (from area in db.Areas
+                                         join state in db.States on area.ID equals state.AreaID
+                                         join neighborhood in db.Neighborhoods on state.ID equals neighborhood.StateID
+                                         where neighborhood.Name.Contains(search) && area.CountryID == countryId
+                                         select new
+                                         {
+                                             value = neighborhood.ID,
+                                             label = neighborhood.Name + " (" + statAcron + ": " + state.Name + " / " + areaAcron + ": " + area.Name + ")",
+                                             typeubic = "NE",
+                                             areaID = area.ID,
+                                             areaName = area.Name,
+                                             stateID = state.ID,
+                                             stateName = state.Name,
+                                             neighborhoodID = neighborhood.ID,
+                                             neighborhoodName = neighborhood.Name,
+                                             hamletID = 0,
+                                             hamletName = "",
+                                             colonyID = 0,
+                                             colonyName = ""
+                                         }).AsEnumerable();
+
+                var jsonDataNeighborhood = diagsNeighborhood.ToArray();
+                //****
+                var jsonDataUnido = jsonDataState.Concat(jsonDataNeighborhood);
+
+                var sortedValues = from x in jsonDataUnido
+                                   orderby x.label
+                                   select x;
+
+                return Json(sortedValues, JsonRequestBehavior.AllowGet);
+            }
+            else if (numberAdmiDiv == 5)
+            {
+                //**** Hamlet
+                var diagsHamlet = (from area in db.Areas
+                                   join state in db.States on area.ID equals state.AreaID
+                                   join neighborhood in db.Neighborhoods on state.ID equals neighborhood.StateID
+                                   join hamlet in db.Hamlets on neighborhood.ID equals hamlet.NeighborhoodID
+                                   where hamlet.Name.Contains(search) && area.CountryID == countryId
+                                   select new
+                                   {
+                                       value = hamlet.ID,
+                                       //label = hamlet.Name + " (" + "AL" + ": " + getMsg("msgCaselistVigTabGeoNeighborhoodsAcronym") +  neighborhood.Name + " / MU: " + state.Name + " / DE: " + area.Name + ")",
+                                       label = hamlet.Name + " (" + neigAcron + ": " + neighborhood.Name + " / " + statAcron + ": " + state.Name + " / " + areaAcron + ": " + area.Name + ")",
+                                       typeubic = "HA",
+                                       areaID = area.ID,
+                                       areaName = area.Name,
+                                       stateID = state.ID,
+                                       stateName = state.Name,
+                                       neighborhoodID = neighborhood.ID,
+                                       neighborhoodName = neighborhood.Name,
+                                       hamletID = hamlet.ID,
+                                       hamletName = hamlet.Name,
+                                       colonyID = 0,
+                                       colonyName = ""
+                                   }).AsEnumerable();
+
+                var jsonDataHamlet = diagsHamlet.ToArray();
+
+                //**** Colony
+                var diagsColony = (from area in db.Areas
+                                   join state in db.States on area.ID equals state.AreaID
+                                   join neighborhood in db.Neighborhoods on state.ID equals neighborhood.StateID
+                                   join hamlet in db.Hamlets on neighborhood.ID equals hamlet.NeighborhoodID
+                                   join colony in db.Colonies on hamlet.ID equals colony.HamletID
+                                   where colony.Name.Contains(search) && area.CountryID == countryId
+                                   select new
+                                   {
+                                       value = colony.ID,
+                                       label = colony.Name + " (" + hamlAcron + ": " + hamlet.Name + " / " + neigAcron + ": " + neighborhood.Name + " / " + statAcron + ": " + state.Name + " / " + areaAcron + ": " + area.Name + ")",
+                                       typeubic = "CO",
+                                       areaID = area.ID,
+                                       areaName = area.Name,
+                                       stateID = state.ID,
+                                       stateName = state.Name,
+                                       neighborhoodID = neighborhood.ID,
+                                       neighborhoodName = neighborhood.Name,
+                                       hamletID = hamlet.ID,
+                                       hamletName = hamlet.Name,
+                                       colonyID = colony.ID,
+                                       colonyName = colony.Name
+                                   }).AsEnumerable();
+
+                var jsonDataColony = diagsColony.ToArray();
+                //****
+                var jsonDataUnido = jsonDataHamlet.Concat(jsonDataColony);
+                
+                var sortedValues = from x in jsonDataUnido
+                                   orderby x.label
+                                   select x;
+
+                return Json(sortedValues, JsonRequestBehavior.AllowGet);
+            }
+            //****
+            return Json(null, JsonRequestBehavior.AllowGet);
+            //****
+        }
+
+        [Authorize]
+        public ActionResult GetSearchUbicaResid_OLD(string term, int max, string code)
+        {
+            //System.Diagnostics.Debug.WriteLine("ActionResult GetCIE10X->START");
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            int countryId = (int)user.Institution.CountryID;
             var search = term;
 
             /*/**** AREA
@@ -3640,5 +3822,24 @@ namespace Paho.Controllers
 
         }
 
+        private static string SgetMsg(string msgView, int? countryDisp, string langDisp)
+        {
+            string searchedMsg = ResourcesM.SgetMessage(msgView, countryDisp, langDisp);
+            //searchedMsg = myR.getMessage(searchedMsg, 0, "ENG");
+            return searchedMsg;
+        }
+
+        public string getMsg(string msgView)
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            string searchedMsg = msgView;
+            int? countryID = user.Institution.CountryID;
+            string countryLang = user.Institution.Country.Language;
+
+            ResourcesM myR = new ResourcesM();
+            searchedMsg = myR.getMessage(searchedMsg, countryID, countryLang);
+            //searchedMsg = myR.getMessage(searchedMsg, 0, "ENG");
+            return searchedMsg;
+        }
     }
 }
