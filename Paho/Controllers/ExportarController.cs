@@ -450,13 +450,16 @@ namespace Paho.Controllers
                             {
                                 if (i > 0)
                                 {
-                                    CopyAndPasteRange(excelWorkBook, excelWs_VIRUSES_IRAG.Index, excelWorkBook, excelWs_VIRUSES_IRAG.Index, "A4:AZ58", "A" + Convert.ToString(4 + (57 * i)) + ":AZ" + Convert.ToString(4 + (57 * i) + 55));
+                                    CopyAndPasteRange(excelWorkBook, excelWs_VIRUSES_IRAG.Index, excelWorkBook, excelWs_VIRUSES_IRAG.Index, "A4:BZ58", "A" + Convert.ToString(4 + (57 * i)) + ":BZ" + Convert.ToString(4 + (57 * i) + 55));
                                 }
                                 YearEnd_report = YearEnd - i;
                                 AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4", (i > 0 ? (6 + (57 * i)) : 6), 1, excelWs_VIRUSES_IRAG.Index, false, ReportCountry, YearEnd_report, YearEnd_report, 1, Inusual, AreaID_, Sentinel);
                                 if (i > 0)
                                 {
                                     ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV1", (6 + (57 * i)), (6 + (57 * i)) + 51);
+                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV2", (6 + (57 * i)), (6 + (57 * i)) + 51);
+                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV3", (6 + (57 * i)), (6 + (57 * i)) + 51);
+                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV4", (6 + (57 * i)), (6 + (57 * i)) + 51);
                                 }
                             }
 
@@ -467,6 +470,12 @@ namespace Paho.Controllers
                             var excelWs_VIRUSES_RSV_Geographic = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Virus_RSV_GEO" : "Virus_VSR_GEO"];
                             if (excelWs_VIRUSES_RSV_Geographic != null)
                                 AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", 5, 1, excelWs_VIRUSES_INF_Geographic.Index, false, ReportCountry, YearBegin, YearEnd, 1, Inusual, AreaID_, Sentinel);
+
+
+                            var excelWs_Leyendas = excelWorkBook.Worksheets["Leyendas"];
+                            ConfigToExcel_FLUID(CountryID, Languaje_, RegionID_, YearEnd, YearBegin, YearEnd, StartDate, EndDate, HospitalID_, excelWorkBook, "Leyendas", 1, excelWs_Leyendas.Index, false);
+
+
 
                         }
                         else if (reportTemplate.ToUpper() == "FLUID")
@@ -2662,28 +2671,49 @@ namespace Paho.Controllers
             {
                 begin_str = element.Series.Substring(0, element.Series.IndexOf(":") - (element.Series.Substring(0, element.Series.IndexOf(":")).Length - element.Series.Substring(0, element.Series.IndexOf(":")).LastIndexOf("$") - 1));
                 letter_range_str = element.Series.Substring(element.Series.IndexOf("$") + 1 , element.Series.Substring(element.Series.IndexOf("$") + 1).IndexOf("$"));
-                element.Series = begin_str + Convert.ToString(range_begin) + ":$" + letter_range_str + Convert.ToString(range_end) + ", " + element.Series ; 
-
+                element.Series = begin_str + Convert.ToString(range_begin) + ":$" + letter_range_str + Convert.ToString(range_end) + ", " + element.Series ;
+                // XSeries prueba
+                //element.XSeries = "Virus!$BY$6:$BZ$57, Virus!$BY$63:$BZ$114, Virus!$BY$120:$BZ$171";
+                //element.Header = "Virus!$BY$6:$BZ$57, Virus!$BY$63:$BZ$114, Virus!$BY$120:$BZ$171";
+                if (graph_name == "CV2")
+                {
+                    var RangeStr = "'Virus'!$BY$" + Convert.ToString(range_begin) + ":$BZ$" + Convert.ToString(range_end) + ", " + (element.XSeries == "" ? excelWorksheet_data.Name + "!$BY$6:$BZ$57" : element.XSeries);
+                    UpdateRangeXMLPath(LineChart, RangeStr);
+                    ////var RangeStr = "'Virus'!$BY$" + Convert.ToString(range_begin) + ":$BZ$" + Convert.ToString(range_end) + ", " + (element.XSeries == "" ? excelWorksheet_data.Name + "!$BY$6:$BZ$57" : element.XSeries) ;
+                    //var RangeStr = "'Virus'!$BY$6:$BZ$57";
+                    //var Rangedata_XSeries = excelWorksheet_data.Cells[RangeStr];
+                    //element.XSeries = Rangedata_XSeries.FullAddress;
+                    //element.XSeries = "Virus!$BY$120:$BZ$171;Virus!$BY$63:$BZ$114;Virus!$BY$6:$BZ$57";
+                }
             }
 
-
-            foreach (ExcelChart TypeChart in Secundary_cs)
+            if (graph_name == "CV1" || graph_name == "CV3")
             {
-                if (TypeChart.GetType().Name == "ExcelLineChart")
+                foreach (ExcelChart TypeChart in Secundary_cs)
                 {
-                    var secundary_cs = TypeChart.Series;
-                    foreach (ExcelChartSerie element_2 in secundary_cs)
+                    if (TypeChart.GetType().Name == "ExcelLineChart")
                     {
-                        begin_str = element_2.Series.Substring(0, element_2.Series.IndexOf(":") - (element_2.Series.Substring(0, element_2.Series.IndexOf(":")).Length - element_2.Series.Substring(0, element_2.Series.IndexOf(":")).LastIndexOf("$") - 1));
-                        letter_range_str = element_2.Series.Substring(element_2.Series.IndexOf("$") + 1, element_2.Series.Substring(element_2.Series.IndexOf("$") + 1).IndexOf("$"));
-                        element_2.Series = begin_str + Convert.ToString(range_begin) + ":$" + letter_range_str + Convert.ToString(range_end) + ", " + element_2.Series;
+                        var secundary_cs = TypeChart.Series;
+                        foreach (ExcelChartSerie element_2 in secundary_cs)
+                        {
+                            begin_str = element_2.Series.Substring(0, element_2.Series.IndexOf(":") - (element_2.Series.Substring(0, element_2.Series.IndexOf(":")).Length - element_2.Series.Substring(0, element_2.Series.IndexOf(":")).LastIndexOf("$") - 1));
+                            letter_range_str = element_2.Series.Substring(element_2.Series.IndexOf("$") + 1, element_2.Series.Substring(element_2.Series.IndexOf("$") + 1).IndexOf("$"));
+                            element_2.Series = begin_str + Convert.ToString(range_begin) + ":$" + letter_range_str + Convert.ToString(range_end) + ", " + element_2.Series;
 
+                        }
                     }
                 }
             }
 
+
             // AR y AS -> Para el eje X
 
+        }
+
+        private void UpdateRangeXMLPath( ExcelChart char_, string range_)
+        {
+            //var chartXml = serie_..ChartXml;
+            //var nsm = new XmlNamespaceManager(chartXml.NameTable);
         }
 
         private void CopyAndPasteRange( ExcelWorkbook excelWorkBook_Copy, int sheet_data_copy , ExcelWorkbook excelWorkBook_Paste, int sheet_data_paste, string range_copy, string range_paste)
@@ -2698,6 +2728,7 @@ namespace Paho.Controllers
             var Rangedata_Y = excelWorksheet_paste.Cells[RangeStr_2];
 
             excelWorksheet_copy.Cells[range_copy].Copy(excelWorksheet_paste.Cells[RangeStr_2]);
+            excelWorksheet_paste.Cells.Worksheet.Workbook.Styles.UpdateXml();
         }
 
 
