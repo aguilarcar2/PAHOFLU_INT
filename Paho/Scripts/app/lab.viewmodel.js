@@ -1108,6 +1108,7 @@ function LabViewModel(app, dataModel) {
         self.GeneticGroup("");
         self.GeneticGroup_2("");
         self.GeneticGroup_3("");
+        //console.log("self.resetFinalResult");
     };
 
     self.EnableTestNational = function () {
@@ -1123,113 +1124,7 @@ function LabViewModel(app, dataModel) {
 
     }
 
-
-    self.ShowProcessedNPHL = ko.computed(function () {
-        self.NPHL_NoProRen("");
-        self.NPHL_NoProRenId("");
-        self.Ship_Date_NPHL("");
-        return (self.NPHL_Processed() === "true")
-    }, self);
-
-    self.NotShowNPHL_Processed = ko.computed(function () {
-        return (self.NPHL_Processed() === "false")
-    }, self);
-
-    self.NotShowNPHL_ProcessedOther = ko.computed(function () {
-        return (self.NPHL_NoProRenId() === "5")
-    }, self);
-
-    self.ShowForeignLabCountryContainer = ko.computed(function () {
-        return (self.ForeignLabCountry())
-    }, self);
-
-    self.ShowProcessedNPHL_2 = ko.computed(function () {
-        self.NPHL_NoProRen_2("");
-        self.NPHL_NoProRenId_2("");
-        self.Ship_Date_NPHL_2("");
-        return (self.NPHL_Processed_2() === "true")
-    }, self);
-
-    self.NotShowNPHL_Processed_2 = ko.computed(function () {
-        return (self.NPHL_Processed_2() === "false")
-    }, self);
-
-    self.NotShowNPHL_ProcessedOther_2 = ko.computed(function () {
-        return (self.NPHL_NoProRenId_2() === "5")
-    }, self);
-
-    self.ShowProcessedNPHL_3 = ko.computed(function () {
-        self.NPHL_NoProRen_3("");
-        self.NPHL_NoProRenId_3("");
-        self.resetFinalResult();
-        return (self.NPHL_Processed_3() === "true")
-    }, self);
-
-    self.NotShowNPHL_Processed_3 = ko.computed(function () {
-        return (self.NPHL_Processed_3() === "false")
-    }, self);
-
-    self.NotShowNPHL_ProcessedOther_3 = ko.computed(function () {
-        return (self.NPHL_NoProRenId_3() === "5")
-    }, self);
-
-    self.ShowProcessed = ko.computed(function () {
-        self.NoProRen("");
-        self.NoProRenId("");
-        self.resetFinalResult();
-        return (self.Processed() === "true")
-    }, self);
-
-    self.ShowProcessed2 = ko.computed(function () {
-        self.NoProRen2("");
-        self.NoProRenId2("");
-        self.resetFinalResult();
-        return (self.Processed2() === "true")
-    }, self);
-
-    self.ShowProcessed3 = ko.computed(function () {
-        self.NoProRen3("");
-        self.NoProRenId3("");
-        self.resetFinalResult();
-        return (self.Processed3() === "true")
-    }, self);
-
-    self.NotShowProcessed = ko.computed(function () {
-        return (self.Processed() === "false")
-    }, self);
-    self.NotShowProcessedOther = ko.computed(function () {
-        return (self.NoProRenId() === "5")
-    }, self);
-
-    self.NotShowProcessed2 = ko.computed(function () {
-        return (self.Processed2() === "false")
-    }, self);
-
-    self.NotShowProcessedOther2 = ko.computed(function () {
-        return (self.NoProRenId2() === "5")
-    }, self);
-
-    self.NotShowProcessed3 = ko.computed(function () {
-        return (self.Processed3() === "false")
-    }, self);
-
-    self.NotShowProcessedOther3 = ko.computed(function () {
-        return (self.NoProRenId3() === "5")
-    }, self);
-
-    self.ShowProcessed_National = ko.computed(function () {
-        self.NoProRen_National("");
-        self.NoProRenId_National("");
-        self.resetFinalResult();
-        return (self.Processed_National() === "true")
-    }, self);
-
-    self.NotShowProcessed_National = ko.computed(function () {
-        return (self.Processed_National() === "false")
-    }, self);
-
-
-    self.EndLabDate = ko.observable(null);
+   self.EndLabDate = ko.observable(null);
     self.Comments = ko.observable("");
 
 
@@ -1308,8 +1203,15 @@ function LabViewModel(app, dataModel) {
     }, self);
 
     self.Processed.subscribe(function (NewIsProcessed) {
+    //console.log("aqui Processed.subscribe");
         if (NewIsProcessed == "false")
             self.LabTests([]);
+    });
+
+    self.Processed_National.subscribe(function (NewIsProcessed) {
+        //console.log("aqui Processed_National.subscribe");
+        //console.log(self.LabTests());
+        self.OrdenFinalResult();
     });
 
     self.EnableVirusTypesFinal = ko.computed(function () {
@@ -2003,7 +1905,7 @@ function LabViewModel(app, dataModel) {
                         labtest_s2.CanPCR((typeof data.LabTests_Sample2[index].CanPCR === "undefined") ? false : data.LabTests_Sample2[index].CanPCR);
                         labtest_s2.CanIFI((typeof data.LabTests_Sample2[index].CanIFI === "undefined") ? false : data.LabTests_Sample2[index].CanIFI);
                         labtest_s2.ProcLab(data.LabTests_Sample2[index].ProcLab.toString());
-                        console.log("--ProcLab Sample2 -- " + labtest.ProcLab());
+                        //console.log("--ProcLab Sample2 -- " + labtest.ProcLab());
                         labtest_s2.LabID(data.LabTests_Sample2[index].ProcLab.toString());
                         labtest_s2.ProcLabName(data.LabTests_Sample2[index].ProcLabName.toString());
                         labtest_s2.ProcessLab(data.LabTests_Sample2[index].ProcessLab.toString());
@@ -2054,7 +1956,7 @@ function LabViewModel(app, dataModel) {
                         labtest_s3.CanPCR((typeof data.LabTests_Sample3[index].CanPCR === "undefined") ? false : data.LabTests_Sample3[index].CanPCR);
                         labtest_s3.CanIFI((typeof data.LabTests_Sample3[index].CanIFI === "undefined") ? false : data.LabTests_Sample3[index].CanIFI);
                         labtest_s3.ProcLab(data.LabTests_Sample3[index].ProcLab.toString());
-                        console.log("--ProcLab Sample3 -- " + labtest.ProcLab());
+                        //console.log("--ProcLab Sample3 -- " + labtest.ProcLab());
                         labtest_s3.LabID(data.LabTests_Sample3[index].ProcLab.toString());
                         labtest_s3.ProcLabName(data.LabTests_Sample3[index].ProcLabName.toString());
                         labtest_s3.ProcessLab(data.LabTests_Sample3[index].ProcessLab.toString());
@@ -2212,7 +2114,7 @@ function LabViewModel(app, dataModel) {
             self.OrderDummyINFB([]);
             self.OrderDummyVRS([]);
             self.OrderDummyOtherVirus([]);
-            self.resetFinalResult();
+            //self.resetFinalResult();
             self.OnlyIFINegative([]);
             self.OnlyINFA([]);
             self.OnlyINFB([]);
@@ -2228,6 +2130,7 @@ function LabViewModel(app, dataModel) {
             self.resetFinalResult();
             self.OrderArrayFinalResult(self.LabTests().concat(self.LabTests_Sample2()).concat(self.LabTests_Sample3()));
 
+            //console.log("function OrdenFinalResult");
             // Inicio nuevo procedimiento para orden
             self.FirstSubtypePositive = ko.observable(false);
             self.SecondSubtypePositive = ko.observable(false);
@@ -2299,7 +2202,7 @@ function LabViewModel(app, dataModel) {
             self.INFAData = ko.observable(false);
             if (self.OrderDummyINFA().length > 0) { self.INFAData(true); }
             self.OrderDummyINFA().forEach(function (v, i) {
-                console.log('INFA' + v.TestResultID() + ' -' + v.VirusTypeID() + ' - ');
+                //console.log('INFA' + v.TestResultID() + ' -' + v.VirusTypeID() + ' - ');
                 if (i == 0) {
 
                     if (typeof (self.OrderDummyINFA()[i + 1]) === "undefined") {
@@ -2354,7 +2257,7 @@ function LabViewModel(app, dataModel) {
             self.INFBData = ko.observable(false);
             if (self.OrderDummyINFB().length > 0) { self.INFAData(true); }
             self.OrderDummyINFB().forEach(function (v, i) {
-                console.log('INFB' + v.TestResultID() + ' -' + v.VirusTypeID() + ' - ');
+                //console.log('INFB' + v.TestResultID() + ' -' + v.VirusTypeID() + ' - ');
                 if (i == 0) {
 
                     if (typeof (self.OrderDummyINFB()[i + 1]) === "undefined") {
@@ -2407,7 +2310,7 @@ function LabViewModel(app, dataModel) {
             self.VRSData = ko.observable(false);
             if (self.OrderDummyVRS().length > 0) { self.VRSData(true); }
             self.OrderDummyVRS().forEach(function (v, i) {
-                console.log('VRS' + v.TestResultID() + ' -' + v.VirusTypeID() + ' - ');
+                //console.log('VRS' + v.TestResultID() + ' -' + v.VirusTypeID() + ' - ');
                 if (i == 0) {
 
                     if (typeof (self.OrderDummyVRS()[i + 1]) === "undefined") {
@@ -2458,7 +2361,7 @@ function LabViewModel(app, dataModel) {
             self.VRSData = ko.observable(false);
             if (self.OrderDummyVRS().length > 0) { self.VRSData(true); }
             self.OrderDummyOtherVirus().forEach(function (v, i) {
-                console.log('OtherVirus' + v.TestResultID() + ' -' + v.VirusTypeID() + ' - ');
+                //console.log('OtherVirus' + v.TestResultID() + ' -' + v.VirusTypeID() + ' - ');
                 if (i == 0) {
 
                     if (typeof (self.OrderDummyOtherVirus()[i + 1]) === "undefined") {
@@ -2509,7 +2412,7 @@ function LabViewModel(app, dataModel) {
             self.OtherIFINegativeData = ko.observable(false);
             if (self.OrderDummyIFINegative().length > 0) { self.OtherIFINegativeData(true); }
             self.OrderDummyIFINegative().forEach(function (v, i) {
-                console.log('IFINegative' + v.TestResultID() + ' -' + v.VirusTypeID() + ' - ');
+                //console.log('IFINegative' + v.TestResultID() + ' -' + v.VirusTypeID() + ' - ');
                 if (i == 0) {
 
                     if (typeof (self.OrderDummyIFINegative()[i + 1]) === "undefined") {
@@ -2602,6 +2505,7 @@ function LabViewModel(app, dataModel) {
             //console.log('Final depurado');
             //console.log(self.OrderArrayFinalResult());
 
+
             self.OrderArrayFinalResult().forEach(function (v, i) {
                 if (i == 0) {
                     self.EndLabDate(v.TestEndDate());
@@ -2658,6 +2562,122 @@ function LabViewModel(app, dataModel) {
             
         }
     };
+
+   
+    self.ShowProcessedNPHL = ko.computed(function () {
+        self.NPHL_NoProRen("");
+        self.NPHL_NoProRenId("");
+        self.Ship_Date_NPHL("");
+        return (self.NPHL_Processed() === "true")
+    }, self);
+
+    self.NotShowNPHL_Processed = ko.computed(function () {
+        return (self.NPHL_Processed() === "false")
+    }, self);
+
+    self.NotShowNPHL_ProcessedOther = ko.computed(function () {
+        return (self.NPHL_NoProRenId() === "5")
+    }, self);
+
+    self.ShowForeignLabCountryContainer = ko.computed(function () {
+        return (self.ForeignLabCountry())
+    }, self);
+
+    self.ShowProcessedNPHL_2 = ko.computed(function () {
+        self.NPHL_NoProRen_2("");
+        self.NPHL_NoProRenId_2("");
+        self.Ship_Date_NPHL_2("");
+        return (self.NPHL_Processed_2() === "true")
+    }, self);
+
+    self.NotShowNPHL_Processed_2 = ko.computed(function () {
+        return (self.NPHL_Processed_2() === "false")
+    }, self);
+
+    self.NotShowNPHL_ProcessedOther_2 = ko.computed(function () {
+        return (self.NPHL_NoProRenId_2() === "5")
+    }, self);
+
+    self.ShowProcessedNPHL_3 = ko.computed(function () {
+        self.NPHL_NoProRen_3("");
+        self.NPHL_NoProRenId_3("");
+        self.resetFinalResult();
+        return (self.NPHL_Processed_3() === "true")
+    }, self);
+
+    self.NotShowNPHL_Processed_3 = ko.computed(function () {
+        return (self.NPHL_Processed_3() === "false")
+    }, self);
+
+    self.NotShowNPHL_ProcessedOther_3 = ko.computed(function () {
+        return (self.NPHL_NoProRenId_3() === "5")
+    }, self);
+
+    self.ShowProcessed = ko.computed(function () {
+        self.NoProRen("");
+        self.NoProRenId("");
+        self.resetFinalResult();
+        return (self.Processed() === "true")
+    }, self);
+
+    self.ShowProcessed2 = ko.computed(function () {
+        self.NoProRen2("");
+        self.NoProRenId2("");
+        self.resetFinalResult();
+        return (self.Processed2() === "true")
+    }, self);
+
+    self.ShowProcessed3 = ko.computed(function () {
+        self.NoProRen3("");
+        self.NoProRenId3("");
+        self.resetFinalResult();
+        return (self.Processed3() === "true")
+    }, self);
+
+
+    self.NotShowProcessedOther = ko.computed(function () {
+        return (self.NoProRenId() === "5")
+    }, self);
+
+    self.NotShowProcessed2 = ko.computed(function () {
+        //self.resetFinalResult();
+        //self.OrdenFinalResult();
+        return (self.Processed2() === "false")
+    }, self);
+
+    self.NotShowProcessedOther2 = ko.computed(function () {
+        return (self.NoProRenId2() === "5")
+    }, self);
+
+    self.NotShowProcessed3 = ko.computed(function () {
+        //self.resetFinalResult();
+        //self.OrdenFinalResult();
+        return (self.Processed3() === "false")
+    }, self);
+
+    self.NotShowProcessedOther3 = ko.computed(function () {
+        return (self.NoProRenId3() === "5")
+    }, self);
+
+    self.ShowProcessed_National = ko.computed(function () {
+        self.NoProRen_National("");
+        self.NoProRenId_National("");
+        //self.OrdenFinalResult();
+        return (self.Processed_National() === "true")
+    }, self);
+
+    self.NotShowProcessed_National = ko.computed(function () {
+        //console.log("aqui NotShowProcessed_National");
+        //self.resetFinalResult();
+        //self.OrdenFinalResult();
+        return (self.Processed_National() === "false")
+    }, self);
+
+    self.NotShowProcessed = ko.computed(function () {
+        //self.resetFinalResult();
+        //self.OrdenFinalResult();
+        return (self.Processed() === "false")
+    }, self);
 
     self.Save = function () {
         app.Views.Home.ValidateAll();

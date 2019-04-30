@@ -777,8 +777,8 @@
     }
 
     self.EnableTestNationalGlobal = function () {
-        console.log("EnableTestNationalGlobal");
-        console.log(app.Views.Lab.NPHL_FlowExist());
+        //console.log("EnableTestNationalGlobal");
+        //console.log(app.Views.Lab.NPHL_FlowExist());
         if ($("#ITy").val() == "2" && ( self.UsrCountry() == 15 || (self.UsrCountry() == 25 && app.Views.Lab.NPHL_FlowExist() ))  && app.Views.Lab.flow_max_record() == app.Views.Contact.flow_institution() && app.Views.Contact.Flow_Local_Institution_Lab()) {
             // Laboratorio Nacional
             $("#RecDate_National").attr('disabled', false);
