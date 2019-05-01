@@ -459,15 +459,16 @@
 
     self.TestResultID_VirusSubType.subscribe(function (new_test_result_virussubtype) {
         //console.log("TestResultID_VirusSubType");
+        //console.log(new_test_result_virussubtype);
         if (new_test_result_virussubtype != "" && new_test_result_virussubtype != null) {
             //alert(new_test_result);
             var category = ko.utils.arrayFirst(app.Views.Home.CTR(), function (category) {
                 return category.Id === new_test_result_virussubtype;
             });
-            //alert(category.orden);
+            //console.log(category.orden);
             if (category != null && category != "undefined")
                 self.OrdenTestResultID_VirusSubType = category.orden;
-
+            
             app.Views.Lab.OrdenFinalResult();
         }
 
@@ -2130,6 +2131,7 @@ function LabViewModel(app, dataModel) {
             self.resetFinalResult();
             self.OrderArrayFinalResult(self.LabTests().concat(self.LabTests_Sample2()).concat(self.LabTests_Sample3()));
 
+            //console.log(self.OrderArrayFinalResult());
             //console.log("function OrdenFinalResult");
             // Inicio nuevo procedimiento para orden
             self.FirstSubtypePositive = ko.observable(false);
@@ -2146,6 +2148,11 @@ function LabViewModel(app, dataModel) {
                     self.OnlyINFA().push(c);
                 }
             });
+
+            //console.log("OnlyINFA");
+            //console.log(self.SecondSubtypePositive());
+            //console.log(self.FirstSubtypePositive());
+            //console.log(self.OnlyINFA());
 
             self.OrderArrayFinalResult().forEach(function (c, i) {
                 if (c.VirusTypeID() == 2) {
@@ -2182,11 +2189,15 @@ function LabViewModel(app, dataModel) {
 
             // Nueva forma de ordenamiento
             if (self.SecondSubtypePositive() && self.FirstSubtypePositive() == false) {
+                //console.log("SecondSubtypePositive = true");
                 self.OrderDummyINFA(self.OnlyINFA.sort(self.generateSortFn([{ name: 'OrdenLabID' }, { name: 'OrdenTestType' }, { name: 'OrdenTestResultID' }, { name: 'OrdenVirusTypeID' }, { name: 'OrdenTestResultID_VirusSubType_2' }, { name: 'OrdenTestResultID_VirusSubType' }, { name: 'OrdenSubTypeID' }, { name: 'OrdenLineageID' }])));
             }
             else {
+                //console.log("FirstSubtypePositive = true");
                 self.OrderDummyINFA(self.OnlyINFA.sort(self.generateSortFn([{ name: 'OrdenLabID' }, { name: 'OrdenTestType' }, { name: 'OrdenTestResultID' }, { name: 'OrdenVirusTypeID' }, { name: 'OrdenTestResultID_VirusSubType' }, { name: 'OrdenTestResultID_VirusSubType_2' }, { name: 'OrdenSubTypeID' }, { name: 'OrdenLineageID' }])));
             }
+
+            //console.log(self.OrderDummyINFA());
 
             self.OrderDummyINFB(self.OnlyINFB.sort(self.generateSortFn([{ name: 'OrdenLabID' }, { name: 'OrdenTestType' }, { name: 'OrdenTestResultID' }, { name: 'OrdenVirusTypeID' }, { name: 'OrdenTestResultID_VirusSubType' }, { name: 'OrdenTestResultID_VirusSubType_2' }, { name: 'OrdenSubTypeID' }, { name: 'OrdenLineageID' }])));
             self.OrderDummyVRS(self.OnlyVRS.sort(self.generateSortFn([{ name: 'OrdenLabID' }, { name: 'OrdenTestType' }, { name: 'OrdenTestResultID' }, { name: 'OrdenVirusTypeID' }, { name: 'OrdenTestResultID_VirusSubType' }, { name: 'OrdenTestResultID_VirusSubType_2' }, { name: 'OrdenSubTypeID' }, { name: 'OrdenLineageID' }])));
@@ -2250,6 +2261,8 @@ function LabViewModel(app, dataModel) {
                 }
             });
 
+
+            //console.log(self.OrderINFA());
 
 
             // Influenza B
@@ -2505,7 +2518,7 @@ function LabViewModel(app, dataModel) {
             //console.log('Final depurado');
             //console.log(self.OrderArrayFinalResult());
 
-
+            self.TestResultID_VirusSubtype_Two_Positive = ko.observable(false);
             self.OrderArrayFinalResult().forEach(function (v, i) {
                 if (i == 0) {
                     self.EndLabDate(v.TestEndDate());
@@ -2515,14 +2528,20 @@ function LabViewModel(app, dataModel) {
 
                         if (v.TestResultID_VirusSubType() == "P" && self.UsrCountry() == 7) {
                             self.FinalResultVirusSubTypeID(v.VirusSubTypeID());
-                        } else if (v.TestResultID_VirusSubType() != "N" && v.TestResultID_VirusSubType() != "NA" && v.TestResultID_VirusSubType() != "NB") {
+                        } else if (v.TestResultID_VirusSubType() != "N" && v.TestResultID_VirusSubType() != "NA" && v.TestResultID_VirusSubType() != "" && typeof v.TestResultID_VirusSubType() != "undefined" && v.TestResultID_VirusSubType() != "NB") {
                             self.FinalResultVirusSubTypeID(v.VirusSubTypeID());
                         }
                             
-                        if (v.TestResultID_VirusSubType_2() == "P" && self.UsrCountry() == 7) {
+                        if (v.TestResultID_VirusSubType_2() == "P" && (v.TestResultID_VirusSubType() != "P" )  && self.UsrCountry() == 7) {
                             self.FinalResultVirusSubTypeID(v.VirusSubTypeID_2());
-                        } else if (v.TestResultID_VirusSubType_2() != "N" && v.TestResultID_VirusSubType_2() != "NA" && v.TestResultID_VirusSubType_2() != "NB" && self.UsrCountry() == 7) {
+                        } else if (v.TestResultID_VirusSubType() != "P" && v.TestResultID_VirusSubType_2() != "N" && v.TestResultID_VirusSubType_2() != "NA" && v.TestResultID_VirusSubType_2() != "" && v.TestResultID_VirusSubType_2() != "NB" && typeof v.TestResultID_VirusSubType_2() != "undefined" && self.UsrCountry() == 7) {
                             self.FinalResultVirusSubTypeID(v.VirusSubTypeID_2());
+                        }
+
+                        if (v.TestResultID_VirusSubType() == "P" && v.TestResultID_VirusSubType_2() == "P" && self.UsrCountry() == 7) {
+                            self.FinalResult_2(v.TestResultID());
+                            self.FinalResultVirusTypeID_2(v.VirusTypeID());
+                            self.FinalResultVirusSubTypeID_2(v.VirusSubTypeID_2());
                         }
 
                         self.FinalResultVirusLineageID(v.VirusLineageID());
@@ -2530,20 +2549,37 @@ function LabViewModel(app, dataModel) {
                     
                 }
                 if (i == 1) {
-                    self.FinalResult_2((v.TestResultID() == "NA" || v.TestResultID() == "NB") ? 'N' : v.TestResultID());
-                    if (v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB") {
-                        self.FinalResultVirusTypeID_2(v.VirusTypeID());
-                        self.FinalResultVirusSubTypeID_2(v.VirusSubTypeID());
-                        self.FinalResultVirusLineageID_2(v.VirusLineageID());
+
+                    
+                    if (self.OrderArrayFinalResult()[0].TestResultID_VirusSubType() == "P" && self.OrderArrayFinalResult()[0].TestResultID_VirusSubType_2() == "P" && self.UsrCountry() == 7) {
+                        self.FinalResult_3((v.TestResultID() == "NA" || v.TestResultID() == "NB") ? 'N' : v.TestResultID());
+                        if (v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB") {
+                            self.FinalResultVirusTypeID_3(v.VirusTypeID());
+                            self.FinalResultVirusSubTypeID_3(v.VirusSubTypeID());
+                            self.FinalResultVirusLineageID_3(v.VirusLineageID());
+                        }
                     }
+                    else {
+                        self.FinalResult_2((v.TestResultID() == "NA" || v.TestResultID() == "NB") ? 'N' : v.TestResultID());
+                        if (v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB") {
+                            self.FinalResultVirusTypeID_2(v.VirusTypeID());
+                            self.FinalResultVirusSubTypeID_2(v.VirusSubTypeID());
+                            self.FinalResultVirusLineageID_2(v.VirusLineageID());
+                        }
+                    }
+
                 }
                 if (i == 2) {
-                    self.FinalResult_3((v.TestResultID() == "NA" || v.TestResultID() == "NB") ? 'N' : v.TestResultID());
-                    if (v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB") {
-                        self.FinalResultVirusTypeID_3(v.VirusTypeID());
-                        self.FinalResultVirusSubTypeID_3(v.VirusSubTypeID());
-                        self.FinalResultVirusLineageID_3(v.VirusLineageID());
-                    }
+
+                    if (self.OrderArrayFinalResult()[0].TestResultID_VirusSubType() != "P" && self.OrderArrayFinalResult()[0].TestResultID_VirusSubType_2() != "P") 
+                        {
+                            self.FinalResult_3((v.TestResultID() == "NA" || v.TestResultID() == "NB") ? 'N' : v.TestResultID());
+                            if (v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB") {
+                                self.FinalResultVirusTypeID_3(v.VirusTypeID());
+                                self.FinalResultVirusSubTypeID_3(v.VirusSubTypeID());
+                                self.FinalResultVirusLineageID_3(v.VirusLineageID());
+                            }
+                        }
                 }
             });
 
