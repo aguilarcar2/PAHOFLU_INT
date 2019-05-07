@@ -5774,6 +5774,7 @@
     var msgValidateProcessEndDateStartDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessEndDateStartDate")))";
     var msgValidateProcessType = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessType")))";
     var msgValidateProcessResult = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessResult")))";
+    var msgValidateProcessResult_Subtype = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessResult_Subtype")))";
     var msgValidateProcessVirus = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessVirus")))";
     var msgValidateProcessOtherVirus = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessOtherVirus")))";
     var msgValidateProcessSubtype = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessSubtype")))";
@@ -5808,7 +5809,7 @@
     var cattrablaborama = @Html.Raw(Json.Encode(Model.CatTrabLaboRamas));               //**** CAFQ
     var caselist_interval_1 = @(Json.Encode(Model.caselist_interval_1)) ;
     var caselist_interval_2 = @(Json.Encode(Model.caselist_interval_2)) ;
-     
+
 
     $("button[data-toggle='collapse']").on('shown', function () {
         $(this).child.removeClass("glyphicon-chevron-down").addClass("glyphicon-chevron-up");

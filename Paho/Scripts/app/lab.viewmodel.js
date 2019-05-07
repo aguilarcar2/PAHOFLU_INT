@@ -1513,7 +1513,7 @@ function LabViewModel(app, dataModel) {
             }
 
             var labtests_check = $.grep(self.LabTests(), function (v) {
-                return v.TestType() === "2";
+                return v.TestType() === "2" || v.TestType() === "1";
             });
             if (labtests_check.length > 0) {
                 if ($("#EndLabDate").val() == "")
@@ -1536,7 +1536,12 @@ function LabViewModel(app, dataModel) {
                 }
             }
 
-            
+            self.ArrayValidate(self.LabTests().concat(self.LabTests_Sample2()).concat(self.LabTests_Sample3()));
+            for (index = 0; index < self.ArrayValidate().length; ++index) {
+
+                if (self.ArrayValidate()[index].TestResultID() === "P" && self.ArrayValidate()[index].VirusTypeID() === "1" && self.ArrayValidate()[index].TestType() === "2" && self.ArrayValidate()[index].TestResultID_VirusSubType() != "P" && self.ArrayValidate()[index].TestResultID_VirusSubType_2() != "P")
+                    msg += "\n" + msgValidateProcessResult_Subtype;
+            }
 
         }
 
@@ -1648,6 +1653,11 @@ function LabViewModel(app, dataModel) {
                     msg += "\n" + msgValidateProcessResult;
                         //Insert the result of the process
                         //"Indique el resultado del proceso";
+
+                        // revision para agregar los subtipos de Chile
+                if (self.ArrayValidate()[index].TestResultID() === "P" && self.ArrayValidate()[index].VirusTypeID() === "1" && self.ArrayValidate()[index].TestType() === "2" && self.ArrayValidate()[index].TestResultID_VirusSubType() != "P" && self.ArrayValidate()[index].TestResultID_VirusSubType_2() != "P")
+                    msg += "\n" + msgValidateProcessResult_Subtype;
+
 
                 if ((self.ArrayValidate()[index].TestResultID() === "P" ) && (self.ArrayValidate()[index].VirusTypeID() === "" || self.ArrayValidate()[index].VirusTypeID() == undefined))
                 {

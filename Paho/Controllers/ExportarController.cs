@@ -19,6 +19,7 @@ using System.Globalization;
 using System.Collections;
 using System.Web.Script.Serialization;
 using Paho.Utility;
+using System.Xml;
 
 namespace Paho.Controllers
 {
@@ -463,19 +464,55 @@ namespace Paho.Controllers
                                 }
                             }
 
+
+                            // Procedimiento para cambiar los rangos del eje X 
+                            if (contador > 0)
+                            {
+                                //var RangeStr = "( Virus!$BY$120:$BZ$171, Virus!$BY$63:$BZ$114, Virus!$BY$6:$BZ$57 ) ";
+                                var RangeStr = " Virus!$BY$6:$BZ$57 ";
+
+                                for (int i = 1; i <= contador; i++)
+                                {
+                                    RangeStr = "Virus!$BY$" + (6 + (57 * i)).ToString() + ":$BZ$" + ((6 + (57 * i)) + 51).ToString() + ", " + RangeStr;
+                                }
+
+                                RangeStr = " ( " + RangeStr + ")";
+
+                                //Tamaño original de las gráficas
+                                // LineChart.SetSize(1375, 700);
+
+                                var graph_name = "CV1";
+                                var LineChart = excelWs_VIRUSES_Chart.Drawings[graph_name] as ExcelChart;
+                                LineChart.SetSize( (150*contador) +  1375, 700);
+                                UpdateRangeXMLPath(LineChart, RangeStr);
+
+                                graph_name = "CV2";
+                                LineChart = excelWs_VIRUSES_Chart.Drawings[graph_name] as ExcelChart;
+                                LineChart.SetSize((150 * contador) + 1375, 700);
+                                UpdateRangeXMLPath(LineChart, RangeStr);
+
+                                graph_name = "CV3";
+                                LineChart = excelWs_VIRUSES_Chart.Drawings[graph_name] as ExcelChart;
+                                LineChart.SetSize((150 * contador) + 1375, 700);
+                                UpdateRangeXMLPath(LineChart, RangeStr);
+
+                                graph_name = "CV4";
+                                LineChart = excelWs_VIRUSES_Chart.Drawings[graph_name] as ExcelChart;
+                                LineChart.SetSize((150 * contador) + 1375, 700);
+                                UpdateRangeXMLPath(LineChart, RangeStr);
+                            }
+
+
                             var excelWs_VIRUSES_INF_Geographic = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Virus_INF_GEO" : "Virus_INF_GEO"];
                             if (excelWs_VIRUSES_INF_Geographic != null)
                                 AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", 5, 1, excelWs_VIRUSES_INF_Geographic.Index, false, ReportCountry, YearBegin, YearEnd, 1, Inusual, AreaID_, Sentinel);
 
                             var excelWs_VIRUSES_RSV_Geographic = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Virus_RSV_GEO" : "Virus_VSR_GEO"];
                             if (excelWs_VIRUSES_RSV_Geographic != null)
-                                AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", 5, 1, excelWs_VIRUSES_INF_Geographic.Index, false, ReportCountry, YearBegin, YearEnd, 1, Inusual, AreaID_, Sentinel);
-
+                                AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", 5, 1, excelWs_VIRUSES_RSV_Geographic.Index, false, ReportCountry, YearBegin, YearEnd, 1, Inusual, AreaID_, Sentinel);
 
                             var excelWs_Leyendas = excelWorkBook.Worksheets["Leyendas"];
                             ConfigToExcel_FLUID(CountryID, Languaje_, RegionID_, YearEnd, YearBegin, YearEnd, StartDate, EndDate, HospitalID_, excelWorkBook, "Leyendas", 1, excelWs_Leyendas.Index, false);
-
-
 
                         }
                         else if (reportTemplate.ToUpper() == "FLUID")
@@ -2672,19 +2709,6 @@ namespace Paho.Controllers
                 begin_str = element.Series.Substring(0, element.Series.IndexOf(":") - (element.Series.Substring(0, element.Series.IndexOf(":")).Length - element.Series.Substring(0, element.Series.IndexOf(":")).LastIndexOf("$") - 1));
                 letter_range_str = element.Series.Substring(element.Series.IndexOf("$") + 1 , element.Series.Substring(element.Series.IndexOf("$") + 1).IndexOf("$"));
                 element.Series = begin_str + Convert.ToString(range_begin) + ":$" + letter_range_str + Convert.ToString(range_end) + ", " + element.Series ;
-                // XSeries prueba
-                //element.XSeries = "Virus!$BY$6:$BZ$57, Virus!$BY$63:$BZ$114, Virus!$BY$120:$BZ$171";
-                //element.Header = "Virus!$BY$6:$BZ$57, Virus!$BY$63:$BZ$114, Virus!$BY$120:$BZ$171";
-                if (graph_name == "CV2")
-                {
-                    var RangeStr = "'Virus'!$BY$" + Convert.ToString(range_begin) + ":$BZ$" + Convert.ToString(range_end) + ", " + (element.XSeries == "" ? excelWorksheet_data.Name + "!$BY$6:$BZ$57" : element.XSeries);
-                    UpdateRangeXMLPath(LineChart, RangeStr);
-                    ////var RangeStr = "'Virus'!$BY$" + Convert.ToString(range_begin) + ":$BZ$" + Convert.ToString(range_end) + ", " + (element.XSeries == "" ? excelWorksheet_data.Name + "!$BY$6:$BZ$57" : element.XSeries) ;
-                    //var RangeStr = "'Virus'!$BY$6:$BZ$57";
-                    //var Rangedata_XSeries = excelWorksheet_data.Cells[RangeStr];
-                    //element.XSeries = Rangedata_XSeries.FullAddress;
-                    //element.XSeries = "Virus!$BY$120:$BZ$171;Virus!$BY$63:$BZ$114;Virus!$BY$6:$BZ$57";
-                }
             }
 
             if (graph_name == "CV1" || graph_name == "CV3")
@@ -2705,15 +2729,27 @@ namespace Paho.Controllers
                 }
             }
 
-
-            // AR y AS -> Para el eje X
-
         }
 
         private void UpdateRangeXMLPath( ExcelChart char_, string range_)
         {
-            //var chartXml = serie_..ChartXml;
-            //var nsm = new XmlNamespaceManager(chartXml.NameTable);
+            var chartXml = char_.ChartXml;
+            var nsm = new XmlNamespaceManager(chartXml.NameTable);
+
+            var nsuri = chartXml.DocumentElement.NamespaceURI;
+            nsm.AddNamespace("c", nsuri);
+
+            var plotAreaNode = chartXml.SelectNodes("c:chartSpace/c:chart/c:plotArea", nsm);
+            //Get the Series ref and its cat
+            var serNode = chartXml.SelectNodes("//c:ser", nsm);
+            foreach (XmlNode serNode_ind in serNode)
+            {
+                var multiLvlStrRef_f_Node = serNode_ind.SelectSingleNode("c:cat/c:multiLvlStrRef/c:f", nsm);
+
+                if (multiLvlStrRef_f_Node != null)
+                    multiLvlStrRef_f_Node.InnerXml = range_;
+
+            }
         }
 
         private void CopyAndPasteRange( ExcelWorkbook excelWorkBook_Copy, int sheet_data_copy , ExcelWorkbook excelWorkBook_Paste, int sheet_data_paste, string range_copy, string range_paste)
@@ -2721,14 +2757,13 @@ namespace Paho.Controllers
             var excelWorksheet_copy = excelWorkBook_Copy.Worksheets[sheet_data_copy];
             var excelWorksheet_paste = excelWorkBook_Paste.Worksheets[sheet_data_paste];
 
-            //var LineChart = excelWorksheet_graph.Drawings[graph_name] as ExcelLineChart;
             var RangeStr = range_copy;
             var RangeStr_2 = range_paste;
             var Rangedata_copy = excelWorksheet_copy.Cells[RangeStr];
             var Rangedata_Y = excelWorksheet_paste.Cells[RangeStr_2];
 
             excelWorksheet_copy.Cells[range_copy].Copy(excelWorksheet_paste.Cells[RangeStr_2]);
-            excelWorksheet_paste.Cells.Worksheet.Workbook.Styles.UpdateXml();
+            //excelWorksheet_paste.Cells.Worksheet.Workbook.Styles.UpdateXml();
         }
 
 
@@ -2837,8 +2872,8 @@ namespace Paho.Controllers
 
                     if (excelWorksheet.Name.IndexOf("_INF_") > 0)
                         command.Parameters.Add("@VirusType", SqlDbType.Text).Value = "INF";
-                    else if (excelWorksheet.Name.IndexOf("_VRS_") > 0 || excelWorksheet.Name.IndexOf("_RSV_") > 0)
-                        command.Parameters.Add("@VirusType", SqlDbType.Text).Value = "VRS";
+                    else if (excelWorksheet.Name.IndexOf("_VSR_") > 0 || excelWorksheet.Name.IndexOf("_RSV_") > 0)
+                        command.Parameters.Add("@VirusType", SqlDbType.Text).Value = "RSV";
 
                     con.Open();
                     using (var reader = command.ExecuteReader())
