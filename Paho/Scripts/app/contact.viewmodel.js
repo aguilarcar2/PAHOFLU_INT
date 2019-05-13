@@ -967,17 +967,17 @@ function ContactViewModel(app, dataModel) {
         //console.log("Contact epi - frecord_lab -- " + self.flow_record() + ", finstitution_lab -- " + self.flow_institution() + ", dataStatement_lab -- " + self.DataStatement() + ", userRole " + app.Views.Home.UserRole() + ", Inst" + $("#ITy").val() + ", OpenAlways" + self.flow_open_always());
         ////if ($("#ITy").val() == "2"  && app.Views.Home.UserRole() == "mod_lab") {
         if ($("#ITy").val() == "2" && app.Views.Home.URmod_lab() == true) {
-            //console.log("Flow Lab - true");
+            console.log("URmod_lab - true");
             return true;
-        } else if ((self.flow_record() == (self.flow_institution() - 1)
-                    && (self.DataStatement() == 2 || self.DataStatement() == null || self.flow_open_always() == true) 
-                    && app.Views.Home.SaveAndAdd_1() == true) || (self.flow_record() == self.flow_institution() && (self.DataStatement() == 1 || self.DataStatement() == null || self.flow_open_always() == true)) || (self.flow_close_case() == 99
-                    && self.flow_open_always() == true)) {
-            //console.log("Flow Lab - true");
+        } else if ((self.flow_record() == (self.flow_institution() - 1) && (self.DataStatement() == 2 || self.DataStatement() == null || self.flow_open_always() == true) && app.Views.Home.SaveAndAdd_1() == true)
+                    || (self.flow_record() == self.flow_institution() && (self.DataStatement() == 1 || self.DataStatement() == null || self.flow_open_always() == true))
+                    || (self.flow_close_case() == 99 && self.flow_open_always() == true)) {
+            console.log("Flow Lab - true");
+            console.log("primera opción" + (self.flow_record() == (self.flow_institution() - 1) && (self.DataStatement() == 2 || self.DataStatement() == null || self.flow_open_always() == true) && app.Views.Home.SaveAndAdd_1() == true))
             return true;
         }
         else {
-            //console.log("Flow Lab - false");
+            console.log("Flow Lab - false");
             return false;
         }
 

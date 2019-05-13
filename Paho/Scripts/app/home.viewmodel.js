@@ -619,7 +619,9 @@
             $("#CaseStatus").attr("disabled", false);
             $("#tabs").tabs("refresh");
         }
-        else if ($("#ITy").val() == "1" && ((app.Views.Hospital.IsSample() === "true" && app.Views.Lab.Processed() === "false") || (app.Views.Lab.NPHL() == true && app.Views.Hospital.IsSample() === "true" && app.Views.Lab.NPHL_Processed() === "false"))) {
+        else if ($("#ITy").val() == "1"
+                && ((app.Views.Hospital.IsSample() === "true" && app.Views.Lab.Processed() === "false")
+                    || (app.Views.Lab.NPHL() == true && app.Views.Hospital.IsSample() === "true" && app.Views.Lab.NPHL_Processed() === "false"))) {
             //console.log("aqui _  Flow status no processed"); //
             $("a[href*='tab-case']").show();
             $("#tab-case").show();

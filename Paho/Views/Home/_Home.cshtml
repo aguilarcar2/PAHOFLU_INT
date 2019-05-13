@@ -3791,6 +3791,13 @@
                     <div class="row rowform">
                         <div class="col-md-3">
                             <div class='input-group'>
+                                <button id="revome_LabTest_1" type="button" class="btn btn-primary" data-bind="enable: CanEdit,visible:CanEdit, click: $parent.removeLabTest.bind($data,1)">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelRemoveResult"))</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowform">
+                        <div class="col-md-3">
+                           <div class='input-group'>
                                 <div data-bind="visible: CanEdit()">
                                     <select name="DrpProcLab" id="DrpProcLab" class="form-control" data-bind="options:$parent.LabsResult,
                                         optionsText: 'Name',
@@ -3801,16 +3808,19 @@
                                 <div data-bind="visible: !CanEdit()">
                                     <label data-bind="text: ProcLabName "></label>
                                 </div>
+                                @*<input type="button" value="Borrar" data-bind="enable: CanEdit,visible:CanEdit, click: $parent.removeLabTest.bind($data,1)">*@
                             </div>
                         </div>
 
                         <div class="col-md-2">
+                            
                             <label class="btn btn-default">
                                 <input type="radio" value="true" data-bind="checked: ProcessLab, enable:CanEdit"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelYes"))
                             </label>
                             <label class="btn btn-default">
                                 <input type="radio" value="false" data-bind="checked: ProcessLab, enable:CanEdit"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelNo"))
                             </label>
+                            
                         </div>
                         <!-- div class="row" data-bind="visible: NotShowProcessedLab">
         <div class='input-group'>
@@ -3856,6 +3866,7 @@
                     </div>
                     <div class="row rowform" data-bind="visible:EnableVirusTypes()">
                         <div class="col-md-5">
+                            
                         </div>
                         <div class="col-md-4">
                             <div class='input-group' data-bind="visible:EnableVirusTypes()">

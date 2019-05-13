@@ -1093,6 +1093,7 @@ function LabViewModel(app, dataModel) {
     }, self);
 
     self.resetFinalResult = function () {
+        //console.log("resetFinalResult");
         self.FinalResult("");
         self.FinalResultVirusTypeID("");
         self.FinalResultVirusSubTypeID("");
@@ -1145,6 +1146,8 @@ function LabViewModel(app, dataModel) {
     self.FResult = ko.observable("");
 
     self.FinalResult.subscribe(function (newFinalResult) {
+        //console.log("FinalResult");
+        //console.log(newFinalResult);
         if (newFinalResult != "" && newFinalResult != "undefined" && newFinalResult != null)
         {
             $("a[href*='tab-case']").show();
@@ -1203,10 +1206,26 @@ function LabViewModel(app, dataModel) {
         var result = self.FinalResultVirusTypeID_3() == "2"; if (!result) self.FinalResultVirusLineageID_3(""); return result;
     }, self);
 
+    self.removeTestbyLab = function (LabId, SampleNumber) {
+
+        self.LabTests().forEach(function (c, i) {
+            //console.log("CanEdit - " + c.CanEdit() + " - LabId" + LabId);
+            if (c.CanEdit() == true) {
+                //console.log("borrar");
+                self.removeLabTest(SampleNumber, c)
+            }
+                 
+        });
+    };
+
+
     self.Processed.subscribe(function (NewIsProcessed) {
-    //console.log("aqui Processed.subscribe");
+    //console.log("aqui Processed.subscribe" + NewIsProcessed);
         if (NewIsProcessed == "false")
-            self.LabTests([]);
+        {
+            self.removeTestbyLab(self.UsrInstID(), 1);
+        }
+            
     });
 
     self.Processed_National.subscribe(function (NewIsProcessed) {
@@ -1216,62 +1235,12 @@ function LabViewModel(app, dataModel) {
     });
 
     self.EnableVirusTypesFinal = ko.computed(function () {
-        //if (self.FinalResult() != "") {
-        //    $("#CaseStatus").attr("disabled", false);
-        //} else {
-        //    $("#CaseStatus").attr("disabled", true);
-        //}
         if (self.FinalResult() == "N" || self.FinalResult() == "U" || self.FinalResult() == "") {
             self.FinalResultVirusTypeID("");
             return false;
         }
         else return true;
     }, self);
-    //self.SetFResult = function () {
-    //    var virustypes;
-    //    var labtests = $.grep(self.LabTests(), function (v) {
-    //        return v.TestType() === "2" && v.TestResultID() === "P" && (v.VirusTypeID() === "2" || v.VirusTypeID() === "3" || v.VirusTypeID() === "4" || v.VirusTypeID() === "5")
-    //    });
-    //    if (labtests.length > 0) {
-    //        console.log(labtests[0].VirusTypes());
-    //        console.log(labtests[0].VirusTypeID());
-    //        virustypes = $.grep(labtests[0].VirusTypes(), function (v) {
-    //            return v.Id == labtests[0].VirusTypeID()
-    //        });
-    //        console.log(virustypes);
-    //        return self.FResult(virustypes[0].Name);
-    //    }
-
-    //    labtests = $.grep(self.LabTests(), function (v) {
-    //        return v.TestType() === "1" && v.TestResultID() === "P" && (v.VirusTypeID() === "1" || v.VirusTypeID() === "5")
-    //    });
-    //    if (labtests.length > 0) {
-    //        console.log(labtests[0].VirusTypes());
-    //        console.log(labtests[0].VirusTypeID());
-    //        virustypes = $.grep(labtests[0].VirusTypes(), function (v) {
-    //            return v.Id == labtests[0].VirusTypeID()
-    //        });
-    //        console.log(virustypes);
-    //        return self.FResult(virustypes[0].Name);
-    //    }
-
-    //    labtests = $.grep(self.LabTests(), function (v) {
-    //        return v.TestResultID() === "P"
-    //    });
-    //    if (labtests.length > 0) {
-    //        console.log(labtests[0].VirusTypes());
-    //        console.log(labtests[0].VirusTypeID());
-    //        virustypes = $.grep(labtests[0].VirusTypes(), function (v) {
-    //            return v.Id == labtests[0].VirusTypeID()
-    //        });
-    //        console.log(virustypes);
-    //        return self.FResult(virustypes[0].Name);
-    //    }
-    //};
-    //self.LabTests.subscribe(function (newlabtests)  {
-    //    self.SetFResult();
-    //});  
-
 
     self.generateSortFn = function (props) {
         return function (a, b) {
@@ -1353,25 +1322,26 @@ function LabViewModel(app, dataModel) {
 
     self.removeLabTest = function (sample_number, data) {
 
-        self.players.remove(function (player) { return player.name == Name });
+        //console.log(data);
+        //console.log(sample_number);
+        if (sample_number == 1) {
+            //console.log("aquí");
+            self.LabTests.remove(data);
+        } else if (sample_number == 2) {
+            self.LabTests_Sample2.remove(data);
+        } else if (sample_number == 3) {
+            self.LabTests_Sample3.remove(data);
+        } else if (sample_number == 999) {
+            self.LabTestsExternal.remove(data);
+        }
 
-        //var labtest = new LabTest(sample_number);
-        //labtest.hideLabOptions = true;
-        ////console.log(labtest.displayLabOptions + " **** ");
-        //labtest.CaseLabID = self.Id;
-        //labtest.SampleNumber(sample_number);
-        //if (sample_number == 1) {
-        //    self.LabTests.remove(labtest);
-        //} else if (sample_number == 2) {
-        //    self.LabTests_Sample2.remove(labtest);
-        //} else if (sample_number == 3) {
-        //    self.LabTests_Sample3.remove(labtest);
-        //}
+        self.OrdenFinalResult();
 
     };
 
 
     self.ResetLab = function () {
+        //console.log("ResetLab");
         self.hasReset(true);
         self.Id = "";
         self.CanIFILab(false);
@@ -1458,6 +1428,7 @@ function LabViewModel(app, dataModel) {
     };
 
     self.ResetLabFinalResult = function () {
+        //console.log("ResetLabFinalResult");
         self.FinalResult("");
         self.FinalResultVirusTypeID("");
         self.FinalResultVirusSubTypeID("");
@@ -1539,7 +1510,11 @@ function LabViewModel(app, dataModel) {
             self.ArrayValidate(self.LabTests().concat(self.LabTests_Sample2()).concat(self.LabTests_Sample3()));
             for (index = 0; index < self.ArrayValidate().length; ++index) {
 
-                if (self.ArrayValidate()[index].TestResultID() === "P" && self.ArrayValidate()[index].VirusTypeID() === "1" && self.ArrayValidate()[index].TestType() === "2" && self.ArrayValidate()[index].TestResultID_VirusSubType() != "P" && self.ArrayValidate()[index].TestResultID_VirusSubType_2() != "P")
+                if (self.ArrayValidate()[index].TestResultID() === "P"  // Resultado general Positivo
+                    && self.ArrayValidate()[index].VirusTypeID() === "1" // Virus seleccionado 
+                    && self.ArrayValidate()[index].TestType() === "2"   // Tipo de técnica es PCR
+                    && self.ArrayValidate()[index].TestResultID_VirusSubType() != "P" && self.ArrayValidate()[index].TestResultID_VirusSubType_2() != "P"
+                    && self.UsrCountry() == 7)
                     msg += "\n" + msgValidateProcessResult_Subtype;
             }
 
@@ -1655,7 +1630,12 @@ function LabViewModel(app, dataModel) {
                         //"Indique el resultado del proceso";
 
                         // revision para agregar los subtipos de Chile
-                if (self.ArrayValidate()[index].TestResultID() === "P" && self.ArrayValidate()[index].VirusTypeID() === "1" && self.ArrayValidate()[index].TestType() === "2" && self.ArrayValidate()[index].TestResultID_VirusSubType() != "P" && self.ArrayValidate()[index].TestResultID_VirusSubType_2() != "P")
+                if (self.ArrayValidate()[index].TestResultID() === "P"
+                    && self.ArrayValidate()[index].VirusTypeID() === "1"
+                    && self.ArrayValidate()[index].TestType() === "2"
+                    && self.ArrayValidate()[index].TestResultID_VirusSubType() != "P"
+                    && self.ArrayValidate()[index].TestResultID_VirusSubType_2() != "P"
+                    && self.ArrayValidate()[index].UsrCountry() == 7) // Esta línea es porque esta validación es solo para Chile
                     msg += "\n" + msgValidateProcessResult_Subtype;
 
 
@@ -1684,8 +1664,12 @@ function LabViewModel(app, dataModel) {
                 }
 
 
-                if (self.ArrayValidate()[index].TestResultID() === "P" && self.ArrayValidate()[index].VirusTypeID() === "1" && (self.ArrayValidate()[index].VirusSubTypeID() === "" || self.ArrayValidate()[index].VirusSubTypeID() == undefined) && self.ArrayValidate()[index].TestType() === "2")
+                if (self.ArrayValidate()[index].TestResultID() === "P"
+                    && self.ArrayValidate()[index].VirusTypeID() === "1" 
+                    && (self.ArrayValidate()[index].VirusSubTypeID() === "" || self.ArrayValidate()[index].VirusSubTypeID() == undefined || ((self.ArrayValidate()[index].VirusSubTypeID_2() === "" || self.ArrayValidate()[index].VirusSubTypeID_2() == undefined) && self.ArrayValidate()[index].UsrCountry() == 7))
+                    && self.ArrayValidate()[index].TestType() === "2") 
                 {
+                    //console.log("Aqui virusSubtiypeID");
                     msg += "\n" + msgValidateProcessSubtype;
                       //  Insert the detected Subtype
                       //"Ingrese el Subtipo detectado";
@@ -2098,6 +2082,7 @@ function LabViewModel(app, dataModel) {
     self.OrdenFinalResult = function () {
 
         if (self.hasGet() == false) {
+            //console.log("OrdenFinalResult");
 
             // Declare variable Array Dummy  -- Nueva versión de ordenamiento
             self.OrderDummyIFINegative = ko.observableArray([]);
@@ -2536,22 +2521,27 @@ function LabViewModel(app, dataModel) {
                     if (v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB") {
                         self.FinalResultVirusTypeID(v.VirusTypeID());
 
-                        if (v.TestResultID_VirusSubType() == "P" && self.UsrCountry() == 7) {
-                            self.FinalResultVirusSubTypeID(v.VirusSubTypeID());
-                        } else if (v.TestResultID_VirusSubType() != "N" && v.TestResultID_VirusSubType() != "NA" && v.TestResultID_VirusSubType() != "" && typeof v.TestResultID_VirusSubType() != "undefined" && v.TestResultID_VirusSubType() != "NB") {
-                            self.FinalResultVirusSubTypeID(v.VirusSubTypeID());
-                        }
-                            
-                        if (v.TestResultID_VirusSubType_2() == "P" && (v.TestResultID_VirusSubType() != "P" )  && self.UsrCountry() == 7) {
-                            self.FinalResultVirusSubTypeID(v.VirusSubTypeID_2());
-                        } else if (v.TestResultID_VirusSubType() != "P" && v.TestResultID_VirusSubType_2() != "N" && v.TestResultID_VirusSubType_2() != "NA" && v.TestResultID_VirusSubType_2() != "" && v.TestResultID_VirusSubType_2() != "NB" && typeof v.TestResultID_VirusSubType_2() != "undefined" && self.UsrCountry() == 7) {
-                            self.FinalResultVirusSubTypeID(v.VirusSubTypeID_2());
-                        }
+                        if (self.UsrCountry() == 7) {
+                            if (v.TestResultID_VirusSubType() == "P" && self.UsrCountry() == 7) {
+                                self.FinalResultVirusSubTypeID(v.VirusSubTypeID());
+                            } else if (v.TestResultID_VirusSubType() != "N" && v.TestResultID_VirusSubType() != "NA" && v.TestResultID_VirusSubType() != "" && typeof v.TestResultID_VirusSubType() != "undefined" && v.TestResultID_VirusSubType() != "NB") {
+                                self.FinalResultVirusSubTypeID(v.VirusSubTypeID());
+                            }
 
-                        if (v.TestResultID_VirusSubType() == "P" && v.TestResultID_VirusSubType_2() == "P" && self.UsrCountry() == 7) {
-                            self.FinalResult_2(v.TestResultID());
-                            self.FinalResultVirusTypeID_2(v.VirusTypeID());
-                            self.FinalResultVirusSubTypeID_2(v.VirusSubTypeID_2());
+                            if (v.TestResultID_VirusSubType_2() == "P" && (v.TestResultID_VirusSubType() != "P") && self.UsrCountry() == 7) {
+                                self.FinalResultVirusSubTypeID(v.VirusSubTypeID_2());
+                            } else if (v.TestResultID_VirusSubType() != "P" && v.TestResultID_VirusSubType_2() != "N" && v.TestResultID_VirusSubType_2() != "NA" && v.TestResultID_VirusSubType_2() != "" && v.TestResultID_VirusSubType_2() != "NB" && typeof v.TestResultID_VirusSubType_2() != "undefined" && self.UsrCountry() == 7) {
+                                self.FinalResultVirusSubTypeID(v.VirusSubTypeID_2());
+                            }
+
+                            if (v.TestResultID_VirusSubType() == "P" && v.TestResultID_VirusSubType_2() == "P" && self.UsrCountry() == 7) {
+                                self.FinalResult_2(v.TestResultID());
+                                self.FinalResultVirusTypeID_2(v.VirusTypeID());
+                                self.FinalResultVirusSubTypeID_2(v.VirusSubTypeID_2());
+                            }
+                        }
+                        else {
+                            self.FinalResultVirusSubTypeID(v.VirusSubTypeID());
                         }
 
                         self.FinalResultVirusLineageID(v.VirusLineageID());
@@ -2662,21 +2652,22 @@ function LabViewModel(app, dataModel) {
     self.ShowProcessed = ko.computed(function () {
         self.NoProRen("");
         self.NoProRenId("");
-        self.resetFinalResult();
+        if (self.Processed == "true" && self.Processed_National == "false")
+            self.resetFinalResult();
         return (self.Processed() === "true")
     }, self);
 
     self.ShowProcessed2 = ko.computed(function () {
         self.NoProRen2("");
         self.NoProRenId2("");
-        self.resetFinalResult();
+        //self.resetFinalResult();
         return (self.Processed2() === "true")
     }, self);
 
     self.ShowProcessed3 = ko.computed(function () {
         self.NoProRen3("");
         self.NoProRenId3("");
-        self.resetFinalResult();
+        //self.resetFinalResult();
         return (self.Processed3() === "true")
     }, self);
 
