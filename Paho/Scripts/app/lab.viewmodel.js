@@ -1224,6 +1224,10 @@ function LabViewModel(app, dataModel) {
         if (NewIsProcessed == "false")
         {
             self.removeTestbyLab(self.UsrInstID(), 1);
+            $("#addLabTest_1").hide();
+        } else if (NewIsProcessed == "true") {
+
+            $("#addLabTest_1").show();
         }
             
     });
@@ -1231,7 +1235,16 @@ function LabViewModel(app, dataModel) {
     self.Processed_National.subscribe(function (NewIsProcessed) {
         //console.log("aqui Processed_National.subscribe");
         //console.log(self.LabTests());
-        self.OrdenFinalResult();
+        //self.OrdenFinalResult();
+
+        if (NewIsProcessed == "false") {
+            self.removeTestbyLab(self.UsrInstID(), 1);
+            $("#addLabTest_1").hide();
+        } else if (NewIsProcessed == "true") {
+
+            $("#addLabTest_1").show();
+        }
+
     });
 
     self.EnableVirusTypesFinal = ko.computed(function () {

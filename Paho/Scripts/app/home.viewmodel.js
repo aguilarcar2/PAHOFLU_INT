@@ -747,6 +747,14 @@
             //console.log("aqui _ FlowDataLab _ institution lab");
             $("#tab-lab :input").prop('disabled', false);
 
+            //if (app.Views.Lab.Processed() != "true" || app.Views.Lab.Processed_National() != "true")
+            //{
+            //    $("#addLabTest_1").hide();
+            //}
+            //else if (app.Views.Lab.Processed() == "true" || app.Views.Lab.Processed_National() == "true") {
+            //    $("#addLabTest_1").show();
+            //}
+
         }
         //else if (self.URmod_lab() == true) {
         //    console.log("aqui _ FlowDataLab _ rol mod_lab");

@@ -962,18 +962,15 @@ function ContactViewModel(app, dataModel) {
     };
     // Revision del flujo si es epidemiologico o laboratorio
     self.Flow_Local_Institution_Lab = function () {
-        //console.log("Flow Lab - SaveAndAdd_1");
-        //console.log(app.Views.Home.SaveAndAdd_1());
-        //console.log("Contact epi - frecord_lab -- " + self.flow_record() + ", finstitution_lab -- " + self.flow_institution() + ", dataStatement_lab -- " + self.DataStatement() + ", userRole " + app.Views.Home.UserRole() + ", Inst" + $("#ITy").val() + ", OpenAlways" + self.flow_open_always());
-        ////if ($("#ITy").val() == "2"  && app.Views.Home.UserRole() == "mod_lab") {
         if ($("#ITy").val() == "2" && app.Views.Home.URmod_lab() == true) {
-            console.log("URmod_lab - true");
             return true;
-        } else if ((self.flow_record() == (self.flow_institution() - 1) && (self.DataStatement() == 2 || self.DataStatement() == null || self.flow_open_always() == true) && app.Views.Home.SaveAndAdd_1() == true)
-                    || (self.flow_record() == self.flow_institution() && (self.DataStatement() == 1 || self.DataStatement() == null || self.flow_open_always() == true))
-                    || (self.flow_close_case() == 99 && self.flow_open_always() == true)) {
-            console.log("Flow Lab - true");
-            console.log("primera opción" + (self.flow_record() == (self.flow_institution() - 1) && (self.DataStatement() == 2 || self.DataStatement() == null || self.flow_open_always() == true) && app.Views.Home.SaveAndAdd_1() == true))
+        } else if ((self.flow_close_case() == 99 && self.flow_open_always() == true)) {
+            return true;
+        } else if ((self.flow_record() == (self.flow_institution() - 1) && (self.DataStatement() == 2 || self.DataStatement() == null || self.flow_open_always() == true) && app.Views.Home.SaveAndAdd_1() == true))
+        {
+            return true;
+        } else if ((self.flow_record() == self.flow_institution() && (self.DataStatement() == 1 || self.DataStatement() == null || self.flow_open_always() == true)))
+        {
             return true;
         }
         else {
