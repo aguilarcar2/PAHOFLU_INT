@@ -469,11 +469,11 @@ namespace Paho.Controllers
                             if (contador > 0)
                             {
                                 //var RangeStr = "( Virus!$BY$120:$BZ$171, Virus!$BY$63:$BZ$114, Virus!$BY$6:$BZ$57 ) ";
-                                var RangeStr = " Virus!$BY$6:$BZ$57 ";
+                                var RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "Virus" : "Virus" )+ "'!$BY$6:$BZ$57 ";
 
                                 for (int i = 1; i <= contador; i++)
                                 {
-                                    RangeStr = "Virus!$BY$" + (6 + (57 * i)).ToString() + ":$BZ$" + ((6 + (57 * i)) + 51).ToString() + ", " + RangeStr;
+                                    RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "Virus" : "Virus") + "'!$BY$" + (6 + (57 * i)).ToString() + ":$BZ$" + ((6 + (57 * i)) + 51).ToString() + ", " + RangeStr;
                                 }
 
                                 RangeStr = " ( " + RangeStr + ")";
