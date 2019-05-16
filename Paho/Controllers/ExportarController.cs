@@ -565,11 +565,11 @@ namespace Paho.Controllers
                             // Procedimiento para cambiar los rangos del eje X 
                             if (contador > 0)
                             {
-                                var RangeStr = " 'Virus Identificados'!$BY$6:$BZ$57 ";
+                                var RangeStr = " '"+ ((user.Institution.Country.Language == "ENG") ? "NATIONAL VIRUSES" : "Virus Identificados") + "'!$BY$6:$BZ$57 ";
 
                                 for (int i = 1; i <= contador; i++)
                                 {
-                                    RangeStr = "'Virus Identificados'!$BY$" + (6 + (57 * i)).ToString() + ":$BZ$" + ((6 + (57 * i)) + 51).ToString() + ", " + RangeStr;
+                                    RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "NATIONAL VIRUSES" : "Virus Identificados") + "'!$BY$" + (6 + (57 * i)).ToString() + ":$BZ$" + ((6 + (57 * i)) + 51).ToString() + ", " + RangeStr;
                                 }
 
                                 RangeStr = " ( " + RangeStr + ")";
