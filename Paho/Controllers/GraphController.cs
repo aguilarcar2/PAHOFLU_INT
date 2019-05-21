@@ -617,8 +617,9 @@ namespace Paho.Controllers
 
         private static void AppendDataToExcel(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? irag_, int? eti_)
         {
-
-            var excelWorksheet = excelWorkBook.Worksheets[sheet];
+            try
+            {
+                var excelWorksheet = excelWorkBook.Worksheets[sheet];
             var row = startRow;
             var column = startColumn;
 
@@ -1193,6 +1194,14 @@ namespace Paho.Controllers
                 }
 
             }
+            }
+            catch (Exception e)
+            {
+                var Message_ = "";
+                Message_ = "El reporte no se pudo generar, por favor intente de nuevo: " + e.Message;
+            }
+
+            //return null;
 
         }
 
