@@ -1619,9 +1619,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Scripts\ammap\maps\svg\jamaicaLow.svg" />
-    <Content Include="Scripts\ammap\maps\svg\jamaicaPARRLow.svg">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="Scripts\ammap\maps\svg\jamaicaPARRLow.svg" />
     <Content Include="Scripts\ammap\maps\svg\jamaicaREGILow.svg" />
     <Content Include="Scripts\ammap\maps\svg\japanHigh.svg" />
     <Content Include="Scripts\ammap\maps\svg\japanLow.svg" />

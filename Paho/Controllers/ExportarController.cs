@@ -1024,7 +1024,7 @@ namespace Paho.Controllers
             //InsertarImagenLogo(consString, reportTemplate, ReportCountry, excelWorksheet);
         }
 
-        private static void AppendDataToExcel_R2_SeveralYears(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId)               //#### CAFQ
+        private static void AppendDataToExcel_R2_SeveralYears_OLDOLD(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId)               //#### CAFQ
         {
             var excelWorksheet = excelWorkBook.Worksheets[sheet];
             int nColumns = 0;
@@ -1303,6 +1303,296 @@ namespace Paho.Controllers
 
                 //inserción de logo
                 InsertarLogoExcel(consString, excelWorksheet, ReportCountry);
+            }
+        }
+
+        private static void AppendDataToExcel_R2_SeveralYears(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId)               //#### CAFQ
+        {
+            var excelWorksheet = excelWorkBook.Worksheets[sheet];
+            int nColumns = 0;
+            int nAnios = YearTo.Value - YearFrom.Value + 1;
+            int nToSe = 0;                                          // Total semanas del reporte
+            List<int> weekByYear = new List<int>();
+            for (int nI = YearFrom.Value; nI <= YearTo.Value; ++nI)
+            {
+                weekByYear.Add(52);
+                nToSe += 52;
+            }
+
+            //var xxx = excelWorksheet.Drawings;                // Coleccion de charts
+            //var yyy = excelWorksheet.Drawings[0];             // Un chart especifico
+            if (storedProcedure == "R2" || storedProcedure == "R3" || storedProcedure == "R1")
+                excelWorksheet.Drawings.Remove(0);              // Eliminando grafico por defecto en plantilla
+
+            string cLabelAxixY = "";
+            if (storedProcedure == "R2")
+                cLabelAxixY = (string)excelWorksheet.Cells[startRow - 1, startColumn + 1].Value;        // Label eje Y
+
+            var row = startRow;
+            var column = startColumn;
+
+            var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+            int nIndice = -1;
+            for (int nI = YearFrom.Value; nI <= YearTo.Value; ++nI)
+            {
+                ++nIndice;
+                if (storedProcedure == "R2")
+                {
+                    row = startRow;
+                    var col = startColumn + (nI - YearFrom.Value) + 1;
+
+                    if (nI > YearFrom.Value)
+                    {
+                        excelWorksheet.Cells[row - 1, startColumn + 1].Copy(excelWorksheet.Cells[row - 1, col]);
+                        excelWorksheet.Cells[row - 1, col].Value = nI;          // Year
+
+                        excelWorksheet.Cells[startRow + 53, startColumn + 1].Copy(excelWorksheet.Cells[startRow + 53, col]);                // Total
+                        excelWorksheet.Cells[startRow + 53, col].StyleID = excelWorksheet.Cells[startRow + 53, startColumn + 1].StyleID;
+
+                        excelWorksheet.Cells[startRow + 52, col].StyleID = excelWorksheet.Cells[startRow + 52, startColumn + 1].StyleID;    // Fila 53
+                    }
+                    else
+                    {
+                        excelWorksheet.Cells[row - 1, col].Value = nI;          // Year
+                    }
+                }
+                else if (storedProcedure == "R1" || storedProcedure == "R3")
+                {
+                    row = startRow + (nI - YearFrom.Value) * weekByYear.ElementAt(nIndice);
+                }
+
+                using (var con = new SqlConnection(consString))
+                {
+                    using (var command = new SqlCommand(storedProcedure, con) { CommandType = CommandType.StoredProcedure, CommandTimeout = 1200 })    //**** CAFQ
+                    {
+                        command.Parameters.Clear();
+                        command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
+                        command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
+                        command.Parameters.Add("@Languaje", SqlDbType.Text).Value = languaje_;
+                        command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
+                        command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
+                        command.Parameters.Add("@Mes_", SqlDbType.Int).Value = month;
+                        command.Parameters.Add("@SE", SqlDbType.Int).Value = se;
+                        command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
+                        command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
+                        command.Parameters.Add("@yearFrom", SqlDbType.Int).Value = nI;
+                        command.Parameters.Add("@yearTo", SqlDbType.Int).Value = nI;
+                        command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;                        //#### CAFQ
+                        command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;          //#### CAFQ
+                        con.Open();
+
+                        using (var reader = command.ExecuteReader())
+                        {
+                            nColumns = (storedProcedure == "R3") ? ((reader.FieldCount - 1) / 2) + 1 : reader.FieldCount;
+
+                            while (reader.Read())
+                            {
+                                var col = column;
+                                var cell = excelWorksheet.Cells[row, col];
+
+                                if (row > startRow && insert_row == true)
+                                    excelWorksheet.InsertRow(row, 1);
+
+                                if (storedProcedure == "R2")
+                                    col = column + (nI - YearFrom.Value) + ((nI == YearFrom) ? 0 : 1);
+
+                                for (var i = 0; i < nColumns; i++)
+                                {
+                                    if (storedProcedure == "R2")
+                                    {
+                                        if (nI > YearFrom && i > 0)
+                                            --col;
+                                    }
+
+                                    if (reader.GetValue(i) != null)
+                                    {
+                                        double numberD;
+                                        bool isNumber = double.TryParse(reader.GetValue(i).ToString(), out numberD);
+
+                                        DateTime dt;
+                                        bool isDate = DateTime.TryParse(reader.GetValue(i).ToString(), out dt);
+
+                                        if (isNumber)
+                                        {
+                                            excelWorksheet.Cells[row, col].Value = numberD;
+                                        }
+                                        else
+                                        {
+                                            if (isDate)
+                                            {
+                                                excelWorksheet.Cells[row, col].Value = dt;
+                                            }
+                                            else
+                                            {
+                                                excelWorksheet.Cells[row, col].Value = reader.GetValue(i).ToString();
+                                            }
+                                        }
+                                        excelWorksheet.Cells[row, col].StyleID = cell.StyleID;
+                                    }
+                                    col++;
+                                }
+
+                                if (storedProcedure == "R1")
+                                {
+                                    excelWorksheet.Cells[row, col].FormulaR1C1 = "IF(RC[-1]<=0, 0, (RC[-2]*100)/RC[-1])";
+                                    excelWorksheet.Cells[row, col].Style.Numberformat.Format = "##0";
+                                    excelWorksheet.Cells[row, col].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                                }
+
+                                row++;
+                            }
+                        }
+
+                        command.Parameters.Clear();
+                        con.Close();
+                    }
+                }
+            }   // End for
+
+            //**** INSERTAR GRAFICO
+            if (storedProcedure == "R2")        // Total fallecidos por IRAG
+            {
+                var myChartCC = excelWorksheet.Drawings.AddChart("ChartColumnClustered", eChartType.ColumnClustered);
+
+                for (int nI = YearFrom.Value; nI <= YearTo.Value; ++nI)
+                {
+                    int nCol = startColumn + (nI - YearFrom.Value) + 1;
+                    var seriesCC = myChartCC.Series.Add(ExcelRange.GetAddress(7, nCol, 59, nCol), ExcelRange.GetAddress(7, 2, 59, 2));
+                    seriesCC.Header = nI.ToString();
+                }
+
+                //myChartCC.Border.Fill.Color = System.Drawing.Color.Red;
+                if (languaje_ == "ENG")
+                    myChartCC.Title.Text = "NUMBERS OF DEATHS BY EPIDEMIOLOGICAL WEEK";
+                else
+                    myChartCC.Title.Text = "NÚMERO DE FALLECIDOS POR SEMANA EPIDEMIOLÓGICA";
+                myChartCC.Title.Font.Bold = true;
+                myChartCC.Legend.Position = eLegendPosition.Bottom;
+                myChartCC.SetSize(920, 405);                    // Ancho, Alto in pixel
+                myChartCC.SetPosition(startRow - 2, 0, (startColumn + (YearTo.Value - YearFrom.Value) + 1), 40);             // (int row, int rowoffset in pixel, int col, int coloffset in pixel)
+
+                myChartCC.YAxis.Title.Text = cLabelAxixY;
+                myChartCC.YAxis.Title.Font.Size = 9;
+                myChartCC.YAxis.Title.Font.Bold = true;
+
+                myChartCC.XAxis.Title.Text = (string)excelWorksheet.Cells[startRow - 1, startColumn].Value;    // Semana epidemiologica
+                myChartCC.XAxis.Title.Font.Size = 9;
+                myChartCC.XAxis.Title.Font.Bold = true;
+            }
+            else if (storedProcedure == "R3")       // Casos por IRAG y Hospitalizaciones Totales
+            {
+                int nFil = startRow;
+                int nFilF = startRow + nToSe - 1;
+                int nCol = startColumn;
+
+                var myChartCC = excelWorksheet.Drawings.AddChart("ColumnStacked" + "1", eChartType.ColumnStacked);
+
+                for (int nK = 1; nK < nColumns; ++nK)
+                {
+                    var seriesCC = myChartCC.Series.Add(ExcelRange.GetAddress(nFil, nCol + nK, nFilF, nCol + nK), ExcelRange.GetAddress(nFil, 2, nFilF, 2));
+                    seriesCC.Header = excelWorksheet.Cells[startRow - 1, nCol + nK].Value.ToString();
+                }
+
+                myChartCC.Title.Text = SgetMsg("msgReportCasosIRAGByAGGraphTitle", countryId, languaje_) + ": " + YearFrom.Value.ToString() + (nAnios == 1 ? "" : " - " + YearTo.Value.ToString());
+                myChartCC.Title.Font.Bold = true;
+                myChartCC.SetSize(1090, 450);
+                myChartCC.SetPosition(startRow + (23 * 0) - 1, 0, nColumns + 1, 40);
+                myChartCC.Legend.Position = eLegendPosition.Bottom;
+
+                myChartCC.YAxis.Title.Text = SgetMsg("msgReportNumberSARICases", countryId, languaje_);
+                myChartCC.YAxis.Title.Font.Size = 9;
+                myChartCC.YAxis.Title.Font.Bold = true;
+
+                myChartCC.XAxis.Title.Text = (string)excelWorksheet.Cells[startRow - 1, startColumn].Value;    // Semana epidemiologica
+                myChartCC.XAxis.Title.Font.Size = 9;
+                myChartCC.XAxis.Title.Font.Bold = true;
+
+                //**** Formateo area de datos
+                FormatearAreaDatos(excelWorksheet, weekByYear, YearFrom.Value, startRow, startColumn, startColumn + nColumns - 1);
+            }
+            else if (storedProcedure == "R1")       // Número de casos y % de hospitalizaciones por IRAG
+            {
+                int nFil = startRow;
+                int nFilF = startRow + nToSe - 1;
+                int nCol = startColumn;
+
+                //**** Chart principal
+                var myChartCC = excelWorksheet.Drawings.AddChart("ColumnStackedLine1", eChartType.ColumnClustered);
+                var serieCC = myChartCC.Series.Add(ExcelRange.GetAddress(nFil, nCol + 1, nFilF, nCol + 1), ExcelRange.GetAddress(nFil, 2, nFilF, 2));   // Valores de la serie, Etiquetas del eje X
+                serieCC.Header = (string)excelWorksheet.Cells[startRow - 1, nCol + 1].Value;    // Leyenda
+
+                myChartCC.XAxis.Title.Text = (string)excelWorksheet.Cells[startRow - 1, nCol].Value;
+                myChartCC.XAxis.Title.Font.Size = 9;
+                myChartCC.XAxis.Title.Font.Bold = true;
+                myChartCC.YAxis.Title.Text = (string)excelWorksheet.Cells[startRow - 1, nCol + 1].Value;
+                myChartCC.YAxis.Title.Font.Size = 9;
+                myChartCC.YAxis.Title.Font.Bold = true;
+
+                //**** Chart secundario 
+                var myChartLI = myChartCC.PlotArea.ChartTypes.Add(eChartType.Line);
+                var serieLI = myChartLI.Series.Add(ExcelRange.GetAddress(nFil, nCol + 3, nFilF, nCol + 3), ExcelRange.GetAddress(nFil, 2, nFilF, 2));
+                serieLI.Header = (string)excelWorksheet.Cells[startRow - 1, nCol + 3].Value;    // Leyenda;
+
+                myChartLI.UseSecondaryAxis = true;
+                myChartLI.YAxis.Title.Text = (string)excelWorksheet.Cells[startRow - 1, nCol + 3].Value;
+                myChartLI.YAxis.Title.Font.Size = 9;
+                myChartLI.YAxis.Title.Font.Bold = true;
+
+                //****                
+                myChartCC.Title.Text = SgetMsg("msgReportNumeroCasosIRAGGraphTitle", countryId, languaje_) + ": " + YearFrom.Value.ToString() + (nAnios == 1 ? "" : " - " + YearTo.Value.ToString());
+                myChartCC.Title.Font.Bold = true;
+                myChartCC.SetSize(900, 420);
+                myChartCC.SetPosition(startRow - 1, 0, 5, 40);
+                myChartCC.Legend.Position = eLegendPosition.Bottom;
+                myChartCC.Legend.Font.Bold = true;
+
+                //**** Formateo area de datos
+                FormatearAreaDatos(excelWorksheet, weekByYear, YearFrom.Value, startRow, startColumn, startColumn + 3);
+            }
+
+            //**** inserción de labels y logo en el Excel
+            if (ReportCountry != null)
+            {
+                //inserción de labels
+                reportLabels(consString, countryId, languaje_, ReportCountry, hospitalId, year, YearFrom, YearTo, se, startDate, endDate, excelWorkBook, excelWorksheet);
+
+                //inserción de logo
+                InsertarLogoExcel(consString, excelWorksheet, ReportCountry);
+            }
+        }
+
+        private static void FormatearAreaDatos(ExcelWorksheet excelWorksheet, List<int> weekByYear, int yearFrom, int startRow, int startColumn, int endColumn)
+        {
+            int nFil, nFilF;
+            int nI = 1;
+            int nCol = startColumn;
+            foreach (int semanas in weekByYear)
+            {
+                nFil = startRow + semanas * (nI - 1);
+                nFilF = nFil + semanas - 1;
+
+                excelWorksheet.Cells[nFil, startColumn, nFil, endColumn].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                excelWorksheet.Cells[nFil, startColumn, nFil, endColumn].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(250, 191, 143));
+
+                ExcelRange rRang = excelWorksheet.Cells[ExcelRange.GetAddress(nFil, startColumn, nFilF, endColumn)];
+                rRang.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                rRang.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                rRang.Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                //****
+                for (int nY = nFil; nY <= nFilF; ++nY)
+                {
+                    var semana = excelWorksheet.Cells[nY, nCol].Value;
+                    if (semana != null)
+                    {
+                        if (semana.ToString() != "")
+                        {
+                            string anio = (yearFrom + (nI - 1)).ToString();
+                            excelWorksheet.Cells[nY, nCol].Value = anio.Substring(anio.Length - 2) + "-" + semana.ToString();
+                        }
+                    }
+                }
+                ++nI;
             }
         }
 

@@ -15,8 +15,9 @@
     self.selectedRegionId = ko.observable("");
     self.selectedReportCountryId = ko.observable("");
     self.selectedReportCountryId.subscribe(function (newValue) {
-        // Reporte epidemiologico, Número de casos y % de hospitalizaciones por IRAG, Total fallecidos por IRAG y Casos por IRAG y Hospitalizaciones Totales
-        var reportID = ["2", "3", "4", "6"];
+        // Reporte epidemiologico, Número de casos y % de hospitalizaciones por IRAG, Total fallecidos por IRAG y Casos por IRAG,
+        // Hospitalizaciones Totales
+        var reportID = ["2", "3", "4", "6", "10"];
         bDisable = false;
         self.Surv("0");                 // Seleccione
 

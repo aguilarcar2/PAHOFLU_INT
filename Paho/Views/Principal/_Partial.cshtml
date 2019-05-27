@@ -5623,7 +5623,11 @@
 
                 var defaultMap = "usaLow";
                 var countryMaps = {
-                    "STL": [ "stLuciaHigh" ],                    
+                    "STL": [ "stLuciaHigh" ],
+                    //"JM": [ "jamaicaLow" ],
+                    "JM": [ "jamaicaPARRLow" ],
+                    "HN": [ "hondurasHigh" ],
+                    "HNH": [ "hondurasHighH" ],
                     "AF": [ "afghanistanLow" ],
                     "AL": [ "albaniaLow" ],
                     "DZ": [ "algeriaLow" ],
@@ -5687,8 +5691,6 @@
                     "GN": [ "guineaLow" ],
                     "GY": [ "guyanaLow" ],
                     "HT": [ "haitiLow" ],
-                    "HN": [ "hondurasHigh" ],
-                    "HNH": [ "hondurasHighH" ],
                     "HK": [ "hongKongLow" ],
                     "HU": [ "hungaryLow" ],
                     "GL": [ "icelandLow" ],
@@ -5705,8 +5707,6 @@
                     "SM": [ "sanMarinoLow" ],
                     "MT": [ "italyLow" ],
                     "IT": [ "italyLow" ],
-                    //"JM": [ "jamaicaLow" ],
-                    "JM": [ "jamaicaPARRLow" ],
                     "JP": [ "japanLow" ],
                     "KZ": [ "kazakhstanLow" ],
                     "KE": [ "kenyaLow" ],
@@ -5819,7 +5819,7 @@
                                 "text": chartTitle
                             } );
                             //----------mapa--------------------
-                            console.log("ruta->" + "/Scripts/ammap/maps/svg/" + currentMap + ".svg");
+                            //console.log("ruta->" + "/Scripts/ammap/maps/svg/" + currentMap + ".svg");
                             var map = AmCharts.makeChart( "mapDivGraph1", {
                                 "type": "map",
                                 "theme": "light",
@@ -6157,7 +6157,7 @@
                                     setTimeout( updateHeatmap, 100 );
                                     return;
                                 }
-                                console.log(chartData);
+                                //console.log(chartData);
                                 for ( var i = 0; i < map.dataProvider.areas.length; i++ ) {
                                     //alert(map.dataProvider.areas.length);
                                     //alert(chartData[i].area.valueOf());
@@ -6482,9 +6482,9 @@
             var CountryIDM = @Html.Raw(Model.CountryID);
             addMapCheckbox($('#txtName').val());
 
-            if(CountryIDM != 18){
-                GetMapData1();
-            }
+            //if(CountryIDM != 18){
+            GetMapData1();
+            //}
             if(!(CountryIDM == 25 || CountryIDM == 119 || CountryIDM == 11 || CountryIDM == 18 || CountryIDM == 15)){           // Suriname y Islas Cayman: No tienen region
                 GetMapData2();                              // Institucional
             }
