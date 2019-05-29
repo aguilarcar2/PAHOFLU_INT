@@ -3791,7 +3791,7 @@
                     <div class="row rowform">
                         <div class="col-md-3">
                             <div class='input-group'>
-                                <button id="revome_LabTest_1" type="button" style="background-color: #ffc33c; color: black;" class="btn btn-primary" data-bind="enable: CanEdit,visible:CanEdit, click: $parent.removeLabTest.bind($data,1)">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelRemoveResult"))</button>
+                                <button id="revome_LabTest_1" type="button" style="background-color: #77dd77; color: white; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px;" class="btn btn-primary" data-bind="enable: CanEdit,visible:CanEdit, click: $parent.removeLabTest.bind($data,1)">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelRemoveResult"))</button>
                             </div>
                         </div>
                     </div>
@@ -5629,6 +5629,8 @@
     /*   Mensajes de alerta de validaciones    */
     var msgviewHome_btnNew = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_btnNew")))";
     var msgValidationSurvData = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationSurvData")))";
+    var msgValidationSaveAndSend = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationSaveAndSend")))";
+    var msgValidationDontSaveAndSend = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationDontSaveAndSend")))";
     var msgValidationSurvType = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationSurvType")))";
     var msgValidationTypeOfDocument = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationTypeOfDocument")))";
     var msgValidationDocumentIDRequired = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationDocumentIDRequired")))";

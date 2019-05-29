@@ -888,7 +888,19 @@ function ContactViewModel(app, dataModel) {
     };
 
     self.Save = function (option_Save, object_Save) {
-        app.Views.Home.ValidateAll(option_Save);
+        if (option_Save == 2) {
+            if (confirm(msgValidationSaveAndSend))
+            {
+                app.Views.Home.ValidateAll(option_Save);
+            }
+            else {
+                alert(msgValidationDontSaveAndSend);
+            }
+        }
+        else {
+            app.Views.Home.ValidateAll(option_Save);
+        }
+        
     };
 
     self.SavePrev = function () {

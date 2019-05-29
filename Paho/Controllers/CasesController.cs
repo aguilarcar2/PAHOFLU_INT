@@ -3248,7 +3248,16 @@ namespace Paho.Controllers
             var result = SaveChanges();
 
             var tests = flucase.CaseLabTests.ToList();
-            if (tests.Count <= 0) return result;
+            if (tests.Count <= 0)
+            {
+                if (Processed == false)
+                {
+                    HistoryRecord(flucase.ID, 4, flucase.flow, 6);
+                    HistoryRecord(flucase.ID, 4, flucase.flow, 11);
+                    HistoryRecord(flucase.ID, 4, flucase.flow, 13);
+                }
+                return result;
+            }
 
             if (tests.Count >= 1) flucase.MuestraID1 = tests[0].ID;
             if (tests.Count >= 2) flucase.MuestraID2 = tests[1].ID;
