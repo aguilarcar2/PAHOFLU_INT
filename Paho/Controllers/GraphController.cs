@@ -1441,7 +1441,8 @@ namespace Paho.Controllers
             return null;
         }
 
-        public JsonResult GetGraphDataTuned(string Report, int CountryID, int? RegionID, int? StateID, int? HospitalID, string Year, int? Month, int? SE, DateTime? StartDate, DateTime? EndDate, int? ReportCountry, string Graph, int? IRAG, int? ETI)
+        public JsonResult GetGraphDataTuned(string Report, int CountryID, int? RegionID, int? StateID, int? HospitalID, string Year, 
+            int? Month, int? SE, DateTime? StartDate, DateTime? EndDate, int? ReportCountry, string Graph, int? IRAG, int? ETI)
         {
             try
             {
@@ -1460,7 +1461,7 @@ namespace Paho.Controllers
                 string Languaje_ = user.Institution.Country.Language ?? "SPA";
                 int? ETI_ = ETI;
                 int? IRAG_ = IRAG;
-                IRAG_ = (IRAG_ == 0 && ETI_ == 0) ? 1 : IRAG_;          //#### CAFQ: 180312 
+                //IRAG_ = (IRAG_ == 0 && ETI_ == 0) ? 1 : IRAG_;          //#### CAFQ: 180312 
                 /*/################################################################# DESARROLLO
                 if (Graph == "Graph1" && (CountryID == 25 || CountryID == 17 || CountryID == 119 || CountryID == 18))
                 {
@@ -2816,8 +2817,7 @@ namespace Paho.Controllers
             }
             return null;
         }
-
-
+        
         private static string graficoIndicadoreDesempenio(string languaje_country, int countryId, string countryName, int? year, int? hospitalId, int? weekFrom, int? weekTo, List<string> datosID)
         {
             /*var user = UserManager.FindById(User.Identity.GetUserId());
