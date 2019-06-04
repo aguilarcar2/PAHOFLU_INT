@@ -90,6 +90,10 @@ function SummaryYearItem(data) {
     self.ActiveHON = ko.computed(function () {
         return (self.UsrCountry() == 15) ? true : false;
     }, self);
+
+    self.ActiveSLU = ko.computed(function () {
+        return (self.UsrCountry() == 18) ? true : false;
+    }, self);
     //****
     self.selectedHospitalId = ko.observable();      //####AAAA
 
@@ -205,6 +209,10 @@ function SummayItem(data) {
     self.ActiveHON = ko.computed(function () {
         return (self.UsrCountry() == 15) ? true : false;
     }, self);
+
+    self.ActiveSLU = ko.computed(function () {
+        return (self.UsrCountry() == 18) ? true : false;
+    }, self);
     //****
     self.UCI_OK = ko.computed(function () {
         bResu = true;
@@ -265,6 +273,30 @@ function SummayItem(data) {
         return bResu
     }, self);
 
+    //------------------------------------------------------
+    self.HOS_IRAG_ShowCol = function (tipoColu) {
+        bResu = false;
+        if (self.UsrCountry() == 9) {
+            if (tipoColu == "T")
+                bResu = true;
+
+        } else {
+            bResu = true;
+        }
+        return bResu;
+    };
+
+    self.HOS_IRAG_ShowCol_F = ko.computed(function () {
+        return self.HOS_IRAG_ShowCol('F');
+    }, self);
+
+    self.HOS_IRAG_ShowCol_M = ko.computed(function () {
+        return self.HOS_IRAG_ShowCol('M');
+    }, self);
+
+    self.HOS_IRAG_ShowCol_T = ko.computed(function () {
+        return self.HOS_IRAG_ShowCol('T');
+    }, self);
     //------------------------------------------------------
     self.UCI_IRAG_ShowCol = function (tipoColu) {
         bResu = false;
@@ -907,14 +939,17 @@ function SummaryViewModel(app, dataModel) {
         return (self.UsrCountry() == 119) ? true : false;
     }, self);
 
+    self.NoActiveCAY = ko.computed(function () {
+        return (self.UsrCountry() == 119) ? false : true;
+    }, self);
+    
     self.ActiveHON = ko.computed(function () {
         return (self.UsrCountry() == 15) ? true : false;
     }, self);
 
-    self.NoActiveCAY = ko.computed(function () {
-        return (self.UsrCountry() == 119) ? false : true;
+    self.ActiveSLU = ko.computed(function () {
+        return (self.UsrCountry() == 18) ? true : false;
     }, self);
-
     //****
     self.PickFirstDay = function (date) {
         var day = date.getDay();
@@ -1001,6 +1036,30 @@ function SummaryViewModel(app, dataModel) {
         return bResu;
     }, self);
 
+    //------------------------------------------------------
+    self.HOS_IRAG_ShowCol = function (tipoColu) {
+        bResu = false;
+        if (self.UsrCountry() == 9) {
+            if (tipoColu == "T")
+                bResu = true;
+
+        } else {
+            bResu = true;
+        }
+        return bResu;
+    };
+
+    self.HOS_IRAG_ShowCol_F = ko.computed(function () {
+        return self.HOS_IRAG_ShowCol('F');
+    }, self);
+
+    self.HOS_IRAG_ShowCol_M = ko.computed(function () {
+        return self.HOS_IRAG_ShowCol('M');
+    }, self);
+
+    self.HOS_IRAG_ShowCol_T = ko.computed(function () {
+        return self.HOS_IRAG_ShowCol('T');
+    }, self);
     //------------------------------------------------------
     self.UCI_IRAG_ShowCol = function (tipoColu) {
         bResu = false;
