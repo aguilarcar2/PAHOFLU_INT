@@ -1054,9 +1054,9 @@ function LabViewModel(app, dataModel) {
         var result = (self.FinalResultVirusTypeID() == "1" || self.FinalResultVirusTypeID() == "2");
         if (result) {
             if (lab_NIC_usr)
-                $('#GeneticGroup').removeAttr('disabled');              // Enable
+                $('#GeneticGroup').prop('disabled', false);
             else
-                $('#GeneticGroup').attr('disabled', 'disabled');
+                $('#GeneticGroup').prop('disabled', true);
         } else {
             self.GeneticGroup("");
         }
@@ -1068,9 +1068,11 @@ function LabViewModel(app, dataModel) {
         //if (!result) self.GeneticGroup_2("");
         if (result) {
             if (lab_NIC_usr)
-                $('#GeneticGroup_2').removeAttr('disabled');              // Enable
+                //$('#GeneticGroup_2').removeAttr('disabled');              // Enable
+                $('#GeneticGroup_2').prop('disabled', false);               // Enable
             else
-                $('#GeneticGroup_2').attr('disabled', 'disabled');
+                //$('#GeneticGroup_2').attr('disabled', 'disabled');
+                $('#GeneticGroup_2').prop('disabled', true);
         } else {
             self.GeneticGroup_2("");
         }
@@ -1082,9 +1084,11 @@ function LabViewModel(app, dataModel) {
         //if (!result) self.GeneticGroup_3("");
         if (result) {
             if (lab_NIC_usr)
-                $('#GeneticGroup_3').removeAttr('disabled');              // Enable
+                //$('#GeneticGroup_3').removeAttr('disabled');              // Enable
+                $('#GeneticGroup_3').prop('disabled', false);               // Enable            
             else
-                $('#GeneticGroup_3').attr('disabled', 'disabled');
+                //$('#GeneticGroup_3').attr('disabled', 'disabled');
+                $('#GeneticGroup_3').prop('disabled', true);
         } else {
             self.GeneticGroup_3("");
         }

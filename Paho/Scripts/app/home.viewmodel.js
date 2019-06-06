@@ -558,11 +558,11 @@
             $("#tabs").tabs("refresh");
             //console.log("aqui _ CaseStatus 3"); //
             if(app.Views.Hospital.CaseStatus() != "") {
-                    $('a[href="#tab-contact"]').click();
-                }
-                else {
-                    $('a[href="#tab-case"]').click();
-                }
+                $('a[href="#tab-contact"]').click();
+            }
+            else {
+                $('a[href="#tab-case"]').click();
+            }
             
 
             //} else if (app.Views.Hospital.CaseStatus() == "3" && self.UserRole() != "adm") {
@@ -692,6 +692,17 @@
                 $("#Destin").attr("disabled", true)
             }
 
+            // Grupo genetico siempre editable para NIC
+            if (lab_NIC_usr){                
+                $("#GeneticGroup").attr("disabled", false);
+                $("#GeneticGroup_2").attr("disabled", false);
+                $("#GeneticGroup_3").attr("disabled", false);
+            }
+            else {
+                $("#GeneticGroup").attr("disabled", true);
+                $("#GeneticGroup_2").attr("disabled", true);
+                $("#GeneticGroup_3").attr("disabled", true);
+            }            
         }
 
         if ($("#ITy").val() == "2" && app.Views.Lab.NPHL() == true && self.UsrCountry() != 25) {
@@ -740,7 +751,7 @@
             
         }
 
-    };
+    };      // END self.FlowDataCaseStatus
 
     self.FlowDataLab = function () {
         if ($("#ITy").val() == "2" && app.Views.Contact.Flow_Local_Institution_Lab() == true) {

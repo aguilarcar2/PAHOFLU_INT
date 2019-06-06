@@ -367,8 +367,6 @@ namespace Paho.Controllers
         {
             int nSemaActual;
             DateTime dSEHoy;
-            //var epiYear = DateTime.Now.Year.ToString();
-            //int intEpiYear = Int32.Parse(epiYear);
             List<Dictionary<string, int>> summaryPerYear = new List<Dictionary<string, int>>();
             //DateTime dFech = PAHOClassUtilities.fechaInicioPrimeraSemanaEpidemiologica(DateTime.Today.Year);
             DateTime dFech = PAHOClassUtilities.fechaInicioPrimeraSemanaEpidemiologica(epiYear);
@@ -379,7 +377,7 @@ namespace Paho.Controllers
             }
             else
             {
-                nSemaActual = 52;
+                nSemaActual = PAHOClassUtilities.semanasAnioEpidemiologico(epiYear);
                 dSEHoy = PAHOClassUtilities.fechaInicioPrimeraSemanaEpidemiologica(epiYear);
                 dSEHoy = dSEHoy.AddDays(-1);
             }
