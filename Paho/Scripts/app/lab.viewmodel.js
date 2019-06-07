@@ -1683,11 +1683,21 @@ function LabViewModel(app, dataModel) {
 
                 if (self.ArrayValidate()[index].TestResultID() === "P"
                     && self.ArrayValidate()[index].VirusTypeID() === "1" 
-                    && (self.ArrayValidate()[index].VirusSubTypeID() === "" || self.ArrayValidate()[index].VirusSubTypeID() == undefined || ((self.ArrayValidate()[index].VirusSubTypeID_2() === "" || self.ArrayValidate()[index].VirusSubTypeID_2() == undefined) && self.ArrayValidate()[index].UsrCountry() == 7))
+                    && (self.ArrayValidate()[index].VirusSubTypeID() === "" || self.ArrayValidate()[index].VirusSubTypeID() == undefined )
                     && self.ArrayValidate()[index].TestType() === "2") 
                 {
                     //console.log("Aqui virusSubtiypeID");
-                    msg += "\n" + msgValidateProcessSubtype;
+
+                    if (self.ArrayValidate()[index].UsrCountry() == 7) {
+
+                        if  ((self.ArrayValidate()[index].VirusSubTypeID() === "" || self.ArrayValidate()[index].VirusSubTypeID() == undefined ) && (self.ArrayValidate()[index].VirusSubTypeID_2() === "" || self.ArrayValidate()[index].VirusSubTypeID_2() == undefined) )
+                            msg += "\n" + msgValidateProcessSubtype;
+
+                    } else {
+                        msg += "\n" + msgValidateProcessSubtype;
+                    }
+
+
                       //  Insert the detected Subtype
                       //"Ingrese el Subtipo detectado";
                 }
