@@ -3019,6 +3019,21 @@
                 </label>
 
             </div>
+
+            <div class="col-md-7" data-bind="visible: ReasonNotSamplingVisible()">
+                <div class='input-group'>
+                    <span class="input-group-addon">
+                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelReasonNotSampling"))
+                    </span>
+                    <select id="ReasonNotSampling" class="form-control" data-bind="options: ReasonNotSampling,
+                                    optionsText: 'Name',
+                                    optionsValue: 'Id',
+                                    value: ReasonNotSamplingID,
+                                    optionsCaption: '@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel"))' ">
+                    </select>&nbsp&nbsp
+                    <input id="ReasonNotSamplingOther" type='text' data-bind="value: ReasonNotSamplingOther, visible: ReasonNotSamplingOtherVisible" class="form-control" />
+                </div>
+            </div>
         </div>
 
         <!-- Fecha toma de muestra/ Tipo de muestra / ... -->
@@ -5613,7 +5628,8 @@
     var labs = @Html.Raw(Json.Encode(Model.Labs));
     var labsExternal = @Html.Raw(Json.Encode(Model.LabsExternal));
     var institutions = @Html.Raw(Json.Encode(Model.Institutions));
-    //var selcty = @*ViewBag.UsrCtry*@;
+    var reasonnotsampling = @Html.Raw(Json.Encode(Model.ReasonNotSampling));
+
     var selcty = @(ViewBag.UsrCtry);
     var reg_inst_usr = @Html.Raw(Json.Encode(Model.reg_inst_usr));
     var reg_salu_usr = @Html.Raw(Json.Encode(Model.reg_salu_usr));

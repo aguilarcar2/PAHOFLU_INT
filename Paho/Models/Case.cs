@@ -28,6 +28,7 @@ namespace Paho.Models
         public IEnumerable<LookupView<Region>> Regions { get; set; }
         public IEnumerable<LookupView<Institution>> Institutions { get; set; }
         public IEnumerable<LookupView<Lab>> Labs { get; set; }
+        public IEnumerable<LookupView<CatReasonNotSampling>> ReasonNotSampling { get; set; }
         public Array LabsExternal { get; set; }
         public Array LabsHospital_cmb { get; set;  }
         public bool DisplayCountries { get; set; }
@@ -362,6 +363,12 @@ namespace Paho.Models
         public bool Active { get; set; }
     }
 
+    //public class ReasonNotSamplingView : LookupView<CatReasonNotSampling>
+    //{
+    //    public string SPA { get; set; }
+    //    public string ENG { get; set; }
+    //}
+
     public abstract class CaseBase
     {
         public int? UserID { get; set; }
@@ -483,8 +490,7 @@ namespace Paho.Models
         public string SPA { get; set; }
         public string code { get; set; }
     }
-
-
+    
     public class CatDocumentType
     {
         public int ID { get; set; }
@@ -530,6 +536,15 @@ namespace Paho.Models
         public virtual Country CountryVaccine { get; set; }
         [ForeignKey("id_catvaccinsource")]
         public virtual CatVaccinSource CatVaccinSource { get; set; }
+    }
+
+    public class CatReasonNotSampling
+    {
+        public int? ID { get; set; }
+
+        public string SPA { get; set; }
+
+        public string ENG { get; set; }
     }
 
     // Catalogos para resultado de laboratorio
@@ -638,6 +653,7 @@ namespace Paho.Models
         public string ENG { get; set; }
         public int? orden { get; set; }
     }
+
     public class CatInstitutionTypeHON
     {
         public int ID { get; set; }
@@ -1203,17 +1219,19 @@ namespace Paho.Models
         public string InstReferName { get; set; }
         public DateTime? FalleDate { get; set; }
         public bool? IsSample { get; set; }
-        public DateTime? SampleDate { get; set; }
+        public int? ReasonNotSamplingID { get; set; }
+        public string ReasonNotSamplingOther { get; set; }
+        public DateTime? SampleDate { get; set; }           // Sample 1
         [MaxLength(2)]
         public string SampleType { get; set; }
         public DateTime? ShipDate { get; set; }
         public long? LabID { get; set; }
-        public DateTime? SampleDate2 { get; set; }
+        public DateTime? SampleDate2 { get; set; }          // Sample 2
         [MaxLength(2)]
         public string SampleType2 { get; set; }
         public DateTime? ShipDate2 { get; set; }
         public long? LabID2 { get; set; }
-        public DateTime? SampleDate3 { get; set; }
+        public DateTime? SampleDate3 { get; set; }          // Sample 3
         [MaxLength(2)]
         public string SampleType3 { get; set; }
         public DateTime? ShipDate3 { get; set; }
@@ -1807,6 +1825,7 @@ namespace Paho.Models
         public DbSet<CatSampleNoProcessed> CatSampleNoProcessed { get; set; }
         public DbSet<CatCaseStatus> CatCaseStatus { get; set; }
         public DbSet<CatTestType> CatTestType { get; set; }
+        public DbSet<CatReasonNotSampling> CatReasonNotSampling { get; set; }
         public DbSet<CatTestResult> CatTestResult { get; set; }
         public DbSet<CatVirusType> CatVirusType { get; set; }
         public DbSet<CatVirusSubType> CatVirusSubType { get; set; }
@@ -2028,6 +2047,8 @@ namespace Paho.Models
                    p.InstReferName,
                    p.FalleDate,
                    p.IsSample,
+                   p.ReasonNotSamplingID,
+                   p.ReasonNotSamplingOther,
                    p.SampleDate,
                    p.SampleType,
                    p.ShipDate,

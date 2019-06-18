@@ -15,9 +15,6 @@
     var date_ship = new Date();
     var date_close_case = new Date();
     var date_MaxDateSystem = MaxDateSystem;
-    
-    //alert(app.dataModel.date_format_);
-    //alert(date_format_moment);
 
     self.Id = "";
     self.UsrCountry = ko.observable(app.Views.Home.UsrCountry()); // Pais del usuario logueado
@@ -559,6 +556,33 @@
         return (app.Views.Contact.ActiveBOL) ? (self.IsSample() === "false") ? true : false : true;
     });
 
+    self.ReasonNotSampling = ko.observableArray(reasonnotsampling);             //#### CAFQ: 181008
+    self.ReasonNotSamplingID = ko.observable("");
+    self.ReasonNotSamplingVisible = ko.computed(function () {
+        bReturn = false;
+
+        if (self.UsrCountry() == 9)
+            if (self.IsSample() === "false")
+                bReturn = true;
+            else
+                self.ReasonNotSamplingID("");
+        else
+            self.ReasonNotSamplingID("");
+
+        return bReturn;
+    }, self);
+    self.ReasonNotSamplingOther = ko.observable("");
+    self.ReasonNotSamplingOtherVisible = ko.computed(function () {
+        bReturn = false;
+
+        if (self.ReasonNotSamplingID() == "2")
+            bReturn = true;
+        else
+            self.ReasonNotSamplingOther("");
+
+        return bReturn;
+    }, self);
+
     self.SampleDate = ko.observable(new Date());
     self.SampleDate.subscribe(function (newSampleDate) {
         var current_value = typeof (newSampleDate) == "object" ? newSampleDate : parseDate(newSampleDate, date_format_);
@@ -605,12 +629,11 @@
           return app.Views.Home.labs();       
     }, self);
     self.LabsHospital = ko.observableArray();
-
     self.LabId = ko.observable("");
 
     self.SampleDate2 = ko.observable(new Date());
     //if (self.UsrCountry() == 7 || self.UsrCountry() == 3 || self.UsrCountry() == 25) {
-        self.SampleDate2.subscribe(function (newSampleDate2) {
+    self.SampleDate2.subscribe(function (newSampleDate2) {
             if (newSampleDate2 != "") {
                 var current_value = typeof (newSampleDate2) == "object" ? newSampleDate2 : parseDate(newSampleDate2, date_format_);
                 var date_sampledate_ = typeof (self.SampleDate()) == "object" ? self.SampleDate() : parseDate(self.SampleDate(), date_format_);
@@ -639,8 +662,7 @@
                 }
             }
         });
-    //}
-    
+    //}    
     self.SampleType2 = ko.observable("");
     self.ShipDate2 = ko.observable(new Date());
     self.ShipDate2.subscribe(function (newShipDate) {
@@ -663,7 +685,6 @@
     self.LabId2 = ko.observable("");
 
     self.SampleDate3 = ko.observable(new Date());
-
     self.SampleDate3.subscribe(function (newSampleDate3) {
         if (self.UsrCountry() == 7) {
             var current_value = typeof (newSampleDate3) == "object" ? newSampleDate3 : parseDate(newSampleDate3, date_format_);
@@ -698,7 +719,6 @@
             }
         }
         });
-
     self.SampleType3 = ko.observable("");
     self.ShipDate3 = ko.observable(new Date());
     self.ShipDate3.subscribe(function (newShipDate) {
@@ -960,6 +980,8 @@
        self.DiagEgVal("");
        self.DiagEgOtro("");                 //#### CAFQ
        self.IsSample(false);
+       self.ReasonNotSamplingId("");
+       self.ReasonNotSamplingOther("");       
        self.SampleDate (null);
        self.SampleType("");
        self.ShipDate(null);
@@ -1211,6 +1233,8 @@
                 } else if (data.IsSample == false) {
                     self.IsSample("false");
                 } else self.IsSample("");
+                self.ReasonNotSamplingID(data.ReasonNotSamplingID);
+                self.ReasonNotSamplingOther(data.ReasonNotSamplingOther);
                 if (data.FeverDate)
                     self.FeverDate(moment(data.FeverDate).clone().toDate());
                 else self.FeverDate(null);
@@ -1272,7 +1296,7 @@
 
                 self.DiagOtroAdm(data.DiagOtroAdm);
 
-                
+                //Primera muestra
                 if (data.SampleDate)
                     self.SampleDate(moment(data.SampleDate).clone().toDate());
                 else self.SampleDate(null)
@@ -1281,7 +1305,7 @@
                     self.ShipDate(moment(data.ShipDate).clone().toDate());
                 else self.ShipDate(null);
                 self.LabId(data.LabId);
-            //Segunda muestra
+                //Segunda muestra
                 if (data.SampleDate2)
                     self.SampleDate2(moment(data.SampleDate2).clone().toDate());
                 else self.SampleDate2(null)
@@ -1290,7 +1314,7 @@
                     self.ShipDate2(moment(data.ShipDate2).clone().toDate());
                 else self.ShipDate2(null);
                 self.LabId2(data.LabId2);
-            //Tercera muestra
+                //Tercera muestra
                 if (data.SampleDate3)
                     self.SampleDate3(moment(data.SampleDate3).clone().toDate());
                 else self.SampleDate3(null)
@@ -1428,17 +1452,6 @@
 
         // falta la fecha de cierre de caso
 
-        /*
-        console.log(self.Temperatura());                        //#### DESARROLLO
-        console.log(parseFloat(self.Temperatura()));            //#### DESARROLLO 
-        console.log(parseFloat(self.Temperatura(), '####,##'));            //#### DESARROLLO 
-        //var numero = self.Temperatura();
-        //console.log(self.Temperatura().replace(".", ","));
-        //numero = numero.toString().replace('.', ',');
-        var numero = self.Temperatura().toString().replace('.', ',');
-        console.log(numero.toString().replace('.', ','));
-        console.log("self.SaveHospital->MEDIO");                        //#### DESARROLLO
-        */
         $.post(app.dataModel.saveHospitalUrl,
             {
                 id: self.Id,
@@ -1461,6 +1474,8 @@
                 FalleDate: $("#FalleDate").val() == "" ? null : moment(date_falle).format(date_format_ISO),
                 InstReferName: self.InstReferName(),
                 IsSample: self.IsSample() === "true" ? true : (self.IsSample() === "false" ? false : null),
+                ReasonNotSamplingID: self.ReasonNotSamplingID(),
+                ReasonNotSamplingOther: self.ReasonNotSamplingOther(),
                 SampleDate: $("#SampleDate").val() == "" ? null : moment(date_sample).format(date_format_ISO),
                 SampleType: self.SampleType(),
                 ShipDate: $("#ShipDate").val() == "" ? null : moment(date_ship).format(date_format_ISO),
@@ -1544,8 +1559,8 @@
                 DataStatement: 2
             },
             function (data) {
-                if (nextStep) nextStep();
-                //alert(data);
+                if (nextStep)
+                    nextStep();
             },
             "json"
         );

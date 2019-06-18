@@ -19,7 +19,7 @@ namespace Paho.Controllers
             IQueryable<Region> regions = null;
             IQueryable<Area> areas = null;
 
-
+            IQueryable<CatReasonNotSampling> catreasonnotsampling = null;
             IQueryable<CatSampleNoProcessed> CSNP = null;
             IQueryable<CatTestType> CTT = null;
             IQueryable<CatTestResult> CTR = null;
@@ -234,6 +234,27 @@ namespace Paho.Controllers
 
             //**** Usuario de laboratorio NIC
             CaseViewModel.lab_NIC_usr = user.Institution.LabNIC;
+
+            //**** Motivos de no toma de muestra
+            //CaseViewModel.ReasonNotSampling = catreasonnotsampling.Select(c => new LookupView<CatReasonNotSampling>()
+            //                                                                    {
+            //                                                                        Id = c.ID.ToString(),
+            //                                                                        Name = (user.Institution.Country.Language == "SPA") ? c.SPA : c.ENG,
+            //                                                                    })
+            //                                                                    .OrderBy(d => d.Name)
+            //                                                                    .ToArray();
+
+            //catreasonnotsampling = db.Areas.Where(d => d.CountryID == user.Institution.CountryID).OrderBy(i => i.Name);
+            catreasonnotsampling = db.CatReasonNotSampling;
+
+            var ReasonNotSamplingDisplay = catreasonnotsampling.Select(i => new LookupView<CatReasonNotSampling>()
+            {
+                Id = i.ID.ToString(),
+                Name = (user.Institution.Country.Language == "SPA") ? i.SPA : i.ENG,
+                orden = ""
+            }).ToList();
+
+            CaseViewModel.ReasonNotSampling = ReasonNotSamplingDisplay;
 
             // Catalogos del laboratorio
             CSNP = db.CatSampleNoProcessed.OrderBy(i => i.orden).ThenBy(j => j.SPA);

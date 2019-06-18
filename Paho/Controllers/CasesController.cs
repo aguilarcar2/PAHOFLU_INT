@@ -1531,17 +1531,19 @@ namespace Paho.Controllers
                     VAFO = flucase.VAFO,                                // Ventilación de alta frecuencia oscilatoria
                     Comments = flucase.Comments,                        //#### CAFQ: 190107 Comentario
                     DiagEgVal = flucase.DiagEg,
-                    DiagEgOtro = flucase.DiagEgOtro,        //#### CAFQ
+                    DiagEgOtro = flucase.DiagEgOtro, 
                     IsSample = flucase.IsSample,
-                    SampleDate = flucase.SampleDate,
+                    ReasonNotSamplingID = flucase.ReasonNotSamplingID,
+                    ReasonNotSamplingOther = flucase.ReasonNotSamplingOther,
+                    SampleDate = flucase.SampleDate,                    // Muestra 1
                     SampleType = flucase.SampleType,
                     ShipDate = flucase.ShipDate,
                     LabId = flucase.LabID,
-                    SampleDate2 = flucase.SampleDate2,
+                    SampleDate2 = flucase.SampleDate2,                  // Muestra 2
                     SampleType2 = flucase.SampleType2,
                     ShipDate2 = flucase.ShipDate2,
                     LabId2 = flucase.LabID2,
-                    SampleDate3 = flucase.SampleDate3,
+                    SampleDate3 = flucase.SampleDate3,                  // Muestra 3
                     SampleType3 = flucase.SampleType3,
                     ShipDate3 = flucase.ShipDate3,
                     LabId3 = flucase.LabID3,
@@ -1650,20 +1652,22 @@ namespace Paho.Controllers
                 string HospitalizedInNumber,
                 string Destin,
                 bool? IsSample,
-                DateTime? SampleDate,
+                int? ReasonNotSamplingID,
+                string ReasonNotSamplingOther,
+                DateTime? SampleDate,                   // Sample 1
                 string SampleType,
                 DateTime? ShipDate,
                 long? LabId,
-                DateTime? SampleDate2,
+                DateTime? SampleDate2,                  // Sample 2
                 string SampleType2,
                 DateTime? ShipDate2,
                 long? LabId2,
                 DateTime? SampleDate3,
-                string SampleType3,
+                string SampleType3,                     // Sample 3
                 DateTime? ShipDate3,
                 long? LabId3,
                 bool? Adenopatia,
-                bool? Wheezing,                                 //#### CAFQ: 180619
+                bool? Wheezing,       
                 bool? AntecedentesFiebre,
                 bool? Rinorrea,
                 //bool? Malestar,
@@ -1783,6 +1787,8 @@ namespace Paho.Controllers
             flucase.FalleDate = FalleDate;
             flucase.InstReferName = InstReferName;
             flucase.IsSample = IsSample;
+            flucase.ReasonNotSamplingID = ReasonNotSamplingID;
+            flucase.ReasonNotSamplingOther = ReasonNotSamplingOther;
             flucase.SampleDate = SampleDate;
             flucase.SampleType = SampleType;
             flucase.ShipDate = ShipDate;
