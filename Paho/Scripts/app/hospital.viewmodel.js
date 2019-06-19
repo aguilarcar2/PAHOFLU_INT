@@ -561,13 +561,13 @@
     self.ReasonNotSamplingVisible = ko.computed(function () {
         bReturn = false;
 
-        if (self.UsrCountry() == 9)
+        //if (self.UsrCountry() == 9)
             if (self.IsSample() === "false")
                 bReturn = true;
             else
                 self.ReasonNotSamplingID("");
-        else
-            self.ReasonNotSamplingID("");
+        //else
+        //    self.ReasonNotSamplingID("");
 
         return bReturn;
     }, self);
@@ -980,7 +980,7 @@
        self.DiagEgVal("");
        self.DiagEgOtro("");                 //#### CAFQ
        self.IsSample(false);
-       self.ReasonNotSamplingId("");
+       self.ReasonNotSamplingID("");
        self.ReasonNotSamplingOther("");       
        self.SampleDate (null);
        self.SampleType("");

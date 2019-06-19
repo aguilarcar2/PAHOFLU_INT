@@ -45,7 +45,6 @@
         <link rel="stylesheet" href="~/Scripts/amcharts/plugins/export/export.css" type="text/css" media="all" />
 
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGráfica 7 - Lineas Basalesxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
-
         <script>
                 var jsonX;
 
@@ -85,114 +84,256 @@
                                 var chartData = [];
                                 $.each(jsonX, function(index, element) {
                                     $.each(element.graphData.graphDataItem, function(index2, element2) {
-                                        chartData.push({
-                                            semana: element2.semana,
-                                            serie1: element2.serie1,
-                                            serie2: element2.serie2,
-                                            serie3: element2.serie3,
-                                            serie4: element2.serie4
-                                        });
+                                        if(CountryID == 9){
+                                            chartData.push({
+                                                semana: element2.semana,
+                                                serie1: element2.serie1,
+                                                serie2: element2.serie2,
+                                                serie3: element2.serie3,
+                                                serie4: element2.serie4,
+                                                serie5: element2.serie5,
+                                                serie6: element2.serie6
+                                            });
+                                        }else{
+                                            chartData.push({
+                                                semana: element2.semana,
+                                                serie1: element2.serie1,
+                                                serie2: element2.serie2,
+                                                serie3: element2.serie3,
+                                                serie4: element2.serie4
+                                            });
+                                        }                                        
                                     });
-
                                 });
 
-                                var chart = AmCharts.makeChart("divGraph7", {
-                                    "type": "serial",
-                                    "theme": "light",
-                                    "mouseWheelZoomEnabled":false,
-                                    "legend": {
-                                        "useGraphSettings": true
+                                if(CountryID == 9){
+                                    var chart = AmCharts.makeChart("divGraph7", {
+                                        "type": "serial",
+                                        "theme": "light",
+                                        "mouseWheelZoomEnabled":false,
+                                        "legend": {
+                                            "useGraphSettings": true
                                         },
-                                    "titles": [{
-                                        "text": jsonX.graph.graphTitle,
-                                        "size": 15
+                                        "titles": [{
+                                            "text": jsonX.graph.graphTitle,
+                                            "size": 15
                                         }],
-                                    "dataProvider": chartData,
-                                    "synchronizeGrid":true,
-                                    "valueAxes": [{
-                                        "id":"v1",
-                                        "axisColor": "#FF6600",
-                                        "axisThickness": 2,
-                                        "axisAlpha": 1,
-                                        "position": "left",
-                                        "unit": "%",
-                                        "title":jsonX.graph.graphYAxisTitle
+                                        "dataProvider": chartData,
+                                        "synchronizeGrid":true,
+                                        "valueAxes": [{
+                                            "id":"v1",
+                                            "axisColor": "#FF6600",
+                                            "axisThickness": 2,
+                                            "axisAlpha": 1,
+                                            "position": "left",
+                                            "unit": "%",
+                                            "title":jsonX.graph.graphYAxisTitle
                                         }],
-                                    "graphs": [{
-                                        "valueAxis": "v1",
-                                        "lineColor": "#2F75B5",
-                                        "lineThickness": 2,
-                                        "bullet": "round",
-                                        "bulletBorderThickness": 1,
-                                        "hideBulletsCount": 20,
-                                        "title": jsonX.graph.graphSeries1Label,
-                                        "valueField": "serie1",
-                                        "type": "line",
-                                        "fillAlphas": 0
-                                        }, {
-                                        "valueAxis": "v1",
-                                        "lineColor": "#FF0000",
-                                        "lineThickness": 2,
-                                        "bullet": "square",
-                                        "bulletBorderThickness": 1,
-                                        "hideBulletsCount": 20,
-                                        "title": jsonX.graph.graphSeries2Label,
-                                        "valueField": "serie2",
-                                        "type": "line",
-                                        "fillAlphas": 0
-                                        }, {
-                                        "valueAxis": "v1",
-                                        "lineColor": "#808080",
-                                        "lineThickness": 2,
-                                        "bullet": "triangleUp",
-                                        "bulletBorderThickness": 1,
-                                        "hideBulletsCount": 20,
-                                        "title": jsonX.graph.graphSeries3Label,
-                                        "valueField": "serie3",
-                                        "type": "line",
-                                        "fillAlphas": 0
-                                        }, {
-                                        "valueAxis": "v1",
-                                        "lineColor": "#009900",
-                                        "lineThickness": 2,
-                                        "bullet": "triangleUp",
-                                        "bulletBorderThickness": 1,
-                                        "hideBulletsCount": 20,
-                                        "title": jsonX.graph.graphSeries4Label,
-                                        "valueField": "serie4",
-                                        "type": "line",
-                                        "fillAlphas": 0
-                                        }],
-                                    "chartScrollbar": {},
-                                    "chartCursor": {
-                                        "cursorPosition": "mouse"
+                                        "graphs": [
+                                            {
+                                            "valueAxis": "v1",
+                                            "lineColor": "#00B0F0",
+                                            "lineThickness": 2,
+                                            "bullet": "round",
+                                            "bulletBorderThickness": 1,
+                                            "hideBulletsCount": 20,
+                                            "title": jsonX.graph.graphSeries1Label,
+                                            "valueField": "serie1",
+                                            "type": "line",
+                                            "fillAlphas": 0
+                                            }, 
+                                            {
+                                            "valueAxis": "v1",
+                                            "lineColor": "#000000",
+                                            "lineThickness": 2,
+                                            "bullet": "square",
+                                            "bulletBorderThickness": 1,
+                                            "hideBulletsCount": 20,
+                                            "title": jsonX.graph.graphSeries2Label,
+                                            "valueField": "serie2",
+                                            "type": "line",
+                                            "fillAlphas": 0
+                                            }, 
+                                            {
+                                            "valueAxis": "v1",
+                                            "lineColor": "#FFFF00",
+                                            "lineThickness": 2,
+                                            "bullet": "triangleUp",
+                                            "bulletBorderThickness": 1,
+                                            "hideBulletsCount": 20,
+                                            "title": jsonX.graph.graphSeries3Label,
+                                            "valueField": "serie3",
+                                            "type": "line",
+                                            "fillAlphas": 0
+                                            }, 
+                                            {
+                                            "valueAxis": "v1",
+                                            "lineColor": "#FABF8F",
+                                            "lineThickness": 2,
+                                            "bullet": "triangleUp",
+                                            "bulletBorderThickness": 1,
+                                            "hideBulletsCount": 20,
+                                            "title": jsonX.graph.graphSeries4Label,
+                                            "valueField": "serie4",
+                                            "type": "line",
+                                            "fillAlphas": 0
+                                            },
+                                            {
+                                                "valueAxis": "v1",
+                                                "lineColor": "#FF0000",
+                                                "lineThickness": 2,
+                                                "bullet": "triangleUp",
+                                                "bulletBorderThickness": 1,
+                                                "hideBulletsCount": 20,
+                                                "title": jsonX.graph.graphSeries5Label,
+                                                "valueField": "serie5",
+                                                "type": "line",
+                                                "fillAlphas": 0
+                                            },
+                                            {
+                                                "valueAxis": "v1",
+                                                "lineColor": "#CC00CC",
+                                                "lineThickness": 2,
+                                                "bullet": "triangleUp",
+                                                "bulletBorderThickness": 1,
+                                                "hideBulletsCount": 20,
+                                                "title": jsonX.graph.graphSeries6Label,
+                                                "valueField": "serie6",
+                                                "type": "line",
+                                                "fillAlphas": 0
+                                            }
+                                        ],
+                                        "chartScrollbar": {},
+                                        "chartCursor": {
+                                            "cursorPosition": "mouse"
                                         },
-                                    "categoryField": "semana",
-                                    "categoryAxis": {
-                                        "parseDates": false,
-                                        "axisColor": "#DADADA",
-                                        "minorGridEnabled": true,
-                                        "title":jsonX.graph.graphXAxisTitle
-                                    },
-                                    /*"export": {
-                                        "enabled": true,
-                                        "position": "top-right"
-                                    },*/
-                                    "export": {
-                                        "enabled": true,
-                                        "menu": [{
-                                            "class": "export-main",
+                                        "categoryField": "semana",
+                                        "categoryAxis": {
+                                            "parseDates": false,
+                                            "axisColor": "#DADADA",
+                                            "minorGridEnabled": true,
+                                            "title":jsonX.graph.graphXAxisTitle
+                                        },
+                                        /*"export": {
+                                            "enabled": true,
+                                            "position": "top-right"
+                                        },*/
+                                        "export": {
+                                            "enabled": true,
+                                            "menu": [{
+                                                "class": "export-main",
                                                 "menu": [{
                                                     "label": "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphExportDownloadTitle"))",
                                                     "menu": [ "PNG", "JPG", "PDF","SVG" ]
-                                                },
-                                                {
-                                                    "label": "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphExportPrintTitle"))",
-                                                    "format": "PRINT"
+                                                            },
+                                                        {
+                                                                                            "label": "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphExportPrintTitle"))",
+                                                                                            "format": "PRINT"
+                                                    }]
+                                                                                        }]
+                                            }
+                                        }); //END var chart
+                                }
+                                else
+                                {
+                                    var chart = AmCharts.makeChart("divGraph7", {
+                                        "type": "serial",
+                                        "theme": "light",
+                                        "mouseWheelZoomEnabled":false,
+                                        "legend": {
+                                            "useGraphSettings": true
+                                        },
+                                        "titles": [{
+                                            "text": jsonX.graph.graphTitle,
+                                            "size": 15
+                                        }],
+                                        "dataProvider": chartData,
+                                        "synchronizeGrid":true,
+                                        "valueAxes": [{
+                                            "id":"v1",
+                                            "axisColor": "#FF6600",
+                                            "axisThickness": 2,
+                                            "axisAlpha": 1,
+                                            "position": "left",
+                                            "unit": "%",
+                                            "title":jsonX.graph.graphYAxisTitle
+                                        }],
+                                        "graphs": [{
+                                            "valueAxis": "v1",
+                                            "lineColor": "#2F75B5",
+                                            "lineThickness": 2,
+                                            "bullet": "round",
+                                            "bulletBorderThickness": 1,
+                                            "hideBulletsCount": 20,
+                                            "title": jsonX.graph.graphSeries1Label,
+                                            "valueField": "serie1",
+                                            "type": "line",
+                                            "fillAlphas": 0
+                                        }, {
+                                            "valueAxis": "v1",
+                                            "lineColor": "#FF0000",
+                                            "lineThickness": 2,
+                                            "bullet": "square",
+                                            "bulletBorderThickness": 1,
+                                            "hideBulletsCount": 20,
+                                            "title": jsonX.graph.graphSeries2Label,
+                                            "valueField": "serie2",
+                                            "type": "line",
+                                            "fillAlphas": 0
+                                        }, {
+                                            "valueAxis": "v1",
+                                            "lineColor": "#808080",
+                                            "lineThickness": 2,
+                                            "bullet": "triangleUp",
+                                            "bulletBorderThickness": 1,
+                                            "hideBulletsCount": 20,
+                                            "title": jsonX.graph.graphSeries3Label,
+                                            "valueField": "serie3",
+                                            "type": "line",
+                                            "fillAlphas": 0
+                                        }, {
+                                            "valueAxis": "v1",
+                                            "lineColor": "#009900",
+                                            "lineThickness": 2,
+                                            "bullet": "triangleUp",
+                                            "bulletBorderThickness": 1,
+                                            "hideBulletsCount": 20,
+                                            "title": jsonX.graph.graphSeries4Label,
+                                            "valueField": "serie4",
+                                            "type": "line",
+                                            "fillAlphas": 0
+                                        }],
+                                        "chartScrollbar": {},
+                                        "chartCursor": {
+                                            "cursorPosition": "mouse"
+                                        },
+                                        "categoryField": "semana",
+                                        "categoryAxis": {
+                                            "parseDates": false,
+                                            "axisColor": "#DADADA",
+                                            "minorGridEnabled": true,
+                                            "title":jsonX.graph.graphXAxisTitle
+                                        },
+                                        /*"export": {
+                                            "enabled": true,
+                                            "position": "top-right"
+                                        },*/
+                                        "export": {
+                                            "enabled": true,
+                                            "menu": [{
+                                                "class": "export-main",
+                                                "menu": [{
+                                                    "label": "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphExportDownloadTitle"))",
+                                                    "menu": [ "PNG", "JPG", "PDF","SVG" ]
+                                                        },
+                                                    {
+                                                                        "label": "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalGraphExportPrintTitle"))",
+                                                                        "format": "PRINT"
                                                 }]
-                                            }]
-                                    }
-                                });
+                                                                }]
+                                        }
+                                    }); //END var chart
+                                }
 
                                 //chart.addListener("dataUpdated", zoomChart);
                                 chart.addListener("rendered", zoomChart);
@@ -243,17 +384,17 @@
 
         <div id="containerGraph7">
             <!--
-            <div class="col-md-6">
-                <span id="LBPais">
-                    País: @((ViewBag.UsrCtry == 7) ? "CHILE" : (ViewBag.UsrCtry == 9) ? "COSTA RICA" : "BOLIVIA")
-                </span>
-            </div>-->
+        <div class="col-md-6">
+            <span id="LBPais">
+                País: @((ViewBag.UsrCtry == 7) ? "CHILE" : (ViewBag.UsrCtry == 9) ? "COSTA RICA" : "BOLIVIA")
+            </span>
+        </div>-->
             <div id="loaderGraph7" class="loaderGraph"></div>
             <div id="divGraph7"></div>
         </div>
-
         <!--<script>GetGraphData7();</script>-->
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxFIN Gráfica 7 - Lineas Basales xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGráfica 8 - Indicadores de Desempeño xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <script>
                 var jsonX;
@@ -654,6 +795,7 @@
         </div>
         <!--<script>GetGraphData8();</script>-->
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxFIN Gráfica 8 - Indicadores de Desempeño xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+        
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGráfica 1 - Epidemiológico 1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <script>
             var expanded = false;
@@ -1284,6 +1426,7 @@
 
         <script>GetGraphData1();</script>
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxFIN Gráfica 1 - Epidemiológico 1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+        
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGráfica 0 - Epidemiológico 1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <script>
                 $(document).mouseup(function(e)
@@ -1549,6 +1692,7 @@
         </div>
 
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxFIN Gráfica 0 - Epidemiológico 1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+        
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGráfica 2 - Epidemiológico 2xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <script>
             var jsonX;
@@ -3973,12 +4117,11 @@
                 margin: 5px;
             }
         </style>
-
         <div id="containerGraph11">
             <div id="loaderGraph11" class="loaderGraph"><!-- Place at bottom of page --></div>
             <div id="divGraph11"></div>
         </div>
-        <!--<script>GetGraphData11();</script>-->
+
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxFIN Gráfica 11 - Casos IRAG x GE xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGráfica 12 - Fallecidos IRAG x GE xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <script>
