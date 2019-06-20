@@ -320,6 +320,20 @@ function ContactViewModel(app, dataModel) {
         if (newage != "" && self.AMeasure() != "" && (self.DOB() == "" || self.DOB() == null)) $("#DOB").prop("disabled", true);
 
 
+        if (app.Views.Home.AlertDefinitionBegin() >= 0 && app.Views.Home.AlertDefinitionEnd() >= 0) {
+            if (app.Views.Contact.AMeasure() == "") app.Views.Contact.AMeasure("Year");
+            var measure = app.Views.Contact.AMeasure() == "Year" ? "years" : (app.Views.Contact.AMeasure() == "Month" ? 'months' : 'days');
+            var ConvertToMonth = ((measure == 'years') ? app.Views.Contact.Age() * 12 : (measure == 'days') ? app.Views.Contact.Age() / 12 : app.Views.Contact.Age());
+
+            if (ConvertToMonth <= app.Views.Home.AlertDefinitionBegin() || ConvertToMonth >= app.Views.Home.AlertDefinitionEnd()) {
+                $("#casedefinitionwarning").hide();
+            }
+
+
+        }
+
+        // Esto es para el mensaje de alerta de condición de 
+
     });
 
     self.AMeasure.subscribe(function (newAMeasure) {
