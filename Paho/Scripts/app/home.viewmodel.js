@@ -37,6 +37,11 @@
     self.URrpt = ko.observable(URlerpt);
 
     self.UsrCountry = ko.observable(selcty);
+    // Alert Definition
+    self.AlertDefinitionBegin = ko.observable(AlertDefinitionBegin);
+    self.AlertDefinitionEnd = ko.observable(AlertDefinitionEnd);
+    
+
     // Date of server
     var date_format_ = app.dataModel.date_format_;
     //var DoS_temp = (jQuery.type($("#DSrv").val()) === 'date') ? parseDate($("#DSrv").val(), date_format_) : null;

@@ -901,6 +901,19 @@ namespace Paho.Models
         }
     }
 
+    public class ConfAlertCaseDefinition
+    {
+        [Key]
+        public int id { get; set; }
+        public int id_country { get; set; }
+        [Required]
+        [Display(Name = "Mes Inicia")]
+        public int month_begin { get; set; }
+        [Required]
+        [Display(Name = "Mes Finaliza")]
+        public int month_end { get; set; }
+    }
+
     public class InstitutionConfiguration
     {
         public long ID { get; set; }
@@ -1841,6 +1854,8 @@ namespace Paho.Models
         public DbSet<CatPopulationInstitutionDetail> CatPopulationInstitutionsDetails { get; set; }
         public DbSet<CatStatusCase> CatStatusCase { get; set; }
         public DbSet<CatHospitalizedIn> CatHospitalizedIn { get; set; }
+
+        public DbSet<ConfAlertCaseDefinition> ConfAlertCaseDefinition { get; set; }
 
         public DbSet<CaseLabTest> CaseLabTests { get; set; }
         public DbSet<CaseSummary> CaseSummaries { get; set; }

@@ -62,6 +62,8 @@ namespace Paho.Controllers
                 ViewBag.ILI = (user.Institution.ILI == true ) ? true : false;
                 ViewBag.InstAccesLevel = (int)user.Institution.AccessLevel;
                 ViewBag.unusual = (user.Institution.surv_unusual == true) ? true : false;
+                ViewBag.AlertDefinitionBegin = (db.ConfAlertCaseDefinition.Where(y => y.id_country == user.Institution.CountryID).Any()) ? db.ConfAlertCaseDefinition.Where(y => y.id_country == user.Institution.CountryID).FirstOrDefault().month_begin : -1;
+                ViewBag.AlertDefinitionEnd = (db.ConfAlertCaseDefinition.Where(y => y.id_country == user.Institution.CountryID).Any()) ? db.ConfAlertCaseDefinition.Where(y => y.id_country == user.Institution.CountryID).FirstOrDefault().month_end : -1;
                 ViewBag.UsrCtry = user.Institution.CountryID;
                 ViewBag.UsrCtryLang = user.Institution.Country.Language;
                 ViewBag.UsrInstID = user.InstitutionID;

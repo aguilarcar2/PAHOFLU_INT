@@ -279,6 +279,22 @@ namespace Paho.Controllers
             return Json(areas, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult GetConfAlertCaseDefinition(int CountryID)
+        {
+            var ageAlertCaseDefinition =
+                     (
+                      from ConfAlertCaseDefinition in db.ConfAlertCaseDefinition as IQueryable<ConfAlertCaseDefinition>
+                      where ConfAlertCaseDefinition.id_country == CountryID
+                      orderby ConfAlertCaseDefinition.month_begin
+                      select new
+                      {
+                          month_begin = ConfAlertCaseDefinition.month_begin,
+                          month = ConfAlertCaseDefinition.month_end
+                      }).ToArray();
+
+            return Json(ageAlertCaseDefinition, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult GetStates(int AreaID)
         {
             var states =

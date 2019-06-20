@@ -769,19 +769,67 @@
 
     self.Tos.subscribe(function (NewTos) {
 
-        if (NewTos === true && self.AntecedentesFiebre() === true) {
-            $("#casedefinitionwarning").hide();
-        } else {
-            $("#casedefinitionwarning").show();
+        if (app.Views.Home.AlertDefinitionBegin() >= 0 && app.Views.Home.AlertDefinitionEnd() >=0)
+        {
+            if (app.Views.Contact.AMeasure() == "") app.Views.Contact.AMeasure("Year");
+            var measure = app.Views.Contact.AMeasure() == "Year" ? "years" : (app.Views.Contact.AMeasure() == "Month" ? 'months' : 'days');
+            var ConvertToMonth = ((measure == 'years') ? app.Views.Contact.Age() * 12 : (measure == 'days') ? app.Views.Contact.Age() / 12 : app.Views.Contact.Age());
+
+            if (ConvertToMonth >= app.Views.Home.AlertDefinitionBegin() && ConvertToMonth <= app.Views.Home.AlertDefinitionEnd() )
+            {
+                if (NewTos === true && self.AntecedentesFiebre() === true) {
+                    $("#casedefinitionwarning").hide();
+                } else {
+                    $("#casedefinitionwarning").show();
+                }
+            } else 
+            {
+                $("#casedefinitionwarning").hide();
+            }
+
+
+        } else if (app.Views.Home.AlertDefinitionBegin() < 0 && app.Views.Home.AlertDefinitionEnd() < 0)
+        {
+
+            if (NewTos === true && self.AntecedentesFiebre() === true) {
+                $("#casedefinitionwarning").hide();
+            } else {
+                $("#casedefinitionwarning").show();
+            }
         }
+
+
+
     });
 
     self.AntecedentesFiebre.subscribe(function (NewAntecedentesFiebre) {
+        if (app.Views.Home.AlertDefinitionBegin() >= 0 && app.Views.Home.AlertDefinitionEnd() >=0)
+        {
+            if (app.Views.Contact.AMeasure() == "") app.Views.Contact.AMeasure("Year");
+            var measure = app.Views.Contact.AMeasure() == "Year" ? "years" : (app.Views.Contact.AMeasure() == "Month" ? 'months' : 'days');
+            var ConvertToMonth = ((measure == 'years') ? app.Views.Contact.Age() * 12 : (measure == 'days') ? app.Views.Contact.Age() / 12 : app.Views.Contact.Age());
 
-        if (NewAntecedentesFiebre === true && self.Tos() === true) {
-            $("#casedefinitionwarning").hide();
-        } else {
-            $("#casedefinitionwarning").show();
+            if (ConvertToMonth >= app.Views.Home.AlertDefinitionBegin() && ConvertToMonth <= app.Views.Home.AlertDefinitionEnd()) {
+                if (NewAntecedentesFiebre === true && self.Tos() === true) {
+                    $("#casedefinitionwarning").hide();
+                } else {
+                    $("#casedefinitionwarning").show();
+                }
+            }
+            else {
+                console.log("Aquí else ");
+                $("#casedefinitionwarning").hide();
+            }
+
+
+        } else if (app.Views.Home.AlertDefinitionBegin() < 0 && app.Views.Home.AlertDefinitionEnd() < 0)
+        {
+
+            if (NewAntecedentesFiebre === true && self.Tos() === true) {
+                $("#casedefinitionwarning").hide();
+            } else {
+                $("#casedefinitionwarning").show();
+            }
         }
     });
 

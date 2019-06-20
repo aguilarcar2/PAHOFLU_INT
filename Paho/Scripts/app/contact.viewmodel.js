@@ -318,6 +318,8 @@ function ContactViewModel(app, dataModel) {
         //if (self.AMeasure() != "" || self.AMeasure() != "Year") self.CalculateDOB();
         if (self.AMeasure() == "") self.AMeasure("Year");
         if (newage != "" && self.AMeasure() != "" && (self.DOB() == "" || self.DOB() == null)) $("#DOB").prop("disabled", true);
+
+
     });
 
     self.AMeasure.subscribe(function (newAMeasure) {

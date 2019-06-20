@@ -5631,11 +5631,13 @@
     var reasonnotsampling = @Html.Raw(Json.Encode(Model.ReasonNotSampling));
 
     var selcty = @(ViewBag.UsrCtry);
+    var AlertDefinitionBegin = @(ViewBag.AlertDefinitionBegin);
+    var AlertDefinitionEnd = @(ViewBag.AlertDefinitionEnd);
     var reg_inst_usr = @Html.Raw(Json.Encode(Model.reg_inst_usr));
     var reg_salu_usr = @Html.Raw(Json.Encode(Model.reg_salu_usr));
     var reg_pais_usr = @Html.Raw(Json.Encode(Model.reg_pais_usr));
     var PAHOFLU_date_format = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgDateFormat")))";
-	var MaxDateSystem = new Date( moment("@Html.Raw(Model.DatePickerConfig)", "DD-MM-YYYY"));
+    var MaxDateSystem = new Date( moment("@Html.Raw(Model.DatePickerConfig)", "DD-MM-YYYY"));
 
     var moment_date_format = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgDateFormatMoment")))";
     var ISO_date_format = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgDateFormatISO")))";
@@ -5741,7 +5743,7 @@
     var viewValidateSampleDateInvalid = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSampleDateInvalid")))";
     var viewValidateSampleDateGtOnsetDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSampleDateGtOnsetDate")))";
     var viewValidateSentSampleDateGtSampleDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSentSampleDateGtSampleDate")))";
-	var viewValidateDateEnterDateToday = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateDateEnterDateToday")))";
+    var viewValidateDateEnterDateToday = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateDateEnterDateToday")))";
 
     var viewValidateSampleTypeRequired = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSampleTypeRequired")))";
     var viewValidateCloseDateRequired = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateCloseDateRequired")))";
