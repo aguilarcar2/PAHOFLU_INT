@@ -487,7 +487,7 @@
             {
                 $("#tab-lab :input").prop('disabled', true);
                 $("#NotSample :input").prop('disabled', false);
-                
+  
             } else {
                 //$("#NotSample :input, #tab-lab :input").prop('disabled', false);
                 if (app.Views.Hospital.CaseStatus == "3") {
@@ -497,6 +497,10 @@
                     $("#NotSample :input").prop('disabled', true);
                 }
             }
+
+            console.log("IsSample True");
+            console.log("IsSample SurvILI" + app.Views.Contact.SurvILI());
+            console.log("IsSample True");
 
             if (app.Views.Contact.SurvILI() == true && app.Views.Lab.FinalResult() && app.Views.Lab.CanConclude() == true) {
                 //$("#CaseStatus").attr("disabled", false);
@@ -522,6 +526,15 @@
             self.SampleType3(null);
             self.ShipDate3(null);
             self.LabId3(null);
+
+            if (self.IsSample() === "false" && self.Destin != "" && self.HospExDate() != "" )
+            {
+                    console.log("Sample is false");
+                    $("a[href*='tab-case']").show();
+                    $("#tab-case").show();
+                    $("#CaseStatus").attr("disabled", false);
+                    $("#tabs").tabs("refresh");
+            }
 
             if (app.Views.Contact.SurvILI() == true && self.IsSample() === "false") {
                 //$("#CaseStatus").attr("disabled", false);
