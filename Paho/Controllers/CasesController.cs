@@ -622,22 +622,21 @@ namespace Paho.Controllers
                                      ready_close = ( // revisar si ya existe un resultado con el flujo y existe un laboratorio con el campo conclusion que ya ingreso los resultados
                                                     (flucase.flow == db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID && i.Conclusion == true).OrderBy(x => x.Priority).FirstOrDefault().Priority && flucase.statement == 2) 
                                                      // si la muestra no fue tomada
-                                                    || (flucase.IsSample == false) 
-                                                     // Para honduras si el laboratorio regional no proceso la muestra
-                                                    || ((user.Institution.CountryID == 15) ? (flucase.Processed_National == false ) : (flucase.Processed == false) ) 
-                                                     // Para Jamaica si el NPHL no proceso la muestra
-                                                    || ((user.Institution.CountryID == 17) ? (flucase.NPHL_Processed == false) : (flucase.Processed == false))
-                                                    || (flucase.Processed == false)
+                                                    || (flucase.IsSample == false)
+                                                    // Para honduras si el laboratorio regional no proceso la muestra
+                                                    || ((user.Institution.CountryID == 15) ? (flucase.Processed_National == false) : (user.Institution.CountryID == 17) ? (flucase.NPHL_Processed == false) : (flucase.Processed == false))
+                                                    // Para Jamaica si el NPHL no proceso la muestra
+                                                    //|| ((user.Institution.CountryID == 17 && user.Institution.CountryID != 15) ? (flucase.NPHL_Processed == false) : (flucase.Processed == false))
+                                                    //|| (flucase.Processed == false)
                                                     // La segunda y tercera muestra tampoco fueron tomadas
                                                     || (flucase.Processed2 == false) || (flucase.Processed3 == false)) ? 1 : 0,
                                      ready_close2 = ( // revisar si ya existe un resultado con el flujo
                                                     (flucase.flow == db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID).OrderByDescending(x => x.Priority).FirstOrDefault().Priority && flucase.statement == 2)
                                                     // si la muestra no fue tomada
                                                     || (flucase.IsSample == false)
-                                                    // Para honduras si el laboratorio regional no proceso la muestra
-                                                    || ((user.Institution.CountryID == 15) ? ( flucase.Processed_National == false) : (flucase.Processed == false))
-                                                    // Para Jamaica si el NPHL no proceso la muestra
-                                                    || ((user.Institution.CountryID == 17) ? ( flucase.NPHL_Processed == false) : (flucase.Processed == false))
+                                                    // Para honduras si el laboratorio regional no proceso la muestra y Para Jamaica si el NPHL no proceso la muestra
+                                                    || ((user.Institution.CountryID == 15) ? ( flucase.Processed_National == false) : (user.Institution.CountryID == 17 && user.Institution.CountryID != 15) ? (flucase.NPHL_Processed == false) : (flucase.Processed == false))
+                                                    // 
                                                     || (flucase.Processed2 == false)
                                                     // La segunda y tercera muestra tampoco fueron tomadas
                                                     || (flucase.Processed2 == false) || (flucase.Processed3 == false)) ? 1 : 0,
@@ -739,7 +738,7 @@ namespace Paho.Controllers
                                             :
                                             
                                             (x.ready_close == 1 && x.FLOW_FLUCASE != 99 ?
-                                                  readyCloseHtml + ( ((x.ready_close_missing_Discharge == 1 || x.ready_close_missing_DateEx == 1 ) && user.Institution.CountryID == 17) ? MissingDischargeHtml : "")  :
+                                                  readyCloseHtml +  ( ((x.ready_close_missing_Discharge == 1 || x.ready_close_missing_DateEx == 1 ) && user.Institution.CountryID == 17) ? MissingDischargeHtml : "")  :
                                                     (x.CS_D_Cat == null ?
                                                        openHtml  :
                                                         (user.Institution.Country.Language == "SPA" ? "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.SPA+"'/> " + x.CS_D_Cat.SPA : "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.ENG+"'/> " + x.CS_D_Cat.ENG )
