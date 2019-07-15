@@ -624,7 +624,7 @@ namespace Paho.Controllers
                                                      // si la muestra no fue tomada
                                                     || (flucase.IsSample == false)
                                                     // Para honduras si el laboratorio regional no proceso la muestra
-                                                    || ((user.Institution.CountryID == 15) ? (flucase.Processed_National == false) : (user.Institution.CountryID == 17) ? (flucase.NPHL_Processed == false) : (flucase.Processed == false))
+                                                    || ((user.Institution.CountryID == 15) ? (flucase.Processed_National == false && flucase.Processed == false) : (user.Institution.CountryID == 17) ? (flucase.NPHL_Processed == false) : (flucase.Processed == false))
                                                     // Para Jamaica si el NPHL no proceso la muestra
                                                     //|| ((user.Institution.CountryID == 17 && user.Institution.CountryID != 15) ? (flucase.NPHL_Processed == false) : (flucase.Processed == false))
                                                     //|| (flucase.Processed == false)
@@ -635,7 +635,7 @@ namespace Paho.Controllers
                                                     // si la muestra no fue tomada
                                                     || (flucase.IsSample == false)
                                                     // Para honduras si el laboratorio regional no proceso la muestra y Para Jamaica si el NPHL no proceso la muestra
-                                                    || ((user.Institution.CountryID == 15) ? ( flucase.Processed_National == false) : (user.Institution.CountryID == 17 && user.Institution.CountryID != 15) ? (flucase.NPHL_Processed == false) : (flucase.Processed == false))
+                                                    || ((user.Institution.CountryID == 15) ? ( flucase.Processed_National == false && flucase.Processed == false) : (user.Institution.CountryID == 17 && user.Institution.CountryID != 15) ? (flucase.NPHL_Processed == false) : (flucase.Processed == false))
                                                     // 
                                                     || (flucase.Processed2 == false)
                                                     // La segunda y tercera muestra tampoco fueron tomadas
@@ -689,7 +689,7 @@ namespace Paho.Controllers
                                          x.LN_D,
                                          x.FN_D,
                                          x.NE_D ?? "",
-                                         "<img src='/Content/themes/base/images/PDF.png' alt='print'/>",
+                                         "<img src='/Content/themes/base/images/PDF.png' alt='print'/>" + " - " + x.ready_close + " - " + x.ready_close2,
                                          x.VR_IF_D == null ? "" :  x.VR_IF_D.TestResultID == null ? "": x.VR_IF_D.TestResultID.ToString() == "P" ? x.VR_IF_D.CatVirusType == null ? "" : (user.Institution.Country.Language == "SPA" ? x.VR_IF_D.CatVirusType.SPA : x.VR_IF_D.CatVirusType.ENG) :  x.VR_IF_D.TestResultID == null  ? ""  : user.Institution.Country.Language == "SPA" ? db.CatTestResult.Where(j=> j.value == x.VR_IF_D.TestResultID.ToString()).FirstOrDefault().description : db.CatTestResult.Where(j=> j.value == x.VR_IF_D.TestResultID.ToString()).FirstOrDefault().ENG ,
                                          x.VR_PCR_D == null ? "" : x.VR_PCR_D.TestResultID == null ? "": x.VR_PCR_D.TestResultID.ToString() == "P" ?  x.VR_PCR_D.CatVirusType == null ? "" : x.VR_PCR_D.CatVirusType.SPA.Contains("Influenza A") == true ? x.VR_PCR_D.CatVirusSubType == null ? "" : (user.Institution.Country.Language == "SPA" ?  x.VR_PCR_D.CatVirusSubType.SPA : x.VR_PCR_D.CatVirusSubType.ENG ): (user.Institution.Country.Language == "SPA" ? x.VR_PCR_D.CatVirusType.SPA : x.VR_PCR_D.CatVirusType.ENG) :  x.VR_PCR_D.TestResultID == null ? "" : user.Institution.Country.Language == "SPA" ? db.CatTestResult.Where(j=> j.value == x.VR_PCR_D.TestResultID.ToString()).FirstOrDefault().description : db.CatTestResult.Where(j=> j.value == x.VR_PCR_D.TestResultID.ToString()).FirstOrDefault().ENG,
                                          x.IS_D == false ? getMsg("msgFlucasesMessageNoSample") : x.FR_ID == "P" ? x.FR_D_C == null ? "" : (user.Institution.Country.Language == "SPA" ? x.FR_D_C.SPA : x.FR_D_C.ENG) : (x.P_D == false) ? getMsg("msgFlucasesMessageNotProcessed") : x.FR_ID == "N" ? getMsg("msgFlucasesMessageNegative") : x.FR_ID == "I" ? getMsg("msgFlucasesMessageIndeterminated") : (x.P_D_N == false) ? getMsg("msgFlucasesMessageNotProcessed") : (x.P_D_NPHL == false) ? getMsg("msgFlucasesMessageNotProcessed") : ""  ,
@@ -2308,6 +2308,11 @@ namespace Paho.Controllers
                             canConclude_Sample_2 = true;
                             canConclude_Sample_3 = true;
                         }
+
+                        if ((flucase.Processed == false && flucase.Processed_National == true) || (flucase.Processed == true && flucase.Processed_National == false)  )
+                        {
+                            canConclude = true;
+                        }
                     }
                     if (user_cty == 17)
                     {
@@ -2935,6 +2940,8 @@ namespace Paho.Controllers
 
                     if (labTestViewModel.LabID == user.InstitutionID)
                         existrecordlabtest = true;
+                    if (user.Institution.CountryID == 15 && flucase.Processed == false && user.Institution.LabNIC != true)
+                        existrecordlabtest = true;
                     if (labTestViewModel.TestType == 1) IFI_RecordHistory = true;
                     if (labTestViewModel.TestType == 2) PCR_RecordHistory = true;
                     // Campos para controlar el flujo de la muestra
@@ -3001,9 +3008,9 @@ namespace Paho.Controllers
             } else if (((flucase.SampleDate == null && flucase.Processed == null) ||  flucase.Processed == false) &&
                        ((flucase.SampleDate2 == null && flucase.Processed2 == null) || flucase.Processed2 == false) &&
                        ((flucase.SampleDate3 == null && flucase.Processed3 == null) || flucase.Processed3 == false))
-            {
-                existrecordlabtest = true;
-            }
+                        {
+                            existrecordlabtest = true;
+                        }
 
             //var Sample_1_process = LabTests.OrderBy(z => z.TestDate).ThenBy(y => y.LabID).Where(x => x.SampleNumber == 1);
             var flow_max_record = db.InstitutionsConfiguration.Where(z => z.InstitutionParentID == flucase.HospitalID).OrderByDescending(x => x.Priority).FirstOrDefault().Priority;
@@ -3025,7 +3032,7 @@ namespace Paho.Controllers
             var count = 0;
             foreach (CaseLabTest Sample_test in Sample_1_process)
             {
-                preview_flow_sample_1 = (any_lab_nphl_in_flow == true && count < 1) ? actual_flow_Sample_1 + 1 : actual_flow_Sample_1 ;
+                preview_flow_sample_1 = (any_lab_nphl_in_flow == true && count < 1) ? actual_flow_Sample_1 + 1 :  (user.Institution.CountryID == 15 && flucase.Processed == false) ? actual_flow_Sample_1 + 1 :  actual_flow_Sample_1 ;
                 actual_flow_Sample_1 = (Int32)Sample_test.flow_test;
 
                 if ((actual_flow_Sample_1 - preview_flow_sample_1) == 1 || (actual_flow_Sample_1 - preview_flow_sample_1) == 0)
@@ -3211,7 +3218,15 @@ namespace Paho.Controllers
                     }
                     else if (flow_complete_Sample_1 == true && flow_complete_Sample_2 == true && flow_complete_Sample_3 == true)
                     {
-                        flucase.flow = flow_temp;
+                        if (user.Institution.CountryID == 15)
+                        {
+
+                            flucase.flow = flow_temp + ((Processed_National == false) ?  1: (flow_temp < flow_max_record) ? flow_max_record - flow_temp : 0);
+                        }else
+                        {
+                            flucase.flow = flow_temp;
+                        }
+                        
                     }
                     else if (flow_complete_Sample_1 == true && flow_complete_Sample_2 == false && flow_complete_Sample_3 == true)
                     {
