@@ -624,12 +624,15 @@ namespace Paho.Controllers
                                                      // si la muestra no fue tomada
                                                     || (flucase.IsSample == false)
                                                     // Para honduras si el laboratorio regional no proceso la muestra
-                                                    || ((user.Institution.CountryID == 15) ? (flucase.Processed_National == false && flucase.Processed == false) : (user.Institution.CountryID == 17) ? (flucase.NPHL_Processed == false) : (flucase.Processed == false))
+                                                    || ((user.Institution.CountryID == 15) ? (flucase.Processed_National == false && flucase.Processed == false) : false)
+                                                    || ((user.Institution.CountryID == 17) ? (flucase.NPHL_Processed == false) : false)
+                                                    || ((user.Institution.CountryID != 15) && (user.Institution.CountryID != 17) && flucase.Processed == false)
                                                     // Para Jamaica si el NPHL no proceso la muestra
                                                     //|| ((user.Institution.CountryID == 17 && user.Institution.CountryID != 15) ? (flucase.NPHL_Processed == false) : (flucase.Processed == false))
                                                     //|| (flucase.Processed == false)
                                                     // La segunda y tercera muestra tampoco fueron tomadas
-                                                    || (flucase.Processed2 == false) || (flucase.Processed3 == false)) ? 1 : 0,
+                                                    || (flucase.Processed2 == false) 
+                                                    || (flucase.Processed3 == false)) ? 1 : 0,
                                      ready_close2 = ( // revisar si ya existe un resultado con el flujo
                                                     (flucase.flow == db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID).OrderByDescending(x => x.Priority).FirstOrDefault().Priority && flucase.statement == 2)
                                                     // si la muestra no fue tomada
@@ -689,7 +692,7 @@ namespace Paho.Controllers
                                          x.LN_D,
                                          x.FN_D,
                                          x.NE_D ?? "",
-                                         "<img src='/Content/themes/base/images/PDF.png' alt='print'/>" + " - " + x.ready_close + " - " + x.ready_close2,
+                                         "<img src='/Content/themes/base/images/PDF.png' alt='print'/>",
                                          x.VR_IF_D == null ? "" :  x.VR_IF_D.TestResultID == null ? "": x.VR_IF_D.TestResultID.ToString() == "P" ? x.VR_IF_D.CatVirusType == null ? "" : (user.Institution.Country.Language == "SPA" ? x.VR_IF_D.CatVirusType.SPA : x.VR_IF_D.CatVirusType.ENG) :  x.VR_IF_D.TestResultID == null  ? ""  : user.Institution.Country.Language == "SPA" ? db.CatTestResult.Where(j=> j.value == x.VR_IF_D.TestResultID.ToString()).FirstOrDefault().description : db.CatTestResult.Where(j=> j.value == x.VR_IF_D.TestResultID.ToString()).FirstOrDefault().ENG ,
                                          x.VR_PCR_D == null ? "" : x.VR_PCR_D.TestResultID == null ? "": x.VR_PCR_D.TestResultID.ToString() == "P" ?  x.VR_PCR_D.CatVirusType == null ? "" : x.VR_PCR_D.CatVirusType.SPA.Contains("Influenza A") == true ? x.VR_PCR_D.CatVirusSubType == null ? "" : (user.Institution.Country.Language == "SPA" ?  x.VR_PCR_D.CatVirusSubType.SPA : x.VR_PCR_D.CatVirusSubType.ENG ): (user.Institution.Country.Language == "SPA" ? x.VR_PCR_D.CatVirusType.SPA : x.VR_PCR_D.CatVirusType.ENG) :  x.VR_PCR_D.TestResultID == null ? "" : user.Institution.Country.Language == "SPA" ? db.CatTestResult.Where(j=> j.value == x.VR_PCR_D.TestResultID.ToString()).FirstOrDefault().description : db.CatTestResult.Where(j=> j.value == x.VR_PCR_D.TestResultID.ToString()).FirstOrDefault().ENG,
                                          x.IS_D == false ? getMsg("msgFlucasesMessageNoSample") : x.FR_ID == "P" ? x.FR_D_C == null ? "" : (user.Institution.Country.Language == "SPA" ? x.FR_D_C.SPA : x.FR_D_C.ENG) : (x.P_D == false) ? getMsg("msgFlucasesMessageNotProcessed") : x.FR_ID == "N" ? getMsg("msgFlucasesMessageNegative") : x.FR_ID == "I" ? getMsg("msgFlucasesMessageIndeterminated") : (x.P_D_N == false) ? getMsg("msgFlucasesMessageNotProcessed") : (x.P_D_NPHL == false) ? getMsg("msgFlucasesMessageNotProcessed") : ""  ,
@@ -3220,8 +3223,15 @@ namespace Paho.Controllers
                     {
                         if (user.Institution.CountryID == 15)
                         {
+                            if (Processed == false && Processed_National == null && LabTests == null)
+                            {
+                                flucase.flow = flow_temp ;
+                            } else
+                            {
+                                flucase.flow = flow_temp + ((Processed_National == false) ? 1 : (flow_temp < flow_max_record && Processed_National == true) ? flow_max_record - flow_temp : 0);
+                            }
 
-                            flucase.flow = flow_temp + ((Processed_National == false) ?  1: (flow_temp < flow_max_record) ? flow_max_record - flow_temp : 0);
+                            
                         }else
                         {
                             flucase.flow = flow_temp;
