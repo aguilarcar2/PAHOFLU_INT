@@ -538,7 +538,15 @@ namespace Paho.Controllers
                             flucases = flucases.Where(d => d.IsSample == true && ((d.SampleDate != null && d.NPHL_Processed != false) || (d.SampleDate2 != null && d.NPHL_Processed_2 != false)));
                         }
 
-                        flucases = flucases.Where(h => (h.IsSample == true && h.Processed != false) && (((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault() - 1)) && (h.statement == 2 || h.statement == null)) || ((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault())) && (h.statement == 1 || h.statement == null))));
+                        if (user.Institution.CountryID == 15)
+                        {
+                            flucases = flucases.Where(h => (h.IsSample == true && (h.Processed != false || h.Processed_National != false)) && (((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault() - 1)) && (h.statement == 2 || h.statement == null)) || ((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault())) && (h.statement == 1 || h.statement == null))));
+                        }
+                        else
+                        {
+                            flucases = flucases.Where(h => (h.IsSample == true && h.Processed != false) && (((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault() - 1)) && (h.statement == 2 || h.statement == null)) || ((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault())) && (h.statement == 1 || h.statement == null))));
+                        }
+
 
                         //Es la escepción únicamente para AZP  -- tengo que mejorar el query para hacerlo automatico
                         if (user.Institution.CountryID != 25)
@@ -3008,12 +3016,24 @@ namespace Paho.Controllers
                         }
                     );
                 }
-            } else if (((flucase.SampleDate == null && flucase.Processed == null) ||  flucase.Processed == false) &&
+            } else if (user.Institution.CountryID != 15)
+            {
+                if (((flucase.SampleDate == null && flucase.Processed == null) || flucase.Processed == false) &&
                        ((flucase.SampleDate2 == null && flucase.Processed2 == null) || flucase.Processed2 == false) &&
                        ((flucase.SampleDate3 == null && flucase.Processed3 == null) || flucase.Processed3 == false))
-                        {
-                            existrecordlabtest = true;
-                        }
+                {
+                    existrecordlabtest = true;
+                }
+            }
+              else if (user.Institution.CountryID == 15)
+            {
+                if (((flucase.SampleDate == null && flucase.Processed == null && flucase.Processed_National == null) || (flucase.Processed == false && (flucase.Processed_National == false || flucase.Processed_National == null))) &&
+                       ((flucase.SampleDate2 == null && flucase.Processed2 == null) || flucase.Processed2 == false) &&
+                       ((flucase.SampleDate3 == null && flucase.Processed3 == null) || flucase.Processed3 == false))
+                {
+                    existrecordlabtest = true;
+                }
+            }
 
             //var Sample_1_process = LabTests.OrderBy(z => z.TestDate).ThenBy(y => y.LabID).Where(x => x.SampleNumber == 1);
             var flow_max_record = db.InstitutionsConfiguration.Where(z => z.InstitutionParentID == flucase.HospitalID).OrderByDescending(x => x.Priority).FirstOrDefault().Priority;
@@ -3228,7 +3248,7 @@ namespace Paho.Controllers
                                 flucase.flow = flow_temp ;
                             } else
                             {
-                                flucase.flow = flow_temp + ((Processed_National == false) ? 1 : (flow_temp < flow_max_record && Processed_National == true) ? flow_max_record - flow_temp : 0);
+                                flucase.flow = flow_temp + ((Processed_National == false  && flow_temp < 2) ? 1 : (flow_temp < flow_max_record && Processed_National == true) ? flow_max_record - flow_temp : 0);
                             }
 
                             

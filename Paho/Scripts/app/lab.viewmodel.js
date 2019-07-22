@@ -272,7 +272,7 @@
 
     }, self);
     self.EnableCTLineage = ko.computed(function () {
-        if ((self.VirusLineageID() == 2 || self.VirusLineageID() == 3) && self.TestType() == 2 && self.UsrCountry() == 7) {
+        if ((self.VirusLineageID() != 1) && self.TestType() == 2 && self.UsrCountry() == 7) {
 
             return true;
         }
