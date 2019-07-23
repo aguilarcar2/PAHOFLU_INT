@@ -2953,6 +2953,8 @@ namespace Paho.Controllers
                         existrecordlabtest = true;
                     if (user.Institution.CountryID == 15 && flucase.Processed == false && user.Institution.LabNIC != true)
                         existrecordlabtest = true;
+                    if (user.Institution.CountryID == 15 && flucase.Processed_National == false && user.Institution.LabNIC == true)
+                        existrecordlabtest = true;
                     if (labTestViewModel.TestType == 1) IFI_RecordHistory = true;
                     if (labTestViewModel.TestType == 2) PCR_RecordHistory = true;
                     // Campos para controlar el flujo de la muestra

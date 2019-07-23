@@ -498,11 +498,12 @@
                 }
             }
 
-            console.log("IsSample True");
-            console.log("IsSample SurvILI" + app.Views.Contact.SurvILI());
-            console.log("IsSample True");
+            //console.log("IsSample True");
+            //console.log("IsSample SurvILI" + app.Views.Contact.SurvILI());
+            //console.log("IsSample True");
 
             if (app.Views.Contact.SurvILI() == true && app.Views.Lab.FinalResult() && app.Views.Lab.CanConclude() == true) {
+                console.log(" ILI tab case");
                 //$("#CaseStatus").attr("disabled", false);
                 $("a[href*='tab-case']").show();
                 $("#tab-case").show();

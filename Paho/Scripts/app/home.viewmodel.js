@@ -625,8 +625,17 @@
             $("#tabs").tabs("refresh");
         }
         else if ($("#ITy").val() == "1"
-                && ((app.Views.Hospital.IsSample() === "true" && app.Views.Lab.Processed() === "false")
+                && ((app.Views.Hospital.IsSample() === "true" && app.Views.Lab.Processed() === "false" && self.UsrCountry() != 15)
                     || (app.Views.Lab.NPHL() == true && app.Views.Hospital.IsSample() === "true" && app.Views.Lab.NPHL_Processed() === "false"))) {
+            //console.log("aqui _  Flow status no processed"); //
+            $("a[href*='tab-case']").show();
+            $("#tab-case").show();
+            $("#CaseStatus").attr("disabled", false);
+            $("#tabs").tabs("refresh");
+            $('a[href="#tab-hospital"]').click();
+        }
+        else if ($("#ITy").val() == "1"
+            && ((app.Views.Hospital.IsSample() === "true" && app.Views.Lab.Processed() === "false" && app.Views.Lab.Processed_National() === "false" && self.UsrCountry() == 15))) {
             //console.log("aqui _  Flow status no processed"); //
             $("a[href*='tab-case']").show();
             $("#tab-case").show();
@@ -639,7 +648,7 @@
             $("#tab-lab :input").prop('disabled', true);
             self.FlowDataHospital();
         } else if (app.Views.Contact.SurvILI() == true && app.Views.Hospital.IsSample() === "true" && app.Views.Lab.CanConclude() == false) {
-            //console.log("aqui _ ILI CanConclude false 3"); //
+            console.log("aqui _ ILI CanConclude false 3"); //
             $("a[href*='tab-case']").hide();
             $("#tab-case").hide();
             $("#CaseStatus").attr("disabled", false);
@@ -672,6 +681,7 @@
             }
 
             if (app.Views.Contact.SurvILI() == true) {
+                console.log("ILI true  ")
                 $("a[href*='tab-case']").show();
                 $("#tab-case").show();
                 $("#CaseStatus").attr("disabled", false);
