@@ -3318,7 +3318,7 @@ namespace Paho.Controllers
             var tests = flucase.CaseLabTests.ToList();
             if (tests.Count <= 0)
             {
-                if (Processed == false)
+                if (Processed == false || Processed_National == false)
                 {
                     HistoryRecord(flucase.ID, 4, flucase.flow, 6);
                     HistoryRecord(flucase.ID, 4, flucase.flow, 11);
