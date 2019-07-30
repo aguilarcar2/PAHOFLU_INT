@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 
@@ -79,5 +81,27 @@ namespace Paho.Utility
             return nSema;
         }
 
+        public static int getNumberAgeGroupCountry(int CountryID)
+        {
+            int nCaAG = 0;
+            //****
+            string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            using (var con = new SqlConnection(connString))
+            {
+                using (var command = new SqlCommand("SELECT COUNT(*) FROM CatAgeGroup WHERE id_country = " + CountryID.ToString(), con))
+                {
+                    con.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            nCaAG = (int)reader.GetValue(0);
+                        }
+                    }
+                }
+            }
+            //****
+            return nCaAG;
+        }
     }
 }

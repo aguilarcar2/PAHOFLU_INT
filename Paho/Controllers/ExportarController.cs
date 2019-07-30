@@ -394,11 +394,12 @@ namespace Paho.Controllers
                         bool insertRow = true;
 
                         //#### CAFQ: 180204
-                        //bool bVariosAnios = false;
-                        //if (YearFrom != null && YearTo != null)
-                        //{
-                        //    bVariosAnios = (YearFrom != YearTo) ? true : false;
-                        //}
+                        bool bVariosAnios = false;
+                        if (YearFrom != null && YearTo != null)
+                        {
+                            if (YearTo > DateTime.Now.Year) YearTo = DateTime.Now.Year;
+                            bVariosAnios = (YearFrom != YearTo) ? true : false;
+                        }
                         //#### 
 
                         if (reportTemplate == "R1" || reportTemplate == "R2" || reportTemplate == "R3" || reportTemplate == "R4" || reportTemplate == "D1" || reportTemplate == "B1" || reportTemplate == "CPE" || reportTemplate == "C1")
@@ -419,6 +420,11 @@ namespace Paho.Controllers
                         else if (reportTemplate == "CPV")
                             AppendDataToExcel_CasosPositivosConVacuna(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook,
                                 reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, AreaID_, Sentinel);        //#### CAFQ
+                        else if (reportTemplate.ToUpper() == "R6" && bVariosAnios)
+                        {
+                            AppendDataToExcel_R6_SeveralYears(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook,
+                                reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, AreaID_, Sentinel);        //#### CAFQ
+                        }
                         else if (reportTemplate.ToUpper() == "R4")
                         {
                             var contador = 0;
@@ -1051,6 +1057,83 @@ namespace Paho.Controllers
             catAxNode.AppendChild(noMultiLvlLblNode);
         }
 
+        static private void EnableMultilevelAxisLabels(ExcelChart myChartCC, string typeGraph)
+        {
+            var chartXml = myChartCC.ChartXml;
+            var nsm = new XmlNamespaceManager(chartXml.NameTable);
+
+            var nsuri = chartXml.DocumentElement.NamespaceURI;
+            nsm.AddNamespace("c", nsuri);
+
+            //Get the Series ref and its cat
+            XmlNode serNode = null;
+            if (typeGraph == "Line")
+            {
+                serNode = chartXml.SelectSingleNode("c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser", nsm);
+            }
+            else if (typeGraph == "ColumnStacked" || typeGraph == "ColumnStacked100" || typeGraph == "ColumnClustered" || typeGraph == "BarStacked") //  
+            {
+                serNode = chartXml.SelectSingleNode("c:chartSpace/c:chart/c:plotArea/c:barChart/c:ser", nsm);
+            }
+            else
+            {
+                //serNode = chartXml.SelectSingleNode("c:chartSpace/c:chart/c:plotArea/c:barChart/c:ser", nsm);
+            }
+            var catNode = serNode.SelectSingleNode("c:cat", nsm);
+
+            //Get Y axis reference to replace with multi level node
+            var numRefNode = catNode.SelectSingleNode("c:numRef", nsm);
+            var multiLvlStrRefNode = chartXml.CreateNode(XmlNodeType.Element, "c:multiLvlStrRef", nsuri);
+
+            //Set the multi level flag
+            var noMultiLvlLblNode = chartXml.CreateElement("c:noMultiLvlLbl", nsuri);
+            var att = chartXml.CreateAttribute("val");
+            att.Value = "0";
+            noMultiLvlLblNode.Attributes.Append(att);
+
+            var catAxNode = chartXml.SelectSingleNode("c:chartSpace/c:chart/c:plotArea/c:catAx", nsm);
+            catAxNode.AppendChild(noMultiLvlLblNode);
+        }
+
+        static private void SetChartPointsColor(ExcelChart chart, int serieNumber, Color color, int typeChart)
+        {
+            var chartXml = chart.ChartXml;
+
+            var nsa = chart.WorkSheet.Drawings.NameSpaceManager.LookupNamespace("a");
+            var nsuri = chartXml.DocumentElement.NamespaceURI;
+
+            var nsm = new XmlNamespaceManager(chartXml.NameTable);
+            nsm.AddNamespace("a", nsa);
+            nsm.AddNamespace("c", nsuri);
+
+            XmlNode serieNode = null;
+            if (typeChart == (int)eChartType.Line)
+            {
+                serieNode = chart.ChartXml.SelectSingleNode(@"c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser[c:idx[@val='" + serieNumber + "']]", nsm);
+            }
+            else
+            {
+                serieNode = chart.ChartXml.SelectSingleNode(@"c:chartSpace/c:chart/c:plotArea/c:barChart/c:ser[c:idx[@val='" + serieNumber + "']]", nsm);
+            }
+            //var serieNode = chart.ChartXml.SelectSingleNode(@"c:chartSpace/c:chart/c:plotArea/c:barChart/c:ser[c:idx[@val='" + serieNumber + "']]", nsm);
+            var serie = chart.Series[serieNumber];
+            var points = serie.Series.Length;
+
+            //Add reference to the color for the legend and data points
+            var srgbClr = chartXml.CreateNode(XmlNodeType.Element, "srgbClr", nsa);
+            var att = chartXml.CreateAttribute("val");
+            att.Value = $"{color.R:X2}{color.G:X2}{color.B:X2}";
+            srgbClr.Attributes.Append(att);
+
+            var solidFill = chartXml.CreateNode(XmlNodeType.Element, "solidFill", nsa);
+            solidFill.AppendChild(srgbClr);
+
+            var spPr = chartXml.CreateNode(XmlNodeType.Element, "spPr", nsuri);
+            spPr.AppendChild(solidFill);
+
+            serieNode.AppendChild(spPr);
+        }
+
         private static void AppendDataToExcel_R2_SeveralYears(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId)               //#### CAFQ
         {
             int _YearFrom, _YearTo;
@@ -1330,7 +1413,7 @@ namespace Paho.Controllers
 
                 //**** Habilitando Multi-Level Category Labels
                 if (nAnios > 1)
-                    EnableMultilevelAxisLabels(myChartCC);
+                    EnableMultilevelAxisLabels(myChartCC, "ColumnStacked");
             }
             else if (storedProcedure == "R1")       // Número de casos y % de hospitalizaciones por IRAG
             {
@@ -1399,7 +1482,7 @@ namespace Paho.Controllers
 
                 //**** Habilitando Multi-Level Category Labels
                 if (nAnios > 1)
-                    EnableMultilevelAxisLabels(myChartCC);
+                    EnableMultilevelAxisLabels(myChartCC, "ColumnClustered");
             }
 
             //**** inserción de labels y logo en el Excel
@@ -1411,6 +1494,814 @@ namespace Paho.Controllers
                 //inserción de logo
                 InsertarLogoExcel(consString, excelWorksheet, ReportCountry);
             }
+        }
+
+        private static void AppendDataToExcel_R6_SeveralYears(string languaje_, int countryId, int? regionId, int? year,
+            int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook,
+            string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry,
+            int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId, int? Sentinel = null)               //#### CAFQ
+        {
+            string cTemp = "";
+            int _YearFrom, _YearTo;
+            _YearFrom = YearFrom.Value;
+            _YearTo = YearTo.Value;
+
+            //startRow = 9;           // Deberia salir desde REPORTCOUNTRY (mal seteado???)
+            //startColumn = 6;        // Deberia salir desde REPORTCOUNTRY (mal seteado???)
+
+            ExcelWorksheet wsPara = excelWorkBook.Worksheets["Parameters"];
+            ExcelWorksheet excelWorksheet = excelWorkBook.Worksheets[sheet];
+            int nI = 0;
+            int nAnios = _YearTo - _YearFrom + 1;
+            List<int> weekByYear = new List<int>();                 // Semanas por anio
+
+            //**** Preparando plantillas
+            int _startColumn = startColumn;
+            int row = startRow;
+            int col = _startColumn;
+            int nGrEd = PAHOClassUtilities.getNumberAgeGroupCountry(countryId);
+
+            //---- Tabla 1
+            for (nI = 1; nI <= nAnios; ++nI)
+            {
+                int nAnio = _YearFrom + (nI - 1);
+                //**** Semanas x anio
+                weekByYear.Add(PAHOClassUtilities.semanasAnioEpidemiologico(nAnio));
+
+                //**** Campos data para el anio nI
+                col = _startColumn + (nI - 1) * 54;
+                if (nI > 1)
+                {
+                    excelWorksheet.Cells[startRow - 3, _startColumn, startRow + 27 * (nGrEd + 1) - 2, _startColumn + 54 - 1].Copy(excelWorksheet.Cells[startRow - 3, col]);
+                }
+                excelWorksheet.Cells[startRow - 4, col].Value = nAnio;
+            }
+            //---- Tabla 2
+            row = (startRow - 1) + (3 * 3 * 3 * (nGrEd + 1)) - 1;           // Ultima fila tabla 1
+            int rowIT2 = row + 11 + 1;                                      // Tabla 2: fila inicio 
+            int rowFT2 = rowIT2 + (((3 * 4 * nGrEd) + 3) * 14) - 1;
+
+            for (nI = 1; nI <= nAnios; ++nI)
+            {
+                int nAnio = _YearFrom + (nI - 1);
+
+                //**** Campos data para el anio nI
+                col = _startColumn + (nI - 1) * 57;
+                if (nI > 1)
+                {
+                    excelWorksheet.Cells[rowIT2 - 3, _startColumn, rowFT2 + 4, _startColumn + 57 - 1].Copy(excelWorksheet.Cells[rowIT2 - 3, col]);
+                }
+                excelWorksheet.Cells[rowIT2 - 3, col].Value = nAnio;
+            }
+
+            //---- Antecedentes
+            cTemp = (string)wsPara.Cells[79, 2].Value;
+            row = Convert.ToInt32(wsPara.Cells[79, 3].Value);
+            col = Convert.ToInt32(wsPara.Cells[79, 4].Value);
+            ExcelWorksheet wsTemp = excelWorkBook.Worksheets[cTemp];
+            int widthYear_AN = 2 * 3 * 3;
+
+            for (nI = 1; nI <= nAnios; ++nI)
+            {
+                int nAnio = _YearFrom + (nI - 1);
+
+                //**** Campos data para el anio nI
+                int colD = col + (nI - 1) * widthYear_AN;
+                if (nI > 1)
+                {
+                    wsTemp.Cells[row - 5, col, row + 41, col + widthYear_AN - 1].Copy(wsTemp.Cells[row - 5, colD]);
+                    for (int nW = 1; nW <= widthYear_AN; nW++)
+                        wsTemp.Column(colD + (nW - 1)).Width = 6;
+                }
+                wsTemp.Cells[row - 5, colD].Value = nAnio;
+            }
+
+
+            //---- Hoja: T1 % hosp. UCI fall.
+            cTemp = (string)wsPara.Cells[73, 2].Value;
+            row = Convert.ToInt32(wsPara.Cells[73, 3].Value);
+            col = Convert.ToInt32(wsPara.Cells[73, 4].Value);
+            wsTemp = excelWorkBook.Worksheets[cTemp];
+            int colW = 3;
+            int srTA = (startRow - 1) + (27 * nGrEd);
+            int widthYear_TA = 54;
+            int heightYear_WK = 53;
+            int nCoWiCopy = colW;
+
+            R6_ActualizarFormulaCeldasTablas(excelWorksheet, wsPara, wsTemp, nAnios, colW, row, col, srTA, startColumn, 6, 9, startRow - 3, widthYear_TA, heightYear_WK, nCoWiCopy, true);
+
+            //---- T2 SE grav. edad
+            cTemp = (string)wsPara.Cells[74, 2].Value;
+            row = Convert.ToInt32(wsPara.Cells[74, 3].Value);
+            col = Convert.ToInt32(wsPara.Cells[74, 4].Value);
+            wsTemp = excelWorkBook.Worksheets[cTemp];
+            colW = nGrEd * 3;
+            srTA = (startRow - 1);
+            widthYear_TA = 54;
+            heightYear_WK = 53;
+            nCoWiCopy = colW;
+
+            R6_ActualizarFormulaCeldasTablas(excelWorksheet, wsPara, wsTemp, nAnios, colW, row, col, srTA, startColumn, 6, 9, startRow - 3, widthYear_TA, heightYear_WK, nCoWiCopy, true);
+
+            //---- T4 v.influ SE
+            cTemp = (string)wsPara.Cells[76, 2].Value;
+            row = Convert.ToInt32(wsPara.Cells[76, 3].Value);
+            col = Convert.ToInt32(wsPara.Cells[76, 4].Value);
+            wsTemp = excelWorkBook.Worksheets[cTemp];                                   // Worksheet de trabajo (WK)
+            colW = 6;                                                                   // Columnas de datos en WK
+            srTA = (startRow - 1) + (27 * (nGrEd + 1)) + 11;                            // nGrEd = 6 => 208 (Influenza A(H1N1)pdm09) en TA
+            widthYear_TA = 57;
+            int height2_TA = 3 * 4 * nGrEd + 3;
+            heightYear_WK = 54;                         // EW + Total   
+            nCoWiCopy = colW + 3;
+
+            R6_ActualizarFormulaCeldasTablas(excelWorksheet, wsPara, wsTemp, nAnios, colW, row, col, srTA, startColumn, 0, height2_TA, srTA - 2, widthYear_TA, heightYear_WK, nCoWiCopy, true);
+
+            col = col + 6;                              // Columna Num. Muestras analizadas en WK
+            colW = 1;
+            srTA = (startRow - 1) + (27 * (nGrEd + 1)) + 11 + (height2_TA * 11);        // nGrEd = 6 => 1033 (# Muestras analizadas)
+            R6_ActualizarFormulaCeldasTablas(excelWorksheet, wsPara, wsTemp, nAnios, colW, row, col, srTA, startColumn, 0, height2_TA, srTA - 2, widthYear_TA, heightYear_WK, nCoWiCopy, false);
+
+            //---- T5 VR SE
+            cTemp = (string)wsPara.Cells[77, 2].Value;
+            row = Convert.ToInt32(wsPara.Cells[77, 3].Value);
+            col = Convert.ToInt32(wsPara.Cells[77, 4].Value);
+            wsTemp = excelWorkBook.Worksheets[cTemp];
+            colW = 13;
+            srTA = (startRow - 1) + (27 * (nGrEd + 1)) + 11;
+            widthYear_TA = 57;
+            height2_TA = 3 * 4 * nGrEd + 3;
+            heightYear_WK = 54;         // EW + Total   
+            nCoWiCopy = colW + 2;
+
+            R6_ActualizarFormulaCeldasTablas(excelWorksheet, wsPara, wsTemp, nAnios, colW, row, col, srTA, startColumn, 0, height2_TA, srTA - 2, widthYear_TA, heightYear_WK, nCoWiCopy, true);
+
+            //**** Recuperando data desde SQL Server
+            int starRowAntec = 11;
+            int starColAntec = 2;
+            int colT2 = 0;
+
+            for (nI = 1; nI <= nAnios; ++nI)
+            {
+                int nAnio = _YearFrom + (nI - 1);
+                col = _startColumn + (nI - 1) * 54;
+                colT2 = _startColumn + (nI - 1) * 57;               // Se enviara a traves del parametro CasosNPHL
+                int colAntec = starColAntec + (nI - 1) * 18;
+
+                AppendDataToExcel(languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, excelWorkBook,
+                    storedProcedure, startRow, col, sheet, insert_row, ReportCountry, nAnio, nAnio, Surv, SurvInusual,
+                    AreaId, colT2.ToString(), Sentinel, starRowAntec, colAntec);
+            }
+
+            //############################# Grafico hoja: "G1 %IRAG"
+            Dictionary<string, decimal> aPara = new Dictionary<string, decimal>();
+            ExcelWorksheet wsHoG1 = excelWorkBook.Worksheets["G1 %IRAG"];
+
+            //---- Elimando los graficos de plantilla
+            for (int nX = wsHoG1.Drawings.Count - 1; nX >= 0; nX--)
+            {
+                wsHoG1.Drawings.Remove(nX);
+            }
+
+            //---- Grafico Resumen (todos los AG)
+            int _startRow = startRow - 1;
+
+            aPara.Add("ChartTitleSize", 11);
+            aPara.Add("AxisTitleYSize", 11);
+            aPara.Add("AxisTitleXSize", 11);
+            aPara.Add("AxisYSize", 10);
+            aPara.Add("AxisXSize", 10);
+            aPara.Add("LegendSize", 11);
+            int width0 = 900;
+            int hight0 = 520;
+            int row0 = 4;
+            int col0 = 0;
+
+            string enPersona = "";
+            int rowWeek_T1 = _startRow - 2;
+            row = _startRow + nGrEd * 27;
+            R6_GraficoPorcentajeIRAG_Line(excelWorksheet, wsPara, wsHoG1, row, rowWeek_T1, nAnios, _startColumn, weekByYear,
+                "G1_0", width0, hight0, row0, col0, aPara, enPersona);
+
+            //---- Grafico por cada AgeGroup
+            aPara["ChartTitleSize"] = 10;
+            aPara["AxisTitleYSize"] = 12;
+            aPara["AxisTitleXSize"] = 12;
+            aPara["AxisYSize"] = 9;
+            aPara["AxisXSize"] = 9;
+            aPara["LegendSize"] = (decimal)8.5;
+            row0 = 14;
+
+            for (nI = 1; nI <= nGrEd; nI++)
+            {
+                row = _startRow + (nI - 1) * 27;                // Fila inicio del enesimo AgeGroup
+                width0 = 450;
+                hight0 = 400;
+
+                if (nI % 2 == 0)
+                {
+                    col0 = 8;
+                }
+                else
+                {
+                    col0 = 0;
+                    row0 = row0 + 25;
+                }
+
+                enPersona = (string)wsPara.Cells[61, 2].Value;
+                if (nI == 1)
+                {
+                    if (enPersona.Substring(enPersona.Length - 2) == "de")   // RIGHT
+                    {
+                        enPersona = enPersona.Substring(0, enPersona.Length - 3);
+                    }
+                }
+
+                R6_GraficoPorcentajeIRAG_Line(excelWorksheet, wsPara, wsHoG1, row, rowWeek_T1, nAnios, _startColumn, weekByYear,
+                    "G1_" + nI.ToString(), width0, hight0, row0, col0, aPara, enPersona);
+            }
+
+            //############################# Grafico hoja: "G2 Influenza"
+            ExcelWorksheet wsHoG2 = excelWorkBook.Worksheets["G2 Influenza"];
+            R6_GraficoVirus_ColumnStacked(excelWorksheet, wsPara, wsHoG2, rowIT2, rowFT2, nGrEd, nAnios, _startColumn, weekByYear, "G2_0");
+
+            //############################# Grafico hoja: "G3 Todos virus"
+            ExcelWorksheet wsHoG3 = excelWorkBook.Worksheets["G3 Todos virus"];
+            R6_GraficoVirus_ColumnStacked(excelWorksheet, wsPara, wsHoG3, rowIT2, rowFT2, nGrEd, nAnios, _startColumn, weekByYear, "G3_0");
+
+
+            //############################# Grafico hoja: "G4 Grupos Edad"
+            //---- Tabla: T6 Tipo virus edad grav (Age Group)
+            cTemp = (string)wsPara.Cells[78, 2].Value;
+            ExcelWorksheet wsHoT6 = excelWorkBook.Worksheets[cTemp];         // "T6 Tipo virus edad grav."
+
+            int rowI = Convert.ToInt32(wsPara.Cells[62, 2].Value);
+            int colI = Convert.ToInt32(wsPara.Cells[63, 2].Value);
+            for (nI = 1; nI <= nAnios; ++nI)
+            {
+                int nAnio = _YearFrom + (nI - 1);
+                if (nI > 1)
+                {
+                    wsHoT6.Cells[rowI - 1, colI, rowI + 10, colI + nGrEd].Copy(wsHoT6.Cells[rowI - 1, colI + (nI - 1) * (nGrEd + 1)]);
+
+                    int r = rowIT2 + 3;
+
+                    for (int a = 1; a <= nGrEd; a++)
+                    {
+                        for (int n = 1; n <= 10; n++)
+                        {
+                            int c = _startColumn + (nI - 1) * 57 + 53;
+
+                            cTemp = "=" + excelWorksheet.Cells[r + (n - 1) * 75 + (a - 1) * 12, c].FullAddress;
+                            int aa = rowI + (n - 1);
+                            int bb = colI + (nI - 1) * (nGrEd + 1) + (a - 1);
+                            wsHoT6.Cells[rowI + (n - 1), colI + (nI - 1) * (nGrEd + 1) + (a - 1)].Formula = cTemp;
+                        }
+                    }
+                }
+
+                wsHoT6.Cells[rowI - 2, colI + (nI - 1) * (nGrEd + 1)].Value = nAnio;
+            }
+
+            //----
+            Dictionary<string, object> aParam = new Dictionary<string, object>();
+            cTemp = (string)wsPara.Cells[69, 2].Value;
+            ExcelWorksheet wsHoG4 = excelWorkBook.Worksheets[cTemp];        // G4 Grupos Edad
+
+            aParam.Add("ChartTitle", (string)wsPara.Cells[71, 2].Value);        // Titulo grafico
+            aParam.Add("ChartTitleSize", 12);
+            aParam.Add("AxisTitleYSize", 11);
+            aParam.Add("AxisTitleXSize", 11);
+            aParam.Add("AxisYSize", 10);
+            aParam.Add("AxisXSize", 10);
+            aParam.Add("LegendSize", 11);
+            aParam.Add("Width", 900);
+            aParam.Add("Hight", 500);
+            aParam.Add("RowUpperChart", 4);
+            aParam.Add("ColLeftChart", 0);
+            aParam.Add("Offset", 10);
+            aParam.Add("OffsetRowX", 2);
+
+            R6_GraficoVirus_100StackedColumnAG(wsHoT6, wsPara, wsHoG4, rowI, colI, nGrEd, nAnios, _startColumn, weekByYear, "G4_0", aParam);
+
+            //############################# Grafico hoja: "G5 Gravedad"
+            //---- Tabla: T6 Tipo virus edad grav (Hosp., UCI, Def.)
+            rowI = Convert.ToInt32(wsPara.Cells[64, 2].Value);
+            colI = Convert.ToInt32(wsPara.Cells[65, 2].Value);
+            for (nI = 1; nI <= nAnios; ++nI)
+            {
+                int nAnio = _YearFrom + (nI - 1);
+                if (nI > 1)
+                {
+                    wsHoT6.Cells[rowI - 2, colI, rowI + 10, colI + 2].Copy(wsHoT6.Cells[rowI - 2, colI + (nI - 1) * 3]);
+                    for (int a = 1; a <= 3; a++)
+                    {
+                        int rT = rowIT2 + 4;                // 208 + 4 = 212
+
+                        int colD = colI + (nI - 1) * 3 + (a - 1);
+                        for (int n = 1; n <= 10; n++)
+                        {
+                            int cT = _startColumn + (nI - 1) * 57 + 56;
+                            cTemp = "=" + excelWorksheet.Cells[rT + (n - 1) * 75 + (a - 1) * 3, cT].FullAddress;
+                            wsHoT6.Cells[rowI + (n - 1), colI + (nI - 1) * 3 + (a - 1)].Formula = cTemp;
+                        }
+                        //----
+                        wsHoT6.Cells[rowI - 2, colD].Formula = wsHoT6.Cells[rowI - 2, colI + (a - 1)].Formula;      // Leyenda
+                    }
+                }
+
+                wsHoT6.Cells[rowI - 3, colI + (nI - 1) * 3].Value = nAnio;
+            }
+
+            Dictionary<string, object> aParamG5 = new Dictionary<string, object>();
+            cTemp = (string)wsPara.Cells[70, 2].Value;
+            ExcelWorksheet wsHoG5 = excelWorkBook.Worksheets[cTemp];            // G5 Gravedad
+
+            aParamG5.Add("ChartTitle", (string)wsPara.Cells[72, 2].Value);        // Titulo grafico
+            aParamG5.Add("ChartTitleSize", 12);
+            aParamG5.Add("AxisTitleYSize", 11);
+            aParamG5.Add("AxisTitleXSize", 11);
+            aParamG5.Add("AxisYSize", 10);
+            aParamG5.Add("AxisXSize", 10);
+            aParamG5.Add("LegendSize", 11);
+            aParamG5.Add("Width", 720);
+            aParamG5.Add("Hight", 500);
+            aParamG5.Add("RowUpperChart", 4);
+            aParamG5.Add("ColLeftChart", 0);
+            aParamG5.Add("Offset", 10);
+            aParamG5.Add("OffsetRowX", 3);
+
+            R6_GraficoVirus_100StackedColumn(wsHoT6, wsPara, wsHoG5, rowI, colI, nGrEd, nAnios, _startColumn, weekByYear, "G5_0", aParamG5);
+
+            //**** inserción de labels y logo en el Excel
+            var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+            if (ReportCountry != null)
+            {
+                //inserción de labels
+                reportLabels(consString, countryId, languaje_, ReportCountry, hospitalId, year, YearFrom, YearTo, se, startDate, endDate, excelWorkBook, excelWorksheet);
+
+                //inserción de logo
+                InsertarLogoExcel(consString, excelWorksheet, ReportCountry);
+            }
+        }
+
+        private static void R6_ActualizarFormulaCeldasTablas(ExcelWorksheet wsTabl, ExcelWorksheet wsPara, ExcelWorksheet wsWork, int nAnios, int nCoWi, int rowS, int colS,
+            int rowI_TA, int colI_TA, int salto1, int salto2, int rowEW, int widthYear_TA, int heightYear_WK, int nCoWiCopy, bool bCopy)
+        {
+            int nI; string cTemp;
+
+            for (nI = 1; nI <= nAnios; ++nI)
+            {
+                if (nI > 1)
+                {
+                    if (bCopy)
+                        wsWork.Cells[rowS, colS - 2, rowS + heightYear_WK - 1, colS + nCoWiCopy - 1].Copy(wsWork.Cells[rowS + (nI - 1) * heightYear_WK, colS - 2]);
+
+                    int rowIA = rowS + (nI - 1) * heightYear_WK;               // Fila inicio anio en la hoja work
+
+                    //---- Actualizando formula de columnas
+                    for (int nK = 1; nK <= nCoWi; nK++)
+                    {
+                        string addresInicSE = "", addresInicYE = "";
+                        int rowPT = rowI_TA;
+
+                        if (nK == 1)
+                        {
+                            addresInicSE = wsTabl.Cells[rowEW, colI_TA + (nI - 1) * widthYear_TA].FullAddress;
+                            addresInicYE = wsTabl.Cells[rowEW - 1, colI_TA + (nI - 1) * widthYear_TA].FullAddress;
+                        }
+
+                        rowPT = rowPT + salto1;
+                        string addresPorcTotaH = wsTabl.Cells[rowPT + (nK - 1) * salto2, colI_TA + (nI - 1) * widthYear_TA].FullAddress;
+
+                        for (int nJ = 1; nJ <= 53; nJ++)
+                        {
+                            int rowCurr = rowIA + (nJ - 1);
+
+                            if (nK == 1 && bCopy == true)
+                            {
+                                cTemp = "=IF(OFFSET(" + addresInicYE + ",0,ROW(B" + rowCurr.ToString() + ")-" + rowIA.ToString() + ")>0, OFFSET(" + addresInicYE + ",0,ROW(B" + rowCurr.ToString() + ")-" + rowIA.ToString() + "), \"\")";
+                                wsWork.Cells[rowCurr, colS - 2].Formula = cTemp;
+
+                                cTemp = "=IF(OFFSET(" + addresInicSE + ",0,ROW(B" + rowCurr.ToString() + ")-" + rowIA.ToString() + ")>0, OFFSET(" + addresInicSE + ",0,ROW(B" + rowCurr.ToString() + ")-" + rowIA.ToString() + "), \"\")";
+                                wsWork.Cells[rowCurr, colS - 1].Formula = cTemp;
+                            }
+
+                            cTemp = "=IF(B" + rowCurr.ToString() + "=\"\", \"\", OFFSET(" + addresPorcTotaH + ",0,ROW(B" + rowCurr.ToString() + ")-" + rowIA.ToString() + "))";
+                            wsWork.Cells[rowCurr, colS + (nK - 1)].Formula = cTemp;
+                        }
+                    }
+                }
+            }
+        }
+
+        private static void R6_GraficoVirus_100StackedColumnAG(ExcelWorksheet excelWorksheet, ExcelWorksheet wsPara, ExcelWorksheet wsHoGr,
+            int rowI_TA, int colI_TA, int nGrEd, int nAnios, int _startColumn, List<int> weekByYear, string chart, Dictionary<string, object> aPara)
+        {
+            int NUM_TIPOS_SUBTIPOS_VIRUS = 10;
+
+            //---- Elimando los graficos de plantilla
+            for (int nX = wsHoGr.Drawings.Count - 1; nX >= 0; nX--)
+                wsHoGr.Drawings.Remove(nX);
+
+            //---- Rangos de las series
+            string cValuesY = "";
+            string cValuesX = "";
+
+            int offsetRowX = (int)aPara["OffsetRowX"];
+            int col = colI_TA;
+            var myChartCC = wsHoGr.Drawings.AddChart(chart, eChartType.ColumnStacked100);
+
+            for (int nJ = 1; nJ <= NUM_TIPOS_SUBTIPOS_VIRUS; nJ++)
+            {
+                cValuesY = "";
+                cValuesX = "";
+                int row = rowI_TA + (nJ - 1);
+
+                for (int nI = 1; nI <= nAnios; ++nI)
+                {
+                    col = colI_TA + (nGrEd + 1) * (nI - 1);
+
+                    cValuesY = cValuesY + excelWorksheet.Cells[row, col, row, col + nGrEd - 1].FullAddress + ",";
+                    cValuesX = cValuesX + excelWorksheet.Cells[rowI_TA - offsetRowX, col, rowI_TA - offsetRowX + 1, col + nGrEd - 1].FullAddress + ",";
+                }
+                cValuesY = cValuesY.Substring(0, cValuesY.Length - 1);
+                cValuesX = cValuesX.Substring(0, cValuesX.Length - 1);
+
+                ExcelRange valuesY = excelWorksheet.Cells[cValuesY];
+                ExcelRange valuesX = excelWorksheet.Cells[cValuesX];
+
+                var serieCC = myChartCC.Series.Add(valuesY, valuesX);                           // Valores de la serie, Etiquetas del eje X
+                serieCC.Header = (string)excelWorksheet.Cells[row, colI_TA - 1].Value;          // Leyenda
+            }
+
+            //if(chart == "G4_0")
+            //{
+            myChartCC.XAxis.Title.Text = (string)wsPara.Cells[2, 3].Value;              // Grupos de edad
+            myChartCC.XAxis.Title.Font.Size = (int)aPara["AxisTitleXSize"]; ;
+            myChartCC.XAxis.Title.Font.Bold = true;
+            myChartCC.XAxis.MajorTickMark = eAxisTickMark.Out;
+            myChartCC.XAxis.MinorTickMark = eAxisTickMark.None;
+            //}
+
+            myChartCC.YAxis.Title.Text = (string)wsPara.Cells[7, 2].Value;                  // Porcentaje
+            myChartCC.YAxis.Title.Font.Size = (int)aPara["AxisTitleYSize"];
+            myChartCC.YAxis.Title.Font.Bold = true;
+
+            //---- 
+            int colOffset = (int)aPara["Offset"];
+            int width0 = (int)aPara["Width"];
+            int hight0 = (int)aPara["Hight"];
+            int row0 = (int)aPara["RowUpperChart"];
+            int col0 = (int)aPara["ColLeftChart"];
+
+            myChartCC.SetSize(width0 + (nAnios - 1) * (width0 / 4), hight0);
+            myChartCC.SetPosition(row0, 0, col0, colOffset);
+
+            myChartCC.Title.Text = (string)aPara["ChartTitle"];                         // Titulo grafico
+            myChartCC.Title.Font.Size = (int)aPara["ChartTitleSize"];
+            myChartCC.Title.Font.Bold = true;
+
+            myChartCC.Legend.Position = eLegendPosition.Bottom;
+            myChartCC.Legend.Font.Size = (int)aPara["LegendSize"]; ;
+            myChartCC.Legend.Font.Bold = true;
+
+            var color = Color.FromArgb(255, 102, 0);
+            SetChartPointsColor(myChartCC, 0, color, (int)eChartType.ColumnStacked);
+            color = Color.FromArgb(255, 255, 0);
+            SetChartPointsColor(myChartCC, 1, color, (int)eChartType.ColumnStacked);
+            color = Color.FromArgb(0, 0, 0);
+            SetChartPointsColor(myChartCC, 2, color, (int)eChartType.ColumnStacked);
+            color = Color.FromArgb(255, 0, 0);
+            SetChartPointsColor(myChartCC, 3, color, (int)eChartType.ColumnStacked);
+            color = Color.FromArgb(0, 204, 255);
+            SetChartPointsColor(myChartCC, 4, color, (int)eChartType.ColumnStacked);
+            color = Color.FromArgb(153, 204, 0);
+            SetChartPointsColor(myChartCC, 5, color, (int)eChartType.ColumnStacked);
+            color = Color.FromArgb(128, 0, 128);
+            SetChartPointsColor(myChartCC, 6, color, (int)eChartType.ColumnStacked);
+            color = Color.FromArgb(55, 96, 146);
+            SetChartPointsColor(myChartCC, 7, color, (int)eChartType.ColumnStacked);
+            color = Color.FromArgb(255, 153, 204);
+            SetChartPointsColor(myChartCC, 8, color, (int)eChartType.ColumnStacked);
+            color = Color.FromArgb(166, 166, 166);
+            SetChartPointsColor(myChartCC, 9, color, (int)eChartType.ColumnStacked);
+
+            //---- Habilitando Multi-Level Category Labels
+            EnableMultilevelAxisLabels(myChartCC, "ColumnStacked100");
+        }
+
+        private static void R6_GraficoVirus_100StackedColumn(ExcelWorksheet excelWorksheet, ExcelWorksheet wsPara, ExcelWorksheet wsHoGr,
+            int rowI_TA, int colI_TA, int nGrEd, int nAnios, int _startColumn, List<int> weekByYear, string chart, Dictionary<string, object> aPara)
+        {
+            int NUM_TIPOS_SUBTIPOS_VIRUS = 10;
+
+            //---- Elimando los graficos de plantilla
+            for (int nX = wsHoGr.Drawings.Count - 1; nX >= 0; nX--)
+                wsHoGr.Drawings.Remove(nX);
+
+            //---- Rangos de las series
+            string cValuesY = "";
+            string cValuesX = "";
+
+            int col = colI_TA;
+            var myChartCC = wsHoGr.Drawings.AddChart(chart, eChartType.ColumnStacked100);
+
+            for (int nJ = 1; nJ <= NUM_TIPOS_SUBTIPOS_VIRUS; nJ++)
+            {
+                int row = rowI_TA + (nJ - 1);
+                cValuesY = excelWorksheet.Cells[row, col, row, col + nAnios * 3 - 1].FullAddress;
+                cValuesX = excelWorksheet.Cells[rowI_TA - 3, col, rowI_TA - 2, col + nAnios * 3 - 1].FullAddress;
+
+                ExcelRange valuesY = excelWorksheet.Cells[cValuesY];
+                ExcelRange valuesX = excelWorksheet.Cells[cValuesX];
+
+                var serieCC = myChartCC.Series.Add(valuesY, valuesX);                   // Valores de la serie, Etiquetas del eje X
+                serieCC.Header = (string)excelWorksheet.Cells[row, col - 1].Value;                  // Leyenda
+            }
+
+            //myChartCC.XAxis.Title.Text = (string)wsPara.Cells[2, 3].Value;          // 
+            //myChartCC.XAxis.Title.Font.Size = (int)aPara["AxisTitleXSize"]; ;
+            //myChartCC.XAxis.Title.Font.Bold = true;
+            //myChartCC.XAxis.MajorTickMark = eAxisTickMark.Out;
+            //myChartCC.XAxis.MinorTickMark = eAxisTickMark.None;
+
+            myChartCC.YAxis.Title.Text = (string)wsPara.Cells[7, 2].Value;          // Porcentaje
+            myChartCC.YAxis.Title.Font.Size = (int)aPara["AxisTitleYSize"];
+            myChartCC.YAxis.Title.Font.Bold = true;
+
+            //---- 
+            int colOffset = (int)aPara["Offset"];
+            int width0 = (int)aPara["Width"];
+            int hight0 = (int)aPara["Hight"];
+            int row0 = (int)aPara["RowUpperChart"];
+            int col0 = (int)aPara["ColLeftChart"];
+
+            myChartCC.SetSize(width0 + (nAnios - 1) * (width0 / 4), hight0);
+            myChartCC.SetPosition(row0, 0, col0, colOffset);
+
+            //myChartCC.Title.Text = (string)wsPara.Cells[72, 2].Value;               // Titulo grafico
+            myChartCC.Title.Text = (string)aPara["ChartTitle"];                         // Titulo grafico
+            myChartCC.Title.Font.Size = (int)aPara["ChartTitleSize"];
+            myChartCC.Title.Font.Bold = true;
+
+            myChartCC.Legend.Position = eLegendPosition.Bottom;
+            myChartCC.Legend.Font.Size = (int)aPara["LegendSize"]; ;
+            myChartCC.Legend.Font.Bold = true;
+
+            var color = Color.FromArgb(255, 102, 0);
+            SetChartPointsColor(myChartCC, 0, color, (int)eChartType.ColumnStacked);
+            color = Color.FromArgb(255, 255, 0);
+            SetChartPointsColor(myChartCC, 1, color, (int)eChartType.ColumnStacked);
+            color = Color.FromArgb(0, 0, 0);
+            SetChartPointsColor(myChartCC, 2, color, (int)eChartType.ColumnStacked);
+            color = Color.FromArgb(255, 0, 0);
+            SetChartPointsColor(myChartCC, 3, color, (int)eChartType.ColumnStacked);
+            color = Color.FromArgb(0, 204, 255);
+            SetChartPointsColor(myChartCC, 4, color, (int)eChartType.ColumnStacked);
+            color = Color.FromArgb(153, 204, 0);
+            SetChartPointsColor(myChartCC, 5, color, (int)eChartType.ColumnStacked);
+            color = Color.FromArgb(128, 0, 128);
+            SetChartPointsColor(myChartCC, 6, color, (int)eChartType.ColumnStacked);
+            color = Color.FromArgb(55, 96, 146);
+            SetChartPointsColor(myChartCC, 7, color, (int)eChartType.ColumnStacked);
+            color = Color.FromArgb(255, 153, 204);
+            SetChartPointsColor(myChartCC, 8, color, (int)eChartType.ColumnStacked);
+            color = Color.FromArgb(166, 166, 166);
+            SetChartPointsColor(myChartCC, 9, color, (int)eChartType.ColumnStacked);
+
+            //---- Habilitando Multi-Level Category Labels
+            EnableMultilevelAxisLabels(myChartCC, "ColumnStacked100");
+        }
+
+        private static void R6_GraficoPorcentajeIRAG_Line(ExcelWorksheet excelWorksheet, ExcelWorksheet wsPara, ExcelWorksheet wsHoG1,
+            int rowI_T1, int rowWeek_T1, int nAnios, int _startColumn, List<int> weekByYear, string chart, int width0,
+            int hight0, int row0, int col0, Dictionary<string, decimal> aPara, string enPersona)
+        {
+            //---- Rangos de las series
+            string cvalues = "", cxvalues = "";
+            string cvaluesU = "", cxvaluesU = "";
+            string cvaluesD = "", cxvaluesD = "";
+
+            int rowH = rowI_T1 + 6;
+            int rowU = rowI_T1 + 15;
+            int rowD = rowI_T1 + 24;
+
+            for (int nI = 1; nI <= nAnios; ++nI)
+            {
+                int col = _startColumn + (nI - 1) * 54;
+                int nSema = weekByYear[nI - 1];
+
+                cvalues = cvalues + excelWorksheet.Cells[rowH, col, rowH, col + nSema - 1].FullAddress + ",";
+                cxvalues = cxvalues + excelWorksheet.Cells[rowWeek_T1 - 1, col, rowWeek_T1, col + nSema - 1].FullAddress + ",";
+
+                cvaluesU = cvaluesU + excelWorksheet.Cells[rowU, col, rowU, col + nSema - 1].FullAddress + ",";
+                cxvaluesU = cxvaluesU + excelWorksheet.Cells[rowWeek_T1 - 1, col, rowWeek_T1, col + nSema - 1].FullAddress + ",";
+
+                cvaluesD = cvaluesD + excelWorksheet.Cells[rowD, col, rowD, col + nSema - 1].FullAddress + ",";
+                cxvaluesD = cxvaluesD + excelWorksheet.Cells[rowWeek_T1 - 1, col, rowWeek_T1, col + nSema - 1].FullAddress + ",";
+            }
+
+            cvalues = cvalues.Substring(0, cvalues.Length - 1);
+            cxvalues = cxvalues.Substring(0, cxvalues.Length - 1);
+            cvaluesU = cvaluesU.Substring(0, cvaluesU.Length - 1);
+            cxvaluesU = cxvaluesU.Substring(0, cxvaluesU.Length - 1);
+            cvaluesD = cvaluesD.Substring(0, cvaluesD.Length - 1);
+            cxvaluesD = cxvaluesD.Substring(0, cxvaluesD.Length - 1);
+
+            ExcelRange values = excelWorksheet.Cells[cvalues];
+            ExcelRange xvalues = excelWorksheet.Cells[cxvalues];
+            ExcelRange valuesU = excelWorksheet.Cells[cvaluesU];
+            ExcelRange xvaluesU = excelWorksheet.Cells[cxvaluesU];
+            ExcelRange valuesD = excelWorksheet.Cells[cvaluesD];
+            ExcelRange xvaluesD = excelWorksheet.Cells[cxvaluesD];
+
+            //---- Chart principal
+            var myChartCC = wsHoG1.Drawings.AddChart(chart, eChartType.Line);
+
+            var serieCC = myChartCC.Series.Add(values, xvalues);                    // H: Valores de la serie, Etiquetas del eje X
+            serieCC.Header = (string)wsPara.Cells[54, 2].Value;                     // Leyenda de la linea
+            serieCC = myChartCC.Series.Add(valuesU, xvaluesU);                      // U: Valores de la serie, Etiquetas del eje X
+            serieCC.Header = (string)wsPara.Cells[55, 2].Value;                     // Leyenda de la linea
+            serieCC = myChartCC.Series.Add(valuesD, xvaluesD);                      // D: Valores de la serie, Etiquetas del eje X
+            serieCC.Header = (string)wsPara.Cells[56, 2].Value;                     // Leyenda de la linea
+
+            myChartCC.XAxis.Title.Text = (string)wsPara.Cells[3, 2].Value;          // SE
+            myChartCC.XAxis.Title.Font.Size = (float)aPara["AxisTitleXSize"]; ;
+            myChartCC.XAxis.Title.Font.Bold = true;
+            myChartCC.XAxis.MajorTickMark = eAxisTickMark.Out;
+            myChartCC.XAxis.MinorTickMark = eAxisTickMark.None;
+
+            myChartCC.YAxis.Title.Text = (string)wsPara.Cells[7, 2].Value;          // Porcentaje
+            myChartCC.YAxis.Title.Font.Size = (float)aPara["AxisTitleYSize"];
+            myChartCC.YAxis.Title.Font.Bold = true;
+
+            //---- 
+            int colOffset = 10;
+            myChartCC.SetSize(width0 + (nAnios - 1) * (width0 / 3), hight0);
+            myChartCC.SetPosition(row0, 0, col0, colOffset);
+
+            if(enPersona == "")
+                myChartCC.Title.Text = (string)wsPara.Cells[58, 2].Value;               // Titulo grafico
+            else
+                myChartCC.Title.Text = (string)wsPara.Cells[58, 2].Value + " " + enPersona + " " + excelWorksheet.Cells[rowI_T1, _startColumn - 4].Value;               // Titulo grafico
+
+            myChartCC.Title.Font.Size = (float)aPara["ChartTitleSize"];
+            myChartCC.Title.Font.Bold = true;
+
+            myChartCC.Legend.Position = eLegendPosition.Bottom;
+            myChartCC.Legend.Font.Size = (float)aPara["LegendSize"]; ;
+            myChartCC.Legend.Font.Bold = true;
+
+            //---- Habilitando Multi-Level Category Labels
+            if (nAnios > 1)
+                EnableMultilevelAxisLabels(myChartCC, "Line");
+        }
+
+        private static void R6_GraficoVirus_ColumnStacked(ExcelWorksheet excelWorksheet, ExcelWorksheet wsPara, ExcelWorksheet wsHoG2,
+            int rowIT2, int rowFT2, int nGrEd, int nAnios, int _startColumn, List<int> weekByYear, string chart)
+        {
+            //---- Elimando los graficos de plantilla
+            for (int nX = wsHoG2.Drawings.Count - 1; nX >= 0; nX--)
+            {
+                wsHoG2.Drawings.Remove(nX);
+            }
+
+            //---- 
+            int width0 = 900;
+            int hight0 = 520;
+            int colOffset = 10;
+
+            //---- Rangos de las series
+            string cvalues = "", cxvalues = "";
+            string cvaluesSEC = "", cxvaluesSEC = "";
+
+            var myChartG2 = wsHoG2.Drawings.AddChart(chart, eChartType.ColumnStacked);
+            int row = rowIT2;
+            int col = 0;
+            int nNuVi = (chart == "G2_0") ? 6 : 10;     // Nro de virus a mostra en el grafico
+
+            for (int nJ = 1; nJ <= nNuVi; ++nJ)         // Influenza A(H1N1)pdm09, Influenza A No Subtipificada, ..., Influenza B
+            {
+                cvalues = "";
+                cxvalues = "";
+                row = rowIT2 + (nJ - 1) * (12 * nGrEd + 3);
+
+                for (int nI = 1; nI <= nAnios; ++nI)
+                {
+                    col = _startColumn + (nI - 1) * 57;
+                    int nSema = weekByYear[nI - 1];
+
+                    cvalues = cvalues + excelWorksheet.Cells[row, col, row, col + nSema - 1].FullAddress + ",";
+                    cxvalues = cxvalues + excelWorksheet.Cells[rowIT2 - 3, col, rowIT2 - 2, col + nSema - 1].FullAddress + ",";
+
+                    if (nJ == 1)        // Para chart secundario
+                    {
+                        if (chart == "G2_0")
+                        {
+                            cvaluesSEC = cvaluesSEC + excelWorksheet.Cells[rowFT2 + 3, col, rowFT2 + 3, col + nSema - 1].FullAddress + ",";
+                        }
+                        else
+                        {
+                            cvaluesSEC = cvaluesSEC + excelWorksheet.Cells[rowFT2 + 4, col, rowFT2 + 4, col + nSema - 1].FullAddress + ",";
+                        }
+                        cxvaluesSEC = cxvaluesSEC + excelWorksheet.Cells[rowIT2 - 3, col, rowIT2 - 2, col + nSema - 1].FullAddress + ",";
+                    }
+                }
+
+                cvalues = cvalues.Substring(0, cvalues.Length - 1);
+                cxvalues = cxvalues.Substring(0, cxvalues.Length - 1);
+                ExcelRange values = excelWorksheet.Cells[cvalues];
+                ExcelRange xvalues = excelWorksheet.Cells[cxvalues];
+
+                var serieG2 = myChartG2.Series.Add(values, xvalues);                // Valores de la serie, Etiquetas del eje 
+
+                if (nJ == 6)
+                    serieG2.Header = (string)excelWorksheet.Cells[row, 1].Value;            // Leyenda de la serie
+                else
+                    serieG2.Header = (string)excelWorksheet.Cells[row, 2].Value;            // Leyenda de la serie                
+            }
+
+            var color = Color.FromArgb(255, 102, 0);
+            SetChartPointsColor(myChartG2, 0, color, (int)eChartType.ColumnStacked);
+            color = Color.FromArgb(255, 255, 0);
+            SetChartPointsColor(myChartG2, 1, color, (int)eChartType.ColumnStacked);
+            color = Color.FromArgb(0, 0, 0);
+            SetChartPointsColor(myChartG2, 2, color, (int)eChartType.ColumnStacked);
+            color = Color.FromArgb(255, 0, 0);
+            SetChartPointsColor(myChartG2, 3, color, (int)eChartType.ColumnStacked);
+            color = Color.FromArgb(0, 204, 255);
+            SetChartPointsColor(myChartG2, 4, color, (int)eChartType.ColumnStacked);
+            color = Color.FromArgb(153, 204, 0);
+            SetChartPointsColor(myChartG2, 5, color, (int)eChartType.ColumnStacked);
+            if (chart == "G3_0")
+            {
+                color = Color.FromArgb(128, 0, 128);
+                SetChartPointsColor(myChartG2, 6, color, (int)eChartType.ColumnStacked);
+                color = Color.FromArgb(55, 96, 146);
+                SetChartPointsColor(myChartG2, 7, color, (int)eChartType.ColumnStacked);
+                color = Color.FromArgb(255, 153, 204);
+                SetChartPointsColor(myChartG2, 8, color, (int)eChartType.ColumnStacked);
+                color = Color.FromArgb(166, 166, 166);
+                SetChartPointsColor(myChartG2, 9, color, (int)eChartType.ColumnStacked);
+            }
+
+            myChartG2.XAxis.Title.Text = (string)wsPara.Cells[3, 2].Value;                  // SE
+            myChartG2.XAxis.Title.Font.Size = 12;
+            myChartG2.XAxis.Title.Font.Bold = true;
+            myChartG2.XAxis.MajorTickMark = eAxisTickMark.Out;
+            myChartG2.XAxis.MinorTickMark = eAxisTickMark.None;
+
+            myChartG2.YAxis.Title.Text = (string)wsPara.Cells[8, 2].Value;                  // Número de casos positivos
+            myChartG2.YAxis.Title.Font.Size = 12;
+            myChartG2.YAxis.Title.Font.Bold = true;
+
+            //**** Chart secundario 
+            cvaluesSEC = cvaluesSEC.Substring(0, cvaluesSEC.Length - 1);
+            cxvaluesSEC = cxvaluesSEC.Substring(0, cxvaluesSEC.Length - 1);
+            ExcelRange valueSEC = excelWorksheet.Cells[cvaluesSEC];
+            ExcelRange xvaluesSEC = excelWorksheet.Cells[cxvaluesSEC];
+
+            var myChartG2SEC = myChartG2.PlotArea.ChartTypes.Add(eChartType.Line);          // Chart secundario
+            var serieSEC = myChartG2SEC.Series.Add(valueSEC, xvaluesSEC);
+            if (chart == "G2_0")
+                serieSEC.Header = (string)excelWorksheet.Cells[rowFT2 + 3, 1].Value;            // Leyenda serie
+            else
+                serieSEC.Header = (string)excelWorksheet.Cells[rowFT2 + 4, 1].Value;            // Leyenda serie
+            //color = Color.FromArgb(192, 0, 0);
+            //SetChartPointsColor(myChartG2SEC, 0, color, (int)eChartType.Line);
+
+            myChartG2SEC.UseSecondaryAxis = true;
+            if (chart == "G2_0")
+                myChartG2SEC.YAxis.Title.Text = (string)excelWorksheet.Cells[rowFT2 + 3, 1].Value;      // % Positivos a Influenza
+            else
+                myChartG2SEC.YAxis.Title.Text = (string)excelWorksheet.Cells[rowFT2 + 4, 1].Value;      // % Positivos a virus respiratorios
+            myChartG2SEC.YAxis.Title.Font.Size = 12;
+            myChartG2SEC.YAxis.Title.Font.Bold = true;
+
+            //****   
+            width0 = 900;
+            hight0 = 520;
+            colOffset = 10;
+            row = 4;
+            col = 0;
+
+            if (chart == "G2_0")
+                myChartG2.Title.Text = (string)wsPara.Cells[59, 2].Value;               // Titulo grafico
+            else
+                myChartG2.Title.Text = (string)wsPara.Cells[60, 2].Value;               // Titulo grafico
+            myChartG2.Title.Font.Size = 11;
+            myChartG2.Title.Font.Bold = true;
+            myChartG2.SetSize(width0 + (nAnios - 1) * (width0 / 3), hight0);
+            myChartG2.SetPosition(row, 0, col, colOffset);
+            myChartG2.Legend.Position = eLegendPosition.Bottom;
+            myChartG2.Legend.Font.Size = 12;
+            myChartG2.Legend.Font.Bold = true;
+
+            //**** Habilitando Multi-Level Category Labels
+            if (nAnios > 1)
+                EnableMultilevelAxisLabels(myChartG2, "ColumnStacked");
         }
 
         private static void FormatearAreaDatos(ExcelWorksheet excelWorksheet, List<int> weekByYear, int yearFrom, int startRow, int startColumn, int endColumn)
@@ -1450,7 +2341,8 @@ namespace Paho.Controllers
         //private static void AppendDataToExcel(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo)
         private static void AppendDataToExcel(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se,
             DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet,
-            bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId, string CasosNPHL = "", int? Sentinel = null)               //#### CAFQ
+            bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId, string CasosNPHL = "", 
+            int? Sentinel = null, int starRowAntec = 0, int starColAntec = 0)               //#### CAFQ
         {
             var excelWorksheet = excelWorkBook.Worksheets[sheet];
             var row = startRow;
@@ -1458,6 +2350,14 @@ namespace Paho.Controllers
             string _storedProcedure;
             int excelColTota = 0, nPosiTipo = 0, nInicTip2 = 0, nPoSuViGr = 0;
             Dictionary<string, string> casosNHPLNumber = new Dictionary<string, string>();
+            int nGrEd = PAHOClassUtilities.getNumberAgeGroupCountry(countryId);                 // Numero de grupos de edad del pais
+            int startColumnT2 = 0;                  // Columna de inicio Tabla para R6
+            if (storedProcedure == "R6")
+            {
+                if (int.TryParse(CasosNPHL, out startColumnT2) == false)
+                    startColumnT2 = 6;
+            }
+            //startColumnT2 = int.Parse(CasosNPHL); 
 
             //_storedProcedure = (storedProcedure == "ML1") ? "MuestrasLabNPHL" : storedProcedure;      //#### CAFQ
             _storedProcedure = storedProcedure;
@@ -1719,8 +2619,10 @@ namespace Paho.Controllers
                         {
                             using (var reader = command.ExecuteReader())
                             {
-                                row = 9;
-                                column = 6;
+                                row = startRow;
+                                column = startColumn;
+                                //var row = startRow;
+                                //var column = startColumn;
                                 var contador_salto = 0;
                                 while (reader.Read())
                                 {
@@ -1774,25 +2676,29 @@ namespace Paho.Controllers
                                 using (var reader2 = command2.ExecuteReader())
                                 {
                                     int nAnDa = 0;
-                                    if (countryId == 25)
-                                    {
-                                        row = row - 1 + (9 * 3) + 15;
-                                        nAnDa = 8 * 8;                  // 8: Nº Age Group
-                                    }
-                                    else
-                                    {
-                                        if (countryId == 17 || countryId == 119 || countryId == 11)
-                                        {
-                                            row = row - 1 + (9 * 3) + 15;
-                                            nAnDa = 9 * 8;              // 9: Nº Age Group
-                                        }
-                                        else
-                                        {
-                                            row = 212;
-                                            nAnDa = 6 * 8;              // 6: Nº Age Group
-                                        }
-                                    }
-                                    column = 6;
+                                    //if (countryId == 25)
+                                    //{
+                                    //    row = row - 1 + (9 * 3) + 15;
+                                    //    nAnDa = 8 * 8;                  // 8: Nº Age Group
+                                    //}
+                                    //else
+                                    //{
+                                    //    if (countryId == 17 || countryId == 119 || countryId == 11)
+                                    //    {
+                                    //        row = row - 1 + (9 * 3) + 15;
+                                    //        nAnDa = 9 * 8;              // 9: Nº Age Group
+                                    //    }
+                                    //    else
+                                    //    {
+                                    //        //row = 212;
+                                    //        row = row - 1 + (9 * 3) + 15;
+                                    //        nAnDa = 6 * 8;              // 6: Nº Age Group
+                                    //    }
+                                    //}
+                                    // nGrEd
+                                    row = row - 1 + (9 * 3) + 15;
+                                    nAnDa = nGrEd * 8;
+                                    column = startColumnT2;
 
                                     var contador_salto2 = 0;
                                     while (reader2.Read())
@@ -1920,8 +2826,17 @@ namespace Paho.Controllers
 
                         using (var reader = command.ExecuteReader())
                         {
-                            row = 11;
-                            column = 2;
+                            if(starRowAntec == 0)
+                            {
+                                row = 11;
+                                column = 2;
+                            }
+                            else
+                            {
+                                row = starRowAntec;
+                                column = starColAntec;
+                            }
+
                             var contador_salto = 0;
                             var excelWorksheet2 = excelWorkBook.Worksheets[2];
                             while (reader.Read())
