@@ -1655,7 +1655,9 @@ namespace Paho.Controllers
 
             //############################# Grafico hoja: "G1 %IRAG"
             Dictionary<string, decimal> aPara = new Dictionary<string, decimal>();
-            ExcelWorksheet wsHoG1 = excelWorkBook.Worksheets["G1 %IRAG"];
+            cTemp = (string)wsPara.Cells[66, 2].Value;
+            //ExcelWorksheet wsHoG1 = excelWorkBook.Worksheets["G1 %IRAG"];
+            ExcelWorksheet wsHoG1 = excelWorkBook.Worksheets[cTemp];
 
             //---- Elimando los graficos de plantilla
             for (int nX = wsHoG1.Drawings.Count - 1; nX >= 0; nX--)
@@ -1722,11 +1724,15 @@ namespace Paho.Controllers
             }
 
             //############################# Grafico hoja: "G2 Influenza"
-            ExcelWorksheet wsHoG2 = excelWorkBook.Worksheets["G2 Influenza"];
+            cTemp = (string)wsPara.Cells[67, 2].Value;
+            //ExcelWorksheet wsHoG2 = excelWorkBook.Worksheets["G2 Influenza"];
+            ExcelWorksheet wsHoG2 = excelWorkBook.Worksheets[cTemp];
             R6_GraficoVirus_ColumnStacked(excelWorksheet, wsPara, wsHoG2, rowIT2, rowFT2, nGrEd, nAnios, _startColumn, weekByYear, "G2_0");
 
             //############################# Grafico hoja: "G3 Todos virus"
-            ExcelWorksheet wsHoG3 = excelWorkBook.Worksheets["G3 Todos virus"];
+            cTemp = (string)wsPara.Cells[68, 2].Value;
+            //ExcelWorksheet wsHoG3 = excelWorkBook.Worksheets["G3 Todos virus"];
+            ExcelWorksheet wsHoG3 = excelWorkBook.Worksheets[cTemp];
             R6_GraficoVirus_ColumnStacked(excelWorksheet, wsPara, wsHoG3, rowIT2, rowFT2, nGrEd, nAnios, _startColumn, weekByYear, "G3_0");
 
 
