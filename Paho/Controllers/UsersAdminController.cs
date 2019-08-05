@@ -422,7 +422,7 @@ namespace Paho.Controllers
         // POST: /Users/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "UserName,Email,Id,InstitutionID,FirstName1,FirstName2,LastName1,LastName2,Hometown,ForeignLab")] EditUserViewModel editUser, params string[] selectedRole)
+        public async Task<ActionResult> Edit([Bind(Include = "UserName,Email,Id,InstitutionID,FirstName1,FirstName2,LastName1,LastName2,Hometown,ForeignLab,ChangePassword,Password,ConfirmPassword")] EditUserViewModel editUser, params string[] selectedRole)
         {
             if (ModelState.IsValid)
             {
@@ -468,6 +468,22 @@ namespace Paho.Controllers
                     ModelState.AddModelError("", result.Errors.First());
                     return View();
                 }
+
+                //****
+                if (editUser.ChangePassword)
+                {
+                    UserStore<ApplicationUser> store = new UserStore<ApplicationUser>(db);
+                    //String userId = user.Id;
+                    //String newPassword = editUser.Password; 
+                    //String hashedNewPassword = UserManager.PasswordHasher.HashPassword(newPassword);
+                    String hashedNewPassword = UserManager.PasswordHasher.HashPassword(editUser.Password);
+                    //ApplicationUser cUser = await store.FindByIdAsync(userId);
+                    ApplicationUser cUser = await store.FindByIdAsync(user.Id);
+                    await store.SetPasswordHashAsync(cUser, hashedNewPassword);
+                    await store.UpdateAsync(cUser);
+                }
+
+                //****
                 return RedirectToAction("Index");
             }
             ModelState.AddModelError("", "Algo falló, por favor comuniquese con el Administrador.");

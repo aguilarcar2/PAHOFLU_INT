@@ -29,6 +29,28 @@
                 @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
             </div>
         </div>
+
+        <div class="form-group">
+            @Html.Label("ChangePasswordLabel", ((string)Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminChangePasswordChangePassword", ViewBag.UsrCtry, ViewBag.UsrCtryLang)), new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.ChangePassword, new { htmlAttributes = new { @class = "checkbox-inline" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Password, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminPassword", ViewBag.UsrCtry, ViewBag.UsrCtryLang)), new { @class = "col-md-2 control-label", id = "PasswordLabel", style = "display: none;" })
+            <div class="col-md-5">
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control", style = "display: none;" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.ConfirmPassword, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminPasswordConfirmation", ViewBag.UsrCtry, ViewBag.UsrCtryLang)), new { @class = "col-md-2 control-label", id = "ConfirmPasswordLabel", style = "display: none;" })
+            <div class="col-md-5">
+                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", style = "display: none;" })
+            </div>
+        </div>
+
        <div class="form-group">
             @Html.LabelFor(m => m.Hometown, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminEditHometown", ViewBag.UsrCtry, ViewBag.UsrCtryLang)), new { @class = "col-md-2 control-label" })
             <div class="col-md-5">
@@ -109,5 +131,20 @@
 <script type="text/javascript">
     //***************************************
     $('a#usersadminLink').addClass("active");        //#### CAFQ: 180806
+    //***************************************
+    $('#ChangePassword').on('change', function (event) {
+
+        if ($('#ChangePassword').prop('checked')) {
+            $('#Password').show();
+            $('#ConfirmPassword').show();
+            $('#PasswordLabel').show();
+            $('#ConfirmPasswordLabel').show();
+        } else {
+            $('#Password').hide();
+            $('#ConfirmPassword').hide();
+            $('#PasswordLabel').hide();
+            $('#ConfirmPasswordLabel').hide();
+        }
+    })
     //***************************************
 </script> 

@@ -34,6 +34,23 @@ namespace Paho.Models
         [Required(AllowEmptyStrings = false)]
         [Display(Name = "Usuario")]
         public string UserName { get; set; }
+
+        //**** CAFQ: 190802
+        //[Required(AllowEmptyStrings = false, ErrorMessage = "Este campo es requerido")]
+        [StringLength(100, ErrorMessage = "En la contraseña {0} debe haber al menos {2} caracteres.", MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "Contraseña")]
+        public string Password { get; set; }
+
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirmación de contraseña")]
+        [Compare("Password", ErrorMessage = "La nueva contraseña y la casilla de confirmación no coinciden.")]
+        public string ConfirmPassword { get; set; }
+
+        [Display(Name = "Cambiar password:")]
+        public bool ChangePassword { get; set; }
+        //**** CAFQ: 190802 END
+
         [Display(Name = "Hometown")]
         [Required(AllowEmptyStrings=false,ErrorMessage="Este campo es requerido")]
         public string Hometown { get; set; }
