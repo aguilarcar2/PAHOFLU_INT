@@ -434,6 +434,22 @@
                         @*<button id="DatosPaciente" type="button" class="btn btn-primary btn-next " data-bind="click: GetPatient, visible:EnableCR">Datos paciente</button>*@
                     </div>
                 </div>
+
+                @if ( ViewBag.UsrCtry == 17)
+                {
+                    <div class="col-md-6">
+                        <div id="HealthCaseGenerate" class='input-group' data-bind="visible:displayhospitalIDCaseGenerating">
+                            <span class="input-group-addon">
+                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelHospitalCaseGenerating"))
+                            </span>
+
+                            <select id="cmbInstitutionsCaseGenerarting" class="form-control" style="max-width:85%;" data-bind="options: app.Views.Home.InstitutionsCaseGenerarting,
+                                optionsText: 'Name',
+                                optionsValue: 'Id',
+                                value: hospitalIDCaseGenerating "></select>
+                        </div>
+                    </div>
+                 }
             </div>
         @if (ViewBag.UsrCtry == 25 || ViewBag.UsrCtry == 11 || ViewBag.UsrCtry == 18 || ViewBag.UsrCtry == 15)
         {
@@ -5631,6 +5647,7 @@
     var labs = @Html.Raw(Json.Encode(Model.Labs));
     var labsExternal = @Html.Raw(Json.Encode(Model.LabsExternal));
     var institutions = @Html.Raw(Json.Encode(Model.Institutions));
+    var InstitutionsCaseGenerarting = @Html.Raw(Json.Encode(Model.InstitutionsCaseGenerarting));
     var reasonnotsampling = @Html.Raw(Json.Encode(Model.ReasonNotSampling));
 
     var selcty = @(ViewBag.UsrCtry);

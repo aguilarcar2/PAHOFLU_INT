@@ -42,10 +42,12 @@ function ContactViewModel(app, dataModel) {
         if (!inusualOK) {
             app.Views.Risk.ResetRiskInusual();
             app.Views.Hospital.ResetHospitalInusual();
+            self.hospitalIDCaseGenerating("");
         }
     });
     self.servicesArr = ko.observableArray(institutions);
     self.selectedServiceId = ko.observable("");
+    self.hospitalIDCaseGenerating = ko.observable("");
     self.Brote = ko.observable(false);
     self.region_institucional = ko.observable("");
     self.region_salud = ko.observable("");
@@ -555,6 +557,11 @@ function ContactViewModel(app, dataModel) {
         }
     }, self);
 
+    self.displayhospitalIDCaseGenerating = ko.computed(function () {
+        //console.log(self.servicesArr().length)
+        return (self.IsInusitado()) ? true : false;
+    }, self);
+
     self.AddFluCase = function () {
         app.Views.Home.ResetFluCase();
     };
@@ -597,6 +604,7 @@ function ContactViewModel(app, dataModel) {
         //self.SurvInusual(false);
         self.Brote(false);
         self.hospitalName("");
+        self.hospitalIDCaseGenerating("");
         self.LName1("");
         self.LName2("");
         self.FName1("");
@@ -851,16 +859,12 @@ function ContactViewModel(app, dataModel) {
                     self.Gender(data.Gender);
                 self.ResponsibleMinor(data.ResponsibleMinor);
                 self.HospitalDate(moment(data.HospitalDate).clone().toDate());
-                //console.log ("Hospital DATe - ");
-                //console.log(moment(data.HospitalDate).clone().toDate());
-                //console.log(data.HospitalDate);
-                //console.log("Anterior HospitalDAte - " + moment(data.HospitalDate).format(date_format_moment));
-                //console.log(self.HospitalDate());
                 self.RegDate(moment(data.RegDate).clone().toDate());
                 self.selectedNationalityID(data.nationality);
                 self.selectedNativepeopleID(data.nativepeople);
                 self.hasHospitalID(data.hospitalIDRecord);
                 self.hasHospitalID() > 0 ? app.Views.Home.selectedInstitutionId(self.hasHospitalID()) : "";
+                self.hospitalIDCaseGenerating(data.hospitalIDCaseGenerating);
                 self.DataStatement(data.DataStatement);
                 self.flow_record(data.flow_record);
                 self.flow_institution(data.flow_institution);
@@ -887,11 +891,6 @@ function ContactViewModel(app, dataModel) {
                 $("button[id^='Siguiente']").attr("disabled", false);
                 $("button[id^='Atras']").attr("disabled", false);
                 
-                /*self.selectedOccupationId(data.Ocupacion);                         //#### CAFQ
-                self.TrabajoDirecc(data.TrabajoDirecc);                         //#### CAFQ
-                self.TrabajoEstablec(data.TrabajoEstablec);                       //#### CAFQ
-                self.ContactoAnimVivos(data.ContactoAnimVivos);                       //#### CAFQ
-                self.OcupacMercAnimVivos(data.OcupacMercAnimVivos);                       //#### CAFQ*/
 
             })
             .fail(function(jqXHR, textStatus, errorThrown) {
@@ -961,6 +960,7 @@ function ContactViewModel(app, dataModel) {
                 RegDate: moment(date_reg_date).format(date_format_ISO),
                 //HospitalId: self.hasHospitalID() > 0 ? self.hasHospitalID() : self.selectedServiceId() > 0 ? self.selectedServiceId() : app.Views.Home.selectedInstitutionId(),
                 HospitalId: self.selectedServiceId() > 0 ? self.selectedServiceId() : app.Views.Home.selectedInstitutionId(),
+                HospitalID_CaseGenerating : self.hospitalIDCaseGenerating,
                 nativepeople: self.selectedNativepeopleID(),
                 nationality: self.selectedNationalityID(),
                 NoExpediente: self.NoExpediente() == null ? "" : self.NoExpediente().toLocaleUpperCase(),

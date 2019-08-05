@@ -544,7 +544,7 @@ namespace Paho.Controllers
                                 }
                             }
 
-                            // VIRUS IRAG
+                            /////////////////////////////////////// VIRUS IRAG  ////////////////////////////////////////////////////////////////////////7
 
                             var excelWs_VIRUSES_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "NATIONAL VIRUSES" : "Virus Identificados"];
                             var excelWs_VIRUSES_Chart = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Graph Virus" : "Gráficos Virus IRAG"];
@@ -553,29 +553,41 @@ namespace Paho.Controllers
 
                             for (int i = 0; i <= contador; i++)
                             {
-                                if (i > 0)
-                                {
-                                    CopyAndPasteRange(excelWorkBook, excelWs_VIRUSES_IRAG.Index, excelWorkBook, excelWs_VIRUSES_IRAG.Index, "A4:BZ58", "A" + Convert.ToString(4 + (57 * i)) + ":BZ" + Convert.ToString(4 + (57 * i) + 55));
-                                }
+
                                 YearEnd_report = YearEnd - i;
-                                AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4", (i > 0 ? (6 + (57 * i)) : 6), 1, excelWs_VIRUSES_IRAG.Index, false, ReportCountry, YearEnd_report, YearEnd_report, 1, Inusual, AreaID_, Sentinel);
+
+
                                 if (i > 0)
                                 {
-                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV1", (6 + (57 * i)), (6 + (57 * i)) + 51);
-                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV2", (6 + (57 * i)), (6 + (57 * i)) + 51);
-                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV3", (6 + (57 * i)), (6 + (57 * i)) + 51);
-                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV4", (6 + (57 * i)), (6 + (57 * i)) + 51);
+                                    CopyAndPasteRange(excelWorkBook, excelWs_VIRUSES_IRAG.Index, excelWorkBook, excelWs_VIRUSES_IRAG.Index, "A" + Convert.ToString(6 + (52 * i)) + ":BZ" + Convert.ToString(6 + (52 * i)), "A" + Convert.ToString(6 + (52 * (i + 1))) + ":BZ" + Convert.ToString(6 + (52 * (i + 1))));
+                                    CopyAndPasteRange(excelWorkBook, excelWs_VIRUSES_IRAG.Index, excelWorkBook, excelWs_VIRUSES_IRAG.Index, "A6:BZ57", "A" + Convert.ToString(6 + (52 * i)) + ":BZ" + Convert.ToString(6 + (52 * i) + 52));
+
                                 }
+                                if (i > 0)
+                                {
+                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV1", (6 + (52 * i)), (6 + (52 * i)) + 51);
+                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV2", (6 + (52 * i)), (6 + (52 * i)) + 51);
+                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV3", (6 + (52 * i)), (6 + (52 * i)) + 51);
+                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV4", (6 + (52 * i)), (6 + (52 * i)) + 51);
+                                    // Configuración de gráfica de Pie
+                                    ConfigGraph_Pie(excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV5", (7 + (52 * i)) + 51, (7 + (52 * i)) + 51);
+                                    ConfigGraph_Pie(excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV6", (7 + (52 * i)) + 51, (7 + (52 * i)) + 51);
+
+
+                                }
+                                AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4", (i > 0 ? (6 + (52 * i)) : 6), 1, excelWs_VIRUSES_IRAG.Index, false, ReportCountry, YearEnd_report, YearEnd_report, 1, Inusual, AreaID_, Sentinel);
+
                             }
+
 
                             // Procedimiento para cambiar los rangos del eje X 
                             if (contador > 0)
                             {
-                                var RangeStr = " '"+ ((user.Institution.Country.Language == "ENG") ? "NATIONAL VIRUSES" : "Virus Identificados") + "'!$BY$6:$BZ$57 ";
+                                var RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "NATIONAL VIRUSES" : "Virus Identificados") + "'!$BY$6:$BZ$57 ";
 
                                 for (int i = 1; i <= contador; i++)
                                 {
-                                    RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "NATIONAL VIRUSES" : "Virus Identificados") + "'!$BY$" + (6 + (57 * i)).ToString() + ":$BZ$" + ((6 + (57 * i)) + 51).ToString() + ", " + RangeStr;
+                                    RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "NATIONAL VIRUSES" : "Virus Identificados") + "'!$BY$" + (6 + (52 * i)).ToString() + ":$BZ$" + ((6 + (52 * i)) + 51).ToString() + ", " + RangeStr;
                                 }
 
                                 RangeStr = " ( " + RangeStr + ")";
@@ -607,50 +619,301 @@ namespace Paho.Controllers
                             //var excelWs_VIRUSES_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "NATIONAL VIRUSES" : "Virus Identificados"];
                             //AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_NATIONAL_VIRUSES", 6, 1, excelWs_VIRUSES_IRAG.Index, false, ReportCountry, YearEnd, YearEnd, 1, Inusual, AreaID_, Sentinel);
 
-                            // IRAG
+                            //////////////////////////////////////////////////// IRAG  /////////////////////////////////////////////////////////////////////////////////7777
                             var excelWs_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "SARI" : "IRAG"];
+                            var excelWs_IRAG_Chart = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "SARI Graphs" : "Gráficos IRAG"];
+
                             AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_IRAG", 8, 1, excelWs_IRAG.Index, false, ReportCountry, YearBegin, YearEnd, 1, Inusual, AreaID_, Sentinel);
-                             // DEATHS
+
+                            // Ajustar gráficas IRAG
+                            for (int i = 0; i <= contador; i++)
+                            {
+
+                                YearEnd_report = YearEnd - i;
+
+                                if (i > 0)
+                                {
+                                    // Copy rangos para los años
+                                    CopyAndPasteRange(excelWorkBook, excelWs_IRAG.Index, excelWorkBook, excelWs_IRAG.Index, "BY8:BZ59", "BY" + Convert.ToString(8 + (52 * i)) + ":BZ" + Convert.ToString(8 + (52 * i) + 52));
+
+
+                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_IRAG_Chart.Index, excelWs_IRAG.Index, "GS2", (11 + (52 * i)), (11 + (52 * i)) + 51);
+                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_IRAG_Chart.Index, excelWs_IRAG.Index, "GS4", (11 + (52 * i)), (11 + (52 * i)) + 51);
+                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_IRAG_Chart.Index, excelWs_IRAG.Index, "GS5", (8 + (52 * i)), (8 + (52 * i)) + 51);
+                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_IRAG_Chart.Index, excelWs_IRAG.Index, "GS6", (11 + (52 * i)), (11 + (52 * i)) + 51);
+                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_IRAG_Chart.Index, excelWs_IRAG.Index, "GS7", (8 + (52 * i)), (8 + (52 * i)) + 51);
+                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_IRAG_Chart.Index, excelWs_IRAG.Index, "GS8", (11 + (52 * i)), (11 + (52 * i)) + 51);
+                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_IRAG_Chart.Index, excelWs_IRAG.Index, "GS9", (8 + (52 * i)), (8 + (52 * i)) + 51);
+
+                                    // Configuración de gráfica de Pie
+                                    //ConfigGraph_Pie(excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV5", (7 + (52 * i)) + 51, (7 + (52 * i)) + 51);
+
+                                }
+
+                            }
+
+                            if (contador > 0)
+                            {
+                                var RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "SARI" : "IRAG") + "'!$BY$8:$BZ$59 ";
+
+                                for (int i = 1; i <= contador; i++)
+                                {
+                                    RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "SARI" : "IRAG") + "'!$BY$" + (8 + (52 * i)).ToString() + ":$BZ$" + ((8 + (52 * i)) + 51).ToString() + ", " + RangeStr;
+                                }
+
+                                RangeStr = " ( " + RangeStr + ")";
+
+                                //Tamaño original de las gráficas
+                                // LineChart.SetSize(1375, 700);
+
+                                var graph_name = "GS2";
+                                var LineChart = excelWs_IRAG_Chart.Drawings[graph_name] as ExcelChart;
+                                LineChart.SetSize((80 * contador) + 600, 325);
+                                UpdateRangeXMLPath(LineChart, RangeStr);
+
+                                graph_name = "GS4";
+                                LineChart = excelWs_IRAG_Chart.Drawings[graph_name] as ExcelChart;
+                                LineChart.SetSize((80 * contador) + 600, 325);
+                                UpdateRangeXMLPath(LineChart, RangeStr);
+
+                                graph_name = "GS5";
+                                LineChart = excelWs_IRAG_Chart.Drawings[graph_name] as ExcelChart;
+                                LineChart.SetSize((80 * contador) + 600, 325);
+                                UpdateRangeXMLPath(LineChart, RangeStr);
+
+                                graph_name = "GS6";
+                                LineChart = excelWs_IRAG_Chart.Drawings[graph_name] as ExcelChart;
+                                LineChart.SetSize((80 * contador) + 600, 325);
+                                UpdateRangeXMLPath(LineChart, RangeStr);
+
+                                graph_name = "GS7";
+                                LineChart = excelWs_IRAG_Chart.Drawings[graph_name] as ExcelChart;
+                                LineChart.SetSize((80 * contador) + 600, 325);
+                                UpdateRangeXMLPath(LineChart, RangeStr);
+
+                                graph_name = "GS8";
+                                LineChart = excelWs_IRAG_Chart.Drawings[graph_name] as ExcelChart;
+                                LineChart.SetSize((80 * contador) + 600, 325);
+                                UpdateRangeXMLPath(LineChart, RangeStr);
+
+                                graph_name = "GS9";
+                                LineChart = excelWs_IRAG_Chart.Drawings[graph_name] as ExcelChart;
+                                LineChart.SetSize((80 * contador) + 600, 325);
+                                UpdateRangeXMLPath(LineChart, RangeStr);
+                            }
+
+                            contador = YearEnd - YearBegin;
+                            if (contador > 0)
+                            {
+                                //var excelWs_Graph_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "SARI Graphs" : "Gráficos IRAG"];
+                                //var excelWs_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "SARI" : "IRAG"];
+
+                                for (int i = 1; i <= contador; i++)
+                                {
+                                    ConfigGraph_FLUID(YearEnd - i, i, excelWorkBook, excelWs_IRAG_Chart.Index, excelWs_IRAG.Index, "GS1", "C", "E");
+                                }
+                            }
+
+                            /////////////////////////////////////////////////////////////////// DEATHS  /////////////////////////////////////////////////////////
                             var excelWs_DEATHS_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "DEATHS Sentinel Sites" : "Fallecidos IRAG"];
+                            var excelWs_DEATHS_IRAG_Chart = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "DEATHS Sentinel Sites" : "Fallecidos IRAG"];
+
                             AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_DEATHS_IRAG", 8, 1, excelWs_DEATHS_IRAG.Index, false, ReportCountry, YearBegin, YearEnd, 1, Inusual, AreaID_, Sentinel);
-                              // ILI
+
+                            // DEATHS Chart
+
+                            contador = YearEnd - YearBegin;
+                            if (contador > 0)
+                            {
+
+                                for (int i = 1; i <= contador; i++)
+                                {
+                                    ConfigGraph_FLUID(YearEnd - i, i, excelWorkBook, excelWs_DEATHS_IRAG_Chart.Index, excelWs_DEATHS_IRAG.Index, "CD3", "C", "K");
+                                }
+                            }
+
+                            for (int i = 0; i <= contador; i++)
+                            {
+
+                                YearEnd_report = YearEnd - i;
+
+                                if (i > 0)
+                                {
+                                    // Copy rangos para los años
+                                    CopyAndPasteRange(excelWorkBook, excelWs_DEATHS_IRAG.Index, excelWorkBook, excelWs_DEATHS_IRAG.Index, "BY8:BZ59", "BY" + Convert.ToString(8 + (52 * i)) + ":BZ" + Convert.ToString(8 + (52 * i) + 52));
+
+                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_DEATHS_IRAG_Chart.Index, excelWs_DEATHS_IRAG.Index, "CD1", (8 + (52 * i)), (8 + (52 * i)) + 51);
+                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_DEATHS_IRAG_Chart.Index, excelWs_DEATHS_IRAG.Index, "CD2", (8 + (52 * i)), (8 + (52 * i)) + 51);
+
+                                }
+
+                            }
+
+                            if (contador > 0)
+                            {
+                                var RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "DEATHS Sentinel Sites" : "Fallecidos IRAG") + "'!$BY$8:$BZ$59 ";
+
+                                for (int i = 1; i <= contador; i++)
+                                {
+                                    RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "DEATHS Sentinel Sites" : "Fallecidos IRAG") + "'!$BY$" + (8 + (52 * i)).ToString() + ":$BZ$" + ((8 + (52 * i)) + 51).ToString() + ", " + RangeStr;
+                                }
+
+                                RangeStr = " ( " + RangeStr + ")";
+
+                                //Tamaño original de las gráficas
+                                // LineChart.SetSize(1375, 700);
+
+                                var graph_name = "CD1";
+                                var LineChart = excelWs_DEATHS_IRAG_Chart.Drawings[graph_name] as ExcelChart;
+                                LineChart.SetSize((100 * contador) + 1000, 650);
+                                UpdateRangeXMLPath(LineChart, RangeStr);
+
+                                graph_name = "CD2";
+                                LineChart = excelWs_DEATHS_IRAG_Chart.Drawings[graph_name] as ExcelChart;
+                                LineChart.SetSize((100 * contador) + 1000, 650);
+                                UpdateRangeXMLPath(LineChart, RangeStr);
+
+                            }
+
+                            ////////////////////////////////////////////////////////////////// ILI //////////////////////////////////////////////////
                             var excelWs_ILI = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "ILI" : "ETI"];
+                            var excelWs_ILI_Chart = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "ILI" : "ETI"];
+
                             AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_ETI", 8, 1, excelWs_ILI.Index, false, ReportCountry, YearBegin, YearEnd, 2, Inusual, AreaID_, Sentinel);
 
-                            // VIRUS ILI
+
+                            // Ajustar gráficas ILI
+                            for (int i = 0; i <= contador; i++)
+                            {
+
+                                YearEnd_report = YearEnd - i;
+
+                                if (i > 0)
+                                {
+                                    // Copy rangos para los años
+                                    CopyAndPasteRange(excelWorkBook, excelWs_ILI.Index, excelWorkBook, excelWs_ILI.Index, "BY8:BZ59", "BY" + Convert.ToString(8 + (52 * i)) + ":BZ" + Convert.ToString(8 + (52 * i) + 52));
+
+
+                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_ILI_Chart.Index, excelWs_ILI.Index, "CILI1", (8 + (52 * i)), (8 + (52 * i)) + 51);
+                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_ILI_Chart.Index, excelWs_ILI.Index, "CILI3", (8 + (52 * i)), (8 + (52 * i)) + 51);
+                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_ILI_Chart.Index, excelWs_ILI.Index, "CILI4", (8 + (52 * i)), (8 + (52 * i)) + 51);
+
+                                    // Configuración de gráfica de Pie
+                                    //ConfigGraph_Pie(excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV5", (7 + (52 * i)) + 51, (7 + (52 * i)) + 51);
+
+                                }
+
+                            }
+
+                            if (contador > 0)
+                            {
+                                var RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "ILI" : "ETI") + "'!$BY$8:$BZ$59 ";
+
+                                for (int i = 1; i <= contador; i++)
+                                {
+                                    RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "ILI" : "ETI") + "'!$BY$" + (8 + (52 * i)).ToString() + ":$BZ$" + ((8 + (52 * i)) + 51).ToString() + ", " + RangeStr;
+                                }
+
+                                RangeStr = " ( " + RangeStr + ")";
+
+                                //Tamaño original de las gráficas
+                                // LineChart.SetSize(1375, 700);
+
+                                var graph_name = "CILI1";
+                                var LineChart = excelWs_ILI_Chart.Drawings[graph_name] as ExcelChart;
+                                LineChart.SetSize((80 * contador) + 600, 325);
+                                UpdateRangeXMLPath(LineChart, RangeStr);
+
+                                graph_name = "CILI3";
+                                LineChart = excelWs_ILI_Chart.Drawings[graph_name] as ExcelChart;
+                                LineChart.SetSize((80 * contador) + 600, 325);
+                                UpdateRangeXMLPath(LineChart, RangeStr);
+
+                                graph_name = "CILI4";
+                                LineChart = excelWs_ILI_Chart.Drawings[graph_name] as ExcelChart;
+                                LineChart.SetSize((80 * contador) + 600, 325);
+                                UpdateRangeXMLPath(LineChart, RangeStr);
+                            }
+
+
+                            //////////////////////////////////////////////////////////////  VIRUS ILI ////////////////////////////////////////////////////  
+
                             var excelWs_VIRUSES_ILI = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "ILI VIRUSES - Sentinel" : "Virus ETI Identificados"];
-                            AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_NATIONAL_VIRUSES", 6, 1, excelWs_VIRUSES_ILI.Index, false, ReportCountry, YearBegin, YearEnd, 2, Inusual, AreaID_, Sentinel);
+                            var excelWs_VIRUSES_ILI_Chart = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "ILI Graphs Viruses" : "Gráficos Virus ETI"];
+                            contador = YearEnd - YearBegin;
+                            YearEnd_report = DateTime.Now.Year;
+                            //AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_NATIONAL_VIRUSES", 6, 1, excelWs_VIRUSES_ILI.Index, false, ReportCountry, YearBegin, YearEnd, 2, Inusual, AreaID_, Sentinel);
+
+                            for (int i = 0; i <= contador; i++)
+                            {
+
+                                YearEnd_report = YearEnd - i;
+
+
+                                if (i > 0)
+                                {
+                                    //Insert_Copy_And_PasteRange(excelWorkBook, excelWs_VIRUSES_IRAG.Index, excelWorkBook, excelWs_VIRUSES_IRAG.Index, "A4:BZ58", "A" + Convert.ToString(4 + (57 * i)) + ":BZ" + Convert.ToString(4 + (57 * i) + 55), (52 * i), 52);
+                                    //CopyAndPasteRange(excelWorkBook, excelWs_VIRUSES_IRAG.Index, excelWorkBook, excelWs_VIRUSES_IRAG.Index, "A4:BZ58", "A" + Convert.ToString(4 + (57 * i)) + ":BZ" + Convert.ToString(4 + (57 * i) + 55));
+                                    CopyAndPasteRange(excelWorkBook, excelWs_VIRUSES_ILI.Index, excelWorkBook, excelWs_VIRUSES_ILI.Index, "A" + Convert.ToString(6 + (52 * i)) + ":BZ" + Convert.ToString(6 + (52 * i)), "A" + Convert.ToString(6 + (52 * (i + 1))) + ":BZ" + Convert.ToString(6 + (52 * (i + 1))));
+                                    CopyAndPasteRange(excelWorkBook, excelWs_VIRUSES_ILI.Index, excelWorkBook, excelWs_VIRUSES_ILI.Index, "A6:BZ57", "A" + Convert.ToString(6 + (52 * i)) + ":BZ" + Convert.ToString(6 + (52 * i) + 52));
+
+                                }
+                                if (i > 0)
+                                {
+                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_VIRUSES_ILI_Chart.Index, excelWs_VIRUSES_ILI.Index, "CVILI1", (6 + (52 * i)), (6 + (52 * i)) + 51);
+                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_VIRUSES_ILI_Chart.Index, excelWs_VIRUSES_ILI.Index, "CVILI2", (6 + (52 * i)), (6 + (52 * i)) + 51);
+                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_VIRUSES_ILI_Chart.Index, excelWs_VIRUSES_ILI.Index, "CVILI3", (6 + (52 * i)), (6 + (52 * i)) + 51);
+                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_VIRUSES_ILI_Chart.Index, excelWs_VIRUSES_ILI.Index, "CVILI4", (6 + (52 * i)), (6 + (52 * i)) + 51);
+                                    // Configuración de gráfica de Pie
+                                    ConfigGraph_Pie(excelWorkBook, excelWs_VIRUSES_ILI_Chart.Index, excelWs_VIRUSES_ILI.Index, "CVILI5", (7 + (52 * i)) + 51, (7 + (52 * i)) + 51);
+                                    ConfigGraph_Pie(excelWorkBook, excelWs_VIRUSES_ILI_Chart.Index, excelWs_VIRUSES_ILI.Index, "CVILI6", (7 + (52 * i)) + 51, (7 + (52 * i)) + 51);
+
+
+                                }
+                                AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4", (i > 0 ? (6 + (52 * i)) : 6), 1, excelWs_VIRUSES_ILI.Index, false, ReportCountry, YearEnd_report, YearEnd_report, 2, Inusual, AreaID_, Sentinel);
+
+                            }
+
+                            if (contador > 0)
+                            {
+                                var RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "ILI VIRUSES - Sentinel" : "Virus ETI Identificados") + "'!$BY$6:$BZ$57 ";
+
+                                for (int i = 1; i <= contador; i++)
+                                {
+                                    RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "ILI VIRUSES - Sentinel" : "Virus ETI Identificados") + "'!$BY$" + (6 + (52 * i)).ToString() + ":$BZ$" + ((6 + (52 * i)) + 51).ToString() + ", " + RangeStr;
+                                }
+
+                                RangeStr = " ( " + RangeStr + ")";
+
+                                //Tamaño original de las gráficas
+                                // LineChart.SetSize(1375, 700);
+
+                                var graph_name = "CVILI1";
+                                var LineChart = excelWs_VIRUSES_ILI_Chart.Drawings[graph_name] as ExcelChart;
+                                LineChart.SetSize((150 * contador) + 1375, 700);
+                                UpdateRangeXMLPath(LineChart, RangeStr);
+
+                                graph_name = "CVILI2";
+                                LineChart = excelWs_VIRUSES_ILI_Chart.Drawings[graph_name] as ExcelChart;
+                                LineChart.SetSize((150 * contador) + 1375, 700);
+                                UpdateRangeXMLPath(LineChart, RangeStr);
+
+                                graph_name = "CVILI3";
+                                LineChart = excelWs_VIRUSES_ILI_Chart.Drawings[graph_name] as ExcelChart;
+                                LineChart.SetSize((150 * contador) + 1375, 700);
+                                UpdateRangeXMLPath(LineChart, RangeStr);
+
+                                graph_name = "CVILI4";
+                                LineChart = excelWs_VIRUSES_ILI_Chart.Drawings[graph_name] as ExcelChart;
+                                LineChart.SetSize((150 * contador) + 1375, 700);
+                                UpdateRangeXMLPath(LineChart, RangeStr);
+                            }
 
                             // Leyendas
                             var excelWs_Leyendas = excelWorkBook.Worksheets["Leyendas"];
-                            ConfigToExcel_FLUID(CountryID, Languaje_, RegionID_, YearEnd, YearBegin ,  YearEnd, StartDate, EndDate, HospitalID_, excelWorkBook, "Leyendas", 1, excelWs_Leyendas.Index, false);
+                            ConfigToExcel_FLUID(CountryID, Languaje_, RegionID_, YearEnd, YearBegin, YearEnd, StartDate, EndDate, HospitalID_, excelWorkBook, "Leyendas", 1, excelWs_Leyendas.Index, false);
 
-                            // Manejo de graficas 
-                            // SARI
-                            contador = YearEnd - YearBegin;
-                            if (contador > 0)
-                            {
-                                var excelWs_Graph_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "SARI Graphs" : "Gráficos IRAG"];
-                                var excelWs_data_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "SARI" : "IRAG"];
 
-                                for (int i = 1; i <= contador; i++)
-                                {
-                                    ConfigGraph_FLUID(YearEnd - i, i, excelWorkBook, excelWs_Graph_IRAG.Index, excelWs_data_IRAG.Index, "GS1", "C" , "E");
-                                }
-                            }
-
-                            // DEATHS
-                            contador = YearEnd - YearBegin;
-                            if (contador > 0)
-                            {
-                                var excelWs_Graph_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "DEATHS Sentinel Sites" : "Fallecidos IRAG"];
-                                var excelWs_data_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "DEATHS Sentinel Sites" : "Fallecidos IRAG"];
-
-                                for (int i = 1; i <= contador; i++)
-                                {
-                                    ConfigGraph_FLUID(YearEnd - i, i, excelWorkBook, excelWs_Graph_IRAG.Index, excelWs_data_IRAG.Index, "GS2", "C", "K");
-                                }
-                            }
                         }
                         else if (reportTemplate.ToUpper() == "C1")
                         {
@@ -3855,6 +4118,29 @@ namespace Paho.Controllers
                         }
                     }
                 }
+            }
+
+        }
+
+        private void ConfigGraph_Pie(ExcelWorkbook excelWorkBook, int sheet_graph, int sheet_data, string graph_name, int range_begin, int range_end)
+        {
+            var excelWorksheet_graph = excelWorkBook.Worksheets[sheet_graph];
+            var excelWorksheet_data = excelWorkBook.Worksheets[sheet_data];
+
+            var LineChart = excelWorksheet_graph.Drawings[graph_name] as ExcelChart;
+            //LineChart.UseSecondaryAxis = true;
+            var cs = LineChart.Series;
+            var Secundary_cs = LineChart.PlotArea.ChartTypes;
+
+
+            var begin_str = "";
+            var letter_range_str = "";
+            var range_str = "";
+
+            foreach (ExcelChartSerie element in cs)
+            {
+                range_str = element.Series.ToString();
+                element.Series = range_str.Replace((range_begin - 52).ToString(), (range_begin).ToString());
             }
 
         }

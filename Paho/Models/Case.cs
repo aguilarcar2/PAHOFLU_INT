@@ -29,6 +29,7 @@ namespace Paho.Models
         public IEnumerable<LookupView<Institution>> Institutions { get; set; }
         public IEnumerable<LookupView<Lab>> Labs { get; set; }
         public IEnumerable<LookupView<CatReasonNotSampling>> ReasonNotSampling { get; set; }
+        public IEnumerable<LookupView<Institution>> InstitutionsCaseGenerarting { get; set; }
         public Array LabsExternal { get; set; }
         public Array LabsHospital_cmb { get; set;  }
         public bool DisplayCountries { get; set; }
@@ -1007,7 +1008,8 @@ namespace Paho.Models
          // Mapeo princifpal para grabar datos
         public int ID { get; set; }
         [Required]
-        public long HospitalID { get; set; }  
+        public long HospitalID { get; set; }
+        public long? HospitalID_CaseGenerating { get; set; }
         public DateTime HospitalDate { get; set; }
         public DateTime RegDate { get; set; }
         public int? Surv { get; set; }
@@ -1893,6 +1895,7 @@ namespace Paho.Models
                {
                    p.ID,
                    p.HospitalID,
+                   p.HospitalID_CaseGenerating,
                    p.HospitalDate,
                    p.RegDate,
                    p.FName1,

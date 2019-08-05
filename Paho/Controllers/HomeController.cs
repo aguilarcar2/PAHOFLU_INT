@@ -16,6 +16,7 @@ namespace Paho.Controllers
         {
             var CaseViewModel = new CaseViewModel();
             IQueryable<Institution> institutions = null;
+            IQueryable<Institution> InstitutionsCaseGenerating = null;
             IQueryable<Region> regions = null;
             IQueryable<Area> areas = null;
 
@@ -217,6 +218,20 @@ namespace Paho.Controllers
 
                 CaseViewModel.Institutions = institutionsDisplay;
             }
+
+            // Health institution Case Generating 
+            InstitutionsCaseGenerating = db.Institutions.OfType<Hospital>().Where(i => i.CountryID == user.Institution.CountryID);
+             var institutionsCaseGeneratingDisplay = InstitutionsCaseGenerating.Select(i => new LookupView<Institution>() {
+                    Id = i.ID.ToString(),
+                    Name = i.Name
+                }).ToList();
+            if (institutionsCaseGeneratingDisplay.Count() > 1)
+            {
+                var all = new LookupView<Institution> { Id = "", Name = getMsg("msgSelectLabel") };        
+                institutionsCaseGeneratingDisplay.Insert(0, all);
+            }
+
+            CaseViewModel.InstitutionsCaseGenerarting = institutionsCaseGeneratingDisplay;
 
             //**** Informacion del usuario
             var region_institucional_usr = user.Institution.cod_region_institucional;

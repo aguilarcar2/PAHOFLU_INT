@@ -55,6 +55,7 @@
     self.selectedAreaId = ko.observable("");
     self.selectedRegionId = ko.observable("");
     self.institutions = ko.observableArray(institutions);
+    self.InstitutionsCaseGenerarting = ko.observableArray(InstitutionsCaseGenerarting);
     self.selectedInstitutionId = ko.observable("");
     self.SCasenumber = ko.observable("");
     self.SNStartDate = ko.observable("");

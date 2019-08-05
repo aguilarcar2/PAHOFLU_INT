@@ -948,6 +948,7 @@ namespace Paho.Controllers
                      nationality = flucase.nationality,
                      nativepeople = flucase.nativepeople,
                      hospitalIDRecord = flucase.HospitalID,
+                     hospitalIDCaseGenerating = flucase.HospitalID_CaseGenerating,
                      hospitalName = institutionsName[0],
                      DataStatement = flucase.statement,
                      flow_record = flucase.flow,
@@ -1004,6 +1005,7 @@ namespace Paho.Controllers
             DateTime HospitalDate,
             DateTime RegDate,
             int HospitalId,
+            int HospitalID_CaseGenerating,
             int? nativepeople,
             int? nationality,
             DateTime DateFeverDummy,
@@ -1042,6 +1044,7 @@ namespace Paho.Controllers
                 {
                     flucase = new FluCase();
                     flucase.HospitalID = HospitalId;
+                    flucase.HospitalID_CaseGenerating = HospitalID_CaseGenerating;
                     flucase.flow = 0;
                     db.Entry(flucase).State = EntityState.Added;
                 }
@@ -1063,6 +1066,7 @@ namespace Paho.Controllers
                     {
                         flucase = new FluCase();
                         flucase.HospitalID = HospitalId;
+                        flucase.HospitalID_CaseGenerating = HospitalID_CaseGenerating;
                         flucase.flow = 0;
                         db.Entry(flucase).State = EntityState.Added;
                     }
@@ -1073,6 +1077,7 @@ namespace Paho.Controllers
             {
                 flucase = db.FluCases.Find(id);
                 flucase.HospitalID = HospitalId;
+                flucase.HospitalID_CaseGenerating = HospitalID_CaseGenerating;
                 db.Entry(flucase).State = EntityState.Modified;
             }
             flucase.Surv = Surv;
