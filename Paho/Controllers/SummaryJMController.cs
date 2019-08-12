@@ -8,6 +8,9 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Paho.Utility;
+using System.Configuration;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace Paho.Controllers
 {
@@ -28,6 +31,7 @@ namespace Paho.Controllers
             //CaseViewModel.UsrCtry = user.Institution.CountryID;
             SummaryViewModel.DatePickerConfig = DoS;
             SummaryViewModel.DateFormatDP = date_format;
+            SummaryViewModel.DisplayTotalGroup = false;                         // Mostrar totales x Pais/Parish ILI Cases-Visit
             //SummaryViewModel.UsrCtry = user.Institution.CountryID;
 
             if (user.Institution.AccessLevel == AccessLevel.All)
@@ -43,7 +47,8 @@ namespace Paho.Controllers
                 {
                     institutions = db.Institutions
                                    //.Where(i => i.CountryID == user.Institution.CountryID && i.AccessLevel == AccessLevel.Area).OrderBy(n => n.FullName);
-                                   .Where(i => i.CountryID == user.Institution.CountryID && i.ILI == true).OrderBy(n => n.FullName);   
+                                   .Where(i => i.CountryID == user.Institution.CountryID && i.ILI == true).OrderBy(n => n.FullName);
+                    SummaryViewModel.DisplayTotalGroup = true;
                 }
                 else if (user.Institution.AccessLevel == AccessLevel.Area)
                 {
@@ -51,6 +56,7 @@ namespace Paho.Controllers
                     //               .Where(i => i.AreaID == user.Institution.AreaID && i.AccessLevel == AccessLevel.Area).OrderBy(n => n.FullName);
                     institutions = db.Institutions
                                    .Where(i => i.AreaID == user.Institution.AreaID && i.ILI == true).OrderBy(n => n.FullName);
+                    SummaryViewModel.DisplayTotalGroup = true;
                 }
                 else
                 {
@@ -77,7 +83,6 @@ namespace Paho.Controllers
 
                 if (institutionsDisplay.Count() > 1)
                 {
-                    //var all = new LookupView<Institution> { Id = "0", Name = getMsg("msgGeneralMessageAll") };
                     var all = new LookupView<Institution> { Id = "0", Name = getMsg("msgSelectLabel") };
                     institutionsDisplay.Insert(0, all);
                 }
@@ -86,9 +91,7 @@ namespace Paho.Controllers
             };
 
             var AgeGroupDisplay = db.CatAgeGroupJM.Where(y => y.id_country == user.Institution.CountryID).OrderBy(z => z.id_conf_country).ToList();
-            //.Select(x => x.AgeGroup)
 
-            //SummaryViewModel.CatAgeGroup = AgeGroupDisplay;
             SummaryViewModel.CatAgeGroup = AgeGroupDisplay;
 
             //**** Link Dashboard
@@ -110,16 +113,158 @@ namespace Paho.Controllers
             return View(SummaryViewModel);
         }
 
+        public JsonResult GetSummaryForYearJM(int hospitalId, int epiYear)
+        {
+            int nSemaActual;
+            DateTime dSEHoy;
+            List<Dictionary<string, int>> summaryPerYear = new List<Dictionary<string, int>>();
+            DateTime dFech = PAHOClassUtilities.fechaInicioPrimeraSemanaEpidemiologica(epiYear);
+            if (DateTime.Today.Year == epiYear)
+            {
+                nSemaActual = PAHOClassUtilities.NumeroActualSE();
+                dSEHoy = dFech.AddDays((nSemaActual - 1) * 7).AddDays(6);
+            }
+            else
+            {
+                nSemaActual = PAHOClassUtilities.semanasAnioEpidemiologico(epiYear);
+                dSEHoy = PAHOClassUtilities.fechaInicioPrimeraSemanaEpidemiologica(epiYear);
+                dSEHoy = dSEHoy.AddDays(-1);
+            }
+
+            //****
+            string hospitalIDs = "";
+            IQueryable<Institution> institutions = null;
+            var user = UserManager.FindById(User.Identity.GetUserId());
+
+            if (user.Institution is Hospital || user.Institution is AdminInstitution)
+            {
+                if (user.Institution.AccessLevel == AccessLevel.Country)
+                {
+                    institutions = db.Institutions
+                                   .Where(i => i.CountryID == user.Institution.CountryID && i.ILI == true).OrderBy(n => n.FullName);
+                }
+                else if (user.Institution.AccessLevel == AccessLevel.Area)      // Jamaica: Parish
+                {
+                    institutions = db.Institutions
+                                   .Where(i => i.AreaID == user.Institution.AreaID && i.ILI == true).OrderBy(n => n.FullName);
+                }
+                else
+                {
+                    institutions = db.Institutions.OfType<Hospital>()
+                                   .Where(i => i.ID == user.Institution.ID).OrderBy(n => n.FullName);
+                }
+
+                foreach (var inst in institutions)
+                    hospitalIDs += inst.ID.ToString() + ",";
+                hospitalIDs = hospitalIDs.Substring(0, hospitalIDs.Length - 1);
+            }
+
+            //****
+            Dictionary<string, int> aILICaseTG = new Dictionary<string, int>();
+            Dictionary<string, int> aILISampTG = new Dictionary<string, int>();
+            Dictionary<string, int> aTotVisiTG = new Dictionary<string, int>();
+
+            int countryId = (int)user.Institution.CountryID;
+            int weekFrom = 1;
+            var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+            using (var con = new SqlConnection(consString))
+            {
+                using (var command = new SqlCommand("Summary_ILI_TotalByEW", con) { CommandType = CommandType.StoredProcedure, CommandTimeout = 600 })
+                {
+                    command.Parameters.Clear();
+                    command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
+                    command.Parameters.Add("@Year_case", SqlDbType.Int).Value = epiYear;
+                    command.Parameters.Add("@Hospital_ID", SqlDbType.NVarChar).Value = hospitalIDs;
+                    command.Parameters.Add("@weekFrom", SqlDbType.Int).Value = weekFrom;
+                    command.Parameters.Add("@weekTo", SqlDbType.Int).Value = nSemaActual;
+
+                    con.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string cAnio = reader.GetValue(0).ToString();
+                            string cWE = reader.GetValue(1).ToString();
+
+                            aILICaseTG.Add(cAnio + cWE, (int)reader.GetValue(2));
+                            aILISampTG.Add(cAnio + cWE, (int)reader.GetValue(3));
+                            aTotVisiTG.Add(cAnio + cWE, (int)reader.GetValue(4));
+                        }
+                    }
+
+                    command.Parameters.Clear();
+                    con.Close();
+                }
+            }
+
+            //****
+            for (int i = nSemaActual; i >= 1; i--)
+            {
+                Dictionary<string, int> dictionary = new Dictionary<string, int>();
+                var ColILICasesST = 0;
+                var ColILISamplesTakenST = 0;
+                var ColTotalVisitsST = 0;
+
+                DateTime WeekendDate = DateTime.UtcNow;
+
+                var casesummary = db.CaseSummariesJM.FirstOrDefault(s => s.HospitalId == hospitalId && s.EW == i && s.EpiYear == epiYear);
+                if (casesummary == null)
+                {
+                    DateTime vFeIn = dFech.AddDays(7 * (i - 1));
+                    DateTime vFeFi = vFeIn.AddDays(6);
+
+                    if (WeekendDate >= vFeIn && WeekendDate <= vFeFi)
+                        WeekendDate = vFeFi;
+                    else
+                    {
+                        if (vFeFi < WeekendDate)
+                            WeekendDate = dFech.AddDays(7 * (i - 1) + 6);
+                        else
+                            WeekendDate = dSEHoy;
+                    }
+                }
+                else
+                {
+                    var casesummaryDetails = casesummary.CaseSummaryDetailJM.ToArray();
+                    WeekendDate = casesummary.WeekendDate;
+                    foreach (CaseSummaryDetailJM casesummaryDetail in casesummaryDetails)
+                    {
+                        ColILICasesST += casesummaryDetail.ILICases;
+                        ColILISamplesTakenST += casesummaryDetail.ILISamplesTaken;
+                        ColTotalVisitsST += casesummaryDetail.TotalVisits;
+                    }
+                }
+                dictionary.Add("EpiWeek", i);
+                dictionary.Add("ColILICasesST", ColILICasesST);
+                dictionary.Add("ColILISamplesTakenST", ColILISamplesTakenST);
+                dictionary.Add("ColTotalVisitsST", ColTotalVisitsST);
+                Int32 unixTimestamp = (Int32)(WeekendDate.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+                dictionary.Add("WeekendDate", unixTimestamp);
+                dictionary.Add("EpiYear", epiYear);
+                //****
+                dictionary.Add("ColILICaseGroup", aILICaseTG[epiYear.ToString() + i.ToString()]);
+                dictionary.Add("ColILISampGroup", aILISampTG[epiYear.ToString() + i.ToString()]);
+                dictionary.Add("ColTotVisiGroup", aTotVisiTG[epiYear.ToString() + i.ToString()]);
+
+                //****
+                summaryPerYear.Add(dictionary);
+            }
+
+            System.Diagnostics.Debug.WriteLine("F2->" + DateTime.Now.ToString());     //=> OKOK
+            return Json(summaryPerYear, JsonRequestBehavior.AllowGet);
+        }
+
         public JsonResult GetSummaryDetailsJM(int hospitalId, string hospitalDate, int EpiWeek, int EpiYear)
         {
             var HospitalDate = DateTime.Parse(hospitalDate);
             //var casesummary =  db.CaseSummaries.FirstOrDefault(s=>s.HosiptalId == hospitalId && s.StartDateOfWeek == HospitalDate);
             var casesummary = db.CaseSummariesJM.FirstOrDefault(s => s.HospitalId == hospitalId && s.EpiYear == EpiYear && s.EW == EpiWeek);
             var user = UserManager.FindById(User.Identity.GetUserId());
+
             if (casesummary == null)
             {
-                casesummary = new CaseSummaryJM()
-                {
+                casesummary = new CaseSummaryJM(){
                     WeekendDate = HospitalDate,
                     HospitalId = hospitalId,
                     EW = EpiWeek,
@@ -144,23 +289,6 @@ namespace Paho.Controllers
             }
             var casesummaryDetails = casesummary.CaseSummaryDetailJM.ToArray();
 
-
-            //     (
-            //      from casesummary in db.CaseSummaries as IEnumerable<CaseSummary>
-            //      where casesummary
-            //      select casesummary.CaseSummaryDetails
-            //      );
-
-            //      CaseSummaryDetails = db.FluCases.GroupBy(o=>o.AgeGroup).Select( f => new {
-
-            //      AgeGroup = f.Key,
-            //      Hospfem = f.Sum(i => i.Gender == Gender.Female && i.CaseHospital.HospAmDate.HasValue ? 1 : 0),
-            //      HospMaso = f.Sum(i => i.Gender == Gender.Male && i.CaseHospital.HospAmDate.HasValue ? 1 : 0),
-            //      ICUfem = f.Sum(i => i.Gender == Gender.Female &&  i.CaseHospital.ICUAmDate.HasValue ? 1 : 0),
-            //      ICUMaso = f.Sum(i => i.Gender == Gender.Male &&  i.CaseHospital.ICUAmDate.HasValue ? 1 : 0),
-            //      Deffem = f.Sum(i => i.Gender == Gender.Female && i.CaseHospital.Destin.Equals("D") ? 1 : 0),
-            //      DefMaso = f.Sum(i => i.Gender == Gender.Male && i.CaseHospital.Destin.Equals("D") ? 1 : 0)              
-            //      }               
             return Json(casesummaryDetails, JsonRequestBehavior.AllowGet);
         }
 
@@ -182,104 +310,7 @@ namespace Paho.Controllers
 
             return Json(getMsg("viewValidateSavedRecordSummary"));
         }
-
-        public JsonResult GetSummaryForYearJM(int hospitalId)
-        {
-            var epiYear = DateTime.Now.Year.ToString();
-            int intEpiYear = Int32.Parse(epiYear);
-            List<Dictionary<string, int>> summaryPerYear = new List<Dictionary<string, int>>();
-            ///////DateTime dFech = fechaInicioPrimeraSemanaEpidemiologica(DateTime.UtcNow.Year);
-            DateTime dFech = PAHOClassUtilities.fechaInicioPrimeraSemanaEpidemiologica(DateTime.Today.Year);
-            int nSemaActual = PAHOClassUtilities.NumeroActualSE();
-            //dFech = dFech.AddDays(6);
-            DateTime dSEHoy;
-            dSEHoy = dFech.AddDays((nSemaActual - 1) * 7).AddDays(6);
-
-            //#### Fecha fin de SE del dia de hoy
-            /*DateTime dSEHoy;
-            DateTime dHoy = DateTime.Now.Date;
-            dSEHoy = dHoy;
-
-            for (int i = 52; i >= 1; i--)
-            {
-                DateTime vSeIn = dFech.AddDays(7 * (i - 1));
-                DateTime vSeFi = vSeIn.AddDays(6);
-                if (dHoy >= vSeIn && dHoy <= vSeFi)
-                {
-                    dSEHoy = vSeFi;
-                    break;
-                }
-            }*/
-            //#### 
-
-            //for (int i = 1; i <= 52; i++)
-            //for (int i = 52; i >= 1; i--)
-            for (int i = nSemaActual; i >= 1; i--)
-            {
-                Dictionary<string, int> dictionary = new Dictionary<string, int>();
-                var ColILICasesST = 0;
-                var ColILISamplesTakenST = 0;
-                var ColTotalVisitsST = 0;
-
-                DateTime WeekendDate = DateTime.UtcNow;
-
-                var casesummary = db.CaseSummariesJM.FirstOrDefault(s => s.HospitalId == hospitalId && s.EW == i && s.EpiYear == intEpiYear);
-                if (casesummary == null)
-                {
-                    DateTime vFeIn = dFech.AddDays(7 * (i - 1));
-                    DateTime vFeFi = vFeIn.AddDays(6);
-
-                    if (WeekendDate >= vFeIn && WeekendDate <= vFeFi)
-                        WeekendDate = vFeFi;
-                    else
-                    {
-                        if (vFeFi < WeekendDate)
-                            WeekendDate = dFech.AddDays(7 * (i - 1) + 6);
-                        else
-                            WeekendDate = dSEHoy;
-                    }
-                }
-                else
-                {
-                    //var casesummaryDetails = casesummary.CaseSummaryDetailJM.ToArray();
-                    var casesummaryDetails = casesummary.CaseSummaryDetailJM.ToArray();
-                    WeekendDate = casesummary.WeekendDate;
-                    foreach (CaseSummaryDetailJM casesummaryDetail in casesummaryDetails)
-                    {//casesummaryDetails
-                        ColILICasesST += casesummaryDetail.ILICases;
-                        ColILISamplesTakenST += casesummaryDetail.ILISamplesTaken;
-                        ColTotalVisitsST += casesummaryDetail.TotalVisits;
-                    }
-                }
-                dictionary.Add("EpiWeek", i);
-                dictionary.Add("ColILICasesST", ColILICasesST);
-                dictionary.Add("ColILISamplesTakenST", ColILISamplesTakenST);
-                dictionary.Add("ColTotalVisitsST", ColTotalVisitsST);
-                Int32 unixTimestamp = (Int32)(WeekendDate.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
-                dictionary.Add("WeekendDate", unixTimestamp);
-                dictionary.Add("EpiYear", intEpiYear);
-                summaryPerYear.Add(dictionary);
-            }
-            return Json(summaryPerYear, JsonRequestBehavior.AllowGet);
-        }
-
-        /*private DateTime fechaInicioPrimeraSemanaEpidemiologica(int nYear)
-        {
-            DateTime vFeIn, vTemp, vSaba;
-            //****
-            vTemp = new DateTime(nYear, 1, 1);                  // 1er día del anio
-            int nWeDa = (int)vTemp.DayOfWeek + 1;               // Domingo 1er día   
-            vSaba = vTemp.AddDays(7 - nWeDa);                   // 1er sábado
-
-            int nDife = (int)vSaba.Subtract(vTemp).TotalDays;
-            if (nDife >= 3)
-                vFeIn = vSaba.AddDays(-(7 - 1));
-            else
-                vFeIn = vSaba.AddDays(1);
-            //****
-            return vFeIn;
-        }*/
-
+      
         public string getMsg(string msgView)
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
@@ -289,7 +320,7 @@ namespace Paho.Controllers
 
             ResourcesM myR = new ResourcesM();
             searchedMsg = myR.getMessage(searchedMsg, countryID, countryLang);
-            //searchedMsg = myR.getMessage(searchedMsg, 0, "ENG");
+
             return searchedMsg;
         }
     }

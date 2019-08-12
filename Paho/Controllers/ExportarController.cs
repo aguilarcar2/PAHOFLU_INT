@@ -1762,7 +1762,7 @@ namespace Paho.Controllers
         private static void AppendDataToExcel_R6_SeveralYears(string languaje_, int countryId, int? regionId, int? year,
             int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook,
             string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry,
-            int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId, int? Sentinel = null)               //#### CAFQ
+            int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId, int? Sentinel = null)
         {
             string cTemp = "";
             int _YearFrom, _YearTo;
@@ -1808,13 +1808,23 @@ namespace Paho.Controllers
             {
                 int nAnio = _YearFrom + (nI - 1);
 
-                //**** Campos data para el anio nI
+                //---- Campos data para el anio nI
                 col = _startColumn + (nI - 1) * 57;
                 if (nI > 1)
                 {
                     excelWorksheet.Cells[rowIT2 - 3, _startColumn, rowFT2 + 4, _startColumn + 57 - 1].Copy(excelWorksheet.Cells[rowIT2 - 3, col]);
                 }
                 excelWorksheet.Cells[rowIT2 - 3, col].Value = nAnio;
+                //---- Ancho de columnas
+                for(int nJ = col; nJ < col + 57; nJ++)
+                {
+                    if (nJ == col)
+                        excelWorksheet.Column(nJ).Width = 5.43;     // 43 px
+                    else if (nJ > col + 57 - 5)
+                        excelWorksheet.Column(nJ).Width = 9.29;     // 40 px
+                    else
+                        excelWorksheet.Column(nJ).Width = 5;        // 40 px
+                }
             }
 
             //---- Antecedentes

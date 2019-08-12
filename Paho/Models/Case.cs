@@ -312,6 +312,7 @@ namespace Paho.Models
         public bool DisplayHospitals { get; set; }
         public string DatePickerConfig { get; set; }
         public string DateFormatDP { get; set; }
+        public bool DisplayTotalGroup { get; set; }
     }
 
     public class ReportViewModel

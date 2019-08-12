@@ -473,11 +473,7 @@ namespace Paho.Controllers
                 if (editUser.ChangePassword)
                 {
                     UserStore<ApplicationUser> store = new UserStore<ApplicationUser>(db);
-                    //String userId = user.Id;
-                    //String newPassword = editUser.Password; 
-                    //String hashedNewPassword = UserManager.PasswordHasher.HashPassword(newPassword);
                     String hashedNewPassword = UserManager.PasswordHasher.HashPassword(editUser.Password);
-                    //ApplicationUser cUser = await store.FindByIdAsync(userId);
                     ApplicationUser cUser = await store.FindByIdAsync(user.Id);
                     await store.SetPasswordHashAsync(cUser, hashedNewPassword);
                     await store.UpdateAsync(cUser);

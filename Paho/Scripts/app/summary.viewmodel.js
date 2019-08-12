@@ -2,26 +2,27 @@
 function SummaryYearItem(data) {
     var self = this;
     //****
-    self.ColETINumST = data.ColETINumST;
+    self.ColETINumST = data.ColETINumST;                    // ETI: Bandeja
     self.ColETIDenoST = data.ColETIDenoST;
-    //self.ColETINumEmerFST = data.ColETINumEmerFST;
-    //self.ColETINumEmerMST = data.ColETINumEmerMST;
     self.ColETINumEmerST = data.ColETINumEmerST;
 
-    self.ColHospTST = data.ColHospTST;
+    self.ColHospTST = data.ColHospTST;                      // SARI: Bandeja
     self.ColUCITST = data.ColUCITST;
     self.ColFalleTST = data.ColFalleTST;
-    self.ColHospSARITST = data.ColHospSARITST;          //#### CAFQ: 181101
-    self.ColUCISARITST = data.ColUCISARITST;            //#### CAFQ: 181101
-    self.ColFalleSARITST = data.ColFalleSARITST;        //#### CAFQ: 181101
-
+    self.ColHospSARITST = data.ColHospSARITST;   
+    self.ColUCISARITST = data.ColUCISARITST;       
+    self.ColFalleSARITST = data.ColFalleSARITST;    
     self.ColNeuTST = data.ColNeuTST;
-    self.ColCCSARITST = data.ColCCSARITST;              //####CAFQ
+    self.ColCCSARITST = data.ColCCSARITST;
     self.ColVentTST = data.ColVentTST;
 
-    self.ColILICasesST = data.ColILICasesST;
+    self.ColILICasesST = data.ColILICasesST;                // ILI Jamaica: Bandeja
     self.ColILISamplesTakenST = data.ColILISamplesTakenST;
     self.ColTotalVisitsST = data.ColTotalVisitsST;
+
+    self.ColILICaseGroup = data.ColILICaseGroup;            // ILI Jamaica: Bandeja: Totales establecimeintos x Pais/Area/Region
+    self.ColILISampGroup = data.ColILISampGroup;
+    self.ColTotVisiGroup = data.ColTotVisiGroup;
 
     self.ColEpiYear = data.EpiYear;
     self.ColEpiWeek = data.EpiWeek;
@@ -1512,7 +1513,6 @@ function SummaryViewModel(app, dataModel) {
 
     self.GetYearSummaryForYearItems = function () {
         if ((typeof self.selectedHospitalId() != "undefined") && self.selectedHospitalId() != "") {
-            //$.postJSON(app.dataModel.getSummaryForYearUrl, { hospitalId: self.selectedHospitalId() })
             $.postJSON(app.dataModel.getSummaryForYearUrl, { hospitalId: self.selectedHospitalId(), epiYear: self.EpiYear() })       // self.EpiYear
                .success(function (data, textStatus, jqXHR) {
                    $("#LabelBandeja").show();
@@ -1528,7 +1528,7 @@ function SummaryViewModel(app, dataModel) {
 
     self.GetYearSummaryForYearItemsJM = function () {
         if ((typeof self.selectedHospitalId() != "undefined") && self.selectedHospitalId() != "") {
-            $.postJSON(app.dataModel.getSummaryForYearUrlJM, { hospitalId: self.selectedHospitalId() })
+            $.postJSON(app.dataModel.getSummaryForYearUrlJM, { hospitalId: self.selectedHospitalId(), epiYear: self.EpiYear() })
                .success(function (data, textStatus, jqXHR) {
                    $("#LabelBandeja").show();
                    $("#TotalBandeja").show();
@@ -1759,13 +1759,6 @@ function SummaryViewModel(app, dataModel) {
     }
 
     self.SaveSummayItems = function () {
-        console.log("Salvando1->A");
-        console.log(self.SummayItems());
-        console.log(self.SummayItems()[0]);
-        console.log(self.SummayItems()[0].MakeValueOfSummayItem());
-        console.log(self.SummayItems()[1].MakeValueOfSummayItem());
-        console.log("Salvando1->B");
-        //****
         if (self.ActiveHON()) {
             var cErrorF = "";
             cErrorF = ValidarDatosSave();
@@ -1795,7 +1788,6 @@ function SummaryViewModel(app, dataModel) {
     };
 
     self.SaveSummayItemsJM = function () {
-        //console.log(self.MakeValuesOfSummayItems());
         $.ajax({
             type: 'POST',
             dataType: 'json',
@@ -1809,6 +1801,7 @@ function SummaryViewModel(app, dataModel) {
                 else
                     alert(data);
                 self.CancelarItems();
+                self.GetYearSummaryForYearItemsJM();  //***********
             },
         })
     };

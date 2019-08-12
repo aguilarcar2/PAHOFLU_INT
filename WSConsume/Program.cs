@@ -25,17 +25,21 @@ namespace WSConsume
 
         public static bool CargarDesdeWS()
         {
+            //System.Console.WriteLine("CargarDesdeWS->STAR");
             int server = 2;
             string cKeyValidate = "W~(4n-Xp@fcJRVV3gepmYeU3=8Rrg3C,{RUvmXH6shWT48;P";
             WSPaCr.WSBDSoapClient WSD = new WSPaCr.WSBDSoapClient();
+            //System.Console.WriteLine("CargarDesdeWS->Invocando el WS");
             var miJson = WSD.GetDaPI(server, cKeyValidate);
+            //System.Console.WriteLine("CargarDesdeWS->Data en miJson");
+            System.Console.WriteLine("CargarDesdeWS->Los primeros 30 Chars recuperados->" + miJson.Substring(1, 30));
 
             DataTable dtExcelData = (DataTable)JsonConvert.DeserializeObject(miJson, typeof(DataTable));
-
+            System.Console.WriteLine("CargarDesdeWS->Data a DataTable");
             try
             {
                 var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
+                //System.Console.WriteLine("CargarDesdeWS->Data a dbo.ImportLab START");
                 using (var con = new SqlConnection(consString))
                 {
                     using (var sqlBulkCopy = new SqlBulkCopy(con))
@@ -46,6 +50,7 @@ namespace WSConsume
                         con.Close();
                     }
                 }
+                //System.Console.WriteLine("CargarDesdeWS->Data a dbo.ImportLab END");
 
                 //Archivo de exportacion de resultados y ejecucion de StoreProcedure
                 var ms = new MemoryStream();
@@ -55,32 +60,35 @@ namespace WSConsume
 
                 using (var excelPackage = new ExcelPackage(fs))
                 {
+                    //System.Console.WriteLine("->111");
                     var excelWorkBook = excelPackage.Workbook;
                     int startColumn = 1;
                     int startRow = 3;
                     bool insertRow = true;
-                    string Report = "ImportLab_CR";
+                    string Report = "ImportLab_CR"; 
                     string user = "PAHOINCIENSA";
 
+                    System.Console.WriteLine("->222");
                     AppendDataToExcel(9, excelWorkBook, Report, startRow, startColumn, 1, insertRow);
-
+                    System.Console.WriteLine("->333");
                     excelPackage.SaveAs(ms);
-
+                    System.Console.WriteLine("->444");
                     //implementación para el guardado del archivo
 
                     //FileInfo notImportedFile = new FileInfo(ConfigurationManager.AppSettings["ImportFailedFolder"] + User.Identity.Name + "_" + DateTime.Now.ToString("yyyyMMddhhmmsst") + "_" + Request.Files["file"]?.FileName + ".XLSX");
                     FileInfo notImportedFile = new FileInfo(ConfigurationManager.AppSettings["ImportFailedFolder"] + user + "_" + DateTime.Now.ToString("yyyyMMddhhmmsst") + ".XLSX");
-
+                    System.Console.WriteLine("->555");
                     FileStream aFile = new FileStream(notImportedFile.FullName, FileMode.Create);
                     aFile.Seek(0, SeekOrigin.Begin);
-
+                    System.Console.WriteLine("->666");
                     ExcelPackage excelNotImported = new ExcelPackage();
 
                     excelNotImported.Load(ms);
-
+                    System.Console.WriteLine("->777");
                     excelNotImported.SaveAs(aFile);
+                    System.Console.WriteLine("->888");
                     aFile.Close();
-
+                    System.Console.WriteLine("->999");
 
                     //hacer inserción en la base de datos, bitácora de subidas
                     var consStringLogImport = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
@@ -125,6 +133,7 @@ namespace WSConsume
                 //};
 
                 //{ storeProcedureMessage}
+                System.Console.WriteLine("CargarDesdeWS->END");
             }
             catch (Exception e)
             {

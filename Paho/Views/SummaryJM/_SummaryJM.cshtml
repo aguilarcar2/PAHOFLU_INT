@@ -1,5 +1,13 @@
 ﻿@model Paho.Models.SummaryJMViewModel
 
+<style>
+    .yearEpidem {
+        background-color: #77dd77;
+        /*background-color: #428bca;*/
+        color: white;
+    }
+</style>
+
 <!-- ko with: app.Views.Summary -->
 <div class="row" style="margin-bottom:15px; margin-top:1em;">
     <!--Country-->
@@ -119,19 +127,19 @@
         </span>
     </div>
 
-    <!-- Hospitalizacion -->
+    <!-- Casos -->
     <div class="col-md-1" id="ICases">
         <div class='col-md-1 input-group'>
             <input type='text' name="ILICases" id="ILICases" class="form-control" style="padding:6px;" data-bind="value: ILICases" />
         </div>
     </div>
-    <!-- UCI -->
+    <!-- Muestras -->
     <div class="col-md-1" id="ISamplesTaken">
         <div class='col-md-1 input-group'>
             <input type='text' name="ILISamplesTaken" id="ILISamplesTaken" class="form-control" style="padding:6px;" data-bind="value: ILISamplesTaken" />
         </div>
     </div>
-    <!-- Fallecidos -->
+    <!-- Visitas -->
     <div class="col-md-1" id="ITotalVisits">
         <div class='input-group col-md-1'>
             <input type='text' name="TotalVisits" id="TotalVisits" class="form-control" style="padding:6px;" data-bind="value: TotalVisits" />
@@ -139,6 +147,7 @@
     </div>
 </div>
 <!-- /ko -->
+
 <!-- Totales -->
 <div class="row rowform" id="TotalSummary">
     <!--Totales-->
@@ -180,7 +189,19 @@
 
 <!-- Bandeja -->
 <div class="container" style="margin-bottom:15px; margin-top:1em;">
-    <table class="table table-hover table-responsive" style="width:480px;">
+    <div class="col-md-2">
+        <div class='input-group'>
+            <span class="input-group-addon yearEpidem">
+                @(((Paho.Controllers.SummaryJMController)this.ViewContext.Controller).getMsg("msgGeneralYear"))
+            </span>
+            <select id="EpiYear" class="form-control" data-bind="options: availableYears,
+                    value: EpiYear,
+					event:{change: GetYearSummaryForYearItemsJM}"> 
+            </select>
+        </div>
+    </div>
+
+    <table class="table table-hover table-responsive" style="width:560px;">
         <!-- Cabecera -->
         <thead id="LabelBandeja">
             <tr>
@@ -199,6 +220,19 @@
                 <th class="col-md-1">
                     @( (((Paho.Controllers.SummaryJMController)this.ViewContext.Controller).getMsg("msgViewSummaryJMILITotalVisits")) )
                 </th>
+                @if (Model.DisplayTotalGroup)
+                {
+                    <th class="col-md-1">
+                        @( (((Paho.Controllers.SummaryJMController)this.ViewContext.Controller).getMsg("msgViewSummaryJMTotalGrandILICases")) )
+                    </th>
+                    <th class="col-md-1">
+                         @( (((Paho.Controllers.SummaryJMController)this.ViewContext.Controller).getMsg("msgViewSummaryJMTotalGrandILISamplesTaken")) )
+                    </th>
+                    <th class="col-md-1">
+                         @( (((Paho.Controllers.SummaryJMController)this.ViewContext.Controller).getMsg("msgViewSummaryJMTotalGrandTotalVisits")) )
+                    </th>
+                }
+
             </tr>
         </thead>
 
@@ -221,6 +255,19 @@
                 <td>
                     <span data-bind="text: ColTotalVisitsST" />
                 </td>
+                <!-- Totales grupo -->
+                @if (Model.DisplayTotalGroup)
+                {
+                    <td>
+                        <span data-bind="text: ColILICaseGroup" />
+                    </td>
+                    <td>
+                        <span data-bind="text: ColILISampGroup" />
+                    </td>
+                    <td>
+                        <span data-bind="text: ColTotVisiGroup" />
+                    </td>
+                }
             </tr>
             <!-- /ko -->
         </tbody>
