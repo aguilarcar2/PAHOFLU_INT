@@ -201,7 +201,7 @@
         </div>
     </div>
 
-    <table class="table table-hover table-responsive" style="width:560px;">
+    <table class="table table-hover table-responsive" style="width:640px;">
         <!-- Cabecera -->
         <thead id="LabelBandeja">
             <tr>
@@ -223,16 +223,19 @@
                 @if (Model.DisplayTotalGroup)
                 {
                     <th class="col-md-1">
-                        @( (((Paho.Controllers.SummaryJMController)this.ViewContext.Controller).getMsg("msgViewSummaryJMTotalGrandILICases")) )
                     </th>
                     <th class="col-md-1">
-                         @( (((Paho.Controllers.SummaryJMController)this.ViewContext.Controller).getMsg("msgViewSummaryJMTotalGrandILISamplesTaken")) )
                     </th>
                     <th class="col-md-1">
-                         @( (((Paho.Controllers.SummaryJMController)this.ViewContext.Controller).getMsg("msgViewSummaryJMTotalGrandTotalVisits")) )
+                        <span style="color:#FD322F">@( (((Paho.Controllers.SummaryJMController)this.ViewContext.Controller).getMsg("msgViewSummaryJMTotalGrandILICases")) )</span>
+                    </th>
+                    <th class="col-md-1">
+                        <span style="color:#FD322F">@( (((Paho.Controllers.SummaryJMController)this.ViewContext.Controller).getMsg("msgViewSummaryJMTotalGrandILISamplesTaken")) )</span>
+                    </th>
+                    <th class="col-md-1">
+                        <span style="color:#FD322F">@( (((Paho.Controllers.SummaryJMController)this.ViewContext.Controller).getMsg("msgViewSummaryJMTotalGrandTotalVisits")) )</span>                        
                     </th>
                 }
-
             </tr>
         </thead>
 
@@ -258,6 +261,8 @@
                 <!-- Totales grupo -->
                 @if (Model.DisplayTotalGroup)
                 {
+                    <td></td>
+                    <td></td>
                     <td>
                         <span data-bind="text: ColILICaseGroup" />
                     </td>
@@ -284,6 +289,8 @@
     var moment_date_format = "@(Html.Raw(((Paho.Controllers.SummaryJMController)this.ViewContext.Controller).getMsg("msgDateFormatMoment")))";
     var ISO_date_format = "@(Html.Raw(((Paho.Controllers.SummaryJMController)this.ViewContext.Controller).getMsg("msgDateFormatISO")))";
     var DatePicker_date_format = "@(Html.Raw(((Paho.Controllers.SummaryJMController)this.ViewContext.Controller).getMsg("msgDateFormatDP")))";
+
+    var msgViewSummaryAlertSelectILISentinelSite = "@(Html.Raw(((Paho.Controllers.SummaryJMController)this.ViewContext.Controller).getMsg("msgViewSummaryAlertSelectILISentinelSite")))";
 
     /////////var MsgSavedData = "@(Html.Raw(((Paho.Controllers.SummaryJMController)this.ViewContext.Controller).getMsg("msgViewSummaryValidateSavedData")))";
     //***************************************

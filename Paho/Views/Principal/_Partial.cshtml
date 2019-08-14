@@ -880,7 +880,6 @@
                 var dataIrag = 0;
                 var dataEti = 0;
                 if($("#chkCountry").is(':checked')){
-                    //alert("Pais chequeado");
                     dataRegion = 0;
                     dataHospital = 0;
                     dataIrag = 1;
@@ -905,7 +904,6 @@
                 yrs = allVals.join();
                 $("#anios").val(yrs);
 
-                //alert($("#anios").val());
                 $(document).ready(function () {
                     $.ajax({
                         type: 'POST',
@@ -969,17 +967,17 @@
                             $("#loaderGraph8").hide(0);
                         },
                         success: function (data) {
-                            /*/################################################################# DESARROLLO
-                            if(GraphCountryID == 18){
-                                GetGraphData11();
-                                GetGraphData12();
-                                GetGraphData9();
-                                GetGraphData10();
-                                GetGraphData7();
-                                GetGraphData8();
-                                return '';
-                            }
-                            //################################################################# END DESARROLLO*/
+                            //################################################################# DESARROLLO
+                            //if(GraphCountryID == 17 || GraphCountryID == 9 || GraphCountryID == 3){
+                            //    GetGraphData7();
+                            //    GetGraphData8();
+                            //    GetGraphData9();
+                            //    GetGraphData10();
+                            //    GetGraphData11();
+                            //    GetGraphData12();
+                            //    return '';
+                            //}
+                            //################################################################# END DESARROLLO
                             var json_obj = JSON.parse(data);
                             jsonX = JSON.parse(data);
                             var chartData = [];
@@ -1008,11 +1006,9 @@
                                 }
                             }
                             chartDataLength = chartData.length;
-                            //alert(chartDataLength);
                             chartData.reverse();
                             if(chartDataLength>0){
                                 for(i = chartDataLength-1; i>0;i--){
-                                    //alert(chartData[i].semana);
                                     if(chartData[i].serie1==0 && chartData[i].serie2==0 && chartData[i].serie3==0){
                                         chartData.pop();
                                     }
@@ -5682,8 +5678,6 @@
                 var allVals = [];
                 var yrs = "";
 
-
-                //alert($("#anios").val());
                 $(document).ready(function () {
                     $.ajax({
                         type: 'POST',
@@ -5696,13 +5690,9 @@
                             var json_obj = JSON.parse(data);
                             jsonX = JSON.parse(data);
                             var chartData = [];
-                            //console.log("jsonX");
-                            //console.log(jsonX);
+
                             $.each(jsonX, function(index, element) {
-
-                                //alert(element);
                                 addMapCheckbox(element);
-
                             });
                         }
                     });
@@ -6626,9 +6616,8 @@
             var CountryIDM = @Html.Raw(Model.CountryID);
             addMapCheckbox($('#txtName').val());
 
-            //if(CountryIDM != 18){
             GetMapData1();
-            //}
+
             if(!(CountryIDM == 25 || CountryIDM == 119 || CountryIDM == 11 || CountryIDM == 18 || CountryIDM == 15)){           // Suriname y Islas Cayman: No tienen region
                 GetMapData2();                              // Institucional
             }

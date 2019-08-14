@@ -1627,6 +1627,11 @@ function SummaryViewModel(app, dataModel) {
     };
 
     self.GetSummayItemsJM = function () {
+        if (self.selectedHospitalId() == 0) {
+            alert(msgViewSummaryAlertSelectILISentinelSite);
+            return;
+        }
+
         if ((typeof self.selectedHospitalId() != "undefined") && self.selectedHospitalId() != "" && (typeof self.HospitalDate() != "undefined") && self.HospitalDate() != "") {
             DatetoSend = jQuery.type(self.HospitalDate()) === 'date' ? self.HospitalDate() : parseDate($("#HospitalDate").val(), date_format_)
             $.postJSON(app.dataModel.getSummayDetailsUrlJM, { hospitalId: self.selectedHospitalId(), hospitalDate: moment(DatetoSend).format(date_format_ISO), EpiWeek: self.HospitalEW(), EpiYear: self.HospitalYE() })
