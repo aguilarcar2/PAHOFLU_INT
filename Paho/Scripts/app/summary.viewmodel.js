@@ -1501,7 +1501,6 @@ function SummaryViewModel(app, dataModel) {
             self.Id = "";
         }
 
-        //self.selectedHospitalId("");
         self.HospitalDate("");
         self.HospitalEW("");
         self.HospitalYE("");
@@ -1527,18 +1526,22 @@ function SummaryViewModel(app, dataModel) {
     };
 
     self.GetYearSummaryForYearItemsJM = function () {
-        if ((typeof self.selectedHospitalId() != "undefined") && self.selectedHospitalId() != "") {
-            $.postJSON(app.dataModel.getSummaryForYearUrlJM, { hospitalId: self.selectedHospitalId(), epiYear: self.EpiYear() })
-               .success(function (data, textStatus, jqXHR) {
-                   $("#LabelBandeja").show();
-                   $("#TotalBandeja").show();
-                   self.SummaryForYearItems([]);
-                   data.forEach(self.AddSummaryForYearItems);
-               })
-               .fail(function (jqXHR, textStatus, errorThrown) {
-                   alert(errorThrown);
-               })
+        if ((typeof self.selectedHospitalId() == "undefined") || self.selectedHospitalId() == "" || self.selectedHospitalId() == "0") {  
+            self.HospitalDate(null);
+            self.HospitalEW(null);
+            self.HospitalYE(null);
         }
+
+        $.postJSON(app.dataModel.getSummaryForYearUrlJM, { hospitalId: self.selectedHospitalId(), epiYear: self.EpiYear() })
+            .success(function (data, textStatus, jqXHR) {
+                $("#LabelBandeja").show();
+                $("#TotalBandeja").show();
+                self.SummaryForYearItems([]);
+                data.forEach(self.AddSummaryForYearItems);
+            })
+            .fail(function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            })
     };
 
     self.GetSummaryExcel = function () {
@@ -1628,6 +1631,10 @@ function SummaryViewModel(app, dataModel) {
 
     self.GetSummayItemsJM = function () {
         if (self.selectedHospitalId() == 0) {
+            self.HospitalDate(null);
+            self.HospitalEW(null);
+            self.HospitalYE(null);
+            //self.CancelarItems()
             alert(msgViewSummaryAlertSelectILISentinelSite);
             return;
         }

@@ -217,6 +217,7 @@ namespace Paho.Controllers
                 Int32 unixTimestamp = (Int32)(StartDateOfWeek.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
                 dictionary.Add("StartDateOfWeek", unixTimestamp);
                 dictionary.Add("EpiYear", epiYear);
+                //dictionary.Add("HospitalId", hospitalId);
 
                 summaryPerYear.Add(dictionary);
             }

@@ -251,7 +251,7 @@ namespace Paho.Controllers
                 summaryPerYear.Add(dictionary);
             }
 
-            System.Diagnostics.Debug.WriteLine("F2->" + DateTime.Now.ToString());     //=> OKOK
+            //System.Diagnostics.Debug.WriteLine("F2->" + DateTime.Now.ToString());     //=> OKOK
             return Json(summaryPerYear, JsonRequestBehavior.AllowGet);
         }
 
