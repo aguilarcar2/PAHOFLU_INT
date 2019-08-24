@@ -2349,7 +2349,7 @@ namespace Paho.Controllers
 
                 if (nI % 2 == 0)
                 {
-                    col0 = 8;
+                    col0 = 8 + (nAnios - 2) * 2;
                 }
                 else
                 {

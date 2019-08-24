@@ -14,6 +14,7 @@
         <h4>@(Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminEditUserForm", ViewBag.UsrCtry, ViewBag.UsrCtryLang))</h4>
         <hr />
         @Html.ValidationSummary("", new { @class = "text-danger" })
+
         @Html.HiddenFor(m => m.Id)
 
         <div class="form-group">
