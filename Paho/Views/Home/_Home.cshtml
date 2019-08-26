@@ -290,32 +290,26 @@
                     </div>
                 </div>}
         </div>
-
-        @*@if (ViewBag.UsrCtry == 9)
+        @if (ViewBag.UsrCtry == 17)
         {
-            <div class="row rowform">
+            <div class="row rowform" data-bind="visible:displayhospitalIDCaseGenerating">
+                <div class="col-md-6"></div>
 
-                <div class="col-md-4">
-                    <div class='input-group'>
+                <div class="col-md-6">
+                    <div id="HealthCaseGenerate" class='input-group' data-bind="visible:displayhospitalIDCaseGenerating">
                         <span class="input-group-addon">
-                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelRegionMINSA"))
+                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelHospitalCaseGenerating"))
                         </span>
-                        <span id="region_salud" class="form-control" data-bind="text:region_salud" disabled />
-                    </div>
 
-                </div>
-                <div class="col-md-2"></div>
-                    <div class="col-md-4">
-                        <div class='input-group'>
-                            <span class="input-group-addon">
-                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelRegionCCSS"))
-                            </span>
-                            <span id="region_institucional" class="form-control" data-bind="text:region_institucional" disabled />
-                        </div>
-
+                        <select id="cmbInstitutionsCaseGenerarting" class="form-control" style="max-width:85%;" data-bind="options: app.Views.Home.InstitutionsCaseGenerarting,
+                                optionsText: 'Name',
+                                optionsValue: 'Id',
+                                value: hospitalIDCaseGenerating "></select>
                     </div>
                 </div>
-        }*@
+            </div>
+        }
+
         @if (ViewBag.UsrCtry == 15 ||  ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 3)
         {
 
@@ -435,22 +429,9 @@
                     </div>
                 </div>
 
-                @if ( ViewBag.UsrCtry == 17)
-                {
-                    <div class="col-md-6">
-                        <div id="HealthCaseGenerate" class='input-group' data-bind="visible:displayhospitalIDCaseGenerating">
-                            <span class="input-group-addon">
-                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelHospitalCaseGenerating"))
-                            </span>
 
-                            <select id="cmbInstitutionsCaseGenerarting" class="form-control" style="max-width:85%;" data-bind="options: app.Views.Home.InstitutionsCaseGenerarting,
-                                optionsText: 'Name',
-                                optionsValue: 'Id',
-                                value: hospitalIDCaseGenerating "></select>
-                        </div>
-                    </div>
-                 }
             </div>
+
         @if (ViewBag.UsrCtry == 25 || ViewBag.UsrCtry == 11 || ViewBag.UsrCtry == 18 || ViewBag.UsrCtry == 15)
         {
             <div class="row rowform">

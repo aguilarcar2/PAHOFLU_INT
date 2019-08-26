@@ -4487,7 +4487,7 @@ namespace Paho.Controllers
                 element.Series = begin_str + Convert.ToString(range_begin) + ":$" + letter_range_str + Convert.ToString(range_end) + ", " + element.Series ;
             }
 
-            if (graph_name == "CV1" || graph_name == "CV3")
+            if (graph_name == "CV1" || graph_name == "CV3" || graph_name == "GS4" || graph_name == "GS6" || graph_name == "GS8" || graph_name == "CILI3" || graph_name == "CILI4" || graph_name == "CVILI1" || graph_name == "CVILI3")
             {
                 foreach (ExcelChart TypeChart in Secundary_cs)
                 {

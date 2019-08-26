@@ -1005,7 +1005,7 @@ namespace Paho.Controllers
             DateTime HospitalDate,
             DateTime RegDate,
             int HospitalId,
-            int HospitalID_CaseGenerating,
+            int? HospitalID_CaseGenerating,
             int? nativepeople,
             int? nationality,
             DateTime DateFeverDummy,
