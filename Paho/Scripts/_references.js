@@ -759,7 +759,6 @@
 /// <reference path="app/exportar.viewmodel.js" />
 /// <reference path="app/fluid.viewmodel.js" />
 /// <reference path="app/geo.viewmodel.js" />
-/// <reference path="app/home.viewmodel.js" />
 /// <reference path="app/hospital.viewmodel.js" />
 /// <reference path="app/kotools.js" />
 /// <reference path="app/kotoolsfordate.js" />

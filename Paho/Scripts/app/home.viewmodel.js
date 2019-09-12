@@ -699,7 +699,7 @@
         {
             //console.log("aqui _ CaseStatus else"); //
             // Para Jamaica activar la fecha de egreso de hospitalización y el Destino para que lo puedan ingresar en cualquier momento
-            if (self.UsrCountry() == 17) {
+            if (self.UsrCountry() == 17 || (self.UsrCountry() == 7 && self.URmod_epi() == true)) {
                 $("#HospExDate").attr("disabled", false);
                 $("#Destin").attr("disabled", false)
             }

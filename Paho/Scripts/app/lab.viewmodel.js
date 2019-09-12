@@ -18,6 +18,8 @@
     self.ProcLab = ko.observable("");
     self.LabID = ko.observable("");
     self.CanEdit = ko.observable(true);
+    self.CanModLab = ko.observable(true);
+	self.CanDeleteProcess = ko.observable(true);											
     self.CanPCR = ko.observable(app.Views.Lab.CanPCRLab());
     self.CanIFI = ko.observable(app.Views.Lab.CanIFILab());
     self.EndFlow = ko.observable("");
@@ -355,7 +357,7 @@
     });
 
     self.ShowProcessedLab = ko.computed(function () {
-        
+        //console.log(self.CanEdit());
         return (self.ProcessLab() === "true")
     }, self);
     self.NotShowProcessedLab = ko.computed(function () {
@@ -1214,7 +1216,7 @@ function LabViewModel(app, dataModel) {
 
         self.LabTests().forEach(function (c, i) {
             //console.log("CanEdit - " + c.CanEdit() + " - LabId" + LabId);
-            if (c.CanEdit() == true) {
+            if (c.CanDeleteProcess() == true) {
                 //console.log("borrar");
                 self.removeLabTest(SampleNumber, c)
             }
@@ -1868,6 +1870,8 @@ function LabViewModel(app, dataModel) {
                         labtest.Id = data.LabTests[index].Id;
                         labtest.CaseLabID = self.Id;
                         labtest.CanEdit(data.LabTests[index].CanEdit);
+                        labtest.CanModLab(data.LabTests[index].CanModLab);
+						labtest.CanDeleteProcess(data.LabTests[index].CanDeleteProcess);																
                         //console.log(data.LabTests[index].CanEdit);
                         labtest.CanPCR((typeof data.LabTests[index].CanPCR === "undefined" ) ? false : data.LabTests[index].CanPCR );
                         labtest.CanIFI((typeof data.LabTests[index].CanIFI === "undefined") ? false : data.LabTests[index].CanIFI);
@@ -1924,6 +1928,8 @@ function LabViewModel(app, dataModel) {
                         labtest_s2.Id = data.LabTests_Sample2[index].Id;
                         labtest_s2.CaseLabID = self.Id;
                         labtest_s2.CanEdit(data.LabTests_Sample2[index].CanEdit);
+                        labtest_s2.CanModLab(data.LabTests_Sample2[index].CanModLab);
+						labtest_s2.CanDeleteProcess(data.LabTests_Sample2[index].CanDeleteProcess);																		   
                         labtest_s2.CanPCR((typeof data.LabTests_Sample2[index].CanPCR === "undefined") ? false : data.LabTests_Sample2[index].CanPCR);
                         labtest_s2.CanIFI((typeof data.LabTests_Sample2[index].CanIFI === "undefined") ? false : data.LabTests_Sample2[index].CanIFI);
                         labtest_s2.ProcLab(data.LabTests_Sample2[index].ProcLab.toString());
@@ -1975,6 +1981,8 @@ function LabViewModel(app, dataModel) {
                         labtest_s3.Id = data.LabTests_Sample3[index].Id;
                         labtest_s3.CaseLabID = self.Id;
                         labtest_s3.CanEdit(data.LabTests_Sample3[index].CanEdit);
+                        labtest_s3.CanModLab(data.LabTests_Sample3[index].CanModLab);
+						labtest_s3.CanDeleteProcess(data.LabTests_Sample3[index].CanDeleteProcess);																		   
                         labtest_s3.CanPCR((typeof data.LabTests_Sample3[index].CanPCR === "undefined") ? false : data.LabTests_Sample3[index].CanPCR);
                         labtest_s3.CanIFI((typeof data.LabTests_Sample3[index].CanIFI === "undefined") ? false : data.LabTests_Sample3[index].CanIFI);
                         labtest_s3.ProcLab(data.LabTests_Sample3[index].ProcLab.toString());

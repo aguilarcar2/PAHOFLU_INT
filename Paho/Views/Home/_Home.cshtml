@@ -3806,21 +3806,22 @@
                     <div class="row rowform">
                         <div class="col-md-3">
                             <div class='input-group'>
-                                <button id="revome_LabTest_1" type="button" style="background-color: #77dd77; color: white; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px;" class="btn btn-primary" data-bind="enable: CanEdit,visible:CanEdit, click: $parent.removeLabTest.bind($data,1)">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelRemoveResult"))</button>
+                                <button id="revome_LabTest_1" type="button" style="background-color: #77dd77; color: white; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px;" class="btn btn-primary" data-bind="enable: CanDeleteProcess,visible:CanDeleteProcess, click: $parent.removeLabTest.bind($data,1)">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelRemoveResult"))</button>
                             </div>
                         </div>
                     </div>
                     <div class="row rowform">
                         <div class="col-md-3">
                            <div class='input-group'>
-                                <div data-bind="visible: CanEdit()">
-                                    <select name="DrpProcLab" id="DrpProcLab" class="form-control" data-bind="options:$parent.LabsResult,
+                                @*<div data-bind="visible: CanEdit() && CanModLab()">*@
+                               <div data-bind="visible: CanModLab()">
+                                   <select name="DrpProcLab" id="DrpProcLab" class="form-control" data-bind="options:$parent.LabsResult,
                                         optionsText: 'Name',
                                         optionsValue: 'Id',
-                                        value:ProcLab">
-                                    </select>
-                                </div>
-                                <div data-bind="visible: !CanEdit()">
+                                        value:ProcLab"></select>
+                               </div>
+                                @*<div data-bind="visible: !CanEdit() && CanModLab()">*@
+                                <div data-bind="visible: !CanModLab()">
                                     <label data-bind="text: ProcLabName "></label>
                                 </div>
                                 @*<input type="button" value="Borrar" data-bind="enable: CanEdit,visible:CanEdit, click: $parent.removeLabTest.bind($data,1)">*@
