@@ -669,7 +669,10 @@ namespace Paho.Controllers
                                      CS_D = flucase.CaseStatus,
                                      CS_D_Cat = flucase.CatStatusCase,
                                      VR_IF_D = flucase.CaseLabTests.Where(e => e.TestType == 1 && e.Processed != null).OrderBy(y => y.CatVirusType.orden).ThenBy(d => d.SampleNumber).ThenBy(u => u.TestDate).FirstOrDefault(),
-                                     VR_PCR_D = flucase.CaseLabTests.Where(e => e.TestType == 2 && e.Processed != null).OrderBy(y => y.CatVirusType.orden).ThenBy(d => d.SampleNumber).ThenBy(u => u.TestDate).FirstOrDefault(),
+                                     VR_PCR_D = flucase.CaseLabTests.Where(e => e.TestType == 2 && e.Processed != null)
+                                                .OrderBy(y => y.CatVirusType.orden)
+                                                .ThenBy(d => d.SampleNumber)
+                                                .ThenBy(u => u.TestDate).FirstOrDefault(),
                                      HEALTH_INST = flucase.Hospital.Name ?? "",
                                      FLOW_FLUCASE = flucase.flow,
                                      TEST_LAST = flucase.CaseLabTests.Where(e => e.Processed != null).OrderByDescending(d => d.flow_test).FirstOrDefault(),
@@ -702,7 +705,25 @@ namespace Paho.Controllers
                                          x.NE_D ?? "",
                                          "<img src='/Content/themes/base/images/PDF.png' alt='print'/>",
                                          x.VR_IF_D == null ? "" :  x.VR_IF_D.TestResultID == null ? "": x.VR_IF_D.TestResultID.ToString() == "P" ? x.VR_IF_D.CatVirusType == null ? "" : (user.Institution.Country.Language == "SPA" ? x.VR_IF_D.CatVirusType.SPA : x.VR_IF_D.CatVirusType.ENG) :  x.VR_IF_D.TestResultID == null  ? ""  : user.Institution.Country.Language == "SPA" ? db.CatTestResult.Where(j=> j.value == x.VR_IF_D.TestResultID.ToString()).FirstOrDefault().description : db.CatTestResult.Where(j=> j.value == x.VR_IF_D.TestResultID.ToString()).FirstOrDefault().ENG ,
-                                         x.VR_PCR_D == null ? "" : x.VR_PCR_D.TestResultID == null ? "": x.VR_PCR_D.TestResultID.ToString() == "P" ?  x.VR_PCR_D.CatVirusType == null ? "" : x.VR_PCR_D.CatVirusType.SPA.Contains("Influenza A") == true ? x.VR_PCR_D.CatVirusSubType == null ? "" : (user.Institution.Country.Language == "SPA" ?  x.VR_PCR_D.CatVirusSubType.SPA : x.VR_PCR_D.CatVirusSubType.ENG ): (user.Institution.Country.Language == "SPA" ? x.VR_PCR_D.CatVirusType.SPA : x.VR_PCR_D.CatVirusType.ENG) :  x.VR_PCR_D.TestResultID == null ? "" : user.Institution.Country.Language == "SPA" ? db.CatTestResult.Where(j=> j.value == x.VR_PCR_D.TestResultID.ToString()).FirstOrDefault().description : db.CatTestResult.Where(j=> j.value == x.VR_PCR_D.TestResultID.ToString()).FirstOrDefault().ENG,
+                                         x.VR_PCR_D == null ? "" : x.VR_PCR_D.TestResultID == null ? 
+                                                        "": x.VR_PCR_D.TestResultID.ToString() == "P" ?  
+                                                                x.VR_PCR_D.CatVirusType == null ? 
+                                                                    "" : 
+                                                                    x.VR_PCR_D.CatVirusType.SPA.Contains("Influenza A") == true ? 
+                                                                        x.VR_PCR_D.CatVirusSubType == null ? 
+                                                                            "" : 
+                                                                            x.VR_PCR_D.TestResultID_VirusSubType_2 == "P" ? 
+                                                                                (user.Institution.Country.Language == "SPA" ?  
+                                                                                    x.VR_PCR_D.CatVirusSubType_2.SPA : 
+                                                                                    x.VR_PCR_D.CatVirusSubType_2.ENG ) :
+                                                                                    (user.Institution.Country.Language == "SPA" ?
+                                                                                    x.VR_PCR_D.CatVirusSubType.SPA :
+                                                                                    x.VR_PCR_D.CatVirusSubType.ENG ) : 
+                                                                        (user.Institution.Country.Language == "SPA" ? x.VR_PCR_D.CatVirusType.SPA : x.VR_PCR_D.CatVirusType.ENG) :
+                                                                     x.VR_PCR_D.TestResultID == null ? "" : 
+                                                                  user.Institution.Country.Language == "SPA" ? 
+                                                                  db.CatTestResult.Where(j=> j.value == x.VR_PCR_D.TestResultID.ToString()).FirstOrDefault().description : 
+                                                                  db.CatTestResult.Where(j=> j.value == x.VR_PCR_D.TestResultID.ToString()).FirstOrDefault().ENG,
                                          x.IS_D == false ? getMsg("msgFlucasesMessageNoSample") : x.FR_ID == "P" ? x.FR_D_C == null ? "" : (user.Institution.Country.Language == "SPA" ? x.FR_D_C.SPA : x.FR_D_C.ENG) : (x.P_D == false) ? getMsg("msgFlucasesMessageNotProcessed") : x.FR_ID == "N" ? getMsg("msgFlucasesMessageNegative") : x.FR_ID == "I" ? getMsg("msgFlucasesMessageIndeterminated") : (x.P_D_N == false) ? getMsg("msgFlucasesMessageNotProcessed") : (x.P_D_NPHL == false) ? getMsg("msgFlucasesMessageNotProcessed") : ""  ,
                                          x.HEALTH_INST ?? "",
                                          //x.FLOW_VIRUS != null ? x.FLOW_VIRUS.value_Cat_TestResult : "nulo"  ,
@@ -2536,6 +2557,7 @@ namespace Paho.Controllers
                               //CanEdit = flucase.flow == 99 ? false : (((flucase.flow - 1) == flow_local_lab || flucase.flow == flow_local_lab) & flow_local_lab > 0  && flow_statement == 1) ? true : false, //institutionsIds.Contains(caselabtest.LabID),
                               //CanEdit = User.IsInRole("Modify_Lab") ? true : institutionsIds.Contains(caselabtest.LabID),
                               CanEdit = institutionsIds.Contains(caselabtest.LabID),
+                              CanDeleteProcess = User.IsInRole("Modify_Lab") ? true : institutionsIds.Contains(caselabtest.LabID),
                               CanPCR = db.Institutions.OfType<Lab>().Where(i => i.ID == caselabtest.LabID).First()?.PCR,
                               CanIFI = db.Institutions.OfType<Lab>().Where(i => i.ID == caselabtest.LabID).First()?.IFI,
                               EndFlow = institutionActualFlow.Any() ? ((caselabtest.TestResultID == "N") ? db.InstitutionConfEndFlowByVirus.Where(j => j.id_InstCnf == institutionActualFlow.FirstOrDefault().ID && j.id_Cat_TestType == caselabtest.TestType && j.value_Cat_TestResult == caselabtest.TestResultID).Any().ToString().ToUpper() : db.InstitutionConfEndFlowByVirus.Where(j => j.id_InstCnf == institutionActualFlow.FirstOrDefault().ID && j.id_Cat_TestType == caselabtest.TestType && j.value_Cat_TestResult == caselabtest.TestResultID && j.id_Cat_VirusType == caselabtest.VirusTypeID).Any().ToString().ToUpper()) : "UNKNOWN",
