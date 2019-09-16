@@ -14,6 +14,7 @@
     self.UsrInstID = ko.observable($('#IIDL').val());               // ID de la institucion del usuario
     self.CaseLabID = "";
     self.OrdenLabID = 99;
+    self.hasGet_Local = ko.observable(app.Views.Lab.hasGet());
     self.LabDummy = ko.observable("");
     self.ProcLab = ko.observable("");
     self.LabID = ko.observable("");
@@ -129,8 +130,8 @@
 
     });
 
-    self.EnableTestResult = ko.computed(function () {
-        if (self.TestType() != "" ) {
+    self.EnableTestResult = ko.computed(function (option, item) {
+        if (self.TestType() != "") {
             return true;
         }
         else {
@@ -144,8 +145,10 @@
         //if (((self.TestResultID() != "U" && self.TestResultID() != "N" && self.EnableCHI()) || (self.TestResultID() != "U" && self.DisableCHI())) && self.TestResultID() != "" && typeof self.TestResultID() != "undefined") { // Desactivado por requerimiento de RRR y Suriname porque si les interesa ingresar cuando es negativo
         if (self.TestResultID() != "NA" && self.TestResultID() != "NB" && self.TestResultID() != "MI" && self.TestResultID() != "I" && self.TestResultID() != "V" && self.TestResultID() != "U" && self.TestResultID() != "" && typeof self.TestResultID() != "undefined") {
             if ((self.TestType() == 1 && self.TestResultID() == "N") || (self.UsrCountry() == 3 && self.TestResultID() == "N")) {
+
                 return false;
             } else {
+
                 return true;
             }   
         }
@@ -157,7 +160,8 @@
     }, self);
 
     self.EnableCTVirusType = ko.computed(function () {
-        if ( self.UsrCountry() == 7 && self.TestType() == 2 && self.VirusTypeID() != "") {
+        if (self.UsrCountry() == 7 && self.TestType() == 2 && self.VirusTypeID() != "") {
+
             return true;
         }
         else {
@@ -168,7 +172,8 @@
     }, self);
 
     self.EnableOtherVirusTypes = ko.computed(function () {
-        if (self.VirusTypeID() == "9" ) {
+        if (self.VirusTypeID() == "9") {
+
             return true;
         }
         else {
@@ -179,6 +184,7 @@
 
     self.EnableCTOtherVirusType = ko.computed(function () {
         if (self.UsrCountry() == 7 && self.VirusTypeID() == 9 && self.TestType() == 2) {
+
             return true;
         }
         else {
@@ -378,6 +384,27 @@
             
             app.Views.Lab.OrdenFinalResult();
         }
+        if (!app.Views.Lab.hasGet()) {
+            // subtipo1
+            self.VirusSubTypeID("");
+            self.TestResultID_VirusSubType("");
+            self.CTSubType("");
+            self.CTRLSubType("");
+            self.OrdenTestResultID_VirusSubType = 99;
+            self.OrdenSubTypeID = 99;
+            // subtipo 2
+            self.VirusSubTypeID_2("");
+            self.TestResultID_VirusSubType_2("");
+            self.CTSubType_2("");
+            self.CTRLSubType_2("");
+            self.OrdenTestResultID_VirusSubType_2 = 99;
+            self.OrdenSubTypeID_2 = 99;
+            // Lineage
+            self.VirusLineageID("");
+            self.CTLineage("");
+            self.CTRLLineage("");
+            self.OrdenLineageID = 99;
+        }
         
     });
 
@@ -456,6 +483,15 @@
 
             app.Views.Lab.OrdenFinalResult();
         }
+
+        if (!app.Views.Lab.hasGet()) {
+            console.log("aquí si");
+            self.VirusTypeID("");
+            self.CTVirusType("");
+            self.CTRLVirusType("");
+            self.OrdenVirusTypeID = 99;
+        }
+
 
     });
 
@@ -1795,7 +1831,7 @@ function LabViewModel(app, dataModel) {
                 self.NoProRenId(data.NoProRenId);
                 self.TempSample1(data.TempSample1);
                 self.hasGet(true);
-
+                console.log(self.hasGet());
                 (data.RecDate2) ? self.RecDate2(moment(data.RecDate2).clone().toDate()) : self.RecDate2(null);
                 self.Identification_Test2(data.Identification_Test2);
                 self.Processed2((data.Processed2 != null) ? data.Processed2.toString() : "");
@@ -1885,7 +1921,8 @@ function LabViewModel(app, dataModel) {
                         if (data.LabTests[index].TestDate)
                             labtest.TestDate(moment(data.LabTests[index].TestDate).clone().toDate());
                         labtest.TestResultID((app.Views.Home.UsrCountry() == 7 && data.LabTests[index].TestType == 1 && data.LabTests[index].TestResultID == 'N' && data.LabTests[index].VirusTypeID == 1) ? 'NA' : (app.Views.Home.UsrCountry() == 7 && data.LabTests[index].TestType == 1 && data.LabTests[index].TestResultID == 'N' && data.LabTests[index].VirusTypeID == 2) ? 'NB' : data.LabTests[index].TestResultID);
-                        labtest.VirusTypeID((app.Views.Home.UsrCountry() == 7 && data.LabTests[index].TestType == 1  && data.LabTests[index].TestResultID == 'N') ? null : data.LabTests[index].VirusTypeID);
+                        labtest.VirusTypeID((app.Views.Home.UsrCountry() == 7 && data.LabTests[index].TestType == 1 && data.LabTests[index].TestResultID == 'N') ? null : data.LabTests[index].VirusTypeID);
+                        console.log(labtest.TestResultID());
                         labtest.CTVirusType(data.LabTests[index].CTVirusType);
                         labtest.CTRLVirusType(data.LabTests[index].CTRLVirusType);
                         labtest.OtherVirusTypeID(data.LabTests[index].OtherVirusTypeID);
@@ -2102,6 +2139,8 @@ function LabViewModel(app, dataModel) {
                 }
 
                 self.hasGet(false);
+                console.log("hasGetGeneral");
+                console.log(self.hasGet());
                 //self.OrdenFinalResult();  // Esta línea es para probar si el orden estsa funcionando 
                 if (self.FinalResult() == "") {
                     self.OrdenFinalResult();
