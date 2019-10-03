@@ -30,10 +30,10 @@ namespace Paho.Models
         [Display(Name = "Current password")]
         public string OldPassword { get; set; }
 
-        [Required]
-        [DataType(DataType.Password)]
-        [Display(Name = "Current password")]
-        public string OldPasswordENG { get; set; }
+        //[Required]
+        //[DataType(DataType.Password)]
+        //[Display(Name = "Current password")]
+        //public string OldPasswordENG { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Este campo es requerido")]
         [StringLength(100, ErrorMessage = "En la contraseña {0} debe haber al menos {2} caracteres.", MinimumLength = 6)]

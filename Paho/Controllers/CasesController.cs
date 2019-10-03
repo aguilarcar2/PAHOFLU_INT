@@ -1041,24 +1041,7 @@ namespace Paho.Controllers
 
             if (!id.HasValue)
             {
-                /*  //#### CAFQ: 180604 - Jamaica Universal
-                var flucases = db.FluCases.Where(f => f.NoExpediente == NoExpediente.ToUpper() && (f.FeverDate < DateDummyRange1 && f.FeverDate >= DateDummyRange2)).ToList();
-
-                if (flucases.Any())
-                {
-                    //id = flucases.First().ID;
-                    //flucase = db.FluCases.Find(id);
-                    //db.Entry(flucase).State = EntityState.Modified;
-                    flucase = db.FluCases.Find(id);
-                    return Json("El registro ya existe por favor verifique. Último registro: " + flucases.First().ID.ToString() );
-                }
-                else
-                {
-                    flucase = new FluCase();
-                    flucase.HospitalID = HospitalId;
-                    flucase.flow = 0;
-                    db.Entry(flucase).State = EntityState.Added;
-                }*/
+ 
 
                 //#### CAFQ: 180604 - Jamaica Universal
                 if (UsrCtry == 17 && SInusual == true)       // Jamaica Universal
@@ -1073,15 +1056,13 @@ namespace Paho.Controllers
                 {
                     var DateDummyRange1 = DateFeverDummy.Date.AddDays(1);
                     var DateDummyRange2 = DateFeverDummy.Date.AddDays(-10);
-                    var flucases = db.FluCases.Where(f => f.NoExpediente == NoExpediente.ToUpper() && (f.FeverDate < DateDummyRange1 && f.FeverDate >= DateDummyRange2)).ToList();
+                    var flucases = db.FluCases.Where(f => f.Surv == Surv && f.NoExpediente == NoExpediente.ToUpper() && (f.FeverDate < DateDummyRange1 && f.FeverDate >= DateDummyRange2)).ToList();
 
                     if (flucases.Any())
                     {
-                        //id = flucases.First().ID;
-                        //flucase = db.FluCases.Find(id);
-                        //db.Entry(flucase).State = EntityState.Modified;
                         flucase = db.FluCases.Find(id);
-                        return Json("El registro ya existe por favor verifique. Último registro: " + flucases.First().ID.ToString());
+                        //getMsg("msgRepeatedRegistration")
+                        return Json(getMsg("msgRepeatedRegistration") + flucases.First().ID.ToString());
                     }
                     else
                     {
