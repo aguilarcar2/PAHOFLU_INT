@@ -1734,6 +1734,8 @@ namespace Paho.Controllers
                 myChartLI.YAxis.Title.Text = (string)excelWorksheet.Cells[startRow - 1, nCol + 3].Value;
                 myChartLI.YAxis.Title.Font.Size = 9;
                 myChartLI.YAxis.Title.Font.Bold = true;
+
+                myChartLI.XAxis.MinorUnit = 1;
                 //myChartLI.XAxis.MajorTickMark = eAxisTickMark.Out;
                 //myChartLI.XAxis.MinorTickMark = eAxisTickMark.None;
 

@@ -45,6 +45,7 @@ namespace WSConsume
                     using (var sqlBulkCopy = new SqlBulkCopy(con))
                     {
                         sqlBulkCopy.DestinationTableName = "dbo.ImportLab";
+                        sqlBulkCopy.BulkCopyTimeout = 1200;
                         con.Open();
                         sqlBulkCopy.WriteToServer(dtExcelData);
                         con.Close();
@@ -68,27 +69,18 @@ namespace WSConsume
                     string Report = "ImportLab_CR"; 
                     string user = "PAHOINCIENSA";
 
-                    System.Console.WriteLine("->222");
                     AppendDataToExcel(9, excelWorkBook, Report, startRow, startColumn, 1, insertRow);
-                    System.Console.WriteLine("->333");
                     excelPackage.SaveAs(ms);
-                    System.Console.WriteLine("->444");
-                    //implementación para el guardado del archivo
 
                     //FileInfo notImportedFile = new FileInfo(ConfigurationManager.AppSettings["ImportFailedFolder"] + User.Identity.Name + "_" + DateTime.Now.ToString("yyyyMMddhhmmsst") + "_" + Request.Files["file"]?.FileName + ".XLSX");
                     FileInfo notImportedFile = new FileInfo(ConfigurationManager.AppSettings["ImportFailedFolder"] + user + "_" + DateTime.Now.ToString("yyyyMMddhhmmsst") + ".XLSX");
-                    System.Console.WriteLine("->555");
                     FileStream aFile = new FileStream(notImportedFile.FullName, FileMode.Create);
                     aFile.Seek(0, SeekOrigin.Begin);
-                    System.Console.WriteLine("->666");
                     ExcelPackage excelNotImported = new ExcelPackage();
 
                     excelNotImported.Load(ms);
-                    System.Console.WriteLine("->777");
                     excelNotImported.SaveAs(aFile);
-                    System.Console.WriteLine("->888");
                     aFile.Close();
-                    System.Console.WriteLine("->999");
 
                     //hacer inserción en la base de datos, bitácora de subidas
                     var consStringLogImport = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
@@ -124,15 +116,7 @@ namespace WSConsume
                     //fin de inserción
                 }
                 ms.Position = 0;
-                //ViewBag.Message = $"Archivo trabajado correctamente!";
-                //ViewBag.Message = "Archivo procesado. En la lista inferior podrá ver la lista de los registros que no fueron importados. Lo podrá localizar por la hora de subida y por su usuario. Puede hacer clic en la flecha azul para descargarlo.";
-                //return View();
-                //return new FileStreamResult(ms, "application/xlsx")
-                //{
-                //    FileDownloadName = "NoInsertados.xlsx"
-                //};
 
-                //{ storeProcedureMessage}
                 System.Console.WriteLine("CargarDesdeWS->END");
             }
             catch (Exception e)
@@ -156,15 +140,7 @@ namespace WSConsume
                 using (var command = new SqlCommand(storedProcedure, con) { CommandType = CommandType.StoredProcedure })
                 {
                     command.Parameters.Clear();
-                    command.CommandTimeout = 180;
-                    //command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
-                    //command.Parameters.Add("@Languaje", SqlDbType.Text).Value = "SPA";
-                    //command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
-                    //command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
-                    //command.Parameters.Add("@Mes_", SqlDbType.Int).Value = month;
-                    //command.Parameters.Add("@SE", SqlDbType.Int).Value = se;
-                    //command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
-                    //command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
+                    command.CommandTimeout = 1200;
 
                     con.Open();
                     using (var reader = command.ExecuteReader())
