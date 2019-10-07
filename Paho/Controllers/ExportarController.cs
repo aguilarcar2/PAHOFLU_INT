@@ -427,6 +427,7 @@ namespace Paho.Controllers
                         }
                         else if (reportTemplate.ToUpper() == "R4")
                         {
+                            // Aquí comienza R4 - Virus detectados
                             var contador = 0;
                             var YearBegin = 0;
                             var YearEnd = 0;
@@ -450,36 +451,104 @@ namespace Paho.Controllers
 
                             var excelWs_VIRUSES_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Virus" : "Virus"];
                             var excelWs_VIRUSES_Chart = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Graph Virus" : "Gráficos"];
+                            //contador = YearEnd - YearBegin;
+                            //var YearEnd_report = DateTime.Now.Year;
+
+                            //for (int i = 0; i <= contador; i++)
+                            //{
+                            //    if (i > 0)
+                            //    {
+                            //        CopyAndPasteRange(excelWorkBook, excelWs_VIRUSES_IRAG.Index, excelWorkBook, excelWs_VIRUSES_IRAG.Index, "A4:BZ58", "A" + Convert.ToString(4 + (57 * i)) + ":BZ" + Convert.ToString(4 + (57 * i) + 55));
+                            //    }
+                            //    YearEnd_report = YearEnd - i;
+                            //    AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4", (i > 0 ? (6 + (57 * i)) : 6), 1, excelWs_VIRUSES_IRAG.Index, false, ReportCountry, YearEnd_report, YearEnd_report, Surv, Inusual, AreaID_, Sentinel);
+                            //    if (i > 0)
+                            //    {
+                            //        ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV1", (6 + (57 * i)), (6 + (57 * i)) + 51);
+                            //        ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV2", (6 + (57 * i)), (6 + (57 * i)) + 51);
+                            //        ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV3", (6 + (57 * i)), (6 + (57 * i)) + 51);
+                            //        ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV4", (6 + (57 * i)), (6 + (57 * i)) + 51);
+                            //    }
+                            //}
+
+
+                            //// Procedimiento para cambiar los rangos del eje X 
+                            //if (contador > 0)
+                            //{
+                            //    //var RangeStr = "( Virus!$BY$120:$BZ$171, Virus!$BY$63:$BZ$114, Virus!$BY$6:$BZ$57 ) ";
+                            //    var RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "Virus" : "Virus" )+ "'!$BY$6:$BZ$57 ";
+
+                            //    for (int i = 1; i <= contador; i++)
+                            //    {
+                            //        RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "Virus" : "Virus") + "'!$BY$" + (6 + (57 * i)).ToString() + ":$BZ$" + ((6 + (57 * i)) + 51).ToString() + ", " + RangeStr;
+                            //    }
+
+                            //    RangeStr = " ( " + RangeStr + ")";
+
+                            //    //Tamaño original de las gráficas
+                            //    // LineChart.SetSize(1375, 700);
+
+                            //    var graph_name = "CV1";
+                            //    var LineChart = excelWs_VIRUSES_Chart.Drawings[graph_name] as ExcelChart;
+                            //    LineChart.SetSize( (150*contador) +  1375, 700);
+                            //    UpdateRangeXMLPath(LineChart, RangeStr);
+
+                            //    graph_name = "CV2";
+                            //    LineChart = excelWs_VIRUSES_Chart.Drawings[graph_name] as ExcelChart;
+                            //    LineChart.SetSize((150 * contador) + 1375, 700);
+                            //    UpdateRangeXMLPath(LineChart, RangeStr);
+
+                            //    graph_name = "CV3";
+                            //    LineChart = excelWs_VIRUSES_Chart.Drawings[graph_name] as ExcelChart;
+                            //    LineChart.SetSize((150 * contador) + 1375, 700);
+                            //    UpdateRangeXMLPath(LineChart, RangeStr);
+
+                            //    graph_name = "CV4";
+                            //    LineChart = excelWs_VIRUSES_Chart.Drawings[graph_name] as ExcelChart;
+                            //    LineChart.SetSize((150 * contador) + 1375, 700);
+                            //    UpdateRangeXMLPath(LineChart, RangeStr);
+                            //}
+
                             contador = YearEnd - YearBegin;
                             var YearEnd_report = DateTime.Now.Year;
-                            
+
                             for (int i = 0; i <= contador; i++)
                             {
-                                if (i > 0)
-                                {
-                                    CopyAndPasteRange(excelWorkBook, excelWs_VIRUSES_IRAG.Index, excelWorkBook, excelWs_VIRUSES_IRAG.Index, "A4:BZ58", "A" + Convert.ToString(4 + (57 * i)) + ":BZ" + Convert.ToString(4 + (57 * i) + 55));
-                                }
+
                                 YearEnd_report = YearEnd - i;
-                                AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4", (i > 0 ? (6 + (57 * i)) : 6), 1, excelWs_VIRUSES_IRAG.Index, false, ReportCountry, YearEnd_report, YearEnd_report, Surv, Inusual, AreaID_, Sentinel);
+
+
                                 if (i > 0)
                                 {
-                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV1", (6 + (57 * i)), (6 + (57 * i)) + 51);
-                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV2", (6 + (57 * i)), (6 + (57 * i)) + 51);
-                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV3", (6 + (57 * i)), (6 + (57 * i)) + 51);
-                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV4", (6 + (57 * i)), (6 + (57 * i)) + 51);
+                                    CopyAndPasteRange(excelWorkBook, excelWs_VIRUSES_IRAG.Index, excelWorkBook, excelWs_VIRUSES_IRAG.Index, "A" + Convert.ToString(6 + (52 * i)) + ":BZ" + Convert.ToString(6 + (52 * i)), "A" + Convert.ToString(6 + (52 * (i + 1))) + ":BZ" + Convert.ToString(6 + (52 * (i + 1))));
+                                    CopyAndPasteRange(excelWorkBook, excelWs_VIRUSES_IRAG.Index, excelWorkBook, excelWs_VIRUSES_IRAG.Index, "A6:BZ57", "A" + Convert.ToString(6 + (52 * i)) + ":BZ" + Convert.ToString(6 + (52 * i) + 52));
+
                                 }
+                                if (i > 0)
+                                {
+                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV1", (6 + (52 * i)), (6 + (52 * i)) + 51);
+                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV2", (6 + (52 * i)), (6 + (52 * i)) + 51);
+                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV3", (6 + (52 * i)), (6 + (52 * i)) + 51);
+                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV4", (6 + (52 * i)), (6 + (52 * i)) + 51);
+                                    // Configuración de gráfica de Pie
+                                    ConfigGraph_Pie(excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV5", (7 + (52 * i)) + 51, (7 + (52 * i)) + 51);
+                                    ConfigGraph_Pie(excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV6", (7 + (52 * i)) + 51, (7 + (52 * i)) + 51);
+
+
+                                }
+                                AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4", (i > 0 ? (6 + (52 * i)) : 6), 1, excelWs_VIRUSES_IRAG.Index, false, ReportCountry, YearEnd_report, YearEnd_report, 1, Inusual, AreaID_, Sentinel);
+
                             }
 
 
                             // Procedimiento para cambiar los rangos del eje X 
                             if (contador > 0)
                             {
-                                //var RangeStr = "( Virus!$BY$120:$BZ$171, Virus!$BY$63:$BZ$114, Virus!$BY$6:$BZ$57 ) ";
-                                var RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "Virus" : "Virus" )+ "'!$BY$6:$BZ$57 ";
+                                var RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "Virus" : "Virus") + "'!$BY$6:$BZ$57 ";
 
                                 for (int i = 1; i <= contador; i++)
                                 {
-                                    RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "Virus" : "Virus") + "'!$BY$" + (6 + (57 * i)).ToString() + ":$BZ$" + ((6 + (57 * i)) + 51).ToString() + ", " + RangeStr;
+                                    RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "Virus" : "Virus") + "'!$BY$" + (6 + (52 * i)).ToString() + ":$BZ$" + ((6 + (52 * i)) + 51).ToString() + ", " + RangeStr;
                                 }
 
                                 RangeStr = " ( " + RangeStr + ")";
@@ -489,7 +558,7 @@ namespace Paho.Controllers
 
                                 var graph_name = "CV1";
                                 var LineChart = excelWs_VIRUSES_Chart.Drawings[graph_name] as ExcelChart;
-                                LineChart.SetSize( (150*contador) +  1375, 700);
+                                LineChart.SetSize((150 * contador) + 1375, 700);
                                 UpdateRangeXMLPath(LineChart, RangeStr);
 
                                 graph_name = "CV2";
@@ -508,7 +577,6 @@ namespace Paho.Controllers
                                 UpdateRangeXMLPath(LineChart, RangeStr);
                             }
 
-
                             var excelWs_VIRUSES_INF_Geographic = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Virus_INF_GEO" : "Virus_INF_GEO"];
                             if (excelWs_VIRUSES_INF_Geographic != null)
                                 AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", 5, 1, excelWs_VIRUSES_INF_Geographic.Index, false, ReportCountry, YearBegin, YearEnd, 1, Inusual, AreaID_, Sentinel);
@@ -519,7 +587,8 @@ namespace Paho.Controllers
 
                             var excelWs_Leyendas = excelWorkBook.Worksheets["Leyendas"];
                             ConfigToExcel_FLUID(CountryID, Languaje_, RegionID_, YearEnd, YearBegin, YearEnd, StartDate, EndDate, HospitalID_, excelWorkBook, "Leyendas", 1, excelWs_Leyendas.Index, false);
-
+                            
+                            // Fin R4 - Virus detectados
                         }
                         else if (reportTemplate.ToUpper() == "FLUID")
                         {

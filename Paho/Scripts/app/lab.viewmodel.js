@@ -688,7 +688,7 @@ function LabViewModel(app, dataModel) {
                 if (moment(current_value).isBefore(moment(date_shipping_date), "days")) {
                     //alert("La fecha de recepción de Muestra 1 no puede ser menor a la fecha de envio de muestra de la Muestra 1");
                     alert(msgValidationShippingDateValidateS1);
-                    self.Rec_Date_NPHL(null);
+                    //self.Rec_Date_NPHL(null);
                 }
 
             } else if ((date_sample_date_ == null || date_sample_date_ == "") && self.hasReset() != true) {
@@ -717,7 +717,7 @@ function LabViewModel(app, dataModel) {
                 if (moment(current_value).isBefore(moment(date_shipping_date), "days")) {
                     //alert("La fecha de recepción de Muestra 1 no puede ser menor a la fecha de envio de muestra de la Muestra 1");
                     alert(msgValidationShippingDateValidateS2);
-                    self.Rec_Date_NPHL_2(null);
+                    //self.Rec_Date_NPHL_2(null);
                 }
 
             } else if ((date_sample_date_ == null || date_sample_date_ == "") && self.hasReset() != true) {
@@ -746,7 +746,7 @@ function LabViewModel(app, dataModel) {
                 if (moment(current_value).isBefore(moment(date_shipping_date), "days")) {
                     //alert("La fecha de recepción de Muestra 1 no puede ser menor a la fecha de envio de muestra de la Muestra 1");
                     alert(msgValidationShippingDateValidateS3);
-                    self.Rec_Date_NPHL_3(null);
+                    //self.Rec_Date_NPHL_3(null);
                 }
 
             } else if ((date_sample_date_ == null || date_sample_date_ == "") && self.hasReset() != true) {
@@ -850,13 +850,13 @@ function LabViewModel(app, dataModel) {
                         //alert("La fecha de recepción de Muestra 1 no puede ser menor a la fecha de envio de muestra de la Muestra 1");
                         alert(msgValidationShippingDateValidateICS1);
                               //msgValidationShippingDateValidateICS1
-                        self.RecDate(null);
+                        //self.RecDate(null);
                     }
                 } else {
                     if (moment(current_value).isBefore(moment(date_shipping_date), "days")) {
                         //alert("La fecha de recepción de Muestra 1 no puede ser menor a la fecha de envio de muestra de la Muestra 1");
                         alert(msgValidationShippingDateValidateS1);
-                        self.RecDate(null);
+                        //self.RecDate(null);
                     }
                 }
 
@@ -908,7 +908,7 @@ function LabViewModel(app, dataModel) {
                     if (moment(current_value).isBefore(moment(date_shipping_date), "days")) {
                         //alert("La fecha de recepción de Muestra 2 no puede ser menor a la fecha de envio de muestra de la Muestra 2");
                         alert(msgValidationShippingDateValidateS2);
-                        self.RecDate(null);
+                        //self.RecDate(null);
                     }
 
                 } else if (date_sample_date_ == null || date_sample_date_ == "") {
@@ -956,7 +956,7 @@ function LabViewModel(app, dataModel) {
                     if (moment(current_value).isBefore(moment(date_shipping_date), "days")) {
                         //alert("La fecha de recepción de Muestra 3 no puede ser menor a la fecha de envio de muestra de la Muestra 3");
                         alert(msgValidationShippingDateValidateS3);
-                        self.RecDate(null);
+                        //self.RecDate(null);
                     }
 
                 } else if (date_sample_date_ == null || date_sample_date_ == "") {
@@ -987,7 +987,7 @@ function LabViewModel(app, dataModel) {
                     if (moment(current_value).isBefore(moment(date_shipping_date), "days")) {
                         //alert("La fecha de recepción de Muestra 2 no puede ser menor a la fecha de envio de muestra de la Muestra 2");
                         alert(msgValidationShippingDateValidateS1);
-                        self.RecDate(null);
+                        //self.RecDate(null);
                     }
 
                 } else if (date_sample_date_ == null || date_sample_date_ == "") {

@@ -1230,6 +1230,18 @@
         if (app.Views.Contact.SurvSARICHI() == true) {
             if (!self.ICU() || self.ICU() == "")
                 msg += "\n" + viewValidateUPCRequired;
+        } else if (app.Views.Contact.SurvSARI() == true) {
+
+            if (!self.ICU() || self.ICU() == "")
+            {
+                msg += "\n" + viewValidateUPCRequired;
+            } else if (self.ICU() == 1) {
+                if (self.ICUAmDate() == "" || self.ICUAmDate() == "undefined" || self.ICUAmDate() == null) {
+                    msg += "\n" + viewValidateICUAdmissionDateRequired;
+                    $("#ICUAmDate").focus();
+                }
+            }
+                
         }
 
 //        if (!self.ICUAmDate())
