@@ -2836,7 +2836,7 @@
 
                         </div>
                         <div class="col-md-2">
-                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelAdmissionDate"))
+                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelAdmissionDate"))<font color="#FF0000">*</font>
                         </div>
                         <div class="col-md-1" data-bind="visible:false">
                             @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelEW"))
@@ -2852,7 +2852,7 @@
                             @(ViewBag.UsrCtry != 7 ? (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelICU")) : (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelUPC")))
                         </div>
                         <div class="col-md-2 input-group ">
-                            <font color="#FF0000">*</font> <input id="ICUAmDate" type='text' class="form-control " data-bind='datepicker: ICUAmDate, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
+                            <font color="#FF0000">*</font><input id="ICUAmDate" type='text' class="form-control " data-bind='datepicker: ICUAmDate, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
                         </div>
                         <div class="col-md-1" data-bind="visible:false">
                             <input id="ICUEW" type='text' readonly="readonly" class="form-control" data-bind="value: ICUEW" />

@@ -1232,7 +1232,18 @@
                 msg += "\n" + viewValidateUPCRequired;
         } else if (app.Views.Contact.SurvSARI() == true) {
 
-            if (!self.ICU() || self.ICU() == "")
+            if (self.UsrCountry() == 15) {
+
+                if (self.EnableICUHon() && (!self.ICU() || self.ICU() == "")) {
+                    msg += "\n" + viewValidateUPCRequired;
+                } else if (self.ICU() == 1) {
+                    if (self.ICUAmDate() == "" || self.ICUAmDate() == "undefined" || self.ICUAmDate() == null) {
+                        msg += "\n" + viewValidateICUAdmissionDateRequired;
+                        $("#ICUAmDate").focus();
+                    }
+                }
+
+            } else if (!self.ICU() || self.ICU() == "")
             {
                 msg += "\n" + viewValidateUPCRequired;
             } else if (self.ICU() == 1) {
