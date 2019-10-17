@@ -47,17 +47,20 @@ namespace Paho.Controllers
                 if (user.Institution.AccessLevel == AccessLevel.Country)
                 {
                     institutions = db.Institutions.OfType<Hospital>()
-                                  .Where(i => i.CountryID == user.Institution.CountryID);
+                                  .Where(i => i.CountryID == user.Institution.CountryID && i.Active == true)
+                                  .OrderBy(i => i.FullName);
                 }
                 else if (user.Institution.AccessLevel == AccessLevel.Area)
                 {
                     institutions = db.Institutions.OfType<Hospital>()
-                                   .Where(i => i.AreaID == user.Institution.AreaID);
+                                   .Where(i => i.AreaID == user.Institution.AreaID && i.Active == true)
+                                   .OrderBy(i => i.FullName);
                 }
                 else
                 {
                     institutions = db.Institutions.OfType<Hospital>()
-                                   .Where(i => i.ID == user.Institution.ID || (i.Father_ID == user.Institution.ID));
+                                   .Where(i => (i.ID == user.Institution.ID || i.Father_ID == user.Institution.ID) && i.Active == true)
+                                   .OrderBy(i => i.FullName);
                 }
             }
 

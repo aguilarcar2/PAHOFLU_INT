@@ -142,65 +142,57 @@ namespace Paho.Controllers
         public async Task<ActionResult> Create()
         {
             var model = new RegisterViewModel();
-            //model.Institutions = from value in db.Institutions
-            //                     select new AddSelectListItem
-            //                     {
-            //                         Text = value.FullName,
-            //                         Value = value.ID.ToString(),
-            //                         Selected = false,
-            //                         CountryID = value.CountryID
-            //                     };
-
-            //model.Institutions = model.Institutions.OrderBy(o => o.Text);
 
             var user_id = UserManager.FindById(User.Identity.GetUserId());
 
             if (user_id.Institution.AccessLevel == AccessLevel.All)
             {
                 model.Institutions = from value in db.Institutions
-                                             orderby value.CountryID, value.FullName
-                                             select new SelectListItem
-                                             {
-                                                 Text = value.FullName,
-                                                 Value = value.ID.ToString(),
-                                                 Selected = false
-                                             };
+                                     where value.Active == true
+                                     orderby value.CountryID, value.FullName
+                                     select new SelectListItem
+                                     {
+                                         Text = value.FullName,
+                                         Value = value.ID.ToString(),
+                                         Selected = false
+                                     };
+                
             }
             else if (user_id.Institution.AccessLevel == AccessLevel.Country)
             {
                 model.Institutions = from value in db.Institutions
-                                             where value.CountryID == user_id.Institution.CountryID
-                                             orderby value.CountryID, value.FullName
-                                             select new SelectListItem
-                                             {
-                                                 Text = value.FullName,
-                                                 Value = value.ID.ToString(),
-                                                 Selected = false
-                                             };
+                                     where value.CountryID == user_id.Institution.CountryID && value.Active == true
+                                     orderby value.CountryID, value.FullName
+                                     select new SelectListItem
+                                     {
+                                        Text = value.FullName,
+                                        Value = value.ID.ToString(),
+                                        Selected = false
+                                     };
             }
             else if (user_id.Institution.AccessLevel == AccessLevel.Regional)
             {
                 model.Institutions = from value in db.Institutions
-                                             where value.cod_region_institucional == user_id.Institution.cod_region_institucional
-                                             orderby value.CountryID, value.FullName
-                                             select new SelectListItem
-                                             {
-                                                 Text = value.FullName,
-                                                 Value = value.ID.ToString(),
-                                                 Selected = false
-                                             };
+                                     where value.cod_region_institucional == user_id.Institution.cod_region_institucional && value.Active == true
+                                     orderby value.CountryID, value.FullName
+                                    select new SelectListItem
+                                    {
+                                        Text = value.FullName,
+                                        Value = value.ID.ToString(),
+                                        Selected = false
+                                    };
             }
             else if (user_id.Institution.AccessLevel == AccessLevel.SelfOnly)
             {
                 model.Institutions = from value in db.Institutions
-                                             where value.ID == user_id.InstitutionID
-                                             orderby value.CountryID, value.FullName
-                                             select new SelectListItem
-                                             {
-                                                 Text = value.FullName,
-                                                 Value = value.ID.ToString(),
-                                                 Selected = false
-                                             };
+                                     where value.ID == user_id.InstitutionID && value.Active == true
+                                     orderby value.CountryID, value.FullName
+                                    select new SelectListItem
+                                    {
+                                        Text = value.FullName,
+                                        Value = value.ID.ToString(),
+                                        Selected = false
+                                    };
             }
 
             //Get the list of Roles
@@ -335,62 +327,53 @@ namespace Paho.Controllers
 
             var userRoles = await UserManager.GetRolesAsync(user.Id);
 
-            //var institutions = from value in db.Institutions
-            //                   where value.CountryID == user.Institution.CountryID
-            //                   orderby value.CountryID, value.FullName
-            //                     select new SelectListItem
-            //                     {
-            //                         Text = value.FullName,
-            //                         Value = value.ID.ToString(),
-            //                         Selected = false
-            //                     };
-
             var user_id = UserManager.FindById(User.Identity.GetUserId());
 
             var institutions = from value in db.Institutions
-                                             orderby value.CountryID, value.FullName
-                                             select new SelectListItem
-                                             {
-                                                 Text = value.FullName,
-                                                 Value = value.ID.ToString(),
-                                                 Selected = false
-                                             };
+                               where value.Active == true
+                               orderby value.CountryID, value.FullName
+                                select new SelectListItem
+                                {
+                                    Text = value.FullName,
+                                    Value = value.ID.ToString(),
+                                    Selected = false
+                                };
 
              if (user_id.Institution.AccessLevel == AccessLevel.Country)
             {
                 institutions = from value in db.Institutions
-                                             where value.CountryID == user_id.Institution.CountryID
-                                             orderby value.CountryID, value.FullName
-                                             select new SelectListItem
-                                             {
-                                                 Text = value.FullName,
-                                                 Value = value.ID.ToString(),
-                                                 Selected = false
-                                             };
+                               where value.CountryID == user_id.Institution.CountryID && value.Active == true
+                               orderby value.CountryID, value.FullName
+                                select new SelectListItem
+                                {
+                                    Text = value.FullName,
+                                    Value = value.ID.ToString(),
+                                    Selected = false
+                                };
             }
             else if (user_id.Institution.AccessLevel == AccessLevel.Regional)
             {
                 institutions = from value in db.Institutions
-                                             where value.cod_region_institucional == user_id.Institution.cod_region_institucional
-                                             orderby value.CountryID, value.FullName
-                                             select new SelectListItem
-                                             {
-                                                 Text = value.FullName,
-                                                 Value = value.ID.ToString(),
-                                                 Selected = false
-                                             };
+                               where value.cod_region_institucional == user_id.Institution.cod_region_institucional && value.Active == true
+                               orderby value.CountryID, value.FullName
+                                select new SelectListItem
+                                {
+                                    Text = value.FullName,
+                                    Value = value.ID.ToString(),
+                                    Selected = false
+                                };
             }
             else if (user_id.Institution.AccessLevel == AccessLevel.SelfOnly)
             {
                 institutions = from value in db.Institutions
-                                             where value.ID == user_id.InstitutionID
-                                             orderby value.CountryID, value.FullName
-                                             select new SelectListItem
-                                             {
-                                                 Text = value.FullName,
-                                                 Value = value.ID.ToString(),
-                                                 Selected = false
-                                             };
+                               where value.ID == user_id.InstitutionID && value.Active == true
+                               orderby value.CountryID, value.FullName
+                                select new SelectListItem
+                                {
+                                    Text = value.FullName,
+                                    Value = value.ID.ToString(),
+                                    Selected = false
+                                };
             }
 
             ViewBag.InstitutionType = user_id.Institution.AccessLevel.ToString().ToLower();
