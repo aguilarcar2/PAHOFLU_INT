@@ -3,7 +3,10 @@ using PagedList;
 using Paho.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
 using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -148,19 +151,62 @@ namespace Paho.Controllers
         // POST: CatInstitucionConf/Edit/5
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public ActionResult EditPost(int? id)
+        public ActionResult EditPost(int? id, long? InstitutionFromID, long? InstitutionToID, long? InstitutionParentID , int Priority, bool Conclusion, bool OpenAlways)
         {
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
+            var count_records_exist = db.InstitutionsConfiguration.Where(z => z.InstitutionParentID == InstitutionParentID && z.InstitutionToID == InstitutionToID && z.InstitutionFromID == InstitutionFromID && z.ID != id).Count();
+
             var catalog = db.InstitutionsConfiguration.Find(id);
+            var InstitutionFromID_original = catalog.InstitutionFromID;
+            var InstitutionToID_original = catalog.InstitutionToID;
+            var InstitutionParentID_original = catalog.InstitutionParentID;
+            var Priority_original = catalog.Priority;
+            var Conclusion_original = catalog.Conclusion;
+            var OpenAlways_original = catalog.OpenAlways;
+
+            if (count_records_exist >= 1)
+            {
+                ModelState.AddModelError("", "No es posible guardar los datos. El flujo se encuentra repetido.");
+                return View(catalog);
+            }
+
             if (TryUpdateModel(catalog, "",
                new string[] { "InstitutionFromID","InstitutionToID","InstitutionParentID","Priority","Conclusion", "OpenAlways" }))
             {
                 try
                 {
+
                     db.SaveChanges();
+
+                    var consStringFlowCorrection = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                    using (var conFlowCorrection = new SqlConnection(consStringFlowCorrection))
+                    {
+                        using (var commandFlowCorrection = new SqlCommand("FlowCorrection", conFlowCorrection) { CommandType = CommandType.StoredProcedure })
+                        {
+                            var user = UserManager.FindById(User.Identity.GetUserId());
+                            commandFlowCorrection.Parameters.Clear();
+                            commandFlowCorrection.Parameters.Add("@InstitutionParentID", SqlDbType.Int).Value = catalog.InstitutionParentID;
+                            commandFlowCorrection.Parameters.Add("@InstitutionToID", SqlDbType.Int).Value = catalog.InstitutionToID;
+                            //commandImportLog.Parameters.Add("@Country_ID", SqlDbType.Int).Value = user.Institution.CountryID;
+                            var returnParameter = commandFlowCorrection.Parameters.Add("@ReturnVal", SqlDbType.Int);
+                            returnParameter.Direction = ParameterDirection.ReturnValue;
+
+                            conFlowCorrection.Open();
+
+                            using (var reader2 = commandFlowCorrection.ExecuteReader())
+                            {
+                                if (returnParameter.Value.ToString() == "1")
+                                {
+                                    ViewBag.Message = $"Correctamente ejecutado.";
+                                }
+                            }
+                        }
+                    }
 
                     return RedirectToAction("Index");
                 }
