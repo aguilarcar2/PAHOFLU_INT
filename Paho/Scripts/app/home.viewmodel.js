@@ -629,6 +629,7 @@
                 && ((app.Views.Hospital.IsSample() === "true" && app.Views.Lab.Processed() === "false" && self.UsrCountry() != 15)
                     || (app.Views.Lab.NPHL() == true && app.Views.Hospital.IsSample() === "true" && app.Views.Lab.NPHL_Processed() === "false"))) {
             //console.log("aqui _  Flow status no processed"); //
+            // revisar si hay que habilitar para CR
             $("a[href*='tab-case']").show();
             $("#tab-case").show();
             $("#CaseStatus").attr("disabled", false);
@@ -638,6 +639,7 @@
         else if ($("#ITy").val() == "1"
             && ((app.Views.Hospital.IsSample() === "true" && app.Views.Lab.Processed() === "false" && app.Views.Lab.Processed_National() === "false" && self.UsrCountry() == 15))) {
             //console.log("aqui _  Flow status no processed"); //
+            // Revisar si hay que habilitar para CR
             $("a[href*='tab-case']").show();
             $("#tab-case").show();
             $("#CaseStatus").attr("disabled", false);
@@ -816,7 +818,7 @@
     self.EnableTestNationalGlobal = function () {
         //console.log("EnableTestNationalGlobal");
         //console.log(app.Views.Lab.NPHL_FlowExist());
-        if ($("#ITy").val() == "2" && ( self.UsrCountry() == 15 || (self.UsrCountry() == 25 && app.Views.Lab.NPHL_FlowExist() ))  && app.Views.Lab.flow_max_record() == app.Views.Contact.flow_institution() && app.Views.Contact.Flow_Local_Institution_Lab()) {
+        if ($("#ITy").val() == "2" && ( self.UsrCountry() == 15 || self.UsrCountry() == 9 || (self.UsrCountry() == 25 && app.Views.Lab.NPHL_FlowExist() ))  && app.Views.Lab.flow_max_record() == app.Views.Contact.flow_institution() && app.Views.Contact.Flow_Local_Institution_Lab()) {
             // Laboratorio Nacional
             $("#RecDate_National").attr('disabled', false);
             $("#TempSample_National").attr('disabled', false);
@@ -833,6 +835,22 @@
             $("#NoProRenId").attr('disabled', true);
             $("#NoReason").attr('disabled', true);
             $("#Identification_Test").attr('disabled', true);
+
+            console.log("----   Lab NIC CR ----");
+            console.log(lab_NIC_usr);
+            console.log(app.Views.Contact.flow_institution());
+            console.log(app.Views.Lab.flow_max_record());
+            console.log(self.UsrCountry());
+            console.log("----   Lab NIC CR ----");
+
+            if (self.UsrCountry() == 9 && app.Views.Lab.flow_max_record() == app.Views.Contact.flow_institution() && lab_NIC_usr) {
+                $('div[id^="Test_1"]').show();
+                $("div[id^='Test_1'] :input").prop('disabled', false);
+            } else {
+                $('div[id^="Test_1"]').hide();
+                $("div[id^='Test_1'] :input").prop('disabled', true);
+            }
+
             }
         else {
 
@@ -851,7 +869,42 @@
             $("#NoProRenId").attr('disabled', false);
             $("#NoReason").attr('disabled', false);
             $("#Identification_Test").attr('disabled', false);
+
+            console.log("----   Lab NIC CR ----");
+            console.log(lab_NIC_usr);
+            console.log(app.Views.Contact.flow_institution());
+            console.log(app.Views.Lab.flow_max_record());
+            console.log(self.UsrCountry());
+            console.log("----   Lab NIC CR ----");
+
+            if (self.UsrCountry() == 9 && app.Views.Lab.flow_max_record() == app.Views.Contact.flow_institution() && lab_NIC_usr) {
+                $('div[id^="Test_1"]').show();
+                $("div[id^='Test_1'] :input").prop('disabled', false);
+            } else {
+                $('div[id^="Test_1"]').hide();
+                $("div[id^='Test_1'] :input").prop('disabled', true);
+            }
         }
+
+    }
+
+    self.ViewTestCR = function () {
+
+            console.log("----   Lab NIC CR ----");
+            console.log(lab_NIC_usr);
+            console.log(app.Views.Contact.flow_institution());
+            console.log(app.Views.Lab.flow_max_record());
+            console.log(self.UsrCountry());
+            console.log("----   Lab NIC CR ----");
+
+            if (self.UsrCountry() == 9 && app.Views.Lab.flow_max_record() > 1 ) {
+                $('div[id^="Test_1"]').show();
+                $("div[id^='Test_1'] :input").prop('disabled', false);
+            } else {
+                $('div[id^="Test_1"]').hide();
+                $("div[id^='Test_1'] :input").prop('disabled', true);
+            }
+
 
     }
 
@@ -888,7 +941,7 @@
 
         //console.log("aqui _ LabAfter");
         //console.log(app.Views.Contact.flow_record());
-        if ($("#ITy").val() == "2" && (self.UsrCountry() == 15 || (self.UsrCountry() == 25 ) )) {
+        if ($("#ITy").val() == "2" && (self.UsrCountry() == 15 || self.UsrCountry() == 9 || (self.UsrCountry() == 25))) {
             self.EnableTestNationalGlobal();
             //console.log(app.Views.Lab.NPHL());
             //if (app.Views.Lab.NPHL()) {
@@ -896,6 +949,9 @@
             //}
             
         }
+        self.ViewTestCR();
+
+
 
         $("#PrintM1").prop('disabled', false);
         $("#PrintM2").prop('disabled', false);
