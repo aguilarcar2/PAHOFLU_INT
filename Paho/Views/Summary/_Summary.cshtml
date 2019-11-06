@@ -1,5 +1,14 @@
 ﻿@model Paho.Models.SummaryViewModel
 
+@{ 
+    string LabelCountry = ((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelCountry");
+    string FieldSelect = ((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryFieldSelect");
+    string LabelHospital = ((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelHospital");
+    string LabelDate = ((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelDate");
+    string LabelEpidemWeek = ((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelEpidemWeek");
+    string LabelEpidemYear = ((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelEpidemYear");
+}
+
 <style>
     .inputHN {
         height: 30px;
@@ -31,15 +40,15 @@
         <div class="col-md-5">
             <div class='input-group'>
                 <span class="input-group-addon">
-                    <!--País:-->
-                    @(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelCountry"))
+                    @(LabelCountry)
                 </span>
                 <select id="Pais" class="form-control" data-bind="options: activecountries,
                         optionsText: 'Name',
                         optionsValue: 'Id',
                         value: selectedCountryId,
-                        optionsCaption: '@(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryFieldSelect"))',
-                        event:{ change: ReloadHospitals}"></select>
+                        optionsCaption: '@(FieldSelect)',
+                        event:{ change: ReloadHospitals}">
+                </select>
             </div>
         </div>
     }
@@ -49,15 +58,14 @@
         <div class="col-md-5">
             <div class='input-group'>
                 <span class="input-group-addon">
-                    <!--Establecimientos:-->
-                    @(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelHospital"))
+                    @(LabelHospital)
                 </span>
                 <select id="combHospital1" class="form-control" data-bind="options: hospitals,
                     optionsText: 'Name',
                     optionsValue: 'Id',
                     value: selectedHospitalId,
-					event:{change: GetYearSummaryForYearItems}"></select>
-                @*optionsCaption: 'Seleccione...',*@
+					event:{change: GetYearSummaryForYearItems}">
+                </select>
             </div>
         </div>
     }
@@ -65,8 +73,7 @@
     <div class="col-md-3">
         <div class='input-group'>
             <span class="input-group-addon">
-                <!--Fecha:-->
-                @(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelDate"))
+                @(LabelDate)
             </span>
             <input id="HospitalDate" type='text' class="form-control" data-bind='optionsAfterRender: showEpiWeek_AM, datepicker: HospitalDate, datepickerOptions: { beforeShowDay: PickLastDay, maxDate:@Model.DatePickerConfig, dateFormat:"@Model.DateFormatDP"}' />
         </div>
@@ -76,7 +83,7 @@
         <div class='input-group'>
             <span class="input-group-addon">
                 <!--Semana Epi:-->
-                @(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelEpidemWeek"))
+                @(LabelEpidemWeek)
             </span>
             <input id="HospitalEW" type='text' readonly="readonly" class="form-control" data-bind="value: HospitalEW" />
         </div>
@@ -86,7 +93,7 @@
         <div class='input-group'>
             <span class="input-group-addon">
                 <!--Año Epi:-->
-                @(((Paho.Controllers.SummaryController)this.ViewContext.Controller).getMsg("msgViewSummaryLabelEpidemYear"))
+                @(LabelEpidemYear)
             </span>
             <input id="HospitalYE" type='text' readonly="readonly" class="form-control" data-bind="value: HospitalYE" />
         </div>
