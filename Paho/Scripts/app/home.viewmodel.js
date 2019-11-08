@@ -836,21 +836,6 @@
             $("#NoReason").attr('disabled', true);
             $("#Identification_Test").attr('disabled', true);
 
-            console.log("----   Lab NIC CR ----");
-            console.log(lab_NIC_usr);
-            console.log(app.Views.Contact.flow_institution());
-            console.log(app.Views.Lab.flow_max_record());
-            console.log(self.UsrCountry());
-            console.log("----   Lab NIC CR ----");
-
-            if (self.UsrCountry() == 9 && app.Views.Lab.flow_max_record() == app.Views.Contact.flow_institution() && lab_NIC_usr) {
-                $('div[id^="Test_1"]').show();
-                $("div[id^='Test_1'] :input").prop('disabled', false);
-            } else {
-                $('div[id^="Test_1"]').hide();
-                $("div[id^='Test_1'] :input").prop('disabled', true);
-            }
-
             }
         else {
 
@@ -869,21 +854,6 @@
             $("#NoProRenId").attr('disabled', false);
             $("#NoReason").attr('disabled', false);
             $("#Identification_Test").attr('disabled', false);
-
-            console.log("----   Lab NIC CR ----");
-            console.log(lab_NIC_usr);
-            console.log(app.Views.Contact.flow_institution());
-            console.log(app.Views.Lab.flow_max_record());
-            console.log(self.UsrCountry());
-            console.log("----   Lab NIC CR ----");
-
-            if (self.UsrCountry() == 9 && app.Views.Lab.flow_max_record() == app.Views.Contact.flow_institution() && lab_NIC_usr) {
-                $('div[id^="Test_1"]').show();
-                $("div[id^='Test_1'] :input").prop('disabled', false);
-            } else {
-                $('div[id^="Test_1"]').hide();
-                $("div[id^='Test_1'] :input").prop('disabled', true);
-            }
         }
 
     }

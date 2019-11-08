@@ -2750,6 +2750,10 @@ function LabViewModel(app, dataModel) {
         return (self.NoProRenId() === "5")
     }, self);
 
+    self.NotShowProcessedOtherNational = ko.computed(function () {
+        return (self.NoProRenId_National() === "5")
+    }, self);
+
     self.NotShowProcessed2 = ko.computed(function () {
         //self.resetFinalResult();
         //self.OrdenFinalResult();

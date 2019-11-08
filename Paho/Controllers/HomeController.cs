@@ -187,7 +187,8 @@ namespace Paho.Controllers
                 {
                     Id = i.orig_country.ToString(),
                     Name = i.Name
-                }).ToList();
+                })
+                .OrderBy( a => a.Name).ToList();
 
                 if (regionsDisplay.Count() > 1)
                 {
@@ -207,7 +208,8 @@ namespace Paho.Controllers
                 var institutionsDisplay = institutions.Select(i => new LookupView<Institution>() {
                     Id = i.ID.ToString(),
                     Name = i.Name
-                }).ToList();
+                })
+                .OrderBy( a => a.Name).ToList();
 
                 if (institutionsDisplay.Count() > 1) {
                     //var all = new LookupView<Institution> { Id = "0", Name = "-- Todo(a)s --" };
@@ -224,7 +226,8 @@ namespace Paho.Controllers
              var institutionsCaseGeneratingDisplay = InstitutionsCaseGenerating.Select(i => new LookupView<Institution>() {
                     Id = i.ID.ToString(),
                     Name = i.Name
-                }).ToList();
+                })
+                .OrderBy ( a => a.Name).ToList();
             if (institutionsCaseGeneratingDisplay.Count() > 1)
             {
                 var all = new LookupView<Institution> { Id = "", Name = getMsg("msgSelectLabel") };        
