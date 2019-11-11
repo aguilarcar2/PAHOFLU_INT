@@ -281,9 +281,12 @@ namespace Paho.Controllers
             ViewBag.InstitutionToID = new SelectList(instQuery, "ID", "Name", selectedTo);
             ViewBag.InstitutionParentID = new SelectList(instQuery, "ID", "Name", selectedParent);
 
-            int IDParent = Convert.ToInt32(selectedParent);
-            var instParent = db.Institutions.OfType<Institution>().Where(x => x.CountryID == countryId && x.ID == IDParent).FirstOrDefault();
-            ViewBag.ParentActive = instParent.Active;   
+            if (selectedParent != null)
+            {
+                int IDParent = Convert.ToInt32(selectedParent);
+                var instParent = db.Institutions.OfType<Institution>().Where(x => x.CountryID == countryId && x.ID == IDParent).FirstOrDefault();
+                ViewBag.ParentActive = instParent.Active;
+            } 
         }
     }
 }
