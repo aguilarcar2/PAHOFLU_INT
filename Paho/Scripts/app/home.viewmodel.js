@@ -860,20 +860,26 @@
 
     self.ViewTestCR = function () {
 
-            console.log("----   Lab NIC CR ----");
-            console.log(lab_NIC_usr);
-            console.log(app.Views.Contact.flow_institution());
-            console.log(app.Views.Lab.flow_max_record());
-            console.log(self.UsrCountry());
-            console.log("----   Lab NIC CR ----");
-
-            if (self.UsrCountry() == 9 && app.Views.Lab.flow_max_record() > 1 ) {
-                $('div[id^="Test_1"]').show();
-                $("div[id^='Test_1'] :input").prop('disabled', false);
-            } else {
-                $('div[id^="Test_1"]').hide();
-                $("div[id^='Test_1'] :input").prop('disabled', true);
+            //console.log("----   Lab NIC CR ----");
+            //console.log(lab_NIC_usr);
+            //console.log(app.Views.Contact.flow_institution());
+            //console.log(app.Views.Lab.flow_max_record());
+            //console.log(self.UsrCountry());
+            //console.log("----   Lab NIC CR ----");
+            if (self.UsrCountry() == 9) {
+                if (app.Views.Lab.flow_max_record() > 1 ) {
+                    $('div[id^="Test_1"]').show();
+                    if ($("#ITy").val() == 2)
+                    {
+                        $("div[id^='Test_1'] :input").prop('disabled', false);
+                    }
+                    
+                } else {
+                    $('div[id^="Test_1"]').hide();
+                    $("div[id^='Test_1'] :input").prop('disabled', true);
+                }
             }
+            
 
 
     }
