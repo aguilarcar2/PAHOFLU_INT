@@ -3163,7 +3163,7 @@ namespace Paho.Controllers
 
                         for (int i = 1; i <= 7; i++)            // i: Hoja
                         {
-                            var virustype = 0;
+                            var virustype = 0;                  // Hoja global
                             switch (i)
                             {
                                 case 2:
@@ -3185,6 +3185,7 @@ namespace Paho.Controllers
                                     virustype = 8;
                                     break;
                             }
+
                             command.Parameters.Clear();
                             command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
                             command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
@@ -3200,41 +3201,45 @@ namespace Paho.Controllers
                             command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
                             command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;                        //#### CAFQ
                             command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;          //#### CAFQ
+                            command.Parameters.Add("@Area_ID", SqlDbType.Int).Value = AreaId;
+                            command.Parameters.Add("@Sentinel", SqlDbType.Int).Value = Sentinel;
+
                             var excelWorksheet2 = excelWorkBook.Worksheets[i];
 
                             using (var reader = command.ExecuteReader())
                             {
                                 excelColTota = reader.FieldCount + 1;
-                                row = 3;
-                                column = 1;
+
+                                row = startRow;
+                                column = startColumn;
                                 var tipo_anterior = 1;
+
                                 while (reader.Read())
                                 {
-                                    //if (Convert.ToInt32(reader.GetValue(15)) != tipo_anterior)
                                     if (Convert.ToInt32(reader.GetValue(nPosiTipo)) != tipo_anterior)
                                     {
                                         row++;
                                     }
-                                    //tipo_anterior = Convert.ToInt32(reader.GetValue(15));
+
                                     tipo_anterior = Convert.ToInt32(reader.GetValue(nPosiTipo));
                                     var col = 1;
                                     var readercont = 0;
                                     int stylerow;
                                     if (tipo_anterior == 1)
                                     {
-                                        stylerow = 2;
+                                        //stylerow = 2;
+                                        stylerow = startRow;
                                     }
                                     else
                                     {
                                         stylerow = row + 1;
                                     }
-                                    excelWorksheet2.InsertRow(row, 1);
-                                    //excelWorksheet.InsertRow(row, 1);
-                                    //for (int j = 0; j < 17; j++)
+                                    if(row > startRow)
+                                        excelWorksheet2.InsertRow(row, 1);
+
                                     for (int j = 0; j < excelColTota; j++)                              // Total columnas retornadas x consulta
                                     {
                                         var cell = excelWorksheet2.Cells[stylerow, col + j];
-                                        //if (tipo_anterior == 2 && j > 8)
                                         if (tipo_anterior == 2 && j > nInicTip2)            // nInicTip2: Inicio hospitalizados (8 o 10)
                                         {
                                         }
@@ -3248,7 +3253,6 @@ namespace Paho.Controllers
                                                 }
                                                 else
                                                 {
-                                                    //if (j == 10)
                                                     if (j == nPoSuViGr)                 // Totales fila  de virus hospitalizados
                                                     {
                                                         excelWorksheet2.Cells[row, col + j].Formula = formulas1[18].Replace("{{toreplace}}", row.ToString()); ;
@@ -3262,12 +3266,9 @@ namespace Paho.Controllers
                                             }
                                             else
                                             {
-                                                //if (formulas1.ContainsKey(j))
                                                 if (j < 17 && formulas1.ContainsKey(j))
                                                 {
-                                                    //excelWorksheet2.Cells[row, col + j].Value = 8555;
                                                     excelWorksheet2.Cells[row, col + j].Formula = formulas1[j].Replace("{{toreplace}}", row.ToString()); ;
-                                                    //excelWorksheet2.Cells[row, col + j].Formula = "=5+1";
                                                 }
                                             }
                                         }
@@ -3275,12 +3276,9 @@ namespace Paho.Controllers
                                     }
                                     row++;
                                 }
-                                //Si se borran las rows auxiliares, las referencias de las funciones ya no funcionan?
-                                //excelWorksheet2.DeleteRow(row);
-                                //excelWorksheet2.DeleteRow(2);
                             }
                         }
-                    }
+                    } // END (storedProcedure == "R5")
                     else
                     {
                         if ((storedProcedure == "R6"))
@@ -4957,6 +4955,7 @@ namespace Paho.Controllers
                             string labelEndDate = "";
                             string labelCurrDate = "";
                             string labelSentinel = "";
+                            string labelVirus = "";
 
                             //****
                             if (countryId > 0)
@@ -5003,20 +5002,36 @@ namespace Paho.Controllers
                             var excelWs = excelWorksheet;
 
                             //****
+                            int nVirus = 0;
+                            string cTemp = "";
                             string label = reader["label"].ToString();
+
                             if (label != "")
                             {
-                                string[] tokens = label.Split(new[] { "{{" }, StringSplitOptions.None);
+                                //string[] tokens = label.Split(new[] { "{{" }, StringSplitOptions.None);
+                                
                                 int nNume = label.Split(new[] { "{{" }, StringSplitOptions.None).Length - 1;
 
                                 for (int nI = 1; nI <= nNume; ++nI)
                                 {
+                                    nVirus = 0;
                                     string cOriginal = label;               //#### CAFQ: 
                                     int nResu1 = label.IndexOf("{{");       //#### CAFQ: 180415
                                     int nResu2 = label.IndexOf("}}");       //#### CAFQ: 180415
+
                                     if (nResu1 >= 0 && nResu2 >= 0)         //#### CAFQ: 180415
                                     {
                                         label = cOriginal.Substring(nResu1, nResu2 - nResu1 + 2);       //#### CAFQ: 180415
+                                        string aaa = label.Substring(0, 7);
+                                        if (label.Substring(0, 7) == "{{virus")         // Left 
+                                        {
+                                            cTemp = label.Substring(8, label.Length - 8 - 2);
+                                            if (int.TryParse(cTemp, out nVirus))
+                                            {
+                                                labelVirus = getDescripcionDatoDesdeID(con, "select * from CatVirusType where ID = @ID", languaje_, nVirus);
+                                                label = "{{virus}}";
+                                            }
+                                        }
 
                                         switch (label)
                                         {
@@ -5065,6 +5080,9 @@ namespace Paho.Controllers
                                                 label = "";
                                                 if (labelWeekEpid != "")
                                                     label = (ReporteID == "LRD") ? labelWeekEpid.ToUpper() : labelWeekEpid;
+                                                break;
+                                            case "{{virus}}":
+                                                label = (labelVirus != "" ? labelVirus : "");
                                                 break;
                                             default:
                                                 label = "";
