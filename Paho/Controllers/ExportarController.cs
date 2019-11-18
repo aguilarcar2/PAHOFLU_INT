@@ -563,6 +563,10 @@ namespace Paho.Controllers
                             contador = YearEnd - YearBegin;
                             var YearEnd_report = DateTime.Now.Year;
 
+                            var excelWs_VIRUSES_INF_Geographic = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Virus_INF_GEO" : "Virus_INF_GEO"];
+                            var excelWs_VIRUSES_RSV_Geographic = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Virus_RSV_GEO" : "Virus_VSR_GEO"];
+
+
                             for (int i = 0; i <= contador; i++)
                             {
 
@@ -574,6 +578,9 @@ namespace Paho.Controllers
                                     CopyAndPasteRange(excelWorkBook, excelWs_VIRUSES_IRAG.Index, excelWorkBook, excelWs_VIRUSES_IRAG.Index, "A" + Convert.ToString(6 + (52 * i)) + ":BZ" + Convert.ToString(6 + (52 * i)), "A" + Convert.ToString(6 + (52 * (i + 1))) + ":BZ" + Convert.ToString(6 + (52 * (i + 1))));
                                     CopyAndPasteRange(excelWorkBook, excelWs_VIRUSES_IRAG.Index, excelWorkBook, excelWs_VIRUSES_IRAG.Index, "A6:BZ57", "A" + Convert.ToString(6 + (52 * i)) + ":BZ" + Convert.ToString(6 + (52 * i) + 52));
 
+                                    // Totales Virus INF Geo y VIrus RSV Geto
+                                    //CopyAndPasteRange(excelWorkBook, excelWs_VIRUSES_INF_Geographic.Index, excelWorkBook, excelWs_VIRUSES_INF_Geographic.Index, "A" + Convert.ToString(6 + (52 * i)) + ":BZ" + Convert.ToString(6 + (52 * i)), "A" + Convert.ToString(6 + (52 * (i + 1))) + ":BZ" + Convert.ToString(6 + (52 * (i + 1))));
+                                    //CopyAndPasteRange(excelWorkBook, excelWs_VIRUSES_RSV_Geographic.Index, excelWorkBook, excelWs_VIRUSES_RSV_Geographic.Index, "A" + Convert.ToString(6 + (52 * i)) + ":BZ" + Convert.ToString(6 + (52 * i)), "A" + Convert.ToString(6 + (52 * (i + 1))) + ":BZ" + Convert.ToString(6 + (52 * (i + 1))));
                                 }
                                 if (i > 0)
                                 {
@@ -588,6 +595,12 @@ namespace Paho.Controllers
 
                                 }
                                 AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4", (i > 0 ? (6 + (52 * i)) : 6), 1, excelWs_VIRUSES_IRAG.Index, false, ReportCountry, YearEnd_report, YearEnd_report, 1, Inusual, AreaID_, Sentinel);
+
+                               if (excelWs_VIRUSES_INF_Geographic != null)
+                                    AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", 5, 1, excelWs_VIRUSES_INF_Geographic.Index, false, ReportCountry, YearEnd_report, YearEnd_report, Surv, Inusual, AreaID_, Sentinel);
+
+                                if (excelWs_VIRUSES_RSV_Geographic != null)
+                                    AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", 5, 1, excelWs_VIRUSES_RSV_Geographic.Index, false, ReportCountry, YearEnd_report, YearEnd_report, Surv, Inusual, AreaID_, Sentinel);
 
                             }
 
@@ -740,14 +753,14 @@ namespace Paho.Controllers
                             // DEATHS Chart
 
                             contador = YearEnd - YearBegin;
-                            if (contador > 0)
-                            {
+                            //if (contador > 0)
+                            //{
 
-                                for (int i = 1; i <= contador; i++)
-                                {
-                                    ConfigGraph_FLUID(YearEnd - i, i, excelWorkBook, excelWs_DEATHS_IRAG_Chart.Index, excelWs_DEATHS_IRAG.Index, "CD3", "C", "K");
-                                }
-                            }
+                            //    for (int i = 1; i <= contador; i++)
+                            //    {
+                            //        ConfigGraph_FLUID(YearEnd - i, i, excelWorkBook, excelWs_DEATHS_IRAG_Chart.Index, excelWs_DEATHS_IRAG.Index, "CD3", "C", "K");
+                            //    }
+                            //}
 
                             for (int i = 0; i <= contador; i++)
                             {
@@ -761,6 +774,7 @@ namespace Paho.Controllers
 
                                     ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_DEATHS_IRAG_Chart.Index, excelWs_DEATHS_IRAG.Index, "CD1", (8 + (52 * i)), (8 + (52 * i)) + 51);
                                     ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_DEATHS_IRAG_Chart.Index, excelWs_DEATHS_IRAG.Index, "CD2", (8 + (52 * i)), (8 + (52 * i)) + 51);
+                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_DEATHS_IRAG_Chart.Index, excelWs_DEATHS_IRAG.Index, "CD3", (8 + (52 * i)), (8 + (52 * i)) + 51);
 
                                 }
 
@@ -786,6 +800,11 @@ namespace Paho.Controllers
                                 UpdateRangeXMLPath(LineChart, RangeStr);
 
                                 graph_name = "CD2";
+                                LineChart = excelWs_DEATHS_IRAG_Chart.Drawings[graph_name] as ExcelChart;
+                                LineChart.SetSize((100 * contador) + 1000, 650);
+                                UpdateRangeXMLPath(LineChart, RangeStr);
+
+                                graph_name = "CD3";
                                 LineChart = excelWs_DEATHS_IRAG_Chart.Drawings[graph_name] as ExcelChart;
                                 LineChart.SetSize((100 * contador) + 1000, 650);
                                 UpdateRangeXMLPath(LineChart, RangeStr);
