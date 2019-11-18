@@ -25,6 +25,7 @@ namespace Paho.Controllers
             IQueryable<CatTestType> CTT = null;
             IQueryable<CatTestResult> CTR = null;
             IQueryable<CatVirusType> CVT = null;
+            IQueryable<CatOtherVirusType> COVT = null;
             IQueryable<CatVirusSubType> CVST = null;
             IQueryable<CatVirusSubType> CVST_Test = null;
             IQueryable<CatVirusLinaje> CVL = null;
@@ -322,6 +323,19 @@ namespace Paho.Controllers
                 orden = i.orden.ToString()
             }).ToList()) ;
 
+            COVT = db.CatOtherVirusType.OrderBy(i => i.orden);
+            var COVTDisplay = (user.Institution.Country.Language == "SPA" ? COVT.Select(i => new LookupView<CatOtherVirusType>()
+            {
+                Id = i.ID.ToString(),
+                Name = i.SPA,
+                orden = i.orden.ToString()
+            }).ToList() : COVT.Select(i => new LookupView<CatOtherVirusType>()
+            {
+                Id = i.ID.ToString(),
+                Name = i.ENG,
+                orden = i.orden.ToString()
+            }).ToList());
+
             CHIn = db.CatHospitalizedIn.OrderBy(i => i.orden);
             var CHInDisplay = (user.Institution.Country.Language == "SPA" ? CHIn.Select(i => new LookupView<CatHospitalizedIn>()
             {
@@ -456,6 +470,7 @@ namespace Paho.Controllers
             CaseViewModel.CTT = CTTDisplay;
             CaseViewModel.CTR = CTRDisplay;
             CaseViewModel.CVT = CVTDisplay;
+            CaseViewModel.COVT = COVTDisplay;
             CaseViewModel.CVST = CVSTDisplay;
             CaseViewModel.CVST_Test = CVST_TestDisplay;
             CaseViewModel.CVL = CVLDisplay;

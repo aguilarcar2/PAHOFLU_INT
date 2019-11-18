@@ -648,7 +648,7 @@ namespace Paho.Controllers
                                     // Copy rangos para los años
                                     CopyAndPasteRange(excelWorkBook, excelWs_IRAG.Index, excelWorkBook, excelWs_IRAG.Index, "BY8:BZ59", "BY" + Convert.ToString(8 + (52 * i)) + ":BZ" + Convert.ToString(8 + (52 * i) + 52));
 
-
+                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_IRAG_Chart.Index, excelWs_IRAG.Index, "GS1", (11 + (52 * i)), (11 + (52 * i)) + 51);
                                     ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_IRAG_Chart.Index, excelWs_IRAG.Index, "GS2", (11 + (52 * i)), (11 + (52 * i)) + 51);
                                     ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_IRAG_Chart.Index, excelWs_IRAG.Index, "GS4", (11 + (52 * i)), (11 + (52 * i)) + 51);
                                     ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_IRAG_Chart.Index, excelWs_IRAG.Index, "GS5", (8 + (52 * i)), (8 + (52 * i)) + 51);
@@ -678,11 +678,15 @@ namespace Paho.Controllers
                                 //Tamaño original de las gráficas
                                 // LineChart.SetSize(1375, 700);
 
-                                var graph_name = "GS2";
+                                var graph_name = "GS1";
                                 var LineChart = excelWs_IRAG_Chart.Drawings[graph_name] as ExcelChart;
                                 LineChart.SetSize((80 * contador) + 600, 325);
                                 UpdateRangeXMLPath(LineChart, RangeStr);
 
+                                graph_name = "GS2";
+                                LineChart = excelWs_IRAG_Chart.Drawings[graph_name] as ExcelChart;
+                                LineChart.SetSize((80 * contador) + 600, 325);
+                                UpdateRangeXMLPath(LineChart, RangeStr);
                                 graph_name = "GS4";
                                 LineChart = excelWs_IRAG_Chart.Drawings[graph_name] as ExcelChart;
                                 LineChart.SetSize((80 * contador) + 600, 325);
@@ -715,16 +719,17 @@ namespace Paho.Controllers
                             }
 
                             contador = YearEnd - YearBegin;
-                            if (contador > 0)
-                            {
-                                //var excelWs_Graph_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "SARI Graphs" : "Gráficos IRAG"];
-                                //var excelWs_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "SARI" : "IRAG"];
+                            //if (contador > 0)
+                            //{
+                            //    //var excelWs_Graph_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "SARI Graphs" : "Gráficos IRAG"];
+                            //    //var excelWs_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "SARI" : "IRAG"];
 
-                                for (int i = 1; i <= contador; i++)
-                                {
-                                    ConfigGraph_FLUID(YearEnd - i, i, excelWorkBook, excelWs_IRAG_Chart.Index, excelWs_IRAG.Index, "GS1", "C", "E");
-                                }
-                            }
+                            //    for (int i = 1; i <= contador; i++)
+                            //    {
+                            //        ConfigGraph_FLUID(YearEnd - i, i, excelWorkBook, excelWs_IRAG_Chart.Index, excelWs_IRAG.Index, "GS1", "C", "E");
+								 
+                            //    }
+                            //}
 
                             /////////////////////////////////////////////////////////////////// DEATHS  /////////////////////////////////////////////////////////
                             var excelWs_DEATHS_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "DEATHS Sentinel Sites" : "Fallecidos IRAG"];

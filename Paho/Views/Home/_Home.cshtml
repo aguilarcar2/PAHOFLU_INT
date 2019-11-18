@@ -3924,12 +3924,19 @@
                                 <span class="input-group-addon">
                                     @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelOtherVirus"))
                                 </span>
-                                    <select class="form-control" data-bind="value: OtherVirusTypeID, visible:EnableOtherVirusTypes, enable:CanEdit">
+                                    @*<select class="form-control" data-bind="value: OtherVirusTypeID, visible:EnableOtherVirusTypes, enable:CanEdit">
                                         <option value="">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelSelect"))</option>
                                         <option value="1">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRhinovirus"))</option>
                                         <option value="2">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabEnterovirus")) </option>
                                         <option value="3">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabParainfluenzaIV"))</option>
-                                    </select>
+                                    </select>*@
+                                <select class="form-control" data-bind="options: COVT,
+                                        optionsText: 'Name',
+                                        optionsValue: 'Id',
+							            optionsCaption: '@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelSelect"))',
+                                        value: OtherVirusTypeID,
+                                        visible:EnableOtherVirusTypes,
+                                        enable:CanEdit"></select>
                                 <input id="OtherVirus" type='text' maxlength="20" class="form-control" data-bind="value:OtherVirus, enable:CanEdit, visible:EnableOtherVirusTypes" />
                             </div>
                         </div>
@@ -4322,12 +4329,19 @@
                                 <span class="input-group-addon">
                                     @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelOtherVirus"))
                                 </span>
-                                    <select class="form-control" data-bind="value: OtherVirusTypeID, visible:EnableOtherVirusTypes, enable:CanEdit">
+                                    @*<select class="form-control" data-bind="value: OtherVirusTypeID, visible:EnableOtherVirusTypes, enable:CanEdit">
                                         <option value="">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelSelect"))</option>
                                         <option value="1">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRhinovirus"))</option>
                                         <option value="2">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabEnterovirus")) </option>
                                         <option value="3">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabParainfluenzaIV"))</option>
-                                    </select>
+                                    </select>*@
+                                <select class="form-control" data-bind="options: COVT,
+                                        optionsText: 'Name',
+                                        optionsValue: 'Id',
+							            optionsCaption: '@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelSelect"))',
+                                        value: OtherVirusTypeID,
+                                        visible:EnableOtherVirusTypes,
+                                        enable:CanEdit"></select>
                                 <input id="OtherVirus" type='text' maxlength="20" class="form-control" data-bind="value:OtherVirus, enable:CanEdit, visible:EnableOtherVirusTypes" />
                             </div>
                         </div>
@@ -4729,12 +4743,19 @@
                                 <span class="input-group-addon">
                                     @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelOtherVirus"))
                                 </span>
-                                <select class="form-control" data-bind="value: OtherVirusTypeID, visible:EnableOtherVirusTypes, enable:CanEdit">
+                                @*<select class="form-control" data-bind="value: OtherVirusTypeID, visible:EnableOtherVirusTypes, enable:CanEdit">
                                     <option value="">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelSelect"))</option>
                                     <option value="1">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRhinovirus"))</option>
                                     <option value="2">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabEnterovirus")) </option>
                                     <option value="3">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabParainfluenzaIV"))</option>
-                                </select>
+                                </select>*@
+                                <select class="form-control" data-bind="options: COVT,
+                                        optionsText: 'Name',
+                                        optionsValue: 'Id',
+							            optionsCaption: '@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelSelect"))',
+                                        value: OtherVirusTypeID,
+                                        visible:EnableOtherVirusTypes,
+                                        enable:CanEdit"></select>
                                 <input id="OtherVirus" type='text' maxlength="20" class="form-control" data-bind="value:OtherVirus, enable:CanEdit, visible:EnableOtherVirusTypes" />
                             </div>
                         </div>
@@ -5065,12 +5086,19 @@
                                     <span class="input-group-addon">
                                         @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelOtherVirus"))
                                     </span>
-                                    <select class="form-control" data-bind="value: OtherVirusTypeID, visible:EnableOtherVirusTypes, enable:CanEdit">
+                                    @*<select class="form-control" data-bind="value: OtherVirusTypeID, visible:EnableOtherVirusTypes, enable:CanEdit">
                                         <option value="">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelSelect"))</option>
                                         <option value="1">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRhinovirus"))</option>
                                         <option value="2">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabEnterovirus")) </option>
                                         <option value="3">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabParainfluenzaIV"))</option>
-                                    </select>
+                                    </select>*@
+                                    <select class="form-control" data-bind="options: COVT,
+                                        optionsText: 'Name',
+                                        optionsValue: 'Id',
+							            optionsCaption: '@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelSelect"))',
+                                        value: OtherVirusTypeID,
+                                        visible:EnableOtherVirusTypes,
+                                        enable:CanEdit"></select>
                                     <input id="OtherVirus" type='text' maxlength="20" class="form-control" data-bind="value:OtherVirus, enable:CanEdit, visible:EnableOtherVirusTypes" />
                                 </div>
                             </div>
@@ -5822,6 +5850,7 @@
     var CTT= @Html.Raw(Json.Encode(Model.CTT));
     var CTR= @Html.Raw(Json.Encode(Model.CTR));
     var CVT= @Html.Raw(Json.Encode(Model.CVT));
+    var COVT= @Html.Raw(Json.Encode(Model.COVT));
     var CVST= @Html.Raw(Json.Encode(Model.CVST));
     var CVST_Test_global= @Html.Raw(Json.Encode(Model.CVST_Test));
     var CVL= @Html.Raw(Json.Encode(Model.CVL));

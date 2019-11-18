@@ -52,6 +52,7 @@ namespace Paho.Models
         public IEnumerable<LookupView<CatTestType>> CTT { get; set; }
         public IEnumerable<LookupView<CatTestResult>> CTR { get; set; }
         public IEnumerable<LookupView<CatVirusType>> CVT { get; set; }
+        public IEnumerable<LookupView<CatOtherVirusType>> COVT { get; set; }
         public IEnumerable<LookupView<CatVirusSubType>> CVST { get; set; }
         public IEnumerable<LookupView<CatVirusSubType>> CVST_Test { get; set; }
         public IEnumerable<LookupView<CatVirusLinaje>> CVL { get; set; }
@@ -609,6 +610,16 @@ namespace Paho.Models
     }
 
     public class CatVirusType
+    {
+
+        public int ID { get; set; }
+        public string SPA { get; set; }
+        public string ENG { get; set; }
+        public int? orden { get; set; }
+
+    }
+
+    public class CatOtherVirusType
     {
 
         public int ID { get; set; }
@@ -1844,6 +1855,7 @@ namespace Paho.Models
         public DbSet<CatReasonNotSampling> CatReasonNotSampling { get; set; }
         public DbSet<CatTestResult> CatTestResult { get; set; }
         public DbSet<CatVirusType> CatVirusType { get; set; }
+        public DbSet<CatOtherVirusType> CatOtherVirusType { get; set; }
         public DbSet<CatVirusSubType> CatVirusSubType { get; set; }
         public DbSet<CatVirusSubTypeConfByLab> CatVirusSubTypeConfByLab { get; set; }
         public DbSet<CatVirusLinaje> CatVirusLinaje { get; set; }
