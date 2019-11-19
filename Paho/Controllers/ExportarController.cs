@@ -427,7 +427,7 @@ namespace Paho.Controllers
                         }
                         else if (reportTemplate.ToUpper() == "R4")
                         {
-                            // Aquí comienza R4 - Virus detectados
+                            ////////////////////////////// Aquí comienza R4 - Virus detectados////////////////////
                             var contador = 0;
                             var YearBegin = 0;
                             var YearEnd = 0;
@@ -452,6 +452,10 @@ namespace Paho.Controllers
                             var excelWs_VIRUSES_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Virus" : "Virus"];
                             var excelWs_VIRUSES_Chart = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Graph Virus" : "Gráficos"];
 
+                            var excelWs_VIRUSES_INF_Geographic = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Virus_INF_GEO" : "Virus_INF_GEO"];
+                            var excelWs_VIRUSES_RSV_Geographic = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Virus_RSV_GEO" : "Virus_VSR_GEO"];
+
+
                             contador = YearEnd - YearBegin;
                             var YearEnd_report = DateTime.Now.Year;
 
@@ -465,6 +469,11 @@ namespace Paho.Controllers
                                 {
                                     CopyAndPasteRange(excelWorkBook, excelWs_VIRUSES_IRAG.Index, excelWorkBook, excelWs_VIRUSES_IRAG.Index, "A" + Convert.ToString(6 + (52 * i)) + ":BZ" + Convert.ToString(6 + (52 * i)), "A" + Convert.ToString(6 + (52 * (i + 1))) + ":BZ" + Convert.ToString(6 + (52 * (i + 1))));
                                     CopyAndPasteRange(excelWorkBook, excelWs_VIRUSES_IRAG.Index, excelWorkBook, excelWs_VIRUSES_IRAG.Index, "A6:BZ57", "A" + Convert.ToString(6 + (52 * i)) + ":BZ" + Convert.ToString(6 + (52 * i) + 52));
+
+                                    if (excelWs_VIRUSES_INF_Geographic != null)
+                                        CopyAndPasteRange(excelWorkBook, excelWs_VIRUSES_INF_Geographic.Index, excelWorkBook, excelWs_VIRUSES_INF_Geographic.Index, "A" + Convert.ToString(5 + (52 * i)) + ":BZ" + Convert.ToString(5 + (52 * i)), "A" + Convert.ToString(5 + (52 * (i + 1))) + ":BZ" + Convert.ToString(5 + (52 * (i + 1))));
+                                    if (excelWs_VIRUSES_RSV_Geographic != null)
+                                        CopyAndPasteRange(excelWorkBook, excelWs_VIRUSES_RSV_Geographic.Index, excelWorkBook, excelWs_VIRUSES_RSV_Geographic.Index, "A" + Convert.ToString(5 + (52 * i)) + ":BZ" + Convert.ToString(5 + (52 * i)), "A" + Convert.ToString(5 + (52 * (i + 1))) + ":BZ" + Convert.ToString(5 + (52 * (i + 1))));
 
                                 }
                                 if (i > 0)
@@ -520,11 +529,9 @@ namespace Paho.Controllers
                                 UpdateRangeXMLPath(LineChart, RangeStr);
                             }
 
-                            var excelWs_VIRUSES_INF_Geographic = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Virus_INF_GEO" : "Virus_INF_GEO"];
                             if (excelWs_VIRUSES_INF_Geographic != null)
                                 AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", 5, 1, excelWs_VIRUSES_INF_Geographic.Index, false, ReportCountry, YearBegin, YearEnd, Surv, Inusual, AreaID_, Sentinel);
 
-                            var excelWs_VIRUSES_RSV_Geographic = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Virus_RSV_GEO" : "Virus_VSR_GEO"];
                             if (excelWs_VIRUSES_RSV_Geographic != null)
                                 AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", 5, 1, excelWs_VIRUSES_RSV_Geographic.Index, false, ReportCountry, YearBegin, YearEnd, Surv, Inusual, AreaID_, Sentinel);
 
@@ -535,6 +542,8 @@ namespace Paho.Controllers
                         }
                         else if (reportTemplate.ToUpper() == "FLUID")
                         {
+                            /////////////////////////////////////// FLUID  ////////////////////////////////////////////////////////////////////////7
+
                             var contador = 0;
                             var YearBegin = 0;
                             var YearEnd = 0;
@@ -579,8 +588,10 @@ namespace Paho.Controllers
                                     CopyAndPasteRange(excelWorkBook, excelWs_VIRUSES_IRAG.Index, excelWorkBook, excelWs_VIRUSES_IRAG.Index, "A6:BZ57", "A" + Convert.ToString(6 + (52 * i)) + ":BZ" + Convert.ToString(6 + (52 * i) + 52));
 
                                     // Totales Virus INF Geo y VIrus RSV Geto
-                                    //CopyAndPasteRange(excelWorkBook, excelWs_VIRUSES_INF_Geographic.Index, excelWorkBook, excelWs_VIRUSES_INF_Geographic.Index, "A" + Convert.ToString(6 + (52 * i)) + ":BZ" + Convert.ToString(6 + (52 * i)), "A" + Convert.ToString(6 + (52 * (i + 1))) + ":BZ" + Convert.ToString(6 + (52 * (i + 1))));
-                                    //CopyAndPasteRange(excelWorkBook, excelWs_VIRUSES_RSV_Geographic.Index, excelWorkBook, excelWs_VIRUSES_RSV_Geographic.Index, "A" + Convert.ToString(6 + (52 * i)) + ":BZ" + Convert.ToString(6 + (52 * i)), "A" + Convert.ToString(6 + (52 * (i + 1))) + ":BZ" + Convert.ToString(6 + (52 * (i + 1))));
+                                    if (excelWs_VIRUSES_INF_Geographic != null)
+                                        CopyAndPasteRange(excelWorkBook, excelWs_VIRUSES_INF_Geographic.Index, excelWorkBook, excelWs_VIRUSES_INF_Geographic.Index, "A" + Convert.ToString(5 + (52 * i)) + ":BZ" + Convert.ToString(5 + (52 * i)), "A" + Convert.ToString(5 + (52 * (i + 1))) + ":BZ" + Convert.ToString(5 + (52 * (i + 1))));
+                                    if (excelWs_VIRUSES_RSV_Geographic != null)
+                                        CopyAndPasteRange(excelWorkBook, excelWs_VIRUSES_RSV_Geographic.Index, excelWorkBook, excelWs_VIRUSES_RSV_Geographic.Index, "A" + Convert.ToString(5 + (52 * i)) + ":BZ" + Convert.ToString(5 + (52 * i)), "A" + Convert.ToString(5 + (52 * (i + 1))) + ":BZ" + Convert.ToString(5 + (52 * (i + 1))));
                                 }
                                 if (i > 0)
                                 {
