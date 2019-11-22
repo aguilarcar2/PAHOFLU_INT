@@ -2982,6 +2982,7 @@ namespace Paho.Controllers
                 return "";
 
             //****
+            //if (countryId == 9 || countryId == 15)                     // Costa Rica
             if (countryId == 9)                     // Costa Rica
                 recuperarDatosExcelLineasBasalesTuned(countryId, sheet, listGlobal, aParametros);
             else
@@ -3071,6 +3072,7 @@ namespace Paho.Controllers
             }
 
             //****
+            //if (countryId == 9 || countryId == 15)                     // Costa Rica
             if (countryId == 9)                     // Costa Rica
             {
                 ArrayList arrayList = new ArrayList();

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity.EntityFramework;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -19,6 +20,9 @@ namespace Paho.Controllers
     [Authorize(Roles = "Admin")]
     public class UsersAdminController : ControllerBase
     {
+        private int _pageSize = 10;
+        private ApplicationRoleManager _roleManager;
+
         public UsersAdminController()
         {
         }
@@ -32,8 +36,7 @@ namespace Paho.Controllers
         {  
             RoleManager = roleManager;
         }
-
-        private ApplicationRoleManager _roleManager;
+                
         public ApplicationRoleManager RoleManager
         {
             get
@@ -48,29 +51,63 @@ namespace Paho.Controllers
 
         //
         // GET: /Users/
-        public async Task<ActionResult> Index()
+        //public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
             var countryId = user.Institution.CountryID ?? 0;
             var Institution_Id = user.InstitutionID ?? 0;
             var Region_id = user.Institution.cod_region_institucional ?? 0;
 
+            //****
+            ViewBag.CurrentSort = sortOrder;
+            //ViewBag.CurrentSort = sortOrder;
+            //ViewBag.ShortNameParm = "userShortName";
+            //ViewBag.NameParm = "userName";
+            //ViewBag.InstitutionParm = "institutionName";
+
+            if (searchString != null)
+            {
+                page = 1;
+                searchString = searchString.ToUpper();
+            }                
+            else
+                searchString = currentFilter;            
+
+            ViewBag.CurrentFilter = searchString;
+            //****
+
             var ListUser = await UserManager.Users.OrderBy(s => s.Institution.Country.Code).ThenBy(s => s.Institution.Name).ThenBy(s => s.UserName).ThenBy(s => s.FirstName1).ToListAsync();
 
             if (user.Institution.AccessLevel == AccessLevel.Regional)
             {
-                ListUser = await UserManager.Users.Where(j => j.Institution.cod_region_institucional == Region_id).OrderBy(s => s.Institution.Country.Code).ThenBy(s => s.Institution.Name).ThenBy(s => s.UserName).ThenBy(s => s.FirstName1).ToListAsync();
+                ListUser = await UserManager.Users.Where(j => j.Institution.cod_region_institucional == Region_id)
+                                            .OrderBy(s => s.Institution.Country.Code).ThenBy(s => s.Institution.Name).ThenBy(s => s.UserName).ThenBy(s => s.FirstName1).ToListAsync();
             } else if ( user.Institution.AccessLevel == AccessLevel.SelfOnly) {
-                ListUser = await UserManager.Users.Where(j => j.InstitutionID == Institution_Id).OrderBy(s => s.Institution.Country.Code).ThenBy(s => s.Institution.Name).ThenBy(s => s.UserName).ThenBy(s => s.FirstName1).ToListAsync();
+                ListUser = await UserManager.Users.Where(j => j.InstitutionID == Institution_Id)
+                                            .OrderBy(s => s.Institution.Country.Code).ThenBy(s => s.Institution.Name).ThenBy(s => s.UserName).ThenBy(s => s.FirstName1).ToListAsync();
             } else if (user.Institution.AccessLevel == AccessLevel.Country )
             {
-                //ListUser = await UserManager.Users.Where(j => j.Institution.CountryID == countryId).OrderBy(s => s.Institution.Country.Code).ThenBy(s => s.Institution.Name).ThenBy(s => s.UserName).ThenBy(s => s.FirstName1).ToListAsync();
-                ListUser = await UserManager.Users.Where(j => j.Institution.CountryID == countryId).OrderBy(s => s.FirstName1).ThenBy(s => s.FirstName2).ThenBy(s => s.LastName1).ThenBy(s => s.LastName2).ToListAsync();
+                ListUser = await UserManager.Users.Where(j => j.Institution.CountryID == countryId)
+                                            .OrderBy(s => s.FirstName1).ThenBy(s => s.FirstName2).ThenBy(s => s.LastName1).ThenBy(s => s.LastName2).ToListAsync();
             }
 
             setUserRolesListJoin(ListUser);     //#### CAFQ: 180530
+            //return View(ListUser);
 
-            return View(ListUser);
+            //*****
+            int pageSize = _pageSize;
+            int pageNumber = (page ?? 1);
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                var xListUser = ListUser.Where(s => s.FullName.ToUpper().Contains(searchString) || s.UserName.ToUpper().Contains(searchString) || s.Institution.FullName.ToUpper().Contains(searchString));
+                return View(xListUser.ToPagedList(pageNumber, pageSize));
+            }
+            else
+            {
+                return View(ListUser.ToPagedList(pageNumber, pageSize));
+            }
         }
 
         [Authorize]
