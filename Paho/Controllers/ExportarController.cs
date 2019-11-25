@@ -1051,11 +1051,12 @@ namespace Paho.Controllers
 
                 ms.Position = 0;
 
-                string nombFile = reportCountry.description == "" ? "Exportable_" : Country_Code + "_" + reportCountry.description.ToString().Replace("%", "_").Replace(" ", "_") + "_";            //#### CAFQ
+                string nombFile = reportCountry.description == "" ? "Exportable_" : Country_Code + "_" + reportCountry.description.ToString().Replace("%", "_").Replace("/"," ").Replace(" ", "_") + "_";            //#### CAFQ
 
                 return new FileStreamResult(ms, "application/xlsx")
                 {
                     FileDownloadName = nombFile + DateTime.Now.ToString("yyyy_MM_dd_HH_mm") + ".xlsx"           //#### CAFQ
+
                 };
             }
             catch (Exception e)
