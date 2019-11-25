@@ -6293,13 +6293,11 @@
                                 }
                                 //console.log(chartData);
                                 for ( var i = 0; i < map.dataProvider.areas.length; i++ ) {
-                                    //alert(map.dataProvider.areas.length);
-                                    //alert(chartData[i].area.valueOf());
                                     var AH1N1 = chartData[i].ah1n1.valueOf();
                                     var AH3 = chartData[i].ah3.valueOf();
                                     var IB = chartData[i].ib.valueOf();
                                     var total = chartData[i].total.valueOf();
-                                    map.dataProvider.areas[ i ].description = "AH1N1: " + AH1N1 + "<br/>AH3: " + AH3 + "<br/>IB: " + IB + "<br/>Total: " + total;//Math.round( Math.random() * 10000 );
+                                    map.dataProvider.areas[ i ].description = "AH1N1: " + AH1N1 + "<br/>AH3N2: " + AH3 + "<br/>IB: " + IB + "<br/>Total: " + total;//Math.round( Math.random() * 10000 );
                                     map.dataProvider.areas[ i ].value = total;
                                 }
                                 map.dataGenerated = true;
@@ -6515,7 +6513,7 @@
                         async: true,
                         success: function (data) {
                             var jsonX = JSON.parse(data);
-                            console.log(jsonX);
+                            //console.log(jsonX);
                             var chartData = [];
                             var chartTitle = jsonX.map.mapTitle;
                             var chartCountry = jsonX.map.mapCountry;
@@ -6582,15 +6580,13 @@
                                     setTimeout( updateHeatmap, 100 );
                                     return;
                                 }
-                                console.log(chartData);
+                                //console.log(chartData);
                                 for ( var i = 0; i < map.dataProvider.areas.length; i++ ) {
-                                    //alert(map.dataProvider.areas.length);
-                                    //alert(chartData[i].area.valueOf());
                                     var AH1N1 = chartData[i].ah1n1.valueOf();
                                     var AH3 = chartData[i].ah3.valueOf();
                                     var IB = chartData[i].ib.valueOf();
                                     var total = chartData[i].total.valueOf();
-                                    map.dataProvider.areas[ i ].description = "AH1N1: " + AH1N1 + "<br/>AH3: " + AH3 + "<br/>IB: " + IB + "<br/>Total: " + total;//Math.round( Math.random() * 10000 );
+                                    map.dataProvider.areas[ i ].description = "AH1N1: " + AH1N1 + "<br/>AH3N2: " + AH3 + "<br/>IB: " + IB + "<br/>Total: " + total;//Math.round( Math.random() * 10000 );
                                     map.dataProvider.areas[ i ].value = total;
                                 }
                                 map.dataGenerated = true;
