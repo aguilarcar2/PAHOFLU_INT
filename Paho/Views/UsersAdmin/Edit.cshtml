@@ -1,11 +1,14 @@
 ﻿@model Paho.Models.EditUserViewModel
 
 @{
+    string LabelChangePassword = Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminChangePasswordChangePassword", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelPassword = Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminPassword", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelPasswordConfirmation = Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminPasswordConfirmation", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
     ViewBag.Title = "Edit";
 }
 
 <h2>@(Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminEditAccount", ViewBag.UsrCtry, ViewBag.UsrCtryLang))</h2>
-
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
@@ -32,21 +35,24 @@
         </div>
         <!-- CAFQ: 190105 -->
         <div class="form-group" id="DIVChangePassword">
-            @Html.Label("ChangePasswordLabel", ((string)Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminChangePasswordChangePassword", ViewBag.UsrCtry, ViewBag.UsrCtryLang)), new { @class = "control-label col-md-2" })
+            @*@Html.Label("ChangePasswordLabel", ((string)Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminChangePasswordChangePassword", ViewBag.UsrCtry, ViewBag.UsrCtryLang)), new { @class = "control-label col-md-2" })*@
+            @Html.Label("ChangePasswordLabel", LabelChangePassword, new { @class = "control-label col-md-2" })
             <div class="col-md-3">
                 @Html.EditorFor(model => model.ChangePassword, new { htmlAttributes = new { @class = "checkbox-inline" } })
             </div>
         </div>
 
         <div class="form-group" id="DIVPassword">
-            @Html.LabelFor(m => m.Password, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminPassword", ViewBag.UsrCtry, ViewBag.UsrCtryLang)), new { @class = "col-md-2 control-label", id = "PasswordLabel", style = "display: none;" })
+            @*@Html.LabelFor(m => m.Password, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminPassword", ViewBag.UsrCtry, ViewBag.UsrCtryLang)), new { @class = "col-md-2 control-label", id = "PasswordLabel", style = "display: none;" })*@
+            @Html.LabelFor(m => m.Password, LabelPassword, new { @class = "col-md-2 control-label", id = "PasswordLabel", style = "display: none;" })
             <div class="col-md-5">
                 @Html.PasswordFor(m => m.Password, new { @class = "form-control", style = "display: none;" })
             </div>
         </div>
 
         <div class="form-group" id="DIVConfirmPassword">
-            @Html.LabelFor(m => m.ConfirmPassword, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminPasswordConfirmation", ViewBag.UsrCtry, ViewBag.UsrCtryLang)), new { @class = "col-md-2 control-label", id = "ConfirmPasswordLabel", style = "display: none;" })
+            @*@Html.LabelFor(m => m.ConfirmPassword, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminPasswordConfirmation", ViewBag.UsrCtry, ViewBag.UsrCtryLang)), new { @class = "col-md-2 control-label", id = "ConfirmPasswordLabel", style = "display: none;" })*@
+            @Html.LabelFor(m => m.ConfirmPassword, LabelPasswordConfirmation, new { @class = "col-md-2 control-label", id = "ConfirmPasswordLabel", style = "display: none;" })
             <div class="col-md-5">
                 @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", style = "display: none;" })
             </div>
