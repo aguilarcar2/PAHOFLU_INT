@@ -177,23 +177,33 @@
         var date_hosp_disc_ = typeof (self.HospExDate()) == "object" ? self.HospExDate() : parseDate(self.HospExDate(), date_format_);
 
         if (self.hasReset() != true) {
-            if (date_hospital_ == null || date_hospital_ == "") {
-                alert(msgValidationNotificationDateEnter);
-                self.HospAmDate("");
-            } else {
-                if (moment(current_value).isAfter(moment(date_hospital_))) {
-                    alert(msgValidationNotificationDateGtHospDate);
+
+            if (app.Views.Contact.SurvInusual() == true) {
+                if (current_value > date_MaxDateSystem) {
+                    alert(viewValidateDateEnterDateToday);
                     self.HospAmDate("");
                 }
-                if (current_value != null && date_fever_ != null && moment(current_value).isBefore(moment(date_fever_), "days")) {
-                    alert(msgValidationHospDateGtFeverDate);
+            }
+            else {
+                if (date_hospital_ == null || date_hospital_ == "") {
+                    alert(msgValidationNotificationDateEnter);
                     self.HospAmDate("");
+                } else {
+                    if (moment(current_value).isAfter(moment(date_hospital_))) {
+                        alert(msgValidationNotificationDateGtHospDate);
+                        self.HospAmDate("");
+                    }
+                    if (current_value != null && date_fever_ != null && moment(current_value).isBefore(moment(date_fever_), "days")) {
+                        alert(msgValidationHospDateGtFeverDate);
+                        self.HospAmDate("");
+                    }
                 }
             }
         }
         //       }
 
     });
+
 
 
     self.HospExDate = ko.observable(new Date());
@@ -238,13 +248,22 @@
         }
 
         if (self.hasReset() != true) {
-            if (date_hospital_ == null || date_hospital_ == "") {
-                alert(msgValidationNotificationDateEnter);
-                self.HospExDate("");
-            } else {
-                if (moment(current_value).isBefore(moment(date_hospital_), "days")) {
-                    alert(msgValidationHospExDateGtHospDate);
+
+            if (app.Views.Contact.SurvInusual() == true) {
+                if (current_value > date_MaxDateSystem) {
+                    alert(viewValidateDateEnterDateToday);
                     self.HospExDate("");
+                }
+            }
+            else {
+                if (date_hospital_ == null || date_hospital_ == "") {
+                    alert(msgValidationNotificationDateEnter);
+                    self.HospExDate("");
+                } else {
+                    if (moment(current_value).isBefore(moment(date_hospital_), "days")) {
+                        alert(msgValidationHospExDateGtHospDate);
+                        self.HospExDate("");
+                    }
                 }
             }
         }
@@ -543,9 +562,17 @@
                 $("#tab-case").show();
                 $("#CaseStatus").attr("disabled", false);
                 $("#tabs").tabs("refresh");
-            } else if (self.Destin() != "" || app.Views.Contact.SurvILI() == true) {
+            }
+            else if (app.Views.Contact.SurvInusual() == true && self.IsSample() === "false") {
+                $("a[href*='tab-case']").show();
+                $("#tab-case").show();
                 $("#CaseStatus").attr("disabled", false);
-            } else {
+                $("#tabs").tabs("refresh");
+            } 
+            else if (self.Destin() != "" || app.Views.Contact.SurvILI() == true) {
+                $("#CaseStatus").attr("disabled", false);
+            } 
+            else {
                 if (app.Views.Contact.IsSurv() == 2) {
                     $("a[href*='tab-case']").show();
                     $("#tab-case").show();

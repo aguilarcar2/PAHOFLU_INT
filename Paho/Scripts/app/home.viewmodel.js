@@ -604,8 +604,23 @@
         //    $("#CaseStatus").attr("disabled", false);
         //    $("#tabs").tabs("refresh");
             //}
-        else if (app.Views.Hospital.IsSample() === "false" && app.Views.Contact.IsSurv() == "2") {
+        else if (app.Views.Hospital.IsSample() === "false" && (app.Views.Contact.IsSurv() == "2" || app.Views.Contact.SurvInusual() == true)) {
             //console.log("aqui _ CaseStatus ETI"); //
+            //console.log("aqui _ CaseStatus SurvInusual"); //
+            $("a[href*='tab-case']").show();
+            $("#tab-case").show();
+            $("#CaseStatus").attr("disabled", false);
+            $("#tabs").tabs("refresh");
+            //console.log("aqui _ CaseStatus 5"); //
+            if (app.Views.Hospital.CaseStatus() != "") {
+                $('a[href="#tab-contact"]').click();
+            }
+            else {
+                $('a[href="#tab-case"]').click();
+            }
+        }
+        else if (app.Views.Hospital.IsSample() === "true" && app.Views.Contact.SurvInusual() == true && app.Views.Lab.CanConclude() == true) {
+            //console.log("aqui _ CaseStatus SurvInusual"); //
             $("a[href*='tab-case']").show();
             $("#tab-case").show();
             $("#CaseStatus").attr("disabled", false);
