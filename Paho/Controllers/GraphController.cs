@@ -4001,29 +4001,30 @@ namespace Paho.Controllers
                             {
                                 cAnio = reader.GetValue(1).ToString();
                                 cSema = reader.GetValue(2).ToString();
+                                int nX = 17;
 
-                                if (reader.GetValue(19) != System.DBNull.Value)
-                                    cGE1 = ((int)reader.GetValue(19)).ToString();
+                                if (reader.GetValue(nX) != System.DBNull.Value)
+                                    cGE1 = ((int)reader.GetValue(nX)).ToString();
                                 else
                                     cGE1 = "0";
-                                if (reader.GetValue(20) != System.DBNull.Value)
-                                    cGE2 = ((int)reader.GetValue(20)).ToString();
+                                if (reader.GetValue(nX + 1) != System.DBNull.Value)
+                                    cGE2 = ((int)reader.GetValue(nX + 1)).ToString();
                                 else
                                     cGE2 = "0";
-                                if (reader.GetValue(21) != System.DBNull.Value)
-                                    cGE3 = ((int)reader.GetValue(21)).ToString();
+                                if (reader.GetValue(nX + 2) != System.DBNull.Value)
+                                    cGE3 = ((int)reader.GetValue(nX + 2)).ToString();
                                 else
                                     cGE3 = "0";
-                                if (reader.GetValue(22) != System.DBNull.Value)
-                                    cGE4 = ((int)reader.GetValue(22)).ToString();
+                                if (reader.GetValue(nX + 3) != System.DBNull.Value)
+                                    cGE4 = ((int)reader.GetValue(nX + 3)).ToString();
                                 else
                                     cGE4 = "0";
-                                if (reader.GetValue(23) != System.DBNull.Value)
-                                    cGE5 = ((int)reader.GetValue(23)).ToString();
+                                if (reader.GetValue(nX + 4) != System.DBNull.Value)
+                                    cGE5 = ((int)reader.GetValue(nX + 4)).ToString();
                                 else
                                     cGE5 = "0";
-                                if (reader.GetValue(24) != System.DBNull.Value)
-                                    cGE6 = ((int)reader.GetValue(24)).ToString();
+                                if (reader.GetValue(nX + 5) != System.DBNull.Value)
+                                    cGE6 = ((int)reader.GetValue(nX + 5)).ToString();
                                 else
                                     cGE6 = "0";
 
@@ -4031,12 +4032,12 @@ namespace Paho.Controllers
                                 {
                                     /*cGE7 = ((int)reader.GetValue(17)).ToString();
                                     cGE8 = ((int)reader.GetValue(18)).ToString();*/
-                                    if (reader.GetValue(25) != System.DBNull.Value)
-                                        cGE7 = ((int)reader.GetValue(25)).ToString();
+                                    if (reader.GetValue(nX + 6) != System.DBNull.Value)
+                                        cGE7 = ((int)reader.GetValue(nX + 6)).ToString();
                                     else
                                         cGE7 = "0";
-                                    if (reader.GetValue(26) != System.DBNull.Value)
-                                        cGE8 = ((int)reader.GetValue(26)).ToString();
+                                    if (reader.GetValue(nX + 7) != System.DBNull.Value)
+                                        cGE8 = ((int)reader.GetValue(nX + 7)).ToString();
                                     else
                                         cGE8 = "0";
 
@@ -4046,16 +4047,16 @@ namespace Paho.Controllers
                                 {
                                     if (countryId == 17 || countryId == 119 || countryId == 11)
                                     {
-                                        if (reader.GetValue(25) != System.DBNull.Value)
-                                            cGE7 = ((int)reader.GetValue(25)).ToString();
+                                        if (reader.GetValue(nX + 6) != System.DBNull.Value)
+                                            cGE7 = ((int)reader.GetValue(nX + 6)).ToString();
                                         else
                                             cGE7 = "0";
-                                        if (reader.GetValue(26) != System.DBNull.Value)
-                                            cGE8 = ((int)reader.GetValue(26)).ToString();
+                                        if (reader.GetValue(nX + 7) != System.DBNull.Value)
+                                            cGE8 = ((int)reader.GetValue(nX + 7)).ToString();
                                         else
                                             cGE8 = "0";
-                                        if (reader.GetValue(27) != System.DBNull.Value)
-                                            cGE9 = ((int)reader.GetValue(27)).ToString();
+                                        if (reader.GetValue(nX + 8) != System.DBNull.Value)
+                                            cGE9 = ((int)reader.GetValue(nX + 8)).ToString();
                                         else
                                             cGE9 = "0";
 
