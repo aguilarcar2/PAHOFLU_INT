@@ -398,11 +398,13 @@
         if (self.UsrCountry() == self.selectedCountryId()) {
             if (!self.selectedAreaId() || self.selectedAreaId() == "") {
                 if (!(self.UsrCountry() == 17 && app.Views.Contact.SurvInusual() == 1))    //#### CAFQ: 180604 - Jamaica Universal
-                    msg += "\n" + msgValidationAreaRequired;
+                    if (!(self.UsrCountry() == 3 && app.Views.Contact.SurvInusual() == 1))    //#### Bolivia inusitado
+                        msg += "\n" + msgValidationAreaRequired;
             }
                 
             if ((!self.selectedStateId() || self.selectedStateId() == "") && self.UsrCountry() != 17 && self.UsrCountry() != 11 && self.UsrCountry() != 119) {
-                msg += "\n" + msgValidationStateRequired;
+                if (!(self.UsrCountry() == 3 && app.Views.Contact.SurvInusual() == 1))    //#### Bolivia inusitado
+                    msg += "\n" + msgValidationStateRequired;
             }
 
             if (self.UsrCountry() == 7) {

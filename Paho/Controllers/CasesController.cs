@@ -27,7 +27,7 @@ namespace Paho.Controllers
         public void HistoryRecord(int? RecordId, int Action_history, int? flow, int? state)
         {
             RecordHistory history;
-            IQueryableToXML(RecordId);
+            //IQueryableToXML(RecordId);
             history = new RecordHistory(); 
             history.Action = Action_history;
             history.Recordid = RecordId;

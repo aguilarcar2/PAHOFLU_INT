@@ -458,7 +458,7 @@ function ContactViewModel(app, dataModel) {
     });
 
     self.NotShowHospitalization = ko.computed(function () {
-        if (self.IsSurv() == "1" || (self.SurvInusual() == true && self.UsrCountry() == 17))
+        if (self.IsSurv() == "1" || (self.SurvInusual() == true && self.UsrCountry() == 17) || (self.SurvInusual() == true && self.UsrCountry() == 3)) // Universal Jamaica & Inusitado Bolivia
         {
             return true;
         } else {
@@ -707,18 +707,23 @@ function ContactViewModel(app, dataModel) {
         if (self.IsSurv() == "")
         {
             if (self.UsrCountry() != 17 && self.IsInusitado() != true)
-                msg += "\n" + msgValidationSurvType;
+                if (self.UsrCountry() != 3 && self.IsInusitado() != true)  // Inusitado Bolivia
+                    msg += "\n" + msgValidationSurvType;
 
         }
             
         if (!self.DocumentType() && (self.UsrCountry() != 25 && self.UsrCountry() != 11 && self.UsrCountry() != 18 && self.UsrCountry() != 17 && self.UsrCountry() != 15))//agregado el 25 para que esta validación ignore SURINAME
-            msg += "\n" + msgValidationTypeOfDocument; // Este no esta en la base
+            if (!(self.UsrCountry() == 3 && self.SurvInusual() == 1))    //####  Bolivia Inusistado
+                msg += "\n" + msgValidationTypeOfDocument; // Este no esta en la base
 
         if (!self.NoExpediente()) {
             if (!(self.UsrCountry() == 17 && self.SurvInusual() == 1) )    //#### CAFQ: 180604 - Jamaica Universal
-            {
+            {  
+               if (!(self.UsrCountry() == 3 && self.SurvInusual() == 1) )    //####  Bolivia Inusistado
+                {             
                 if (self.UsrCountry() != 15)
                     msg += "\n" + msgValidationDocumentIDRequired;
+                }
             }
                 
         }
@@ -780,7 +785,8 @@ function ContactViewModel(app, dataModel) {
 
         if ((date_DOB == null || date_DOB == "") && (self.Age() == ""))
             if (!(self.UsrCountry() == 17 && self.SurvInusual() == 1))    //#### CAFQ: 180604 - Jamaica Universal
-                msg += "\n" + msgValidationTypeDOBorAge;
+                if (!(self.UsrCountry() == 3 && self.SurvInusual() == 1))    //#### Bolivia Inusitado
+                    msg += "\n" + msgValidationTypeDOBorAge;
                 
         //if (msg !== "") { alert('DAT. VIGILANCIA:' + msg); $('#tabs').tabs({ active: 0 }); return false; }
         if (msg !== "") { alert(msgValidationSurvData + msg); $('#tabs').tabs({ active: 0 }); return false; }
@@ -932,6 +938,8 @@ function ContactViewModel(app, dataModel) {
         //date_fever_dummy = jQuery.type(app.Views.Hospital.FeverDate()) === 'date' ? app.Views.Hospital.FeverDate() : parseDate($("#FeverDate").val(), date_format_);
         //console.log("x1->" + self.ResponsibleMinor());
         if (self.UsrCountry() == 17 && self.SurvInusual() == 1) {
+            date_fever_dummy = jQuery.type(self.HospitalDate()) === 'date' ? self.HospitalDate() : parseDate($("#HospitalDate").val(), date_format_);
+        } else if (self.UsrCountry() == 3 && self.SurvInusual() == 1) {  //  Inusitado Bolivia
             date_fever_dummy = jQuery.type(self.HospitalDate()) === 'date' ? self.HospitalDate() : parseDate($("#HospitalDate").val(), date_format_);
         } else {
             date_fever_dummy = jQuery.type(app.Views.Hospital.FeverDate()) === 'date' ? app.Views.Hospital.FeverDate() : parseDate($("#FeverDate").val(), date_format_);

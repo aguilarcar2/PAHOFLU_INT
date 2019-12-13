@@ -700,7 +700,8 @@
         }
 
         if ((!self.VaccinFuente() || self.VaccinFuente() == "0") && self.UsrCountry() != 25 && self.UsrCountry() != 18 && self.UsrCountry() != 11 && self.UsrCountry() != 17 && self.UsrCountry() != 11 && self.UsrCountry() != 119)
-            msg += "\n" + "Fuente de la información de la vacuna es requerida";
+            if (!(self.UsrCountry() == 3 && app.Views.Contact.SurvInusual() == 1))    //#### Bolivia inusitado
+             msg += "\n" + "Fuente de la información de la vacuna es requerida";
 
 
         // Validacion de Fecha de vacunas contra fecha de nacimiento
@@ -712,25 +713,27 @@
             }
 
         if ((app.Views.Contact.AMeasure() == "Month" && app.Views.Contact.Age() > 5) && app.Views.Contact.AMeasure() != "Day") {
+            if (!(self.UsrCountry() == 3 && app.Views.Contact.SurvInusual() == 1))    //#### Bolivia inusitado
+                { 
+                    if (!self.VacInfluenza() && !self.UsrCountry() == 7 && !self.UsrCountry() != 17)
+                        msg += "\n" + "Información de la vacuna de Influenza es requerida";
 
-            if (!self.VacInfluenza() && !self.UsrCountry() == 7 && !self.UsrCountry() != 17)
-                msg += "\n" + "Información de la vacuna de Influenza es requerida";
+                    if (date_influenza_1 != null && self.VacInfluenza() == "1" && !self.UsrCountry() != 17)
+                        if (moment(date_influenza_1).isBefore(moment(date_DOB_dummy))) {
+                            msg += "\n" + "La fecha de la vacuna de Influenza no puede ser menor a fecha de nacimiento";
+                            $("#VacInfluenzaDateFirst").focus();
+                        }
 
-            if (date_influenza_1 != null && self.VacInfluenza() == "1" && !self.UsrCountry() != 17)
-                if (moment(date_influenza_1).isBefore(moment(date_DOB_dummy))) {
-                    msg += "\n" + "La fecha de la vacuna de Influenza no puede ser menor a fecha de nacimiento";
-                    $("#VacInfluenzaDateFirst").focus();
-                }
-
-            if (date_influenza_1 != null && date_influenza_2 != null && !self.UsrCountry() != 17) {
-                if (moment(date_influenza_2).isBefore(moment(date_DOB_dummy))) {
-                    msg += "\n" + "La fecha de la vacuna de segunda dosis de Influenza no puede ser menor a fecha de nacimiento";
-                    $("#VacInfluenzaDateSecond").focus();
-                }
-                if (moment(date_influenza_2).isBefore(moment(date_influenza_1)) && !self.UsrCountry() != 17) {
-                    msg += "\n" + "La fecha de la vacuna de segunda dosis de Influenza no puede ser menor a fecha de la primera dosis de Influenza";
-                    $("#VacInfluenzaDateSecond").focus();
-                }
+                    if (date_influenza_1 != null && date_influenza_2 != null && !self.UsrCountry() != 17) {
+                        if (moment(date_influenza_2).isBefore(moment(date_DOB_dummy))) {
+                            msg += "\n" + "La fecha de la vacuna de segunda dosis de Influenza no puede ser menor a fecha de nacimiento";
+                            $("#VacInfluenzaDateSecond").focus();
+                        }
+                        if (moment(date_influenza_2).isBefore(moment(date_influenza_1)) && !self.UsrCountry() != 17) {
+                            msg += "\n" + "La fecha de la vacuna de segunda dosis de Influenza no puede ser menor a fecha de la primera dosis de Influenza";
+                            $("#VacInfluenzaDateSecond").focus();
+                        }
+                    }
             }
         }
 
@@ -792,7 +795,8 @@
 
         if (!self.AntiViral())
             if (!(self.UsrCountry() == 17 && app.Views.Contact.SurvInusual() == 1))    //#### CAFQ: 180604 - Jamaica Universal
-                msg += "\n" + msgValidationAntiviralTreatment;
+                if (!(self.UsrCountry() == 3 && app.Views.Contact.SurvInusual() == 1))    //#### Bolivia inusitado
+                    msg += "\n" + msgValidationAntiviralTreatment;
 
         if (self.EnableAntiViralDate() && app.Views.Contact.SurvSARI() == true) {
             if (date_antiviral == null)
@@ -812,11 +816,13 @@
 
         if (!self.RiskFactors() || self.RiskFactors() == "")
             if (!(self.UsrCountry() == 17 && app.Views.Contact.SurvInusual() == 1))    //#### CAFQ: 180604 - Jamaica Universal
-                msg += "\n" + msgValidationRiskFactor;
+                if (!(self.UsrCountry() == 3 && app.Views.Contact.SurvInusual() == 1))    //#### Bolivia inusitado
+                    msg += "\n" + msgValidationRiskFactor;
 
         if (app.Views.Contact.ActiveBOL()) {
-            if (!self.Comorbidities() || self.Comorbidities() == "")
-                msg += "\n" + msgValidationRiskFactor;
+            if (!(self.UsrCountry() == 3 && app.Views.Contact.SurvInusual() == 1))    //#### Bolivia inusitado
+                if (!self.Comorbidities() || self.Comorbidities() == "")
+                    msg += "\n" + msgValidationRiskFactor;
         }
         
 
