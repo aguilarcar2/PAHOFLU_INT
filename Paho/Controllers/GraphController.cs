@@ -3581,15 +3581,16 @@ namespace Paho.Controllers
                         con.Open();
                         using (var reader = command.ExecuteReader())
                         {
-                            int nCasos, nPoIn;
+                            int nCasos, nPoIn, nCasosP;
                             double nPorc;
                             CultureInfo oCI = new CultureInfo("en-US");
 
                             while (reader.Read())
                             {
-                                nCasos = (int)reader.GetValue(6);                           // Casos + a influenza
+                                nCasos = (int)reader.GetValue(4);                           // Casos + a influenza
+                                nCasosP = (int)reader.GetValue(6);                           // Casos + a influenza
                                 nPoIn = (int)reader.GetValue(5);                            // Casos ETI (con muestra)
-                                nPorc = (nPoIn == 0) ? 0 : (Convert.ToDouble(nCasos) / Convert.ToDouble(nPoIn)) * 100;
+                                nPorc = (nPoIn == 0) ? 0 : (Convert.ToDouble(nCasosP) / Convert.ToDouble(nPoIn)) * 100;
 
                                 aData.Add(new string[] { reader.GetValue(1).ToString(), reader.GetValue(2).ToString(), nCasos.ToString(), nPorc.ToString("###0.0", oCI) });
                             }
