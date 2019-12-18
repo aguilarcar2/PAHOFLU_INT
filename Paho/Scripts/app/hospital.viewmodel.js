@@ -590,7 +590,7 @@
 
 
     self.CaseIsSample = ko.computed(function () {
-        return (app.Views.Contact.ActiveBOL) ? (self.IsSample() === "true") ? true : false : true;
+        return (app.Views.Contact.ActiveBOL) ? ( (self.IsSample() === "true") ? true : (app.Views.Contact.SurvInusual() == 1) ? true :  false) : true;
     });
 
     self.CaseIsNoSample = ko.computed(function () {
