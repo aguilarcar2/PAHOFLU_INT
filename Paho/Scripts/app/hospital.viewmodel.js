@@ -1176,7 +1176,7 @@
         
         if ($("#FeverDate").val() == "")
             if (!(self.UsrCountry() == 17 && app.Views.Contact.SurvInusual() == 1))    //#### CAFQ: 180604 - Jamaica Universal
-                if (!(self.UsrCountry() == 3 && app.Views.Contact.SurvInusual() == 1))    //#### CAFQ: 180604 - Jamaica Universal
+                if (!(self.UsrCountry() == 3 && app.Views.Contact.SurvInusual() == 1))    //#### Bolivia Universal
                     msg += "\n" + msgValidationOnsetOnFever;
         if ($("#FeverDate").val() != "" && !moment(moment(date_fever).format(date_format_moment), [date_format_moment], true).isValid())
             msg += "\n" + viewValidateOnsetInvalid;
@@ -1199,7 +1199,7 @@
         if (app.Views.Contact.SurvSARI() == true) {
             if ($("#HospAmDate").val() == "")
                 if (!(self.UsrCountry() == 17 && app.Views.Contact.SurvInusual() == 1))    //#### CAFQ: 180604 - Jamaica Universal
-                    if (!(self.UsrCountry() == 3 && app.Views.Contact.SurvInusual() == 1))    //#### Bolivia inusitado
+                    if (!(self.UsrCountry() == 3 && app.Views.Contact.SurvInusual() == 1))    //#### Bolivia universal
                         msg += "\n" + viewValidateHospDateRequired;
             if ($("#HospAmDate").val() != "" && !moment(moment(date_hosp_adm).format(date_format_moment), [date_format_moment], true).isValid())
                 msg += "\n" + viewValidateHospDateInvalid;
@@ -1209,7 +1209,7 @@
             }
 
             if (date_hosp_adm != null && date_hosp_disc != null && moment(date_hosp_disc).isBefore(moment(date_hosp_adm), "days") && self.UsrCountry() != 17) {
-                if (!(self.UsrCountry() == 3 && app.Views.Contact.SurvInusual() == 1))    //#### Bolivia inusitado
+                if (!(self.UsrCountry() == 3 && app.Views.Contact.SurvInusual() == 1))    //#### Bolivia universal
                 {
                     msg += "\n" + viewValidateHospExitDateGtHospDate;
                     $("#HospExDate").focus();
@@ -1305,7 +1305,7 @@
 
         if (!self.IsSample())
             if (!(self.UsrCountry() == 17 && app.Views.Contact.SurvInusual() == 1))    //#### CAFQ: 180604 - Jamaica Universal
-                if (!(self.UsrCountry() == 3 && app.Views.Contact.SurvInusual() == 1))    //#### Bolivia inusitado
+                if (!(self.UsrCountry() == 3 && app.Views.Contact.SurvInusual() == 1))    //#### Bolivia universal
                     msg += "\n" + viewValidateSampleInfoRequired;
 
         if (self.IsSample() === "true") {
