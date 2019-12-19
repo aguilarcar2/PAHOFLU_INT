@@ -34,7 +34,7 @@
             <span class="input-group-addon">
                 @(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelSurv"))
             </span>
-            <select id="Surv" class="form-control" data-bind="value: Surv">
+            @*<select id="Surv" class="form-control" data-bind="value: Surv">
                 @if ((ViewBag.SARI == true && ViewBag.ILI == true) || (ViewBag.SARI == true && ViewBag.unusual == true) || (ViewBag.ILI == true && ViewBag.unusual == true) || (ViewBag.SARI == true && ViewBag.ILI == true && ViewBag.unusual == true))
                 {
                     if (ViewBag.UsrCtry == 17)
@@ -59,12 +59,17 @@
                     <option value="3">@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelUnusualCase"))</option>
                 }
 
+            </select>*@
+
+            <select id="Surv" class="form-control" data-bind="options: survCountries,
+                       optionsText: 'Name',
+                       optionsValue: 'Id',
+                       value: Surv ">
+
             </select>
-            <!--
-            <label class="btn btn-default">
-                <input type="checkbox" name="SurvInusual" id="SurvInusual" data-bind="checked: SurvInusual">  @(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelUnusualCase"))
-            </label>
-            -->
+
+            @*valueUpdate:'change'*@
+
         </div>
     </div>
 </div>
@@ -170,7 +175,6 @@
                        value: selectedInstitutionId,
                        valueUpdate:'change'"></select>
 
-                @*optionsCaption: 'Select...',*@
             </div>
         </div>
     </div>
@@ -345,6 +349,7 @@
     var regions= @Html.Raw(Json.Encode(Model.Regions));
     var institutions = @Html.Raw(Json.Encode(Model.Institutions));
     var reportsCountries = @Html.Raw(Json.Encode(Model.ReportsCountries));
+    var survCountries = @Html.Raw(Json.Encode(Model.SurvCountries));
     //console.log(reportsCountries);
     var CountryID = @Html.Raw(Model.CountryID);
     var selcty = @ViewBag.UsrCtry;

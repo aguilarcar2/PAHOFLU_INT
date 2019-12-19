@@ -145,6 +145,7 @@ namespace Paho.Models
         public IEnumerable<LookupView<Institution>> Institutions { get; set; }
         public IEnumerable<LookupView<ReportCountry>> ReportsCountries { get; set; }
         public IEnumerable<LookupView<Region>> Regions { get; set; }
+        public IEnumerable<LookupView<CatSurv>> SurvCountries { get; set; }
         public bool DisplayCountries { get; set; }
         public bool DisplayAreas { get; set; }                      //#### CAFQ: 180703
         public bool DisplayRegionals { get; set; }
@@ -551,6 +552,16 @@ namespace Paho.Models
     }
 
     // Catalogos para resultado de laboratorio
+
+    public class CatSurv
+    {
+
+        public int ID { get; set; }
+        public string description { get; set; }
+        public string ENG { get; set; }
+        public int? orden { get; set; }
+
+    }
 
     public class CatSampleNoProcessed
     {
@@ -1848,6 +1859,8 @@ namespace Paho.Models
         public DbSet<CatTrabSaludRama> CatTrabSaludRamas { get; set; }              //#### CAFQ
         public DbSet<CatTrabLaboRama> CatTrabLaboRamas { get; set; }                //#### CAFQ
         //Catalogos
+        
+        public DbSet<CatSurv> CatSurv { get; set; }
         public DbSet<CatRegionType> CatRegionType { get; set; }
         public DbSet<CatSampleNoProcessed> CatSampleNoProcessed { get; set; }
         public DbSet<CatCaseStatus> CatCaseStatus { get; set; }

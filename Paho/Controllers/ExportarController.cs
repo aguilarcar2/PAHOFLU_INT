@@ -35,10 +35,12 @@ namespace Paho.Controllers
             //IQueryable<Paho.Models.Area> areas = null;
             IQueryable<Area> areas = null;                          //#### CAFQ: 180703 
             IQueryable<ReportCountry> ReportsCountries = null;
+            IQueryable<CatSurv> SurvCountries = null;
 
             var user = UserManager.FindById(User.Identity.GetUserId());
             ExportarViewModel.CountryID = user.Institution.CountryID ?? 0;
             ReportsCountries = db.ReportsCountries.Where(i => i.CountryID == user.Institution.CountryID && i.active == true);
+            SurvCountries = db.CatSurv.OrderBy(i => i.orden);
 
             if (user.Institution.AccessLevel == AccessLevel.All)
             {
@@ -236,6 +238,26 @@ namespace Paho.Controllers
                 ExportarViewModel.Institutions = institutionsDisplay;
             };
 
+
+            if (SurvCountries != null)
+            {
+                var SurvCountriesDisplay = SurvCountries.Select(i => new LookupView<Paho.Models.CatSurv>()
+                {
+                    Id = i.ID.ToString(),
+                    Name = (user.Institution.Country.Language == "SPA") ? i.description : i.ENG,
+                    orden = i.orden.ToString()
+                }).ToList();
+
+                if (SurvCountriesDisplay.Count() > 1)
+                {
+                    //var all = new LookupView<Paho.Models.Institution> { Id = "0", Name = "-- Todo(a)s --" };
+                    var all = new LookupView<Paho.Models.CatSurv> { Id = "0", Name = getMsg("msgGeneralMessageAll"), orden = "0" };
+                    SurvCountriesDisplay.Insert(0, all);
+                }
+
+                ExportarViewModel.SurvCountries = SurvCountriesDisplay;
+            }
+
             //**** Link Dashboard
             string dashbUrl = "", dashbTitle = "";
             List<CatDashboardLink> lista = (from tg in db.CatDashboarLinks
@@ -297,12 +319,13 @@ namespace Paho.Controllers
             {
                 var ms = new MemoryStream();
 
-                if (Surv == 3)
-                {
-                    Surv = 0;
-                    Inusual = true;
-                }
-                else if (Surv == 0)
+                //if (Surv == 3)
+                //{
+                //    Surv = 0;
+                //    Inusual = true;
+                //}
+                //else 
+                if (Surv == 0)
                     Inusual = null;
 
                 int AreaID_ = (int)Area;
@@ -567,7 +590,7 @@ namespace Paho.Controllers
 
                             /////////////////////////////////////// VIRUS IRAG  ////////////////////////////////////////////////////////////////////////7
 
-                            var excelWs_VIRUSES_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "NATIONAL VIRUSES" : "Virus Identificados"];
+                            var excelWs_VIRUSES_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "SARI VIRUSES" : "Virus Identificados"];
                             var excelWs_VIRUSES_Chart = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Graph Virus" : "Gráficos Virus IRAG"];
                             contador = YearEnd - YearBegin;
                             var YearEnd_report = DateTime.Now.Year;
@@ -619,11 +642,11 @@ namespace Paho.Controllers
                             // Procedimiento para cambiar los rangos del eje X 
                             if (contador > 0)
                             {
-                                var RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "NATIONAL VIRUSES" : "Virus Identificados") + "'!$BY$6:$BZ$57 ";
+                                var RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "SARI VIRUSES" : "Virus Identificados") + "'!$BY$6:$BZ$57 ";
 
                                 for (int i = 1; i <= contador; i++)
                                 {
-                                    RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "NATIONAL VIRUSES" : "Virus Identificados") + "'!$BY$" + (6 + (52 * i)).ToString() + ":$BZ$" + ((6 + (52 * i)) + 51).ToString() + ", " + RangeStr;
+                                    RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "SARI VIRUSES" : "Virus Identificados") + "'!$BY$" + (6 + (52 * i)).ToString() + ":$BZ$" + ((6 + (52 * i)) + 51).ToString() + ", " + RangeStr;
                                 }
 
                                 RangeStr = " ( " + RangeStr + ")";
@@ -652,7 +675,7 @@ namespace Paho.Controllers
                                 UpdateRangeXMLPath(LineChart, RangeStr);
                             }
 
-                            //var excelWs_VIRUSES_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "NATIONAL VIRUSES" : "Virus Identificados"];
+                            //var excelWs_VIRUSES_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "SARI VIRUSES" : "Virus Identificados"];
                             //AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_NATIONAL_VIRUSES", 6, 1, excelWs_VIRUSES_IRAG.Index, false, ReportCountry, YearEnd, YearEnd, 1, Inusual, AreaID_, Sentinel);
 
                             //////////////////////////////////////////////////// IRAG  /////////////////////////////////////////////////////////////////////////////////7777

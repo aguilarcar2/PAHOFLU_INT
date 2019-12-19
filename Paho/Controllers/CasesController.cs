@@ -699,7 +699,7 @@ namespace Paho.Controllers
                                        cell = new string[]
                                      {
                                          //#### CAFQ: 180604 - Jamaica Universal
-                                         "<img src='/Content/themes/base/images/" + ((UsrCtry==17 && (bool)x.surv_IDInusual==true) ? Convert.ToInt32((bool)x.surv_IDInusual).ToString() + "_" + "UNI" + ".png' alt='" + "UNIVERSAL" : x.surv_ID.ToString() + "_" + language + ".png' alt='" + (x.surv_ID == 1 ? "SARI":"ILI")) + "'/>",
+                                         "<img src='/Content/themes/base/images/" + (((bool)x.surv_IDInusual==true) ? Convert.ToInt32((bool)x.surv_IDInusual).ToString() + "_" + "UNI" + ".png' alt='" + "UNIVERSAL" : x.surv_ID.ToString() + "_" + language + ".png' alt='" + (x.surv_ID == 1 ? "SARI":"ILI")) + "'/>",
                                          //x.id_D.ToString(),
                                          x.id_D.ToString() + ((user.Institution.CountryID==15) ? x.ICON_COMMEN : x.ICON_COMMEN_CLOSE),
                                          x.H_D.ToString((user.Institution.CountryID==17) ? "yyyy/MM/dd": "dd/MM/yyyy" ),
@@ -1049,11 +1049,12 @@ namespace Paho.Controllers
  
 
                 //#### CAFQ: 180604 - Jamaica Universal
-                if (UsrCtry == 17 && SInusual == true)       // Jamaica Universal
+                if ((UsrCtry == 17 || UsrCtry == 3) && SInusual == true)       // Jamaica Universal
                 {
                     flucase = new FluCase();
                     flucase.HospitalID = HospitalId;
                     flucase.HospitalID_CaseGenerating = HospitalID_CaseGenerating;
+                    flucase.Surv = 3;
                     flucase.flow = 0;
                     db.Entry(flucase).State = EntityState.Added;
                 }
@@ -1074,6 +1075,7 @@ namespace Paho.Controllers
                         flucase = new FluCase();
                         flucase.HospitalID = HospitalId;
                         flucase.HospitalID_CaseGenerating = HospitalID_CaseGenerating;
+                        flucase.Surv = (SInusual == true) ? 4 : Surv;
                         flucase.flow = 0;
                         db.Entry(flucase).State = EntityState.Added;
                     }
@@ -1085,9 +1087,11 @@ namespace Paho.Controllers
                 flucase = db.FluCases.Find(id);
                 flucase.HospitalID = HospitalId;
                 flucase.HospitalID_CaseGenerating = HospitalID_CaseGenerating;
+                flucase.Surv = (SInusual == true) ? 4 : Surv;
                 db.Entry(flucase).State = EntityState.Modified;
             }
-            flucase.Surv = Surv;
+
+
             flucase.SurvInusual = SInusual;
             flucase.Brote = Brote;
             flucase.LName1 = LName1 ?? "";
