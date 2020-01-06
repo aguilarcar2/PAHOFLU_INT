@@ -285,6 +285,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AreasController.cs" />
     <Compile Include="Controllers\AssignFinalResult.cs" />
+    <Compile Include="Controllers\BaselineConfigurationController.cs" />
     <Compile Include="Controllers\CatSampleReasonsNoProcessedController.cs" />
     <Compile Include="Controllers\CatVirusLinajesController.cs" />
     <Compile Include="Controllers\ColonyController.cs" />
@@ -2089,6 +2090,7 @@
     <Content Include="Scripts\ammap\themes\dark.js" />
     <Content Include="Scripts\ammap\themes\light.js" />
     <Content Include="Scripts\ammap\themes\patterns.js" />
+    <Content Include="Scripts\app\baselineconf.viewmodel.js" />
     <Content Include="Scripts\app\usersAdmin.js" />
     <Content Include="Scripts\app\catalog.institution-conf.js" />
     <Content Include="Scripts\app\catalog.institution.js" />
@@ -2447,6 +2449,8 @@
     <Content Include="Views\Colony\Create.cshtml" />
     <Content Include="Views\Colony\Edit.cshtml" />
     <Content Include="Views\Colony\Delete.cshtml" />
+    <Content Include="Views\BaselineConfiguration\Index.cshtml" />
+    <Content Include="Views\BaselineConfiguration\_BaseLineConfiguration.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

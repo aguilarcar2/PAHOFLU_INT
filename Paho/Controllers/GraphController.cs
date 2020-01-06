@@ -46,7 +46,7 @@ namespace Paho.Controllers
             var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (var con = new SqlConnection(consString))
             {
-                using (var command = new SqlCommand("GetDataYears", con) { CommandType = CommandType.StoredProcedure })
+                using (var command = new SqlCommand("GetDataYears", con) { CommandType = CommandType.StoredProcedure, CommandTimeout = 1200 })
                 {
                     command.Parameters.Clear();                    
                     con.Open();
@@ -2961,32 +2961,31 @@ namespace Paho.Controllers
             else if (countryId == 9)
                 sheet = "Costa Rica";
             else if (countryId == 3)
-                sheet = "BOLIVIA INLASA";
-            else if (countryId == 3.1)
-                sheet = "BOLIVIA INLASA";
-            else if (countryId == 3.2)
-                sheet = "BOLIVIA CENETROP";
+                sheet = "Bolivia";
+            //else if (countryId == 3.1)
+            //    sheet = "BOLIVIA INLASA";
+            //else if (countryId == 3.2)
+            //    sheet = "BOLIVIA CENETROP";
             else if (countryId == 25)
-                sheet = "Surinam";
+                sheet = "Suriname";
             else if (countryId == 17)
                 sheet = "Jamaica";
             else if (countryId == 18)
-                sheet = "Saint Lucia";
+                sheet = "St. Lucia";
             else if (countryId == 11)
                 sheet = "Dominica";
             else if (countryId == 15)
                 sheet = "Honduras";
             else if (countryId == 119)
-                sheet = "CaymanIslands";
+                sheet = "Cayman Islands";
             else
                 return "";
 
             //****
-            //if (countryId == 9 || countryId == 15)                     // Costa Rica
-            if (countryId == 9)                     // Costa Rica
-                recuperarDatosExcelLineasBasalesTuned(countryId, sheet, listGlobal, aParametros);
-            else
-                recuperarDatosExcelLineasBasales(countryId, aCEP1, aUA1, aUE1, sheet, aParametros);
+            //if (countryId == 9 || countryId == 7)                     // Costa Rica + Chile
+            recuperarDatosExcelLineasBasalesTuned(countryId, sheet, listGlobal, aParametros);
+            //else
+            //    recuperarDatosExcelLineasBasales(countryId, aCEP1, aUA1, aUE1, sheet, aParametros);
 
             //****
             cTitu = (string)aParametros[0];         // Titulo
@@ -3065,19 +3064,20 @@ namespace Paho.Controllers
 
             //**** Ultima semana con data
             string cSeFi = "";
-            foreach (KeyValuePair<string, decimal> kvp in aResu)
-            {
-                if (kvp.Value != 0 && kvp.Value != -1)
-                    cSeFi = kvp.Key;
-            }
+            //foreach (KeyValuePair<string, decimal> kvp in aResu)
+            //{
+            //    if (kvp.Value != 0 && kvp.Value != -1)
+            //        cSeFi = kvp.Key;
+            //}
+            var x = aResu.Last();
+            cSeFi = x.Key;
 
             //****
-            //if (countryId == 9 || countryId == 15)                     // Costa Rica
-            if (countryId == 9)                     // Costa Rica
-            {
+            //if (countryId == 9 || countryId == 7)                     // Costa Rica + Chile
+            //{
                 ArrayList arrayList = new ArrayList();
 
-                int nI = 0;
+                int nR = 0;
                 foreach (List<object> aColus in listGlobal)
                 {
                     Dictionary<string, decimal> datosCol = (Dictionary<string, decimal>)aColus.ElementAt(2);
@@ -3088,10 +3088,10 @@ namespace Paho.Controllers
                         decimal nTemp = 0;
                         cKey = kvp.Key;
 
-                        if (nI == 0)
+                        if (nR == 0)
                         {
                             nTemp = Convert.ToDecimal(datosCol[cKey]) * 100;
-                            cTemp = "\"" + "serie" + (nI + 2).ToString() + "\":\"" + nTemp.ToString("##0.0", new CultureInfo("en-US")) + "\"";          // xxxCurva Epidemica Promedio
+                            cTemp = "\"" + "serie" + (nR + 2).ToString() + "\":\"" + nTemp.ToString("##0.0", new CultureInfo("en-US")) + "\"";          // xxxCurva Epidemica Promedio
                             arrayList.Add(cTemp);
                         }
                         else
@@ -3099,13 +3099,13 @@ namespace Paho.Controllers
                             cTemp = arrayList[nAL].ToString();
 
                             nTemp = Convert.ToDecimal(datosCol[cKey]) * 100;
-                            cTemp = cTemp + "," + "\"" + "serie" + (nI + 2).ToString() + "\":\"" + nTemp.ToString("##0.0", new CultureInfo("en-US")) + "\"";
+                            cTemp = cTemp + "," + "\"" + "serie" + (nR + 2).ToString() + "\":\"" + nTemp.ToString("##0.0", new CultureInfo("en-US")) + "\"";
                             arrayList[nAL] = cTemp;
 
                             ++nAL;
                         }
                     }
-                    ++nI;
+                    ++nR;
                 }
 
                 decimal nTemp1 = 0;
@@ -3141,61 +3141,61 @@ namespace Paho.Controllers
                 jsonTextLB = jsonTextLB + cJS + "},";
                 jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + aParametros[4] + "\",";
 
-                nI = 2;
+                nJ = 2;
                 foreach (List<object> aColus in listGlobal)
                 {
                     string labelCol = aColus.ElementAt(0).ToString();
                     //string colorCol = aColus.ElementAt(1).ToString();
-                    jsonTextLB = jsonTextLB + "\"" + "graphSeries" + nI.ToString() + "Label" + "\":\"" + labelCol + "\",";
-                    ++nI;
+                    jsonTextLB = jsonTextLB + "\"" + "graphSeries" + nJ.ToString() + "Label" + "\":\"" + labelCol + "\",";
+                    ++nJ;
                 }
 
                 //jsonTextLB = jsonTextLB + "}}";
                 jsonTextLB = jsonTextLB.Substring(0, jsonTextLB.Length - 1) + "}}";
-            }
-            else
-            {
-                decimal nTemp = 0;
+            //}
+            //else
+            //{
+            //    decimal nTemp = 0;
 
-                foreach (KeyValuePair<string, decimal> kvp in aResu)
-                {
-                    cKey = kvp.Key;
-                    if (String.Compare(kvp.Key, cSeFi, true) <= 0)
-                    {
-                        cSema = cKey.Substring(cKey.Length - 2, 2);
+            //    foreach (KeyValuePair<string, decimal> kvp in aResu)
+            //    {
+            //        cKey = kvp.Key;
+            //        if (String.Compare(kvp.Key, cSeFi, true) <= 0)
+            //        {
+            //            cSema = cKey.Substring(cKey.Length - 2, 2);
 
-                        cTemp = "{";
-                        cTemp = cTemp + "\"" + "semana" + "\":\"" + cSema + "\",";
-                        nTemp = Convert.ToDecimal(aCEP1[cKey]) * 100;
-                        cTemp = cTemp + "\"" + "serie1" + "\":\"" + nTemp.ToString("##0.0", new CultureInfo("en-US")) + "\",";          // Curva Epidemica Promedio
-                        nTemp = Convert.ToDecimal(aUA1[cKey]) * 100;
-                        cTemp = cTemp + "\"" + "serie2" + "\":\"" + nTemp.ToString("##0.0", new CultureInfo("en-US")) + "\",";          // Umbral de Alerta
-                        nTemp = Convert.ToDecimal(aUE1[cKey]) * 100;
-                        cTemp = cTemp + "\"" + "serie3" + "\":\"" + nTemp.ToString("##0.0", new CultureInfo("en-US")) + "\",";          // Umbral Estacional
+            //            cTemp = "{";
+            //            cTemp = cTemp + "\"" + "semana" + "\":\"" + cSema + "\",";
+            //            nTemp = Convert.ToDecimal(aCEP1[cKey]) * 100;
+            //            cTemp = cTemp + "\"" + "serie1" + "\":\"" + nTemp.ToString("##0.0", new CultureInfo("en-US")) + "\",";          // Curva Epidemica Promedio
+            //            nTemp = Convert.ToDecimal(aUA1[cKey]) * 100;
+            //            cTemp = cTemp + "\"" + "serie2" + "\":\"" + nTemp.ToString("##0.0", new CultureInfo("en-US")) + "\",";          // Umbral de Alerta
+            //            nTemp = Convert.ToDecimal(aUE1[cKey]) * 100;
+            //            cTemp = cTemp + "\"" + "serie3" + "\":\"" + nTemp.ToString("##0.0", new CultureInfo("en-US")) + "\",";          // Umbral Estacional
 
-                        nTemp = Convert.ToDecimal(kvp.Value) * 100;
-                        if (nTemp < 0)
-                            cTemp = cTemp + "\"" + "serie4" + "\":\"" + "" + "\"";           // Porcentaje de Positividad
-                        else
-                            cTemp = cTemp + "\"" + "serie4" + "\":\"" + nTemp.ToString("##0.0", new CultureInfo("en-US")) + "\"";       // Porcentaje de Positividad
+            //            nTemp = Convert.ToDecimal(kvp.Value) * 100;
+            //            if (nTemp < 0)
+            //                cTemp = cTemp + "\"" + "serie4" + "\":\"" + "" + "\"";           // Porcentaje de Positividad
+            //            else
+            //                cTemp = cTemp + "\"" + "serie4" + "\":\"" + nTemp.ToString("##0.0", new CultureInfo("en-US")) + "\"";       // Porcentaje de Positividad
 
-                        cTemp = cTemp + "}";
+            //            cTemp = cTemp + "}";
 
-                        cJS = cJS + "," + cTemp;
-                    }
-                    else
-                        break;
-                }
+            //            cJS = cJS + "," + cTemp;
+            //        }
+            //        else
+            //            break;
+            //    }
 
-                cJS = "[" + cJS.Substring(1, cJS.Length - 1) + "]";
+            //    cJS = "[" + cJS.Substring(1, cJS.Length - 1) + "]";
 
-                jsonTextLB = jsonTextLB + cJS + "},";
-                jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + SgetMsg("msgLineasBasalesCurvaEpidemicaPromedio", countryId, languaje_country) + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + SgetMsg("msgLineasBasalesUmbralAlerta", countryId, languaje_country) + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphSeries3Label" + "\":\"" + SgetMsg("msgLineasBasalesUmbralEstacional", countryId, languaje_country) + "\",";
-                jsonTextLB = jsonTextLB + "\"" + "graphSeries4Label" + "\":\"" + SgetMsg("msgLineasBasalesPorcentajePositividad", countryId, languaje_country) + " " + cAnEv + "\"";
-                jsonTextLB = jsonTextLB + "}}";
-            }
+            //    jsonTextLB = jsonTextLB + cJS + "},";
+            //    jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + SgetMsg("msgLineasBasalesCurvaEpidemicaPromedio", countryId, languaje_country) + "\",";
+            //    jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + SgetMsg("msgLineasBasalesUmbralAlerta", countryId, languaje_country) + "\",";
+            //    jsonTextLB = jsonTextLB + "\"" + "graphSeries3Label" + "\":\"" + SgetMsg("msgLineasBasalesUmbralEstacional", countryId, languaje_country) + "\",";
+            //    jsonTextLB = jsonTextLB + "\"" + "graphSeries4Label" + "\":\"" + SgetMsg("msgLineasBasalesPorcentajePositividad", countryId, languaje_country) + " " + cAnEv + "\"";
+            //    jsonTextLB = jsonTextLB + "}}";
+            //}
             //****
             return jsonTextLB;
         }
@@ -3312,11 +3312,19 @@ namespace Paho.Controllers
                         var excelWorksheet = excelWorkBook.Worksheets[sheet];
 
                         aParaLiBa.Add(excelWorksheet.Cells[row, COL_PARAMETROS].Value);                     // Titulo: J3
-                        string cAnio = (string)excelWorksheet.Cells[row + 1, COL_PARAMETROS].Value;         // Anio evluacion: J4
+
+                        var vTemp = excelWorksheet.Cells[row + 1, COL_PARAMETROS].Value;                    // Anio evluacion: J4
+                        //string cAnio = (string)excelWorksheet.Cells[row + 1, COL_PARAMETROS].Value;
+                        string cAnio = vTemp.ToString();
                         aParaLiBa.Add(cAnio);
-                        string cSeIn = (string)excelWorksheet.Cells[row + 2, COL_PARAMETROS].Value;         // Semana inicio anio: J5
+
+                        vTemp = excelWorksheet.Cells[row + 2, COL_PARAMETROS].Value;                        // Semana inicio anio: J5
+                        string cSeIn = vTemp.ToString();
                         aParaLiBa.Add(cSeIn);
-                        aParaLiBa.Add((string)excelWorksheet.Cells[row + 3, COL_PARAMETROS].Value);         // Total semanas del periodo
+
+                        vTemp = excelWorksheet.Cells[row + 3, COL_PARAMETROS].Value;                        // Total semanas del periodo
+                        aParaLiBa.Add(vTemp.ToString());         
+
                         aParaLiBa.Add(excelWorksheet.Cells[row - 1, col + 1].Value);                        // Label serie1 (anio a medir)
 
                         nAnio = Convert.ToInt32(cAnio);
@@ -3326,7 +3334,7 @@ namespace Paho.Controllers
                         {
                             colData = col + nI;
 
-                            var valor = excelWorksheet.Cells[row - 2, colData].Value;       // Flag activo
+                            var valor = excelWorksheet.Cells[row - 2, colData].Value;                       // Flag activo
                             if (valor != null)
                             {
                                 if (valor.ToString() == "1")
@@ -3360,7 +3368,9 @@ namespace Paho.Controllers
             for (int nI = 1; nI <= 53; ++nI)
             {
                 int nSema = Convert.ToInt32(excelWorksheet.Cells[row + nI - 1, colWeek].Value);
+                //decimal nDato = Convert.ToDecimal(excelWorksheet.Cells[row + nI - 1, colData].Value);
                 decimal nDato = Convert.ToDecimal(excelWorksheet.Cells[row + nI - 1, colData].Value);
+                nDato = nDato / 100;
 
                 if (nSema == 1)
                     ++nAnio;

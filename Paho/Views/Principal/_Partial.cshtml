@@ -84,7 +84,7 @@
                                 var chartData = [];
                                 $.each(jsonX, function(index, element) {
                                     $.each(element.graphData.graphDataItem, function(index2, element2) {
-                                        if(CountryID == 9){
+                                        //if(CountryID == 9 || CountryID == 7){
                                             chartData.push({
                                                 semana: element2.semana,
                                                 serie1: element2.serie1,
@@ -94,19 +94,19 @@
                                                 serie5: element2.serie5,
                                                 serie6: element2.serie6
                                             });
-                                        }else{
-                                            chartData.push({
-                                                semana: element2.semana,
-                                                serie1: element2.serie1,
-                                                serie2: element2.serie2,
-                                                serie3: element2.serie3,
-                                                serie4: element2.serie4
-                                            });
-                                        }                                        
+                                        //}else{
+                                        //    chartData.push({
+                                        //        semana: element2.semana,
+                                        //        serie1: element2.serie1,
+                                        //        serie2: element2.serie2,
+                                        //        serie3: element2.serie3,
+                                        //        serie4: element2.serie4
+                                        //    });
+                                        //}                                        
                                     });
                                 });
 
-                                if(CountryID == 9){
+                                //if(CountryID == 9 || CountryID == 7) {
                                     var chart = AmCharts.makeChart("divGraph7", {
                                         "type": "serial",
                                         "theme": "light",
@@ -233,8 +233,8 @@
                                                                                         }]
                                             }
                                         }); //END var chart
-                                }
-                                else
+                                //}
+                                @*else
                                 {
                                     var chart = AmCharts.makeChart("divGraph7", {
                                         "type": "serial",
@@ -333,7 +333,7 @@
                                                                 }]
                                         }
                                     }); //END var chart
-                                }
+                                } // END Else*@
 
                                 //chart.addListener("dataUpdated", zoomChart);
                                 chart.addListener("rendered", zoomChart);
@@ -383,12 +383,13 @@
         </style>
 
         <div id="containerGraph7">
-            <!--
-        <div class="col-md-6">
-            <span id="LBPais">
-                País: @((ViewBag.UsrCtry == 7) ? "CHILE" : (ViewBag.UsrCtry == 9) ? "COSTA RICA" : "BOLIVIA")
-            </span>
-        </div>-->
+            @*
+            <div class="col-md-6">
+                <span id="LBPais">
+                    País: @((ViewBag.UsrCtry == 7) ? "CHILE" : (ViewBag.UsrCtry == 9) ? "COSTA RICA" : "BOLIVIA")
+                </span>
+            </div>
+            *@
             <div id="loaderGraph7" class="loaderGraph"></div>
             <div id="divGraph7"></div>
         </div>

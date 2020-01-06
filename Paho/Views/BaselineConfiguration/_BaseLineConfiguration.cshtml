@@ -1,0 +1,234 @@
+﻿@model Paho.Models.BaselineConfigurationViewModel
+
+@{
+    string labelCatalog = Paho.Controllers.ResourcesM.SgetMessage("msgMenuParametersBaseline", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelCountry = Paho.Controllers.ResourcesM.SgetMessage("msgViewExportarLabelCountry", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelFieldSelect = Paho.Controllers.ResourcesM.SgetMessage("msgViewExportarFieldSelect", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+    string labelSendUpdates = Paho.Controllers.ResourcesM.SgetMessage("msgLineasBasalesSendUpdates", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+    string labelAttachment = Paho.Controllers.ResourcesM.SgetMessage("msgTicketAttachment", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    //string labelAttachment = "Seleccione archivo con datos históricos";
+    string labelAttachmentSize = Paho.Controllers.ResourcesM.SgetMessage("msgTicketAttachmentSize", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+
+
+    //string labelCreate = Paho.Controllers.ResourcesM.SgetMessage("msgViewCatPopulation_Crear", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+}
+
+
+<style>
+    .col-md-10 {
+        margin-top: 10px;
+    }
+
+    #DescriptionTicket {
+        max-width: 400px;
+        max-height: 145px;
+        height: 145px;
+    }
+
+    #SubjectTicket {
+        width: 426px;
+        max-width: 426px;
+    }
+
+    .fileChooser {
+        margin-bottom: 10px;
+    }
+
+    /*ticketFileChooser*/
+    .ticketFileChooser {
+        display: inline !important;
+        margin-left: 10px;
+        max-width: 590px;
+    }
+
+    #fileSizeTotal {
+        margin-left: 40px;
+        color: blue;
+        font-weight: bold;
+    }
+
+    #clearButton1, #clearButton2, #clearButton3 {
+        margin-left: 5px;
+        display: none;
+    }
+
+    #ticketAttachmentWarning {
+        margin: 20px 5px;
+    }
+
+    #ticketAttachmentWarningMsg {
+        color: red;
+        font-weight: bold;
+        display: none;
+    }
+
+    #attachmentLoader {
+        display: none;
+    }
+
+    attachmentLoaderContainer {
+        display: inline;
+    }
+
+    #ticketStatus, #ticketStatusLabel {
+        display: none;
+    }
+
+    #ticketPriority, #ticketPriorityLabel {
+        display: none;
+    }
+
+    #editTicket {
+        display: none;
+    }
+
+    #IDTicket {
+        display: none;
+    }
+
+    #rolType {
+        display: none;
+    }
+
+    /*.custom-file-input ~ .custom-file-label::after {
+        content: "Elegirrrr";
+    }*/
+</style>
+
+<!-- ko with: app.Views.Baselineconf -->
+<div class="row" style="margin-bottom:15px; margin-top:1em;">
+    <div class='input-group'>
+        <span class="input-group-addon">
+            <b>@(labelCatalog)</b>
+        </span>
+    </div>
+</div>
+
+<!--País:-->
+<span style="font-weight:bold">Paso 1: Seleccionar país y ajustar valores actuales en la plantilla</span>
+<div class="row" style="margin-bottom: 15px; margin-top: 1em;">
+    <div class="col-md-5">
+        <div class='input-group'>
+            <span class="input-group-addon">
+                @(labelCountry)
+            </span>
+            @*<select id="Pais" class="form-control" data-bind="options: countries,
+                               optionsText: 'Name',
+                               optionsValue: 'Id',
+                               value: selectedCountryId,
+                               optionsCaption: '@(labelFieldSelect)',
+                               event:{ change: ReloadInstitutions},">
+                </select>*@
+            <select id="Pais" class="form-control" data-bind="options: countries,
+                               optionsText: 'Name',
+                               optionsValue: 'Id',
+                               value: selectedCountryId,
+                               optionsCaption: '@(labelFieldSelect)',
+                               event: { change: ReloadParameters}"></select>
+        </div>
+    </div>
+</div>
+
+
+<div class="row" style="margin-bottom:15px; margin-top:1em;">
+    <div class="col-md-3">
+        <div class='input-group'>
+            <span class="input-group-addon">
+                <!--Año:-->
+                @*@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarLabelYear"))*@
+                Año:
+            </span>
+            <input id="Year" type='text' class="form-control" data-bind="value: Year" />
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class='input-group'>
+            <span class="input-group-addon">
+                <!--Semana inicio:-->
+                @*@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarLabelMonth"))*@
+                Semana inicio:
+            </span>
+            <input id="StartWeek" type='text' class="form-control" data-bind="value: StartWeek" />
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class='input-group'>
+            <span class="input-group-addon">
+                <!--Total semanas periodo:-->
+                @*@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarLabelEW"))*@
+                Total semanas periodo
+            </span>
+            <input id="EndWeek" type='text' class="form-control" data-bind="value: EndWeek" />
+        </div>
+    </div>
+</div>
+
+<div class="row" style="margin-bottom:15px; margin-top:1em;">
+    <div class="col-md-6">
+        <div class='input-group'>
+            <span class="input-group-addon">
+                <!--Año:-->
+                @*@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarLabelYear"))*@
+                Titulo:
+            </span>
+            <input id="Title" type='text' class="form-control" data-bind="value: Title" style="max-width:1000px; width:1000px" />
+        </div>
+    </div>
+</div>
+
+<br />
+<span style="font-weight:bold">Paso 2: Obtener datos historicos del país</span>
+<br />
+<a href="http://ais.paho.org/" target="_blank">Obtener...</a>
+<br />
+<br />
+
+
+<!-- COMPONENT START -->
+<span style="font-weight:bold">Paso 3: Cargar archivo con datos historicos para su envio al servidor</span>
+<div class="col-md-10">
+    <div class='input-group'>
+        <label for="ticketFile">@(labelAttachment)</label>
+        <input class="ticketFileChooser" type="file" id="ticketFile" accept=".xls, .xlsx" style="width: 600px" />
+        <span>@(labelAttachmentSize)</span>
+        @*<span id="fileSize1"></span>*@
+        @*<img id="clearButton1" src="~/Content/themes/base/images/CrossSmall.png" onclick="cleanFileElement(1)">*@
+    </div>
+</div>
+
+<div class="row" style="margin-bottom:15px; margin-top:1em;">    
+
+</div>
+<!-- COMPONENT END -->
+<br />
+@*<br />*@
+<span style="font-weight:bold">Paso 4: Actualizar datos en plantillas del país</span>
+<div class="col-md-10">
+    <div class="input-group">
+        @*<button id="cleanForm" type="button" class="btn btn-primary" onclick="CleanForm()">@(((Paho.Controllers.TicketController)this.ViewContext.Controller).getMsg("msgTicketCleanForm"))</button>*@
+        <button id="newTicket" type="button" class="btn btn-primary" data-bind="click: SaveParameters">@(labelSendUpdates)</button>
+
+        @*<img id="attachmentLoader" src="~/Content/themes/base/images/loader-1s-29px.gif" />*@
+
+    </div>
+</div>
+
+
+<script type="text/javascript">
+        countries = @Html.Raw(Json.Encode(Model.Countries));
+
+        var PAHOFLU_date_format = "@(Html.Raw(Paho.Controllers.ResourcesM.SgetMessage("msgDateFormat", ViewBag.UsrCtry, ViewBag.UsrCtryLang)))";
+        var moment_date_format = "@(Html.Raw(Paho.Controllers.ResourcesM.SgetMessage("msgDateFormatMoment", ViewBag.UsrCtry, ViewBag.UsrCtryLang)))";
+        var ISO_date_format = "@(Html.Raw(Paho.Controllers.ResourcesM.SgetMessage("msgDateFormatISO", ViewBag.UsrCtry, ViewBag.UsrCtryLang)))";
+        var DatePicker_date_format = "@(Html.Raw(Paho.Controllers.ResourcesM.SgetMessage("msgDateFormatDP", ViewBag.UsrCtry, ViewBag.UsrCtryLang)))";
+
+        //***************************************
+        $('a#MaintenanceM').addClass("active");
+        //***************************************
+</script>
+
+<!-- /ko -->

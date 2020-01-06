@@ -33,6 +33,10 @@
     self.getSummayDetailsExcel = "/exportar/GetSummaryDetailsExcel";
     self.getSummaryForYearUrl = "/summary/GetSummaryForYear"
     self.saveSummayDetailsUrl = "/summary/SaveSummary";
+
+    self.getBaselineConfigUrl = "/BaselineConfiguration/GetParameters";
+    self.saveBaselineConfigUrl = "/BaselineConfiguration/SaveParameters";
+
     //#### DENOMINADORES Jamaica
     self.getSummayDetailsUrlJM = "/summaryJM/GetSummaryDetailsJM";
     self.getSummaryForYearUrlJM = "/summaryJM/GetSummaryForYearJM"

@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@{
+    string labelCatalog = Paho.Controllers.ResourcesM.SgetMessage("msgMenuParametersBaseline", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelCatVirusFlowView = Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatVirusFlowView", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    //string labelReturnToList = Paho.Controllers.ResourcesM.SgetMessage("msgReturnToList", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    //string labelCreate = Paho.Controllers.ResourcesM.SgetMessage("msgViewCatPopulation_Crear", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -170,7 +177,10 @@
                                     {
                                         <li> @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuImportPadronView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "ImportPadron", new { area = "" }, null) </li>
                                     }
+
+                                    <li>@Html.ActionLink(labelCatalog, "Index", "BaselineConfiguration", new { area = "" }, null)</li>
                                 }
+
                                 <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatInstitucionView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "CatInstitucion", new { area = "" }, null)</li>
                                 <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatInstitucionConfView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "CatInstitucionConf", new { area = "" }, null)</li>
                                 @*<li>@Html.ActionLink((((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelDataDictionary")), "Index", "Diccionario", new { area = "" }, null) </li>
