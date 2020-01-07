@@ -17,7 +17,8 @@ namespace Paho.Controllers
         // GET: BaselineConfiguration
         public ActionResult Index()
         {
-            BaselineConfigurationViewModel oBaseLineConfig = new BaselineConfigurationViewModel();
+            string urlWhoAC = ConfigurationManager.AppSettings["URLWhoAverageCurves"];
+            ViewBag.UrlWhoAC = urlWhoAC;                                    // URL average curve
 
             var countries = db.Countries
                                 .Where(i => i.Active == true)
@@ -28,6 +29,7 @@ namespace Paho.Controllers
                                     Active = c.Active
                                 });
 
+            BaselineConfigurationViewModel oBaseLineConfig = new BaselineConfigurationViewModel();
             oBaseLineConfig.Countries = countries;
 
             return View(oBaseLineConfig);

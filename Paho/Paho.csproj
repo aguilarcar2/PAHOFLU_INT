@@ -2142,6 +2142,7 @@
     <None Include="Properties\PublishProfiles\CAFQ_181024.pubxml" />
     <None Include="Properties\PublishProfiles\CAFQ_1812.pubxml" />
     <None Include="Properties\PublishProfiles\CAFQ_1901.pubxml" />
+    <None Include="Properties\PublishProfiles\CAFQ_2020.pubxml" />
     <None Include="Properties\PublishProfiles\CAFQ_CH.pubxml" />
     <None Include="Properties\PublishProfiles\CAFQ_DIC26.pubxml" />
     <None Include="Properties\PublishProfiles\CAFQ_PAHO.pubxml" />

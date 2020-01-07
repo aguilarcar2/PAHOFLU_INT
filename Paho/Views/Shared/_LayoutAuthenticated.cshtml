@@ -177,8 +177,6 @@
                                     {
                                         <li> @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuImportPadronView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "ImportPadron", new { area = "" }, null) </li>
                                     }
-
-                                    <li>@Html.ActionLink(labelCatalog, "Index", "BaselineConfiguration", new { area = "" }, null)</li>
                                 }
 
                                 <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatInstitucionView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "CatInstitucion", new { area = "" }, null)</li>
@@ -191,6 +189,10 @@
                                 <li>@Html.ActionLink((((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelAgeGroupsCatalog")), "Index", "CatAgeGroup", new { area = "" }, null)</li>
                                 <li>@Html.ActionLink((((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewLayoutAuthenticated_LabelVaccineSourceCatalog")), "Index", "CatVaccinSources", new { area = "" }, null)</li>*@
 
+                                @if (ViewBag.UsrCtry == 32 || ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 17)     // NN. UU., Chile y Jamaica
+                                {
+                                    <li>@Html.ActionLink(labelCatalog, "Index", "BaselineConfiguration", new { area = "" }, null)</li>
+                                }  
                             </ul>
                         </li>
                     }
@@ -208,6 +210,8 @@
 
                     }                    
                     @*<li>@Html.ActionLink("Searches", "Index", "Report", new { area = "" }, null)</li>*@
+
+                  
 
                     <!--Dashboard-->
                     @if (ViewBag.DashbUrl != "")

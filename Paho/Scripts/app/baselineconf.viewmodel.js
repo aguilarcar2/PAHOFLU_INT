@@ -3,6 +3,8 @@
 
     var self = this;
 
+    self.UsrCountry = ko.observable(selcty);
+
     self.Year = ko.observable();
     self.StartWeek = ko.observable();
     self.EndWeek = ko.observable();
@@ -10,6 +12,10 @@
 
     self.countries = ko.observableArray(countries);
     self.selectedCountryId = ko.observable();
+
+    self.VisibleGetHistoricalData = ko.computed(function () {
+        return (self.UsrCountry() == 32) ? true : false;
+    }, self);
 
     self.ReloadParameters = function () {
         console.log("ReloadParameters->START");
@@ -34,12 +40,11 @@
 
             var json_obj = JSON.parse(data);
 
-            self.Year(json_obj.Year);
+            //self.Year(json_obj.Year);
+            self.Year((new Date).getFullYear());            
             self.StartWeek(json_obj.StartWeek);
             self.EndWeek(json_obj.TotalWeek);
             self.Title(json_obj.Title);
-
-
 
         })
         .fail(function (jqXHR, textStatus, errorThrown) {
