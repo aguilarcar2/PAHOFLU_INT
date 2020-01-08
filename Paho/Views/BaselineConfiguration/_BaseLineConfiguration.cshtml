@@ -10,13 +10,14 @@
     string labelTotalWeek = "Total semanas periodo:";
     string labelTitle = "Título:";
     string labelApplicationLink = "Enlace a la aplicación WHO Average Curves...";
+    string labelStartYearDH = "Año inicial:";
+    string labelEndYearDH = "Año final:";
 
     string labelSendUpdates = Paho.Controllers.ResourcesM.SgetMessage("msgLineasBasalesSendUpdates", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 
-    string labelAttachment = Paho.Controllers.ResourcesM.SgetMessage("msgTicketAttachment", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
-    //string labelAttachment = "Seleccione archivo con datos históricos";
-    string labelAttachmentSize = Paho.Controllers.ResourcesM.SgetMessage("msgTicketAttachmentSize", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
-
+    //string labelAttachment = Paho.Controllers.ResourcesM.SgetMessage("msgTicketAttachment", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelAttachment = "Seleccione archivo con datos históricos";
+    //string labelAttachmentSize = Paho.Controllers.ResourcesM.SgetMessage("msgTicketAttachmentSize", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 
     string labelPaso1 = "Paso 1:";
     string labelPaso2 = "Paso 2:";
@@ -25,11 +26,10 @@
 
     string labelSelectCountry = "Seleccionar país y ajustar valores actuales en la plantilla";
     string labelGetData = "Obtener datos históricos del país y guardarlo en una carpeta adecuada";
-    string labelFileUpload = "Cargar archivo con datos historicos para su envio al servidor";
+    string labelFileUpload = "Cargar archivo con datos historicos para su envio al servidor e indicar el ámbito de los datos";
     string labelUpdateTemplate = "Actualizar datos en plantillas del país";
 
     //string labelCreate = Paho.Controllers.ResourcesM.SgetMessage("msgViewCatPopulation_Crear", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
-
 }
 
 
@@ -124,9 +124,12 @@
 </div>
 
 <!--País:-->
-<span style="font-weight:bold; font-size: 10pt;">@(labelPaso1 + " " + labelSelectCountry)</span>
+
 <div class="row" style="margin-bottom: 15px; margin-top: 1em;">
-    <div class="col-md-5">
+    <div class="col-md-6">
+        <span style="font-weight:bold; font-size: 10pt;">@(labelPaso1 + " " + labelSelectCountry)</span>
+    </div>
+    <div class="col-md-10">
         <div class='input-group'>
             <span class="input-group-addon">
                 @(labelCountry)
@@ -176,72 +179,86 @@
             <span class="input-group-addon">
                 @(labelTitle)                
             </span>
-            <input id="Title" type='text' class="form-control" data-bind="value: Title" style="max-width:1000px; width:1000px" />
+            <input id="Title" type='text' class="form-control" readonly data-bind="value: Title" style="max-width:1000px; width:1000px" />
         </div>
     </div>
 </div>
 
-<div data-bind="visible: VisibleGetHistoricalData()">
-    <br />
-    <span style="font-weight:bold; font-size: 10pt;">@(labelPaso2 + " " + labelGetData)</span>
-    <br />
-    <a href="@(ViewBag.UrlWhoAC)" target="_blank">@(labelApplicationLink)</a>
+<br />
+<div class="row" style="margin-bottom:15px; margin-top:1em;" data-bind="visible: VisibleGetHistoricalData()">
+    <div class="col-md-6">
+        <span style="font-weight:bold; font-size: 10pt;">@(labelPaso2 + " " + labelGetData)</span>
+        <br />
+        <a href="@(ViewBag.UrlWhoAC)" target="_blank">@(labelApplicationLink)</a>
+    </div>
 </div>
-
-@*<div class="input-group mb-3">
-    <div class="input-group-prepend">
-        <span class="input-group-text">Uploadddd</span>
-    </div>
-    <div class="custom-file">
-        <input type="file" class="custom-file-input" id="inputGroupFile01">
-        <label class="custom-file-label" for="inputGroupFile01">Choose fileeee</label>
-    </div>
-</div>*@
 
 <!-- COMPONENT START -->
 <br />
-<br />
-@if (ViewBag.UsrCtry == 32)
-{
-    <span style="font-weight:bold; font-size: 10pt;">@(labelPaso3 + " " + labelFileUpload)</span>
-}
-else
-{
-    <span style="font-weight:bold; font-size: 10pt;">@(labelPaso2 + " " + labelFileUpload)</span>
-}
-<div class="col-md-10">
-    <div class='input-group'>
-        <label for="ticketFile">@(labelAttachment)</label>
-        <input class="ticketFileChooser" type="file" id="ticketFile" accept=".xls, .xlsx" style="width: 600px" />
-        <span>@(labelAttachmentSize)</span>
-        @*<span id="fileSize1"></span>*@
-        @*<img id="clearButton1" src="~/Content/themes/base/images/CrossSmall.png" onclick="cleanFileElement(1)">*@
+<div class="row" style="margin-bottom:15px; margin-top:1em;">
+    <div class="col-md-6">
+        @if (ViewBag.UsrCtry == 32)
+        {
+            <span style="font-weight:bold; font-size: 10pt;">@(labelPaso3 + " " + labelFileUpload)</span>
+        }
+        else
+        {
+            <span style="font-weight:bold; font-size: 10pt;">@(labelPaso2 + " " + labelFileUpload)</span>
+        }
+    </div>
+    <div class="col-md-10">
+        <div class='input-group'>
+            <label for="ticketFile">@(labelAttachment)</label>
+            <input class="ticketFileChooser" type="file" id="ticketFile" accept=".xls, .xlsx" style="width: 600px" />
+            @*<span>@(labelAttachmentSize)</span>*@
+            @*<span id="fileSize1"></span>*@
+            @*<img id="clearButton1" src="~/Content/themes/base/images/CrossSmall.png" onclick="cleanFileElement(1)">*@
+        </div>
     </div>
 </div>
 
+<div class="row" style="margin-bottom:15px; margin-top:1em;">
+    <div class="col-md-3">
+        <div class='input-group'>
+            <span class="input-group-addon">
+                @(labelStartYearDH)
+            </span>
+            <input id="StartYearDH" type='text' class="form-control" data-bind="value: StartYearDH" />
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class='input-group'>
+            <span class="input-group-addon">
+                @(labelEndYearDH)
+            </span>
+            <input id="EndYearDH" type='text' class="form-control" data-bind="value: EndYearDH" />
+        </div>
+    </div>
+</div>
+
+<br />
 <div class="row" style="margin-bottom:15px; margin-top:1em;">    
+    <div class="col-md-6">
+        @if (ViewBag.UsrCtry == 32)
+        {
+            <span style="font-weight:bold; font-size: 10pt;">@(labelPaso4 + " " + labelUpdateTemplate)</span>
+        }
+        else
+        {
+            <span style="font-weight:bold; font-size: 10pt;">@(labelPaso3 + " " + labelUpdateTemplate)</span>
+        }            
+    </div>
+    <div class="col-md-10">
+        <div class="input-group">
+            @*<button id="cleanForm" type="button" class="btn btn-primary" onclick="CleanForm()">@(((Paho.Controllers.TicketController)this.ViewContext.Controller).getMsg("msgTicketCleanForm"))</button>*@
+            <button id="newTicket" type="button" class="btn btn-primary" data-bind="click: SaveParameters">@(labelSendUpdates)</button>
+
+            @*<img id="attachmentLoader" src="~/Content/themes/base/images/loader-1s-29px.gif" />*@
+
+        </div>
+    </div>
 </div>
 <!-- COMPONENT END -->
-
-<br />
-@if (ViewBag.UsrCtry == 32)
-{
-    <span style="font-weight:bold; font-size: 10pt;">@(labelPaso4 + " " + labelUpdateTemplate)</span>
-}
-else
-{
-    <span style="font-weight:bold; font-size: 10pt;">@(labelPaso3 + " " + labelUpdateTemplate)</span>
-}
-<div class="col-md-10">
-    <div class="input-group">
-        @*<button id="cleanForm" type="button" class="btn btn-primary" onclick="CleanForm()">@(((Paho.Controllers.TicketController)this.ViewContext.Controller).getMsg("msgTicketCleanForm"))</button>*@
-        <button id="newTicket" type="button" class="btn btn-primary" data-bind="click: SaveParameters">@(labelSendUpdates)</button>
-
-        @*<img id="attachmentLoader" src="~/Content/themes/base/images/loader-1s-29px.gif" />*@
-
-    </div>
-</div>
-
 
 <script type="text/javascript">
     var selcty = @ViewBag.UsrCtry;

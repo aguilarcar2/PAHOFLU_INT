@@ -1,4 +1,5 @@
-﻿using OfficeOpenXml;
+﻿using Microsoft.AspNet.Identity;
+using OfficeOpenXml;
 using Paho.Models;
 using System;
 using System.Collections.Generic;
@@ -17,20 +18,44 @@ namespace Paho.Controllers
         // GET: BaselineConfiguration
         public ActionResult Index()
         {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            int countryUser = (Int32)user.Institution.CountryID;
+
             string urlWhoAC = ConfigurationManager.AppSettings["URLWhoAverageCurves"];
             ViewBag.UrlWhoAC = urlWhoAC;                                    // URL average curve
 
-            var countries = db.Countries
-                                .Where(i => i.Active == true)
-                                .Select(c => new CountryView()
-                                {
-                                    Id = c.ID.ToString(),
-                                    Name = c.Name,
-                                    Active = c.Active
-                                });
-
+            //var countries;
+            //countries = null;
             BaselineConfigurationViewModel oBaseLineConfig = new BaselineConfigurationViewModel();
-            oBaseLineConfig.Countries = countries;
+
+            if (countryUser == 32)
+            {
+                var countries = db.Countries
+                    .Where(i => i.Active == true && i.ID != 32)
+                    .Select(c => new CountryView()
+                    {
+                        Id = c.ID.ToString(),
+                        Name = c.Name,
+                        Active = c.Active,
+                        orden = c.Language
+                    });
+
+                oBaseLineConfig.Countries = countries;
+            }
+            else
+            {
+                var countries = db.Countries
+                .Where(i => i.Active == true && i.ID == countryUser)
+                .Select(c => new CountryView()
+                {
+                    Id = c.ID.ToString(),
+                    Name = c.Name,
+                    Active = c.Active,
+                    orden = c.Language
+                });
+
+                oBaseLineConfig.Countries = countries;
+            }
 
             return View(oBaseLineConfig);
         }
@@ -99,18 +124,33 @@ namespace Paho.Controllers
                 string startWeek = firstWorksheet.Cells["L5"].Value.ToString();
                 string totalWeek = firstWorksheet.Cells["L6"].Value.ToString();
 
-                jsonData = "{\"Year\":\"" + year + "\",\"StartWeek\":\"" + startWeek + "\",\"TotalWeek\":\"" + totalWeek + "\",\"Title\":\"" + title + "\"}";
-                //string valB1 = firstWorksheet.Cells[1, 2].Value.ToString();
+                //string startYearDH = firstWorksheet.Cells["L8"].Value.ToString();
+                var vTemp = firstWorksheet.Cells["L8"].Value;
+                if (vTemp == null)
+                    vTemp = "";
+                string startYearDH = vTemp.ToString();
 
-                ////Save your file
-                //excelPackage.Save();
+                //string endYearDH = firstWorksheet.Cells["L9"].Value.ToString();
+                vTemp = firstWorksheet.Cells["L9"].Value;
+                if (vTemp == null)
+                    vTemp = "";
+                string endYearDH = vTemp.ToString();
+
+                jsonData = "{" + "\"Year\":\"" + year + 
+                                 "\",\"StartWeek\":\"" + startWeek + 
+                                 "\",\"TotalWeek\":\"" + totalWeek + 
+                                 "\",\"Title\":\"" + title +
+                                 "\",\"StartYearDH\":\"" + startYearDH +
+                                 "\",\"EndYearDH\":\"" + endYearDH +
+                                 "\"" + 
+                           "}";
             }
 
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
 
 
-        public string SaveParameters(int? CountryID, int? Year, int? StartWeek, int? EndWeek, string Title, HttpPostedFileBase myfile)
+        public string SaveParameters(int? CountryID, int? Year, int? StartWeek, int? EndWeek, string Title, string StartYearDH, string EndYearDH, HttpPostedFileBase myfile)
         {
             string saveResult = "";
 
@@ -123,10 +163,16 @@ namespace Paho.Controllers
             {
                 ExcelWorksheet wsLB = excelPackageLB.Workbook.Worksheets[1];
 
+                string cTemp = wsLB.Cells["B2"].Value.ToString();
+                cTemp = cTemp.Substring(0, cTemp.Length - 4);
+                wsLB.Cells["B2"].Value = cTemp + Year;
+
                 wsLB.Cells["L3"].Value = Title;
                 wsLB.Cells["L4"].Value = Year;
                 wsLB.Cells["L5"].Value = StartWeek;
                 wsLB.Cells["L6"].Value = EndWeek;
+                wsLB.Cells["L8"].Value = StartYearDH;
+                wsLB.Cells["L9"].Value = EndYearDH;
 
                 if (Request.Files.Count > 0)            // Attachment
                 {
@@ -151,11 +197,6 @@ namespace Paho.Controllers
                     using (ExcelPackage excelPackageDa = new ExcelPackage(fiDa))
                     {
                         ExcelWorksheet wsDa = excelPackageDa.Workbook.Worksheets[1];
-                        ////Get the content from cells A1 and B1 as string, in two different notations
-                        //firstWorksheet.Cells["L3"].Value = Title;
-                        //firstWorksheet.Cells["L4"].Value = Year;
-                        //firstWorksheet.Cells["L5"].Value = StartWeek;
-                        //firstWorksheet.Cells["L6"].Value = EndWeek;
 
                         wsLB.Cells["B3:H55"].Clear();
 
@@ -164,47 +205,15 @@ namespace Paho.Controllers
                         wsDa.Cells[2, 7, 54, 7].Copy(wsLB.Cells[3, 6, 55, 6]);      // Moderate
                         wsDa.Cells[2, 8, 54, 8].Copy(wsLB.Cells[3, 7, 55, 7]);      // High
                         wsDa.Cells[2, 9, 54, 9].Copy(wsLB.Cells[3, 8, 55, 8]);      // Extraordinary
-
-                        /*
-                         Copia la columna 5 en la columna 2 Básicamente Source.Copy (Destino)
-                            Esto solo copiaría las primeras 100 filas.
-	                            workSheet.Cells[1,5,100,5].Copy(workSheet.Cells[1,2,100,2]);
-                         * */
-                        //excelPackage.Save();
                     }
                 }// END If
 
                 excelPackageLB.Save();
             }
 
-
-
             saveResult = "1";
 
             return saveResult;
         }
-
-
-
-
-        //    public string getMsg(string msgView)
-        //    {
-        //        var user = UserManager.FindById(User.Identity.GetUserId());
-        //        string searchedMsg = msgView;
-        //        int? countryID = user.Institution.CountryID;
-        //        string countryLang = user.Institution.Country.Language;
-
-        //        ResourcesM myR = new ResourcesM();
-        //        searchedMsg = myR.getMessage(searchedMsg, countryID, countryLang);
-        //        //searchedMsg = myR.getMessage(searchedMsg, 0, "ENG");
-        //        return searchedMsg;
-        //    }
-
-        //    private static string SgetMsg(string msgView, int? countryDisp, string langDisp)
-        //    {
-        //        string searchedMsg = ResourcesM.SgetMessage(msgView, countryDisp, langDisp);
-        //        //searchedMsg = myR.getMessage(searchedMsg, 0, "ENG");
-        //        return searchedMsg;
-        //    }
     }
 }
