@@ -1,0 +1,86 @@
+﻿@model Paho.Models.Country
+
+@{
+    string labelCatalogCountry = Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatCountry", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelReturnToList = Paho.Controllers.ResourcesM.SgetMessage("msgReturnToList", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelMsgDeleteRecord = Paho.Controllers.ResourcesM.SgetMessage("msgDeleteRecord", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelDelete = Paho.Controllers.ResourcesM.SgetMessage("msgViewCatPopulation_Borrar", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+}
+
+@{
+    ViewBag.Title = labelCatalogCountry;
+}
+@*<h2>Delete</h2>*@
+
+<div>
+    <h4>@labelCatalogCountry</h4>
+    <hr />
+    <h3>@(labelMsgDeleteRecord)?</h3>
+
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Code)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Code)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ENG)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ENG)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NumberAdminisDivision)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NumberAdminisDivision)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Active)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Active)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Language)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Language)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            @*<input type="submit" value="Delete" class="btn btn-default" />*@ 
+            <input type="submit" value=@labelDelete class="btn btn-default" />
+            @*@Html.ActionLink("Back to List", "Index")*@
+        </div>
+    }
+</div>
+
+<div>
+    <br />
+    @Html.ActionLink(@labelReturnToList, "Index")
+</div>

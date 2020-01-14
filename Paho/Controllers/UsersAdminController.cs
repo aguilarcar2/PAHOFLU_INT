@@ -61,7 +61,6 @@ namespace Paho.Controllers
 
             //****
             ViewBag.CurrentSort = sortOrder;
-            //ViewBag.CurrentSort = sortOrder;
             //ViewBag.ShortNameParm = "userShortName";
             //ViewBag.NameParm = "userName";
             //ViewBag.InstitutionParm = "institutionName";
@@ -126,7 +125,6 @@ namespace Paho.Controllers
                         command.Parameters.Clear();
                         command.Parameters.Add("@UserName", SqlDbType.Text).Value = item.UserName;
 
-                        //////con.Open();
                         using (var reader = command.ExecuteReader())
                         {
                             while (reader.Read())
@@ -135,9 +133,6 @@ namespace Paho.Controllers
                                 item.UserRolesListJoin = cRoles;
                             }
                         }
-
-                        //command.Parameters.Clear();
-                        //////con.Close();
                     }
 
                     command.Parameters.Clear();
@@ -151,8 +146,7 @@ namespace Paho.Controllers
         {
 
         }
-
-
+        
         [Authorize(Roles = "Admin")]
         private void getInstitutionType(int id_inst)
         {
@@ -181,6 +175,8 @@ namespace Paho.Controllers
             var model = new RegisterViewModel();
 
             var user_id = UserManager.FindById(User.Identity.GetUserId());
+
+
 
             if (user_id.Institution.AccessLevel == AccessLevel.All)
             {

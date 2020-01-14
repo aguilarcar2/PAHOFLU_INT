@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace Paho.Models
 {
@@ -46,7 +47,7 @@ namespace Paho.Models
         //[Display(Name = "Confirmar nueva contraseña")]
         [Display(Name = "Confirm new password")]
         //[Compare("NewPassword", ErrorMessage = "La nueva contraseña y la casilla de confirmación no coinciden.")]
-        [Compare("NewPassword", ErrorMessage = "The new password and the confirmation box do not match.")]
+        [System.ComponentModel.DataAnnotations.Compare("NewPassword", ErrorMessage = "The new password and the confirmation box do not match.")]
         public string ConfirmPassword { get; set; }
     }
 
@@ -83,7 +84,7 @@ namespace Paho.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirmación de contraseña")]
-        [Compare("Password", ErrorMessage = "La nueva contraseña y la casilla de confirmación no coinciden.")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "La nueva contraseña y la casilla de confirmación no coinciden.")]
         public string ConfirmPassword { get; set; }
 
         [Display(Name = "Procedencia")]
@@ -103,8 +104,12 @@ namespace Paho.Models
         public string InstitutionType { get; set; }
         [Display(Name = "Institución Externa:")]            //#### CAFQ: 180911
         public bool ForeignLab { get; set; }                //#### CAFQ: 180911
-        public IEnumerable<System.Web.Mvc.SelectListItem> Institutions { get; set; }
-        public IEnumerable<System.Web.Mvc.SelectListItem> RolesList { get; set; }
+        public IEnumerable<SelectListItem> Institutions { get; set; }
+        public IEnumerable<SelectListItem> RolesList { get; set; }
+
+        public int? CountryID { get; set; }
+        public IEnumerable<SelectListItem> Countries { get; set; }
+
     }
 
     public class ResetPasswordViewModel
@@ -122,7 +127,7 @@ namespace Paho.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirmación de contraseña")]
-        [Compare("Password", ErrorMessage = "La nueva contraseña y la casilla de confirmación no coinciden.")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "La nueva contraseña y la casilla de confirmación no coinciden.")]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; } 

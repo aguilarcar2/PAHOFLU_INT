@@ -25,7 +25,7 @@
     string labelPaso4 = "Paso 4:";
 
     string labelSelectCountry = "Seleccionar país y ajustar valores actuales en la plantilla";
-    string labelGetData = "Obtener datos históricos del país y guardarlo en una carpeta adecuada";
+    string labelGetData = "Obtener datos históricos del país y guardarlo en una carpeta adecuada como por ejemplo 'C:\\Mis Documentos\\PlantillasLineasBasales'";
     string labelFileUpload = "Cargar archivo con datos historicos para su envio al servidor e indicar el ámbito de los datos";
     string labelUpdateTemplate = "Actualizar datos en plantillas del país";
 
@@ -186,10 +186,10 @@
 
 <br />
 <div class="row" style="margin-bottom:15px; margin-top:1em;" data-bind="visible: VisibleGetHistoricalData()">
-    <div class="col-md-6">
+    <div class="col-md-10">
         <span style="font-weight:bold; font-size: 10pt;">@(labelPaso2 + " " + labelGetData)</span>
         <br />
-        <a href="@(ViewBag.UrlWhoAC)" target="_blank">@(labelApplicationLink)</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;<a href="@(ViewBag.UrlWhoAC)" target="_blank">@(labelApplicationLink)</a>
     </div>
 </div>
 

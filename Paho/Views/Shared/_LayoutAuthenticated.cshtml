@@ -1,6 +1,10 @@
 ﻿@{
-    string labelCatalog = Paho.Controllers.ResourcesM.SgetMessage("msgMenuParametersBaseline", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    //string labelCatalog = Paho.Controllers.ResourcesM.SgetMessage("msgMenuParametersBaseline", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelBaselineConfiguration = Paho.Controllers.ResourcesM.SgetMessage("msgMenuParametersBaseline", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    
     string labelCatVirusFlowView = Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatVirusFlowView", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelCatCountry = Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatCountry", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
     //string labelReturnToList = Paho.Controllers.ResourcesM.SgetMessage("msgReturnToList", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     //string labelCreate = Paho.Controllers.ResourcesM.SgetMessage("msgViewCatPopulation_Crear", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 }
@@ -191,7 +195,11 @@
 
                                 @if (ViewBag.UsrCtry == 32 || ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 17)     // NN. UU., Chile y Jamaica
                                 {
-                                    <li>@Html.ActionLink(labelCatalog, "Index", "BaselineConfiguration", new { area = "" }, null)</li>
+                                    if (ViewBag.UsrCtry == 32)
+                                    {
+                                        <li>@Html.ActionLink(labelCatCountry, "Index", "CatCountry", new { area = "" }, null)</li>
+                                    }
+                                    <li>@Html.ActionLink(labelBaselineConfiguration, "Index", "BaselineConfiguration", new { area = "" }, null)</li>
                                 }  
                             </ul>
                         </li>

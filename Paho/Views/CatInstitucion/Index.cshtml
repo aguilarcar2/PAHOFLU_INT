@@ -42,6 +42,10 @@
         <th>
             @Html.ActionLink("Orig. country", "Index", new { sortOrder = ViewBag.InstIdSortParm, currentFilter = ViewBag.CurrentFilter })
         </th>
+        <th>
+            @*@Html.ActionLink("Orig. country", "Index", new { sortOrder = ViewBag.InstIdSortParm, currentFilter = ViewBag.CurrentFilter })*@
+            @Html.DisplayName("País")
+        </th>
         <th></th>
     </tr>
 
@@ -69,6 +73,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.orig_country)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Country.Name)
             </td>
             <td>
                 @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgViewCatPopulation_Editar", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Edit", "CatInstitucion", new { id = item.ID }, null) |

@@ -1,0 +1,108 @@
+﻿@model PagedList.IPagedList<Paho.Models.Country>
+
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    string labelCatalogCountry = Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatCountry", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    //string labelCatalogName = Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatCloseParametersView", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelCreateNew = Paho.Controllers.ResourcesM.SgetMessage("msgViewCatPopulation_CrearNuevo", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelSearchCriteria = Paho.Controllers.ResourcesM.SgetMessage("msgSearchCriteria", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelSubmit = Paho.Controllers.ResourcesM.SgetMessage("viewHome_btnSearch", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelEdit = Paho.Controllers.ResourcesM.SgetMessage("msgViewCatPopulation_Editar", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelDelete = Paho.Controllers.ResourcesM.SgetMessage("msgViewCatPopulation_Borrar", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelPage = Paho.Controllers.ResourcesM.SgetMessage("msgPage", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelOf = Paho.Controllers.ResourcesM.SgetMessage("msgViewCatPopulation_De", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+    ViewBag.Title = labelCatalogCountry;
+}
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h4>@(labelCatalogCountry)</h4>
+
+<p>
+    @Html.ActionLink(labelCreateNew, "Create", "CatCountry", new { area = "" }, null)
+</p>
+
+@using (Html.BeginForm("Index", "CatCountry", FormMethod.Get))
+{
+    <p>
+        @(labelSearchCriteria): @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value=@(labelSubmit) />
+    </p>
+}
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("ID")
+        </th>
+        <th>
+            @Html.ActionLink("Codigo", "Index", new { sortOrder = ViewBag.CodeParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            @Html.ActionLink("Nombre", "Index", new { sortOrder = ViewBag.NameParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            @Html.ActionLink("Nombre ENG", "Index", new { sortOrder = ViewBag.ENGParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            @Html.DisplayName("Número de divisiones geograficas")
+        </th>
+        <th>
+            @Html.ActionLink("Activo", "Index", new { sortOrder = ViewBag.ActiveParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            @Html.DisplayName("Idioma")
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Code)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ENG)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NumberAdminisDivision)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Active)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Language)
+        </td>
+        <td>
+            @Html.ActionLink(labelEdit, "Edit", new { id=item.ID })  | 
+            @*@Html.ActionLink("Details", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })*@
+            @Html.ActionLink(labelDelete, "Delete", new { id = item.ID })
+        </td>
+    </tr>
+}
+
+</table>
+
+<br />
+@(labelPage) @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) @(labelOf) @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
+<script type="text/javascript">
+    //***************************************
+    $('a#MaintenanceM').addClass("active");
+    //***************************************
+</script>
