@@ -1,4 +1,11 @@
 ﻿@model Paho.Models.RegisterViewModel
+
+@{
+    //string labelEditar = "Editar";
+    string LabelCountry = (string)Paho.Controllers.ResourcesM.SgetMessage("msgCountry", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    //string LabelButtonSave = Paho.Controllers.CatVirusTypeController.SgetMessage("msgViewSummaryButtonSave", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+}
+
 @{
     ViewBag.Title = ((string)Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminCreateNew", ViewBag.UsrCtry, ViewBag.UsrCtryLang));
 }
@@ -12,6 +19,14 @@
     <hr />
     @Html.ValidationSummary("", new { @class = "text-error" })
     @Html.HiddenFor(m => m.InstitutionType)
+
+    @*<div class="form-group">
+        @Html.LabelFor(m => m.CountryID, LabelCountry, new { @class = "col-md-2 control-label" })
+        <div class="col-md-7">
+            @Html.DropDownListFor(m => m.CountryID, Model.Countries, new { @class = "form-control" })
+        </div>
+    </div>*@
+
     <div class="form-group">
         @Html.LabelFor(m => m.UserName, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminUserName", ViewBag.UsrCtry, ViewBag.UsrCtryLang)), new { @class = "col-md-2 control-label" })
         <div class="col-md-5">

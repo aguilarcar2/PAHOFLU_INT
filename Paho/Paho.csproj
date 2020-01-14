@@ -286,6 +286,7 @@
     <Compile Include="Controllers\AreasController.cs" />
     <Compile Include="Controllers\AssignFinalResult.cs" />
     <Compile Include="Controllers\BaselineConfigurationController.cs" />
+    <Compile Include="Controllers\CatCountryController.cs" />
     <Compile Include="Controllers\CatSampleReasonsNoProcessedController.cs" />
     <Compile Include="Controllers\CatVirusLinajesController.cs" />
     <Compile Include="Controllers\ColonyController.cs" />
@@ -2452,11 +2453,16 @@
     <Content Include="Views\Colony\Delete.cshtml" />
     <Content Include="Views\BaselineConfiguration\Index.cshtml" />
     <Content Include="Views\BaselineConfiguration\_BaseLineConfiguration.cshtml" />
+    <Content Include="Views\CatCountry\Index.cshtml" />
+    <Content Include="Views\CatCountry\Edit.cshtml" />
+    <Content Include="Views\CatCountry\Create.cshtml" />
+    <Content Include="Views\CatCountry\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Concrete\" />
     <Folder Include="Views\AssignFinalResult\" />
+    <Folder Include="Views\Country\" />
     <Folder Include="Views\ExportGraphics\" />
     <Folder Include="Views\ExportLab\" />
     <Folder Include="Views\GetImportLab\" />

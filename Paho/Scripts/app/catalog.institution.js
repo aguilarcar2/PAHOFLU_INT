@@ -79,7 +79,6 @@
             if ($("#cod_region_pais").children().length > 1)
                 $("#RegionPaisGroup").show();
         }
-
         else {
             $("#div-father").hide();
         }
@@ -136,6 +135,35 @@
     $("#cod_region_pais").change(function () {
         toggleRegion();
     });
+
+    $("#CountryID").change(function () {
+        console.log("#CountryID.change->START");
+        loadAreaOfCountry();
+        console.log("#CountryID.change->END");
+    });
+    
+    function loadAreaOfCountry() {
+        $("#AreaID").empty();
+        $.ajax({
+            type: 'POST',
+            url: '/CatInstitucion/GetAreaOfCountry',
+            dataType: 'json',
+            data: { countryID: $("#CountryID").val() },
+            success: function (areas) {
+                $.each(areas, function (i, area) {
+                    $("#AreaID").append('<option value="'
+                                        + area.Value + '" ' + '' + '>'
+                                        + area.Text + '</option>');
+                });
+            },
+            error: function (ex) {
+                console.log('Failed to retrieve areas.' + ex);
+            }
+        });
+        return false;
+
+
+    }
 
     function loadFatherInst() {
         //console.log($("#Father_ID").val());

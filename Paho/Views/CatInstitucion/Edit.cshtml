@@ -9,6 +9,7 @@
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.ID)
+        @Html.HiddenFor(model => model.CountryID)
 
         <!-- Location -->
         <div class="form-group vertical-align">

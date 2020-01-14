@@ -408,6 +408,12 @@ namespace Paho.Models
         public bool Active { get; set; }
         public virtual ICollection<Area> Areas { get; set; }
         public string Language { get; set; }
+        //public static IEnumerable<SelectListItem> LanguageList()
+        //{
+        //    yield return new SelectListItem { Text = "Español", Value = "SPA" };
+        //    yield return new SelectListItem { Text = "Ingles", Value = "ENG" };
+        //}
+        public IEnumerable<SelectListItem> LanguageList { get; set; }
     }
 
     public class CatRegionType
@@ -832,7 +838,7 @@ namespace Paho.Models
         [DisplayName("Orden de prioridad para el resultado final por institución:")]
         public int? OrdenPrioritybyLab { get; set; }
         [DisplayName("Laboratorio intermedio:")]
-        public bool NPHL { get; set; }
+        public bool? NPHL { get; set; }
         [NotMapped]
 		public InstitutionType InstType { get; set; }
         public int? cod_institution_type { get; set; }

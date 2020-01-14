@@ -39,10 +39,28 @@ namespace Paho.Controllers
 
             ViewBag.CurrentFilter = searchString;
 
-            var catalogo = from c in db.Institutions where c.CountryID == countryId select c;
+            //var catalogo = from c in db.Institutions where c.CountryID == countryId select c;
+            var catalogo = from c in db.Institutions select c;
+
+            if (user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
+            {
+                if (user.Institution is Hospital)
+                {
+                    catalogo = catalogo.OfType<Hospital>().Where(j => j.ID == user.InstitutionID || j.Father_ID == user.InstitutionID);
+                }
+                else if (user.Institution is Lab)
+                {
+                    catalogo = catalogo.OfType<Lab>().Where(j => j.ID == user.InstitutionID);
+                }
+            }
+            else if (user.Institution.AccessLevel == AccessLevel.Country)
+            {
+                catalogo = catalogo.Where(j => j.CountryID == countryId);       //.OrderBy(j => j.CountryID).ThenBy(j => j.FullName);
+            }
+
             if (!string.IsNullOrEmpty(searchString))
             {
-                catalogo = catalogo.Where(s => s.FullName.Contains(searchString) || s.Name.Contains(searchString));
+                catalogo = catalogo.Where(s => s.FullName.Contains(searchString) || s.Name.Contains(searchString) || s.Country.Name.Contains(searchString));
             }
 
             switch (sortOrder)
@@ -63,19 +81,12 @@ namespace Paho.Controllers
                     catalogo = catalogo.OrderByDescending(s => s.InstID);
                     break;
                 default:
-                    catalogo = catalogo.OrderBy(s => s.FullName);
+                    //catalogo = catalogo.OrderBy(s => s.FullName);
+                    catalogo = catalogo.OrderBy(s => s.CountryID).ThenBy(s => s.FullName);
                     break;
             }
 
-            if (user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service )
-            {
-                if (user.Institution is Hospital) {
-                    catalogo = catalogo.OfType<Hospital>().Where(j => j.ID == user.InstitutionID || j.Father_ID == user.InstitutionID);
-                } else if (user.Institution is Lab) {
-                    catalogo = catalogo.OfType<Lab>().Where(j => j.ID == user.InstitutionID);
-                }
-                
-            }
+
 
             int pageSize = _pageSize;
             int pageNumber = (page ?? 1);
@@ -101,6 +112,15 @@ namespace Paho.Controllers
         // GET: CatAgeGroup/Create
         public ActionResult Create()
         {
+            //var user = UserManager.FindById(User.Identity.GetUserId());
+            //var countryId = user.Institution.CountryID ?? 0;
+
+            //Institution model = new Institution();
+            ////string Language = user.Institution.Country.Language;        //#### CAFQ: 180911
+            ////ViewBag.UserCountry = countryId;
+            //if (countryId != 32)
+            //    selectedCountryID = countryId;
+
             PopulateDepartmentsDropDownList(); 
             return View();
         }
@@ -112,17 +132,17 @@ namespace Paho.Controllers
             [Bind(Include =
             "AreaID, FullName, Name, AccessLevel, cod_institution_type, InstID, Father_ID, sentinel, SARI, ILI, surv_unusual, PCR, IFI, Active, orig_country, " + 
             "sentinel, cod_region_institucional, cod_region_salud, cod_region_pais, InstType, OrdenPrioritybyLab, NPHL, LocationTypeID, ForeignCountryID, " + 
-            "ForeignInstitutionAddress, LabNIC")]
+            "ForeignInstitutionAddress, LabNIC, CountryID")]
             Hospital catalog)
         {
             try
             {   
                 if (ModelState.IsValid)
                 {
-                    var user = UserManager.FindById(User.Identity.GetUserId());
-                    var countryId = user.Institution.CountryID ?? 0;
+                    //var user = UserManager.FindById(User.Identity.GetUserId());
+                    //var countryId = user.Institution.CountryID ?? 0;
 
-                    catalog.CountryID = countryId;
+                    //catalog.CountryID = countryId;
 
                     if (catalog.InstType == InstitutionType.Admin) {
                         db.Institutions.Add(new AdminInstitution(catalog));
@@ -140,6 +160,7 @@ namespace Paho.Controllers
             {
                 ModelState.AddModelError("", "No es posible guardar los datos. Intente de nuevo, si el problema persiste contacte al administrador." + "\n" + dex.Message);
             }
+
             return View(catalog);
         }
 
@@ -164,7 +185,7 @@ namespace Paho.Controllers
                 catalogo.InstType = InstitutionType.Admin;
             }
 
-            PopulateDepartmentsDropDownList(catalogo.AreaID, 
+            PopulateDepartmentsDropDownList(catalogo.CountryID, catalogo.AreaID,
                 catalogo.AccessLevel, catalogo.InstType, catalogo.cod_region_institucional, 
                 catalogo.cod_region_salud, catalogo.cod_region_pais, catalogo.Father_ID, catalogo.InstType,
                 catalogo.LocationTypeID, catalogo.ForeignCountryID, catalogo.ForeignInstitutionAddress, catalogo.cod_institution_type);
@@ -184,7 +205,8 @@ namespace Paho.Controllers
             var catalog = db.Institutions.Find(id);
             if (TryUpdateModel(catalog, "",
                new string[] { "AreaID", "FullName", "Name", "AccessLevel", "InstID", "Father_ID", "SARI", "ILI", "surv_unusual", "PCR", "IFI",
-                   "Active", "sentinel", "orig_country","cod_region_institucional","cod_region_salud","cod_region_pais","InstType", "cod_institution_type", "OrdenPrioritybyLab", "NPHL", "LocationTypeID", "ForeignCountryID", "ForeignInstitutionAddress", "LabNIC" }))
+                   "Active", "sentinel", "orig_country","cod_region_institucional","cod_region_salud","cod_region_pais","InstType", "cod_institution_type",
+                   "OrdenPrioritybyLab", "NPHL", "LocationTypeID", "ForeignCountryID", "ForeignInstitutionAddress", "LabNIC", "CountryID" }))
             {
                 try
                 {
@@ -229,7 +251,7 @@ namespace Paho.Controllers
                 catalogo.InstType = InstitutionType.Admin;
             }
 
-            PopulateDepartmentsDropDownList(catalogo.AreaID,
+            PopulateDepartmentsDropDownList(catalogo.CountryID, catalogo.AreaID,
                 catalogo.AccessLevel, catalogo.InstType, catalogo.cod_region_institucional,
                 catalogo.cod_region_salud, catalogo.cod_region_pais, catalogo.Father_ID, catalogo.InstType,
                 catalogo.LocationTypeID, catalogo.InstitutionTypeID, catalogo.LabNIC);
@@ -284,7 +306,34 @@ namespace Paho.Controllers
             }
         }
 
+
+        public JsonResult GetAreaOfCountry(int countryID)
+        {
+            //var user = UserManager.FindById(User.Identity.GetUserId());
+            //var countryId = user.Institution.CountryID ?? 0;
+            //List<SelectListItem> City = new List<SelectListItem>();
+
+            //switch (tipo)
+            //{
+            //    case "Lab":
+            //        var instQuery = db.Institutions.OfType<Hospital>().Where(x => x.CountryID == countryId).OrderBy(x => x.Name).ToList();
+            //        instQuery.Insert(0, new Hospital { ID = 0, Name = "-- " + getMsg("msgSelect") + " -- " });
+            //        return Json(new SelectList(instQuery, "ID", "Name"));
+            //    default:
+            //        var hospQuery = db.Institutions.OfType<Hospital>().Where(x => x.CountryID == countryId && x.AccessLevel == AccessLevel.SelfOnly).OrderBy(x => x.Name).ToList();
+            //        hospQuery.Insert(0, new Hospital { ID = 0, Name = "-- " + getMsg("msgSelect") + " -- " });
+            //        return Json(new SelectList(hospQuery, "ID", "Name"));
+            //}
+
+            var instQuery = db.Areas.Where(x => x.CountryID == countryID).OrderBy(x => x.Name).ToList();
+            if(instQuery.Count > 1)
+                instQuery.Insert(0, new Area { ID = 0, Name = "-- " + getMsg("msgSelect") + " -- " });
+
+            return Json(new SelectList(instQuery, "ID", "Name"));
+        }
+
         private void PopulateDepartmentsDropDownList(
+            object selectedCountryID = null,
             object selectedArea = null, 
             object selectedNivel = null, 
             object selectedTipo = null,
@@ -299,13 +348,41 @@ namespace Paho.Controllers
             object selectedcodInstitutionTypeID = null)
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
-            var countryId = user.Institution.CountryID ?? 0;
-            string Language = user.Institution.Country.Language;        //#### CAFQ: 180911
 
-            var areasQuery = from d in db.Areas where d.CountryID == countryId orderby d.Name select d;
+            var countryId = 0;
+            if (selectedCountryID == null)
+                countryId = user.Institution.CountryID ?? 0;
+            else
+                countryId = (Int32)selectedCountryID;
+
+            string Language = user.Institution.Country.Language; 
+            ViewBag.UserCountry = countryId;
+
+            //**** Paises
+            var countries = db.Countries
+                    .Where(c => (countryId == 32) ? c.Active == true : c.ID == countryId)
+                    .Select(c => new CountryView()
+                    {
+                        Id = c.ID.ToString(),
+                        Name = (Language == "SPA") ? c.Name : c.ENG,
+                    })
+                    .OrderBy(d => d.Name)
+                    .ToList();
+
+            if(countries.Count > 1)
+                countries.Insert(0, new CountryView { Id = "0", Name = "-- " + getMsg("msgSelect") + " -- " });
+
+            ViewBag.Countries = new SelectList(countries, "ID", "Name", selectedCountryID);
+
+            //**** Areas
+            var areasQuery = (from d in db.Areas where d.CountryID == countryId orderby d.Name select d)
+                             .ToList();
+            if (areasQuery.Count > 1)
+                areasQuery.Insert(0, new Area { ID = 0, Name = "-- " + getMsg("msgSelect") + " -- " });
             ViewBag.AreaID = new SelectList(areasQuery, "ID", "Name", selectedArea);
 
-            var nivelQuery = from AccessLevel e in Enum.GetValues(typeof(AccessLevel)) select new { Id = e, Name = (user.Institution.CountryID == 17 && e.ToString() == "Area") ? "Parish":  e.ToString() };
+            //****
+            var nivelQuery = from AccessLevel e in Enum.GetValues(typeof(AccessLevel)) select new { Id = e, Name = (countryId == 17 && e.ToString() == "Area") ? "Parish":  e.ToString() };
             ViewBag.AccessLevel = new SelectList(nivelQuery, "Id", "Name", selectedNivel);
 
             //if (user.Institution.CountryID == 17)
@@ -313,7 +390,6 @@ namespace Paho.Controllers
             //    var nivelQuery_JAM = from AccessLevel_JAM e in Enum.GetValues(typeof(AccessLevel)) select new { Id = e, Name = e.ToString() };
             //    ViewBag.AccessLevel = new SelectList(nivelQuery_JAM, "Id", "Name", selectedNivel);
             //}
-
 
             var tipoQuery = from InstitutionType e in Enum.GetValues(typeof(InstitutionType)) select new { Id = e, Name = e.ToString() };
             ViewBag.InstitutionType = new SelectList(tipoQuery, "Id", "Name", selectedTipo);
@@ -342,6 +418,8 @@ namespace Paho.Controllers
                 ViewBag.Father_ID = new SelectList(instQuery, "ID", "Name", selectedFather);
             }
             //****
+            if (selectedLocationTypeID == null)
+                selectedLocationTypeID = 1;
             var regInstTypeLocaQuery = (from d in db.InstitutionLocationType
                                         select new InstitutionLocationTypeView
                                         {
@@ -351,7 +429,6 @@ namespace Paho.Controllers
 
             regInstTypeLocaQuery.Insert(0, new InstitutionLocationTypeView { ID = 0, Name = "-- " + getMsg("msgSelect") + " -- " });
             ViewBag.cod_institution_type_location = new SelectList(regInstTypeLocaQuery, "ID", "Name", selectedLocationTypeID);
-
 
             // Tipo de institución para Honduras
             var regInstTypeHON = db.CatInstitutionTypeHON
@@ -367,12 +444,12 @@ namespace Paho.Controllers
 
             ViewBag.cod_institution_type = new SelectList(regInstTypeHON, "ID", "Name", selectedcodInstitutionTypeID);
 
-            //**** Paises
+            //**** Paises for ForeignCountries
             var regCountries = db.Countries
                     .Select(c => new CountryView()
                     {
                         Id = c.ID.ToString(),
-                        Name = (user.Institution.Country.Language == "SPA") ? c.Name : c.ENG,
+                        Name = (Language == "SPA") ? c.Name : c.ENG,
                     })
                     .OrderBy(d => d.Name)
                     .ToList();

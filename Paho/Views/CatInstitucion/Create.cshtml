@@ -9,6 +9,20 @@
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
+        <!-- País -->
+        @if(ViewBag.UserCountry == 32){ 
+            <div class="form-group vertical-align" id="div-Country">
+                @Html.LabelFor(model => model.CountryID, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgViewCatInstitution_Country", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
+                <div class="col-md-10">
+                    @Html.DropDownList("CountryID", ViewBag.Countries as SelectList, null, new { @class = "form-control" })
+                </div>
+            </div>
+        }
+        else
+        {
+            @Html.HiddenFor(model => model.CountryID)
+        }
+
         <!-- Location -->
         <div class="form-group vertical-align">
             @Html.LabelFor(model => model.LocationTypeID, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgViewCatInstitution_Location", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
@@ -221,6 +235,11 @@
 }
 
 <script type="text/javascript">
+    var userCountry = @ViewBag.UserCountry;
+    if (userCountry != 32) {
+        $('#CountryID').val(userCountry)
+    }
+
     //***************************************
     $('a#MaintenanceM').addClass("active");        //#### CAFQ: 180806
     //***************************************
