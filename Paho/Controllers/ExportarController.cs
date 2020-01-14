@@ -339,6 +339,7 @@ namespace Paho.Controllers
                 string Country_Code = user.Institution.Country.Code;
 
                 var reportCountry = db.ReportsCountries.FirstOrDefault(s => s.ID == ReportCountry);
+                var country_group_age_user = db.CatAgeGroup.Where(z => z.id_country == CountryID);
                 int reportID = reportCountry.ReportID;//contiene la FK para obtener el ID del reporte en la tabla Report
                 int reportStartCol = reportCountry.startCol;//contiene la startCol de la tabla ReportCountry, pasa saber en que columna se inicia
                 int reportStartRow = reportCountry.startRow;//contiene la startRow de la tabla ReportCountry, pasa saber en que fila se inicia
@@ -425,7 +426,7 @@ namespace Paho.Controllers
                         }
                         //#### 
 
-                        if (reportTemplate == "R1" || reportTemplate == "R2" || reportTemplate == "R3" || reportTemplate == "R4" || reportTemplate == "D1" || reportTemplate == "B1" || reportTemplate == "CPE" || reportTemplate == "C1")
+                        if (reportTemplate == "R1" || reportTemplate == "R2" || reportTemplate == "R3" || reportTemplate == "R4" || reportTemplate == "R8" || reportTemplate == "D1" || reportTemplate == "B1" || reportTemplate == "CPE" || reportTemplate == "C1")
                         {
                             insertRow = false;
                         } // R4 = Virus detectados
@@ -560,7 +561,7 @@ namespace Paho.Controllers
 
                             var excelWs_Leyendas = excelWorkBook.Worksheets["Leyendas"];
                             ConfigToExcel_FLUID(CountryID, Languaje_, RegionID_, YearEnd, YearBegin, YearEnd, StartDate, EndDate, HospitalID_, Surv, excelWorkBook, "Leyendas", 1, excelWs_Leyendas.Index, false);
-                            
+
                             // Fin R4 - Virus detectados
                         }
                         else if (reportTemplate.ToUpper() == "FLUID")
@@ -630,7 +631,7 @@ namespace Paho.Controllers
                                 }
                                 AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4", (i > 0 ? (6 + (52 * i)) : 6), 1, excelWs_VIRUSES_IRAG.Index, false, ReportCountry, YearEnd_report, YearEnd_report, 1, Inusual, AreaID_, Sentinel);
 
-                               if (excelWs_VIRUSES_INF_Geographic != null)
+                                if (excelWs_VIRUSES_INF_Geographic != null)
                                     AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", 5, 1, excelWs_VIRUSES_INF_Geographic.Index, false, ReportCountry, YearEnd_report, YearEnd_report, Surv, Inusual, AreaID_, Sentinel);
 
                                 if (excelWs_VIRUSES_RSV_Geographic != null)
@@ -774,7 +775,7 @@ namespace Paho.Controllers
                             //    for (int i = 1; i <= contador; i++)
                             //    {
                             //        ConfigGraph_FLUID(YearEnd - i, i, excelWorkBook, excelWs_IRAG_Chart.Index, excelWs_IRAG.Index, "GS1", "C", "E");
-								 
+
                             //    }
                             //}
 
@@ -1055,7 +1056,7 @@ namespace Paho.Controllers
 
                             // Leyendas
                             var excelWs_Leyendas = excelWorkBook.Worksheets["Leyendas"];
-                            ConfigToExcel_FLUID(CountryID, Languaje_, RegionID_, Year, YearBegin, YearEnd, StartDate, EndDate, HospitalID_, Surv,  excelWorkBook, "Leyendas", 1, excelWs_Leyendas.Index, false);
+                            ConfigToExcel_FLUID(CountryID, Languaje_, RegionID_, Year, YearBegin, YearEnd, StartDate, EndDate, HospitalID_, Surv, excelWorkBook, "Leyendas", 1, excelWs_Leyendas.Index, false);
 
                         }
                         else if (reportTemplate == "FM1")
@@ -1063,6 +1064,147 @@ namespace Paho.Controllers
                         //else if ((reportTemplate == "R2" || reportTemplate == "R3" || reportTemplate == "R1") && bVariosAnios)
                         else if (reportTemplate == "R2" || reportTemplate == "R3" || reportTemplate == "R1")
                             AppendDataToExcel_R2_SeveralYears(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, AreaID_);        //#### CAFQ: 180204
+                        else if (reportTemplate == "R8")
+                        {
+                            // Leyendas
+                            var contador = 0;
+                            var YearBegin = 0;
+                            var YearEnd = 0;
+                            var YearEnd_report = DateTime.Now.Year;
+
+                            ////////////////////////////       Total fallecidos IRAG   ////////////////////////////////////////////
+
+                            var excelWs_Death_total = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "DEATHS Total" : "Total fallecidos IRAG"];
+                            AppendDataToExcel_R2_SeveralYears(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R2", reportStartRow, reportStartCol, excelWs_Death_total.Index, insertRow, ReportCountry, YearFrom, YearTo, 1, Inusual, AreaID_);
+
+                            if (YearFrom != null && YearTo != null)
+                            {
+                                YearBegin = (int)YearFrom;
+                                YearEnd = (int)YearTo;
+                                if (YearEnd > DateTime.Now.Year) YearEnd = DateTime.Now.Year;
+                            }
+                            else if (Year != null)
+                            {
+                                YearBegin = (int)Year;
+                                YearEnd = (int)Year;
+                                if (YearEnd > DateTime.Now.Year)
+                                {
+                                    YearBegin = DateTime.Now.Year;
+                                    YearEnd = DateTime.Now.Year;
+                                }
+                            }
+
+                            ////////Tipo virus edad grav./////
+
+                            var excelWs_Virus_Gravedad = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "VirusType Age Severity" : "Tipo virus edad grav."];
+                            var excelWs_Virus_Gravedad_Chart = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Severity Graph" : "Gráfica Gravedad"];
+
+                            contador = YearEnd - YearBegin;
+                            for (int i = 0; i <= contador; i++)
+                            {
+
+                                YearEnd_report = YearEnd - i;
+
+                                if (i > 0)
+                                {
+                                    // Copy rangos para los años
+                                    
+                                    CopyAndPasteRange(excelWorkBook, excelWs_Virus_Gravedad.Index, excelWorkBook, excelWs_Virus_Gravedad.Index, "B6:H17", ColumnAdress(1 + (7*i) + 1) + "6:" + ColumnAdress(1 + (7*i) + 7 + 1) + "17");
+
+                                    CopyAndPasteRange(excelWorkBook, excelWs_Virus_Gravedad.Index, excelWorkBook, excelWs_Virus_Gravedad.Index, "B20:D32", ColumnAdress(1 + (3 * i) + 1) + "20:" + ColumnAdress(1 + (3 * i) + 3 + 1) + "32");
+
+                                    excelWs_Virus_Gravedad.Cells[20, (1 + (3 * i) + 1)].Value = YearEnd_report;
+                                    excelWs_Virus_Gravedad.Cells[6, (1 + (7 * i) + 1)].Value = YearEnd_report;
+
+                                    //ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_Virus_Gravedad_Chart.Index, excelWs_Virus_Gravedad.Index, "CG1", 20, 21);
+                                    //        //ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_DEATHS_IRAG_Chart.Index, excelWs_DEATHS_IRAG.Index, "CD2", (8 + (52 * i)), (8 + (52 * i)) + 51);
+                                    //        //ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_DEATHS_IRAG_Chart.Index, excelWs_DEATHS_IRAG.Index, "CD3", (8 + (52 * i)), (8 + (52 * i)) + 51);
+
+                                }
+
+                                AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R8_GRAVEDAD", 23, (2 + (i * 3)), excelWs_Virus_Gravedad.Index, false, ReportCountry, YearEnd_report, YearEnd_report, 1, Inusual, AreaID_, Sentinel);
+
+                                AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R8_GRAVEDAD_by_AGE", 8, (2 + (i * 7)), excelWs_Virus_Gravedad.Index, false, ReportCountry, YearEnd_report, YearEnd_report, 1, Inusual, AreaID_, Sentinel);
+
+
+                            }
+
+
+                            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                            var excelWs_DEATHS_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "DEATHS SARI Age virus" : "Fallecidos IRAG"];
+                            var excelWs_DEATHS_IRAG_Chart = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "DEATHS SARI Age virus" : "Fallecidos IRAG"];
+
+                            AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_DEATHS_IRAG", 8, 1, excelWs_DEATHS_IRAG.Index, false, ReportCountry, YearBegin, YearEnd, 1, Inusual, AreaID_, Sentinel);
+
+                            // DEATHS Chart
+
+                            contador = YearEnd - YearBegin;
+
+                            for (int i = 0; i <= contador; i++)
+                            {
+
+                                YearEnd_report = YearEnd - i;
+
+                                if (i > 0)
+                                {
+                                    // Copy rangos para los años
+                                    CopyAndPasteRange(excelWorkBook, excelWs_DEATHS_IRAG.Index, excelWorkBook, excelWs_DEATHS_IRAG.Index, "BY8:BZ59", "BY" + Convert.ToString(8 + (52 * i)) + ":BZ" + Convert.ToString(8 + (52 * i) + 52));
+
+                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_DEATHS_IRAG_Chart.Index, excelWs_DEATHS_IRAG.Index, "CD1", (8 + (52 * i)), (8 + (52 * i)) + 51);
+                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_DEATHS_IRAG_Chart.Index, excelWs_DEATHS_IRAG.Index, "CD2", (8 + (52 * i)), (8 + (52 * i)) + 51);
+                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_DEATHS_IRAG_Chart.Index, excelWs_DEATHS_IRAG.Index, "CD3", (8 + (52 * i)), (8 + (52 * i)) + 51);
+
+                                }
+
+                            }
+
+                            if (contador > 0)
+                            {
+                                var RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "DEATHS IRAG" : "Fallecidos IRAG") + "'!$BY$8:$BZ$59 ";
+
+                                for (int i = 1; i <= contador; i++)
+                                {
+                                    RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "DEATHS IRAG" : "Fallecidos IRAG") + "'!$BY$" + (8 + (52 * i)).ToString() + ":$BZ$" + ((8 + (52 * i)) + 51).ToString() + ", " + RangeStr;
+                                }
+
+                                RangeStr = " ( " + RangeStr + ")";
+
+                                //Tamaño original de las gráficas
+                                // LineChart.SetSize(1375, 700);
+
+                                var graph_name = "CD1";
+                                var LineChart = excelWs_DEATHS_IRAG_Chart.Drawings[graph_name] as ExcelChart;
+                                LineChart.SetSize((100 * contador) + 1000, 650);
+                                UpdateRangeXMLPath(LineChart, RangeStr);
+
+                                graph_name = "CD2";
+                                LineChart = excelWs_DEATHS_IRAG_Chart.Drawings[graph_name] as ExcelChart;
+                                LineChart.SetSize((100 * contador) + 1000, 650);
+                                UpdateRangeXMLPath(LineChart, RangeStr);
+
+                                graph_name = "CD3";
+                                LineChart = excelWs_DEATHS_IRAG_Chart.Drawings[graph_name] as ExcelChart;
+                                LineChart.SetSize((100 * contador) + 1000, 650);
+                                UpdateRangeXMLPath(LineChart, RangeStr);
+
+                            }
+
+
+                            ////////////////////////////////////////////////////////////////////////////////////////////////
+
+                            var excelWs_GRAVEDAD_by_AGE = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "value_table" : "value_table"];
+                            AppendDataToExcel_R8_HOSP_ICU_DEATHS(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R8_GRAV_AGE_HOSP_ICU_DEATH", 8, 1, excelWs_GRAVEDAD_by_AGE.Index, false, ReportCountry, YearBegin, YearEnd, 1, Inusual, AreaID_, Sentinel,2,"HOSP");
+                            AppendDataToExcel_R8_HOSP_ICU_DEATHS(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R8_GRAV_AGE_HOSP_ICU_DEATH", 8, 1, excelWs_GRAVEDAD_by_AGE.Index, false, ReportCountry, YearBegin, YearEnd, 1, Inusual, AreaID_, Sentinel, 2, "ICU");
+                            AppendDataToExcel_R8_HOSP_ICU_DEATHS(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R8_GRAV_AGE_HOSP_ICU_DEATH", 8, 1, excelWs_GRAVEDAD_by_AGE.Index, false, ReportCountry, YearBegin, YearEnd, 1, Inusual, AreaID_, Sentinel, 2, "DEATH");
+
+
+
+                            // Leyendas
+                            var excelWs_Leyendas = excelWorkBook.Worksheets["Leyendas"];
+                            ConfigToExcel_FLUID(CountryID, Languaje_, RegionID_, Year, YearBegin, YearEnd, StartDate, EndDate, HospitalID_, Surv, excelWorkBook, "Leyendas", 1, excelWs_Leyendas.Index, false);
+
+                        }
                         else
                         {
                             AppendDataToExcel(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, AreaID_, CasosNPHL, Sentinel);        //#### CAFQ
@@ -4079,6 +4221,87 @@ namespace Paho.Controllers
             return Json(jsonDatosLabNPHL);
         }
 
+        private static void AppendDataToExcel_R8_HOSP_ICU_DEATHS(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se,
+            DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row,
+            int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId = null, int? Sentinel = null, int interval = 0, string Service = null)
+        {
+
+            var excelWorksheet = excelWorkBook.Worksheets[sheet];
+            var row = startRow;
+
+            var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            using (var con = new SqlConnection(consString))
+            {
+                using (var command = new SqlCommand(storedProcedure, con) { CommandType = CommandType.StoredProcedure })
+                {
+                    command.Parameters.Clear();
+                    command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
+                    command.Parameters.Add("@Languaje", SqlDbType.Text).Value = languaje_;
+                    command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
+                    command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
+                    command.Parameters.Add("@Mes_", SqlDbType.Int).Value = month;
+                    command.Parameters.Add("@SE", SqlDbType.Int).Value = se;
+                    command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
+                    command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
+                    command.Parameters.Add("@yearFrom", SqlDbType.Int).Value = YearFrom;
+                    command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
+                    command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
+                    command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;
+                    command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;
+                    command.Parameters.Add("@Area_ID", SqlDbType.Int).Value = AreaId;
+                    command.Parameters.Add("@Sentinel", SqlDbType.Int).Value = Sentinel;
+                    command.Parameters.Add("@Service", SqlDbType.Text).Value = Service;
+
+                    con.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            //var col = 1;
+                            var col = startColumn;
+                            //&& insert_row == true
+                            if (row > startRow && insert_row == true) excelWorksheet.InsertRow(row, 1);
+
+                            for (var i = 0; i < reader.FieldCount; i++)
+                            {
+                                if (Service == "ICU" && i == 3)
+                                    col = 5;
+                                if (Service == "DEATH" && i == 3)
+                                    col = 6;
+                                col = col + (i > 3 ? (interval): 0 );
+                                var cell = excelWorksheet.Cells[startRow, col];
+                                if (reader.GetValue(i) != null)
+                                {
+                                    int number;
+                                    bool isNumber = int.TryParse(reader.GetValue(i).ToString(), out number);
+
+                                    if (isNumber)
+                                    {
+                                        excelWorksheet.Cells[row, col].Value = number;
+                                    }
+                                    else
+                                    {
+                                        excelWorksheet.Cells[row, col].Value = reader.GetValue(i).ToString();
+                                    }
+                                    excelWorksheet.Cells[row, col].StyleID = cell.StyleID;
+
+                                }
+                                col++;
+                            }
+
+                            row++;
+                        }
+                    }
+                    command.Parameters.Clear();
+                    con.Close();
+
+                }
+            }
+
+            // Apply only if it has a Total row at the end and hast SUM in range, i.e. SUM(A1:A4)
+            //excelWorksheet.DeleteRow(row, 2);
+        }
+
         private static void AppendDataToExcel_FLUID(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se,
             DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row,
             int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId = null, int? Sentinel = null)
@@ -4988,6 +5211,17 @@ namespace Paho.Controllers
                     con.Close();
                 }
             }
+        }
+        public static string ColumnAdress(int col)
+        {
+            if (col <= 26)
+            {
+                return Convert.ToChar(col + 64).ToString();
+            }
+            int div = col / 26;
+            int mod = col % 26;
+            if (mod == 0) { mod = 26; div--; }
+            return ColumnAdress(div) + ColumnAdress(mod);
         }
 
         public string getMsg(string msgView)

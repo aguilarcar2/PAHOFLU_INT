@@ -17,7 +17,7 @@
     self.selectedReportCountryId.subscribe(function (newValue) {
         // Reporte epidemiologico, Número de casos y % de hospitalizaciones por IRAG, Total fallecidos por IRAG y Casos por IRAG,
         // Hospitalizaciones Totales
-        var reportID = ["2", "3", "4", "6", "10"];
+        var reportID = ["2", "3", "4", "6", "10", "22"];
         bDisable = false;
         self.Surv("0");                 // Seleccione
 
