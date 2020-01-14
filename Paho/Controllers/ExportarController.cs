@@ -1116,10 +1116,8 @@ namespace Paho.Controllers
                                     excelWs_Virus_Gravedad.Cells[20, (1 + (3 * i) + 1)].Value = YearEnd_report;
                                     excelWs_Virus_Gravedad.Cells[6, (1 + (7 * i) + 1)].Value = YearEnd_report;
 
-                                    //ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_Virus_Gravedad_Chart.Index, excelWs_Virus_Gravedad.Index, "CG1", 20, 21);
-                                    //        //ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_DEATHS_IRAG_Chart.Index, excelWs_DEATHS_IRAG.Index, "CD2", (8 + (52 * i)), (8 + (52 * i)) + 51);
-                                    //        //ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_DEATHS_IRAG_Chart.Index, excelWs_DEATHS_IRAG.Index, "CD3", (8 + (52 * i)), (8 + (52 * i)) + 51);
-
+                                    ConfigGraph_Bars_Histogram_range(YearEnd_report, excelWorkBook, excelWs_Virus_Gravedad_Chart.Index, excelWs_Virus_Gravedad.Index, "CG1", ColumnAdress(1 + (3 * i) + 1), ColumnAdress(1 + (3 * i) + 3), 20, 32);
+        
                                 }
 
                                 AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R8_GRAVEDAD", 23, (2 + (i * 3)), excelWs_Virus_Gravedad.Index, false, ReportCountry, YearEnd_report, YearEnd_report, 1, Inusual, AreaID_, Sentinel);
@@ -1128,6 +1126,23 @@ namespace Paho.Controllers
 
 
                             }
+
+                            var RangeStr = " '" + excelWs_Virus_Gravedad.Name + "'!$B$20:$D$21";
+
+                            for (int i = 1; i <= contador; i++)
+                            {
+                                RangeStr = "'" + excelWs_Virus_Gravedad.Name + "'!$"+ ColumnAdress(1 + (3 * i) + 1) + "$20"+ ":$" + ColumnAdress(1 + (3 * i) + 3)  +"$21," + RangeStr;
+                            }
+
+                            RangeStr = " (" + RangeStr + ")";
+
+                            //Tamaño original de las gráficas
+                            // LineChart.SetSize(1375, 700);
+
+                            var graph_name = "CG1";
+                            var LineChart = excelWs_Virus_Gravedad_Chart.Drawings[graph_name] as ExcelChart;
+                            LineChart.SetSize((100 * contador) + 1000, 650);
+                            UpdateRangeXMLPath(LineChart, RangeStr);
 
 
                             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1161,7 +1176,7 @@ namespace Paho.Controllers
 
                             if (contador > 0)
                             {
-                                var RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "DEATHS IRAG" : "Fallecidos IRAG") + "'!$BY$8:$BZ$59 ";
+                                RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "DEATHS IRAG" : "Fallecidos IRAG") + "'!$BY$8:$BZ$59 ";
 
                                 for (int i = 1; i <= contador; i++)
                                 {
@@ -1173,8 +1188,8 @@ namespace Paho.Controllers
                                 //Tamaño original de las gráficas
                                 // LineChart.SetSize(1375, 700);
 
-                                var graph_name = "CD1";
-                                var LineChart = excelWs_DEATHS_IRAG_Chart.Drawings[graph_name] as ExcelChart;
+                                graph_name = "CD1";
+                                LineChart = excelWs_DEATHS_IRAG_Chart.Drawings[graph_name] as ExcelChart;
                                 LineChart.SetSize((100 * contador) + 1000, 650);
                                 UpdateRangeXMLPath(LineChart, RangeStr);
 
@@ -4542,6 +4557,29 @@ namespace Paho.Controllers
                         }
                     }
                 }
+            }
+
+        }
+
+        private void ConfigGraph_Bars_Histogram_range(int? year, ExcelWorkbook excelWorkBook, int sheet_graph, int sheet_data, string graph_name, string range_column_begin, string range_column_end, int range_row_begin, int range_row_end)
+        {
+            var excelWorksheet_graph = excelWorkBook.Worksheets[sheet_graph];
+            var excelWorksheet_data = excelWorkBook.Worksheets[sheet_data];
+
+            var LineChart = excelWorksheet_graph.Drawings[graph_name] as ExcelChart;
+            //LineChart.UseSecondaryAxis = true;
+            var cs = LineChart.Series;
+            var Secundary_cs = LineChart.PlotArea.ChartTypes;
+
+
+            var begin_str = "";
+            var letter_range_str = "";
+            var row_actual = "";
+
+            foreach (ExcelChartSerie element in cs)
+            {
+                row_actual = element.Series.Substring(element.Series.LastIndexOf("$") + 1);
+                element.Series = "'" + excelWorksheet_data.Name + "'!$" + range_column_begin + "$" + row_actual + ":$" + range_column_end + "$" + row_actual + ", " + element.Series;
             }
 
         }
