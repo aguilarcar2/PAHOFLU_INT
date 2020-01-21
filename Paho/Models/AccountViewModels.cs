@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Web.Mvc;
 
 namespace Paho.Models
@@ -71,6 +72,7 @@ namespace Paho.Models
         [Required(AllowEmptyStrings = false, ErrorMessage = "Este campo es requerido")]
         [Display(Name = "Usuario")]
         public string UserName { get; set; }
+
         [Required(AllowEmptyStrings = false, ErrorMessage = "Este campo es requerido")]
         [EmailAddress]
         [Display(Name = "Correo electrónico")]
@@ -107,9 +109,9 @@ namespace Paho.Models
         public IEnumerable<SelectListItem> Institutions { get; set; }
         public IEnumerable<SelectListItem> RolesList { get; set; }
 
+        [NotMapped]
         public int? CountryID { get; set; }
-        public IEnumerable<SelectListItem> Countries { get; set; }
-
+        //public IEnumerable<SelectListItem> Countries { get; set; }
     }
 
     public class ResetPasswordViewModel

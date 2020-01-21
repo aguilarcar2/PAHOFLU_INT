@@ -6,12 +6,18 @@
     string labelMsgDeleteRecord = Paho.Controllers.ResourcesM.SgetMessage("msgDeleteRecord", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string labelDelete = Paho.Controllers.ResourcesM.SgetMessage("msgViewCatPopulation_Borrar", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 
+    string labelCodigo = Paho.Controllers.ResourcesM.SgetMessage("msgISOCode", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelNombreSPA = Paho.Controllers.ResourcesM.SgetMessage("msgSpanishName", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelNombreENG = Paho.Controllers.ResourcesM.SgetMessage("msgEnglishName", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelPais = Paho.Controllers.ResourcesM.SgetMessage("msgCountry", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelDivisionesAdminis = Paho.Controllers.ResourcesM.SgetMessage("msgNumberTerritorialPoliticalDivisions", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelActivo = Paho.Controllers.ResourcesM.SgetMessage("msgActive", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelIdioma = Paho.Controllers.ResourcesM.SgetMessage("msgLanguage", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 }
 
 @{
     ViewBag.Title = labelCatalogCountry;
 }
-@*<h2>Delete</h2>*@
 
 <div>
     <h4>@labelCatalogCountry</h4>
@@ -20,62 +26,53 @@
 
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Code)
+            @Html.LabelFor(model => model.Code, labelCodigo)
         </dt>
-
         <dd>
             @Html.DisplayFor(model => model.Code)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.LabelFor(model => model.Code, labelNombreSPA)
         </dt>
-
         <dd>
             @Html.DisplayFor(model => model.Name)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ENG)
+            @Html.LabelFor(model => model.Code, labelNombreENG)
         </dt>
-
         <dd>
             @Html.DisplayFor(model => model.ENG)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.NumberAdminisDivision)
+            @Html.LabelFor(model => model.Code, labelDivisionesAdminis)
         </dt>
-
         <dd>
             @Html.DisplayFor(model => model.NumberAdminisDivision)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Active)
+            @Html.LabelFor(model => model.Code, labelActivo)
         </dt>
-
         <dd>
             @Html.DisplayFor(model => model.Active)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Language)
+            @Html.LabelFor(model => model.Code, labelIdioma)
         </dt>
-
         <dd>
             @Html.DisplayFor(model => model.Language)
         </dd>
-
     </dl>
 
     @using (Html.BeginForm()) {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            @*<input type="submit" value="Delete" class="btn btn-default" />*@ 
             <input type="submit" value=@labelDelete class="btn btn-default" />
-            @*@Html.ActionLink("Back to List", "Index")*@
         </div>
     }
 </div>

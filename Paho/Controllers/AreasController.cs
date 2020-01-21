@@ -97,7 +97,9 @@ namespace Paho.Controllers
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
             var UsrLang = user.Institution.Country.Language;
-            var cat_countries = from c in db.Countries select c;
+            var cat_countries = from c in db.Countries
+                                where c.Active == true
+                                select c;
             if (user.Institution.AccessLevel == AccessLevel.Country || user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
             {
                 if (user.Institution.AccessLevel == AccessLevel.Country)

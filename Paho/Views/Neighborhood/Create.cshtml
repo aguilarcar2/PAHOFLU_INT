@@ -5,7 +5,7 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>@(((Paho.Controllers.NeighborhoodController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelState"))</h4>
+        <h4>@(((Paho.Controllers.NeighborhoodController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelNeighborhood"))</h4>
         <hr />
 
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })

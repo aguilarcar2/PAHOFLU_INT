@@ -110,6 +110,10 @@ function ContactViewModel(app, dataModel) {
     self.NoActiveHON = ko.computed(function () {
         return (self.UsrCountry() == 15) ? false : true;
     }, self);
+    self.ActiveCHN = ko.computed(function () {
+        return (self.UsrCountry() == 67) ? true : false;
+    }, self);
+
 
     self.VisibleIdType = ko.computed(function () {
         return (self.UsrCountry() != 15) ? true : false;
@@ -120,6 +124,14 @@ function ContactViewModel(app, dataModel) {
 
     self.ShowOnlyAdult = ko.computed(function () {
             return (self.AMeasure() == "Month" || self.AMeasure() == "Day" || (self.AMeasure() == "Year" && self.Age() < 15)) ? false : true;
+    }, self);
+
+    self.LNameEnable = ko.computed(function () {
+        return (self.UsrCountry() == 67 && self.SurvInusual() == true) ? false : true;
+    }, self);
+
+    self.FNameEnable = ko.computed(function () {
+        return (self.UsrCountry() == 67 && self.SurvInusual() == true) ? false : true;
     }, self);
 
     // Inicia EsRut validacion para Chile

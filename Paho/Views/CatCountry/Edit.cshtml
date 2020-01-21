@@ -1,17 +1,17 @@
 ﻿@model Paho.Models.Country
 
 @{
-    string labelEditar = "Editar";
+    string labelEditar = (string)Paho.Controllers.ResourcesM.SgetMessage("msgEdit", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string LabelReturnToList = (string)Paho.Controllers.ResourcesM.SgetMessage("msgReturnToList", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string LabelButtonSave = Paho.Controllers.CatVirusTypeController.SgetMessage("msgViewSummaryButtonSave", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 
-    string labelCodigo = "Código";
-    string labelNombreSPA = "Nombre español";
-    string labelNombreENG = "Nombre ingles";
-    string labelPais = "País";
-    string labelDivisionesAdminis = "Número de divisiones administrativas";
-    string labelActivo = "Activo";
-    string labelIdioma = "Idioma";
+    string labelCodigo = Paho.Controllers.ResourcesM.SgetMessage("msgISOCode", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelNombreSPA = Paho.Controllers.ResourcesM.SgetMessage("msgSpanishName", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelNombreENG = Paho.Controllers.ResourcesM.SgetMessage("msgEnglishName", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelPais = Paho.Controllers.ResourcesM.SgetMessage("msgCountry", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelDivisionesAdminis = Paho.Controllers.ResourcesM.SgetMessage("msgNumberTerritorialPoliticalDivisions", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelActivo = Paho.Controllers.ResourcesM.SgetMessage("msgActive", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelIdioma = Paho.Controllers.ResourcesM.SgetMessage("msgLanguage", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 }
 
 @{

@@ -14,6 +14,14 @@
     string labelPage = Paho.Controllers.ResourcesM.SgetMessage("msgPage", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string labelOf = Paho.Controllers.ResourcesM.SgetMessage("msgViewCatPopulation_De", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 
+    string labelCodigo = Paho.Controllers.ResourcesM.SgetMessage("msgISOCode", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelNombreSPA = Paho.Controllers.ResourcesM.SgetMessage("msgSpanishName", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelNombreENG = Paho.Controllers.ResourcesM.SgetMessage("msgEnglishName", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelPais = Paho.Controllers.ResourcesM.SgetMessage("msgCountry", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelDivisionesAdminis = Paho.Controllers.ResourcesM.SgetMessage("msgNumberTerritorialPoliticalDivisions", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelActivo = Paho.Controllers.ResourcesM.SgetMessage("msgActive", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelIdioma = Paho.Controllers.ResourcesM.SgetMessage("msgLanguage", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
     ViewBag.Title = labelCatalogCountry;
 }
 
@@ -42,22 +50,22 @@
             @Html.DisplayName("ID")
         </th>
         <th>
-            @Html.ActionLink("Codigo", "Index", new { sortOrder = ViewBag.CodeParm, currentFilter = ViewBag.CurrentFilter })
+            @Html.ActionLink(labelCodigo, "Index", new { sortOrder = ViewBag.CodeParm, currentFilter = ViewBag.CurrentFilter })
         </th>
         <th>
-            @Html.ActionLink("Nombre", "Index", new { sortOrder = ViewBag.NameParm, currentFilter = ViewBag.CurrentFilter })
+            @Html.ActionLink(labelNombreSPA, "Index", new { sortOrder = ViewBag.NameParm, currentFilter = ViewBag.CurrentFilter })
         </th>
         <th>
-            @Html.ActionLink("Nombre ENG", "Index", new { sortOrder = ViewBag.ENGParm, currentFilter = ViewBag.CurrentFilter })
+            @Html.ActionLink(labelNombreENG, "Index", new { sortOrder = ViewBag.ENGParm, currentFilter = ViewBag.CurrentFilter })
         </th>
         <th>
-            @Html.DisplayName("Número de divisiones geograficas")
+            @Html.DisplayName(labelDivisionesAdminis)
         </th>
         <th>
-            @Html.ActionLink("Activo", "Index", new { sortOrder = ViewBag.ActiveParm, currentFilter = ViewBag.CurrentFilter })
+            @Html.ActionLink(labelActivo, "Index", new { sortOrder = ViewBag.ActiveParm, currentFilter = ViewBag.CurrentFilter })
         </th>
         <th>
-            @Html.DisplayName("Idioma")
+            @Html.DisplayName(labelIdioma)
         </th>
         <th></th>
     </tr>

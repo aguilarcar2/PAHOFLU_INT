@@ -49,6 +49,22 @@ namespace Paho.Controllers
             }
         }
 
+        public JsonResult GetCountryInstitutions(int countryID)
+        {
+            var instQuery = db.Institutions.Where(x => x.CountryID == countryID)
+                            .Select(x => new { ID = x.ID, Name = x.FullName })
+                            .OrderBy(x => x.Name).ToList();
+
+            //var instQuery1 = from institution in db.Institutions
+            //                 .where institution.CountryID = countryID
+            //                 select new { ID = institution.ID, Name = institution.FullName };
+
+            if (instQuery.Count > 1)
+                instQuery.Insert(0, new { ID = (long)0, Name = "-- " + getMsg("msgSelect") + " -- " });
+
+            return Json(new SelectList(instQuery, "ID", "Name"));
+        }
+
         //
         // GET: /Users/
         //public async Task<ActionResult> Index()
@@ -175,13 +191,15 @@ namespace Paho.Controllers
             var model = new RegisterViewModel();
 
             var user_id = UserManager.FindById(User.Identity.GetUserId());
-
-
+            var countryId = user_id.Institution.CountryID ?? 0;
+            var language = user_id.Institution.Country.Language;
+            int selectedCountryID = countryId;
 
             if (user_id.Institution.AccessLevel == AccessLevel.All)
             {
                 model.Institutions = from value in db.Institutions
-                                     where value.Active == true
+                                     //where value.Active == true
+                                     where value.Active == true && value.CountryID == countryId
                                      orderby value.CountryID, value.FullName
                                      select new SelectListItem
                                      {
@@ -189,7 +207,8 @@ namespace Paho.Controllers
                                          Value = value.ID.ToString(),
                                          Selected = false
                                      };
-                
+
+                //selectedCountryID = countryId;
             }
             else if (user_id.Institution.AccessLevel == AccessLevel.Country)
             {
@@ -231,8 +250,27 @@ namespace Paho.Controllers
             //Get the list of Roles
             model.RolesList = new SelectList(await RoleManager.Roles.OrderBy(d=>d.Name).ToListAsync(), "Name", "Name");
             model.InstitutionType = "";
+
             ViewBag.InstitutionType = user_id.Institution.AccessLevel.ToString().ToLower();
 
+            //**** Paises
+            var countries = db.Countries
+                    .Where(c => (user_id.Institution.AccessLevel == AccessLevel.All) ? c.Active == true : c.ID == countryId)
+                    .Select(c => new CountryView()
+                    {
+                        Id = c.ID.ToString(),
+                        Name = (language == "SPA") ? c.Name : c.ENG,
+                    })
+                    .OrderBy(d => d.Name)
+                    .ToList();
+
+            if (countries.Count > 1)
+                countries.Insert(0, new CountryView { Id = "0", Name = "-- " + getMsg("msgSelect") + " -- " });
+
+            ViewBag.Countries = new SelectList(countries, "ID", "Name", selectedCountryID);
+            //ViewBag.Countries = new SelectList(countries, "ID", "Name");
+
+            //****
             return View(model);
         }
 
@@ -545,6 +583,19 @@ namespace Paho.Controllers
                 return RedirectToAction("Index");
             }
             return View();
+        }
+
+        public string getMsg(string msgView)
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            string searchedMsg = msgView;
+            int? countryID = user.Institution.CountryID;
+            string countryLang = user.Institution.Country.Language;
+
+            ResourcesM myR = new ResourcesM();
+            searchedMsg = myR.getMessage(searchedMsg, countryID, countryLang);
+            //searchedMsg = myR.getMessage(searchedMsg, 0, "ENG");
+            return searchedMsg;
         }
     }
 }

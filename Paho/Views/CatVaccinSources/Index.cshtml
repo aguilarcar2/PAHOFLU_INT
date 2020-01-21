@@ -6,9 +6,13 @@
 @{
     ViewBag.Title = (Paho.Controllers.ResourcesM.SgetMessage("msgCatalog", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + " - " + (Paho.Controllers.ResourcesM.SgetMessage("msgVaccineSource", ViewBag.UsrCtry, ViewBag.UsrCtryLang));
 }
-    <p>
-        @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgViewCatPopulation_CrearNuevo", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Create", "CatVaccinSources", new { area = "" }, null)
-    </p>
+
+<h4>@((string)Paho.Controllers.ResourcesM.SgetMessage("msgCatalog", ViewBag.UsrCtry, ViewBag.UsrCtryLang) + " - " + (string)Paho.Controllers.ResourcesM.SgetMessage("msgVaccineSource", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) </h4>
+
+<p>
+    @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgViewCatPopulation_CrearNuevo", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Create", "CatVaccinSources", new { area = "" }, null)
+</p>
+
 @using (Html.BeginForm("Index", "CatVaccinSources", FormMethod.Get))
 {
     <p>

@@ -6,7 +6,9 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+@*<h2>Index</h2>*@
+<h4>@(Paho.Controllers.CatVirusTypeController.SgetMessage("msgMenuCatVirusLinajeView", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) </h4>
+
 
 <p>
     @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgViewCatPopulation_CrearNuevo", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Create", "CatVirusLinajes", new { area = "" }, null)

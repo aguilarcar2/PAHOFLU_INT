@@ -137,9 +137,9 @@
     });
 
     $("#CountryID").change(function () {
-        console.log("#CountryID.change->START");
+        //console.log("#CountryID.change->START");
         loadAreaOfCountry();
-        console.log("#CountryID.change->END");
+        //console.log("#CountryID.change->END");
     });
     
     function loadAreaOfCountry() {
@@ -160,9 +160,8 @@
                 console.log('Failed to retrieve areas.' + ex);
             }
         });
+
         return false;
-
-
     }
 
     function loadFatherInst() {

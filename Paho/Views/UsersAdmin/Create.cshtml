@@ -3,7 +3,9 @@
 @{
     //string labelEditar = "Editar";
     string LabelCountry = (string)Paho.Controllers.ResourcesM.SgetMessage("msgCountry", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelUser = (string)Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminUserName", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     //string LabelButtonSave = Paho.Controllers.CatVirusTypeController.SgetMessage("msgViewSummaryButtonSave", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    //((string)Paho.Controllers.ResourcesM.SgetMessage("msgViewCatInstitution_Country", ViewBag.UsrCtry, ViewBag.UsrCtryLang))
 }
 
 @{
@@ -20,15 +22,24 @@
     @Html.ValidationSummary("", new { @class = "text-error" })
     @Html.HiddenFor(m => m.InstitutionType)
 
-    @*<div class="form-group">
-        @Html.LabelFor(m => m.CountryID, LabelCountry, new { @class = "col-md-2 control-label" })
-        <div class="col-md-7">
-            @Html.DropDownListFor(m => m.CountryID, Model.Countries, new { @class = "form-control" })
+    <!-- País -->
+    if (ViewBag.InstitutionType == "all")       // Inst. access level
+    {
+        //<div class="form-group" id="div-Country">
+        <div class="form-group">
+            @Html.LabelFor(model => model.CountryID, LabelCountry, htmlAttributes: new { @class = "col-md-2 control-label" })
+            <div class="col-md-5">
+                @Html.DropDownList("CountryID", ViewBag.Countries as SelectList, null, new { @class = "form-control" })
+            </div>
         </div>
-    </div>*@
+    }
+    else
+    {
+        @Html.HiddenFor(model => model.CountryID)
+    }
 
     <div class="form-group">
-        @Html.LabelFor(m => m.UserName, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminUserName", ViewBag.UsrCtry, ViewBag.UsrCtryLang)), new { @class = "col-md-2 control-label" })
+        @Html.LabelFor(m => m.UserName, LabelUser, new { @class = "col-md-2 control-label" })
         <div class="col-md-5">
             @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
         </div>
@@ -130,6 +141,7 @@
 
 <script type="text/javascript">
     var AdminCountry = '@ViewBag.InstitutionType';
+    var instAccessLevel = '@ViewBag.InstitutionType';
 </script>
 
 <script type="text/javascript">
