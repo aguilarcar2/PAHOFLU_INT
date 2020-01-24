@@ -3,8 +3,9 @@
     self.Id = "";
     self.hasReset = ko.observable(false);
     self.UsrCountry = ko.observable(app.Views.Home.UsrCountry()); // Pais del usuario logueado
-    self.selectedCountryId = ko.observable();
 
+    //****
+    self.selectedCountryId = ko.observable();
     self.selectedCountryId.subscribe(function (newCountrySelect) {
         if (self.hasReset() != true) {
             if (self.UsrCountry() != self.selectedCountryId()) {
@@ -131,6 +132,97 @@
             alert(errorThrown);
         })
     };
+
+    //**** Country case was diagnosed
+    self.selectedCountryIdCWD = ko.observable();
+    self.selectedCountryIdCWD.subscribe(function (newCountrySelect) {
+        if (self.hasReset() != true) {
+            if (self.UsrCountry() != self.selectedCountryIdCWD()) {
+                //$("#AreaCWD").attr("disabled", true);
+                //$("#StateCWD").attr("disabled", true);
+                //$("#Neighborhoods").attr("disabled", true);
+            } else if (self.UsrCountry() == self.selectedCountryIdCWD()) {
+                $("#AreaCWD").attr("disabled", false);
+                $("#StateCWD").attr("disabled", false);
+                //$("#Neighborhoods").attr("disabled", false);      
+            }
+        }
+    });
+
+    //**** Level 1 case was diagnosed
+    self.AreaNameCWD = ko.observable();
+
+    self.AreasCWD = ko.observableArray();
+    self.selectedAreaIdCWD = ko.observable();
+    self.ReloadAreasCWD = function (select) {
+        console.log("ReloadAreasCWD->START");
+        //if (typeof self.selectedCountryIdCWD() === "undefined") {
+        //    self.AreasCWD("");
+        //    self.AreasNameCWD("");
+        //    return;
+        //}
+        self.AreasCWD("");
+        self.AreaNameCWD("");
+        if (self.UsrCountry() == self.selectedCountryIdCWD()) {
+            $.getJSON(app.dataModel.getAreasUrl, { CountryID: self.selectedCountryIdCWD() }, function (data, status) {
+                self.AreasCWD(data);
+                if ($.isFunction(select))
+                    select();
+            })
+            .fail(function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            })
+        }
+        console.log("ReloadAreasCWD->END");
+    };
+
+
+
+    self.AreaCWDVisible = ko.computed(function () {
+        if (typeof self.selectedCountryIdCWD() === "undefined") {
+            return true;
+        } else {
+            return (self.UsrCountry() == self.selectedCountryIdCWD()) ? true : false;
+        }       
+    }, self);    
+
+    //**** Level 2 case was diagnosed
+    self.StateNameCWD = ko.observable();
+
+    self.StatesCWD = ko.observableArray();
+    self.selectedStateIdCWD = ko.observable();
+    self.ReloadStatesCWD = function (select) {
+        console.log("ReloadStatesCWD->START");
+        //if (typeof self.selectedAreaIdCWD() === "undefined") {
+        //    self.StatesCWD("");
+        //    self.StatesNameCWD("");
+        //    return;
+        //}
+        self.StatesCWD("");
+        self.StateNameCWD("");
+        if (self.UsrCountry() == self.selectedCountryIdCWD()) {
+            $.getJSON(app.dataModel.getStatesUrl, { AreaID: self.selectedAreaIdCWD() }, function (data, status) {
+                self.StatesCWD(data);
+                if ($.isFunction(select))
+                    select();
+            })
+            .fail(function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            })
+        }
+        console.log("ReloadStatesCWD->END");
+    };
+
+
+
+    self.StateCWDVisible = ko.computed(function () {
+        if (typeof self.selectedCountryIdCWD() === "undefined") {
+            return true;
+        } else {
+            return (self.UsrCountry() == self.selectedCountryIdCWD()) ? true : false;
+        }
+    }, self);
+
     //****
     self.selectedParishPostOfficeJMId = ko.observable();
 
@@ -383,8 +475,6 @@
         })
     };
 
-    
-
     self.ReloadLocalsAndNeighborhoods2weeks = function () {
         //self.ReloadLocals2weeks();
         self.ReloadNeighborhoods2weeks();
@@ -399,12 +489,14 @@
             if (!self.selectedAreaId() || self.selectedAreaId() == "") {
                 if (!(self.UsrCountry() == 17 && app.Views.Contact.SurvInusual() == 1))    //#### CAFQ: 180604 - Jamaica Universal
                     if (!(self.UsrCountry() == 3 && app.Views.Contact.SurvInusual() == 1))    //#### Bolivia inusitado
-                        msg += "\n" + msgValidationAreaRequired;
+                        if (app.Views.Contact.IsSurv() != "4")
+                            msg += "\n" + msgValidationAreaRequired;
             }
                 
             if ((!self.selectedStateId() || self.selectedStateId() == "") && self.UsrCountry() != 17 && self.UsrCountry() != 11 && self.UsrCountry() != 119) {
                 if (!(self.UsrCountry() == 3 && app.Views.Contact.SurvInusual() == 1))    //#### Bolivia inusitado
-                    msg += "\n" + msgValidationStateRequired;
+                    if (app.Views.Contact.IsSurv() != "4")
+                        msg += "\n" + msgValidationStateRequired;
             }
 
             if (self.UsrCountry() == 7) {

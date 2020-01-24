@@ -150,6 +150,10 @@
     });
     self.FeverEW = ko.observable("");
     self.FeverEY = ko.observable("");
+
+    self.IsolationDate = ko.observable(new Date());
+    self.HospitalizedNameHosp = ko.observable();
+    
     
     self.DiagPrinAdm = ko.observable("");
     self.DiagPrinAdmVal = ko.observable("");
@@ -806,7 +810,13 @@
     self.Rinorrea = ko.observable("");
     self.Malestar = ko.observable("");
     self.Nauseas = ko.observable("");
+
     self.DolorMuscular = ko.observable("");
+    self.ChessPain = ko.observable("");
+    self.AbdominalPain = ko.observable("");
+    self.JointPain = ko.observable("");
+    self.IrritabilityConfusion = ko.observable("");
+
     self.Disnea = ko.observable("");
     self.DolorCabeza = ko.observable("");
     self.Estridor = ko.observable("");
@@ -882,6 +892,10 @@
             }
         }
     });
+
+    self.IsSurveillanceCode4 = ko.computed(function () {   
+        return (app.Views.Contact.IsSurv() == "4") ? true : false;
+    }, self); 
 
     self.IsInusitadoSintomatologia = ko.computed(function () {                         //**** CAFQ
         if (self.UsrCountry() == 3) {                               // Bolivia
@@ -1177,9 +1191,12 @@
         if ($("#FeverDate").val() == "")
             if (!(self.UsrCountry() == 17 && app.Views.Contact.SurvInusual() == 1))    //#### CAFQ: 180604 - Jamaica Universal
                 if (!(self.UsrCountry() == 3 && app.Views.Contact.SurvInusual() == 1))    //#### Bolivia Universal
+                    //if (app.Views.Contact.IsSurv() != "4")
                     msg += "\n" + msgValidationOnsetOnFever;
+
         if ($("#FeverDate").val() != "" && !moment(moment(date_fever).format(date_format_moment), [date_format_moment], true).isValid())
             msg += "\n" + viewValidateOnsetInvalid;
+
         if (date_notification != null && date_fever != null && moment(date_fever).isAfter(moment(date_notification), "days")) {
             msg += "\n" + viewValidateOnsetLtNotiDate;
             $("#FeverDate").focus();
@@ -1200,7 +1217,9 @@
             if ($("#HospAmDate").val() == "")
                 if (!(self.UsrCountry() == 17 && app.Views.Contact.SurvInusual() == 1))    //#### CAFQ: 180604 - Jamaica Universal
                     if (!(self.UsrCountry() == 3 && app.Views.Contact.SurvInusual() == 1))    //#### Bolivia universal
-                        msg += "\n" + viewValidateHospDateRequired;
+                        if (app.Views.Contact.IsSurv() != "4")
+                            msg += "\n" + viewValidateHospDateRequired;
+
             if ($("#HospAmDate").val() != "" && !moment(moment(date_hosp_adm).format(date_format_moment), [date_format_moment], true).isValid())
                 msg += "\n" + viewValidateHospDateInvalid;
             if (date_hosp_adm != null && date_fever != null && moment(date_hosp_adm).isBefore(moment(date_fever), "days")) {
@@ -1274,7 +1293,6 @@
         } else if (app.Views.Contact.SurvSARI() == true) {
 
             if (self.UsrCountry() == 15) {
-
                 if (self.EnableICUHon() && (!self.ICU() || self.ICU() == "")) {
                     msg += "\n" + viewValidateUPCRequired;
                 } else if (self.ICU() == 1) {
@@ -1286,7 +1304,8 @@
 
             } else if ((!self.ICU() || self.ICU() == "") && !(self.UsrCountry() == 3 && app.Views.Contact.SurvInusual() == 1) && !(self.UsrCountry() == 17 && app.Views.Contact.SurvInusual() == 1))
             {
-                msg += "\n" + viewValidateUPCRequired;
+                if (app.Views.Contact.IsSurv() != "4")
+                    msg += "\n" + viewValidateUPCRequired;
             } else if (self.ICU() == 1) {
                 if (self.ICUAmDate() == "" || self.ICUAmDate() == "undefined" || self.ICUAmDate() == null) {
                     msg += "\n" + viewValidateICUAdmissionDateRequired;
@@ -1306,7 +1325,8 @@
         if (!self.IsSample())
             if (!(self.UsrCountry() == 17 && app.Views.Contact.SurvInusual() == 1))    //#### CAFQ: 180604 - Jamaica Universal
                 if (!(self.UsrCountry() == 3 && app.Views.Contact.SurvInusual() == 1))    //#### Bolivia universal
-                    msg += "\n" + viewValidateSampleInfoRequired;
+                    if (app.Views.Contact.IsSurv() != "4")
+                        msg += "\n" + viewValidateSampleInfoRequired;
 
         if (self.IsSample() === "true") {
             if ($("#SampleDate").val() == "")

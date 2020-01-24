@@ -366,6 +366,8 @@
     <Content Include="Content\themes\base\images\1_UNI.png" />
     <Content Include="Content\themes\base\images\2_ENG.png" />
     <Content Include="Content\themes\base\images\2_SPA.png" />
+    <Content Include="Content\themes\base\images\4_ENG.png" />
+    <Content Include="Content\themes\base\images\4_SPA.png" />
     <Content Include="Content\themes\base\images\ajax-loader.gif" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\BlueHorizontalSPANISH.png" />

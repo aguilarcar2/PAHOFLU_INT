@@ -1073,6 +1073,7 @@ namespace Paho.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public AgeGroup? AgeGroup { get; private set; }
         public Gender Gender { get; set; }
+        //public int? Gender { get; set; }
         public string ResponsibleMinor { get; set; }
         public int? nativepeople { get;  set; }
         public int? nationality { get; set; }
@@ -3225,6 +3226,7 @@ namespace Paho.Models
                      FName1 = "John",
                      LName1 = "Doe",
                      Gender = Gender.Male,
+                     //Gender = 1,
                      HospitalDate = new DateTime(2012, 12, 12),
                      NoExpediente = "123",
                      NationalId = "CI234",
@@ -3238,6 +3240,7 @@ namespace Paho.Models
                      FName1 = "Jenny",
                      LName1 = "Smith",
                      Gender = Gender.Female,
+                     //Gender = 2,
                      HospitalDate = new DateTime(2013, 12, 12),
                      NoExpediente = "123",
                      NationalId = "CI1234",
@@ -3256,6 +3259,7 @@ namespace Paho.Models
                      FName1 = "David",
                      LName1 = "Chen",
                      Gender = Gender.Unknown,
+                     //Gender = 3,
                      HospitalDate = new DateTime(2013, 12, 12),
                      NoExpediente = "123",
                      NationalId = "CI1235",

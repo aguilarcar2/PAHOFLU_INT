@@ -127,11 +127,11 @@ function ContactViewModel(app, dataModel) {
     }, self);
 
     self.LNameEnable = ko.computed(function () {
-        return (self.UsrCountry() == 67 && self.SurvInusual() == true) ? false : true;
+        return (self.IsSurv() == "4") ? false : true;       // Inusitados
     }, self);
 
     self.FNameEnable = ko.computed(function () {
-        return (self.UsrCountry() == 67 && self.SurvInusual() == true) ? false : true;
+        return (self.IsSurv() == "4") ? false : true;
     }, self);
 
     // Inicia EsRut validacion para Chile
@@ -560,13 +560,12 @@ function ContactViewModel(app, dataModel) {
     }, self);
  
     self.IsInusitado = ko.computed(function () {            //**** CAFQ
-        if (self.SurvInusual() == true) {
-            // Desactivado por el momento requirimiento de RRR //16/Marzo/2018
-            //return true;
+        if (self.IsSurv() == "4") 
             return true;
-        } else {
+        else if (self.SurvInusual() == true) 
+            return true;
+        else 
             return false; 
-        }
     }, self);
 
     self.displayhospitalIDCaseGenerating = ko.computed(function () {
@@ -592,7 +591,6 @@ function ContactViewModel(app, dataModel) {
     };
 
     self.ResetContact = function () {
-
         //self.Id = ko.observable("");
         if ($.isFunction(self.Id)) {
             self.Id = ko.observable("");
@@ -601,14 +599,22 @@ function ContactViewModel(app, dataModel) {
         else {
             self.Id = "";
         }
+
         self.Id(null);
         if ($('input[name="IsSurv"][value="1"]').length > 0 && $('input[name="IsSurv"][value="2"]').length == 0) {
             self.IsSurv("1");
         } else if ($('input[name="IsSurv"][value="2"]').length > 0 && $('input[name="IsSurv"][value="1"]').length == 0) {
             self.IsSurv("2");
         } else if ($('input[name="IsSurv"][value="2"]').length == 0 && $('input[name="IsSurv"][value="1"]').length == 0) {
-            self.IsSurv("");
-            self.SurvInusual(true);
+            //self.IsSurv("");
+            //self.SurvInusual(true);
+            if (self.UsrCountry() == 3 || self.UsrCountry() == 17) {        //Universal: Bolivia or Jamaica
+                self.IsSurv("");
+                self.SurvInusual(true);
+            } else {
+                self.IsSurv("4");                   // Inusual
+                self.SurvInusual();
+            }
         } else {
             self.IsSurv("");
         }
@@ -648,6 +654,12 @@ function ContactViewModel(app, dataModel) {
         self.region_institucional(app.Views.Home.UsrRegInst());
         self.region_salud(app.Views.Home.UsrRegSalud());
         self.region_pais(app.Views.Home.UsrRegPais());
+        if(self.IsSurv() == "4"){
+            self.LName1("-");
+            //self.LName2("-");
+            self.FName1("-");
+            //self.FName2("-");
+        }
     };
 
     self.FormatDateWrite = function (node_date) {
@@ -703,7 +715,6 @@ function ContactViewModel(app, dataModel) {
         //date_reg_date = parseDate($("#RegDate").val(), date_format_);
         //date_inicio_sintomas = parseDate($("#FeverDate").val(), date_format_);
 
-
         date_hospital = jQuery.type(self.HospitalDate()) === 'date' ? self.HospitalDate() : parseDate($("#HospitalDate").val(), date_format_);
         date_reg_date = jQuery.type(self.RegDate()) === 'date' ? self.RegDate() : parseDate($("#RegDate").val(), date_format_);
         date_inicio_sintomas = jQuery.type(app.Views.Hospital.FeverDate()) === 'date' ? app.Views.Hospital.FeverDate() : parseDate($("#FeverDate").val(), date_format_);
@@ -723,6 +734,20 @@ function ContactViewModel(app, dataModel) {
                     msg += "\n" + msgValidationSurvType;
 
         }
+
+
+        if ($("#HospitalDate").val() == "")
+            msg += "\n" + msgValidationNotificationDateRequired;
+        if ($("#HospitalDate").val() != "" && !moment(moment(date_hospital).format(date_format_moment), [date_format_moment], true).isValid())
+            msg += "\n" + msgValidationNotificationDate;
+        //if ($("#RegDate").val() == "")
+        //    msg += "\n" + "Fecha de notificación es requerido";
+        if ($("#RegDate").val() != "" && !moment(moment(date_reg_date).format(date_format_moment), [date_format_moment], true).isValid())
+            msg += "\n" + msgValidationRecordDate;
+        if (date_hospital != null && date_reg_date != null && moment(date_hospital).isAfter(moment(date_reg_date))) {
+            msg += "\n" + msgValidationRecordDateLater;
+            $("#HospitalDate").focus();
+        }
             
         if (!self.DocumentType() && (self.UsrCountry() != 25 && self.UsrCountry() != 11 && self.UsrCountry() != 18 && self.UsrCountry() != 17 && self.UsrCountry() != 15))//agregado el 25 para que esta validación ignore SURINAME
             if (!(self.UsrCountry() == 3 && self.SurvInusual() == 1))    //####  Bolivia Inusistado
@@ -736,31 +761,20 @@ function ContactViewModel(app, dataModel) {
                 if (self.UsrCountry() != 15)
                     msg += "\n" + msgValidationDocumentIDRequired;
                 }
-            }
-                
+            }                
         }
             
-
-        if ($("#HospitalDate").val() == "")
-            msg += "\n" + msgValidationNotificationDateRequired;
-        if ($("#HospitalDate").val() != "" && !moment(moment(date_hospital).format(date_format_moment), [date_format_moment], true).isValid())
-            msg += "\n" + msgValidationNotificationDate;
-        //if ($("#RegDate").val() == "")
-        //    msg += "\n" + "Fecha de notificación es requerido";
-        if ($("#RegDate").val() != "" && !moment(moment(date_reg_date).format(date_format_moment), [date_format_moment], true).isValid())
-            msg += "\n" + msgValidationRecordDate;
-        if (date_hospital != null && date_reg_date != null && moment(date_hospital).isAfter(moment(date_reg_date)))
-        {
-            msg += "\n" + msgValidationRecordDateLater;
-            $("#HospitalDate").focus();
-        }
-            
+ 
         if (!self.LName1())
-            msg += "\n" + msgValidationFirstLastNameRequired;
+            if (self.IsSurv() != "4")       // Inusual
+                msg += "\n" + msgValidationFirstLastNameRequired;
+
         if (!self.LName2() && self.UsrCountry == 9 )
             msg += "\n" + msgValidationSecondLastNameRequired;
+
         if (!self.FName1())
-            msg += "\n" + msgValidationFirstNameRequired;
+            if (self.IsSurv() != "4")
+                msg += "\n" + msgValidationFirstNameRequired;
 
         // validacion del combo de servicios
         
@@ -770,9 +784,21 @@ function ContactViewModel(app, dataModel) {
             {
                 msg += "\n" + msgValidationService;
             }
-        }
-            
+        }        
 
+
+        // Validaciones Chile
+        if (self.UsrCountry() == 7) {
+            if (date_DOB == null || date_DOB == "")
+                msg += "\n" + msgValidationTypeDOB;
+            if (moment(date_DOB).isAfter(moment(date_hospital)))
+                msg += "\n" + msgValidationDOBLater;
+        }
+
+        if ((date_DOB == null || date_DOB == "") && (self.Age() == ""))
+            if (!(self.UsrCountry() == 17 && self.SurvInusual() == 1))    //#### CAFQ: 180604 - Jamaica Universal
+                if (!(self.UsrCountry() == 3 && self.SurvInusual() == 1))    //#### Bolivia Inusitado
+                    msg += "\n" + msgValidationTypeDOBorAge;           
 
 //        if (!self.DOB())
 //            msg += "\n" + "Date of birth is invalid";
@@ -784,22 +810,9 @@ function ContactViewModel(app, dataModel) {
 //            msg += "\n" + "Fecha de nacimiento no puede ser posterior a la de notificación ";
         if (!self.Gender())
             //if (!(self.UsrCountry() == 17 && self.SurvInusual() == 1))    //#### CAFQ: 180604 - Jamaica Universal
-            msg += "\n" + msgValidationSexRequired;
+            //if (self.IsSurv() != "4")
+                msg += "\n" + msgValidationSexRequired;
 
-        // Validaciones Chile
-
-        if (self.UsrCountry() == 7) {
-            if (date_DOB == null || date_DOB == "")
-                msg += "\n" + msgValidationTypeDOB;
-            if (moment(date_DOB).isAfter(moment(date_hospital)))
-                msg += "\n" + msgValidationDOBLater;
-        }
-
-        if ((date_DOB == null || date_DOB == "") && (self.Age() == ""))
-            if (!(self.UsrCountry() == 17 && self.SurvInusual() == 1))    //#### CAFQ: 180604 - Jamaica Universal
-                if (!(self.UsrCountry() == 3 && self.SurvInusual() == 1))    //#### Bolivia Inusitado
-                    msg += "\n" + msgValidationTypeDOBorAge;
-                
         //if (msg !== "") { alert('DAT. VIGILANCIA:' + msg); $('#tabs').tabs({ active: 0 }); return false; }
         if (msg !== "") { alert(msgValidationSurvData + msg); $('#tabs').tabs({ active: 0 }); return false; }
         if (nextStep != null) nextStep();

@@ -698,9 +698,11 @@ namespace Paho.Controllers
                                        id = x.id_D.ToString(),
                                        cell = new string[]
                                      {
-                                         //#### CAFQ: 180604 - Jamaica Universal
-                                         "<img src='/Content/themes/base/images/" + (((bool)x.surv_IDInusual==true) ? Convert.ToInt32((bool)x.surv_IDInusual).ToString() + "_" + "UNI" + ".png' alt='" + "UNIVERSAL" : x.surv_ID.ToString() + "_" + language + ".png' alt='" + (x.surv_ID == 1 ? "SARI":"ILI")) + "'/>",
-                                         //x.id_D.ToString(),
+                                         "<img src='/Content/themes/base/images/" + (
+                                         (((bool)x.surv_IDInusual==true) ? Convert.ToInt32((bool)x.surv_IDInusual).ToString() + "_" + "UNI" + ".png' alt='" + "UNIVERSAL" :
+                                         x.surv_ID.ToString() + "_" + language + ".png' alt='" + (x.surv_ID == 1 ? "SARI" : (x.surv_ID == 2 ? "ILI" : "nCoV")))
+                                         ) + "'/>",
+                                         ////x.id_D.ToString(),
                                          x.id_D.ToString() + ((user.Institution.CountryID==15) ? x.ICON_COMMEN : x.ICON_COMMEN_CLOSE),
                                          x.H_D.ToString((user.Institution.CountryID==17) ? "yyyy/MM/dd": "dd/MM/yyyy" ),
                                          x.LN_D,
@@ -1027,6 +1029,7 @@ namespace Paho.Controllers
             int? Age,
             AMeasure? AMeasure,
             Gender Gender,
+            //int? Gender,
             string ResponsibleMinor,        //####CAFQ 
             DateTime HospitalDate,
             DateTime RegDate,

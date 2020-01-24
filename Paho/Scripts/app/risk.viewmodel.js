@@ -701,7 +701,8 @@
 
         if ((!self.VaccinFuente() || self.VaccinFuente() == "0") && self.UsrCountry() != 25 && self.UsrCountry() != 18 && self.UsrCountry() != 11 && self.UsrCountry() != 17 && self.UsrCountry() != 11 && self.UsrCountry() != 119)
             if (!(self.UsrCountry() == 3 && app.Views.Contact.SurvInusual() == 1))    //#### Bolivia inusitado
-             msg += "\n" + "Fuente de la información de la vacuna es requerida";
+                if (app.Views.Contact.IsSurv() != "4")
+                    msg += "\n" + "Fuente de la información de la vacuna es requerida";
 
 
         // Validacion de Fecha de vacunas contra fecha de nacimiento
@@ -796,7 +797,8 @@
         if (!self.AntiViral())
             if (!(self.UsrCountry() == 17 && app.Views.Contact.SurvInusual() == 1))    //#### CAFQ: 180604 - Jamaica Universal
                 if (!(self.UsrCountry() == 3 && app.Views.Contact.SurvInusual() == 1))    //#### Bolivia inusitado
-                    msg += "\n" + msgValidationAntiviralTreatment;
+                    if (app.Views.Contact.IsSurv() != "4")
+                        msg += "\n" + msgValidationAntiviralTreatment;
 
         if (self.EnableAntiViralDate() && app.Views.Contact.SurvSARI() == true) {
             if (date_antiviral == null)
@@ -817,7 +819,8 @@
         if (!self.RiskFactors() || self.RiskFactors() == "")
             if (!(self.UsrCountry() == 17 && app.Views.Contact.SurvInusual() == 1))    //#### CAFQ: 180604 - Jamaica Universal
                 if (!(self.UsrCountry() == 3 && app.Views.Contact.SurvInusual() == 1))    //#### Bolivia inusitado
-                    msg += "\n" + msgValidationRiskFactor;
+                    if (app.Views.Contact.IsSurv() != "4")
+                        msg += "\n" + msgValidationRiskFactor;
 
         if (app.Views.Contact.ActiveBOL()) {
             if (!(self.UsrCountry() == 3 && app.Views.Contact.SurvInusual() == 1))    //#### Bolivia inusitado
