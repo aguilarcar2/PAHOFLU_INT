@@ -1,7 +1,9 @@
 ﻿$(document).ready(function () {
-        $('#Father_ID_hidd').attr('disabled', 'disabled');
-        $('#Father_ID_hidd').hide();
-    onLoad();    
+    $('#Father_ID_hidd').attr('disabled', 'disabled');
+    $('#Father_ID_hidd').hide();
+
+    onLoad();
+
     function onLoad() {
         var isVisibleButtonDelete = $("#DeleteInst").is(":visible");
         //console.log("Visible boton delete->" + isVisible);

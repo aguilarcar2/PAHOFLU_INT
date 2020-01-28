@@ -33,13 +33,14 @@ namespace Paho.Controllers
                 page = 1;
             else
                 searchString = currentFilter;
-
             ViewBag.CurrentFilter = searchString;
 
-            var catalogo = from c in db.States where c.Area.CountryID == countryId select c;
+            //var catalogo = from c in db.States where c.Area.CountryID == countryId select c;
+            var catalogo = from c in db.States select c;
+
             if (!string.IsNullOrEmpty(searchString))
             {
-                catalogo = catalogo.Where(s => s.Name.Contains(searchString));
+                catalogo = catalogo.Where(s => s.Area.Country.Name.Contains(searchString) || s.Area.Name.Contains(searchString) || s.Name.Contains(searchString));
             }
 
             switch (sortOrder)
@@ -54,7 +55,7 @@ namespace Paho.Controllers
                     catalogo = catalogo.OrderBy(s => s.orig_country);
                     break;
                 default:
-                    catalogo = catalogo.OrderBy(s => s.Area.Name).ThenBy(s => s.Name);
+                    catalogo = catalogo.OrderBy(s => s.Area.Country.Name).ThenBy(s => s.Area.Name).ThenBy(s => s.Name);
                     break;
             }
 
@@ -84,18 +85,6 @@ namespace Paho.Controllers
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
             var UsrLang = user.Institution.Country.Language;
-            /*var cat_countries = from c in db.Countries select c;
-            if (user.Institution.AccessLevel == AccessLevel.Country || user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
-            {
-                if (user.Institution.AccessLevel == AccessLevel.Country)
-                {
-                    cat_countries = cat_countries.Where(s => s.ID == user.Institution.CountryID);
-                }
-                else if (user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
-                {
-                    cat_countries = cat_countries.Where(s => s.ID == user.Institution.CountryID);
-                }
-            }*/
 
             //****
             var cat_countries = from c in db.Countries
@@ -114,26 +103,58 @@ namespace Paho.Controllers
                 }
             }
 
-            ViewBag.CountryID = new SelectList(cat_countries, "ID", "Name");
+            var cat_countriesTemp = cat_countries.ToList();
+            if(cat_countriesTemp.Count() > 1)
+                cat_countriesTemp.Insert(0, new Country { ID = 0, Name = "-- " + getMsg("msgSelect") + " -- " });
+
+            ViewBag.CountryID = new SelectList(cat_countriesTemp, "ID", "Name");
 
             //****
-            var areas = db.Areas.Include(a => a.Country);
-
-            if (user.Institution.AccessLevel == AccessLevel.Country || user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
+            if (user.Institution.AccessLevel == AccessLevel.All)
             {
-                if (user.Institution.AccessLevel == AccessLevel.Country)
+                var areas = db.Areas.Where(a => a.CountryID == 0).ToList();
+                areas.Insert(0, new Area { ID = 0, Name = "-- " + getMsg("msgSelect") + " -- " });
+
+                ViewBag.Areas = new SelectList(areas, "ID", "Name");
+            }
+            else
+            {
+                var areas = db.Areas.Include(a => a.Country);
+
+                if (user.Institution.AccessLevel == AccessLevel.Country || user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
                 {
-                    areas = areas.Where(s => s.CountryID == user.Institution.CountryID)
-                                    .OrderBy(o => o.Country.Name).ThenBy(o => o.Name);
+                    if (user.Institution.AccessLevel == AccessLevel.Country)
+                    {
+                        areas = areas.Where(s => s.CountryID == user.Institution.CountryID)
+                                        .OrderBy(o => o.Country.Name).ThenBy(o => o.Name);
+                    }
+                    else if (user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
+                    {
+                        areas = areas.Where(s => s.CountryID == user.Institution.CountryID)
+                                        .OrderBy(o => o.Country.Name).ThenBy(o => o.Name);
+                    }
                 }
-                else if (user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
-                {
-                    areas = areas.Where(s => s.CountryID == user.Institution.CountryID)
-                                    .OrderBy(o => o.Country.Name).ThenBy(o => o.Name);
-                }
+
+                ViewBag.Areas = new SelectList(areas, "ID", "Name");
             }
 
-            ViewBag.Areas = new SelectList(areas, "ID", "Name");
+            //var areas = db.Areas.Include(a => a.Country);
+
+            //if (user.Institution.AccessLevel == AccessLevel.Country || user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
+            //{
+            //    if (user.Institution.AccessLevel == AccessLevel.Country)
+            //    {
+            //        areas = areas.Where(s => s.CountryID == user.Institution.CountryID)
+            //                        .OrderBy(o => o.Country.Name).ThenBy(o => o.Name);
+            //    }
+            //    else if (user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
+            //    {
+            //        areas = areas.Where(s => s.CountryID == user.Institution.CountryID)
+            //                        .OrderBy(o => o.Country.Name).ThenBy(o => o.Name);
+            //    }
+            //}
+
+            //ViewBag.Areas = new SelectList(areas, "ID", "Name");
 
             //****
             return View();
@@ -162,40 +183,6 @@ namespace Paho.Controllers
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
             var UsrLang = user.Institution.Country.Language;
-            //****
-            var cat_countries = from c in db.Countries select c;
-            if (user.Institution.AccessLevel == AccessLevel.Country || user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
-            {
-                if (user.Institution.AccessLevel == AccessLevel.Country)
-                {
-                    cat_countries = cat_countries.Where(s => s.ID == user.Institution.CountryID);
-                }
-                else if (user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
-                {
-                    cat_countries = cat_countries.Where(s => s.ID == user.Institution.CountryID);
-                }
-            }
-
-            ViewBag.CountryID = new SelectList(cat_countries, "ID", "Name");
-
-            //****
-            var areas = db.Areas.Include(a => a.Country);
-
-            if (user.Institution.AccessLevel == AccessLevel.Country || user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
-            {
-                if (user.Institution.AccessLevel == AccessLevel.Country)
-                {
-                    areas = areas.Where(s => s.CountryID == user.Institution.CountryID)
-                                    .OrderBy(o => o.Country.Name).ThenBy(o => o.Name);
-                }
-                else if (user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
-                {
-                    areas = areas.Where(s => s.CountryID == user.Institution.CountryID)
-                                    .OrderBy(o => o.Country.Name).ThenBy(o => o.Name);
-                }
-            }
-
-            ViewBag.Areas = new SelectList(areas, "ID", "Name");
 
             //****
             if (id == null)
@@ -205,6 +192,47 @@ namespace Paho.Controllers
             if (state == null)
                 return HttpNotFound();
 
+            //****
+            var cat_countries = from c in db.Countries where c.Active == true select c;
+
+            if (user.Institution.AccessLevel == AccessLevel.Country || user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
+            {
+                if (user.Institution.AccessLevel == AccessLevel.Country)
+                {
+                    cat_countries = cat_countries.Where(s => s.ID == user.Institution.CountryID);
+                }
+                else if (user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
+                {
+                    cat_countries = cat_countries.Where(s => s.ID == user.Institution.CountryID);
+                }
+            }
+
+
+            //****
+            //var areas0 = db.Areas.Include(a => a.Country);
+            var areas = from a in db.Areas where a.CountryID == state.Area.CountryID select a;
+
+            if (user.Institution.AccessLevel == AccessLevel.Country || user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
+            {
+                if (user.Institution.AccessLevel == AccessLevel.Country)
+                {
+                    areas = areas.Where(s => s.CountryID == user.Institution.CountryID)
+                                    .OrderBy(o => o.Country.Name).ThenBy(o => o.Name);
+                }
+                else if (user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
+                {
+                    areas = areas.Where(s => s.CountryID == user.Institution.CountryID)
+                                    .OrderBy(o => o.Country.Name).ThenBy(o => o.Name);
+                }
+            }
+
+
+
+            //****
+            ViewBag.CountryID = new SelectList(cat_countries, "ID", "Name", state.Area.Country.ID);
+            ViewBag.Areas = new SelectList(areas, "ID", "Name", state.AreaID);
+
+            //****
             return View(state);
         }
 

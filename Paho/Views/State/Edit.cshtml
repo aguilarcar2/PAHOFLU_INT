@@ -1,6 +1,16 @@
 ﻿@model Paho.Models.State
 
 @{
+    //string labelEditar = "Editar";
+    //string LabelState = (string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelState", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    //string LabelCountry = (string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelCountry", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    //string LabelArea = (string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelArea", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    //string LabelSelect = (string)Paho.Controllers.ResourcesM.SgetMessage("msgSelectLabel", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+    string labelReturnToList = Paho.Controllers.ResourcesM.SgetMessage("msgReturnToList", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+}
+
+@{
     ViewBag.Title = "Edit";
 }
 
@@ -60,11 +70,13 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @*@Html.ActionLink("Back to List", "Index")*@
+    @Html.ActionLink(labelReturnToList, "Index")
 </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/catalog-state")
 }
 
 <script type="text/javascript">

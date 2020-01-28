@@ -5,33 +5,30 @@
     string labelCountry = Paho.Controllers.ResourcesM.SgetMessage("msgViewExportarLabelCountry", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string labelFieldSelect = Paho.Controllers.ResourcesM.SgetMessage("msgViewExportarFieldSelect", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 
-    string labelYear = "Año actual temporada:";
-    string labelStartWeek = "Semana inicio:";
-    string labelTotalWeek = "Total semanas periodo:";
-    string labelTitle = "Título:";
-    string labelApplicationLink = "Enlace a la aplicación WHO Average Curves...";
-    string labelStartYearDH = "Año inicial:";
-    string labelEndYearDH = "Año final:";
+    string labelYear = Paho.Controllers.ResourcesM.SgetMessage("msgBaselineLabelParametersCurrentYearSeason", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelStartWeek = Paho.Controllers.ResourcesM.SgetMessage("msgBaselineLabelParametersStartWeek", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelTotalWeek = Paho.Controllers.ResourcesM.SgetMessage("msgBaselineLabelParametersTotalWeeksPeriod", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelTitle = Paho.Controllers.ResourcesM.SgetMessage("msgBaselineLabelParametersTitle", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelApplicationLink = Paho.Controllers.ResourcesM.SgetMessage("msgBaselineLabelParametersLinkWHOAverageCurvesApplication", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 
+    string labelStartYearDH = Paho.Controllers.ResourcesM.SgetMessage("msgBaselineLabelParametersInitialYear", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelEndYearDH = Paho.Controllers.ResourcesM.SgetMessage("msgBaselineLabelParametersFinalYear", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string labelSendUpdates = Paho.Controllers.ResourcesM.SgetMessage("msgLineasBasalesSendUpdates", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 
-    //string labelAttachment = Paho.Controllers.ResourcesM.SgetMessage("msgTicketAttachment", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
-    string labelAttachment = "Seleccione archivo con datos históricos";
-    //string labelAttachmentSize = Paho.Controllers.ResourcesM.SgetMessage("msgTicketAttachmentSize", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelAttachment = Paho.Controllers.ResourcesM.SgetMessage("msgBaselineLabelParametersSelectFile", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 
-    string labelPaso1 = "Paso 1:";
-    string labelPaso2 = "Paso 2:";
-    string labelPaso3 = "Paso 3:";
-    string labelPaso4 = "Paso 4:";
+    string labelPaso1 = Paho.Controllers.ResourcesM.SgetMessage("msgBaselineLabelParametersStep1", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelPaso2 = Paho.Controllers.ResourcesM.SgetMessage("msgBaselineLabelParametersStep2", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelPaso3 = Paho.Controllers.ResourcesM.SgetMessage("msgBaselineLabelParametersStep3", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelPaso4 = Paho.Controllers.ResourcesM.SgetMessage("msgBaselineLabelParametersStep4", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 
-    string labelSelectCountry = "Seleccionar país y ajustar valores actuales en la plantilla";
-    string labelGetData = "Obtener datos históricos del país y guardarlo en una carpeta adecuada como por ejemplo 'C:\\Mis Documentos\\PlantillasLineasBasales'";
-    string labelFileUpload = "Cargar archivo con datos historicos para su envio al servidor e indicar el ámbito de los datos";
-    string labelUpdateTemplate = "Actualizar datos en plantillas del país";
+    string labelSelectCountry = Paho.Controllers.ResourcesM.SgetMessage("msgBaselineLabelParametersSelectCountry", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    //string labelGetData = "Obtener datos históricos del país y guardarlo en una carpeta adecuada como por ejemplo 'C:\\Mis Documentos\\PlantillasLineasBasales'";
+    string labelGetData = Paho.Controllers.ResourcesM.SgetMessage("msgBaselineLabelParametersMessageObtainDataHistorical", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 
-    //string labelCreate = Paho.Controllers.ResourcesM.SgetMessage("msgViewCatPopulation_Crear", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelFileUpload = Paho.Controllers.ResourcesM.SgetMessage("msgBaselineLabelParametersFileUpload", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelUpdateTemplate = Paho.Controllers.ResourcesM.SgetMessage("msgBaselineLabelParametersUpdateTemplate", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 }
-
 
 <style>
     .col-md-10 {

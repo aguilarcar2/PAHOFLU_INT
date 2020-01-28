@@ -23,7 +23,6 @@ namespace Paho.Controllers
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
             var countryId = user.Institution.CountryID ?? 0;
-            //var areas = db.Areas.Include(a => a.Country);
 
             ViewBag.CurrentSort = sortOrder;
             ViewBag.AreaParm = "areaName";
@@ -36,14 +35,19 @@ namespace Paho.Controllers
 
             ViewBag.CurrentFilter = searchString;
 
-            var catalogo = from c in db.Areas where c.CountryID == countryId select c;
+            //var catalogo = from c in db.Areas where c.CountryID == countryId select c;
+            var catalogo = from c in db.Areas select c;
+
             if (!string.IsNullOrEmpty(searchString))
             {
-                catalogo = catalogo.Where(s => s.Name.Contains(searchString));
+                catalogo = catalogo.Where(s => s.Name.Contains(searchString) || s.Country.Name.Contains(searchString));
             }
 
             switch (sortOrder)
             {
+                case "countryName":
+                    catalogo = catalogo.OrderBy(s => s.Country.Name).ThenBy(s => s.Name);
+                    break;
                 case "areaName":
                     catalogo = catalogo.OrderBy(s => s.Name);
                     break;
@@ -51,10 +55,9 @@ namespace Paho.Controllers
                     catalogo = catalogo.OrderBy(s => s.orig_country);
                     break;
                 default:
-                    catalogo = catalogo.OrderBy(s => s.Name);
+                    catalogo = catalogo.OrderBy(s => s.Country.Name).ThenBy(s => s.Name);
                     break;
             }
-
 
             if (user.Institution.AccessLevel == AccessLevel.Country || user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
             {
@@ -73,7 +76,6 @@ namespace Paho.Controllers
             int pageSize = _pageSize;
             int pageNumber = (page ?? 1);
 
-            //return View(areas.ToList());
             return View(catalogo.ToPagedList(pageNumber, pageSize));
         }
 
@@ -100,6 +102,7 @@ namespace Paho.Controllers
             var cat_countries = from c in db.Countries
                                 where c.Active == true
                                 select c;
+
             if (user.Institution.AccessLevel == AccessLevel.Country || user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
             {
                 if (user.Institution.AccessLevel == AccessLevel.Country)
@@ -140,7 +143,12 @@ namespace Paho.Controllers
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
             var UsrLang = user.Institution.Country.Language;
-            var cat_countries = from c in db.Countries select c;
+
+            //var cat_countries = from c in db.Countries select c;
+            var cat_countries = from c in db.Countries
+                                where c.Active == true
+                                select c;
+
             if (user.Institution.AccessLevel == AccessLevel.Country || user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
             {
                 if (user.Institution.AccessLevel == AccessLevel.Country)
@@ -153,18 +161,16 @@ namespace Paho.Controllers
                 }
             }
 
-            ViewBag.CountryID = new SelectList(cat_countries, "ID", "Name");
-
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+
             Area area = db.Areas.Find(id);
             if (area == null)
             {
                 return HttpNotFound();
             }
-            //ViewBag.CountryID = new SelectList(db.Countries, "ID", "Code", area.CountryID);
+            ViewBag.CountryID = new SelectList(cat_countries, "ID", "Name", area.CountryID);
+
             return View(area);
         }
 
@@ -182,6 +188,7 @@ namespace Paho.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.CountryID = new SelectList(db.Countries, "ID", "Code", area.CountryID);
+
             return View(area);
         }
 

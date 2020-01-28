@@ -755,6 +755,7 @@
 /// <reference path="app/catalog.institution.js" />
 /// <reference path="app/catalog.institution-conf.js" />
 /// <reference path="app/catalog.population.js" />
+/// <reference path="app/catalog.state.js" />
 /// <reference path="app/common.js" />
 /// <reference path="app/contact.viewmodel.js" />
 /// <reference path="app/exportar.viewmodel.js" />

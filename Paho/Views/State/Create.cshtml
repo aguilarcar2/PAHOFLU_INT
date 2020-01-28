@@ -1,18 +1,41 @@
 ﻿@model Paho.Models.State
 
+@{
+    //string labelEditar = "Editar";
+    string LabelState = (string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelState", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelCountry = (string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelCountry", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelArea = (string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelArea", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelSelect = (string)Paho.Controllers.ResourcesM.SgetMessage("msgSelectLabel", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+    string labelReturnToList = Paho.Controllers.ResourcesM.SgetMessage("msgReturnToList", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    //string labelSave = Paho.Controllers.ResourcesM.SgetMessage("msgViewCatPopulation_Guardar", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+    //string LabelButtonSave = Paho.Controllers.CatVirusTypeController.SgetMessage("msgViewSummaryButtonSave", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    //string labelCreate = Paho.Controllers.ResourcesM.SgetMessage("msgViewCatPopulation_Crear", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+    //string labelCodigo = Paho.Controllers.ResourcesM.SgetMessage("msgISOCode", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    //string labelNombreSPA = Paho.Controllers.ResourcesM.SgetMessage("msgSpanishName", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    //string labelNombreENG = Paho.Controllers.ResourcesM.SgetMessage("msgEnglishName", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    //string labelPais = Paho.Controllers.ResourcesM.SgetMessage("msgCountry", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    //string labelDivisionesAdminis = Paho.Controllers.ResourcesM.SgetMessage("msgNumberTerritorialPoliticalDivisions", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    //string labelActivo = Paho.Controllers.ResourcesM.SgetMessage("msgActive", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    //string labelIdioma = Paho.Controllers.ResourcesM.SgetMessage("msgLanguage", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+}
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>@(((Paho.Controllers.StateController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelState"))</h4>
+        @*<h4>@(((Paho.Controllers.StateController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelState"))</h4>*@
+        <h4>@LabelState</h4>
         <hr />
 
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         <!-- Country -->
         <div class="form-group">
-            @Html.LabelFor(model => model.Area.CountryID, (((Paho.Controllers.StateController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelCountry")), htmlAttributes: new { @class = "control-label col-md-1_5" })
+            @Html.LabelFor(model => model.Area.CountryID, LabelCountry, htmlAttributes: new { @class = "control-label col-md-1_5" })
             <div class="col-md-7">
                 @Html.DropDownList("CountryID", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Area.CountryID, "", new { @class = "text-danger" })
@@ -20,17 +43,15 @@
         </div>
         <!-- AreaID -->
         <div class="form-group">
-            @Html.LabelFor(model => model.AreaID, (((Paho.Controllers.StateController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelArea")),
-                            htmlAttributes: new { @class = "control-label col-md-1_5" })
+            @Html.LabelFor(model => model.AreaID, LabelArea, htmlAttributes: new { @class = "control-label col-md-1_5" })
             <div class="col-md-7">
-                @Html.DropDownList("AreaID", ViewBag.Areas as SelectList, (((Paho.Controllers.StateController)this.ViewContext.Controller).getMsg("msgSelectLabel")),
-                            htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownList("AreaID", ViewBag.Areas as SelectList, null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.AreaID, "", new { @class = "text-danger" })
             </div>
         </div>
         <!-- Name -->
         <div class="form-group">
-            @Html.LabelFor(model => model.Name, (((Paho.Controllers.StateController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelState")), htmlAttributes: new { @class = "control-label col-md-1_5" })
+            @Html.LabelFor(model => model.Name, LabelState, htmlAttributes: new { @class = "control-label col-md-1_5" })
             <div class="col-md-7">
                 @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
@@ -54,11 +75,13 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @*@Html.ActionLink("Back to Listsss", "Index")*@
+    @Html.ActionLink(labelReturnToList, "Index")
 </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/catalog-state")
 }
 
 <script type="text/javascript">

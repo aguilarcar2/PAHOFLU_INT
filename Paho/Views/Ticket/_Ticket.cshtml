@@ -59,6 +59,7 @@
         display:none;
     }
 </style>
+
 <!-- ko with: app.Views.Ticket -->
 <div class="row" style="margin-bottom:15px; margin-top:1em;">
     <div class="col-md-6">
@@ -166,6 +167,7 @@
         </div>
     </div>
 </div>
+
 <script>
     var inputFile1 = document.querySelector('#ticketFile');
     inputFile1.addEventListener('change', checkFilesRequirements);
@@ -175,8 +177,6 @@
 
     var inputFile3 = document.querySelector('#ticketFile3');
     inputFile3.addEventListener('change', checkFilesRequirements);
-
-    
 
     function cleanFileElement(fileElement){
         //alert('entro');
@@ -275,8 +275,8 @@
             }
         }
     }                    
-    
 </script>
+
 <div class="container" style="margin-bottom:15px; margin-top:1em;">
     <table id="TicketList" class="table table-hover table-responsive" style="width:550px; display:none;">
         <thead>
@@ -292,6 +292,7 @@
         <tbody></tbody>
     </table>
 </div>
+
 <script>
     function CleanForm(){
 
@@ -323,6 +324,7 @@
 
 
     }
+
     function GetTicketList() {
         $(document).ready(function () {           
             $.ajax({
@@ -401,17 +403,16 @@
             });
         })           
     };
+    
     GetTicketList();
+    
     function loadTicket(event){
-        console.log(event);
+        //console.log(event);
         alert(event);
-        
         alert(event.td);
     }
-    $(document).ready(function() {
 
-        
-        
+    $(document).ready(function() {        
         $('#TicketList tbody').click(function(e) {
             console.log(e);
             
@@ -442,12 +443,11 @@
             }
             $('#SubjectTicket').prop('disabled', true);
             $('#DescriptionTicket').prop('disabled', true);
-            $('#editTicket').prop('disabled', false);
-            
+            $('#editTicket').prop('disabled', false);            
         });
-
     });
-</script>    
+</script>
+
 <script type="text/javascript">
     var selcty = @ViewBag.UsrCtry;
     var msgTicketMissingValues = "@(Html.Raw(((Paho.Controllers.TicketController)this.ViewContext.Controller).getMsg("msgTicketMissingValues")))";

@@ -248,7 +248,7 @@
     </div>
 </div>
 
-
+<!-- Tabs -->
 <div id = "tabs" data-bind="visible: shouldtabs" style="margin-top: 7px; display: none">
     <ul>
         <li><a href = "#tab-contact">  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContact")) </a></li>
@@ -2458,7 +2458,7 @@
                             </div>
                         </div>
                         <!-- Dolor muscular -->
-                        @*<div class="col-md-3">
+                        <div class="col-md-3" data-bind="visible: app.Views.Contact.IsSurv() != '4'">
                             <div class="form-inline">
                                 <div class="input-group">
                                     <label class="btn btn-default">
@@ -2471,7 +2471,7 @@
                                     <input type='text' id="DolorMuscularLocaliz" class="form-control case_letter" style="max-width: 170px" data-bind="visible: IsDolorMuscular, value: DolorMuscularLocaliz" />
                                 </div>
                             </div>
-                        </div>*@
+                        </div>
                         <!-- Disnea -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
@@ -2480,16 +2480,15 @@
                         </div>
 
                         <!-- Irritability/Confusion -->
-                        <div class="col-md-3">
+                        <div class="col-md-3" data-bind="visible: app.Views.Contact.IsSurv() == '4'">
                             <label class="btn btn-default">
-                                @*<input type="checkbox" name="Disnea" id="Disnea" value="1" data-bind="checked: Disnea"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelDyspnoea"))*@
                                 <input type="checkbox" name="IrritabilityConfusion" id="IrritabilityConfusion" value="1" data-bind="checked: IrritabilityConfusion"> Irritability/Confusion
                             </label>
                         </div>
                     </div>
 
                     <!-- Dolor muscular / Chess Pain / ... -->
-                    <div class="row rowform" data-bind="visible:app.Views.Contact.IsInusitado">
+                    <div class="row rowform" data-bind="visible: app.Views.Contact.IsSurv() == '4'">
                         <!-- Dolor muscular -->
                         <div class="col-md-3">
                             <div class="form-inline">

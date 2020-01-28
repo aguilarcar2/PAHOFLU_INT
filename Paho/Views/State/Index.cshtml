@@ -1,5 +1,21 @@
 ﻿@model PagedList.IPagedList<Paho.Models.State>
 
+@{
+    string labelState = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelState", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+    //string labelCatalog = Paho.Controllers.ResourcesM.SgetMessage("msgCatalog", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    //string labelCatalogName = Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatCloseParametersView", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelCreateNew = Paho.Controllers.ResourcesM.SgetMessage("msgViewCatPopulation_CrearNuevo", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelSearchCriteria = Paho.Controllers.ResourcesM.SgetMessage("msgSearchCriteria", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelSubmit = Paho.Controllers.ResourcesM.SgetMessage("viewHome_btnSearch", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelEdit = Paho.Controllers.ResourcesM.SgetMessage("msgViewCatPopulation_Editar", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelDelete = Paho.Controllers.ResourcesM.SgetMessage("msgViewCatPopulation_Borrar", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelPage = Paho.Controllers.ResourcesM.SgetMessage("msgPage", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelOf = Paho.Controllers.ResourcesM.SgetMessage("msgViewCatPopulation_De", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+    //ViewBag.Title = labelCatalog + " - " + labelCatalogName;
+}
+
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
@@ -7,24 +23,24 @@
     ViewBag.Title = "Index";
 }
 
-<h2>@(((Paho.Controllers.StateController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelState"))</h2>
+<h2>@(labelState)</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink(labelCreateNew, "Create")
 </p>
 
 @using (Html.BeginForm("Index", "State", FormMethod.Get))
 {
     <p>
-        @(Paho.Controllers.ResourcesM.SgetMessage("msgSearchCriteria", ViewBag.UsrCtry, ViewBag.UsrCtryLang)): @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
-        <input type="submit" value=@(Paho.Controllers.ResourcesM.SgetMessage("viewHome_btnSearch", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) />
+        @labelSearchCriteria: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value=@(labelSubmit) />
     </p>
 }
 
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayName((string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelState", ViewBag.UsrCtry, ViewBag.UsrCtryLang))
+            @Html.DisplayName((string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelCountry", ViewBag.UsrCtry, ViewBag.UsrCtryLang))
         </th>
         <th>
             @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelArea", ViewBag.UsrCtry, ViewBag.UsrCtryLang),
@@ -57,18 +73,17 @@
                 @Html.DisplayFor(modelItem => item.orig_country)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                @Html.ActionLink(labelEdit, "Edit", new { id = item.ID }) |
+                @Html.ActionLink(labelDelete, "Delete", new { id = item.ID })
             </td>
         </tr>
     }
-
 </table>
 
 <br />
-@(Paho.Controllers.ResourcesM.SgetMessage("msgPage", ViewBag.UsrCtry, ViewBag.UsrCtryLang))
+@(labelPage)
 @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
-@(Paho.Controllers.ResourcesM.SgetMessage("msgViewCatPopulation_De", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) @Model.PageCount
+@(labelOf) @Model.PageCount
 
 @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
 
