@@ -44,6 +44,7 @@
     //#### 
     self.getCasesInExcelUrl = "/exportar/GetCasesInExcel";
     self.getExportar = "/exportar/GetExcel";
+    self.getCountryReportsUrl = "/exportar/GetCountryReports";
     self.getFluid = "/fluid/Generate";
     self.getExportarGraphics = "/graphics/GenerateGraphic";
     self.getPrintTest =  "/printtest/GetPrint"

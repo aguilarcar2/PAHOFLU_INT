@@ -449,7 +449,6 @@
             self.OrdenLineageID = category.orden;
             app.Views.Lab.OrdenFinalResult();
         }
-
     });
 
     self.TestType.subscribe(function (new_test_type) {
@@ -467,7 +466,6 @@
 
             app.Views.Lab.OrdenFinalResult();
         }
-
     });
 
     self.TestResultID.subscribe(function (new_test_result) {
@@ -491,8 +489,6 @@
             self.CTRLVirusType("");
             self.OrdenVirusTypeID = 99;
         }
-
-
     });
 
     self.TestResultID_VirusSubType.subscribe(function (new_test_result_virussubtype) {
@@ -509,7 +505,6 @@
             
             app.Views.Lab.OrdenFinalResult();
         }
-
     });
 
     self.TestResultID_VirusSubType_2.subscribe(function (new_test_result_virussubtype) {
@@ -525,25 +520,22 @@
 
             app.Views.Lab.OrdenFinalResult();
         }
-
     });
-
 
     self.VisibleFalseIFIVirus = function (option, item) {
         //console.log('item id = ' + item.id);
         if (!(app.Views.Lab.CanPCRLab() == true) && typeof (item) != 'undefined' ) {
             //console.log('RemoveIFIVirus');
             //console.log(item);
-            if (item.Id == 12 || item.Id == 11 || item.Id == 10) {
+            //if (item.Id == 12 || item.Id == 11 || item.Id == 10) {
+            if (item.Id == 12 || item.Id == 11 || item.Id == 10 || item.Id == 14) {     // 14: nCov, 10: Rinovirus, 11: Coronavirus, 12: Bocavirus
                 ko.applyBindingsToNode(option, {
                     attr: {
                         'style': 'display:none'
                     }
                 }, item);
             }
-
         }
-
     };
 
     self.VisibleTestResultIFI = function (option, item) {
@@ -554,13 +546,12 @@
         if (typeof (item) != 'undefined' && app.Views.Home.UsrCountry() != 7)
         {
             if (item.Id == 'NA' || item.Id == 'NB' || (item.Id == 'MI')) {
-                    ko.applyBindingsToNode(option, {
-                        attr: {
-                            'style': 'display:none'
-                        }
-                    }, item);
-                }
-
+                ko.applyBindingsToNode(option, {
+                    attr: {
+                        'style': 'display:none'
+                    }
+                }, item);
+            }
         } else if (typeof (item) != 'undefined' && app.Views.Home.UsrCountry() == 7) {
             if(app.Views.Lab.CanPCRLab() == true && app.Views.Lab.CanIFILab() == false)
             {
@@ -573,10 +564,7 @@
                 }
             }
         }
-        
-
     };
-
 };
 
 function LabViewModel(app, dataModel) {

@@ -1,16 +1,20 @@
 ﻿function ExportarViewModel(app, dataModel) {
     var self = this;
+
     var date_format_moment = app.dataModel.date_format_ISO;
 
-    self.UsrCountry = ko.observable(selcty);
-    //self.displayFilters = ko.observable(false);
+    self.UsrCountry = ko.observable(selcty);                    // User country
+
     self.displayFilters = ko.observable(true);                  //#### CAFQ: 180703
-    self.selectedCountryId = ko.observable(CountryID);
     self.selectedAreaId = ko.observable("");
     self.countries = ko.observableArray(countries);
     self.institutions = ko.observableArray(institutions);
     self.reportsCountries = ko.observableArray(reportsCountries);
     self.regions = ko.observableArray(regions);
+    self.areas = ko.observableArray(areas);
+
+    //self.selectedCountryId = ko.observable(CountryID);
+    self.selectedCountryId = ko.observable(selcty);
     self.selectedInstitutionId = ko.observable("");
     self.selectedRegionId = ko.observable("");
     self.selectedReportCountryId = ko.observable("");
@@ -47,6 +51,59 @@
         return (self.UsrCountry() == 15) ? true : false;
     }, self);
 
+    self.ReloadAreas = function () {
+        if (typeof self.selectedCountryId() === "undefined") {
+            return;
+        }
+        self.loadAreas();
+    };
+
+    self.loadAreas = function () {
+        $.getJSON(app.dataModel.getAreasUrl, { CountryID: self.selectedCountryId() }, function (data, status) {
+            self.areas(data);
+        })
+            .fail(function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            });
+    };
+
+    self.ReloadRegions = function () {
+        if (typeof self.selectedCountryId() === "undefined") {
+            return;
+        }
+        self.loadRegions();
+    };
+
+    self.loadRegions = function () {
+        $.getJSON(app.dataModel.getRegionsUrl, { CountryID: self.selectedCountryId() }, function (data, status) {
+            self.regions(data);
+        })
+            .fail(function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            });
+    };
+
+    self.ReloadCountryReports = function () {
+        if (typeof self.selectedCountryId() === "undefined") {
+            return;
+        }
+        self.loadCountryReports();
+
+        self.ReloadRegions();
+        self.ReloadAreas();
+        self.ReloadInstitutions();
+    };
+
+    self.loadCountryReports = function () {
+        $.getJSON(app.dataModel.getCountryReportsUrl, { CountryID: self.selectedCountryId() }, function (data, status) {
+            self.reportsCountries(data);
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            alert(errorThrown);
+        });
+    };
+
+    
     self.ReloadInstitutions = function () {
         if (typeof self.selectedCountryId() === "undefined") {
             return;
@@ -78,6 +135,10 @@
             self.selectedInstitutionId(0);
         }
     });
+
+    //self.selectedCountryId.subscribe(function (NewCountryId) {
+    //    console.log("NewCountryId->" + NewCountryId);
+    //});
 
     self.Report = ko.observable("Cases");
 

@@ -78,32 +78,33 @@ namespace Paho.Controllers
             var UsrCtry = CountryID > 0 ? CountryID : user.Institution.CountryID;
             //Refrescar institucion en el combo segun la region a la que pertenecen
             var regions =
-             (
-              from Region in db.Regions as IQueryable<Region>
-              where Region.CountryID == UsrCtry && (Region.tipo_region == 1 || Region.tipo_region == null)
-              select new
-              {
-                  Id = Region.ID,
-                  //Id = Region.orig_country,
-                  Name = Region.Name
-                  }).ToArray();
+                (
+                from Region in db.Regions as IQueryable<Region>
+                where Region.CountryID == UsrCtry && (Region.tipo_region == 1 || Region.tipo_region == null)
+                select new
+                {
+                    Id = (Int32)Region.orig_country,
+                    Name = Region.Name
+                })
+                .OrderBy(r => r.Name)
+                .ToArray();
 
             if (user.type_region != 1 && user.type_region != null)
             {
                 regions =
-             (
-              from Region in db.Regions as IQueryable<Region>
-              where Region.CountryID == UsrCtry && (Region.tipo_region == user.type_region )
-              select new
-              {
-                  Id = Region.ID,
-                  //Id = Region.orig_country,
-                  Name = Region.Name
-              }).ToArray();
+                 (
+                  from Region in db.Regions as IQueryable<Region>
+                  where Region.CountryID == UsrCtry && (Region.tipo_region == user.type_region )
+                  select new
+                  {
+                      Id = (Int32)Region.orig_country,
+                      Name = Region.Name
+                  })
+                  .OrderBy(r => r.Name)
+                  .ToArray();
             }
 
-
-                return Json(regions, JsonRequestBehavior.AllowGet);
+            return Json(regions, JsonRequestBehavior.AllowGet);
         }
 
         // GET: GetHospitals
@@ -111,7 +112,8 @@ namespace Paho.Controllers
         {
 
             var user = UserManager.FindById(User.Identity.GetUserId());
-            var UsrCtry = user.Institution.CountryID;
+            //var UsrCtry = user.Institution.CountryID;
+            var UsrCtry = CountryID > 0 ? CountryID : user.Institution.CountryID;
 
             if (AreaID != null && AreaID > 0)
             {
@@ -125,8 +127,9 @@ namespace Paho.Controllers
                       Name = institution.Name,
                       InstitutionType = institution is Hospital ? InstitutionType.Hospital : InstitutionType.Lab
                       //InstitutionType = InstitutionType.Hospital
-                  }).ToArray();
-
+                  })
+                  .OrderBy(i => i.Name)
+                  .ToArray();
 
                 var institutionsDisplay = institutions.Select(i => new LookupView<Institution>()
                 {
@@ -149,9 +152,7 @@ namespace Paho.Controllers
             }
             else if (RegionID != null  && RegionID > 0)
             {
-
                 //Refrescar institucion en el combo segun la region a la que pertenecen
-
                 var institutions =
                  (
                   from institution in db.Institutions as IQueryable<Institution>
@@ -162,7 +163,9 @@ namespace Paho.Controllers
                       Name = institution.Name,
                       InstitutionType = institution is Hospital ? InstitutionType.Hospital : InstitutionType.Lab
                       //InstitutionType = InstitutionType.Hospital
-                  }).ToArray();
+                  })
+                  .OrderBy(i => i.Name)
+                  .ToArray();
 
                 if ((user.type_region == 1 || user.type_region == null) && RegionID > 0)
                 {
@@ -233,7 +236,7 @@ namespace Paho.Controllers
 
                 //CountryID = CountryID != null ? CountryID : UsrCtry;
 
-                var institutions =
+                var institutions = 
                  (
                   from institution in db.Institutions as IQueryable<Institution>
                   where institution.CountryID == CountryID && institution is Hospital
@@ -243,7 +246,9 @@ namespace Paho.Controllers
                       Name = institution.Name,
                       InstitutionType = institution is Lab ? InstitutionType.Lab : InstitutionType.Hospital
                       //InstitutionType = InstitutionType.Hospital
-                  }).ToArray();
+                  })
+                  .OrderBy(i => i.Name)
+                  .ToArray();
 
                 var institutionsDisplay = institutions.Select(i => new LookupView<Institution>()
                 {

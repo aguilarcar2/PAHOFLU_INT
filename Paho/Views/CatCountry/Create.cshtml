@@ -5,6 +5,7 @@
     string LabelReturnToList = (string)Paho.Controllers.ResourcesM.SgetMessage("msgReturnToList", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string LabelButtonSave = Paho.Controllers.CatVirusTypeController.SgetMessage("msgViewSummaryButtonSave", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string labelCreate = Paho.Controllers.ResourcesM.SgetMessage("msgViewCatPopulation_Crear", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelSelect = Paho.Controllers.ResourcesM.SgetMessage("msgGeneralSelect", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 
     string labelCodigo = Paho.Controllers.ResourcesM.SgetMessage("msgISOCode", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string labelNombreSPA = Paho.Controllers.ResourcesM.SgetMessage("msgSpanishName", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
@@ -13,6 +14,8 @@
     string labelDivisionesAdminis = Paho.Controllers.ResourcesM.SgetMessage("msgNumberTerritorialPoliticalDivisions", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string labelActivo = Paho.Controllers.ResourcesM.SgetMessage("msgActive", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string labelIdioma = Paho.Controllers.ResourcesM.SgetMessage("msgLanguage", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+    
 }
 
 @using (Html.BeginForm()) 
@@ -70,7 +73,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Language, labelIdioma, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-7">
-                @Html.DropDownListFor(model => model.Language, Model.LanguageList, "-- Seleccione --", new { @class = "form-control" })
+                @Html.DropDownListFor(model => model.Language, Model.LanguageList, labelSelect, new { @class = "form-control" })
             </div>
         </div>
 

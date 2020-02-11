@@ -32,7 +32,6 @@ namespace Paho.Controllers
             var ExportarViewModel = new ExportarViewModel();
             IQueryable<Institution> institutions = null;
             IQueryable<Paho.Models.Region> regions = null;
-            //IQueryable<Paho.Models.Area> areas = null;
             IQueryable<Area> areas = null;                          //#### CAFQ: 180703 
             IQueryable<ReportCountry> ReportsCountries = null;
             IQueryable<CatSurv> SurvCountries = null;
@@ -48,6 +47,13 @@ namespace Paho.Controllers
                 ExportarViewModel.DisplayAreas = true;              //#### CAFQ: 180703   
                 ExportarViewModel.DisplayRegionals = true;
                 ExportarViewModel.DisplayHospitals = true;
+
+                if (user.type_region == null)
+                    regions = db.Regions.Where(r => r.CountryID == user.Institution.CountryID && r.tipo_region == 1).OrderBy(i => i.Name);
+                else
+                    regions = db.Regions.Where(r => r.CountryID == user.Institution.CountryID && r.tipo_region == user.type_region).OrderBy(i => i.Name);
+
+                areas = db.Areas.Where(a => a.CountryID == user.Institution.CountryID).OrderBy(a => a.Name);
             }
             else if (user.Institution is Hospital || user.Institution is AdminInstitution)
             {
@@ -161,6 +167,7 @@ namespace Paho.Controllers
             ExportarViewModel.DatePickerConfig = DoS;
             ExportarViewModel.DateFormatDP = date_format;
 
+            //**** 
             ExportarViewModel.Countries = db.Countries
                     .Select(c => new CountryView()
                     {
@@ -169,6 +176,7 @@ namespace Paho.Controllers
                         Active = c.Active
                     }).ToArray();
 
+            //**** 
             if (ReportsCountries != null)
             {
                 ExportarViewModel.ReportsCountries = ReportsCountries.Select(i => new LookupView<ReportCountry>()
@@ -188,16 +196,15 @@ namespace Paho.Controllers
                     Name = i.Name
                 }).OrderBy(d => d.Name).ToList();
 
-                if (areasDisplay.Count() > 1)
-                {
-                    //var all = new LookupView<Region> { Id = "0", Name = "-- Todo(a)s --" };
-                    var all = new LookupView<Area> { Id = "0", Name = getMsg("msgGeneralMessageAll") };
-                    areasDisplay.Insert(0, all);
-                    ExportarViewModel.DisplayAreas = true;
-                }
+                //if (areasDisplay.Count() > 1)
+                //{
+                //    //var all = new LookupView<Region> { Id = "0", Name = "-- Todo(a)s --" };
+                //    var all = new LookupView<Area> { Id = "0", Name = getMsg("msgGeneralMessageAll") };
+                //    areasDisplay.Insert(0, all);
+                //    ExportarViewModel.DisplayAreas = true;
+                //}
 
                 ExportarViewModel.Areas = areasDisplay;
-                //CaseViewModel.Regions = regions;
             }
 
             if (regions != null)
@@ -208,13 +215,13 @@ namespace Paho.Controllers
                     Name = i.Name
                 }).ToList();
 
-                if (regionsDisplay.Count() > 1)
-                {
-                    //var all = new LookupView<Paho.Models.Region> { Id = "0", Name = "-- Todo(a)s --" };
-                    var all = new LookupView<Paho.Models.Region> { Id = "0", Name = getMsg("msgGeneralMessageAll") };
-                    regionsDisplay.Insert(0, all);
-                    ExportarViewModel.DisplayRegionals = true;
-                }
+                //if (regionsDisplay.Count() > 1)
+                //{
+                //    //var all = new LookupView<Paho.Models.Region> { Id = "0", Name = "-- Todo(a)s --" };
+                //    var all = new LookupView<Paho.Models.Region> { Id = "0", Name = getMsg("msgGeneralMessageAll") };
+                //    regionsDisplay.Insert(0, all);
+                //    ExportarViewModel.DisplayRegionals = true;
+                //}
 
                 ExportarViewModel.Regions = regionsDisplay;
                 //CaseViewModel.Regions = regions;
@@ -274,6 +281,23 @@ namespace Paho.Controllers
             //****
 
             return View(ExportarViewModel);
+        }
+
+        // GET: Regiones
+        public JsonResult GetCountryReports(int? CountryID)
+        {
+            var countries = db.ReportsCountries
+                .Where(c => c.CountryID == CountryID)
+                .Select(c => new
+                {
+                    ID = c.ID.ToString(),
+                    Name = c.description,
+                    ReportID = c.ReportID
+                })
+                //.OrderBy(c => c.Name)
+                .ToArray();
+
+            return Json(countries, JsonRequestBehavior.AllowGet);
         }
 
         private IQueryable<FluCase> GetQuery(int CountryID, int? HospitalID, int? Year, int? Month, int? SE, DateTime? StartDate, DateTime? EndDate)
@@ -339,12 +363,21 @@ namespace Paho.Controllers
                 string Country_Code = user.Institution.Country.Code;
 
                 var reportCountry = db.ReportsCountries.FirstOrDefault(s => s.ID == ReportCountry);
+                if (CountryID != user.Institution.CountryID)            // Datos ReportCountry del pais seleccionado
+                {
+                    reportCountry = db.ReportsCountries.FirstOrDefault(s => s.CountryID == CountryID_ && s.ReportID == reportCountry.ReportID);
+
+                    var countrySele = db.Countries.FirstOrDefault(s => s.ID == CountryID_);
+                    Languaje_ = countrySele.Language;
+                    Country_Code = countrySele.Code;
+                }
+
                 var country_group_age_user = db.CatAgeGroup.Where(z => z.id_country == CountryID);
-                int reportID = reportCountry.ReportID;//contiene la FK para obtener el ID del reporte en la tabla Report
-                int reportStartCol = reportCountry.startCol;//contiene la startCol de la tabla ReportCountry, pasa saber en que columna se inicia
-                int reportStartRow = reportCountry.startRow;//contiene la startRow de la tabla ReportCountry, pasa saber en que fila se inicia
+                int reportID = reportCountry.ReportID;                                  //contiene la FK para obtener el ID del reporte en la tabla Report
+                int reportStartCol = reportCountry.startCol;                            //contiene la startCol de la tabla ReportCountry, pasa saber en que columna se inicia
+                int reportStartRow = reportCountry.startRow;                            //contiene la startRow de la tabla ReportCountry, pasa saber en que fila se inicia
                 var report = db.Reports.FirstOrDefault(s => s.ID == reportID);
-                string reportTemplate = report.Template;//contiene el nombre del template, que luego se relacionará al archivo template de Excel
+                string reportTemplate = report.Template;                                //contiene el nombre del template, que luego se relacionará al archivo template de Excel
 
                 if (user.Institution.AccessLevel == AccessLevel.SelfOnly && HospitalID_ == 0) { HospitalID_ = Convert.ToInt32(user.Institution.ID); }
                 if (user.Institution.AccessLevel == AccessLevel.Area && Area == 0) { AreaID_ = Convert.ToInt32(user.Institution.AreaID); }
@@ -353,7 +386,6 @@ namespace Paho.Controllers
                 {
                     ViewBag.Message = "El reporte no se pudo generar, por favor intente de nuevo";
                     return null;
-                    ;
                 }
 
                 string templateToUse;
@@ -473,32 +505,57 @@ namespace Paho.Controllers
                                 }
                             }
 
-                            var excelWs_VIRUSES_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Virus" : "Virus"];
-                            var excelWs_VIRUSES_Chart = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Graph Virus" : "Gráficos"];
+                            var excelWs_Legend = excelWorkBook.Worksheets["Leyendas"];
+                            string virusSheetName = excelWs_Legend.Cells["Q2"].Value.ToString();
 
-                            var excelWs_VIRUSES_INF_Geographic = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Virus_INF_GEO" : "Virus_INF_GEO"];
-                            var excelWs_VIRUSES_RSV_Geographic = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Virus_RSV_GEO" : "Virus_VSR_GEO"];
+                            //var excelWs_VIRUSES_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Virus" : "Virus"];
+                            //var excelWs_VIRUSES_Chart = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Graph Virus" : "Gráficos"];
+                            //var excelWs_VIRUSES_INF_Geographic = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Virus_INF_GEO" : "Virus_INF_GEO"];
+                            //var excelWs_VIRUSES_RSV_Geographic = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Virus_RSV_GEO" : "Virus_VSR_GEO"];
+                            var excelWs_VIRUSES_IRAG = excelWorkBook.Worksheets[excelWs_Legend.Cells["Q2"].Value.ToString()];
+                            var excelWs_VIRUSES_Chart = excelWorkBook.Worksheets[excelWs_Legend.Cells["Q3"].Value.ToString()];
+                            var excelWs_VIRUSES_INF_Geographic = excelWorkBook.Worksheets[excelWs_Legend.Cells["Q4"].Value.ToString()];
+                            var excelWs_VIRUSES_RSV_Geographic = excelWorkBook.Worksheets[excelWs_Legend.Cells["Q5"].Value.ToString()];
 
+                            ExcelWorksheet excelWs_VIRUSES_NCOV_Geographic = null;
+                            var procesarHoja = excelWs_Legend.Cells["R6"].Value;
+                            if (procesarHoja != null)
+                                if (procesarHoja.ToString() == "1")
+                                    excelWs_VIRUSES_NCOV_Geographic = excelWorkBook.Worksheets[excelWs_Legend.Cells["Q6"].Value.ToString()];
+
+                            ExcelWorksheet excelWs_VIRUSES_IRAG_NC = null;
+                            procesarHoja = excelWs_Legend.Cells["R7"].Value;
+                            if (procesarHoja != null)
+                                if (procesarHoja.ToString() == "1")
+                                    excelWs_VIRUSES_IRAG_NC = excelWorkBook.Worksheets[excelWs_Legend.Cells["Q7"].Value.ToString()];        // No centinela
+
+                            //if (CountryID == 15)
+                            //    Sentinel = 1;
 
                             contador = YearEnd - YearBegin;
                             var YearEnd_report = DateTime.Now.Year;
 
                             for (int i = 0; i <= contador; i++)
                             {
-
                                 YearEnd_report = YearEnd - i;
-
 
                                 if (i > 0)
                                 {
                                     CopyAndPasteRange(excelWorkBook, excelWs_VIRUSES_IRAG.Index, excelWorkBook, excelWs_VIRUSES_IRAG.Index, "A" + Convert.ToString(6 + (52 * i)) + ":BZ" + Convert.ToString(6 + (52 * i)), "A" + Convert.ToString(6 + (52 * (i + 1))) + ":BZ" + Convert.ToString(6 + (52 * (i + 1))));
                                     CopyAndPasteRange(excelWorkBook, excelWs_VIRUSES_IRAG.Index, excelWorkBook, excelWs_VIRUSES_IRAG.Index, "A6:BZ57", "A" + Convert.ToString(6 + (52 * i)) + ":BZ" + Convert.ToString(6 + (52 * i) + 52));
 
+                                    if (excelWs_VIRUSES_IRAG_NC != null)        // Hoja Centinela No
+                                    {
+                                        CopyAndPasteRange(excelWorkBook, excelWs_VIRUSES_IRAG_NC.Index, excelWorkBook, excelWs_VIRUSES_IRAG_NC.Index, "A" + Convert.ToString(6 + (52 * i)) + ":BZ" + Convert.ToString(6 + (52 * i)), "A" + Convert.ToString(6 + (52 * (i + 1))) + ":BZ" + Convert.ToString(6 + (52 * (i + 1))));
+                                        CopyAndPasteRange(excelWorkBook, excelWs_VIRUSES_IRAG_NC.Index, excelWorkBook, excelWs_VIRUSES_IRAG_NC.Index, "A6:BZ57", "A" + Convert.ToString(6 + (52 * i)) + ":BZ" + Convert.ToString(6 + (52 * i) + 52));
+                                    }
+
                                     if (excelWs_VIRUSES_INF_Geographic != null)
                                         CopyAndPasteRange(excelWorkBook, excelWs_VIRUSES_INF_Geographic.Index, excelWorkBook, excelWs_VIRUSES_INF_Geographic.Index, "A" + Convert.ToString(5 + (52 * i)) + ":BZ" + Convert.ToString(5 + (52 * i)), "A" + Convert.ToString(5 + (52 * (i + 1))) + ":BZ" + Convert.ToString(5 + (52 * (i + 1))));
                                     if (excelWs_VIRUSES_RSV_Geographic != null)
                                         CopyAndPasteRange(excelWorkBook, excelWs_VIRUSES_RSV_Geographic.Index, excelWorkBook, excelWs_VIRUSES_RSV_Geographic.Index, "A" + Convert.ToString(5 + (52 * i)) + ":BZ" + Convert.ToString(5 + (52 * i)), "A" + Convert.ToString(5 + (52 * (i + 1))) + ":BZ" + Convert.ToString(5 + (52 * (i + 1))));
-
+                                    if (excelWs_VIRUSES_NCOV_Geographic != null)
+                                        CopyAndPasteRange(excelWorkBook, excelWs_VIRUSES_NCOV_Geographic.Index, excelWorkBook, excelWs_VIRUSES_NCOV_Geographic.Index, "A" + Convert.ToString(5 + (52 * i)) + ":BZ" + Convert.ToString(5 + (52 * i)), "A" + Convert.ToString(5 + (52 * (i + 1))) + ":BZ" + Convert.ToString(5 + (52 * (i + 1))));
                                 }
                                 if (i > 0)
                                 {
@@ -509,22 +566,31 @@ namespace Paho.Controllers
                                     // Configuración de gráfica de Pie
                                     ConfigGraph_Pie(excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV5", (7 + (52 * i)) + 51, (7 + (52 * i)) + 51);
                                     ConfigGraph_Pie(excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV6", (7 + (52 * i)) + 51, (7 + (52 * i)) + 51);
-
-
                                 }
-                                AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4", (i > 0 ? (6 + (52 * i)) : 6), 1, excelWs_VIRUSES_IRAG.Index, false, ReportCountry, YearEnd_report, YearEnd_report, Surv, Inusual, AreaID_, Sentinel);
 
+                                //AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4", (i > 0 ? (6 + (52 * i)) : 6), 1, 
+                                //    excelWs_VIRUSES_IRAG.Index, false, ReportCountry, YearEnd_report, YearEnd_report, Surv, Inusual, AreaID_, Sentinel);
+                                AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4", (i > 0 ? (6 + (52 * i)) : 6), 1,
+                                    excelWs_VIRUSES_IRAG.Index, false, ReportCountry, YearEnd_report, YearEnd_report, Surv, Inusual, AreaID_, Sentinel: (CountryID_ == 15 ? 1 : Sentinel));
+
+                                if (excelWs_VIRUSES_IRAG_NC != null)
+                                {
+                                    AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4", (i > 0 ? (6 + (52 * i)) : 6), 1,
+                                        excelWs_VIRUSES_IRAG_NC.Index, false, ReportCountry, YearEnd_report, YearEnd_report, Surv, Inusual, AreaID_, Sentinel: 0);
+                                }
                             }
-
 
                             // Procedimiento para cambiar los rangos del eje X 
                             if (contador > 0)
                             {
-                                var RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "Virus" : "Virus") + "'!$BY$6:$BZ$57 ";
+                                //var RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "Virus" : "Virus") + "'!$BY$6:$BZ$57 ";
+                                var RangeStr = " '" + excelWs_Legend.Cells["Q2"].Value.ToString() + "'!$BY$6:$BZ$57 ";
+                                //excelWorkBook.Worksheets[excelWs_Legend.Cells["Q2"].Value.ToString()];
 
                                 for (int i = 1; i <= contador; i++)
                                 {
-                                    RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "Virus" : "Virus") + "'!$BY$" + (6 + (52 * i)).ToString() + ":$BZ$" + ((6 + (52 * i)) + 51).ToString() + ", " + RangeStr;
+                                    //RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "Virus" : "Virus") + "'!$BY$" + (6 + (52 * i)).ToString() + ":$BZ$" + ((6 + (52 * i)) + 51).ToString() + ", " + RangeStr;
+                                    RangeStr = " '" + virusSheetName + "'!$BY$" + (6 + (52 * i)).ToString() + ":$BZ$" + ((6 + (52 * i)) + 51).ToString() + ", " + RangeStr;
                                 }
 
                                 RangeStr = " ( " + RangeStr + ")";
@@ -553,11 +619,18 @@ namespace Paho.Controllers
                                 UpdateRangeXMLPath(LineChart, RangeStr);
                             }
 
+
                             if (excelWs_VIRUSES_INF_Geographic != null)
-                                AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", 5, 1, excelWs_VIRUSES_INF_Geographic.Index, false, ReportCountry, YearBegin, YearEnd, Surv, Inusual, AreaID_, Sentinel);
+                                AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", 5, 1, 
+                                    excelWs_VIRUSES_INF_Geographic.Index, false, ReportCountry, YearBegin, YearEnd, Surv, Inusual, AreaID_, Sentinel: (CountryID_ == 15 ? 1 : Sentinel), VirusType:"INF");
 
                             if (excelWs_VIRUSES_RSV_Geographic != null)
-                                AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", 5, 1, excelWs_VIRUSES_RSV_Geographic.Index, false, ReportCountry, YearBegin, YearEnd, Surv, Inusual, AreaID_, Sentinel);
+                                AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", 5, 1, 
+                                    excelWs_VIRUSES_RSV_Geographic.Index, false, ReportCountry, YearBegin, YearEnd, Surv, Inusual, AreaID_, Sentinel: (CountryID_ == 15 ? 1 : Sentinel), VirusType:"RSV");
+
+                            if (excelWs_VIRUSES_NCOV_Geographic != null)
+                                AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", 5, 1, 
+                                    excelWs_VIRUSES_NCOV_Geographic.Index, false, ReportCountry, YearBegin, YearEnd, Surv, Inusual, AreaID_, Sentinel: (CountryID_ == 15 ? 1 : Sentinel), VirusType:"NCOV");
 
                             var excelWs_Leyendas = excelWorkBook.Worksheets["Leyendas"];
                             ConfigToExcel_FLUID(CountryID, Languaje_, RegionID_, YearEnd, YearBegin, YearEnd, StartDate, EndDate, HospitalID_, Surv, excelWorkBook, "Leyendas", 1, excelWs_Leyendas.Index, false);
@@ -1117,14 +1190,11 @@ namespace Paho.Controllers
                                     excelWs_Virus_Gravedad.Cells[6, (1 + (7 * i) + 1)].Value = YearEnd_report;
 
                                     ConfigGraph_Bars_Histogram_range(YearEnd_report, excelWorkBook, excelWs_Virus_Gravedad_Chart.Index, excelWs_Virus_Gravedad.Index, "CG1", ColumnAdress(1 + (3 * i) + 1), ColumnAdress(1 + (3 * i) + 3), 20, 32);
-        
                                 }
 
                                 AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R8_GRAVEDAD", 23, (2 + (i * 3)), excelWs_Virus_Gravedad.Index, false, ReportCountry, YearEnd_report, YearEnd_report, 1, Inusual, AreaID_, Sentinel);
 
                                 AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R8_GRAVEDAD_by_AGE", 8, (2 + (i * 7)), excelWs_Virus_Gravedad.Index, false, ReportCountry, YearEnd_report, YearEnd_report, 1, Inusual, AreaID_, Sentinel);
-
-
                             }
 
                             var RangeStr = " '" + excelWs_Virus_Gravedad.Name + "'!$B$20:$D$21";
@@ -4718,7 +4788,9 @@ namespace Paho.Controllers
             //excelWorksheet.DeleteRow(row, 2);
         }
 
-        private static void AppendDataToExcel_R4(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId = null, int? Sentinel = null)
+        private static void AppendDataToExcel_R4(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, 
+            ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, 
+            bool? SurvInusual, int? AreaId = null, int? Sentinel = null, string VirusType = "")
         {
 
             var excelWorksheet = excelWorkBook.Worksheets[sheet];
@@ -4746,10 +4818,14 @@ namespace Paho.Controllers
                     command.Parameters.Add("@Area_ID", SqlDbType.Int).Value = AreaId;
                     command.Parameters.Add("@Sentinel", SqlDbType.Int).Value = Sentinel;
 
-                    if (excelWorksheet.Name.IndexOf("_INF_") > 0)
-                        command.Parameters.Add("@VirusType", SqlDbType.Text).Value = "INF";
-                    else if (excelWorksheet.Name.IndexOf("_VSR_") > 0 || excelWorksheet.Name.IndexOf("_RSV_") > 0)
-                        command.Parameters.Add("@VirusType", SqlDbType.Text).Value = "RSV";
+                    //if (excelWorksheet.Name.IndexOf("_INF_") > 0)
+                    //    command.Parameters.Add("@VirusType", SqlDbType.Text).Value = "INF";
+                    //else if (excelWorksheet.Name.IndexOf("_VSR_") > 0 || excelWorksheet.Name.IndexOf("_RSV_") > 0)
+                    //    command.Parameters.Add("@VirusType", SqlDbType.Text).Value = "RSV";
+                    //else if(excelWorksheet.Name.IndexOf("_nCov_") > 0)
+                    //    command.Parameters.Add("@VirusType", SqlDbType.Text).Value = "NCOV";
+                    if (VirusType != "")
+                        command.Parameters.Add("@VirusType", SqlDbType.Text).Value = VirusType;
 
                     con.Open();
                     using (var reader = command.ExecuteReader())

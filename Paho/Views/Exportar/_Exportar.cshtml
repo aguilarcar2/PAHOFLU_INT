@@ -1,28 +1,67 @@
 ﻿@model Paho.Models.ExportarViewModel
 
+@{
+    string labelPais = Paho.Controllers.ResourcesM.SgetMessage("msgViewExportarLabelCountry", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelFieldSelect = Paho.Controllers.ResourcesM.SgetMessage("msgViewExportarFieldSelect", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelMessageAll = Paho.Controllers.ResourcesM.SgetMessage("msgGeneralMessageAll", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    
+    string labelReportsGeneration = Paho.Controllers.ResourcesM.SgetMessage("msgViewExportarLabelReportsGeneration", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelReports = Paho.Controllers.ResourcesM.SgetMessage("msgViewExportarLabelReports", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelSurv = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabContactLabelSurv", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+}
+
 <!-- ko with: app.Views.Exportar -->
 <div class="row" style="margin-bottom:15px; margin-top:1em;">
     <div class='input-group'>
         <span class="input-group-addon">
-            <!--<b>Generación de reportes</b>-->
-            <b>@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarLabelReportsGeneration"))</b>
+            <b>@labelReportsGeneration</b>
         </span>
     </div>
 </div>
+
+<!--País:-->
+@if (Model.DisplayCountries)
+{
+    <div class="row" style="margin-bottom: 15px; margin-top: 1em;">
+        <div class="col-md-5">
+            <div class='input-group'>
+                <span class="input-group-addon">
+                    @labelPais
+                </span>
+                @*<select id="Pais" class="form-control" data-bind="options: activecountries,
+                           optionsText: 'Name',
+                           optionsValue: 'Id',
+                           value: selectedCountryId,
+                           optionsCaption: '@labelFieldSelect',
+                           event:{ change: ReloadInstitutions}">
+                </select>*@
+                <select id="Pais" class="form-control" data-bind="options: activecountries,
+                           optionsText: 'Name',
+                           optionsValue: 'Id',
+                           value: selectedCountryId,
+                           optionsCaption: '@labelFieldSelect',
+                           event:{ change: ReloadCountryReports }">
+                </select>
+            </div>
+        </div>
+    </div>
+}
 
 <!--Reportes:-->
 <div class="row" style="margin-bottom: 15px; margin-top: 1em;">
     <div class="col-md-5">
         <div class='input-group'>
             <span class="input-group-addon">
-                @(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarLabelReports"))
+                @labelReports
             </span>
             <select id="Reports" class="form-control" data-bind="options: reportsCountries,
                        optionsText: 'Name',
-                       optionsValue: 'Id',
+                       optionsValue: 'ID',
                        value: selectedReportCountryId,
-                       optionsCaption: '@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarFieldSelect"))',
-                       valueUpdate:'change'"></select>
+                       optionsCaption: '@labelFieldSelect',
+                       valueUpdate:'change'">
+            </select>
         </div>
     </div>
 </div>
@@ -32,7 +71,7 @@
     <div class="col-md-5">
         <div class='input-group'>
             <span class="input-group-addon">
-                @(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelSurv"))
+                @labelSurv
             </span>
             @*<select id="Surv" class="form-control" data-bind="value: Surv">
                 @if ((ViewBag.SARI == true && ViewBag.ILI == true) || (ViewBag.SARI == true && ViewBag.unusual == true) || (ViewBag.ILI == true && ViewBag.unusual == true) || (ViewBag.SARI == true && ViewBag.ILI == true && ViewBag.unusual == true))
@@ -58,16 +97,13 @@
                 {
                     <option value="3">@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelUnusualCase"))</option>
                 }
-
             </select>*@
 
             <select id="Surv" class="form-control" data-bind="options: survCountries,
                        optionsText: 'Name',
                        optionsValue: 'Id',
                        value: Surv ">
-
             </select>
-
             @*valueUpdate:'change'*@
 
         </div>
@@ -91,26 +127,6 @@
     </div>
 </div>
 
-<!--País:-->
-@if (Model.DisplayCountries)
-{
-    <div class="row" style="margin-bottom: 15px; margin-top: 1em;">
-        <div class="col-md-5">
-            <div class='input-group'>
-                <span class="input-group-addon">
-                    <!--País:-->
-                    @(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarLabelCountry"))
-                </span>
-                <select id="Pais" class="form-control" data-bind="options: activecountries,
-                           optionsText: 'Name',
-                           optionsValue: 'Id',
-                           value: selectedCountryId,
-                           optionsCaption: '@(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarFieldSelect"))',
-                           event:{ change: ReloadInstitutions},"></select>
-            </div>
-        </div>
-    </div>
-}
 
 <!--Areas / Parish-->
 @if (Model.DisplayAreas)
@@ -124,7 +140,9 @@
                 <select id="Areas" class="form-control" data-bind="options: areas,
                        optionsText: 'Name',
                        optionsValue: 'Id',
-                       value: selectedAreaId "></select>
+                       value: selectedAreaId, 
+                       optionsCaption: '@labelMessageAll' ">
+                </select>
             </div>
         </div>
     </div>
@@ -137,16 +155,16 @@
         <div class="col-md-5">
             <div class='input-group'>
                 <span class="input-group-addon">
-                    <!--Región:-->
                     @(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgViewExportarLabelRegion"))
                 </span>
                 <select id="Regions" class="form-control" data-bind="options: regions,
-                       optionsText: 'Name',
-                       optionsValue: 'Id',
-                       value: selectedRegionId,
-                       valueUpdate:'change',
-                       event:{ change: ReloadInstitutions}"></select>
-
+                        optionsText: 'Name',
+                        optionsValue: 'Id',
+                        value: selectedRegionId,
+                        valueUpdate: 'change',
+                        optionsCaption: '@labelMessageAll',
+                        event: { change: ReloadInstitutions }">
+                </select>
             </div>
         </div>
     </div>
@@ -173,8 +191,8 @@
                        optionsText: 'Name',
                        optionsValue: 'Id',
                        value: selectedInstitutionId,
-                       valueUpdate:'change'"></select>
-
+                       valueUpdate:'change'">
+                </select>
             </div>
         </div>
     </div>
@@ -343,16 +361,19 @@
         var aa = "123";
     })
 
-    var countries = @Html.Raw(Json.Encode(Model.Countries));
-    var areas= @Html.Raw(Json.Encode(Model.Areas));
-    //console.log(areas);
-    var regions= @Html.Raw(Json.Encode(Model.Regions));
+    var countries = @Html.Raw(Json.Encode(Model.Countries));        // Lista de paises
+    var regions = @Html.Raw(Json.Encode(Model.Regions));
+    var areas = @Html.Raw(Json.Encode(Model.Areas));
+    @*var activecountries = @Html.Raw(Json.Encode(Model.Countries));*@
+    console.log(areas);
+    console.log(regions);
     var institutions = @Html.Raw(Json.Encode(Model.Institutions));
-    var reportsCountries = @Html.Raw(Json.Encode(Model.ReportsCountries));
-    var survCountries = @Html.Raw(Json.Encode(Model.SurvCountries));
-    //console.log(reportsCountries);
-    var CountryID = @Html.Raw(Model.CountryID);
-    var selcty = @ViewBag.UsrCtry;
+    var reportsCountries = @Html.Raw(Json.Encode(Model.ReportsCountries));      // Lista de reportes del país
+    var survCountries = @Html.Raw(Json.Encode(Model.SurvCountries));            // Lista de vigilancias
+
+    @*var CountryID = @Html.Raw(Model.CountryID);*@
+    @*var selcty = @ViewBag.UsrCtry;      // CountryID del user*@
+    var selcty = @Html.Raw(Model.CountryID);      // CountryID del user
     var PAHOFLU_date_format = "@(Html.Raw(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgDateFormat")))";
     var moment_date_format = "@(Html.Raw(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgDateFormatMoment")))";
     var ISO_date_format = "@(Html.Raw(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgDateFormatISO")))";

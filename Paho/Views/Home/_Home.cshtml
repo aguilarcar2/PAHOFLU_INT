@@ -21,13 +21,12 @@
     string LabelAdminLevel1 = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelAdminLevel1", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string LabelAdminLevel2 = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelAdminLevel2", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 
-    
-
-
     string LabelSelectLabel = Paho.Controllers.ResourcesM.SgetMessage("msgSelectLabel", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 
-
-
+    string LabelSelect = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabLabelSelect", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelIF = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabLabelIF", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelPCR = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabLabelPCR", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelCellCulture = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabLabelCellCulture", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 }
 
 <!-- ko with: home -->
@@ -4045,6 +4044,7 @@
         </div>
 
         <div data-bind="visible:ShowProcessed() || ShowProcessed_National()" style="padding-left:15px;">
+            @* Labels: Laboratorio / Procesada / ... / Resultado *@
             <div class="row rowform">
                 <div class="row rowform">
                     <div class="col-md-3">
@@ -4074,6 +4074,7 @@
                     </div>
                 </div>
             </div>
+            @* Campos: Laboratorio / Procesada / ... / Resultado ...etc *@
             <div id="LabTests" data-bind="foreach: { data: LabTests }">
                 <div class="row rowform" style="border-bottom:dashed; border-bottom-width:thin; padding-bottom:5px;">
                     <div class="row rowform">
@@ -4084,6 +4085,7 @@
                         </div>
                     </div>
                     <div class="row rowform">
+                        <!-- Laboratorio -->
                         <div class="col-md-3">
                            <div class='input-group'>
                                 @*<div data-bind="visible: CanEdit() && CanModLab()">*@
@@ -4100,39 +4102,40 @@
                                 @*<input type="button" value="Borrar" data-bind="enable: CanEdit,visible:CanEdit, click: $parent.removeLabTest.bind($data,1)">*@
                             </div>
                         </div>
-
-                        <div class="col-md-2">
-                            
+                        <!-- Procesada -->
+                        <div class="col-md-2">                            
                             <label class="btn btn-default">
                                 <input type="radio" value="true" data-bind="checked: ProcessLab, enable:CanEdit"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelYes"))
                             </label>
                             <label class="btn btn-default">
                                 <input type="radio" value="false" data-bind="checked: ProcessLab, enable:CanEdit"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelNo"))
-                            </label>
-                            
+                            </label>                            
                         </div>
                         <!-- div class="row" data-bind="visible: NotShowProcessedLab">
-        <div class='input-group'>
-            <span class="input-group-addon">
-                Why not processed?
-            </span>
-            <input id="NoReason" type='text' class="form-control" data-bind="value: NoProRen" />
-        </div>
-    </div -->
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    Why not processed?
+                                </span>
+                                <input id="NoReason" type='text' class="form-control" data-bind="value: NoProRen" />
+                            </div>
+                        </div -->
                         <!-- div class="row" -->
+                        <!-- Fecha Inicio -->
                         <div class="col-md-2" data-bind="visible: ShowProcessedLab">
                             <div class='input-group'>
                                 <input type='text' class="form-control " data-bind='datepicker: TestDate, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}, enable:CanEdit' />
                             </div>
                         </div>
+                        <!-- Fecha Final -->
                         <div class="col-md-2" data-bind="visible: ShowProcessedLab">
                             <div class='input-group'>
                                 <input type='text' class="form-control" data-bind='datepicker: TestEndDate , datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}, enable:CanEdit' />
                             </div>
                         </div>
+                        <!-- Tipo test -->
                         <div class="col-md-1_5" data-bind="visible: ShowProcessedLab">
                             <div class='input-group'>
-                                <select class="form-control" data-bind="value: TestType, enable:CanEdit">
+                                <select class="form-control" data-bind="value: TestType, enable: CanEdit">
                                     <option value="">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelSelect"))</option>
                                     <option value="1" data-bind="visible: CanIFI">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelIF"))</option>
                                     <option value="2" data-bind="visible: CanPCR">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelPCR"))</option>
@@ -4140,6 +4143,7 @@
                                 </select>
                             </div>
                         </div>
+                        <!-- Resultado -->
                         <div class="col-md-1_5" data-bind="visible:EnableTestResult">
                             <div class='input-group' data-bind="enable:CanEdit">
                                 <select class="form-control" data-bind="options: CTR,
@@ -4155,21 +4159,22 @@
                     </div>
                     <div class="row rowform" data-bind="visible:EnableVirusTypes()">
                         <div class="col-md-5">
-                            
+
                         </div>
                         <div class="col-md-4">
                             <div class='input-group' data-bind="visible:EnableVirusTypes()">
-                                    <span class="input-group-addon">
-                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelVirus"))
-                                    </span>
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelVirus"))
+                                </span>
                                 <select id="VirusTypeID" name="VirusTypeID" class="form-control" data-bind="options: CVT,
                                         optionsAfterRender: VisibleFalseIFIVirus,
                                         optionsText: 'Name',
                                         optionsValue: 'Id',
 							            optionsCaption: '@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelVirus"))...',
                                         value: VirusTypeID,
-                                        visible:EnableVirusTypes(),
-                                        enable:CanEdit"></select>
+                                        visible: EnableVirusTypes(),
+                                        enable: CanEdit">
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-1_5">
