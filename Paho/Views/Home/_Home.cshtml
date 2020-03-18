@@ -10,7 +10,10 @@
     string LabelRespiratorySupport = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabHospitalLabelRespiratorySupport", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 
     string LabelNameOfHospital = "Name of Hospital";
-    string LabelDateOfIsolation = "Date of Isolation";
+    //string LabelDateOfIsolation = "Date of Isolation";
+    string LabelDateOfIsolation = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabHospitalLabelDateIsolation", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+
     string LabelResidence = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelResidence", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string LabelPlaceCaseDiagnosed = "Place where the case was diagnosed";
 
@@ -22,11 +25,75 @@
     string LabelAdminLevel2 = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelAdminLevel2", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 
     string LabelSelectLabel = Paho.Controllers.ResourcesM.SgetMessage("msgSelectLabel", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
-
+    //msgCaselistVigTabLabelResultSelect
     string LabelSelect = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabLabelSelect", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string LabelIF = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabLabelIF", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string LabelPCR = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabLabelPCR", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string LabelCellCulture = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabLabelCellCulture", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+    string LabelUniqueCaseIdentif = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabContactLabelUniqueCaseIdentif", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelCountryCaseDiagnosed = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabContactLabelCountryCaseDiagnosed", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelFirstAdministLevel = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabContactLabelFirstAdministLevel", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+    string LabelInusitadosHistoriaExposicion = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistInusitadosHistoriaExposicion", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelHealthCareWorkerJob = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabRiskLabelHealthCareWorkerJob", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelYes = Paho.Controllers.ResourcesM.SgetMessage("msgYes", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelNo = Paho.Controllers.ResourcesM.SgetMessage("msgNo", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelUnknown = Paho.Controllers.ResourcesM.SgetMessage("msgUnknown", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelCity = Paho.Controllers.ResourcesM.SgetMessage("msgCity", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelNameFacility = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabRiskLabelNameFacility", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+    string LabelPreviousSymptomsTravel = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabRiskLabelPreviousSymptomsTravel", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelDateDeparture = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabRiskLabelDateDeparture", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelPatientVisitedHealthCare = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabRiskLabelPatientVisitedHealthCare", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelContactCaseConfirmed = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabRiskLabelContactCaseConfirmed", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelTypeContactCaseConfirmed = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabRiskLabelTypeContactCaseConfirmed", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelIdentifiersUniqueLikelyConfirmed = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabRiskLabelIdentifiersUniqueLikelyConfirmed", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelContactIdentifier = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabRiskLabelContactIdentifier", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelContactFirstDate = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabRiskLabelContactFirstDate", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelContactLastDate = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabRiskLabelContactLastDate", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelCountryHigherExposition = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabRiskLabelCountryHigherExposition", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+    string LabelSymptomsFirstLabConfirmation = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabHospitalLabelSymptomsFirstLabConfirmation", ViewBag.UsrCtry, ViewBag.UsrCtryLang);              //"Any symptoms or signs at time of specimen collection that resulted in first laboratory confirmation?";
+    string LabelNoAsymptomatic = Paho.Controllers.ResourcesM.SgetMessage("msgNoAsymptomatic", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+    string LabelCaseInIsolation = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabHospitalLabelCaseInIsolation", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelDateIsolation = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabHospitalLabelDateIsolation", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelCaseInIsolationOtherPlace = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabHospitalLabelCaseInIsolationOtherPlace", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+    string LabelReasonSampling = "Motivo toma de muestra";
+
+    ////
+    string LabelOutcomeCase = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabCaseLabelOutcomeCase", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelOutcomeDateResubmission = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabCaseLabelOutcomeDateResubmission", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+    string LabelOutcomeDevelopedSymptoms = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabCaseLabelOutcomeDevelopedSymptoms", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelOutcomeDevelopedSymptomsNo = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabCaseLabelOutcomeDevelopedSymptomsNo", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelOutcomeDevelopedSymptomsYes = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabCaseLabelOutcomeDevelopedSymptomsYes", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelOutcomeDateOnsetSymptoms = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabCaseLabelOutcomeDateOnsetSymptoms", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+    string LabelOutcomeAdmissionPrevReported = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabCaseLabelOutcomeAdmissionPrevReported", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelOutcomeDateFirstAdmission = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabCaseLabelOutcomeDateFirstAdmission", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+    string LabelOutcomeClinicalCourse = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabCaseLabelOutcomeClinicalCourse", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelOutcomeUCI = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabCaseLabelOutcomeUCI", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelOutcomeVentMecanica = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabCaseLabelOutcomeVentMecanica", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelOutcomeECMO = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabCaseLabelOutcomeECMO", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+    string LabelOutcomeFinalHealthOutcome = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabCaseLabelOutcomeFinalHealthOutcome", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelOutcomeExitCondition = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabHospitalLabelExitCondition", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelOutcomeExplain = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabCaseLabelOutcomeExplain", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+    string LabelOutcomeDateRelease = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabCaseLabelOutcomeDateRelease", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelOutcomeDateLastLabTest = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabCaseLabelOutcomeDateLastLabTest", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelOutcomeResultsLastTest = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabCaseLabelOutcomeResultsLastTest", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+    string LabelOutcomeResultSelect = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabLabelResultSelect", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelOutcomeTotalHighRisk = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabCaseLabelOutcomeTotalHighRisk", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+    /*
+ 
+    */
 }
 
 <!-- ko with: home -->
@@ -344,7 +411,6 @@
 
         @if (ViewBag.UsrCtry == 15 ||  ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 3)
         {
-
             <div class="row rowform">
                 @if (ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 15)
                 {
@@ -381,8 +447,8 @@
                 </div>
                 }
             </div>
-
         }
+        <!-- Fecha de captación(Fecha de notificación/Date of Reporting/Capture date) / Fecha de registro -->
         <div class="row rowform">
             <div class="col-md-6">
                 <div class='input-group'>
@@ -406,7 +472,18 @@
                 </div>
             </div>
         </div>
-
+        <!-- Identificador unico del caso -->
+        <div class="row rowform">
+            <div class="col-md-6">
+                <div class='input-group'>
+                    <span class="input-group-addon">
+                        @LabelUniqueCaseIdentif:
+                    </span>
+                    <input id="UniqueCaseIdentif" type='text' class="form-control case_letter" data-bind="value: UniqueCaseIdentif" /><br />
+                </div>
+            </div>
+        </div>
+        <!-- Tipo identificación / No. identificación -->
         <div class="row rowform">
             @if (ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 18 && ViewBag.UsrCtry != 17)
             {
@@ -467,7 +544,6 @@
                     @*<button id="DatosPaciente" type="button" class="btn btn-primary btn-next " data-bind="click: GetPatient, visible:EnableCR">Datos paciente</button>*@               
                 </div>
             </div>
-
         </div>
 
         @if (ViewBag.UsrCtry == 25 || ViewBag.UsrCtry == 11 || ViewBag.UsrCtry == 18 || ViewBag.UsrCtry == 15)
@@ -492,6 +568,7 @@
                 </div>
             </div>
         }
+        <!-- Apellidos / Nombres -->
         <div class="row rowform">
             <div class="col-md-6">
                 <div class='input-group'>
@@ -585,7 +662,6 @@
                 </div>
             </div>
         </div>  
-
         <!-- Nacionalidad/Pueblo originario -->
         <!--<div class="row rowform" data-bind="visible: SurvSARICHI() || (ActiveBOL() && IsInusitado()) || (ActiveSUR() && IsInusitado())">-->
         <div class="row rowform" data-bind="visible: (SurvSARICHI() || IsInusitado() || SurvSARIHON())">
@@ -616,7 +692,28 @@
                 </div>
             </div>
         </div>
-     
+        <!-- Lugar donde se diagnosticó el caso / Nivel Administrativo 1  -->
+        <div class="row rowform">
+            <div class="col-md-6">
+                <div class='input-group'>
+                    <span class='input-group-addon'> @LabelCountryCaseDiagnosed:</span>
+                    <select id="CountryCaseDiagnosedID" class="form-control" data-bind="options: app.Views.Home.countries,
+                        optionsText: 'Name',
+                        optionsValue: 'Id',
+                        value: selectedCountryCaseDiagnosedID,
+                        optionsCaption: '@LabelSelectLabel'"></select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class='input-group'>
+                    <span class="input-group-addon">
+                        @LabelFirstAdministLevel:
+                    </span>
+                    <input id="firstadministlevel" type='text' class="form-control case_letter" data-bind="value: FirstAdministLevel" />
+                </div>
+            </div>
+        </div>
+             
         <!-- Siguiente -->
         <div class="row rowform">
             <div class="col-md-12">
@@ -709,7 +806,7 @@
                 </div>
             </div>
         </div>
-
+        <!-- State / Neighborhoods -->
         <div class="row rowform">
             <!-- State -->
             @if ( @ViewBag.UsrCtry != 119 && @ViewBag.UsrCtry != 11)
@@ -995,8 +1092,7 @@
             </div>
 		}
 
-        <!-- Place where the case was diagnosed: -->
-
+        <!-- INUSITADO: Place where the case was diagnosed: País / Area / State -->
         <div data-bind="visible: (app.Views.Contact.IsSurv() == '4')">
             @* <div class="row rowform" data-bind="visible: (app.Views.Contact.IsSurv() == '4')"> *@
             <div class="row rowform" >
@@ -1135,7 +1231,335 @@
             </div>
         </div>
 
-        <!-- Seccion: Ocupación -->
+        <!-- Seccion: Exposicion Normal -->
+        <div class="row rowform" data-bind="visible: !app.Views.Contact.IsInusitado()">
+            <div class="col-md-12">
+                <button type="button" style="background-color:#B2BABB; color:#000000" class="btn btn-group-justified" data-toggle="collapse" data-target="#Exposicion">
+                    <!--Historia de exposición / Posible exposición-->
+                    @*@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosHistoriaExposicion"))*@
+                    @LabelInusitadosHistoriaExposicion
+                    <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
+                </button>
+
+                <div id="Exposicion" class="collapse in">
+                    <!-- personal de salud (trabajó en algún establecimiento de salud) -->
+                    <div class="row rowform">
+                        <div class='input-group col-md-12'>
+                            <span class="input-group-addon">
+                                @LabelHealthCareWorkerJob:
+                            </span>
+                            <label class="btn btn-default">
+                                <input type="radio" name="HealthCareWorkerJob" id="HealthCareWorkerJob" value="1" data-bind="checked: HealthCareWorkerJob">@LabelYes
+                            </label>
+                            <label class="btn btn-default">
+                                <input type="radio" name="HealthCareWorkerJob" id="HealthCareWorkerJob" value="0" data-bind="checked: HealthCareWorkerJob">@LabelNo
+                            </label>
+                            <label class="btn btn-default">
+                                <input type="radio" name="HealthCareWorkerJob" id="HealthCareWorkerJob" value="9" data-bind="checked: HealthCareWorkerJob">@LabelUnknown
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- especificar: País / Ciudad / Establecimiento -->
+                    <div class="row rowform" data-bind="visible: HealthCareWorkerJobYes()">
+                        <div class="col-md-4">
+                            <div class="col-md-1">
+                            </div>
+                            <div class="col-md-11">
+                                <div class='input-group'>
+                                    <span class='input-group-addon'> @LabelCountry:</span>
+                                    <select id="HealthCareWorkerJobCountry" class="form-control" data-bind="options: app.Views.Home.countries,
+                                        optionsText: 'Name',
+                                        optionsValue: 'Id',
+                                        value: selectedHealthCareWorkerJobCountryID,
+                                        optionsCaption: '@LabelSelectLabel'"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @LabelCity:
+                                </span>
+                                <input id="HealthCareWorkerJobCity" type='text' class="form-control case_letter" data-bind="value: HealthCareWorkerJobCity" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @LabelNameFacility:
+                                </span>
+                                <input id="HealthCareWorkerJobFacility" type='text' class="form-control case_letter" data-bind="value: HealthCareWorkerJobFacility" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Viaje dias previos -->
+                    <div class="row rowform">
+                        <div class='input-group col-md-12'>
+                            <span class="input-group-addon">
+                                @LabelPreviousSymptomsTravel:
+                            </span>
+                            @* Eliminar las varable id y name que sucede??? *@
+                            <label class="btn btn-default">
+                                <input type="radio" name="TravelPrevSympt" id="TravelPrevSympt" value="1" data-bind='checked: TravelPrevSympt'>@LabelYes
+                            </label>
+                            <label class="btn btn-default">
+                                <input type="radio" name="TravelPrevSympt" id="TravelPrevSympt" value="0" data-bind='checked: TravelPrevSympt'>@LabelNo
+                            </label>
+                            <label class="btn btn-default">
+                                <input type="radio" name="TravelPrevSympt" id="TravelPrevSympt" value="9" data-bind='checked: TravelPrevSympt'>@LabelUnknown
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Destino Pais 1 / Ciudad 1 / Salida 1 -->
+                    <div class="row rowform" data-bind="visible: IsTravelPrevSympt()">
+                        <div class="col-md-4">
+                            <div class="col-md-1">
+                                1.-
+                            </div>
+                            <div class="col-md-11">
+                                <div class='input-group'>
+                                    <span class="input-group-addon">@LabelCountry</span>
+                                    <select id="TravelPrevSymptCountry1" class="form-control" data-bind="options: app.Views.Home.countries,
+                                        optionsText: 'Name',
+                                        optionsValue: 'Id',
+                                        value: TravelPrevSymptCountry1SelectedID,
+                                        optionsCaption: '@LabelSelectLabel'"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class='input-group'>
+                                <span class="input-group-addon">@LabelCity</span>
+                                <input id="TravelPrevSymptCity1" type='text' class="form-control case_letter" data-bind="value: TravelPrevSymptCity1" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class='input-group'>  
+                                <span class="input-group-addon">@LabelDateDeparture</span>
+                                <input id="TravelPrevSymptDateDeparture1" type="text" class="form-control" data-bind='datepicker: TravelPrevSymptDateDeparture1, datepickerOptions: {maxDate:"@Model.DatePickerConfig", dateFormat:"@Model.DateFormatDP"}' />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Destino Pais 2 / Ciudad 2 / Salida 2 -->
+                    <div class="row rowform" data-bind="visible: IsTravelPrevSympt()">
+                        <div class="col-md-4">
+                            <div class="col-md-1">
+                                2.-
+                            </div>
+                            <div class="col-md-11">
+                                <div class='input-group'>
+                                    <span class="input-group-addon">@LabelCountry</span>
+                                    <select id="TravelPrevSymptCountry2" class="form-control" data-bind="options: app.Views.Home.countries,
+                                        optionsText: 'Name',
+                                        optionsValue: 'Id',
+                                        value: TravelPrevSymptCountry2SelectedID,
+                                        optionsCaption: '@LabelSelectLabel'"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class='input-group'>
+                                <span class="input-group-addon">@LabelCity</span>
+                                <input id="TravelPrevSymptCity2" type='text' class="form-control case_letter" data-bind="value: TravelPrevSymptCity2" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class='input-group'>
+                                <span class="input-group-addon">@LabelDateDeparture</span>
+                                <input id="TravelPrevSymptDateDeparture2" type="text" class="form-control" data-bind='datepicker: TravelPrevSymptDateDeparture2, datepickerOptions: {maxDate:"@Model.DatePickerConfig", dateFormat:"@Model.DateFormatDP"}' />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Destino Pais 3 / Ciudad 3 / Salida 3 -->
+                    <div class="row rowform" data-bind="visible: IsTravelPrevSympt()">
+                        <div class="col-md-4">
+                            <div class="col-md-1">
+                                3.-
+                            </div>
+                            <div class="col-md-11">
+                                <div class='input-group'>
+                                    <span class="input-group-addon">@LabelCountry</span>
+                                    <select id="TravelPrevSymptCountry3" class="form-control" data-bind="options: app.Views.Home.countries,
+                                        optionsText: 'Name',
+                                        optionsValue: 'Id',
+                                        value: TravelPrevSymptCountry3SelectedID,
+                                        optionsCaption: '@LabelSelectLabel'"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class='input-group'>
+                                <span class="input-group-addon">@LabelCity</span>
+                                <input id="TravelPrevSymptCity3" type='text' class="form-control case_letter" data-bind="value: TravelPrevSymptCity3" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class='input-group'>
+                                <span class="input-group-addon">@LabelDateDeparture</span>
+                                <input id="TravelPrevSymptDateDeparture3" type="text" class="form-control" data-bind='datepicker: TravelPrevSymptDateDeparture3, datepickerOptions: {maxDate:"@Model.DatePickerConfig", dateFormat:"@Model.DateFormatDP"}' />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Paciente visito algún servicio de salud en los 14 días previos al inicio de síntomas -->
+                    <div class="row rowform">
+                        <div class='input-group col-md-12'>
+                            <span class="input-group-addon">
+                                @LabelPatientVisitedHealthCare:
+                            </span>
+                            <label class="btn btn-default">
+                                <input type="radio" value="1" data-bind='checked: PatientVisitedHealthCare'>@LabelYes
+                            </label>
+                            <label class="btn btn-default">
+                                <input type="radio" value="0" data-bind='checked: PatientVisitedHealthCare'>@LabelNo
+                            </label>
+                            <label class="btn btn-default">
+                                <input type="radio" value="9" data-bind='checked: PatientVisitedHealthCare'>@LabelUnknown
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Contacto del paciente con un caso confirmado -->
+                    <div class="row rowform">
+                        <div class='input-group col-md-12'>
+                            <span class="input-group-addon">
+                                @LabelContactCaseConfirmed:
+                            </span>
+                            <label class="btn btn-default">
+                                <input type="radio" value="1" data-bind='checked: ContactCaseConfirmed'>@LabelYes
+                            </label>
+                            <label class="btn btn-default">
+                                <input type="radio" value="0" data-bind='checked: ContactCaseConfirmed'>@LabelNo
+                            </label>
+                            <label class="btn btn-default">
+                                <input type="radio" value="9" data-bind='checked: ContactCaseConfirmed'>@LabelUnknown
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Tipo de contacto -->
+                    <div class="row rowform" data-bind="visible: IsContactCaseConfirmed()">
+                        <div class="col-md-4">
+                            <div class="col-md-1">
+                            </div>
+                            <div class="col-md-11">
+                                <div class='input-group'>
+                                    <span class="input-group-addon">@LabelTypeContactCaseConfirmed:</span>
+                                    <input id="ContactCaseConfirmedDesc" type='text' class="form-control case_letter" data-bind="value: ContactCaseConfirmedDesc" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Identificador de Contacto / Fecha de primer contacto / Fecha de último contacto -->
+                    <div class="row rowform" data-bind="visible: IsContactCaseConfirmed()">
+                        <div class="col-md-4">
+                            <div class="col-md-1">
+                            </div>
+                            <div class="col-md-11">
+                                <span style="font-weight:bold">@LabelIdentifiersUniqueLikelyConfirmed:</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowform" data-bind="visible: IsContactCaseConfirmed()">
+                        <div class="col-md-4">
+                            <div class="col-md-1">
+                                1.-
+                            </div>
+                            <div class="col-md-11">
+                                <div class='input-group'>
+                                    <span class="input-group-addon">@LabelContactIdentifier</span>
+                                    <input id="ContactIdentifier1" type='text' class="form-control case_letter" data-bind="value: ContactIdentifier1" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class='input-group'>
+                                <span class="input-group-addon">@LabelContactFirstDate</span>
+                                <input id="ContactFirstDate1" type="text" class="form-control" data-bind='datepicker: ContactFirstDate1, datepickerOptions: {maxDate:"@Model.DatePickerConfig", dateFormat:"@Model.DateFormatDP"}' />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class='input-group'>
+                                <span class="input-group-addon">@LabelContactLastDate</span>
+                                <input id="ContactLastDate1" type="text" class="form-control" data-bind='datepicker: ContactLastDate1, datepickerOptions: {maxDate:"@Model.DatePickerConfig", dateFormat:"@Model.DateFormatDP"}' />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowform" data-bind="visible: IsContactCaseConfirmed()">
+                        <div class="col-md-4">
+                            <div class="col-md-1">
+                                2.-
+                            </div>
+                            <div class="col-md-11">
+                                <div class='input-group'>
+                                    <span class="input-group-addon">@LabelContactIdentifier</span>
+                                    <input id="ContactIdentifier2" type='text' class="form-control case_letter" data-bind="value: ContactIdentifier2" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class='input-group'>
+                                <span class="input-group-addon">@LabelContactFirstDate</span>
+                                <input id="ContactFirstDate2" type="text" class="form-control" data-bind='datepicker: ContactFirstDate2, datepickerOptions: {maxDate:"@Model.DatePickerConfig", dateFormat:"@Model.DateFormatDP"}' />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class='input-group'>
+                                <span class="input-group-addon">@LabelContactLastDate</span>
+                                <input id="ContactLastDate2" type="text" class="form-control" data-bind='datepicker: ContactLastDate2, datepickerOptions: {maxDate:"@Model.DatePickerConfig", dateFormat:"@Model.DateFormatDP"}' />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowform" data-bind="visible: IsContactCaseConfirmed()">
+                        <div class="col-md-4">
+                            <div class="col-md-1">
+                                3.-
+                            </div>
+                            <div class="col-md-11">
+                                <div class='input-group'>
+                                    <span class="input-group-addon">@LabelContactIdentifier</span>
+                                    <input id="ContactIdentifier3" type='text' class="form-control case_letter" data-bind="value: ContactIdentifier3" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class='input-group'>
+                                <span class="input-group-addon">@LabelContactFirstDate</span>
+                                <input id="ContactFirstDate3" type="text" class="form-control" data-bind='datepicker: ContactFirstDate3, datepickerOptions: {maxDate:"@Model.DatePickerConfig", dateFormat:"@Model.DateFormatDP"}' />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class='input-group'>
+                                <span class="input-group-addon">@LabelContactLastDate</span>
+                                <input id="ContactLastDate3" type="text" class="form-control" data-bind='datepicker: ContactLastDate3, datepickerOptions: {maxDate:"@Model.DatePickerConfig", dateFormat:"@Model.DateFormatDP"}' />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- País de mayor probabilidad de exposición -->
+                    <div class="row rowform">
+                        <div class="col-md-4">
+                            <div class='input-group'>
+                                <span class="input-group-addon">@LabelCountryHigherExposition:</span>
+                                <select id="CountryHigherExposition" class="form-control" data-bind="options: app.Views.Home.countries,
+                                        optionsText: 'Name',
+                                        optionsValue: 'Id',
+                                        value: CountryHigherExpositionSelectedID,
+                                        optionsCaption: '@LabelSelectLabel'"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inusitado - Seccion: Ocupación -->
         <div class="row rowform" data-bind="visible:app.Views.Contact.IsInusitado">
             <div class="col-md-12">
                 <button type="button" style="background-color:#B2BABB; color:#000000" class="btn btn-group-justified" data-toggle="collapse" data-target="#Ocupacion">
@@ -1220,7 +1644,7 @@
             </div>
         </div>
 
-        <!-- Seccion: Exposicion -->
+        <!-- Inusitado - Seccion: Exposicion -->
         <div class="row rowform" data-bind="visible:app.Views.Contact.IsInusitado">
             <div class="col-md-12">
                 <button type="button" style="background-color:#B2BABB; color:#000000" class="btn btn-group-justified" data-toggle="collapse" data-target="#Exposicion">
@@ -2041,7 +2465,7 @@
                             </div>
                         </div>
                     }
-
+                    <!-- Cardiopatía crónica / Diabetes -->
                     <div class="row rowform">
                         <div class='input-group col-md-4'>
                             <label class="btn btn-default">
@@ -2054,7 +2478,7 @@
                             </label>
                         </div>
                     </div>
-
+                    <!-- Enfermedad neurológica crónica / Asma -->
                     <div class="row rowform">
                         <div class="col-md-4">
                             <label class="btn btn-default">
@@ -2305,6 +2729,27 @@
 
     <!-- INFORMACION CLINICA -->
     <div id="tab-hospital" data-bind="with: app.Views.Hospital">
+        <!-- Algún síntoma en recolección de muestra confirmada por laboratorio -->
+        <div class="row rowform">
+            <div class='input-group col-md-12'>
+                <span class="input-group-addon">
+                    @LabelSymptomsFirstLabConfirmation
+                </span>
+                <label class="btn btn-default">
+                    @*<input type="radio" name="LabConfirmedSymptom" id="PregnantSí" value="1" data-bind="checked: Pregnant">  @LabelYes*@
+                    <input type="radio" value="1" data-bind="checked: LabConfirmedSymptom">  @LabelYes
+                </label>
+                <label class="btn btn-default">
+                    @*<input type="radio" name="LabConfirmedSymptom" id="PregnantNo" value="0" data-bind="checked: Pregnant">  @LabelNoAsymptomatic*@
+                    <input type="radio" value="0" data-bind="checked: LabConfirmedSymptom">  @LabelNoAsymptomatic
+                </label>
+                <label class="btn btn-default">
+                    @*<input type="radio" name="LabConfirmedSymptom" id="PregnantDesconocido" value="9" data-bind="checked: Pregnant">  @LabelUnknown*@
+                    <input type="radio" value="9" data-bind="checked: LabConfirmedSymptom">  @LabelUnknown
+                </label>
+            </div>
+        </div>
+
         <!-- Fecha de inicio de síntomas / S.E. inicio de síntomas / Año epidemiológico -->
         <div class="row rowform">
             <div class="col-md-5">
@@ -2381,15 +2826,13 @@
 
                 <!-- Sintomatologia -->
                 <div id="sintomatologia" class="collapse in">
-                    <!-- <div class="row rowform"> -->
+                    <!-- Fiebre / Temperatura / Tos /Dificultad respiratoria / Label: No cumple definición de caso -->
                     <div class="row rowform" data-bind="visible:app.Views.Contact.NoActiveBOL">
-                        <!-- Fiebre o historial de fiebre -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
                                 <input type="checkbox" name="AntecedentesFiebre" id="AntecedentesFiebre" value="1" data-bind="checked: AntecedentesFiebre"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelFeverHistory"))
                             </label>
                         </div>
-                        <!-- Temperatura -->
                         <div class="col-md-3" data-bind="visible:app.Views.Contact.IsInusitado">
                             <div class='input-group'>
                                 <span class="input-group-addon">
@@ -2398,13 +2841,11 @@
                                 <input id="Temperatura" type='text' class="form-control case_letter" style="max-width: 100px" data-bind="value: Temperatura" />
                             </div>
                         </div>
-                        <!-- Tos -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
                                 <input type="checkbox" name="Tos" id="Tos" value="1" data-bind="checked: Tos"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelCough"))
                             </label>
                         </div>
-                        <!-- Dificultad respiratoria -->
                         @if (ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 15 && ViewBag.UsrCtry != 18 && ViewBag.UsrCtry != 17 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 119)
                         {
                             <div class="col-md-3" data-bind="visible: app.Views.Contact.SurvSARI">
@@ -2420,9 +2861,8 @@
                             </div>
                         }
                     </div>
-
+                    <!-- Inusitado: Temperatura -->
                     <div class="row rowform" data-bind="visible: app.Views.Contact.IsInusitado">
-                        <!-- Temperatura -->
                         <div class="col-md-3" data-bind="visible: app.Views.Contact.ActiveBOL">
                             <div class='input-group'>
                                 <span class="input-group-addon">
@@ -2432,16 +2872,14 @@
                             </div>
                         </div>
                     </div>
-
+                    <!-- Cefalea / Erupción / Dolor muscular / Disnea / Irritability/Confusion -->
                     <div class="row rowform" data-bind="visible:app.Views.Contact.IsInusitado">
-                        <!-- Cefalea -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
                                 <input type="checkbox" name="DolorCabeza" id="DolorCabeza" value="1" data-bind="checked: DolorCabeza"> 
                                     @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosCefalea"))
                             </label>
                         </div>
-                        <!-- Erupción -->
                         <div class="col-md-3">
                             <div class="form-inline">
                                 <div class="input-group">
@@ -2456,7 +2894,6 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Dolor muscular -->
                         <div class="col-md-3" data-bind="visible: app.Views.Contact.IsSurv() != '4'">
                             <div class="form-inline">
                                 <div class="input-group">
@@ -2471,24 +2908,19 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Disnea -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
                                 <input type="checkbox" name="Disnea" id="Disnea" value="1" data-bind="checked: Disnea"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelDyspnoea"))
                             </label>
                         </div>
-
-                        <!-- Irritability/Confusion -->
                         <div class="col-md-3" data-bind="visible: app.Views.Contact.IsSurv() == '4'">
                             <label class="btn btn-default">
                                 <input type="checkbox" name="IrritabilityConfusion" id="IrritabilityConfusion" value="1" data-bind="checked: IrritabilityConfusion"> Irritability/Confusion
                             </label>
                         </div>
                     </div>
-
-                    <!-- Dolor muscular / Chess Pain / ... -->
+                    <!-- Dolor muscular / Chess Pain(Dolor de pecho) / Abdominal Pain / Joint Pain(Dolor en las articulaciones) -->
                     <div class="row rowform" data-bind="visible: app.Views.Contact.IsSurv() == '4'">
-                        <!-- Dolor muscular -->
                         <div class="col-md-3">
                             <div class="form-inline">
                                 <div class="input-group">
@@ -2503,8 +2935,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Chess Pain -->
                         <div class="col-md-3">
                             <div class="form-inline">
                                 <div class="input-group">
@@ -2515,8 +2945,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Abdominal Pain -->
                         <div class="col-md-3">
                             <div class="form-inline">
                                 <div class="input-group">
@@ -2527,8 +2955,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Joint Pain -->
                         <div class="col-md-3">
                             <div class="form-inline">
                                 <div class="input-group">
@@ -2540,9 +2966,8 @@
                             </div>
                         </div>
                     </div>
-
+                    <!-- Síntomas hemorrágicos / Alteración del estado mental / Altralgia -->
                     <div class="row rowform" data-bind="visible:app.Views.Contact.IsInusitado">
-                        <!-- Síntomas hemorrágicos -->
                         <div class="col-md-6">
                             <div class="form-inline">
                                 <div class="input-group">
@@ -2557,16 +2982,12 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Alteración del estado mental -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
                                 <input type="checkbox" name="AlteracEstadoMental" id="AlteracEstadoMental" value="1" data-bind="checked: AlteracEstadoMental"> 
                                     @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosAlteraciónEstadoMental"))
                             </label>
                         </div>
-
-                        <!-- Altralgia -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
                                 <input type="checkbox" name="Altralgia" id="Altralgia" value="1" data-bind="checked: Altralgia"> 
@@ -2574,33 +2995,26 @@
                             </label>
                         </div>
                     </div>
-
+                    <!-- Escalofríos / Conjuntivitis / Rinitis / Diarrea aguda -->
                     <div class="row rowform" data-bind="visible:app.Views.Contact.IsInusitado">
-                        <!-- Escalofríos -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
                                 <input type="checkbox" name="Escalofrios" id="Escalofrios" value="1" data-bind="checked: Escalofrios"> 
                                     @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosEscalofrios"))
                             </label>
                         </div>
-
-                        <!-- Conjuntivitis -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
                                 <input type="checkbox" name="Conjuntivitis" id="Conjuntivitis" value="1" data-bind="checked: Conjuntivitis"> 
                                     @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosConjuntivitis"))
                             </label>
                         </div>
-
-                        <!-- Rinitis -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
                                 <input type="checkbox" name="Rinitis" id="Rinitis" value="1" data-bind="checked: Rinitis"> 
                                     @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosRinitis"))
                             </label>
                         </div>
-
-                        <!-- Diarrea aguda -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
                                 <input type="checkbox" name="DiarreaAguda" id="DiarreaAguda" value="1" data-bind="checked: DiarreaAguda"> 
@@ -2608,33 +3022,26 @@
                             </label>
                         </div>
                     </div>
-
+                    <!-- Diarrea crónica / Mareo / Fallo en el desarrollo / Hepatomegalea -->
                     <div class="row rowform" data-bind="visible:app.Views.Contact.IsInusitado">
-                        <!-- Diarrea crónica -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
                                 <input type="checkbox" name="DiarreaCronica" id="DiarreaCronica" value="1" data-bind="checked: DiarreaCronica"> 
                                     @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosDiarreaCronica"))
                             </label>
                         </div>
-
-                        <!-- Mareo -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
                                 <input type="checkbox" name="Mareo" id="Mareo" value="1" data-bind="checked: Mareo"> 
                                     @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosMareo"))
                             </label>
                         </div>
-
-                        <!-- Fallo en el desarrollo -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
                                 <input type="checkbox" name="FalloDesarrollo" id="FalloDesarrollo" value="1" data-bind="checked: FalloDesarrollo"> 
                                     @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosFalloDesarrollo"))
                             </label>
                         </div>
-
-                        <!-- Hepatomegalea -->
                         <div class="col-md-3">
                             <label class="btn btn-default">
                                 <input type="checkbox" name="Hepatomegalea" id="Hepatomegalea" value="1" data-bind="checked: Hepatomegalea"> 
@@ -2642,7 +3049,6 @@
                             </label>
                         </div>
                     </div>
-
                     <div class="row rowform" data-bind="visible:app.Views.Contact.IsInusitado">
                         <!-- Ictericia -->
                         <div class="col-md-3">
@@ -2676,7 +3082,6 @@
                             </label>
                         </div>
                     </div>
-
                     <div class="row rowform" data-bind="visible:app.Views.Contact.IsInusitado">
                         <!-- Rigidez de nuca -->
                         <div class="col-md-3">
@@ -2710,7 +3115,6 @@
                             </label>
                         </div>
                     </div>
-
                     <div class="row rowform" data-bind="visible:app.Views.Contact.IsInusitado">
                         <!-- Dolor retrorobitario -->
                         <div class="col-md-3">
@@ -2752,7 +3156,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="row rowform">
                         @if (ViewBag.UsrCtry == 17 || ViewBag.UsrCtry == 11 || ViewBag.UsrCtry == 119)
                         {   <!-- Rinorrea y Disnea para Jamaica e IC -->
@@ -2799,8 +3202,7 @@
                             </label>
                         </div>
                     </div>
-
-                    <!-- Medicion de saturacion de oxigeno -->
+                    <!-- Medicion de saturacion de oxigeno / Saturación de oxígeno % -->
                     <div class="row rowform" data-bind="visible:app.Views.Contact.SurvSARICR">
                         <div class="col-md-4">
                             <label class="btn btn-default">
@@ -2818,7 +3220,6 @@
                     </div>
                 </div>
             </div>
-
             <!-- Mensaje para Jamaica de definicion de caso-->
         </div>
 
@@ -3067,7 +3468,6 @@
                     </div>
 
                     <!-- Hospitalizado en / Numero o identificacion -->
-
                     <div class="row rowform" data-bind="visible: EnableHON()">
                         <div class="input-group col-md-3">
                             <span class="input-group-addon">
@@ -3089,7 +3489,40 @@
                             </div>
                         </div>
                     </div>
-                
+
+                    <!-- El caso está en aislamiento / Fecha de aislamiento -->
+                    <div class="row rowform">
+                        <div class='input-group col-md-6'>
+                            <span class="input-group-addon">@LabelCaseInIsolation:</span>
+                            <label class="btn btn-default">
+                                <input type="radio" value="1" data-bind='checked: CaseInIsolation'>@LabelYes
+                            </label>
+                            <label class="btn btn-default">
+                                <input type="radio" value="0" data-bind='checked: CaseInIsolation'>@LabelNo
+                            </label>
+                            <label class="btn btn-default">
+                                <input type="radio" value="9" data-bind='checked: CaseInIsolation'>@LabelUnknown
+                            </label>
+                        </div>
+                        <div class="col-md-6">
+                            <div class='input-group'>
+                                <span class="input-group-addon">@LabelDateIsolation:</span>
+                                <input id="DateIsolation" type="text" class="form-control" data-bind='datepicker: DateIsolation, datepickerOptions: {maxDate:"@Model.DatePickerConfig", dateFormat:"@Model.DateFormatDP"}' />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- El caso está en aislamiento otro lugar -->
+                    <div class="row rowform">
+                        <div class="col-md-12">
+                            <div class='input-group'>
+                                <span class="input-group-addon">@LabelCaseInIsolationOtherPlace:</span>
+                                <input id="CaseInIsolationOtherPlace" type='text' class="form-control case_letter" data-bind="value: CaseInIsolationOtherPlace" />
+                            </div>
+                        </div>
+                    </div>                
+
+                    <!-- UCI -->
                     <div class="row rowform" data-bind="visible: EnableICUHon()">
                         <div class="input-group col-md-3">
                             <span class="input-group-addon">
@@ -3102,7 +3535,7 @@
                             </select>
                         </div>
                     </div>
-
+                    <!-- Labels UCI -->
                     <div class="row rowform" data-bind="visible:EnableICUDate">
                         <div class="col-md-2">
 
@@ -3119,6 +3552,7 @@
                         <div class="col-md-4">
                         </div>
                     </div>
+                    <!-- Campos UCI -->
                     <div class="row rowform" data-bind="visible:EnableICUDate">
                         <div class="col-md-2">
                             @(ViewBag.UsrCtry != 7 ? (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelICU")) : (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelUPC")))
@@ -3143,9 +3577,9 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Unidades de pacientes críticos (UPC) = Incluye pacientes UCI o ... -->
                     @if (ViewBag.UsrCtry == 7)
                     {
-                        <!-- Unidades de pacientes críticos (UPC) = Incluye pacientes UCI o ... -->
                         <div class="row rowform">
                             <div class="col-md-7">
                                 <div style="font-weight:bold;font-size:9px">
@@ -3195,6 +3629,14 @@
                                 <div class="col-md-3">
                                     <label class="btn btn-default">
                                         <input type="checkbox" name="VAFO" id="VAFO" value="1" data-bind="checked: VAFO"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelHFOV"))
+                                    </label>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-md-3">
+                                    <label class="btn btn-default">
+                                        <input type="checkbox" name="ECMO" id="ECMO" value="1" data-bind="checked: ECMO"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelECMO"))
                                     </label>
                                 </div>
                             }
@@ -3301,6 +3743,26 @@
                                     optionsCaption: '@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel"))' ">
                     </select>&nbsp&nbsp
                     <input id="ReasonNotSamplingOther" type='text' data-bind="value: ReasonNotSamplingOther, visible: ReasonNotSamplingOtherVisible" class="form-control" />
+                </div>
+            </div>
+
+            <div class="col-md-7" data-bind="visible: ReasonSamplingVisible()">
+                <div class='input-group'>
+                    <span class="input-group-addon">
+                        @*@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelReasonNotSampling"))*@
+                        @LabelReasonSampling
+                    </span>
+                    @*<select id="ReasonSampling" class="form-control" data-bind="options: ReasonSampling,
+                optionsText: 'Name',
+                optionsValue: 'Id',
+                value: ReasonSamplingID,
+                optionsCaption: '@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel"))' ">*@
+                    <select id="ReasonSampling" class="form-control" data-bind="options: ReasonSampling,
+                                    optionsText: 'Name',
+                                    optionsValue: 'Id',
+                                    value: ReasonSamplingID,
+                                    optionsCaption: '@LabelSelectLabel' "></select>&nbsp&nbsp
+                    <input id="ReasonSamplingOther" type='text' data-bind="value: ReasonSamplingOther, visible: ReasonSamplingOtherVisible" class="form-control" />
                 </div>
             </div>
         </div>
@@ -3562,6 +4024,7 @@
 
     <!-- Estado del caso -->
     <div id="tab-case" data-bind="with: app.Views.Hospital">
+        <!-- Status del caso -->
         <div class="row rowform">
             <div class="col-md-12">
                 <button type="button" style="background-color:#B2BABB; color:#000000" class="btn btn-group-justified" data-toggle="collapse" data-target="#statuscaso">
@@ -3569,9 +4032,8 @@
                     <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
                 </button>
                 <div id="statuscaso" class="collapse in">
-
+                    <!-- Cumple definición de caso / Estatus del caso / Fecha de cierre -->
                     <div class="row rowform">
-
                         <div class="col-md-3" data-bind="visible: app.Views.Contact.OnlyCR">
                             <label class="btn btn-default">
                                 <input type="checkbox" name="CaseComply" id="CaseComply" value="1" data-bind="checked: CaseComply"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabCaseLabelCompliesDefinition")) 
@@ -3612,8 +4074,8 @@
                                 <input id="CloseDate" name="CloseDate" type='text' class="form-control " data-bind='datepicker: CloseDate, enable: EnableCloseDate, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
                             </div>
                         </div>
-
                     </div>
+                    <!-- Observaciones -->
                     <div class="row rowform">
                         <div class="col-md-8">
                             <div class='input-group'>
@@ -3627,7 +4089,224 @@
                 </div>
             </div>
         </div>
-        
+
+        <!-- Evolución -->
+        <div class="row rowform">
+            <div class="col-md-12">
+                <button type="button" style="background-color:#B2BABB; color:#000000" class="btn btn-group-justified" data-toggle="collapse" data-target="#OutcomeCase">
+                    @LabelOutcomeCase
+                    <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
+                </button>
+                <div id="OutcomeCase" class="collapse in">
+                    <!-- Fecha de reenvío de este report -->
+                    <div class="row rowform">
+                        <div class="col-md-4">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @LabelOutcomeDateResubmission
+                                </span>
+                                <input id="OutcomeDateResubmission" name="OutcomeDateResubmission" type='text' class="form-control " data-bind='datepicker: OutcomeDateResubmission, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Si el caso era asintomático al momento de la toma de muestra, desarrollo... / Fecha de inicio de sintomas... -->
+                    <div class="row rowform">
+                        <div class='input-group col-md-12'>
+                            <span class="input-group-addon">
+                                @LabelOutcomeDevelopedSymptoms:
+                            </span>
+                            <label class="btn btn-default">
+                                <input type="radio" value="1" data-bind="checked: OutcomeDevelopSymptoms">@LabelOutcomeDevelopedSymptomsYes
+                            </label>
+                            <label class="btn btn-default">
+                                <input type="radio" value="0" data-bind="checked: OutcomeDevelopSymptoms">@LabelOutcomeDevelopedSymptomsNo
+                            </label>
+                        </div>
+                    </div>
+                    <!-- Fecha de inicio de sintomas... -->
+                    <div class="row rowform">
+                        <div class="col-md-4">
+                            <div class="col-md-1">
+                            </div>
+                            <div class="col-md-11">
+                                <div class='input-group'>
+                                    <span class="input-group-addon">
+                                        @LabelOutcomeDateOnsetSymptoms
+                                    </span>
+                                    <input id="OutcomeDateOnsetSymptoms" name="OutcomeDateOnsetSymptoms" type='text' class="form-control " data-bind='enable: OutcomeDateOnsetSymptomsEnable, datepicker: OutcomeDateOnsetSymptoms, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Label: Result 1 -->
+                    <div class="row rowform">
+                        <div class="col-md-12">
+                            <div style="font-weight:bold;font-size:11px">
+                                @LabelOutcomeClinicalCourse <br />
+                                <hr style="margin-top:3px; margin-bottom:0px; border-width:1px  0  0; " />
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Hospitalización (podría haber ...) -->
+                    <div class="row rowform">
+                        <div class="col-md-6">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @LabelOutcomeAdmissionPrevReported:
+                                </span>
+                                <label class="btn btn-default">
+                                    <input type="radio" value="1" data-bind="checked: OutcomeAdmissionPrevReported">@LabelYes
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type="radio" value="0" data-bind="checked: OutcomeAdmissionPrevReported">@LabelNo
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type="radio" value="9" data-bind="checked: OutcomeAdmissionPrevReported">@LabelUnknown
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @LabelOutcomeDateFirstAdmission
+                                </span>
+                                <input id="OutcomeDateFirstAdmission" name="OutcomeDateFirstAdmission" type='text' class="form-control " data-bind='enable: OutcomeDateFirstAdmissionEnable, datepicker: OutcomeDateFirstAdmission, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
+                            </div>
+                        </div>
+                    </div>
+                    <!-- UCI / Ventilación mecánica -->
+                    <div class="row rowform">
+                        <div class="col-md-6">
+                            <div class='input-group'>
+                                <span class="input-group-addon">@LabelOutcomeUCI:</span>
+                                <label class="btn btn-default">
+                                    <input type="radio" value="1" data-bind="checked: OutcomeUCI">@LabelYes
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type="radio" value="0" data-bind="checked: OutcomeUCI">@LabelNo
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type="radio" value="9" data-bind="checked: OutcomeUCI">@LabelUnknown
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class='input-group'>
+                                <span class="input-group-addon">@LabelOutcomeVentMecanica:</span>
+                                <label class="btn btn-default">
+                                    <input type="radio" value="1" data-bind="checked: OutcomeVentMecanica">@LabelYes
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type="radio" value="0" data-bind="checked: OutcomeVentMecanica">@LabelNo
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type="radio" value="9" data-bind="checked: OutcomeVentMecanica">@LabelUnknown
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ECMO -->
+                    <div class="row rowform">
+                        <div class="col-md-6">
+                            <div class='input-group'>
+                                <span class="input-group-addon">@LabelOutcomeECMO:</span>
+                                <label class="btn btn-default">
+                                    <input type="radio" value="1" data-bind="checked: OutcomeECMO">@LabelYes
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type="radio" value="0" data-bind="checked: OutcomeECMO">@LabelNo
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type="radio" value="9" data-bind="checked: OutcomeECMO">@LabelUnknown
+                                </label>
+                            </div>
+                        </div>
+ 
+                    </div>
+
+                    
+                    <!-- Label: Resultado final -->
+                    <div class="row rowform">
+                        <div class="col-md-12">
+                            <div style="font-weight:bold;font-size:11px">
+                                @LabelOutcomeFinalHealthOutcome <br />
+                                <hr style="margin-top:3px; margin-bottom:0px; border-width:1px  0  0; " />
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Condicion de salida / Otro -->
+                    <div class="row rowform">
+                        <div class="col-md-4">
+                            <div class='input-group'>
+                                <span class="input-group-addon">@LabelOutcomeExitCondition:</span>
+                                <select id="OutcomeDestin" class="form-control" data-bind="value: OutcomeDestin" style="max-width:200px">
+                                    <option value="">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSelect"))</option>
+                                    <option value="A">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelMedicalDischarged"))</option>
+                                    <option value="D">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelDeceased"))</option>
+                                    <option value="S">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelStillIll"))</option>
+                                    <option value="O">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOther"))</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class='input-group'>
+                                <span class="input-group-addon">@LabelOutcomeExplain:</span>
+                                <input id="OutcomeDestinOther" type='text' class="form-control case_letter" data-bind="value: OutcomeDestinOther, enable: OutcomeDestinOtherEnable" />
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Fecha de alta de aislamiento/hospitalización o Fecha de fallecimiento -->
+                    <div class="row rowform">
+                        <div class="col-md-12">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @LabelOutcomeDateRelease
+                                </span>
+                                <input id="OutcomeDateRelease" name="OutcomeDateRelease" type='text' class="form-control " data-bind='datepicker: OutcomeDateRelease, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Fecha de la última prueba de laboratorio -->
+                    <div class="row rowform">
+                        <div class="col-md-6">
+                            <div class='input-group'>
+                                <span class="input-group-addon">@LabelOutcomeDateLastLabTest</span>
+                                <input id="OutcomeDateLastLabTest" name="OutcomeDateLastLabTest" type='text' class="form-control " data-bind='datepicker: OutcomeDateLastLabTest, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
+                            </div>
+                        </div>
+                        <!-- Resultado -->
+                        <div class="col-md-6">
+                            <div class='input-group'>
+                                <span class="input-group-addon">@LabelOutcomeResultsLastTest</span>
+                                <select class="form-control" data-bind="options: app.Views.Home.CTR,
+                                        optionsText: 'Name',
+                                        optionsValue: 'Id',
+							            optionsCaption: '@LabelOutcomeResultSelect',
+                                        value: OutcomeResultsLastTest"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowform">
+                        <div class="col-md-12">
+                            <div class='input-group'>
+                                <span class="input-group-addon">@LabelOutcomeTotalHighRisk:</span>
+                                <input id="OutcomeTotalHighRisk" type='text' class="form-control case_letter" data-bind="value: OutcomeTotalHighRisk, enable: OutcomeTotalHighRiskEnable" />
+                                &nbsp;&nbsp;
+                                <label class="btn btn-default">
+                                    <input type="checkbox" name="OutcomeTotalHighRiskUnknown" id="OutcomeTotalHighRiskUnknown" data-bind="checked: OutcomeTotalHighRiskUnknown">@LabelUnknown
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Atras -->
         <div class="row rowform">
             <div class="col-md-12">
                 <button id="Atras" type="button" class="btn btn-primary btn-back" onclick="$('#tabs').tabs({ active: 4 });">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabCaseBtnBack"))</button>
@@ -5937,6 +6616,7 @@
     var institutions = @Html.Raw(Json.Encode(Model.Institutions));
     var InstitutionsCaseGenerarting = @Html.Raw(Json.Encode(Model.InstitutionsCaseGenerarting));
     var reasonnotsampling = @Html.Raw(Json.Encode(Model.ReasonNotSampling));
+    var reasonsampling = @Html.Raw(Json.Encode(Model.ReasonSampling));
 
     var selcty = @(ViewBag.UsrCtry);
     var AlertDefinitionBegin = @(ViewBag.AlertDefinitionBegin);
@@ -6127,6 +6807,9 @@
     var CSNP= @Html.Raw(Json.Encode(Model.CSNP));
     var CTT= @Html.Raw(Json.Encode(Model.CTT));
     var CTR= @Html.Raw(Json.Encode(Model.CTR));
+    console.log("F1");
+    console.log(CTR);
+    console.log("F2");
     var CVT= @Html.Raw(Json.Encode(Model.CVT));
     var COVT= @Html.Raw(Json.Encode(Model.COVT));
     var CVST= @Html.Raw(Json.Encode(Model.CVST));

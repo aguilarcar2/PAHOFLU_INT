@@ -275,6 +275,19 @@ namespace Paho.Controllers
 
             CaseViewModel.ReasonNotSampling = ReasonNotSamplingDisplay;
 
+            //**** Motivos de toma de muestra
+            IQueryable<CatReasonSampling> catreasonsampling = null;
+            catreasonsampling = db.CatReasonSampling;
+
+            var ReasonSamplingDisplay = catreasonsampling.Select(i => new LookupView<CatReasonSampling>()
+            {
+                Id = i.ID.ToString(),
+                Name = (user.Institution.Country.Language == "SPA") ? i.SPA : i.ENG,
+                orden = ""
+            }).ToList();
+
+            CaseViewModel.ReasonSampling = ReasonSamplingDisplay;
+
             // Catalogos del laboratorio
             CSNP = db.CatSampleNoProcessed.OrderBy(i => i.orden).ThenBy(j => j.SPA);
             var CSNPDisplay = (user.Institution.Country.Language == "SPA" ? CSNP.Select(i => new LookupView<CatSampleNoProcessed>()

@@ -36,8 +36,8 @@ function ContactViewModel(app, dataModel) {
     self.flow_open_always = ko.observable(false); // Esta variable es solo para los laboratorios que estan marcados en la tabla de configuracion de flujo
 
     self.SavePrev_var = ko.observable(true);
-    self.IsSurv = ko.observable("");                                //#### CAFQ
-    self.SurvInusual = ko.observable(false);                        //#### CAFQ
+    self.IsSurv = ko.observable("");
+    self.SurvInusual = ko.observable(false);
     self.SurvInusual.subscribe(function (inusualOK) {               //#### CAFQ
         if (!inusualOK) {
             app.Views.Risk.ResetRiskInusual();
@@ -78,7 +78,11 @@ function ContactViewModel(app, dataModel) {
     self.AMeasure.subscribe(function(newmeasure){
         //self.CalculateDOB();
     });
-    self.ResponsibleMinor = ko.observable("");      //####CAFQ 
+    self.ResponsibleMinor = ko.observable("");
+
+    self.UniqueCaseIdentif = ko.observable("");                         //#### 200225
+    self.selectedCountryCaseDiagnosedID = ko.observable("");            //#### 200225
+    self.FirstAdministLevel = ko.observable("");                        //#### 200225
 
     self.ActiveBOL = ko.computed(function () {
         return (self.UsrCountry() == 3) ? true : false;
@@ -100,10 +104,10 @@ function ContactViewModel(app, dataModel) {
     }, self);
     self.ActiveSUR = ko.computed(function () {
         return (self.UsrCountry() == 25) ? true : false;
-    }, self);       //#### CAFQ
+    }, self);
     self.ActiveJAM = ko.computed(function () {
         return (self.UsrCountry() == 17) ? true : false;
-    }, self);       //#### CAFQ
+    }, self);
     self.ActiveHON = ko.computed(function () {
         return (self.UsrCountry() == 15) ? true : false;
     }, self);
@@ -113,8 +117,7 @@ function ContactViewModel(app, dataModel) {
     self.ActiveCHN = ko.computed(function () {
         return (self.UsrCountry() == 67) ? true : false;
     }, self);
-
-
+    
     self.VisibleIdType = ko.computed(function () {
         return (self.UsrCountry() != 15) ? true : false;
     }, self);
@@ -306,11 +309,9 @@ function ContactViewModel(app, dataModel) {
     });
 
     //self.NoExpediente.subscribe(function (NewDT) {
-
     //    if (self.UsrCountry() == 7 && self.NoExpediente() != "" && NewDT == 4 && self.NoExpediente() != "9.999.999" && $("#ITy").val() != "2") {
     //        self.esrut(NewRUN);
     //    }
-
     //});
 
     self.EnableCHI = ko.computed(function () {
@@ -646,6 +647,11 @@ function ContactViewModel(app, dataModel) {
 
         self.selectedNativepeopleID("");
         self.hasHospitalID("");
+
+        self.selectedCountryCaseDiagnosedID("");                //#### 200225
+        self.UniqueCaseIdentif();                               //#### 200225
+        self.FirstAdministLevel();                              //#### 200225
+
         // esto es para resetear el flujo
         self.flow_institution(0);
         self.flow_record(0);
@@ -896,6 +902,11 @@ function ContactViewModel(app, dataModel) {
                 self.hasHospitalID(data.hospitalIDRecord);
                 self.hasHospitalID() > 0 ? app.Views.Home.selectedInstitutionId(self.hasHospitalID()) : "";
                 self.hospitalIDCaseGenerating(data.hospitalIDCaseGenerating);
+
+                self.selectedCountryCaseDiagnosedID(data.CountryCaseDiagnosedID);   //#### 200225
+                self.UniqueCaseIdentif(data.UniqueCaseIdentif);                     //#### 200225
+                self.FirstAdministLevel(data.FirstAdministLevel);                   //#### 200225
+
                 self.DataStatement(data.DataStatement);
                 self.flow_record(data.flow_record);
                 self.flow_institution(data.flow_institution);
@@ -998,6 +1009,9 @@ function ContactViewModel(app, dataModel) {
                 nationality: self.selectedNationalityID(),
                 NoExpediente: self.NoExpediente() == null ? "" : self.NoExpediente().toLocaleUpperCase(),
                 DateFeverDummy: moment(date_fever_dummy).format(date_format_ISO),
+                CountryCaseDiagnosedID: self.selectedCountryCaseDiagnosedID(),                      //#### 200225
+                UniqueCaseIdentif: self.UniqueCaseIdentif(),                                        //#### 200225
+                FirstAdministLevel: self.FirstAdministLevel(),                                      //#### 200225
                 IsSample: app.Views.Hospital.IsSample() === "true" ? true : (app.Views.Hospital.IsSample() === "false" ? false : null),
             },
             function (data) {

@@ -50,7 +50,92 @@
     self.TrabLaboratorioRama = ko.observable("");                           //##### CAFQ
     self.selectedTrabSaludRamaId = ko.observable();                         //**** CAFQ
     self.selectedTrabLaboratorioRamaId = ko.observable();                   //**** CAFQ
+    //********************
+    self.HealthCareWorkerJob = ko.observable("");                           //#### 200225
+    self.selectedHealthCareWorkerJobCountryID = ko.observable("");          //#### 200225
+    self.HealthCareWorkerJobCity = ko.observable("");                       //#### 200225
+    self.HealthCareWorkerJobFacility = ko.observable("");                   //#### 200225
+    self.HealthCareWorkerJobYes = ko.computed(function () {                 //**** 200225
+        bReturn = false;
 
+        if (self.HealthCareWorkerJob() == "1") {
+            bReturn = true;
+        } else {
+            self.selectedHealthCareWorkerJobCountryID("");
+            self.HealthCareWorkerJobCity("");
+            self.HealthCareWorkerJobFacility("");
+        }
+
+        return bReturn;
+    }, self);
+
+    self.TravelPrevSympt = ko.observable("");                               //#### 200225
+    self.TravelPrevSymptCountry1SelectedID = ko.observable("");             //#### 200225
+    self.TravelPrevSymptCountry2SelectedID = ko.observable("");             //#### 200225
+    self.TravelPrevSymptCountry3SelectedID = ko.observable("");             //#### 200225
+    self.TravelPrevSymptCity1 = ko.observable("");                          //#### 200225
+    self.TravelPrevSymptCity2 = ko.observable("");                          //#### 200225
+    self.TravelPrevSymptCity3 = ko.observable("");                          //#### 200225
+    self.TravelPrevSymptDateDeparture1 = ko.observable();                              //#### 200225
+    self.TravelPrevSymptDateDeparture2 = ko.observable();                              //#### 200225
+    self.TravelPrevSymptDateDeparture3 = ko.observable();                              //#### 200225
+    self.IsTravelPrevSympt = ko.computed(function () {                 //**** 200225
+        bReturn = false;
+
+        if (self.TravelPrevSympt() == "1") {
+            bReturn = true;
+        } else {
+            self.TravelPrevSymptCountry1SelectedID("");
+            self.TravelPrevSymptCountry2SelectedID("");
+            self.TravelPrevSymptCountry3SelectedID("");
+            self.TravelPrevSymptCity1("");
+            self.TravelPrevSymptCity2("");
+            self.TravelPrevSymptCity3("");
+            self.TravelPrevSymptDateDeparture1();
+            self.TravelPrevSymptDateDeparture2();
+            self.TravelPrevSymptDateDeparture3();
+        }
+
+        return bReturn;
+    }, self);
+
+    self.PatientVisitedHealthCare = ko.observable("");                      //#### 200225
+    self.ContactCaseConfirmed = ko.observable("");                          //#### 200225
+    self.ContactCaseConfirmedDesc = ko.observable("");                      //#### 200225
+    self.ContactIdentifier1 = ko.observable("");                            //#### 200225
+    self.ContactFirstDate1 = ko.observable(null);                           //#### 200225
+    self.ContactLastDate1 = ko.observable(null);                            //#### 200225
+    self.ContactIdentifier2 = ko.observable("");                            //#### 200225
+    self.ContactFirstDate2 = ko.observable(null);                           //#### 200225
+    self.ContactLastDate2 = ko.observable(null);                            //#### 200225
+    self.ContactIdentifier3 = ko.observable("");                            //#### 200225
+    self.ContactFirstDate3 = ko.observable(null);                           //#### 200225
+    self.ContactLastDate3 = ko.observable(null);                            //#### 200225
+
+    self.IsContactCaseConfirmed = ko.computed(function () {                 //**** 200225
+        bReturn = false;
+
+        if (self.ContactCaseConfirmed() == "1") {
+            bReturn = true;
+        } else {
+            self.ContactCaseConfirmedDesc("");
+            self.ContactIdentifier1("");                                    //#### 200225
+            self.ContactFirstDate1(null);                                   //#### 200225
+            self.ContactLastDate1(null);                                    //#### 200225
+            self.ContactIdentifier2("");                                    //#### 200225
+            self.ContactFirstDate2(null);                                   //#### 200225
+            self.ContactLastDate2(null);                                    //#### 200225
+            self.ContactIdentifier3("");                                    //#### 200225
+            self.ContactFirstDate3(null);                                   //#### 200225
+            self.ContactLastDate3(null);                                    //#### 200225
+        }
+
+        return bReturn;
+    }, self);
+
+    self.CountryHigherExpositionSelectedID = ko.observable("");             //#### 200225  
+
+    //********************
     self.IsViajePrevSintoma = ko.computed(function () {                     //##### CAFQ
         return (self.ViajePrevSintoma() == 1) ? true : false;
     }, self);
@@ -505,6 +590,36 @@
         self.AntiViralDose("");
         self.AntiViralDays();
 
+        self.TravelPrevSympt("");                               //#### 200225
+        self.TravelPrevSymptCountry1SelectedID("");             //#### 200225
+        self.TravelPrevSymptCountry2SelectedID("");             //#### 200225
+        self.TravelPrevSymptCountry3SelectedID("");             //#### 200225
+        self.TravelPrevSymptCity1("");                               //#### 200225
+        self.TravelPrevSymptCity2("");                               //#### 200225
+        self.TravelPrevSymptCity3("");                               //#### 200225
+        self.TravelPrevSymptDateDeparture1(null);             //#### 200225
+        self.TravelPrevSymptDateDeparture2(null);             //#### 200225
+        self.TravelPrevSymptDateDeparture3(null);             //#### 200225
+
+        self.PatientVisitedHealthCare("");
+        self.ContactCaseConfirmed("");
+        self.ContactCaseConfirmedDesc("");
+        self.ContactIdentifier1("");
+        self.ContactIdentifier2("");
+        self.ContactIdentifier3("");
+        self.ContactFirstDate1(null);
+        self.ContactFirstDate2(null);
+        self.ContactFirstDate3(null);
+        self.ContactLastDate1(null);
+        self.ContactLastDate2(null);
+        self.ContactLastDate3(null);
+        self.CountryHigherExpositionSelectedID("");
+
+        self.HealthCareWorkerJob("");
+        self.selectedHealthCareWorkerJobCountryID("");
+        self.HealthCareWorkerJobCity(null);
+        self.HealthCareWorkerJobFacility(null);
+
         self.Antibiotic("");
         self.AntibioticName("");
         self.ResetRiskInusual();                    //#### CAFQ
@@ -550,8 +665,7 @@
 
     self.GetRisk = function (id) {
         self.Id = id;
-        //console.log("Getting ...");
-        //console.log(self.Id);
+
         $.getJSON(app.dataModel.getRiskUrl, { id: id }, function (data, status) {
             self.hasReset(true);
                 self.RiskFactors(data.RiskFactors);
@@ -644,10 +758,38 @@
                 self.TipoRelaContacto(data.TipoRelaContacto);           //#### CAFQ
                 self.FamiDirecContacto(data.FamiDirecContacto);           //#### CAFQ
 
-                //self.TrabSaludRama(data.TrabSaludRama);                         //#### CAFQ
+                self.TravelPrevSympt(data.TravelPrevSympt);                                         //#### 200225
+                self.TravelPrevSymptCountry1SelectedID(data.TravelPrevSymptCountryID1);             //#### 200225
+                self.TravelPrevSymptCountry2SelectedID(data.TravelPrevSymptCountryID2);             //#### 200225
+                self.TravelPrevSymptCountry3SelectedID(data.TravelPrevSymptCountryID3);             //#### 200225
+                self.TravelPrevSymptCity1(data.TravelPrevSymptCity1);                               //#### 200225
+                self.TravelPrevSymptCity2(data.TravelPrevSymptCity2);                               //#### 200225
+                self.TravelPrevSymptCity3(data.TravelPrevSymptCity3);                               //#### 200225
+                if (data.TravelPrevSymptDateDeparture1) self.TravelPrevSymptDateDeparture1(moment(data.TravelPrevSymptDateDeparture1).clone().toDate()); else self.TravelPrevSymptDateDeparture1(null);
+                if (data.TravelPrevSymptDateDeparture2) self.TravelPrevSymptDateDeparture2(moment(data.TravelPrevSymptDateDeparture2).clone().toDate()); else self.TravelPrevSymptDateDeparture2(null);
+                if (data.TravelPrevSymptDateDeparture3) self.TravelPrevSymptDateDeparture3(moment(data.TravelPrevSymptDateDeparture3).clone().toDate()); else self.TravelPrevSymptDateDeparture3(null);
+                
+                self.PatientVisitedHealthCare(data.PatientVisitedHealthCare);
+                self.ContactCaseConfirmed(data.ContactCaseConfirmed);
+                self.ContactCaseConfirmedDesc(data.ContactCaseConfirmedDesc);
+                self.ContactIdentifier1(data.ContactIdentifier1);
+                self.ContactIdentifier2(data.ContactIdentifier2);
+                self.ContactIdentifier3(data.ContactIdentifier3);
+                if (data.ContactFirstDate1) self.ContactFirstDate1(moment(data.ContactFirstDate1).clone().toDate()); else self.ContactFirstDate1(null);
+                if (data.ContactFirstDate2) self.ContactFirstDate2(moment(data.ContactFirstDate2).clone().toDate()); else self.ContactFirstDate2(null);
+                if (data.ContactFirstDate3) self.ContactFirstDate3(moment(data.ContactFirstDate3).clone().toDate()); else self.ContactFirstDate3(null);
+                if (data.ContactLastDate1) self.ContactLastDate1(moment(data.ContactLastDate1).clone().toDate()); else self.ContactLastDate1(null);
+                if (data.ContactLastDate2) self.ContactLastDate2(moment(data.ContactLastDate2).clone().toDate()); else self.ContactLastDate2(null);
+                if (data.ContactLastDate3) self.ContactLastDate3(moment(data.ContactLastDate3).clone().toDate()); else self.ContactLastDate3(null);
+                self.CountryHigherExpositionSelectedID(data.CountryHigherExpositionID);
+
+                self.HealthCareWorkerJob(data.HealthCareWorkerJob);
+                self.selectedHealthCareWorkerJobCountryID(data.HealthCareWorkerJobCountryID);
+                self.HealthCareWorkerJobCity(data.HealthCareWorkerJobCity);
+                self.HealthCareWorkerJobFacility(data.HealthCareWorkerJobFacility);
+
                 self.selectedTrabSaludRamaId(data.TrabSaludRama);               //#### CAFQ
                 self.TrabLaboratorio(data.TrabLaboratorio);                     //#### CAFQ
-                //self.TrabLaboratorioRama(data.TrabLaboratorioRama);             //#### CAFQ
                 self.selectedTrabLaboratorioRamaId(data.TrabLaboratorioRama);   //#### CAFQ
 
                 self.hasReset(false);
@@ -861,6 +1003,17 @@
         date_DestFechaSalida2 = jQuery.type(self.DestFechaSalida2()) === 'date' ? self.DestFechaSalida2() : parseDate($("#DestFechaSalida2").val(), date_format_);            //#### CAFQ
         date_DestFechaSalida3 = jQuery.type(self.DestFechaSalida3()) === 'date' ? self.DestFechaSalida3() : parseDate($("#DestFechaSalida3").val(), date_format_);            //#### CAFQ
 
+        date_TravelPrevSymptDateDeparture1 = jQuery.type(self.TravelPrevSymptDateDeparture1()) === 'date' ? self.TravelPrevSymptDateDeparture1() : parseDate($("#TravelPrevSymptDateDeparture1").val(), date_format_);            //#### CAFQ
+        date_TravelPrevSymptDateDeparture2 = jQuery.type(self.TravelPrevSymptDateDeparture2()) === 'date' ? self.TravelPrevSymptDateDeparture2() : parseDate($("#TravelPrevSymptDateDeparture2").val(), date_format_);            //#### CAFQ
+        date_TravelPrevSymptDateDeparture3 = jQuery.type(self.TravelPrevSymptDateDeparture3()) === 'date' ? self.TravelPrevSymptDateDeparture3() : parseDate($("#TravelPrevSymptDateDeparture3").val(), date_format_);            //#### CAFQ
+
+        date_ContactFirstDate1 = jQuery.type(self.ContactFirstDate1()) === 'date' ? self.ContactFirstDate1() : parseDate($("#ContactFirstDate1").val(), date_format_);            //#### CAFQ
+        date_ContactFirstDate2 = jQuery.type(self.ContactFirstDate2()) === 'date' ? self.ContactFirstDate2() : parseDate($("#ContactFirstDate2").val(), date_format_);            //#### CAFQ
+        date_ContactFirstDate3 = jQuery.type(self.ContactFirstDate3()) === 'date' ? self.ContactFirstDate3() : parseDate($("#ContactFirstDate3").val(), date_format_);            //#### CAFQ
+        date_ContactLastDate1 = jQuery.type(self.ContactLastDate1()) === 'date' ? self.ContactLastDate1() : parseDate($("#ContactLastDate1").val(), date_format_);            //#### CAFQ
+        date_ContactLastDate2 = jQuery.type(self.ContactLastDate2()) === 'date' ? self.ContactLastDate2() : parseDate($("#ContactLastDate2").val(), date_format_);            //#### CAFQ
+        date_ContactLastDate3 = jQuery.type(self.ContactLastDate3()) === 'date' ? self.ContactLastDate3() : parseDate($("#ContactLastDate3").val(), date_format_);            //#### CAFQ
+
         date_InfeccHospitFecha = jQuery.type(self.InfeccHospitFecha()) === 'date' ? self.InfeccHospitFecha() : parseDate($("#InfeccHospitFecha").val(), date_format_);        //#### CAFQ
 
          $.post(app.dataModel.saveRiskUrl,
@@ -951,12 +1104,41 @@
                 InfluConfirContacto: self.InfluConfirContacto(),          //#### CAFQ
                 TipoRelaContacto: self.TipoRelaContacto(),          //#### CAFQ
                 FamiDirecContacto: self.FamiDirecContacto(),          //#### CAFQ
-                /*TrabSaludRama: self.TrabSaludRama(),          //#### CAFQ
-                TrabLaboratorio: self.TrabLaboratorio(),          //#### CAFQ
-                TrabLaboratorioRama: self.TrabLaboratorioRama()          //#### CAFQ*/
                 TrabSaludRama: self.selectedTrabSaludRamaId(),                          //#### CAFQ
                 TrabLaboratorio: self.TrabLaboratorio(),                                //#### CAFQ
-                TrabLaboratorioRama: self.selectedTrabLaboratorioRamaId()               //#### CAFQ
+                TrabLaboratorioRama: self.selectedTrabLaboratorioRamaId(),               //#### CAFQ
+
+                TravelPrevSympt: self.TravelPrevSympt(),
+                TravelPrevSymptCountryID1: self.TravelPrevSymptCountry1SelectedID(),
+                TravelPrevSymptCountryID2: self.TravelPrevSymptCountry2SelectedID(),
+                TravelPrevSymptCountryID3: self.TravelPrevSymptCountry3SelectedID(),
+                TravelPrevSymptCity1: self.TravelPrevSymptCity1(),
+                TravelPrevSymptCity2: self.TravelPrevSymptCity2(),
+                TravelPrevSymptCity3: self.TravelPrevSymptCity3(),
+                TravelPrevSymptDateDeparture1: $("#TravelPrevSymptDateDeparture1").val() == "" ? null : moment(date_TravelPrevSymptDateDeparture1).format(date_format_ISO),
+                TravelPrevSymptDateDeparture2: $("#TravelPrevSymptDateDeparture2").val() == "" ? null : moment(date_TravelPrevSymptDateDeparture2).format(date_format_ISO),
+                TravelPrevSymptDateDeparture3: $("#TravelPrevSymptDateDeparture3").val() == "" ? null : moment(date_TravelPrevSymptDateDeparture3).format(date_format_ISO),
+
+                PatientVisitedHealthCare: self.PatientVisitedHealthCare(),
+                ContactCaseConfirmed: self.ContactCaseConfirmed(),
+                ContactCaseConfirmedDesc: self.ContactCaseConfirmedDesc(),
+                ContactIdentifier1: self.ContactIdentifier1(),
+                ContactIdentifier2: self.ContactIdentifier2(),
+                ContactIdentifier3: self.ContactIdentifier3(),
+                ContactFirstDate1: $("#ContactFirstDate1").val() == "" ? null : moment(date_ContactFirstDate1).format(date_format_ISO),
+                ContactFirstDate2: $("#ContactFirstDate2").val() == "" ? null : moment(date_ContactFirstDate2).format(date_format_ISO),
+                ContactFirstDate3: $("#ContactFirstDate3").val() == "" ? null : moment(date_ContactFirstDate3).format(date_format_ISO),
+                ContactLastDate1: $("#ContactLastDate1").val() == "" ? null : moment(date_ContactLastDate1).format(date_format_ISO),
+                ContactLastDate2: $("#ContactLastDate2").val() == "" ? null : moment(date_ContactLastDate2).format(date_format_ISO),
+                ContactLastDate3: $("#ContactLastDate3").val() == "" ? null : moment(date_ContactLastDate3).format(date_format_ISO),
+                CountryHigherExpositionID: self.CountryHigherExpositionSelectedID(),
+
+                HealthCareWorkerJob: self.HealthCareWorkerJob(),
+                HealthCareWorkerJobCountryID: self.selectedHealthCareWorkerJobCountryID(),
+                HealthCareWorkerJobCity: self.HealthCareWorkerJobCity(),
+                HealthCareWorkerJobFacility: self.HealthCareWorkerJobFacility()
+
+
             },
             function (data) {
                 if (nextStep) nextStep();

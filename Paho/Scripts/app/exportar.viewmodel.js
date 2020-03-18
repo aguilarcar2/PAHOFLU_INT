@@ -103,17 +103,42 @@
         });
     };
 
-    
+    self.ReloadInstitutionsArea = function () {
+        if (typeof self.selectedCountryId() === "undefined") {
+            return;
+        }
+
+        if (self.selectedAreaId() > 0) {
+            //$("#Regions").val("")
+            self.selectedRegionId("");
+        }
+
+        self.loadInstitutions();
+    };
+
+    self.ReloadInstitutionsRegion = function () {
+        if (typeof self.selectedCountryId() === "undefined") {
+            return;
+        }
+
+        if (self.selectedRegionId() > 0) {
+            //$("#Areas").val("")
+            self.selectedAreaId("");
+        }
+
+        self.loadInstitutions();
+    };
+
     self.ReloadInstitutions = function () {
         if (typeof self.selectedCountryId() === "undefined") {
             return;
         }
+
         self.loadInstitutions();
-        //$("#HospitalsGroup").show();
     };
 
     self.loadInstitutions = function () {
-        $.getJSON(app.dataModel.getInstitutionsUrl, { CountryID: self.selectedCountryId(), RegionID: self.selectedRegionId() }, function (data, status) {
+        $.getJSON(app.dataModel.getInstitutionsUrl, { CountryID: self.selectedCountryId(), RegionID: self.selectedRegionId(), AreaID: self.selectedAreaId() }, function (data, status) {
             self.institutions(data);
         })
             .fail(function (jqXHR, textStatus, errorThrown) {
@@ -121,20 +146,20 @@
             });
     };
 
-    self.selectedAreaId.subscribe(function (NewAreaID) {
-        if (NewAreaID > 0) {
-            //("#Regionals").attr('disabled', true);
-            self.selectedRegionId(0);
-        }
+    ////self.selectedAreaId.subscribe(function (NewAreaID) {
+    ////    if (NewAreaID > 0) {
+    ////        //("#Regionals").attr('disabled', true);
+    ////        self.selectedRegionId(0);
+    ////    }
 
-        self.loadInstitutions();
-        $("#caselist").trigger("reloadGrid");
-        $("#caselist_pend").trigger('reloadGrid');
+    ////    self.loadInstitutions();
+    ////    $("#caselist").trigger("reloadGrid");
+    ////    $("#caselist_pend").trigger('reloadGrid');
 
-        if (NewAreaID == 0 && self.institutions().length > 1) {
-            self.selectedInstitutionId(0);
-        }
-    });
+    ////    if (NewAreaID == 0 && self.institutions().length > 1) {
+    ////        self.selectedInstitutionId(0);
+    ////    }
+    ////});
 
     //self.selectedCountryId.subscribe(function (NewCountryId) {
     //    console.log("NewCountryId->" + NewCountryId);
@@ -151,10 +176,9 @@
     self.StartDate = ko.observable(null);
     self.EndDate = ko.observable(null);
 
-
     self.validate = function (nextStep) {
         var msg = "";
-        var selectCountryUsr = self.selectedCountryId() ? self.selectedCountryId() : CountryID
+        var selectCountryUsr = self.selectedCountryId() ? self.selectedCountryId() : selcty
 
         if ($("#Reports").val() == "") {
             msg += "\n" + " - " + msgViewExportarValidateSelectionReport
@@ -180,13 +204,25 @@
         return true;
     };
 
+    //CountryID: self.selectedCountryId() ? self.selectedCountryId() : CountryID,
     self.exportar = function () {
         var namevalues = {
-            Report: self.Report(), CountryID: self.selectedCountryId() ? self.selectedCountryId() : CountryID, HospitalID: self.selectedInstitutionId(),
-            Year: self.Year(), Month: self.Month(), SE: self.SE(), StartDate: self.StartDate() ? moment(self.StartDate()).format(date_format_moment) : null,
-            EndDate: self.EndDate() ? moment(self.EndDate()).format(date_format_moment) : null, ReportCountry: self.selectedReportCountryId(),
-            RegionID: self.selectedRegionId(), YearFrom: self.YearFrom(), YearTo: self.YearTo(), Surv: self.Surv(), Inusual: self.SurvInusual(),
-            Area: self.selectedAreaId(), Sentinel: self.Sentinel()
+            Report: self.Report(),
+            CountryID: self.selectedCountryId() ? self.selectedCountryId() : selcty,
+            HospitalID: self.selectedInstitutionId(),
+            Year: self.Year(),
+            Month: self.Month(),
+            SE: self.SE(),
+            StartDate: self.StartDate() ? moment(self.StartDate()).format(date_format_moment) : null,
+            EndDate: self.EndDate() ? moment(self.EndDate()).format(date_format_moment) : null,
+            ReportCountry: self.selectedReportCountryId(),
+            RegionID: self.selectedRegionId(),
+            YearFrom: self.YearFrom(),
+            YearTo: self.YearTo(),
+            Surv: self.Surv(),
+            Inusual: self.SurvInusual(),
+            Area: self.selectedAreaId(),
+            Sentinel: self.Sentinel()
         }
         if (self.validate() == true)
             window.open(app.dataModel.getExportar + "?" + $.param(namevalues, true), "_blank");
@@ -201,7 +237,7 @@
     }, self);                           //**** CAFQ
 
     self.getCasosNPHL = function () {                           //**** CAFQ
-        var _CountryID = self.selectedCountryId() ? self.selectedCountryId() : CountryID
+        var _CountryID = self.selectedCountryId() ? self.selectedCountryId() : selcty
         var _StartDate = self.StartDate() ? moment(self.StartDate()).format(date_format_moment) : null
         var _EndDate = self.EndDate() ? moment(self.EndDate()).format(date_format_moment) : null
 
@@ -292,7 +328,7 @@
         //alert(Casos);
         var namevalues = {
             Report: self.Report(),
-            CountryID: self.selectedCountryId() ? self.selectedCountryId() : CountryID,
+            CountryID: self.selectedCountryId() ? self.selectedCountryId() : selcty,
             HospitalID: self.selectedInstitutionId(),
             Year: self.Year(),
             Month: self.Month(),
@@ -316,7 +352,16 @@
     };                           //**** CAFQ
 
     self.url = ko.computed(function () {
-        var namevalues = { Report: self.Report(), CountryID: self.selectedCountryId() ? self.selectedCountryId() : CountryID, HospitalID: self.selectedInstitutionId(), Year: self.Year(), Month: self.Month(), SE: self.SE(), StartDate: self.StartDate() ? moment(self.StartDate()).format(date_format_moment) : null, EndDate: self.EndDate() ? moment(self.EndDate()).format(date_format_moment) : null }
+        var namevalues = {
+            Report: self.Report(),
+            CountryID: self.selectedCountryId() ? self.selectedCountryId() : selcty,
+            HospitalID: self.selectedInstitutionId(),
+            Year: self.Year(),
+            Month: self.Month(),
+            SE: self.SE(),
+            StartDate: self.StartDate() ? moment(self.StartDate()).format(date_format_moment) : null,
+            EndDate: self.EndDate() ? moment(self.EndDate()).format(date_format_moment) : null
+        }
         return app.dataModel.getExportar + "?" + $.param(namevalues, true);
     });
     //self.Generate = function () {
@@ -325,8 +370,6 @@
     //        return app.dataModel.getExportar + "?" + $.param(namevalues, true);
     //    }
     //};
-
-
 };
 
 app.addViewModel({

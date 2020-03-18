@@ -973,7 +973,7 @@ namespace Paho.Controllers
                      Age = flucase.Age,
                      AMeasure = flucase.AMeasure.ToString(),
                      Gender = flucase.Gender.ToString(),
-                     ResponsibleMinor = flucase.ResponsibleMinor,        //####CAFQ
+                     ResponsibleMinor = flucase.ResponsibleMinor,
                      HospitalDate = flucase.HospitalDate.ToUniversalTime(),
                      RegDate = flucase.RegDate,
                      nationality = flucase.nationality,
@@ -982,6 +982,11 @@ namespace Paho.Controllers
                      hospitalIDCaseGenerating = flucase.HospitalID_CaseGenerating,
                      hospitalName = institutionsName[0],
                      DataStatement = flucase.statement,
+
+                     CountryCaseDiagnosedID = flucase.CountryCaseDiagnosedID,                       //#### 200225
+                     UniqueCaseIdentif = flucase.UniqueCaseIdentif,                                 //#### 200225
+                     FirstAdministLevel = flucase.FirstAdministLevel,                               //#### 200225
+
                      flow_record = flucase.flow,
                      flow_institution = flow_local_lab,
                      flow_max = flow_max,
@@ -1043,6 +1048,11 @@ namespace Paho.Controllers
             int? nativepeople,
             int? nationality,
             DateTime DateFeverDummy,
+
+            int? CountryCaseDiagnosedID,                    //#### 200225
+            string UniqueCaseIdentif,                       //#### 200225
+            string FirstAdministLevel,                      //#### 200225
+
             bool? IsSample // Esto se agrego únicamente para la bitacora
             )
         {
@@ -1054,8 +1064,6 @@ namespace Paho.Controllers
 
             if (!id.HasValue)
             {
- 
-
                 //#### CAFQ: 180604 - Jamaica Universal
                 if ((UsrCtry == 17 || UsrCtry == 3) && SInusual == true)       // Jamaica Universal
                 {
@@ -1099,7 +1107,6 @@ namespace Paho.Controllers
                 db.Entry(flucase).State = EntityState.Modified;
             }
 
-
             flucase.SurvInusual = SInusual;
             flucase.Brote = Brote;
             flucase.LName1 = LName1 ?? "";
@@ -1119,11 +1126,11 @@ namespace Paho.Controllers
             flucase.RegDate = RegDate;
             flucase.nativepeople = nativepeople;
             flucase.nationality = nationality;
-            /*flucase.Ocupacion = Ocupacion;                                      //#### CAFQ 
-            flucase.TrabajoDirecc = TrabajoDirecc;                              //#### CAFQ 
-            flucase.TrabajoEstablec = TrabajoEstablec;                          //#### CAFQ
-            flucase.ContactoAnimVivos = ContactoAnimVivos;                      //#### CAFQ
-            flucase.OcupacMercAnimVivos = OcupacMercAnimVivos;                  //#### CAFQ*/
+
+            flucase.CountryCaseDiagnosedID = CountryCaseDiagnosedID;                //#### 200225
+            flucase.UniqueCaseIdentif = UniqueCaseIdentif;                          //#### 200225
+            flucase.FirstAdministLevel = FirstAdministLevel;                        //#### 200225
+
             flucase.InsertDate = DateTime.Now;
             //flucase.UserID = User.Identity.Name;
             try
@@ -1134,8 +1141,8 @@ namespace Paho.Controllers
             {
                 Console.WriteLine(e.ToString());
             }
-            // Grabar en la bitacora
 
+            // Grabar en la bitacora
             if (!id.HasValue)
             {
                 HistoryRecord(flucase.ID, 1, flucase.flow, 1);
@@ -1147,7 +1154,6 @@ namespace Paho.Controllers
                 {
                     HistoryRecord(flucase.ID, 1, flucase.flow, 3);
                 }
-                
             }
             else
             {
@@ -1187,7 +1193,7 @@ namespace Paho.Controllers
                     Liver = flucase.Liver,
                     Renal = flucase.Renal,
                     Immunsupp = flucase.Immunsupp,
-                    ParaCerebral= flucase.ParaCerebral,
+                    ParaCerebral = flucase.ParaCerebral,
                     Indigena = flucase.Indigena,
                     TrabSalud = flucase.TrabSalud,
                     Desnutricion = flucase.Desnutricion,
@@ -1261,7 +1267,37 @@ namespace Paho.Controllers
                     FamiDirecContacto = flucase.FamiDirecContacto,                //#### CAFQ
                     TrabSaludRama = flucase.TrabSaludRama,                //#### CAFQ
                     TrabLaboratorio = flucase.TrabLaboratorio,                //#### CAFQ
-                    TrabLaboratorioRama = flucase.TrabLaboratorioRama                //#### CAFQ
+                    TrabLaboratorioRama = flucase.TrabLaboratorioRama,                //#### CAFQ
+
+                    TravelPrevSympt = flucase.TravelPrevSympt,                                         //#### 200225
+                    TravelPrevSymptCountryID1 = flucase.TravelPrevSymptCountryID1,                     //#### 200225
+                    TravelPrevSymptCountryID2 = flucase.TravelPrevSymptCountryID2,                     //#### 200225
+                    TravelPrevSymptCountryID3 = flucase.TravelPrevSymptCountryID3,                     //#### 200225
+                    TravelPrevSymptCity1 = flucase.TravelPrevSymptCity1,                               //#### 200225
+                    TravelPrevSymptCity2 = flucase.TravelPrevSymptCity2,                               //#### 200225
+                    TravelPrevSymptCity3 = flucase.TravelPrevSymptCity3,                               //#### 200225
+                    TravelPrevSymptDateDeparture1 = flucase.TravelPrevSymptDateDeparture1,             //#### 200225
+                    TravelPrevSymptDateDeparture2 = flucase.TravelPrevSymptDateDeparture2,             //#### 200225
+                    TravelPrevSymptDateDeparture3 = flucase.TravelPrevSymptDateDeparture3,              //#### 200225
+
+                    PatientVisitedHealthCare = flucase.PatientVisitedHealthCare,
+                    ContactCaseConfirmed = flucase.ContactCaseConfirmed,
+                    ContactCaseConfirmedDesc = flucase.ContactCaseConfirmedDesc,
+                    ContactIdentifier1 = flucase.ContactIdentifier1,
+                    ContactIdentifier2 = flucase.ContactIdentifier2,
+                    ContactIdentifier3 = flucase.ContactIdentifier3,
+                    ContactFirstDate1 = flucase.ContactFirstDate1,
+                    ContactFirstDate2 = flucase.ContactFirstDate2,
+                    ContactFirstDate3 = flucase.ContactFirstDate3,
+                    ContactLastDate1 = flucase.ContactLastDate1,
+                    ContactLastDate2 = flucase.ContactLastDate2,
+                    ContactLastDate3 = flucase.ContactLastDate3,
+                    CountryHigherExpositionID = flucase.CountryHigherExpositionID,
+
+                    HealthCareWorkerJob = flucase.HealthCareWorkerJob,
+                    HealthCareWorkerJobCountryID = flucase.HealthCareWorkerJobCountryID,
+                    HealthCareWorkerJobCity = flucase.HealthCareWorkerJobCity,
+                    HealthCareWorkerJobFacility = flucase.HealthCareWorkerJobFacility
 
                 }, JsonRequestBehavior.AllowGet);
             };
@@ -1384,7 +1420,38 @@ namespace Paho.Controllers
                 int? FamiDirecContacto,              //#### CAFQ
                 int? TrabSaludRama,                         //#### CAFQ
                 bool? TrabLaboratorio,                      //#### CAFQ
-                int? TrabLaboratorioRama                    //#### CAFQ
+                int? TrabLaboratorioRama,                    //#### CAFQ
+
+                int? TravelPrevSympt,                    //#### 200225
+                int? TravelPrevSymptCountryID1,                    //#### 200225
+                int? TravelPrevSymptCountryID2,                    //#### 200225
+                int? TravelPrevSymptCountryID3,                    //#### 200225
+                string TravelPrevSymptCity1,                    //#### 200225
+                string TravelPrevSymptCity2,                    //#### 200225
+                string TravelPrevSymptCity3,                    //#### 200225
+                DateTime? TravelPrevSymptDateDeparture1,           //#### 200225
+                DateTime? TravelPrevSymptDateDeparture2,           //#### 200225
+                DateTime? TravelPrevSymptDateDeparture3,           //#### 200225
+
+                int? PatientVisitedHealthCare,
+                int? ContactCaseConfirmed,
+                string ContactCaseConfirmedDesc,
+                string ContactIdentifier1,
+                string ContactIdentifier2,
+                string ContactIdentifier3,
+                DateTime? ContactFirstDate1,
+                DateTime? ContactFirstDate2,
+                DateTime? ContactFirstDate3,
+                DateTime? ContactLastDate1,
+                DateTime? ContactLastDate2,
+                DateTime? ContactLastDate3,
+                int? CountryHigherExpositionID,
+
+                int? HealthCareWorkerJob,
+                int? HealthCareWorkerJobCountryID,
+                string HealthCareWorkerJobCity,
+                string HealthCareWorkerJobFacility
+
             )
         {
             FluCase flucase;
@@ -1493,6 +1560,36 @@ namespace Paho.Controllers
             flucase.TrabSaludRama = TrabSaludRama;                      //#### CAFQ
             flucase.TrabLaboratorio = TrabLaboratorio;                  //#### CAFQ
             flucase.TrabLaboratorioRama = TrabLaboratorioRama;          //#### CAFQ
+
+            flucase.TravelPrevSympt = TravelPrevSympt;                        //#### 200225
+            flucase.TravelPrevSymptCountryID1 = TravelPrevSymptCountryID1;                        //#### 200225
+            flucase.TravelPrevSymptCountryID2 = TravelPrevSymptCountryID2;                        //#### 200225
+            flucase.TravelPrevSymptCountryID3 = TravelPrevSymptCountryID3;                        //#### 200225
+            flucase.TravelPrevSymptCity1 = TravelPrevSymptCity1;                        //#### 200225
+            flucase.TravelPrevSymptCity2 = TravelPrevSymptCity2;                        //#### 200225
+            flucase.TravelPrevSymptCity3 = TravelPrevSymptCity3;                        //#### 200225
+            flucase.TravelPrevSymptDateDeparture1 = TravelPrevSymptDateDeparture1;                        //#### 200225
+            flucase.TravelPrevSymptDateDeparture2 = TravelPrevSymptDateDeparture2;                        //#### 200225
+            flucase.TravelPrevSymptDateDeparture3 = TravelPrevSymptDateDeparture3;                        //#### 200225
+
+            flucase.PatientVisitedHealthCare = PatientVisitedHealthCare;
+            flucase.ContactCaseConfirmed = ContactCaseConfirmed;
+            flucase.ContactCaseConfirmedDesc = ContactCaseConfirmedDesc;
+            flucase.ContactIdentifier1 = ContactIdentifier1;
+            flucase.ContactIdentifier2 = ContactIdentifier2;
+            flucase.ContactIdentifier3 = ContactIdentifier3;
+            flucase.ContactFirstDate1 = ContactFirstDate1;
+            flucase.ContactFirstDate2 = ContactFirstDate2;
+            flucase.ContactFirstDate3 = ContactFirstDate3;
+            flucase.ContactLastDate1 = ContactLastDate1;
+            flucase.ContactLastDate2 = ContactLastDate2;
+            flucase.ContactLastDate3 = ContactLastDate3;
+            flucase.CountryHigherExpositionID = CountryHigherExpositionID;
+
+            flucase.HealthCareWorkerJob = HealthCareWorkerJob;
+            flucase.HealthCareWorkerJobCountryID = HealthCareWorkerJobCountryID;
+            flucase.HealthCareWorkerJobCity = HealthCareWorkerJobCity;
+            flucase.HealthCareWorkerJobFacility = HealthCareWorkerJobFacility;
 
             db.SaveChanges();
 
@@ -1650,9 +1747,37 @@ namespace Paho.Controllers
                     Tiraje = flucase.Tiraje,
                     Odinofagia = flucase.Odinofagia,
 
+                    //#### COVID-19
+                    LabConfirmedSymptom = flucase.LabConfirmedSymptom,
+                    CaseInIsolation = flucase.CaseInIsolation,
+                    DateIsolation = flucase.DateIsolation,
+                    CaseInIsolationOtherPlace = flucase.CaseInIsolationOtherPlace,
+
+                    ReasonSamplingID = flucase.ReasonSamplingID,
+                    ReasonSamplingOther = flucase.ReasonSamplingOther,
+
+                    OutcomeDateResubmission = flucase.OutcomeDateResubmission,
+                    OutcomeDevelopSymptoms = flucase.OutcomeDevelopSymptoms,
+                    OutcomeDateOnsetSymptoms = flucase.OutcomeDateOnsetSymptoms,
+
+                    OutcomeAdmissionPrevReported = flucase.OutcomeAdmissionPrevReported,
+                    OutcomeDateFirstAdmission = flucase.OutcomeDateFirstAdmission,
+                    OutcomeUCI = flucase.OutcomeUCI,
+                    OutcomeVentMecanica = flucase.OutcomeVentMecanica,
+                    OutcomeECMO = flucase.OutcomeECMO,
+
+                    OutcomeDestin = flucase.OutcomeDestin,
+                    OutcomeDestinOther = flucase.OutcomeDestinOther,
+                    OutcomeDateRelease = flucase.OutcomeDateRelease,
+                    OutcomeDateLastLabTest = flucase.OutcomeDateLastLabTest,
+                    OutcomeResultsLastTest = flucase.OutcomeResultsLastTest,
+                    OutcomeTotalHighRisk = flucase.OutcomeTotalHighRisk,
+                    OutcomeTotalHighRiskUnknown = flucase.OutcomeTotalHighRiskUnknown,
+                    //#### 
                     CaseStatus = flucase.CaseStatus,
                     CloseDate = flucase.CloseDate,
                     ObservationCase = flucase.ObservationCase,
+                    //#### 
                     LabsHospital = institutionLabs.Select(x => new { Id = x.ID, x.Name }).ToList(),
                 }, JsonRequestBehavior.AllowGet);
             };
@@ -1783,6 +1908,33 @@ namespace Paho.Controllers
                 string DiagEgOtro,                              //#### CAFQ
                 bool? Tiraje,
                 bool? Odinofagia,
+                //#### COVID-19
+                int? LabConfirmedSymptom,
+                int? CaseInIsolation,
+                DateTime? DateIsolation,
+                string CaseInIsolationOtherPlace,
+
+                int? ReasonSamplingID,
+                string ReasonSamplingOther,
+
+                DateTime? OutcomeDateResubmission,
+                int? OutcomeDevelopSymptoms,
+                DateTime? OutcomeDateOnsetSymptoms,
+
+                int? OutcomeAdmissionPrevReported,
+                DateTime? OutcomeDateFirstAdmission,
+                int? OutcomeUCI,
+                int? OutcomeVentMecanica,
+                int? OutcomeECMO,
+
+                string OutcomeDestin,
+                string OutcomeDestinOther,
+                DateTime? OutcomeDateRelease,
+                DateTime? OutcomeDateLastLabTest,
+                string OutcomeResultsLastTest,
+                int? OutcomeTotalHighRisk,
+                bool? OutcomeTotalHighRiskUnknown,
+                //#### 
                 int? CaseStatus,
                 DateTime? CloseDate,
                 string ObservationCase,
@@ -1918,6 +2070,33 @@ namespace Paho.Controllers
             flucase.DiagEgOtro = DiagEgOtro;                        //#### CAFQ
             flucase.Tiraje = Tiraje;
             flucase.Odinofagia = Odinofagia;
+            //#### COVID-19
+            flucase.LabConfirmedSymptom = LabConfirmedSymptom;
+            flucase.CaseInIsolation = CaseInIsolation;
+            flucase.DateIsolation = DateIsolation;
+            flucase.CaseInIsolationOtherPlace = CaseInIsolationOtherPlace;
+
+            flucase.ReasonSamplingID = ReasonSamplingID;
+            flucase.ReasonSamplingOther = ReasonSamplingOther;
+
+            flucase.OutcomeDateResubmission = OutcomeDateResubmission;
+            flucase.OutcomeDevelopSymptoms = OutcomeDevelopSymptoms;
+            flucase.OutcomeDateOnsetSymptoms = OutcomeDateOnsetSymptoms;
+
+            flucase.OutcomeAdmissionPrevReported = OutcomeAdmissionPrevReported;
+            flucase.OutcomeDateFirstAdmission = OutcomeDateFirstAdmission;
+            flucase.OutcomeUCI = OutcomeUCI;
+            flucase.OutcomeVentMecanica = OutcomeVentMecanica;
+            flucase.OutcomeECMO = OutcomeECMO;
+
+            flucase.OutcomeDestin = OutcomeDestin;
+            flucase.OutcomeDestinOther = OutcomeDestinOther;
+            flucase.OutcomeDateRelease = OutcomeDateRelease;
+            flucase.OutcomeDateLastLabTest = OutcomeDateLastLabTest;
+            flucase.OutcomeResultsLastTest = OutcomeResultsLastTest;
+            flucase.OutcomeTotalHighRisk = OutcomeTotalHighRisk;
+            flucase.OutcomeTotalHighRiskUnknown = OutcomeTotalHighRiskUnknown;
+            //#### 
             flucase.CaseStatus = CaseStatus;
             if (CaseStatusD > 0)
                 flucase.flow = 99 ;

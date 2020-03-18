@@ -463,6 +463,11 @@
     self.DiagEgVal = ko.observable("");
     self.DiagEgOtro = ko.observable("");                //#### CAFQ
 
+    self.LabConfirmedSymptom = ko.observable("");                               //#### 200225
+    self.CaseInIsolation = ko.observable("");                                   //#### 200225
+    self.DateIsolation = ko.observable(null);                                   //#### 200225
+    self.CaseInIsolationOtherPlace = ko.observable("");                         //#### 200225
+
     //self.CheckFeverDate = function (date_node) {
     //    var date_hospital_ = app.Views.Contact.HospitalDate();
         
@@ -624,6 +629,30 @@
             bReturn = true;
         else
             self.ReasonNotSamplingOther("");
+
+        return bReturn;
+    }, self);
+
+    self.ReasonSampling = ko.observableArray(reasonsampling);             //#### CAFQ: 181008
+    self.ReasonSamplingID = ko.observable("");
+    self.ReasonSamplingVisible = ko.computed(function () {
+        bReturn = false;
+
+        if (self.IsSample() === "true")
+            bReturn = true;
+        else
+            self.ReasonSamplingID("");
+
+        return bReturn;
+    }, self);
+    self.ReasonSamplingOther = ko.observable("");
+    self.ReasonSamplingOtherVisible = ko.computed(function () {
+        bReturn = false;
+
+        if (self.ReasonSamplingID() == "6")     // Otro
+            bReturn = true;
+        else
+            self.ReasonSamplingOther("");
 
         return bReturn;
     }, self);
@@ -954,6 +983,7 @@
         return (self.InfeccHospit() == "1") ? true : false;
     }, self);                                             //**** CAFQ*/
 
+    //**** Estado del caso / Evolucion
     self.CaseStatus = ko.observable("");
     self.CaseComply = ko.observable("");
     self.CloseDate = ko.observable(new Date());
@@ -961,6 +991,67 @@
     self.EnableCloseDate = ko.computed(function () {
         var result = (self.UsrCountry() == 7) ? self.CaseStatus() == "3" || self.CaseStatus() == "2" : (self.UsrCountry() != 7) ? self.CaseStatus() == "1" ||  self.CaseStatus() == "3" || self.CaseStatus() == "2" : false; if (!result) self.CloseDate(null); return result;
     }, self);
+
+    self.OutcomeDateResubmission = ko.observable(null);
+    self.OutcomeDevelopSymptoms = ko.observable(null);
+    self.OutcomeDateOnsetSymptoms = ko.observable(null);
+    self.OutcomeDateOnsetSymptomsEnable = ko.computed(function () {
+        var temp = (self.CaseStatus() == "") ? true : false;            // Para que se ejecute open case
+
+        var result = (self.OutcomeDevelopSymptoms() == 1) ? true : false;
+
+        if (!result) 
+            self.OutcomeDateOnsetSymptoms(null);
+
+        return result;
+    }, self);
+    
+    self.OutcomeAdmissionPrevReported = ko.observable(null);
+    self.OutcomeDateFirstAdmission = ko.observable(null);
+    self.OutcomeDateFirstAdmissionEnable = ko.computed(function () {
+        var temp = (self.CaseStatus() == "") ? true : false;            // Para que se ejecute open case
+
+        var result = (self.OutcomeAdmissionPrevReported() == 1) ? true : false;
+
+        if (!result)
+            self.OutcomeDateFirstAdmission(null);
+
+        return result;
+    }, self);
+    self.OutcomeUCI = ko.observable(null);
+    self.OutcomeVentMecanica = ko.observable(null);
+    self.OutcomeECMO = ko.observable(null);
+
+    self.OutcomeDestin = ko.observable(null);
+    self.OutcomeDestinOther = ko.observable(null);
+    self.OutcomeDestinOtherEnable = ko.computed(function () {
+        var temp = (self.CaseStatus() == "") ? true : false;            // Para que se ejecute open case
+
+        var result = (self.OutcomeDestin() == "O") ? true : false;
+
+        if (!result)
+            self.OutcomeDestinOther(null);
+
+        return result;
+    }, self);
+
+    self.OutcomeDateRelease = ko.observable(null);
+    self.OutcomeDateLastLabTest = ko.observable(null);
+
+    self.OutcomeResultsLastTest = ko.observable(null);
+    self.OutcomeTotalHighRisk = ko.observable(null);
+    self.OutcomeTotalHighRiskUnknown = ko.observable(null);
+    self.OutcomeTotalHighRiskEnable = ko.computed(function () {
+        var temp = (self.CaseStatus() == "") ? true : false;            // Para que se ejecute open case
+
+        var result = (self.OutcomeTotalHighRiskUnknown() == true) ? false : true;
+
+        if (!result)
+            self.OutcomeTotalHighRisk(null);
+
+        return result;
+    }, self);
+    //****
 
     self.Destin.subscribe(function (NewDestin) {
     //(app.Views.Contact.SurvSARI() == true || app.Views.Contact.SurvInusual() == true)
@@ -1049,90 +1140,118 @@
     }, self);
 
     self.ResetHospital = function () {
-       self.hasReset(true);
-       self.Id = "";
-       self.CHNum("");
-       self.Salon("");
-       self.SalonVal("");
-       self.DiagPrinAdm("");
-       self.DiagPrinAdmVal(""); 
-       self.DiagOtroAdm("");
-       self.FeverDate(null);
-       self.FeverEW("");
-       self.FeverEY("");
-       self.DiagDate(null);
-       self.DiagEW("");
-       self.DiagEY("");
-       self.HospAmDate(null);
-       self.HospEW("");
-       self.HospEY("");
-       self.HospExDate(null);
-       self.ICU(null);
-       self.ICUAmDate(null);
-       self.ICUEW("");
-       self.ICUEY("");
-       self.ICUExDate(null);
-       self.HospitalizedIn(null);
-       self.HospitalizedInNumber("");
-       self.FalleDate(null);
-       self.InstReferName("");
-       self.Destin(null);
-       self.Destin("");
-       self.DestinICU("");
-       self.HallRadio("");
-       self.HallRadioFindings("");          //#### CAFQ
-       self.UCInt("");
-       self.UCri("");
-       self.MecVent("");
-       self.MecVentNoInv("");
-       self.ECMO("");
-       self.VAFO("");
-       self.Comments("");                   //#### CAFQ: 190107
-       self.DiagEg("");
-       self.DiagEgVal("");
-       self.DiagEgOtro("");                 //#### CAFQ
-       self.IsSample(false);
-       self.ReasonNotSamplingID("");
-       self.ReasonNotSamplingOther("");       
-       self.SampleDate (null);
-       self.SampleType("");
-       self.ShipDate(null);
-       self.LabId("");
-       self.SampleDate2(null);
-       self.SampleType2("");
-       self.ShipDate2(null);
-       self.LabId2("");
-       self.SampleDate3(null);
-       self.SampleType3("");
-       self.ShipDate3(null);
-       self.LabId3("");
-       self.Adenopatia("");
-       self.Wheezing("");                   //#### CAFQ: 180619
-       self.AntecedentesFiebre("");
-       self.Rinorrea("");
-       self.Malestar("");
-       self.Nauseas("");
-       self.DolorMuscular("");
-       self.Disnea("");
-       self.DolorCabeza("");
-       self.Estridor("");
-       self.Tos("");
-       self.DifResp("");
-       self.MedSatOxig("");
-       self.SatOxigPor("");
-       self.Tiraje("");
-       self.Odinofagia("");
-       self.DifResp("");
-       self.MedSatOxig("");
-       self.SatOxigPor("");
-       self.CaseStatus("");
-       self.CaseComply("");
-       self.CloseDate(null);
-       self.ObservationCase("");
-       self.ResetHospitalInusual();         //#### CAFQ
-       self.FeverEW("");
-       self.FeverEY("");
-       self.hasReset(false);
+        self.hasReset(true);
+        self.Id = "";
+        self.CHNum("");
+        self.Salon("");
+        self.SalonVal("");
+        self.DiagPrinAdm("");
+        self.DiagPrinAdmVal(""); 
+        self.DiagOtroAdm("");
+        self.FeverDate(null);
+        self.FeverEW("");
+        self.FeverEY("");
+        self.DiagDate(null);
+        self.DiagEW("");
+        self.DiagEY("");
+        self.HospAmDate(null);
+        self.HospEW("");
+        self.HospEY("");
+        self.HospExDate(null);
+        self.ICU(null);
+        self.ICUAmDate(null);
+        self.ICUEW("");
+        self.ICUEY("");
+        self.ICUExDate(null);
+        self.HospitalizedIn(null);
+        self.HospitalizedInNumber("");
+        self.FalleDate(null);
+        self.InstReferName("");
+        self.Destin(null);
+        self.Destin("");
+        self.DestinICU("");
+        self.HallRadio("");
+        self.HallRadioFindings("");          //#### CAFQ
+        self.UCInt("");
+        self.UCri("");
+        self.MecVent("");
+        self.MecVentNoInv("");
+        self.ECMO("");
+        self.VAFO("");
+        self.Comments("");                   //#### CAFQ: 190107
+        self.DiagEg("");
+        self.DiagEgVal("");
+        self.DiagEgOtro("");                 //#### CAFQ
+        self.IsSample(false);
+        self.ReasonNotSamplingID("");
+        self.ReasonNotSamplingOther("");       
+        self.SampleDate (null);
+        self.SampleType("");
+        self.ShipDate(null);
+        self.LabId("");
+        self.SampleDate2(null);
+        self.SampleType2("");
+        self.ShipDate2(null);
+        self.LabId2("");
+        self.SampleDate3(null);
+        self.SampleType3("");
+        self.ShipDate3(null);
+        self.LabId3("");
+        self.Adenopatia("");
+        self.Wheezing("");                   //#### CAFQ: 180619
+        self.AntecedentesFiebre("");
+        self.Rinorrea("");
+        self.Malestar("");
+        self.Nauseas("");
+        self.DolorMuscular("");
+        self.Disnea("");
+        self.DolorCabeza("");
+        self.Estridor("");
+        self.Tos("");
+        self.DifResp("");
+        self.MedSatOxig("");
+        self.SatOxigPor("");
+        self.Tiraje("");
+        self.Odinofagia("");
+        self.DifResp("");
+        self.MedSatOxig("");
+        self.SatOxigPor("");
+
+        //#### COVID-19
+        self.LabConfirmedSymptom("");
+        self.CaseInIsolation("");
+        self.DateIsolation(null);
+        self.CaseInIsolationOtherPlace("");
+
+        self.ReasonSamplingID("");
+        self.ReasonSamplingOther("");
+
+        self.OutcomeDateResubmission(null);
+        self.OutcomeDevelopSymptoms(null);
+        self.OutcomeDateOnsetSymptoms(null);
+
+        self.OutcomeAdmissionPrevReported("");
+        self.OutcomeDateFirstAdmission(null);
+        self.OutcomeUCI("");
+        self.OutcomeVentMecanica("");
+        self.OutcomeECMO("");
+
+        self.OutcomeDestin(null);
+        self.OutcomeDestinOther(null);
+        self.OutcomeDateRelease(null);
+        self.OutcomeDateLastLabTest(null);
+        self.OutcomeResultsLastTest(null);
+        self.OutcomeTotalHighRisk(null);
+        self.OutcomeTotalHighRiskUnknown(null);
+        //####         
+        self.CaseStatus("");
+        self.CaseComply("");
+        self.CloseDate(null);
+        self.ObservationCase("");
+        self.ResetHospitalInusual();         //#### CAFQ
+        self.FeverEW("");
+        self.FeverEY("");
+        self.hasReset(false);
     };
 
     self.ResetHospitalInusual = function () {
@@ -1543,9 +1662,37 @@
                 else 
                     self.DiagEg("");
                 self.DiagEgOtro(data.DiagEgOtro);       //#### CAFQ
-
                 self.Tiraje(data.Tiraje);
                 self.Odinofagia(data.Odinofagia);
+
+                //#### COVID-19
+                self.LabConfirmedSymptom(data.LabConfirmedSymptom);
+                self.CaseInIsolation(data.CaseInIsolation);
+                self.DateIsolation(moment(data.DateIsolation).clone().toDate());
+                self.CaseInIsolationOtherPlace(data.CaseInIsolationOtherPlace);
+
+                self.ReasonSamplingID(data.ReasonSamplingID);
+                self.ReasonSamplingOther(data.ReasonSamplingOther);
+
+                self.OutcomeDateResubmission(moment(data.OutcomeDateResubmission).clone().toDate());
+                self.OutcomeDevelopSymptoms(data.OutcomeDevelopSymptoms);
+                self.OutcomeDateOnsetSymptoms(moment(data.OutcomeDateOnsetSymptoms).clone().toDate());
+
+                self.OutcomeAdmissionPrevReported(data.OutcomeAdmissionPrevReported);
+                self.OutcomeDateFirstAdmission(moment(data.OutcomeDateFirstAdmission).clone().toDate());
+                self.OutcomeUCI(data.OutcomeUCI);
+                self.OutcomeVentMecanica(data.OutcomeVentMecanica);
+                self.OutcomeECMO(data.OutcomeECMO);
+
+                self.OutcomeDestin(data.OutcomeDestin);
+                self.OutcomeDestinOther(data.OutcomeDestinOther);
+                self.OutcomeDateRelease(moment(data.OutcomeDateRelease).clone().toDate());
+                self.OutcomeDateLastLabTest(moment(data.OutcomeDateLastLabTest).clone().toDate());
+                self.OutcomeResultsLastTest(data.OutcomeResultsLastTest);
+                self.OutcomeTotalHighRisk(data.OutcomeTotalHighRisk);
+                self.OutcomeTotalHighRiskUnknown(data.OutcomeTotalHighRiskUnknown);
+                //#### 
+
                 self.CaseStatus(data.CaseStatus);
                 if (data.CloseDate)
                     self.CloseDate(moment(data.CloseDate).clone().toDate());
@@ -1562,8 +1709,6 @@
                 //} else {
                     self.LabsHospital(data.LabsHospital);
                 //}
-                
-
             })
             .fail(function(jqXHR, textStatus, errorThrown) {
                 console.log(errorThrown);
@@ -1595,8 +1740,17 @@
         date_sample3 = jQuery.type(self.SampleDate3()) === 'date' ? self.SampleDate3() : parseDate($("#SampleDate3").val(), date_format_);
         date_ship3 = jQuery.type(self.ShipDate3()) === 'date' ? self.ShipDate3() : parseDate($("#ShipDate3").val(), date_format_);
         date_close_case = jQuery.type(self.CloseDate()) === 'date' ? self.CloseDate() : parseDate($("#CloseDate").val(), date_format_);
-        //date_InfeccHospitFecha = parseDate($("#InfeccHospitFecha").val(), date_format_);        //#### CAFQ
+        //#### COVID-19
+        date_DateIsolation = jQuery.type(self.DateIsolation()) === 'date' ? self.DateIsolation() : parseDate($("#DateIsolation").val(), date_format_);
 
+        date_OutcomeDateResubmission = jQuery.type(self.OutcomeDateResubmission()) === 'date' ? self.OutcomeDateResubmission() : parseDate($("#OutcomeDateResubmission").val(), date_format_);
+        date_OutcomeDateOnsetSymptoms = jQuery.type(self.OutcomeDateOnsetSymptoms()) === 'date' ? self.OutcomeDateOnsetSymptoms() : parseDate($("#OutcomeDateOnsetSymptoms").val(), date_format_);
+
+        date_OutcomeDateFirstAdmission = jQuery.type(self.OutcomeDateFirstAdmission()) === 'date' ? self.OutcomeDateFirstAdmission() : parseDate($("#OutcomeDateFirstAdmission").val(), date_format_);
+
+        date_OutcomeDateRelease = jQuery.type(self.OutcomeDateRelease()) === 'date' ? self.OutcomeDateRelease() : parseDate($("#OutcomeDateRelease").val(), date_format_);
+        date_OutcomeDateLastLabTest = jQuery.type(self.OutcomeDateLastLabTest()) === 'date' ? self.OutcomeDateLastLabTest() : parseDate($("#OutcomeDateLastLabTest").val(), date_format_);
+        //####
         // falta la fecha de cierre de caso
 
         $.post(app.dataModel.saveHospitalUrl,
@@ -1700,6 +1854,33 @@
                 DiagEgOtro: self.DiagEgOtro() == null ? "" : self.DiagEgOtro().toLocaleUpperCase(),         //#### CAFQ
                 Tiraje: self.Tiraje(),
                 Odinofagia: self.Odinofagia(),
+                //#### COVID-19
+                LabConfirmedSymptom: self.LabConfirmedSymptom(),
+                CaseInIsolation: self.CaseInIsolation(),
+                DateIsolation: $("#DateIsolation").val() == "" ? null : moment(date_DateIsolation).format(date_format_ISO),  
+                CaseInIsolationOtherPlace: self.CaseInIsolationOtherPlace(),
+
+                ReasonSamplingID: self.ReasonSamplingID(),
+                ReasonSamplingOther: self.ReasonSamplingOther(),
+
+                OutcomeDateResubmission: $("#OutcomeDateResubmission").val() == "" ? null : moment(date_OutcomeDateResubmission).format(date_format_ISO),
+                OutcomeDevelopSymptoms: self.OutcomeDevelopSymptoms(),
+                OutcomeDateOnsetSymptoms: $("#OutcomeDateOnsetSymptoms").val() == "" ? null : moment(date_OutcomeDateOnsetSymptoms).format(date_format_ISO),
+
+                OutcomeAdmissionPrevReported: self.OutcomeAdmissionPrevReported(),
+                OutcomeDateFirstAdmission: $("#OutcomeDateFirstAdmission").val() == "" ? null : moment(date_OutcomeDateFirstAdmission).format(date_format_ISO),
+                OutcomeUCI: self.OutcomeUCI(),
+                OutcomeVentMecanica: self.OutcomeVentMecanica(),
+                OutcomeECMO: self.OutcomeECMO(),
+
+                OutcomeDestin: self.OutcomeDestin(),
+                OutcomeDestinOther: self.OutcomeDestinOther(),
+                OutcomeDateRelease: $("#OutcomeDateRelease").val() == "" ? null : moment(date_OutcomeDateRelease).format(date_format_ISO),
+                OutcomeDateLastLabTest: $("#OutcomeDateLastLabTest").val() == "" ? null : moment(date_OutcomeDateLastLabTest).format(date_format_ISO),
+                OutcomeResultsLastTest: self.OutcomeResultsLastTest(),
+                OutcomeTotalHighRisk: self.OutcomeTotalHighRisk(),
+                OutcomeTotalHighRiskUnknown: self.OutcomeTotalHighRiskUnknown(),
+                //#### COVID-19
                 CaseStatus: self.CaseStatus(),
                 CloseDate: $("#CloseDate").val() == "" ? null : moment(date_close_case).format(date_format_ISO),
                 ObservationCase: self.ObservationCase() == null ? "" : self.ObservationCase().toLocaleUpperCase(),

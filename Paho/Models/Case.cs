@@ -29,6 +29,7 @@ namespace Paho.Models
         public IEnumerable<LookupView<Institution>> Institutions { get; set; }
         public IEnumerable<LookupView<Lab>> Labs { get; set; }
         public IEnumerable<LookupView<CatReasonNotSampling>> ReasonNotSampling { get; set; }
+        public IEnumerable<LookupView<CatReasonSampling>> ReasonSampling { get; set; }
         public IEnumerable<LookupView<Institution>> InstitutionsCaseGenerarting { get; set; }
         public Array LabsExternal { get; set; }
         public Array LabsHospital_cmb { get; set;  }
@@ -570,6 +571,16 @@ namespace Paho.Models
         public string ENG { get; set; }
     }
 
+
+    public class CatReasonSampling
+    {
+        public int? ID { get; set; }
+        public string SPA { get; set; }
+        public string ENG { get; set; }
+        public bool Active { get; set; }
+        public int? CountryID { get; set; }
+    }
+
     // Catalogos para resultado de laboratorio
 
     public class CatSurv
@@ -1078,6 +1089,68 @@ namespace Paho.Models
         public int? nativepeople { get;  set; }
         public int? nationality { get; set; }
 
+        //#### 200225 COVID-19 - START
+        public string UniqueCaseIdentif { get; set; }
+        public int? CountryCaseDiagnosedID { get; set; }
+        public string FirstAdministLevel { get; set; }
+
+        public int? TravelPrevSympt { get; set; }
+        public int? TravelPrevSymptCountryID1 { get; set; }
+        public int? TravelPrevSymptCountryID2 { get; set; }
+        public int? TravelPrevSymptCountryID3 { get; set; }
+        public string TravelPrevSymptCity1 { get; set; }
+        public string TravelPrevSymptCity2 { get; set; }
+        public string TravelPrevSymptCity3 { get; set; }
+        public DateTime? TravelPrevSymptDateDeparture1 { get; set; }
+        public DateTime? TravelPrevSymptDateDeparture2 { get; set; }
+        public DateTime? TravelPrevSymptDateDeparture3 { get; set; }
+
+        public int? PatientVisitedHealthCare { get; set; }
+        public int? ContactCaseConfirmed { get; set; }
+        public string ContactCaseConfirmedDesc { get; set; }
+        public string ContactIdentifier1 { get; set; }
+        public DateTime? ContactFirstDate1 { get; set; }
+        public DateTime? ContactLastDate1 { get; set; }
+        public string ContactIdentifier2 { get; set; }
+        public DateTime? ContactFirstDate2 { get; set; }
+        public DateTime? ContactLastDate2 { get; set; }
+        public string ContactIdentifier3 { get; set; }
+        public DateTime? ContactFirstDate3 { get; set; }
+        public DateTime? ContactLastDate3 { get; set; }
+        public int? CountryHigherExpositionID { get; set; }
+
+        public int? HealthCareWorkerJob { get; set; }
+        public int? HealthCareWorkerJobCountryID { get; set; }
+        public string HealthCareWorkerJobCity { get; set; }
+        public string HealthCareWorkerJobFacility { get; set; }
+
+        public int? LabConfirmedSymptom { get; set; }
+        public int? CaseInIsolation { get; set; }
+        public DateTime? DateIsolation { get; set; }
+        public string CaseInIsolationOtherPlace { get; set; }
+
+        public int? ReasonSamplingID { get; set; }
+        public string ReasonSamplingOther { get; set; }
+
+        public DateTime? OutcomeDateResubmission { get; set; }
+        public int? OutcomeDevelopSymptoms { get; set; }
+        public DateTime? OutcomeDateOnsetSymptoms { get; set; }
+
+        public int? OutcomeAdmissionPrevReported { get; set; }
+        public DateTime? OutcomeDateFirstAdmission { get; set; }
+        public int? OutcomeUCI { get; set; }
+        public int? OutcomeVentMecanica { get; set; }
+        public int? OutcomeECMO { get; set; }
+
+        public string OutcomeDestin { get; set; }
+        public string OutcomeDestinOther { get; set; }
+        public DateTime? OutcomeDateRelease { get; set; }
+        public DateTime? OutcomeDateLastLabTest { get; set; }
+        public string OutcomeResultsLastTest { get; set; }
+        public int? OutcomeTotalHighRisk { get; set; }
+        public bool? OutcomeTotalHighRiskUnknown { get; set; }
+        //#### 200225 COVID-19 - END
+
         public int? Ocupacion { get; set; }                         //#### CAFQ
         public string TrabajoDirecc { get; set; }                   //#### CAFQ
         public string TrabajoEstablec { get; set; }                 //#### CAFQ
@@ -1100,19 +1173,14 @@ namespace Paho.Models
         public int? InfluConfirContacto { get; set; }               //#### CAFQ
         public string TipoRelaContacto { get; set; }                //#### CAFQ
         public int? FamiDirecContacto { get; set; }                 //#### CAFQ
-        //public string TrabSaludRama { get; set; }                   //#### CAFQ
         public int? TrabSaludRama { get; set; }                     //#### CAFQ
         public bool? TrabLaboratorio { get; set; }                  //#### CAFQ
-        //public string TrabLaboratorioRama { get; set; }             //#### CAFQ
         public int? TrabLaboratorioRama { get; set; }               //#### CAFQ
         public Decimal? Temperatura { get; set; }                   //#### CAFQ
-        //public bool? DolorCabeza { get; set; }                    //#### CAFQ                YA EXISTE (Cefalea)
         public bool? Mialgia { get; set; }                          //#### CAFQ
         public bool? Erupcion { get; set; }                         //#### CAFQ
         public string ErupcionLocaliz { get; set; }                 //#### CAFQ
-        //public bool? Dolor { get; set; }                          //#### CAFQ
         public string DolorMuscularLocaliz { get; set; }            //#### CAFQ
-        //public bool? Disnea { get; set; }                         //#### CAFQ
         public bool? SintomHemorrag { get; set; }                   //#### CAFQ
         public string SintomHemorragDesc { get; set; }              //#### CAFQ
         public bool? AlteracEstadoMental { get; set; }              //#### CAFQ
@@ -1886,6 +1954,7 @@ namespace Paho.Models
         public DbSet<CatCaseStatus> CatCaseStatus { get; set; }
         public DbSet<CatTestType> CatTestType { get; set; }
         public DbSet<CatReasonNotSampling> CatReasonNotSampling { get; set; }
+        public DbSet<CatReasonSampling> CatReasonSampling { get; set; }
         public DbSet<CatTestResult> CatTestResult { get; set; }
         public DbSet<CatVirusType> CatVirusType { get; set; }
         public DbSet<CatOtherVirusType> CatOtherVirusType { get; set; }
@@ -1958,6 +2027,67 @@ namespace Paho.Models
                    p.AgeGroup,
                    p.Gender,
                    p.ResponsibleMinor,
+                   //#### 200225 COVID - 19 - START
+                   p.UniqueCaseIdentif,                     //#### 200225
+                   p.CountryCaseDiagnosedID,                //#### 200225
+                   p.FirstAdministLevel,                    //#### 200225
+
+                   p.TravelPrevSympt,
+                   p.TravelPrevSymptCountryID1,
+                   p.TravelPrevSymptCountryID2,
+                   p.TravelPrevSymptCountryID3,
+                   p.TravelPrevSymptCity1,
+                   p.TravelPrevSymptCity2,
+                   p.TravelPrevSymptCity3,
+                   p.TravelPrevSymptDateDeparture1,
+                   p.TravelPrevSymptDateDeparture2,
+                   p.TravelPrevSymptDateDeparture3,
+
+                   p.PatientVisitedHealthCare,
+                   p.ContactCaseConfirmed,
+                   p.ContactCaseConfirmedDesc,
+                   p.ContactIdentifier1,
+                   p.ContactFirstDate1,
+                   p.ContactLastDate1,
+                   p.ContactIdentifier2,
+                   p.ContactFirstDate2,
+                   p.ContactLastDate2,
+                   p.ContactIdentifier3,
+                   p.ContactFirstDate3,
+                   p.ContactLastDate3,
+                   p.CountryHigherExpositionID,
+
+                   p.HealthCareWorkerJob,                       //#### 200225
+                   p.HealthCareWorkerJobCountryID,                       //#### 200225
+                   p.HealthCareWorkerJobCity,                       //#### 200225
+                   p.HealthCareWorkerJobFacility,                       //#### 200225
+                   //#### 200225 COVID - 19
+                   p.LabConfirmedSymptom,                       //#### 200225
+                   p.CaseInIsolation,                       //#### 200225
+                   p.DateIsolation,                       //#### 200225
+                   p.CaseInIsolationOtherPlace,                       //#### 200225
+
+                   p.ReasonSamplingID,                       //#### 200225
+                   p.ReasonSamplingOther,                       //#### 200225
+
+                   p.OutcomeDateResubmission,
+                   p.OutcomeDevelopSymptoms,
+                   p.OutcomeDateOnsetSymptoms,
+
+                   p.OutcomeAdmissionPrevReported,
+                   p.OutcomeDateFirstAdmission,
+                   p.OutcomeUCI,
+                   p.OutcomeVentMecanica,
+                   p.OutcomeECMO,
+
+                   p.OutcomeDestin,
+                   p.OutcomeDestinOther,
+                   p.OutcomeDateRelease,
+                   p.OutcomeDateLastLabTest,
+                   p.OutcomeResultsLastTest,
+                   p.OutcomeTotalHighRisk,
+                   p.OutcomeTotalHighRiskUnknown,
+                   //####
                    p.UserID,
                    p.InsertDate,
                    p.LastUpdate,
@@ -1966,11 +2096,11 @@ namespace Paho.Models
                    p.Brote,
                    p.nativepeople,
                    p.nationality,
-                   p.Ocupacion,             //#### CAFQ
-                   p.TrabajoDirecc,             //#### CAFQ
-                   p.TrabajoEstablec,             //#### CAFQ
-                   p.ContactoAnimVivos,             //#### CAFQ
-                   p.OcupacMercAnimVivos,             //#### CAFQ
+                   p.Ocupacion,
+                   p.TrabajoDirecc,
+                   p.TrabajoEstablec,
+                   p.ContactoAnimVivos,
+                   p.OcupacMercAnimVivos,
                    p.flow,
                    p.statement,
                    // CaseGeo
@@ -1984,15 +2114,15 @@ namespace Paho.Models
                    p.Address2,
                    p.LocalID,
                    p.NeighborhoodID,
-				   p.HamletID,                  //#### CAFQ: 181018
-                   p.ColonyID,                  //#### CAFQ: 181018
+				   p.HamletID,
+                   p.ColonyID,
                    p.UrbanRural,
                    p.CountryID2weeks,
                    p.AreaID2weeks,
                    p.StateID2weeks,
                    p.NeighborhoodID2weeks,
                    p.Address,
-                   p.RegionAddress,             //#### CAFQ: 181008
+                   p.RegionAddress,
                    p.CountryOrigin,
                    p.PhoneNumber,
                    p.Latitude,
@@ -2067,10 +2197,10 @@ namespace Paho.Models
                    p.NumeIdentContacto,             //#### CAFQ
                    p.InfluConfirContacto,             //#### CAFQ
                    p.TipoRelaContacto,             //#### CAFQ
-                   p.FamiDirecContacto,             //#### CAFQ
-                   p.TrabSaludRama,             //#### CAFQ
-                   p.TrabLaboratorio,             //#### CAFQ
-                   p.TrabLaboratorioRama,             //#### CAFQ
+                   p.FamiDirecContacto,
+                   p.TrabSaludRama,
+                   p.TrabLaboratorio,
+                   p.TrabLaboratorioRama,
                    p.SickleCellDisease,
                    // CaseHospital
                    p.CHNum,
@@ -2248,6 +2378,9 @@ namespace Paho.Models
                    p.GeneticGroup,                              // Grupo genetico
                    p.GeneticGroup_2,
                    p.GeneticGroup_3,
+
+
+
                    p.CaseStatus,
                    p.CloseDate,
                    p.ObservationCase

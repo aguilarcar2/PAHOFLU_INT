@@ -57,7 +57,7 @@
             </span>
             <select id="Reports" class="form-control" data-bind="options: reportsCountries,
                        optionsText: 'Name',
-                       optionsValue: 'ID',
+                       optionsValue: 'Id',
                        value: selectedReportCountryId,
                        optionsCaption: '@labelFieldSelect',
                        valueUpdate:'change'">
@@ -365,15 +365,18 @@
     var regions = @Html.Raw(Json.Encode(Model.Regions));
     var areas = @Html.Raw(Json.Encode(Model.Areas));
     @*var activecountries = @Html.Raw(Json.Encode(Model.Countries));*@
-    console.log(areas);
-    console.log(regions);
+    //console.log(areas);
+    //console.log(regions);
     var institutions = @Html.Raw(Json.Encode(Model.Institutions));
     var reportsCountries = @Html.Raw(Json.Encode(Model.ReportsCountries));      // Lista de reportes del país
+    console.log("X1");
+    console.log(reportsCountries);
+    console.log("X2");
     var survCountries = @Html.Raw(Json.Encode(Model.SurvCountries));            // Lista de vigilancias
-
     @*var CountryID = @Html.Raw(Model.CountryID);*@
     @*var selcty = @ViewBag.UsrCtry;      // CountryID del user*@
     var selcty = @Html.Raw(Model.CountryID);      // CountryID del user
+    //console.log("selcty->" + selcty);
     var PAHOFLU_date_format = "@(Html.Raw(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgDateFormat")))";
     var moment_date_format = "@(Html.Raw(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgDateFormatMoment")))";
     var ISO_date_format = "@(Html.Raw(((Paho.Controllers.ExportarController)this.ViewContext.Controller).getMsg("msgDateFormatISO")))";

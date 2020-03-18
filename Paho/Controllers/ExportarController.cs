@@ -61,6 +61,9 @@ namespace Paho.Controllers
 
                 if (user.Institution.AccessLevel == AccessLevel.Country)
                 {
+                    ExportarViewModel.DisplayAreas = true;
+                    ExportarViewModel.DisplayRegionals = true;
+
                     institutions = db.Institutions.OfType<Hospital>()
                                   .Where(i => i.CountryID == user.Institution.CountryID).OrderBy(n => n.FullName);
 
@@ -290,7 +293,7 @@ namespace Paho.Controllers
                 .Where(c => c.CountryID == CountryID)
                 .Select(c => new
                 {
-                    ID = c.ID.ToString(),
+                    Id = c.ID.ToString(),
                     Name = c.description,
                     ReportID = c.ReportID
                 })
@@ -664,20 +667,21 @@ namespace Paho.Controllers
 
                             /////////////////////////////////////// VIRUS IRAG  ////////////////////////////////////////////////////////////////////////7
 
-                            var excelWs_VIRUSES_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "SARI VIRUSES" : "Virus Identificados"];
-                            var excelWs_VIRUSES_Chart = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Graph Virus" : "Gráficos Virus IRAG"];
+                            //var excelWs_VIRUSES_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "SARI VIRUSES" : "Virus Identificados"];
+                            //var excelWs_VIRUSES_Chart = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Graph Virus" : "Gráficos Virus IRAG"];
+                            var excelWs_VIRUSES_IRAG = excelWorkBook.Worksheets[(Languaje_ == "ENG") ? "SARI VIRUSES" : "Virus IRAG Identificados"];
+                            var excelWs_VIRUSES_Chart = excelWorkBook.Worksheets[(Languaje_ == "ENG") ? "Graph Virus" : "Gráficos Virus IRAG"];
                             contador = YearEnd - YearBegin;
                             var YearEnd_report = DateTime.Now.Year;
 
-                            var excelWs_VIRUSES_INF_Geographic = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Virus_INF_GEO" : "Virus_INF_GEO"];
-                            var excelWs_VIRUSES_RSV_Geographic = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Virus_RSV_GEO" : "Virus_VSR_GEO"];
-
+                            //var excelWs_VIRUSES_INF_Geographic = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Virus_INF_GEO" : "Virus_INF_GEO"];
+                            //var excelWs_VIRUSES_RSV_Geographic = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Virus_RSV_GEO" : "Virus_VSR_GEO"];
+                            var excelWs_VIRUSES_INF_Geographic = excelWorkBook.Worksheets[(Languaje_ == "ENG") ? "Virus_INF_GEO" : "Virus_INF_GEO"];
+                            var excelWs_VIRUSES_RSV_Geographic = excelWorkBook.Worksheets[(Languaje_ == "ENG") ? "Virus_RSV_GEO" : "Virus_VSR_GEO"];
 
                             for (int i = 0; i <= contador; i++)
                             {
-
                                 YearEnd_report = YearEnd - i;
-
 
                                 if (i > 0)
                                 {
@@ -699,28 +703,30 @@ namespace Paho.Controllers
                                     // Configuración de gráfica de Pie
                                     ConfigGraph_Pie(excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV5", (7 + (52 * i)) + 51, (7 + (52 * i)) + 51);
                                     ConfigGraph_Pie(excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV6", (7 + (52 * i)) + 51, (7 + (52 * i)) + 51);
-
-
                                 }
-                                AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4", (i > 0 ? (6 + (52 * i)) : 6), 1, excelWs_VIRUSES_IRAG.Index, false, ReportCountry, YearEnd_report, YearEnd_report, 1, Inusual, AreaID_, Sentinel);
+
+                                AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4", (i > 0 ? (6 + (52 * i)) : 6), 1, 
+                                    excelWs_VIRUSES_IRAG.Index, false, ReportCountry, YearEnd_report, YearEnd_report, 1, Inusual, AreaID_, Sentinel);
 
                                 if (excelWs_VIRUSES_INF_Geographic != null)
-                                    AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", 5, 1, excelWs_VIRUSES_INF_Geographic.Index, false, ReportCountry, YearEnd_report, YearEnd_report, Surv, Inusual, AreaID_, Sentinel);
+                                    AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", 5, 1, 
+                                        excelWs_VIRUSES_INF_Geographic.Index, false, ReportCountry, YearEnd_report, YearEnd_report, Surv, Inusual, AreaID_, Sentinel, VirusType: "INF");
 
                                 if (excelWs_VIRUSES_RSV_Geographic != null)
-                                    AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", 5, 1, excelWs_VIRUSES_RSV_Geographic.Index, false, ReportCountry, YearEnd_report, YearEnd_report, Surv, Inusual, AreaID_, Sentinel);
-
+                                    AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", 5, 1, 
+                                        excelWs_VIRUSES_RSV_Geographic.Index, false, ReportCountry, YearEnd_report, YearEnd_report, Surv, Inusual, AreaID_, Sentinel, VirusType: "RSV");
                             }
-
 
                             // Procedimiento para cambiar los rangos del eje X 
                             if (contador > 0)
                             {
-                                var RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "SARI VIRUSES" : "Virus Identificados") + "'!$BY$6:$BZ$57 ";
+                                //var RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "SARI VIRUSES" : "Virus Identificados") + "'!$BY$6:$BZ$57 ";
+                                var RangeStr = " '" + ((Languaje_ == "ENG") ? "SARI VIRUSES" : "Virus IRAG Identificados") + "'!$BY$6:$BZ$57 ";
 
                                 for (int i = 1; i <= contador; i++)
                                 {
-                                    RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "SARI VIRUSES" : "Virus Identificados") + "'!$BY$" + (6 + (52 * i)).ToString() + ":$BZ$" + ((6 + (52 * i)) + 51).ToString() + ", " + RangeStr;
+                                    //RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "SARI VIRUSES" : "Virus Identificados") + "'!$BY$" + (6 + (52 * i)).ToString() + ":$BZ$" + ((6 + (52 * i)) + 51).ToString() + ", " + RangeStr;
+                                    RangeStr = " '" + ((Languaje_ == "ENG") ? "SARI VIRUSES" : "Virus IRAG Identificados") + "'!$BY$" + (6 + (52 * i)).ToString() + ":$BZ$" + ((6 + (52 * i)) + 51).ToString() + ", " + RangeStr;
                                 }
 
                                 RangeStr = " ( " + RangeStr + ")";
@@ -753,10 +759,13 @@ namespace Paho.Controllers
                             //AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_NATIONAL_VIRUSES", 6, 1, excelWs_VIRUSES_IRAG.Index, false, ReportCountry, YearEnd, YearEnd, 1, Inusual, AreaID_, Sentinel);
 
                             //////////////////////////////////////////////////// IRAG  /////////////////////////////////////////////////////////////////////////////////7777
-                            var excelWs_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "SARI" : "IRAG"];
-                            var excelWs_IRAG_Chart = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "SARI Graphs" : "Gráficos IRAG"];
+                            //var excelWs_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "SARI" : "IRAG"];
+                            //var excelWs_IRAG_Chart = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "SARI Graphs" : "Gráficos IRAG"];
+                            var excelWs_IRAG = excelWorkBook.Worksheets[(Languaje_ == "ENG") ? "SARI" : "IRAG"];
+                            var excelWs_IRAG_Chart = excelWorkBook.Worksheets[(Languaje_ == "ENG") ? "SARI Graphs" : "Gráficos IRAG"];
 
-                            AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_IRAG", 8, 1, excelWs_IRAG.Index, false, ReportCountry, YearBegin, YearEnd, 1, Inusual, AreaID_, Sentinel);
+                            AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_IRAG", 8, 1, excelWs_IRAG.Index, false, 
+                                ReportCountry, YearBegin, YearEnd, 1, Inusual, AreaID_, Sentinel);
 
                             // Ajustar gráficas IRAG
                             for (int i = 0; i <= contador; i++)
@@ -774,24 +783,26 @@ namespace Paho.Controllers
                                     ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_IRAG_Chart.Index, excelWs_IRAG.Index, "GS4", (11 + (52 * i)), (11 + (52 * i)) + 51);
                                     ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_IRAG_Chart.Index, excelWs_IRAG.Index, "GS5", (8 + (52 * i)), (8 + (52 * i)) + 51);
                                     ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_IRAG_Chart.Index, excelWs_IRAG.Index, "GS6", (11 + (52 * i)), (11 + (52 * i)) + 51);
+                                    ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_IRAG_Chart.Index, excelWs_IRAG.Index, "GS10Cov-2", (11 + (52 * i)), (11 + (52 * i)) + 51);
                                     ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_IRAG_Chart.Index, excelWs_IRAG.Index, "GS7", (8 + (52 * i)), (8 + (52 * i)) + 51);
                                     ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_IRAG_Chart.Index, excelWs_IRAG.Index, "GS8", (11 + (52 * i)), (11 + (52 * i)) + 51);
                                     ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_IRAG_Chart.Index, excelWs_IRAG.Index, "GS9", (8 + (52 * i)), (8 + (52 * i)) + 51);
 
+
                                     // Configuración de gráfica de Pie
                                     //ConfigGraph_Pie(excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV5", (7 + (52 * i)) + 51, (7 + (52 * i)) + 51);
-
                                 }
-
                             }
 
                             if (contador > 0)
                             {
-                                var RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "SARI" : "IRAG") + "'!$BY$8:$BZ$59 ";
+                                //var RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "SARI" : "IRAG") + "'!$BY$8:$BZ$59 ";
+                                var RangeStr = " '" + ((Languaje_ == "ENG") ? "SARI" : "IRAG") + "'!$BY$8:$BZ$59 ";
 
                                 for (int i = 1; i <= contador; i++)
                                 {
-                                    RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "SARI" : "IRAG") + "'!$BY$" + (8 + (52 * i)).ToString() + ":$BZ$" + ((8 + (52 * i)) + 51).ToString() + ", " + RangeStr;
+                                    //RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "SARI" : "IRAG") + "'!$BY$" + (8 + (52 * i)).ToString() + ":$BZ$" + ((8 + (52 * i)) + 51).ToString() + ", " + RangeStr;
+                                    RangeStr = " '" + ((Languaje_ == "ENG") ? "SARI" : "IRAG") + "'!$BY$" + (8 + (52 * i)).ToString() + ":$BZ$" + ((8 + (52 * i)) + 51).ToString() + ", " + RangeStr;
                                 }
 
                                 RangeStr = " ( " + RangeStr + ")";
@@ -837,6 +848,11 @@ namespace Paho.Controllers
                                 LineChart = excelWs_IRAG_Chart.Drawings[graph_name] as ExcelChart;
                                 LineChart.SetSize((80 * contador) + 600, 325);
                                 UpdateRangeXMLPath(LineChart, RangeStr);
+
+                                graph_name = "GS10Cov-2";
+                                LineChart = excelWs_IRAG_Chart.Drawings[graph_name] as ExcelChart;
+                                LineChart.SetSize((80 * contador) + 600, 325);
+                                UpdateRangeXMLPath(LineChart, RangeStr);
                             }
 
                             contador = YearEnd - YearBegin;
@@ -852,11 +868,18 @@ namespace Paho.Controllers
                             //    }
                             //}
 
-                            /////////////////////////////////////////////////////////////////// DEATHS  /////////////////////////////////////////////////////////
-                            var excelWs_DEATHS_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "DEATHS Sentinel Sites" : "Fallecidos IRAG"];
-                            var excelWs_DEATHS_IRAG_Chart = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "DEATHS Sentinel Sites" : "Fallecidos IRAG"];
+                            //////////////////////////////////////////////////// IRAG SARS-CoV-2 /////////////////////////////////////////////////////////////////////////////////7777
+                            ////var excelWs_IRAG_COV2 = excelWorkBook.Worksheets[(Languaje_ == "ENG") ? "SARI-nCov" : "IRAG-nCov"];
+                            ////AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_IRAG__Covid2", 8, 1, excelWs_IRAG_COV2.Index, false, ReportCountry, YearBegin, YearEnd, 1, Inusual, AreaID_, Sentinel);
 
-                            AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_DEATHS_IRAG", 8, 1, excelWs_DEATHS_IRAG.Index, false, ReportCountry, YearBegin, YearEnd, 1, Inusual, AreaID_, Sentinel);
+                            /////////////////////////////////////////////////////////////////// DEATHS  /////////////////////////////////////////////////////////
+                            //var excelWs_DEATHS_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "DEATHS Sentinel Sites" : "Fallecidos IRAG"];
+                            //var excelWs_DEATHS_IRAG_Chart = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "DEATHS Sentinel Sites" : "Fallecidos IRAG"];
+                            var excelWs_DEATHS_IRAG = excelWorkBook.Worksheets[(Languaje_ == "ENG") ? "DEATHS Sentinel Sites" : "Fallecidos IRAG"];
+                            var excelWs_DEATHS_IRAG_Chart = excelWorkBook.Worksheets[(Languaje_ == "ENG") ? "DEATHS Sentinel Sites" : "Fallecidos IRAG"];
+
+                            AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_DEATHS_IRAG", 8, 1, excelWs_DEATHS_IRAG.Index, 
+                                false, ReportCountry, YearBegin, YearEnd, 1, Inusual, AreaID_, Sentinel);
 
                             // DEATHS Chart
 
@@ -885,16 +908,17 @@ namespace Paho.Controllers
                                     ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_DEATHS_IRAG_Chart.Index, excelWs_DEATHS_IRAG.Index, "CD3", (8 + (52 * i)), (8 + (52 * i)) + 51);
 
                                 }
-
                             }
 
                             if (contador > 0)
                             {
-                                var RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "DEATHS Sentinel Sites" : "Fallecidos IRAG") + "'!$BY$8:$BZ$59 ";
+                                //var RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "DEATHS Sentinel Sites" : "Fallecidos IRAG") + "'!$BY$8:$BZ$59 ";
+                                var RangeStr = " '" + ((Languaje_ == "ENG") ? "DEATHS Sentinel Sites" : "Fallecidos IRAG") + "'!$BY$8:$BZ$59 ";
 
                                 for (int i = 1; i <= contador; i++)
                                 {
-                                    RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "DEATHS Sentinel Sites" : "Fallecidos IRAG") + "'!$BY$" + (8 + (52 * i)).ToString() + ":$BZ$" + ((8 + (52 * i)) + 51).ToString() + ", " + RangeStr;
+                                    //RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "DEATHS Sentinel Sites" : "Fallecidos IRAG") + "'!$BY$" + (8 + (52 * i)).ToString() + ":$BZ$" + ((8 + (52 * i)) + 51).ToString() + ", " + RangeStr;
+                                    RangeStr = " '" + ((Languaje_ == "ENG") ? "DEATHS Sentinel Sites" : "Fallecidos IRAG") + "'!$BY$" + (8 + (52 * i)).ToString() + ":$BZ$" + ((8 + (52 * i)) + 51).ToString() + ", " + RangeStr;
                                 }
 
                                 RangeStr = " ( " + RangeStr + ")";
@@ -920,11 +944,13 @@ namespace Paho.Controllers
                             }
 
                             ////////////////////////////////////////////////////////////////// ILI //////////////////////////////////////////////////
-                            var excelWs_ILI = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "ILI" : "ETI"];
-                            var excelWs_ILI_Chart = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "ILI" : "ETI"];
+                            //var excelWs_ILI = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "ILI" : "ETI"];
+                            //var excelWs_ILI_Chart = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "ILI" : "ETI"];
+                            var excelWs_ILI = excelWorkBook.Worksheets[(Languaje_ == "ENG") ? "ILI" : "ETI"];
+                            var excelWs_ILI_Chart = excelWorkBook.Worksheets[(Languaje_ == "ENG") ? "ILI" : "ETI"];
 
-                            AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_ETI", 8, 1, excelWs_ILI.Index, false, ReportCountry, YearBegin, YearEnd, 2, Inusual, AreaID_, Sentinel);
-
+                            AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_ETI", 8, 1, excelWs_ILI.Index, false, 
+                                ReportCountry, YearBegin, YearEnd, 2, Inusual, AreaID_, Sentinel);
 
                             // Ajustar gráficas ILI
                             for (int i = 0; i <= contador; i++)
@@ -951,11 +977,13 @@ namespace Paho.Controllers
 
                             if (contador > 0)
                             {
-                                var RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "ILI" : "ETI") + "'!$BY$8:$BZ$59 ";
+                                //var RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "ILI" : "ETI") + "'!$BY$8:$BZ$59 ";
+                                var RangeStr = " '" + ((Languaje_ == "ENG") ? "ILI" : "ETI") + "'!$BY$8:$BZ$59 ";
 
                                 for (int i = 1; i <= contador; i++)
                                 {
-                                    RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "ILI" : "ETI") + "'!$BY$" + (8 + (52 * i)).ToString() + ":$BZ$" + ((8 + (52 * i)) + 51).ToString() + ", " + RangeStr;
+                                    //RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "ILI" : "ETI") + "'!$BY$" + (8 + (52 * i)).ToString() + ":$BZ$" + ((8 + (52 * i)) + 51).ToString() + ", " + RangeStr;
+                                    RangeStr = " '" + ((Languaje_ == "ENG") ? "ILI" : "ETI") + "'!$BY$" + (8 + (52 * i)).ToString() + ":$BZ$" + ((8 + (52 * i)) + 51).ToString() + ", " + RangeStr;
                                 }
 
                                 RangeStr = " ( " + RangeStr + ")";
@@ -982,8 +1010,10 @@ namespace Paho.Controllers
 
                             //////////////////////////////////////////////////////////////  VIRUS ILI ////////////////////////////////////////////////////  
 
-                            var excelWs_VIRUSES_ILI = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "ILI VIRUSES - Sentinel" : "Virus ETI Identificados"];
-                            var excelWs_VIRUSES_ILI_Chart = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "ILI Graphs Viruses" : "Gráficos Virus ETI"];
+                            //var excelWs_VIRUSES_ILI = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "ILI VIRUSES - Sentinel" : "Virus ETI Identificados"];
+                            //var excelWs_VIRUSES_ILI_Chart = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "ILI Graphs Viruses" : "Gráficos Virus ETI"];
+                            var excelWs_VIRUSES_ILI = excelWorkBook.Worksheets[(Languaje_ == "ENG") ? "ILI VIRUSES - Sentinel" : "Virus ETI Identificados"];
+                            var excelWs_VIRUSES_ILI_Chart = excelWorkBook.Worksheets[(Languaje_ == "ENG") ? "ILI Graphs Viruses" : "Gráficos Virus ETI"];
                             contador = YearEnd - YearBegin;
                             YearEnd_report = DateTime.Now.Year;
                             //AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_NATIONAL_VIRUSES", 6, 1, excelWs_VIRUSES_ILI.Index, false, ReportCountry, YearBegin, YearEnd, 2, Inusual, AreaID_, Sentinel);
@@ -1000,8 +1030,9 @@ namespace Paho.Controllers
                                     //CopyAndPasteRange(excelWorkBook, excelWs_VIRUSES_IRAG.Index, excelWorkBook, excelWs_VIRUSES_IRAG.Index, "A4:BZ58", "A" + Convert.ToString(4 + (57 * i)) + ":BZ" + Convert.ToString(4 + (57 * i) + 55));
                                     CopyAndPasteRange(excelWorkBook, excelWs_VIRUSES_ILI.Index, excelWorkBook, excelWs_VIRUSES_ILI.Index, "A" + Convert.ToString(6 + (52 * i)) + ":BZ" + Convert.ToString(6 + (52 * i)), "A" + Convert.ToString(6 + (52 * (i + 1))) + ":BZ" + Convert.ToString(6 + (52 * (i + 1))));
                                     CopyAndPasteRange(excelWorkBook, excelWs_VIRUSES_ILI.Index, excelWorkBook, excelWs_VIRUSES_ILI.Index, "A6:BZ57", "A" + Convert.ToString(6 + (52 * i)) + ":BZ" + Convert.ToString(6 + (52 * i) + 52));
-
                                 }
+
+
                                 if (i > 0)
                                 {
                                     ConfigGraph_Bars_Histogram(YearEnd_report, excelWorkBook, excelWs_VIRUSES_ILI_Chart.Index, excelWs_VIRUSES_ILI.Index, "CVILI1", (6 + (52 * i)), (6 + (52 * i)) + 51);
@@ -1011,20 +1042,22 @@ namespace Paho.Controllers
                                     // Configuración de gráfica de Pie
                                     ConfigGraph_Pie(excelWorkBook, excelWs_VIRUSES_ILI_Chart.Index, excelWs_VIRUSES_ILI.Index, "CVILI5", (7 + (52 * i)) + 51, (7 + (52 * i)) + 51);
                                     ConfigGraph_Pie(excelWorkBook, excelWs_VIRUSES_ILI_Chart.Index, excelWs_VIRUSES_ILI.Index, "CVILI6", (7 + (52 * i)) + 51, (7 + (52 * i)) + 51);
-
-
                                 }
-                                AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4", (i > 0 ? (6 + (52 * i)) : 6), 1, excelWs_VIRUSES_ILI.Index, false, ReportCountry, YearEnd_report, YearEnd_report, 2, Inusual, AreaID_, Sentinel);
+
+                                AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4", (i > 0 ? (6 + (52 * i)) : 6), 1, 
+                                    excelWs_VIRUSES_ILI.Index, false, ReportCountry, YearEnd_report, YearEnd_report, 2, Inusual, AreaID_, Sentinel);
 
                             }
 
                             if (contador > 0)
                             {
-                                var RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "ILI VIRUSES - Sentinel" : "Virus ETI Identificados") + "'!$BY$6:$BZ$57 ";
+                                //var RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "ILI VIRUSES - Sentinel" : "Virus ETI Identificados") + "'!$BY$6:$BZ$57 ";
+                                var RangeStr = " '" + ((Languaje_ == "ENG") ? "ILI VIRUSES - Sentinel" : "Virus ETI Identificados") + "'!$BY$6:$BZ$57 ";
 
                                 for (int i = 1; i <= contador; i++)
                                 {
-                                    RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "ILI VIRUSES - Sentinel" : "Virus ETI Identificados") + "'!$BY$" + (6 + (52 * i)).ToString() + ":$BZ$" + ((6 + (52 * i)) + 51).ToString() + ", " + RangeStr;
+                                    //RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "ILI VIRUSES - Sentinel" : "Virus ETI Identificados") + "'!$BY$" + (6 + (52 * i)).ToString() + ":$BZ$" + ((6 + (52 * i)) + 51).ToString() + ", " + RangeStr;
+                                    RangeStr = " '" + ((Languaje_ == "ENG") ? "ILI VIRUSES - Sentinel" : "Virus ETI Identificados") + "'!$BY$" + (6 + (52 * i)).ToString() + ":$BZ$" + ((6 + (52 * i)) + 51).ToString() + ", " + RangeStr;
                                 }
 
                                 RangeStr = " ( " + RangeStr + ")";
@@ -1056,7 +1089,6 @@ namespace Paho.Controllers
                             // Leyendas
                             var excelWs_Leyendas = excelWorkBook.Worksheets["Leyendas"];
                             ConfigToExcel_FLUID(CountryID, Languaje_, RegionID_, YearEnd, YearBegin, YearEnd, StartDate, EndDate, HospitalID_, Surv, excelWorkBook, "Leyendas_FLUID", 1, excelWs_Leyendas.Index, false);
-
 
                         }
                         else if (reportTemplate.ToUpper() == "C1")
@@ -4391,6 +4423,7 @@ namespace Paho.Controllers
             DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row,
             int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId = null, int? Sentinel = null)
         {
+            NumberFormatInfo nfi = new CultureInfo("en-US", false).NumberFormat;            // NumberFormatInfo asociado con la cultura en-US.
 
             var excelWorksheet = excelWorkBook.Worksheets[sheet];
             var row = startRow;
@@ -4441,23 +4474,26 @@ namespace Paho.Controllers
                                     }
                                     else
                                     {
-                                        excelWorksheet.Cells[row, col].Value = reader.GetValue(i).ToString();
-                                    }
-                                    excelWorksheet.Cells[row, col].StyleID = cell.StyleID;
+                                        decimal numberdeci;
+                                        isNumber = decimal.TryParse(reader.GetValue(i).ToString(), out numberdeci);
 
+                                        if (isNumber)
+                                            excelWorksheet.Cells[row, col].Value = numberdeci;
+                                        else
+                                            excelWorksheet.Cells[row, col].Value = reader.GetValue(i).ToString();
+                                    }
+
+                                    excelWorksheet.Cells[row, col].StyleID = cell.StyleID;
                                 }
                                 col++;
                             }
-
                             row++;
                         }
                     }
                     command.Parameters.Clear();
                     con.Close();
-
                 }
             }
-
             // Apply only if it has a Total row at the end and hast SUM in range, i.e. SUM(A1:A4)
             //excelWorksheet.DeleteRow(row, 2);
         }
@@ -4507,7 +4543,8 @@ namespace Paho.Controllers
             }
             else if (regionId != null && regionId > 0)
             {
-                var Region_report = db.Regions.Find(regionId);
+                //var Region_report = db.Regions.Find(regionId);
+                var Region_report = db.Regions.Where(r => r.CountryID == countryId && r.orig_country == regionId).FirstOrDefault();
 
                 excelWorksheet.Cells[2, 4].Value = Region_report.Name.ToString();
             }
@@ -4611,7 +4648,7 @@ namespace Paho.Controllers
                 element.Series = begin_str + Convert.ToString(range_begin) + ":$" + letter_range_str + Convert.ToString(range_end) + ", " + element.Series ;
             }
 
-            if (graph_name == "CV1" || graph_name == "CV3" || graph_name == "GS4" || graph_name == "GS6" || graph_name == "GS8" || graph_name == "CILI3" || graph_name == "CILI4" || graph_name == "CVILI1" || graph_name == "CVILI3")
+            if (graph_name == "CV1" || graph_name == "CV3" || graph_name == "GS4" || graph_name == "GS6" || graph_name == "GS10Cov-2" || graph_name == "GS8" || graph_name == "CILI3" || graph_name == "CILI4" || graph_name == "CVILI1" || graph_name == "CVILI3")
             {
                 foreach (ExcelChart TypeChart in Secundary_cs)
                 {
