@@ -677,7 +677,14 @@ namespace Paho.Controllers
                                      CS_D = flucase.CaseStatus,
                                      CS_D_Cat = flucase.CatStatusCase,
                                      VR_IF_D = flucase.CaseLabTests.Where(e => e.TestType == 1 && e.Processed != null).OrderBy(y => y.CatVirusType.orden).ThenBy(d => d.SampleNumber).ThenBy(u => u.TestDate).FirstOrDefault(),
-                                     VR_PCR_D = flucase.CaseLabTests.Where(e => e.TestType == 2 && e.Processed != null)
+                                     VR_PCR_D = (flucase.CaseLabTests.Where(e => e.TestType == 2 &&  e.TestResultID == "P" && e.VirusTypeID == 14).Any() == false)  // ESto es para ver si existe algún positivo de SARS-CoV-2
+                                                   ? 
+                                                flucase.CaseLabTests.Where(e => e.TestType == 2 && e.Processed != null)
+                                                .OrderBy(y => y.CatVirusType.orden)
+                                                .ThenBy(d => d.SampleNumber)
+                                                .ThenBy(u => u.TestDate).FirstOrDefault() 
+                                                   :  
+                                                flucase.CaseLabTests.Where(e => e.TestType == 2 && e.Processed != null && e.TestResultID == "P")
                                                 .OrderBy(y => y.CatVirusType.orden)
                                                 .ThenBy(d => d.SampleNumber)
                                                 .ThenBy(u => u.TestDate).FirstOrDefault(),
@@ -2408,7 +2415,10 @@ namespace Paho.Controllers
                     var flow_complete_Sample_2 = (Sample_2_test.Count() > 0 ) ? false : (flucase.SampleDate2 != null && flucase.Processed2 != null) ? false : true;
                     var Sample_3_test = list_test_record.Where(y => y.SampleNumber == 3).OrderBy(j => j.flow_test);
                     var flow_complete_Sample_3 = (Sample_3_test.Count() > 0) ? false : (flucase.SampleDate3 != null && flucase.Processed3 != null) ? false : true;
-                    
+
+                    var canConclude_test = false;
+
+
                     if (Sample_1_test.Count() == 0 && flucase.SampleDate != null) flow_complete_Sample_1 = true;
                     if (Sample_2_test.Count() == 0 && flucase.SampleDate2 != null) flow_complete_Sample_2 = true;
                     if (Sample_3_test.Count() == 0 && flucase.SampleDate3 != null) flow_complete_Sample_3 = true;
@@ -2419,13 +2429,11 @@ namespace Paho.Controllers
                     var preview_flow = 0;
                     foreach (CaseLabTest Sample_test in Sample_1_test)
                     {
-                        //if (Count_ == 1)
-                        //{ actual_flow = preview_flow = (Int32)Sample_test.flow_test; }
-                        //else
-                        //{
+
                             preview_flow = actual_flow;
                             actual_flow = (Int32)Sample_test.flow_test;
-                        //}
+                            canConclude_test = false;
+
 
                         if (user_cty == 17 && preview_flow == 0) preview_flow = 1;
                         if (user_cty == 15 && preview_flow == 0 && flucase.Processed == false) preview_flow = 1;
@@ -2436,8 +2444,28 @@ namespace Paho.Controllers
                         }
                         else
                         {
-                            flow_complete_Sample_1 = false;
-                            break;
+                            if(user_cty == 9)
+                            {
+                                if (list_institution_conf.Any())
+                                {
+                                    canConclude_test = list_institution_conf.Contains(Sample_test.LabID) && Sample_test.statement_test == 2;
+                                }
+
+                                if (canConclude_test)
+                                {
+                                    flow_complete_Sample_1 = true;
+                                }
+                                else
+                                {
+                                    flow_complete_Sample_1 = false;
+                                    break;
+                                }
+                            } else
+                            {
+                                flow_complete_Sample_1 = false;
+                                break;
+                            }
+
                         }
                     }
                     canConclude_Sample_1 = flow_complete_Sample_1;
@@ -3050,7 +3078,8 @@ namespace Paho.Controllers
             var IFI_Count = 0;
             var PCR_Count = 0;
             var user = UserManager.FindById(User.Identity.GetUserId());
-            
+            var canConclude_test = true;
+
 
             flucase = db.FluCases.Find(id);
 
@@ -3247,6 +3276,10 @@ namespace Paho.Controllers
             }
 
             //var Sample_1_process = LabTests.OrderBy(z => z.TestDate).ThenBy(y => y.LabID).Where(x => x.SampleNumber == 1);
+
+            
+            var list_institution_conf = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(i => i.InstitutionParentID == flucase.HospitalID && i.Conclusion == true).OrderBy(x => x.Priority).Select(t => t.InstitutionToID).ToList();
+
             var flow_max_record = db.InstitutionsConfiguration.Where(z => z.InstitutionParentID == flucase.HospitalID).OrderByDescending(x => x.Priority).FirstOrDefault().Priority;
             var flow_min_record = db.InstitutionsConfiguration.Where(z => z.InstitutionParentID == flucase.HospitalID).OrderBy(x => x.Priority).FirstOrDefault().Priority;
 
@@ -3275,8 +3308,31 @@ namespace Paho.Controllers
                 }
                 else
                 {
-                    flow_complete_Sample_1 = false;
-                    break;
+                    //if (Sample_test.inst_cnf_orig )
+                    if (user.Institution.CountryID == 9 )
+                    {
+                        if (list_institution_conf.Any())
+                        {
+                            canConclude_test = list_institution_conf.Contains(Sample_test.LabID) && Sample_test.statement_test == 2;
+                        }
+
+                        if (canConclude_test)
+                        {
+                            flow_complete_Sample_1 = true;
+                        } else
+                        {
+                            flow_complete_Sample_1 = false;
+                            break;
+                        }
+                    }
+                        else
+                    {
+                        flow_complete_Sample_1 = false;
+                        break;
+                    }
+ 
+
+
                 }
                 count = +1;
 
