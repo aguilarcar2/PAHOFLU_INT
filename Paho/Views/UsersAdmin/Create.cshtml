@@ -6,6 +6,7 @@
     string LabelUser = (string)Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminUserName", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     //string LabelButtonSave = Paho.Controllers.CatVirusTypeController.SgetMessage("msgViewSummaryButtonSave", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     //((string)Paho.Controllers.ResourcesM.SgetMessage("msgViewCatInstitution_Country", ViewBag.UsrCtry, ViewBag.UsrCtryLang))
+    string LabelMessagePasswordValidation = Paho.Controllers.ResourcesM.SgetMessage("msgMessagePasswordValidation", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 }
 
 @{
@@ -52,8 +53,9 @@
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.Password, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgUsersAdminPassword", ViewBag.UsrCtry, ViewBag.UsrCtryLang)), new { @class = "col-md-2 control-label" })
-        <div class="col-md-5">
-            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+        <div class="col-md-9">
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control" }) 
+            <span style="color: #922B21;"> *(@LabelMessagePasswordValidation) </span>
         </div>
     </div>
     <div class="form-group">

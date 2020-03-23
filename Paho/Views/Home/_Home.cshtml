@@ -9,13 +9,11 @@
     string LabelHospitalizationInformation = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabHospitalLabelHospitalizationInformation", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string LabelRespiratorySupport = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabHospitalLabelRespiratorySupport", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 
-    string LabelNameOfHospital = "Name of Hospital";
-    //string LabelDateOfIsolation = "Date of Isolation";
+    string LabelNameOfHospital = Paho.Controllers.ResourcesM.SgetMessage("msgHospitalName", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string LabelDateOfIsolation = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabHospitalLabelDateIsolation", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 
-
     string LabelResidence = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelResidence", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
-    string LabelPlaceCaseDiagnosed = "Place where the case was diagnosed";
+    string LabelPlaceCaseDiagnosed = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistInusitadosPlaceCaseDiagnosed", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 
     string LabelResidenceCountry = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelResidenceCountry", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string LabelResidenceArea = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelResidenceArea", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
@@ -25,7 +23,6 @@
     string LabelAdminLevel2 = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelAdminLevel2", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 
     string LabelSelectLabel = Paho.Controllers.ResourcesM.SgetMessage("msgSelectLabel", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
-    //msgCaselistVigTabLabelResultSelect
     string LabelSelect = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabLabelSelect", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string LabelIF = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabLabelIF", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string LabelPCR = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabLabelPCR", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
@@ -54,16 +51,14 @@
     string LabelContactLastDate = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabRiskLabelContactLastDate", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string LabelCountryHigherExposition = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabRiskLabelCountryHigherExposition", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 
-    string LabelSymptomsFirstLabConfirmation = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabHospitalLabelSymptomsFirstLabConfirmation", ViewBag.UsrCtry, ViewBag.UsrCtryLang);              //"Any symptoms or signs at time of specimen collection that resulted in first laboratory confirmation?";
+    string LabelSymptomsFirstLabConfirmation = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabHospitalLabelSymptomsFirstLabConfirmation", ViewBag.UsrCtry, ViewBag.UsrCtryLang);  
     string LabelNoAsymptomatic = Paho.Controllers.ResourcesM.SgetMessage("msgNoAsymptomatic", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 
     string LabelCaseInIsolation = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabHospitalLabelCaseInIsolation", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string LabelDateIsolation = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabHospitalLabelDateIsolation", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string LabelCaseInIsolationOtherPlace = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabHospitalLabelCaseInIsolationOtherPlace", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 
-    string LabelReasonSampling = "Motivo toma de muestra";
-
-    ////
+    string LabelReasonSampling = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabHospitalLabelReasonSampling", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string LabelOutcomeCase = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabCaseLabelOutcomeCase", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string LabelOutcomeDateResubmission = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabCaseLabelOutcomeDateResubmission", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 
@@ -91,9 +86,6 @@
     string LabelOutcomeResultSelect = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabLabelResultSelect", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string LabelOutcomeTotalHighRisk = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabCaseLabelOutcomeTotalHighRisk", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 
-    /*
- 
-    */
 }
 
 <!-- ko with: home -->

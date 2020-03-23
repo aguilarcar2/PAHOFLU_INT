@@ -879,7 +879,7 @@ namespace Paho.Controllers
                             var excelWs_DEATHS_IRAG_Chart = excelWorkBook.Worksheets[(Languaje_ == "ENG") ? "DEATHS Sentinel Sites" : "Fallecidos IRAG"];
 
                             AppendDataToExcel_FLUID(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "FLUID_DEATHS_IRAG", 8, 1, excelWs_DEATHS_IRAG.Index, 
-                                false, ReportCountry, YearBegin, YearEnd, 1, Inusual, AreaID_, Sentinel);
+                                false, ReportCountry, YearBegin, YearEnd, Surv=1, Inusual, AreaID_, Sentinel);
 
                             // DEATHS Chart
 

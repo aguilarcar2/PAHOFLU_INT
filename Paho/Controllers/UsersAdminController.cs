@@ -295,7 +295,7 @@ namespace Paho.Controllers
                 var adminresult = await UserManager.CreateAsync(user, userViewModel.Password);
 
                 var user_id = UserManager.FindById(User.Identity.GetUserId());
-                ViewBag.InstitutionType = user_id.Institution.InstType;
+                ViewBag.InstitutionType = user_id.Institution.InstType.ToString();
 
                 if (user_id.Institution.AccessLevel == AccessLevel.All)
                 {
