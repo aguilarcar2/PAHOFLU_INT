@@ -677,15 +677,9 @@ namespace Paho.Controllers
                                      CS_D = flucase.CaseStatus,
                                      CS_D_Cat = flucase.CatStatusCase,
                                      VR_IF_D = flucase.CaseLabTests.Where(e => e.TestType == 1 && e.Processed != null).OrderBy(y => y.CatVirusType.orden).ThenBy(d => d.SampleNumber).ThenBy(u => u.TestDate).FirstOrDefault(),
-                                     VR_PCR_D = (flucase.CaseLabTests.Where(e => e.TestType == 2 &&  e.TestResultID == "P" && e.VirusTypeID == 14).Any() == false)  // ESto es para ver si existe algún positivo de SARS-CoV-2
-                                                   ? 
-                                                flucase.CaseLabTests.Where(e => e.TestType == 2 && e.Processed != null)
+                                     VR_PCR_D = flucase.CaseLabTests.Where(e => e.TestType == 2 && e.Processed != null)
                                                 .OrderBy(y => y.CatVirusType.orden)
-                                                .ThenBy(d => d.SampleNumber)
-                                                .ThenBy(u => u.TestDate).FirstOrDefault() 
-                                                   :  
-                                                flucase.CaseLabTests.Where(e => e.TestType == 2 && e.Processed != null && e.TestResultID == "P")
-                                                .OrderBy(y => y.CatVirusType.orden)
+                                                .ThenBy(d => d.CatTestResult.orden)
                                                 .ThenBy(d => d.SampleNumber)
                                                 .ThenBy(u => u.TestDate).FirstOrDefault(),
                                      HEALTH_INST = flucase.Hospital.Name ?? "",
