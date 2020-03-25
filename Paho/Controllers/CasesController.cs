@@ -3311,19 +3311,24 @@ namespace Paho.Controllers
                     //if (Sample_test.inst_cnf_orig )
                     if (user.Institution.CountryID == 9 )
                     {
-                        if (list_institution_conf.Any())
+                        if (flow_complete_Sample_1 == false)
                         {
-                            canConclude_test = list_institution_conf.Contains(Sample_test.LabID) && Sample_test.statement_test == 2;
-                        }
+                            if (list_institution_conf.Any())
+                            {
+                                canConclude_test = list_institution_conf.Contains(Sample_test.LabID) && Sample_test.statement_test == 2;
+                            }
 
-                        if (canConclude_test)
-                        {
-                            flow_complete_Sample_1 = true;
-                        } else
-                        {
-                            flow_complete_Sample_1 = false;
-                            break;
+                            if (canConclude_test)
+                            {
+                                flow_complete_Sample_1 = true;
+                            }
+                            else
+                            {
+                                flow_complete_Sample_1 = false;
+                                break;
+                            }
                         }
+                        
                     }
                         else
                     {
@@ -3331,8 +3336,6 @@ namespace Paho.Controllers
                         break;
                     }
  
-
-
                 }
                 count = +1;
 

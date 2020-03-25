@@ -2226,6 +2226,7 @@
     <Content Include="Scripts\ammap\plugins\responsive\readme.md" />
     <Content Include="Scripts\ammap\plugins\responsive\responsive.min.js.map" />
     <None Include="Properties\PublishProfiles\PAHO_PUBLISH.pubxml" />
+    <None Include="Properties\PublishProfiles\Publicar_Web_Desarrollo.pubxml" />
     <None Include="Properties\PublishProfiles\VILCANOTA_PAHOFLU.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\d3.js" />
