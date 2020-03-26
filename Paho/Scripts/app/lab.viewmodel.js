@@ -2169,6 +2169,7 @@ function LabViewModel(app, dataModel) {
             self.OrderINFB = ko.observableArray([]);
             self.OrderVRS = ko.observableArray([]);
             self.OrderSARS_COV2 = ko.observableArray([]);
+            self.OrderSARS_COV2_Negative = ko.observableArray([]);
             self.OrderOtherVirus = ko.observableArray([]);
             // Termina nueva forma de ordenar
             self.OrderArrayFinalResult([]);
@@ -2191,6 +2192,7 @@ function LabViewModel(app, dataModel) {
             self.OrderINFB([]);
             self.OrderVRS([]);
             self.OrderSARS_COV2([]);
+            self.OrderSARS_COV2_Negative([]);
             self.OrderOtherVirus([]);
             self.OrderIFINegative([]);
             // termina nueva forma de ordenar
@@ -2446,62 +2448,33 @@ function LabViewModel(app, dataModel) {
             // SARS_COV2
             self.SARS_COV2Negative = ko.observable(true);
             self.SARS_COV2Data = ko.observable(false);
-            //console.log("SARS_COV2");
-            //console.log(self.OrderDummySARS_COV2());
             if (self.OrderDummySARS_COV2().length > 0) { self.SARS_COV2Data(true); }
             self.OrderDummySARS_COV2().forEach(function (v, i) {
-                //console.log('SARS_COV2 ' + ' - i =' + i + ' - ResultID =' + v.TestResultID() + ' - Orden Test Result ID =' + v.OrdenTestResultID + ' - VirusTypeID ' + v.VirusTypeID() + ' - Orden Virus Type ID ' + v.OrdenVirusTypeID);
-                if (i == 0) {
-
-                    if (typeof (self.OrderDummySARS_COV2()[i + 1]) === "undefined") {
+              if (i == 0) {
+                    if (v.TestResultID() == "P") {
                         self.OrderSARS_COV2.push(v);
                         self.SARS_COV2Negative(false);
                     }
-                    else if (v.TestResultID() == "P") {
-                        self.OrderSARS_COV2.push(v);
-                        self.SARS_COV2Negative(false);
-                    }
-                    else if (v.TestResultID() == "N" && self.OrderDummySARS_COV2()[i + 1].TestResultID() == "N") {
-                        self.OrderSARS_COV2.push(v);
-                    }
-                    else if (v.TestResultID() == "N") {
-                        self.OrderSARS_COV2.push(v);
-                    }
-
-                } else if (self.OrderDummySARS_COV2()[i - 1].VirusTypeID() != v.VirusTypeID() && v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB") {
-
-                    if (self.OrderDummySARS_COV2()[0].TestResultID() == "N") {
-                        if (v.VirusTypeID() > 2) {
-                            self.OrderSARS_COV2.push(v);
-                        }
-                    } else {
-
-                        self.virusexist = ko.observable(false);
-                        self.OrderDummySARS_COV2().forEach(function (d, j) {
-                            if (j < i) {
-                                if (d.VirusTypeID() == v.VirusTypeID()) {
-                                    //&& v.TestResultID_VirusSubType == 'undefined'
-                                    self.virusexist(true);
-                                }
-                            }
-
-                        });
-
-                        if (self.virusexist() == false) {
-                            self.OrderSARS_COV2.push(v);
-                        }
-
-                    }
-
-                }
+              }
             });
 
-            //console.log(self.OrderSARS_COV2());
+
+            // Incluir la información de los negativos de SARS-CoV-2
+            console.log("OrderSARS_COV2 - " + self.OrderSARS_COV2().length);
+            if (!(self.OrderSARS_COV2().length > 0)) {
+            
+                self.OrderDummySARS_COV2().forEach(function (v, i) {
+                    if (i == 0) {
+                        if (v.TestResultID() == "N") {
+                            self.OrderSARS_COV2_Negative.push(v);
+                            }
+                    }
+                });
+            }
+
 
             // Other Virus
             self.OtherVirusNegative = ko.observable(true);
-            self.VRSData = ko.observable(false);
-            if (self.OrderDummyVRS().length > 0) { self.VRSData(true); }
             self.OrderDummyOtherVirus().forEach(function (v, i) {
                 //console.log('OtherVirus' + v.TestResultID() + ' -' + v.VirusTypeID() + ' - ');
                 if (i == 0) {
@@ -2607,7 +2580,7 @@ function LabViewModel(app, dataModel) {
 
             // Comiensa ordenamiento final
             self.OrderArrayFinalResult([]);
-            self.OrderArrayFinalResult(self.OrderINFA().concat(self.OrderINFB()).concat(self.OrderVRS()).concat(self.OrderSARS_COV2()).concat(self.OrderOtherVirus()).concat(self.OrderIFINegative()));
+            self.OrderArrayFinalResult(self.OrderINFA().concat(self.OrderINFB()).concat(self.OrderVRS()).concat(self.OrderSARS_COV2()).concat(self.OrderSARS_COV2_Negative()).concat(self.OrderOtherVirus()).concat(self.OrderIFINegative()));
 
             //console.log('Final concatenado');
             //console.log(self.OrderArrayFinalResult());
@@ -2639,20 +2612,17 @@ function LabViewModel(app, dataModel) {
                         if (v.VirusTypeID() == self.OrderDummy()[i + 1].VirusTypeID())
                             self.OrderArrayFinalResult.push(v);
                     }    
-                } else if ( v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB") {
+                } else if (( v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB") || (v.VirusTypeID() == 14)) {
                             self.OrderArrayFinalResult.push(v);       
                 }
             });
-
-            //console.log('Final depurado');
-            //console.log(self.OrderArrayFinalResult());
 
             self.TestResultID_VirusSubtype_Two_Positive = ko.observable(false);
             self.OrderArrayFinalResult().forEach(function (v, i) {
                 if (i == 0) {
                     self.EndLabDate(v.TestEndDate());
                     self.FinalResult((v.TestResultID() == "NA" || v.TestResultID() == "NB") ? 'N' : v.TestResultID());
-                    if (v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB") {
+                    if ((v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB") || (v.VirusTypeID() == 14)) {
                         self.FinalResultVirusTypeID(v.VirusTypeID());
 
                         if (self.UsrCountry() == 7) {
@@ -2694,8 +2664,9 @@ function LabViewModel(app, dataModel) {
                         }
                     }
                     else {
+                        console.log("Resultado 2");
                         self.FinalResult_2((v.TestResultID() == "NA" || v.TestResultID() == "NB") ? 'N' : v.TestResultID());
-                        if (v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB") {
+                        if ((v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB") || (v.VirusTypeID() == 14)) {
                             self.FinalResultVirusTypeID_2(v.VirusTypeID());
                             self.FinalResultVirusSubTypeID_2(v.VirusSubTypeID());
                             self.FinalResultVirusLineageID_2(v.VirusLineageID());
@@ -2708,7 +2679,7 @@ function LabViewModel(app, dataModel) {
                     if (self.OrderArrayFinalResult()[0].TestResultID_VirusSubType() != "P" && self.OrderArrayFinalResult()[0].TestResultID_VirusSubType_2() != "P") 
                         {
                             self.FinalResult_3((v.TestResultID() == "NA" || v.TestResultID() == "NB") ? 'N' : v.TestResultID());
-                            if (v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB") {
+                            if ((v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB") || (v.VirusTypeID() == 14)) {
                                 self.FinalResultVirusTypeID_3(v.VirusTypeID());
                                 self.FinalResultVirusSubTypeID_3(v.VirusSubTypeID());
                                 self.FinalResultVirusLineageID_3(v.VirusLineageID());
