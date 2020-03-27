@@ -431,6 +431,9 @@ namespace Paho.Controllers
                     case "C1":
                         templateToUse = "CONSDATA";
                         break;
+                    case "CBSC2":                                   //Cases Brote SARS-CoV-2 
+                        templateToUse = "Sari_Cases_Brote";
+                        break;
                     default:
                         templateToUse = "SariTemplate";
                         break;
@@ -3083,6 +3086,8 @@ namespace Paho.Controllers
                 _storedProcedure = "R10_CondicionesPreexistentes";
             else if (storedProcedure == "CPV")
                 _storedProcedure = "R11_CasosPositivosInfluenzaConVacuna";
+            else if (storedProcedure == "CBSC2")
+                _storedProcedure = "CasesBrote";
 
             if (storedProcedure == "R5")
             {
