@@ -1049,7 +1049,7 @@ function ContactViewModel(app, dataModel) {
             return true;
         }
         else {
-            console.log("Flow Lab - false");
+            //console.log("Flow Lab - false");
             return false;
         }
 

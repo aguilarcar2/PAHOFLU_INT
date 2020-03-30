@@ -456,7 +456,8 @@
     });
 
     self.TestType.subscribe(function (new_test_type) {
-        //console.log("TestType");
+        //console.log("TestType event");
+        //console.log(self.TestType() + " -- " + new_test_type);
         if (new_test_type != "" && new_test_type != null) {
 
             var category = ko.utils.arrayFirst(app.Views.Home.CTT(), function (category) {
@@ -472,8 +473,8 @@
         }
     });
 
-    self.TestResultID.subscribe(function (new_test_result) {
-        //console.log("TestResultID");
+    self.TestResultID.subscribe(function (new_test_result, event) {
+
         if (new_test_result != "" && new_test_result != null) {
             //alert(new_test_result);
             var category = ko.utils.arrayFirst(app.Views.Home.CTR(), function (category) {
@@ -483,11 +484,17 @@
             if (category != null && category != "undefined")
             self.OrdenTestResultID = category.orden;
 
+            //console.log("aquí si TestResultID");
+            self.VirusTypeID("");
+            self.CTVirusType("");
+            self.CTRLVirusType("");
+            self.OrdenVirusTypeID = 99;
+
             app.Views.Lab.OrdenFinalResult();
         }
 
         if (!app.Views.Lab.hasGet()) {
-            console.log("aquí si");
+            //console.log("aquí si hasGet TestResultID");
             self.VirusTypeID("");
             self.CTVirusType("");
             self.CTRLVirusType("");
@@ -1127,7 +1134,7 @@ function LabViewModel(app, dataModel) {
     }, self);
 
     self.resetFinalResult = function () {
-        //console.log("resetFinalResult");
+        console.log("resetFinalResult");
         self.FinalResult("");
         self.FinalResultVirusTypeID("");
         self.FinalResultVirusSubTypeID("");
@@ -2131,8 +2138,8 @@ function LabViewModel(app, dataModel) {
                 }
 
                 self.hasGet(false);
-                console.log("hasGetGeneral");
-                console.log(self.hasGet());
+                //console.log("hasGetGeneral");ff
+                //console.log(self.hasGet());
                 //self.OrdenFinalResult();  // Esta línea es para probar si el orden estsa funcionando 
                 if (self.FinalResult() == "") {
                     self.OrdenFinalResult();
@@ -2197,7 +2204,7 @@ function LabViewModel(app, dataModel) {
             self.OrderIFINegative([]);
             // termina nueva forma de ordenar
 
-            self.resetFinalResult();
+            //self.resetFinalResult();
             self.OrderArrayFinalResult(self.LabTests().concat(self.LabTests_Sample2()).concat(self.LabTests_Sample3()));
 
             //console.log(self.OrderArrayFinalResult());
@@ -2460,7 +2467,7 @@ function LabViewModel(app, dataModel) {
 
 
             // Incluir la información de los negativos de SARS-CoV-2
-            console.log("OrderSARS_COV2 - " + self.OrderSARS_COV2().length);
+            //console.log("OrderSARS_COV2 - " + self.OrderSARS_COV2().length);
             if (!(self.OrderSARS_COV2().length > 0)) {
             
                 self.OrderDummySARS_COV2().forEach(function (v, i) {
@@ -2589,8 +2596,7 @@ function LabViewModel(app, dataModel) {
 
             
             self.OrderArrayFinalResult([]);
-            //console.log('Final ordenado');
-            //console.log(self.OrderDummy());
+
 
             self.OrderDummy().forEach(function (v, i) {
 
@@ -2617,13 +2623,20 @@ function LabViewModel(app, dataModel) {
                 }
             });
 
+            //console.log('Final ordenado');
+            //console.log(self.OrderArrayFinalResult());
+            //self.resetFinalResult();
+
             self.TestResultID_VirusSubtype_Two_Positive = ko.observable(false);
             self.OrderArrayFinalResult().forEach(function (v, i) {
                 if (i == 0) {
                     self.EndLabDate(v.TestEndDate());
                     self.FinalResult((v.TestResultID() == "NA" || v.TestResultID() == "NB") ? 'N' : v.TestResultID());
-                    if ((v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB") || (v.VirusTypeID() == 14)) {
-                        self.FinalResultVirusTypeID(v.VirusTypeID());
+                    if ((v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB") || (v.TestResultID() == "N" &&  v.VirusTypeID() == 14)) {
+                        //console.log("Resultado del virus");
+                        //console.log(v.TestResultID() + " -- " + v.VirusTypeID());
+
+                        self.FinalResultVirusTypeID((( v.VirusTypeID() != "" ) ? v.VirusTypeID(): ""));
 
                         if (self.UsrCountry() == 7) {
                             if (v.TestResultID_VirusSubType() == "P" && self.UsrCountry() == 7) {
@@ -2666,7 +2679,7 @@ function LabViewModel(app, dataModel) {
                     else {
                         console.log("Resultado 2");
                         self.FinalResult_2((v.TestResultID() == "NA" || v.TestResultID() == "NB") ? 'N' : v.TestResultID());
-                        if ((v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB") || (v.VirusTypeID() == 14)) {
+                        if ((v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB") || (v.TestResultID() == "N" && v.VirusTypeID() == 14)) {
                             self.FinalResultVirusTypeID_2(v.VirusTypeID());
                             self.FinalResultVirusSubTypeID_2(v.VirusSubTypeID());
                             self.FinalResultVirusLineageID_2(v.VirusLineageID());
@@ -2679,7 +2692,7 @@ function LabViewModel(app, dataModel) {
                     if (self.OrderArrayFinalResult()[0].TestResultID_VirusSubType() != "P" && self.OrderArrayFinalResult()[0].TestResultID_VirusSubType_2() != "P") 
                         {
                             self.FinalResult_3((v.TestResultID() == "NA" || v.TestResultID() == "NB") ? 'N' : v.TestResultID());
-                            if ((v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB") || (v.VirusTypeID() == 14)) {
+                            if ((v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB") || (v.TestResultID() == "N" && v.VirusTypeID() == 14)) {
                                 self.FinalResultVirusTypeID_3(v.VirusTypeID());
                                 self.FinalResultVirusSubTypeID_3(v.VirusSubTypeID());
                                 self.FinalResultVirusLineageID_3(v.VirusLineageID());

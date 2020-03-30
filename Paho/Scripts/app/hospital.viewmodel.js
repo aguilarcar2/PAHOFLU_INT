@@ -212,7 +212,7 @@
 
     self.HospExDate = ko.observable(new Date());
     self.HospExDate.subscribe(function (newHospExDate) {
-        console.log("subscribe HospExDate");
+        //console.log("subscribe HospExDate");
         //if (self.UsrCountry() == 7 && self.UsrCountry() == 3) {
         var current_value = typeof (newHospExDate) == "object" ? newHospExDate : parseDate(newHospExDate, date_format_);
         var date_hospital_ = typeof (self.HospAmDate()) == "object" ? self.HospAmDate() : parseDate(self.HospAmDate(), date_format_);
@@ -1056,7 +1056,7 @@
     self.Destin.subscribe(function (NewDestin) {
     //(app.Views.Contact.SurvSARI() == true || app.Views.Contact.SurvInusual() == true)
         if ((app.Views.Contact.IsSurv() != "" || app.Views.Contact.SurvInusual() == true) && NewDestin != null && NewDestin != "") {
-            console.log("Destin subscribe");
+            //console.log("Destin subscribe");
             if (self.HospExDate() == "" || self.HospExDate() == "undefined" || self.HospExDate() == null)
             {
                 alert(viewValidateExitDateBeforeDestin);
@@ -1111,7 +1111,7 @@
             //$("#tabs").tabs("refresh");
 
         } else if (NewDestin == null || NewDestin == "") {
-            console.log("destin sin datos");
+            //console.log("destin sin datos");
             $("a[href*='tab-case']").hide();
             $("#tab-case").hide();
             $("#tabs").tabs("refresh");

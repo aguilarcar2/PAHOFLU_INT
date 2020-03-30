@@ -666,7 +666,7 @@
             $("#tab-lab :input").prop('disabled', true);
             self.FlowDataHospital();
         } else if (app.Views.Contact.SurvILI() == true && app.Views.Hospital.IsSample() === "true" && app.Views.Lab.CanConclude() == false) {
-            console.log("aqui _ ILI CanConclude false 3"); //
+            //console.log("aqui _ ILI CanConclude false 3"); //
             $("a[href*='tab-case']").hide();
             $("#tab-case").hide();
             $("#CaseStatus").attr("disabled", false);
