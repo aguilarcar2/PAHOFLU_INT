@@ -1134,7 +1134,7 @@ function LabViewModel(app, dataModel) {
     }, self);
 
     self.resetFinalResult = function (param_reset) {
-        console.log(param_reset);
+        //console.log(param_reset);
         self.FinalResult("");
         self.FinalResultVirusTypeID("");
         self.FinalResultVirusSubTypeID("");
@@ -2591,25 +2591,25 @@ function LabViewModel(app, dataModel) {
 
             // Termina nueva forma de ordenar
 
-            console.log("Array finales negativos");
+            //console.log("Array finales negativos");
 
-            console.log("OrderINFA--");
-            console.log(self.OrderINFA());
+            //console.log("OrderINFA--");
+            //console.log(self.OrderINFA());
 
-            console.log("OrderINFB--");
-            console.log(self.OrderINFB());
+            //console.log("OrderINFB--");
+            //console.log(self.OrderINFB());
 
-            console.log("OrderVRS--");
-            console.log(self.OrderVRS());
+            //console.log("OrderVRS--");
+            //console.log(self.OrderVRS());
 
-            console.log("OrderSARS_COV2_Negative --");
-            console.log(self.OrderSARS_COV2_Negative());
+            //console.log("OrderSARS_COV2_Negative --");
+            //console.log(self.OrderSARS_COV2_Negative());
 
-            console.log("OrderIFINegative --");
-            console.log(self.OrderIFINegative());
+            //console.log("OrderIFINegative --");
+            //console.log(self.OrderIFINegative());
 
-            console.log("OrderOtherVirus --");
-            console.log(self.OrderOtherVirus());
+            //console.log("OrderOtherVirus --");
+            //console.log(self.OrderOtherVirus());
 
             // Comiensa ordenamiento final
             self.OrderArrayFinalResult([]);
@@ -2619,10 +2619,8 @@ function LabViewModel(app, dataModel) {
             //console.log(self.OrderArrayFinalResult());
 
             self.OrderDummy(self.OrderArrayFinalResult.sort(self.generateSortFn([  { name: 'OrdenTestResultID' }, { name: 'OrdenVirusTypeID' }, { name: 'OrdenTestResultID_VirusSubType' }, { name: 'OrdenTestResultID_VirusSubType_2' }, { name: 'OrdenSubTypeID' }, { name: 'OrdenLineageID' }])));
-
-            
+       
             self.OrderArrayFinalResult([]);
-
 
             self.OrderDummy().forEach(function (v, i) {
 
@@ -2649,8 +2647,8 @@ function LabViewModel(app, dataModel) {
                 }
             });
 
-            console.log('Final ordenado');
-            console.log(self.OrderArrayFinalResult());
+            //console.log('Final ordenado');
+            //console.log(self.OrderArrayFinalResult());
             //self.resetFinalResult();
 
             self.TestResultID_VirusSubtype_Two_Positive = ko.observable(false);
