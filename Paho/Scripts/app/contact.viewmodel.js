@@ -75,9 +75,11 @@ function ContactViewModel(app, dataModel) {
     self.DOB_dummy = ko.observable(new Date());
     self.Age = ko.observable("");
     self.AMeasure = ko.observable("");
-    self.AMeasure.subscribe(function(newmeasure){
-        //self.CalculateDOB();
-    });
+    self.AgeMonths = ko.observable(null);                               //**** CAFQ: 200327
+    self.AgeGroupSelected = ko.observable(null);                        //**** CAFQ: 200327
+    //self.AMeasure.subscribe(function(newmeasure){                     //**** CAFQ: 200327
+    //    //self.CalculateDOB();
+    //});
     self.ResponsibleMinor = ko.observable("");
 
     self.UniqueCaseIdentif = ko.observable("");                         //#### 200225
@@ -329,11 +331,54 @@ function ContactViewModel(app, dataModel) {
 
     }, self);
 
+    self.CalculateAgemonthAgeGroup = function (age, measure) {
+        //console.log("self.AgeGroupSelected->START");
+        //console.log(age + " - " + measure);
+        if (measure != "" && age != "") {            //**** CAFQ: 200327
+            //console.log("s1");
+            if (measure == "Year")
+                self.AgeMonths(age * 12);
+            else if (measure == "Month")
+                self.AgeMonths(age);
+            else
+                self.AgeMonths(0);
+        } else {
+            //console.log("s2");
+            self.AgeMonths(null);
+        }
+        //console.log("s2");
+        //console.log(self.AgeMonths());
+        //console.log("s2a_");
+
+        //if (self.AgeMonths() != "") {            //**** CAFQ: 200327
+        if (isNaN(self.AgeMonths()) == false) {            //**** CAFQ: 200327
+            //console.log("s3");
+            CatAgeGroupCountry.forEach(function (reg, index) {
+                //console.log("s3a");
+                var Id = reg.Id;
+                var MI = parseInt(reg.Name);
+                var MF = parseInt(reg.orden);
+                //console.log("MI->" + MI);
+                //console.log("MF->" + MF);
+                //console.log("SAM->" + self.AgeMonths());
+                if (parseInt(self.AgeMonths()) >= MI && parseInt(self.AgeMonths()) <= MF) {
+                    //console.log("===");
+                    //console.log(self.AgeMonths());
+                    //console.log(MI);
+                    //console.log(MF);
+                    self.AgeGroupSelected(Id);
+                }
+            });
+        }
+        //console.log("self.AgeGroupSelected->" + self.AgeGroupSelected());
+        //console.log(self.AgeGroupSelected());
+        //console.log("self.AgeGroupSelected->END");
+    };
+
     self.Age.subscribe(function (newage) {
         //if (self.AMeasure() != "" || self.AMeasure() != "Year") self.CalculateDOB();
         if (self.AMeasure() == "") self.AMeasure("Year");
         if (newage != "" && self.AMeasure() != "" && (self.DOB() == "" || self.DOB() == null)) $("#DOB").prop("disabled", true);
-
 
         if (app.Views.Home.AlertDefinitionBegin() >= 0 && app.Views.Home.AlertDefinitionEnd() >= 0) {
             if (app.Views.Contact.AMeasure() == "") app.Views.Contact.AMeasure("Year");
@@ -343,18 +388,20 @@ function ContactViewModel(app, dataModel) {
             if (ConvertToMonth <= app.Views.Home.AlertDefinitionBegin() || ConvertToMonth >= app.Views.Home.AlertDefinitionEnd()) {
                 $("#casedefinitionwarning").hide();
             }
-
-
         }
-
         // Esto es para el mensaje de alerta de condición de 
 
+        self.CalculateAgemonthAgeGroup(newage, self.AMeasure());            //**** CAFQ: 200327
     });
 
     self.AMeasure.subscribe(function (newAMeasure) {
         //if (self.AMeasure() != "" || self.AMeasure() != "Year") self.CalculateDOB();
-        if (newAMeasure != "" && self.Age() != "" && (self.DOB() == "" || self.DOB() == null)) $("#DOB").prop("disabled", true);
+        if (newAMeasure != "" && self.Age() != "" && (self.DOB() == "" || self.DOB() == null))
+            $("#DOB").prop("disabled", true);
+
+        self.CalculateAgemonthAgeGroup(self.Age(), newAMeasure);            //**** CAFQ: 200327
     });
+
     self.CalculateDOB = function () {
         if (self.AMeasure() == "") self.AMeasure("Year");
         var measure = self.AMeasure() == "Year" ? "years" : (self.AMeasure() == "Month" ? 'months' : 'days');
@@ -368,6 +415,15 @@ function ContactViewModel(app, dataModel) {
     self.DOB.subscribe(function (nedob) {
         if ($("#DOB").prop("disabled")) return;
         if (self.hasGet() == true) return;
+
+        var date_HospitalDate_ = jQuery.type(app.Views.Contact.HospitalDate()) === 'date' ? app.Views.Contact.HospitalDate() : parseDate(app.Views.Contact.HospitalDate(), date_format_);
+        var date_DOB_ = jQuery.type(app.Views.Contact.DOB()) === 'date' ? app.Views.Contact.DOB() : parseDate(app.Views.Contact.DOB(), date_format_);
+        if (date_DOB_ > date_HospitalDate_) {
+            alert(msgValidationDOB_CollectionDate)
+            self.DOB(null);
+            return
+        }          
+        
         if (self.DOB() && self.DOB() != "") {
             /*console.log(self.DOB());
             console.log(moment().diff(self.DOB(), 'years'));*/
@@ -417,7 +473,7 @@ function ContactViewModel(app, dataModel) {
     self.FullName = ko.computed(function () {
         return self.FName1() + " " + (self.FName2() || "") + " " + self.LName1() + " " + (self.LName2() || "");
     });
-    self.AgeGroup = ko.computed(function () {      
+    self.AgeGroup = ko.computed(function () {                   // Se emplea para mostrar el texto en el form
         if (!(self.Age() || self.DOB())) return "";
         if (self.UsrCountry() == 25 || self.UsrCountry() == 11 || self.UsrCountry() == 18) {
             if (self.AMeasure() === "Day" || (self.AMeasure() === "Month" && self.Age() <= 6)) return "child under 6 months"
@@ -635,6 +691,8 @@ function ContactViewModel(app, dataModel) {
         self.DOB_dummy(null);
         self.Age("");
         self.AMeasure("");
+        self.AgeMonths(null);                   //**** CAFQ: 200327
+        self.AgeGroupSelected(null);            //**** CAFQ: 200327
         self.Gender("");
         self.ResponsibleMinor("");
         self.HospitalDate(null);
@@ -998,6 +1056,8 @@ function ContactViewModel(app, dataModel) {
                 DOB: moment(date_DOB).format(date_format_ISO),
                 Age: self.Age(),
                 AMeasure: self.AMeasure(),
+                AgeMonths: self.AgeMonths(),                            //**** CAFQ: 200327
+                AgeGroupSelected: self.AgeGroupSelected(),              //**** CAFQ: 200327
                 Gender: self.Gender(),
                 ResponsibleMinor: self.ResponsibleMinor(),
                 HospitalDate: moment(date_hospital).format(date_format_ISO),

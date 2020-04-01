@@ -586,8 +586,51 @@ namespace Paho.Controllers
 
             ViewBag.DashbUrl = dashbUrl;
             ViewBag.DashbTitle = dashbTitle;
-            //****
 
+            //****
+            //var AgeGroupCountry = (from c in db.CatAgeGroup.Where(c => c.id_country == user.Institution.CountryID)
+            //                       select new
+            //                       {
+            //                           id = c.id,
+            //                           month_begin = c.month_begin,
+            //                           month_end = c.month_end
+            //                       }).ToList();
+
+            //ViewBag.AgeGroupCountryList = AgeGroupCountry;
+            /*
+                CaseViewModel.LabsExternal = (from institution in db.Institutions.OfType<Lab>().Where(i => LabsForeign.Contains(i.ID) && i.ForeignLab == true)
+                                              select new LookupView<Lab>()
+                                              {
+                                                  Id = institution.ID.ToString(),
+                                                  Name = institution.Name
+                                              })
+                      .ToArray();
+            */
+
+            CaseViewModel.CatAgeGroupCountry = (from institution in db.CatAgeGroup.Where(i => i.id_country == user.Institution.CountryID)
+                                                select new LookupView<CatAgeGroup>()
+                                                {
+                                                    Id = institution.id.ToString(),
+                                                    Name = institution.month_begin.ToString(),
+                                                    orden = institution.month_end.ToString()
+                                                }).ToList();
+
+
+
+            //{            //CVST = db.CatVirusSubType.OrderBy(i => i.orden);
+            //var CVSTDisplay = (user.Institution.Country.Language == "SPA" ? CVST.Select(i => new LookupView<CatVirusSubType>()
+            //    Id = i.ID.ToString(),
+            //    Name = i.SPA,
+            //    orden = i.orden.ToString()
+            //}).ToList() : CVST.Select(i => new LookupView<CatVirusSubType>()
+            //{
+            //    Id = i.ID.ToString(),
+            //    Name = i.ENG,
+            //    orden = i.orden.ToString()
+            //}).ToList());
+
+
+            //****
             return View(CaseViewModel);
         }
 

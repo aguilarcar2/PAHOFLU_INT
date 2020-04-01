@@ -51,7 +51,7 @@
     string LabelContactLastDate = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabRiskLabelContactLastDate", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string LabelCountryHigherExposition = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabRiskLabelCountryHigherExposition", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 
-    string LabelSymptomsFirstLabConfirmation = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabHospitalLabelSymptomsFirstLabConfirmation", ViewBag.UsrCtry, ViewBag.UsrCtryLang);  
+    string LabelSymptomsFirstLabConfirmation = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabHospitalLabelSymptomsFirstLabConfirmation", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string LabelNoAsymptomatic = Paho.Controllers.ResourcesM.SgetMessage("msgNoAsymptomatic", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 
     string LabelCaseInIsolation = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabHospitalLabelCaseInIsolation", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
@@ -85,6 +85,8 @@
 
     string LabelOutcomeResultSelect = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabLabelResultSelect", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string LabelOutcomeTotalHighRisk = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabCaseLabelOutcomeTotalHighRisk", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+    string LabelSectionIsolationData = "Datos de aislamiento";
 
 }
 
@@ -3329,6 +3331,52 @@
             </div>
         </div>
 
+        <!-- Datos de aislamiento -->
+        <!-- <div class="row rowform" id="Isolation_DIV" data-bind="visible: !app.Views.Contact.NotShowHospitalization"> -->
+        <div class="row rowform" id="Isolation_DIV" data-bind="visible: app.Views.Contact.SurvILI">
+            <div class="col-md-12">
+                <button type="button" style="background-color:#B2BABB; color:#000000" class="btn btn-group-justified" data-toggle="collapse" data-target="#IsolationFields">
+                    @LabelSectionIsolationData
+                    <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
+                </button>
+
+                <div id="IsolationFields" class="collapse in">
+                    <!-- El caso está en aislamiento / Fecha de aislamiento -->
+                    <div class="row rowform">
+                        <div class='input-group col-md-6'>
+                            <span class="input-group-addon">@LabelCaseInIsolation:</span>
+                            <label class="btn btn-default">
+                                <input type="radio" value="1" data-bind='checked: CaseInIsolation'>@LabelYes
+                            </label>
+                            <label class="btn btn-default">
+                                <input type="radio" value="0" data-bind='checked: CaseInIsolation'>@LabelNo
+                            </label>
+                            <label class="btn btn-default">
+                                <input type="radio" value="9" data-bind='checked: CaseInIsolation'>@LabelUnknown
+                            </label>
+                        </div>
+                        <div class="col-md-6">
+                            <div class='input-group'>
+                                <span class="input-group-addon">@LabelDateIsolation:</span>
+                                <input id="DateIsolation" type="text" class="form-control" data-bind='datepicker: DateIsolation, datepickerOptions: {maxDate:"@Model.DatePickerConfig", dateFormat:"@Model.DateFormatDP"}' />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- El caso está en aislamiento otro lugar -->
+                    <div class="row rowform">
+                        <div class="col-md-12">
+                            <div class='input-group'>
+                                <span class="input-group-addon">@LabelCaseInIsolationOtherPlace:</span>
+                                <input id="CaseInIsolationOtherPlace" type='text' class="form-control case_letter" data-bind="value: CaseInIsolationOtherPlace" />
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
         <!-- Datos de hospitalizacion -->
         <div class="row rowform" id="Hospitalization_div" data-bind="visible: app.Views.Contact.NotShowHospitalization">
             <div class="col-md-12">
@@ -3483,7 +3531,7 @@
                     </div>
 
                     <!-- El caso está en aislamiento / Fecha de aislamiento -->
-                    <div class="row rowform">
+                    @*<div class="row rowform">
                         <div class='input-group col-md-6'>
                             <span class="input-group-addon">@LabelCaseInIsolation:</span>
                             <label class="btn btn-default">
@@ -3502,17 +3550,17 @@
                                 <input id="DateIsolation" type="text" class="form-control" data-bind='datepicker: DateIsolation, datepickerOptions: {maxDate:"@Model.DatePickerConfig", dateFormat:"@Model.DateFormatDP"}' />
                             </div>
                         </div>
-                    </div>
+                    </div>*@
 
                     <!-- El caso está en aislamiento otro lugar -->
-                    <div class="row rowform">
+                    @*<div class="row rowform">
                         <div class="col-md-12">
                             <div class='input-group'>
                                 <span class="input-group-addon">@LabelCaseInIsolationOtherPlace:</span>
                                 <input id="CaseInIsolationOtherPlace" type='text' class="form-control case_letter" data-bind="value: CaseInIsolationOtherPlace" />
                             </div>
                         </div>
-                    </div>                
+                    </div>*@                
 
                     <!-- UCI -->
                     <div class="row rowform" data-bind="visible: EnableICUHon()">
@@ -6624,6 +6672,9 @@
     var DatePicker_date_format = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgDateFormatDP")))";
     var lab_NIC_usr = @Html.Raw(Json.Encode(Model.lab_NIC_usr));
 
+    var CatAgeGroupCountry = @Html.Raw(Json.Encode(Model.CatAgeGroupCountry));
+    //console.log(CatAgeGroupCountry);
+
     /*   Mensajes de alerta de validaciones    */
     var msgviewHome_btnNew = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewHome_btnNew")))";
     var msgValidationSurvData = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationSurvData")))";
@@ -6659,6 +6710,9 @@
     var msgValidationRecordDateLater = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationRecordDateLater")))";
     var msgValidationTypeDOB = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationTypeDOB")))";
     var msgValidationTypeDOBorAge = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationTypeDOBorAge")))";
+
+    var msgValidationDOB_CollectionDate = "Fecha de nacimiento debe ser menor o igual que la fecha de captaciónnnn";
+
     var msgValidationDOBLater = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationDOBLater")))";
     var msgConfirmationExitRecord = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgConfirmationExitRecord")))";
     var msgConfirmationDocumentTypeNumberRequired = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgConfirmationDocumentTypeNumberRequired")))";
@@ -6888,9 +6942,9 @@
                 //    }
                 //}
                 onCellSelect: function (rowId, iCol, content, event) {
-                    console.log(iCol);
-                    console.log(content);
-                    console.log(event);
+                    //console.log(iCol);
+                    //console.log(content);
+                    //console.log(event);
                     if (iCol == 6){
                         app.Views.PrintTest.GeneratebyList(rowId);
                     } else if (rowId) {

@@ -1038,9 +1038,10 @@ namespace Paho.Controllers
             string NationalId,
             DateTime? DOB,
             int? Age,
-            AMeasure? AMeasure,
             Gender Gender,
-            //int? Gender,
+            AMeasure? AMeasure,
+            int? AgeMonths,                 //**** CAFQ: 200327
+            int? AgeGroupSelected,          //**** CAFQ: 200327
             string ResponsibleMinor,        //####CAFQ 
             DateTime HospitalDate,
             DateTime RegDate,
@@ -1121,8 +1122,10 @@ namespace Paho.Controllers
             flucase.DOB = DOB;
             flucase.Age = Age;
             flucase.AMeasure = AMeasure;
+            flucase.AgeMonths = AgeMonths;                                          //**** CAFQ: 200327
+            flucase.AgeGroup = AgeGroupSelected;
             flucase.Gender = Gender;
-            flucase.ResponsibleMinor = ResponsibleMinor;    //####CAFQ         
+            flucase.ResponsibleMinor = ResponsibleMinor;
             flucase.HospitalDate = HospitalDate;
             flucase.RegDate = RegDate;
             flucase.nativepeople = nativepeople;

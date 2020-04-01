@@ -31,6 +31,7 @@ namespace Paho.Models
         public IEnumerable<LookupView<CatReasonNotSampling>> ReasonNotSampling { get; set; }
         public IEnumerable<LookupView<CatReasonSampling>> ReasonSampling { get; set; }
         public IEnumerable<LookupView<Institution>> InstitutionsCaseGenerarting { get; set; }
+        public IEnumerable<LookupView<CatAgeGroup>> CatAgeGroupCountry { get; set; }            //**** CAFQ: 200327
         public Array LabsExternal { get; set; }
         public Array LabsHospital_cmb { get; set;  }
         public bool DisplayCountries { get; set; }
@@ -1081,10 +1082,11 @@ namespace Paho.Models
         public DateTime? DOB { get; set; }
         public int? Age { get; set; }
         public AMeasure? AMeasure { get; set; }
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public AgeGroup? AgeGroup { get; private set; }
+        //[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        //public AgeGroup? AgeGroup { get; private set; }
+        public int? AgeGroup { get; set; }
         public Gender Gender { get; set; }
-        //public int? Gender { get; set; }
+        public int? AgeMonths { get; set; }                         //**** CAFQ: 200327
         public string ResponsibleMinor { get; set; }
         public int? nativepeople { get;  set; }
         public int? nationality { get; set; }
@@ -2024,6 +2026,7 @@ namespace Paho.Models
                    p.DOB,
                    p.Age,
                    p.AMeasure,
+                   p.AgeMonths,                             //**** CAFQ: 200327
                    p.AgeGroup,
                    p.Gender,
                    p.ResponsibleMinor,
