@@ -2541,22 +2541,16 @@ function LabViewModel(app, dataModel) {
                             if (typeof (self.OrderDummyIFINegative()[i + 1]) === "undefined") {
                                 self.OrderIFINegative.push(v);
                                 self.OtherIFINegative(false);
-                                console.log("OFIN-1");
                     }
                     else if (v.TestResultID() == "P") {
                                 self.OrderIFINegative.push(v);
                                 self.OtherIFINegative(false);
-                                console.log("OFIN-2");
                     }
                     else if (v.TestResultID() == "N" && self.OrderDummyIFINegative()[i + 1].TestResultID() == "N") {
                                 self.OrderIFINegative.push(v);
-                                console.log("OFIN-3");
-                        
                     }
                     else if (v.TestResultID() == "N") {
                                 self.OrderIFINegative.push(v);
-                                console.log("OFIN-4");
-                        
                     }
 
                     } else if (self.OrderDummyIFINegative()[i - 1].VirusTypeID() != v.VirusTypeID() && v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB") {
@@ -2684,14 +2678,11 @@ function LabViewModel(app, dataModel) {
                         else {
                             self.FinalResultVirusSubTypeID(v.VirusSubTypeID());
                         }
-
                         self.FinalResultVirusLineageID(v.VirusLineageID());
                     }
                     
                 }
                 if (i == 1) {
-
-                    
                     if (self.OrderArrayFinalResult()[0].TestResultID_VirusSubType() == "P" && self.OrderArrayFinalResult()[0].TestResultID_VirusSubType_2() == "P" && self.UsrCountry() == 7) {
                         self.FinalResult_3((v.TestResultID() == "NA" || v.TestResultID() == "NB") ? 'N' : v.TestResultID());
                         if (v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB") {
@@ -2701,9 +2692,8 @@ function LabViewModel(app, dataModel) {
                         }
                     }
                     else {
-                        console.log("Resultado 2");
                         self.FinalResult_2((v.TestResultID() == "NA" || v.TestResultID() == "NB") ? 'N' : v.TestResultID());
-                        if ((v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB") || (v.TestResultID() == "N" && v.VirusTypeID() == 14)) {
+                        if ((v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB") ||  v.VirusTypeID() == 14) {
                             self.FinalResultVirusTypeID_2(v.VirusTypeID());
                             self.FinalResultVirusSubTypeID_2(v.VirusSubTypeID());
                             self.FinalResultVirusLineageID_2(v.VirusLineageID());
@@ -2713,15 +2703,24 @@ function LabViewModel(app, dataModel) {
                 }
                 if (i == 2) {
 
-                    if (self.OrderArrayFinalResult()[0].TestResultID_VirusSubType() != "P" && self.OrderArrayFinalResult()[0].TestResultID_VirusSubType_2() != "P") 
-                        {
+                    if (self.UsrCountry() == 7) {
+                        if ((self.OrderArrayFinalResult()[0].TestResultID_VirusSubType() != "P" && self.OrderArrayFinalResult()[0].TestResultID_VirusSubType_2() != "P") || v.TestResultID() == "P" || v.VirusTypeID() == 14) {
                             self.FinalResult_3((v.TestResultID() == "NA" || v.TestResultID() == "NB") ? 'N' : v.TestResultID());
-                            if ((v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB") || (v.TestResultID() == "N" && v.VirusTypeID() == 14)) {
+                            if ((v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB") || v.VirusTypeID() == 14) {
                                 self.FinalResultVirusTypeID_3(v.VirusTypeID());
                                 self.FinalResultVirusSubTypeID_3(v.VirusSubTypeID());
                                 self.FinalResultVirusLineageID_3(v.VirusLineageID());
                             }
                         }
+                    }
+                    else
+                    {
+                        if ((v.TestResultID() != "N" && v.TestResultID() != "NA" && v.TestResultID() != "NB") || v.VirusTypeID() == 14) {
+                            self.FinalResultVirusTypeID_3(v.VirusTypeID());
+                            self.FinalResultVirusSubTypeID_3(v.VirusSubTypeID());
+                            self.FinalResultVirusLineageID_3(v.VirusLineageID());
+                        }
+                    }
                 }
             });
 
