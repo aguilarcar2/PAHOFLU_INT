@@ -144,7 +144,7 @@
     self.EnableVirusTypes = ko.computed(function () {
         //if (((self.TestResultID() != "U" && self.TestResultID() != "N" && self.EnableCHI()) || (self.TestResultID() != "U" && self.DisableCHI())) && self.TestResultID() != "" && typeof self.TestResultID() != "undefined") { // Desactivado por requerimiento de RRR y Suriname porque si les interesa ingresar cuando es negativo
         if (self.TestResultID() != "NA" && self.TestResultID() != "NB" && self.TestResultID() != "MI" && self.TestResultID() != "I" && self.TestResultID() != "V" && self.TestResultID() != "U" && self.TestResultID() != "" && typeof self.TestResultID() != "undefined") {
-            if ((self.TestType() == 1 && self.TestResultID() == "N") || (self.UsrCountry() == 3 && self.TestResultID() == "N")) {
+            if ((self.TestType() == 1 && self.TestResultID() == "N")) {
 
                 return false;
             } else {
