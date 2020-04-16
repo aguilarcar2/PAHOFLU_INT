@@ -639,16 +639,18 @@ namespace Paho.Controllers
                                                     (flucase.flow == db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID && i.Conclusion == true).OrderBy(x => x.Priority).FirstOrDefault().Priority && flucase.statement == 2) 
                                                      // si la muestra no fue tomada
                                                     || (flucase.IsSample == false)
+                                                    || ((user.Institution.CountryID == 9)  ? ( flucase.CaseLabTests.Where( z =>  db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID && i.Conclusion == true ).Select(y => y.ID).ToList().Contains((long)z.inst_cnf_orig)).Any() && flucase.statement == 2) : false)
                                                     // Para honduras si el laboratorio regional no proceso la muestra
                                                     || ((user.Institution.CountryID == 15) ? (flucase.Processed_National == false && flucase.Processed == false) : false)
                                                     || ((user.Institution.CountryID == 17) ? (flucase.NPHL_Processed == false) : false)
-                                                    || ((user.Institution.CountryID != 15) && (user.Institution.CountryID != 17) && flucase.Processed == false)
+                                                    || ((user.Institution.CountryID != 15) && (user.Institution.CountryID != 17) && (user.Institution.CountryID != 9) && flucase.Processed == false)
                                                     // Para Jamaica si el NPHL no proceso la muestra
                                                     //|| ((user.Institution.CountryID == 17 && user.Institution.CountryID != 15) ? (flucase.NPHL_Processed == false) : (flucase.Processed == false))
                                                     //|| (flucase.Processed == false)
                                                     // La segunda y tercera muestra tampoco fueron tomadas
                                                     || (flucase.Processed2 == false) 
                                                     || (flucase.Processed3 == false)) ? 1 : 0,
+                                     //dummy_ready_close = (),
                                      ready_close2 = ( // revisar si ya existe un resultado con el flujo
                                                     (flucase.flow == db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID).OrderByDescending(x => x.Priority).FirstOrDefault().Priority && flucase.statement == 2)
                                                     // si la muestra no fue tomada
@@ -714,7 +716,7 @@ namespace Paho.Controllers
                                          x.LN_D,
                                          x.FN_D,
                                          x.NE_D ?? "",
-                                         "<img src='/Content/themes/base/images/PDF.png' alt='print'/>",
+                                         "<img src='/Content/themes/base/images/PDF.png' alt='print'/> " + x.ready_close,
                                          x.VR_IF_D == null ? "" :  x.VR_IF_D.TestResultID == null ? "": x.VR_IF_D.TestResultID.ToString() == "P" ? x.VR_IF_D.CatVirusType == null ? "" : (user.Institution.Country.Language == "SPA" ? x.VR_IF_D.CatVirusType.SPA : x.VR_IF_D.CatVirusType.ENG) :  x.VR_IF_D.TestResultID == null  ? ""  : user.Institution.Country.Language == "SPA" ? db.CatTestResult.Where(j=> j.value == x.VR_IF_D.TestResultID.ToString()).FirstOrDefault().description : db.CatTestResult.Where(j=> j.value == x.VR_IF_D.TestResultID.ToString()).FirstOrDefault().ENG ,
                                          x.VR_PCR_D == null ? "" : x.VR_PCR_D.TestResultID == null ? 
                                                         "": x.VR_PCR_D.TestResultID.ToString() == "P" ?  
@@ -3404,7 +3406,7 @@ namespace Paho.Controllers
                 }
                 else
                 {
-                    if (flucase.Processed != null)
+                    if (flucase.Processed != null || flucase.Processed_National != null )
                     {
                         data_sample_1 = true;
                     }
