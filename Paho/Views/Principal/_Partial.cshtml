@@ -969,12 +969,12 @@
                         },
                         success: function (data) {
                             //################################################################# DESARROLLO
-                            //if(GraphCountryID == 17 || GraphCountryID == 9 || GraphCountryID == 3){
-                            //    GetGraphData7();
-                            //    GetGraphData8();
-                            //    GetGraphData9();
-                            //    GetGraphData10();
-                            //    GetGraphData11();
+                            //if(GraphCountryID == 17 || GraphCountryID == 9 || GraphCountryID == 3 || GraphCountryID == 7){
+                            //    GetGraphData7();                    // Lineas basales
+                            //    GetGraphData8();                    // Indicadores desempeño
+                            //    GetGraphData9();                    // Casos ETI y % ETI / Denominadores ETI
+                            //    GetGraphData10();                   // Casos ETI y % Casos ETI (+)Inf / Casos ETI Total
+                            //    GetGraphData11();                   // Casos IRAG (+) para Infl
                             //    GetGraphData12();
                             //    return '';
                             //}
@@ -1135,6 +1135,7 @@
                                 chart.zoomToIndexes(0, chart.dataProvider.length);
                             }
                             //chart.zoomToIndexes(chart.dataProvider.length - 10, chart.dataProvider.length - 1);
+
                             GetGraphData2();
                             GetGraphData3();
                             GetGraphData4();
@@ -5183,7 +5184,7 @@
         </div>
         <!--<script>GetGraphData12();</script>-->
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxFIN Gráfica 12 - Fallecidos IRAG x GE xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
-        <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGráfica 9 - ETI 1 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+        <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx Gráfica 9 - ETI 1 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <script>
                 var jsonX;
 
@@ -6610,7 +6611,7 @@
 
         <!-- HTML -->
         <script>
-            var CountryIDM = @Html.Raw(Model.CountryID);
+            @*var CountryIDM = @Html.Raw(Model.CountryID);
             addMapCheckbox($('#txtName').val());
 
             GetMapData1();
@@ -6620,7 +6621,7 @@
             }
             if(CountryIDM == 9 || CountryIDM == 15){
                 GetMapData3();                              // Health
-            }
+            }*@
         </script>
 
         <style>

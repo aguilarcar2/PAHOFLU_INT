@@ -926,13 +926,14 @@
         return (app.Views.Contact.IsSurv() == "4") ? true : false;
     }, self); 
 
-    self.IsInusitadoSintomatologia = ko.computed(function () {                         //**** CAFQ
+    self.IsInusitadoSintomatologia = ko.computed(function () {
         if (self.UsrCountry() == 3) {                               // Bolivia
-            return (app.Views.Contact.IsInusitado() == true) ? true : false;
+            //return (app.Views.Contact.IsInusitado() == true) ? true : false;
+            return true;    // Bolivia tambien debe mostrar sintomatolgia en IRAG
         } else {
             return true;
         }
-    }, self);             //**** CAFQ
+    }, self);
     self.Temperatura = ko.observable().extend({ numeric: 1 });                      //**** CAFQ
     self.DolorCabeza = ko.observable("");                                           //**** CAFQ
     self.Mialgia = ko.observable("");                                               //**** CAFQ

@@ -498,7 +498,8 @@ namespace Paho.Controllers
                             {
                                 YearBegin = (int)YearFrom;
                                 YearEnd = (int)YearTo;
-                                if (YearEnd > DateTime.Now.Year) YearEnd = DateTime.Now.Year;
+                                if (YearEnd > DateTime.Now.Year)
+                                    YearEnd = DateTime.Now.Year;
                             }
                             else if (Year != null)
                             {
@@ -510,7 +511,16 @@ namespace Paho.Controllers
                                     YearEnd = DateTime.Now.Year;
                                 }
                             }
-
+                            else if (StartDate != null && EndDate != null)
+                            {
+                                YearBegin = StartDate.Value.Year;
+                                YearEnd = EndDate.Value.Year;
+                                if (YearEnd > DateTime.Now.Year)
+                                {
+                                    //YearBegin = DateTime.Now.Year;
+                                    YearEnd = DateTime.Now.Year;
+                                }
+                            }
                             var excelWs_Legend = excelWorkBook.Worksheets["Leyendas"];
                             string virusSheetName = excelWs_Legend.Cells["Q2"].Value.ToString();
 
@@ -639,14 +649,14 @@ namespace Paho.Controllers
                                     excelWs_VIRUSES_NCOV_Geographic.Index, false, ReportCountry, YearBegin, YearEnd, Surv, Inusual, AreaID_, Sentinel: (CountryID_ == 15 ? 1 : Sentinel), VirusType:"NCOV");
 
                             var excelWs_Leyendas = excelWorkBook.Worksheets["Leyendas"];
-                            ConfigToExcel_FLUID(CountryID, Languaje_, RegionID_, YearEnd, YearBegin, YearEnd, StartDate, EndDate, HospitalID_, Surv, excelWorkBook, "Leyendas", 1, excelWs_Leyendas.Index, false);
+                            //ConfigToExcel_FLUID(CountryID, Languaje_, RegionID_, YearEnd, YearBegin, YearEnd, StartDate, EndDate, HospitalID_, Surv, excelWorkBook, "Leyendas", 1, excelWs_Leyendas.Index, false, Month, SE); 
+                            ConfigToExcel_FLUID(CountryID, Languaje_, RegionID_, Year, YearFrom, YearTo, StartDate, EndDate, HospitalID_, Surv, excelWorkBook, "Leyendas", 1, excelWs_Leyendas.Index, false, Month, SE);
 
                             // Fin R4 - Virus detectados
                         }
                         else if (reportTemplate.ToUpper() == "FLUID")
                         {
                             /////////////////////////////////////// FLUID  ////////////////////////////////////////////////////////////////////////7
-
                             var contador = 0;
                             var YearBegin = 0;
                             var YearEnd = 0;
@@ -655,7 +665,8 @@ namespace Paho.Controllers
                             {
                                 YearBegin = (int)YearFrom;
                                 YearEnd = (int)YearTo;
-                                if (YearEnd > DateTime.Now.Year) YearEnd = DateTime.Now.Year;
+                                if (YearEnd > DateTime.Now.Year)
+                                    YearEnd = DateTime.Now.Year;
                             }
                             else if (Year != null)
                             {
@@ -664,6 +675,16 @@ namespace Paho.Controllers
                                 if (YearEnd > DateTime.Now.Year)
                                 {
                                     YearBegin = DateTime.Now.Year;
+                                    YearEnd = DateTime.Now.Year;
+                                }
+                            }
+                            else if (StartDate != null && EndDate != null)
+                            {
+                                YearBegin = StartDate.Value.Year;
+                                YearEnd = EndDate.Value.Year;
+                                if (YearEnd > DateTime.Now.Year)
+                                {
+                                    //YearBegin = DateTime.Now.Year;
                                     YearEnd = DateTime.Now.Year;
                                 }
                             }
@@ -1091,9 +1112,10 @@ namespace Paho.Controllers
 
                             // Leyendas
                             var excelWs_Leyendas = excelWorkBook.Worksheets["Leyendas"];
-                            ConfigToExcel_FLUID(CountryID, Languaje_, RegionID_, YearEnd, YearBegin, YearEnd, StartDate, EndDate, HospitalID_, Surv, excelWorkBook, "Leyendas_FLUID", 1, excelWs_Leyendas.Index, false);
+                            //ConfigToExcel_FLUID(CountryID, Languaje_, RegionID_, YearEnd, YearBegin, YearEnd, StartDate, EndDate, HospitalID_, Surv, excelWorkBook, "Leyendas_FLUID", 1, excelWs_Leyendas.Index, false);
+                            ConfigToExcel_FLUID(CountryID, Languaje_, RegionID_, Year, YearFrom, YearTo, StartDate, EndDate, HospitalID_, Surv, excelWorkBook, "Leyendas_FLUID", 1, excelWs_Leyendas.Index, false, Month, SE);
 
-                        }
+                        } //END FLUID
                         else if (reportTemplate.ToUpper() == "C1")
                         {
                             var contador = 0;
@@ -1310,7 +1332,6 @@ namespace Paho.Controllers
 
                             }
 
-
                             ////////////////////////////////////////////////////////////////////////////////////////////////
 
                             var excelWs_GRAVEDAD_by_AGE = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "value_table" : "value_table"];
@@ -1318,12 +1339,10 @@ namespace Paho.Controllers
                             AppendDataToExcel_R8_HOSP_ICU_DEATHS(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R8_GRAV_AGE_HOSP_ICU_DEATH", 8, 1, excelWs_GRAVEDAD_by_AGE.Index, false, ReportCountry, YearBegin, YearEnd, 1, Inusual, AreaID_, Sentinel, 2, "ICU");
                             AppendDataToExcel_R8_HOSP_ICU_DEATHS(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R8_GRAV_AGE_HOSP_ICU_DEATH", 8, 1, excelWs_GRAVEDAD_by_AGE.Index, false, ReportCountry, YearBegin, YearEnd, 1, Inusual, AreaID_, Sentinel, 2, "DEATH");
 
-
-
                             // Leyendas
                             var excelWs_Leyendas = excelWorkBook.Worksheets["Leyendas"];
-                            ConfigToExcel_FLUID(CountryID, Languaje_, RegionID_, Year, YearBegin, YearEnd, StartDate, EndDate, HospitalID_, Surv, excelWorkBook, "Leyendas", 1, excelWs_Leyendas.Index, false);
-
+                            //ConfigToExcel_FLUID(CountryID, Languaje_, RegionID_, Year, YearBegin, YearEnd, StartDate, EndDate, HospitalID_, Surv, excelWorkBook, "Leyendas", 1, excelWs_Leyendas.Index, false);
+                            ConfigToExcel_FLUID(CountryID, Languaje_, RegionID_, Year, YearFrom, YearTo, StartDate, EndDate, HospitalID_, Surv, excelWorkBook, "Leyendas", 1, excelWs_Leyendas.Index, false, Month, SE);
                         }
                         else
                         {
@@ -4503,7 +4522,8 @@ namespace Paho.Controllers
             //excelWorksheet.DeleteRow(row, 2);
         }
 
-        private void ConfigToExcel_FLUID(int countryId, string languaje_country, int? regionId, int? year, int? yearBegin, int? yearEnd, DateTime? StartDate, DateTime? EndDate,  int? hospitalId, int? Surv, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int sheet, bool? insert_row)
+        private void ConfigToExcel_FLUID(int countryId, string languaje_country, int? regionId, int? year, int? yearBegin, int? yearEnd, DateTime? StartDate, DateTime? EndDate,  int? hospitalId, 
+            int? Surv, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int sheet, bool? insert_row, int? month = null, int? se = null)
         {
             var excelWorksheet = excelWorkBook.Worksheets["Leyendas"];
             //var excelWorksheet = excelWorkBook.Worksheets[sheet];
@@ -4525,56 +4545,71 @@ namespace Paho.Controllers
                 }
             }
 
-            if (year != null)
+            excelWorksheet.Cells[2, 1].Value = null;                 // A2
+            if (year != null && year > 0)
             {
-                excelWorksheet.Cells[2, 1].Value = year.ToString();
+                excelWorksheet.Cells[2, 1].Value = year.ToString();                 // A2
             }
 
-            if (yearBegin != null)
+            excelWorksheet.Cells[2, 12].Value = null;                // L2
+            if (month != null && month > 0)
             {
-                excelWorksheet.Cells[2, 10].Value = yearBegin.ToString();
+                excelWorksheet.Cells[2, 12].Value = month.ToString();                // L2
             }
-            if (yearEnd != null)
+            excelWorksheet.Cells[2, 15].Value = null;                               // O2
+            if (se != null && se > 0)
             {
-                excelWorksheet.Cells[2, 11].Value = yearEnd.ToString();
+                excelWorksheet.Cells[2, 15].Value = se.ToString();                  // O2
             }
 
+            excelWorksheet.Cells[2, 10].Value = null;
+            if (yearBegin != null && yearBegin > 0)
+            {
+                excelWorksheet.Cells[2, 10].Value = yearBegin.ToString();           // J2
+            }
+            excelWorksheet.Cells[2, 11].Value = null;             // K2
+            if (yearEnd != null && yearEnd > 0)
+            {
+                excelWorksheet.Cells[2, 11].Value = yearEnd.ToString();             // K2
+            }
+
+            excelWorksheet.Cells[2, 4].Value = null;                                // D2
+            excelWorksheet.Cells[2, 5].Value = null;                                // E2
             if (hospitalId != null && hospitalId > 0)
             {
                 var Institution = db.Institutions.Find(hospitalId);
-
-                excelWorksheet.Cells[2, 5].Value = Institution.Name.ToString();
-
+                excelWorksheet.Cells[2, 5].Value = Institution.Name.ToString();     // E2
             }
             else if (regionId != null && regionId > 0)
             {
                 //var Region_report = db.Regions.Find(regionId);
                 var Region_report = db.Regions.Where(r => r.CountryID == countryId && r.orig_country == regionId).FirstOrDefault();
-
-                excelWorksheet.Cells[2, 4].Value = Region_report.Name.ToString();
+                excelWorksheet.Cells[2, 4].Value = Region_report.Name.ToString();   // D2
             }
             else
             {
                 var Pais = db.Countries.Find(countryId);
-
                 excelWorksheet.Cells[2, 3].Value = Pais.Name.ToString();
             }
 
-            // EW calculate
-
+            excelWorksheet.Cells[2, 8].Value = null;                            // StartDate
+            excelWorksheet.Cells[2, 9].Value = null;                            // EndDate
             if (StartDate != null && EndDate != null)
             {
-                if (StartDate.Value.Year == EndDate.Value.Year)
-                {
-                    excelWorksheet.Cells[2, 13].Value = GetWeekNumber (Convert.ToDateTime(StartDate));
-                    excelWorksheet.Cells[2, 14].Value = GetWeekNumber(Convert.ToDateTime(EndDate));
-                }
-                else if (EndDate != null)
-                {
-                    excelWorksheet.Cells[2, 13].Value = 1;
-                    excelWorksheet.Cells[2, 14].Value = GetWeekNumber(Convert.ToDateTime(EndDate));
-                }
-            }  else if ( yearEnd != null)
+                //if (StartDate.Value.Year == EndDate.Value.Year)
+                //{
+                //    excelWorksheet.Cells[2, 13].Value = GetWeekNumber (Convert.ToDateTime(StartDate));
+                //    excelWorksheet.Cells[2, 14].Value = GetWeekNumber(Convert.ToDateTime(EndDate));
+                //}
+                //else if (EndDate != null)
+                //{
+                //    excelWorksheet.Cells[2, 13].Value = 1;
+                //    excelWorksheet.Cells[2, 14].Value = GetWeekNumber(Convert.ToDateTime(EndDate));
+                //}
+                excelWorksheet.Cells[2, 8].Value = StartDate;
+                excelWorksheet.Cells[2, 9].Value = EndDate;
+            }
+            else if ( yearEnd != null)
             {
                 excelWorksheet.Cells[2, 13].Value = 1;
                 if (yearEnd < DateTime.Now.Year )
@@ -4589,20 +4624,23 @@ namespace Paho.Controllers
                 
             } else if (year != null)
             {
-                excelWorksheet.Cells[2, 13].Value = 1;
+                excelWorksheet.Cells[2, 13].Value = 1;                                          // M: Start week
                 if (year < DateTime.Now.Year)
                 {
                     var date_dummy = new DateTime(Convert.ToInt16(year), 12, 26); ;
-
-                    excelWorksheet.Cells[2, 14].Value = GetWeekNumber(date_dummy);
+                    excelWorksheet.Cells[2, 14].Value = GetWeekNumber(date_dummy);              // N: End week
                 }
                 else
                 {
                     excelWorksheet.Cells[2, 14].Value = GetWeekNumber(DateTime.Now);
                 }
 
+                if (yearBegin == null)
+                {
+                    excelWorksheet.Cells[2, 10].Value = year;                   // J: Range begin
+                    excelWorksheet.Cells[2, 11].Value = year;                   // K: Range end
+                }
             }
-
         }
 
         public static int GetWeekNumber( DateTime date)
