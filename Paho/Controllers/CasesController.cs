@@ -2326,9 +2326,20 @@ namespace Paho.Controllers
             if (user.Institution is Hospital  || user.Institution is AdminInstitution)
             {
                 var list_institution_conf = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(i => i.InstitutionParentID == flucase.HospitalID && i.Conclusion == true).OrderBy(x=> x.Priority).Select(t => t.InstitutionToID).ToList();
+                var list_institution_conf_CR = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(i => i.InstitutionParentID == flucase.HospitalID && i.Conclusion == true).OrderBy(x => x.Priority).Select(t => t.ID).ToList();
+
                 if (list_institution_conf.Any())
                 {
-                     canConclude = flucase.CaseLabTests.Where(y => list_institution_conf.Contains(y.LabID)).Any() && flucase.statement==2;
+                    if (user_cty == 9)
+                    {
+                        canConclude = flucase.CaseLabTests.Where(y => list_institution_conf_CR.Contains((long)y.inst_cnf_orig)).Any() && flucase.statement == 2;
+                    }
+                    else
+                    {
+                        canConclude = flucase.CaseLabTests.Where(y => list_institution_conf.Contains(y.LabID)).Any() && flucase.statement == 2;
+                    }
+
+                        
                 }
 
                 //// Chequeo de muestra de virus para terminar el flujo
@@ -2447,7 +2458,7 @@ namespace Paho.Controllers
                             {
                                 if (list_institution_conf.Any())
                                 {
-                                    canConclude_test = list_institution_conf.Contains(Sample_test.LabID) && Sample_test.statement_test == 2;
+                                    canConclude_test = list_institution_conf_CR.Contains((long)Sample_test.inst_cnf_orig) && Sample_test.statement_test == 2;
                                 }
 
                                 if (canConclude_test)
