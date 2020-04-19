@@ -1501,33 +1501,33 @@ namespace Paho.Controllers
                 //Inicio de revisión si los datos para la gráfica, año, hospital, etc. existen o no
                 string resultGetGraphData = "";
                 var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-                //////using (var con = new SqlConnection(consString))
-                //////{
-                //////    using (var command = new SqlCommand("GetGraphData", con) { CommandType = CommandType.StoredProcedure })
-                //////    {
-                //////        command.Parameters.Clear();
-                //////        command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = CountryID_;
-                //////        command.Parameters.Add("@Graph", SqlDbType.Text).Value = Graph;
-                //////        command.Parameters.Add("@Year", SqlDbType.Text).Value = Year;
-                //////        command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = RegionID_;
-                //////        command.Parameters.Add("@State_ID", SqlDbType.Int).Value = StateID_;
-                //////        command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = HospitalID_Cache;
-                //////        command.Parameters.Add("@IRAG", SqlDbType.Int).Value = IRAG_;
-                //////        command.Parameters.Add("@ETI", SqlDbType.Int).Value = ETI_;
-                //////        con.Open();
-                //////        using (var reader = command.ExecuteReader())
-                //////        {
-                //////            while (reader.Read())
-                //////            {
-                //////                resultGetGraphData = reader["GraphData"].ToString().Trim();
-                //////            }
-                //////        }
-                //////    }
-                //////}
+                using (var con = new SqlConnection(consString))
+                {
+                    using (var command = new SqlCommand("GetGraphData", con) { CommandType = CommandType.StoredProcedure })
+                    {
+                        command.Parameters.Clear();
+                        command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = CountryID_;
+                        command.Parameters.Add("@Graph", SqlDbType.Text).Value = Graph;
+                        command.Parameters.Add("@Year", SqlDbType.Text).Value = Year;
+                        command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = RegionID_;
+                        command.Parameters.Add("@State_ID", SqlDbType.Int).Value = StateID_;
+                        command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = HospitalID_Cache;
+                        command.Parameters.Add("@IRAG", SqlDbType.Int).Value = IRAG_;
+                        command.Parameters.Add("@ETI", SqlDbType.Int).Value = ETI_;
+                        con.Open();
+                        using (var reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                resultGetGraphData = reader["GraphData"].ToString().Trim();
+                            }
+                        }
+                    }
+                }
                 //Fin de la revisión de si existen los datos para la gráfica
 
                 //Si hay datos de la gráfica solicitada, se regresan esos datos
-                if(resultGetGraphData != "")
+                if (resultGetGraphData != "")
                 {
                     return Json(resultGetGraphData);
                 }
@@ -1850,13 +1850,13 @@ namespace Paho.Controllers
                                             ExcelPackage ep = new ExcelPackage(ms);
                                             auxEp = ep;
 
-                                            //--------------------- Prueba de grabado de archivo
-                                            //Funcional
+                                            //########################################### DESARROLLO: Prueba de grabado de archivo
                                             //ExcelPackage ep11 = new ExcelPackage(ms);
                                             //string path = @"C:\Temp\sal1.xlsx";
                                             //Stream stream = System.IO.File.Create(path);
                                             //ep11.SaveAs(stream);
                                             //stream.Close();
+                                            //########################################### 
 
                                             //***************************************** GRAPH 0: Llenado de datos para Graph0
                                             decimal auxVal0;
@@ -2035,7 +2035,7 @@ namespace Paho.Controllers
                                                 //indiceInicial2 = 887;
                                                 qtyRowsVirus = 3 + (qtyGruposEdad * (4 * 3));               // Tabla 2: 3 + (6 * (4 * 3))
                                                 //filaInicialTabla2 = filaInicial + ((qtyGruposEdad + 1) * qtyRowsGrupoEdad) + 11;    // 8 + ((6 + 1) * 27) + 11 -> Vigilancia de Influenza y otros Virus Respiratorios 
-                                                filaInicialTabla2 = qtyRowsTabla1 + 11;                     //-> Vigilancia de Influenza y otros Virus Respiratorios 
+                                                filaInicialTabla2 = filaInicial + qtyRowsTabla1 + 11;                     //-> Vigilancia de Influenza y otros Virus Respiratorios 
                                                 indiceInicial = filaInicialTabla2 + (qytVirusEspecificos * qtyRowsVirus) + 3;       // 208 + (10 * 75) + 3 -> Positivos para otros virus respiratorios\Other
                                                 indiceInicial2 = indiceInicial + 1;
                                             }
@@ -2049,7 +2049,7 @@ namespace Paho.Controllers
                                                     //indiceInicial2 = 1292;
                                                     qtyRowsVirus = 3 + (qtyGruposEdad * (4 * 3));               // Tabla 2: 3 + (6 * (4 * 3))
                                                     //filaInicialTabla2 = filaInicial + ((qtyGruposEdad + 1) * qtyRowsGrupoEdad) + 11;    // 8 + ((6 + 1) * 27) + 11 -> Vigilancia de Influenza y otros Virus Respiratorios 
-                                                    filaInicialTabla2 = qtyRowsTabla1 + 11;                     //-> Vigilancia de Influenza y otros Virus Respiratorios 
+                                                    filaInicialTabla2 = filaInicial + qtyRowsTabla1 + 11;                     //-> Vigilancia de Influenza y otros Virus Respiratorios 
                                                     indiceInicial = filaInicialTabla2 + (qytVirusEspecificos * qtyRowsVirus) + 3;       // 208 + (10 * 75) + 3 -> Positivos para otros virus respiratorios\Other
                                                     indiceInicial2 = indiceInicial + 1;
                                                 }
@@ -2061,7 +2061,7 @@ namespace Paho.Controllers
                                                     //indiceInicial2 = 1157;
                                                     qtyRowsVirus = 3 + (qtyGruposEdad * (4 * 3));               // Tabla 2: 3 + (6 * (4 * 3))
                                                     //filaInicialTabla2 = filaInicial + ((qtyGruposEdad + 1) * qtyRowsGrupoEdad) + 11;    // 8 + ((6 + 1) * 27) + 11 -> Vigilancia de Influenza y otros Virus Respiratorios 
-                                                    filaInicialTabla2 = qtyRowsTabla1 + 11;                     //-> Vigilancia de Influenza y otros Virus Respiratorios 
+                                                    filaInicialTabla2 = filaInicial + qtyRowsTabla1 + 11;                     //-> Vigilancia de Influenza y otros Virus Respiratorios 
                                                     indiceInicial = filaInicialTabla2 + (qytVirusEspecificos * qtyRowsVirus) + 3;       // 208 + (10 * 75) + 3 -> Positivos para otros virus respiratorios\Other
                                                     indiceInicial2 = indiceInicial + 1;
                                                 }
@@ -2210,7 +2210,15 @@ namespace Paho.Controllers
                                                 decimal auxVal;
                                                 bool conversionResult;
 
-                                                anotherAuxXmlNode3 = myXmlDoc3.CreateElement("serie1");         // 
+                                                anotherAuxXmlNode3 = myXmlDoc3.CreateElement("serie1");         // Otros
+                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[(((qtyGruposEdad * 12) + 3) * 10) + filaInicialTabla2, 6 + i].Formula).ToString(), out auxVal);
+                                                auxVal = (conversionResult) ? (auxVal) : 0;
+                                                auxVal = Math.Round(auxVal, 2);
+                                                anotherAuxXmlNode3.InnerText = auxVal.ToString(new CultureInfo("en-US"));
+                                                //anotherAuxXmlNode.InnerText = (conversionResult) ? (auxVal*100).ToString(new CultureInfo("en-US")) : "0";
+                                                auxXmlNode3.AppendChild(anotherAuxXmlNode3);
+
+                                                anotherAuxXmlNode3 = myXmlDoc3.CreateElement("serie2");         // Adenovirus
                                                 conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[(((qtyGruposEdad * 12) + 3) * 9) + filaInicialTabla2, 6 + i].Formula).ToString(), out auxVal);
                                                 auxVal = (conversionResult) ? (auxVal) : 0;
                                                 auxVal = Math.Round(auxVal, 2);
@@ -2218,7 +2226,7 @@ namespace Paho.Controllers
                                                 //anotherAuxXmlNode.InnerText = (conversionResult) ? (auxVal*100).ToString(new CultureInfo("en-US")) : "0";
                                                 auxXmlNode3.AppendChild(anotherAuxXmlNode3);
 
-                                                anotherAuxXmlNode3 = myXmlDoc3.CreateElement("serie2");         // 
+                                                anotherAuxXmlNode3 = myXmlDoc3.CreateElement("serie3");         // SARS-CoV-2
                                                 conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[(((qtyGruposEdad * 12) + 3) * 8) + filaInicialTabla2, 6 + i].Formula).ToString(), out auxVal);
                                                 auxVal = (conversionResult) ? (auxVal) : 0;
                                                 auxVal = Math.Round(auxVal, 2);
@@ -2226,7 +2234,7 @@ namespace Paho.Controllers
                                                 //anotherAuxXmlNode.InnerText = (conversionResult) ? (auxVal*100).ToString(new CultureInfo("en-US")) : "0";
                                                 auxXmlNode3.AppendChild(anotherAuxXmlNode3);
 
-                                                anotherAuxXmlNode3 = myXmlDoc3.CreateElement("serie3");         // 
+                                                anotherAuxXmlNode3 = myXmlDoc3.CreateElement("serie4");         // VSR
                                                 conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[(((qtyGruposEdad * 12) + 3) * 7) + filaInicialTabla2, 6 + i].Formula).ToString(), out auxVal);
                                                 auxVal = (conversionResult) ? (auxVal) : 0;
                                                 auxVal = Math.Round(auxVal, 2);
@@ -2234,7 +2242,7 @@ namespace Paho.Controllers
                                                 //anotherAuxXmlNode.InnerText = (conversionResult) ? (auxVal*100).ToString(new CultureInfo("en-US")) : "0";
                                                 auxXmlNode3.AppendChild(anotherAuxXmlNode3);
 
-                                                anotherAuxXmlNode3 = myXmlDoc3.CreateElement("serie4");         // 
+                                                anotherAuxXmlNode3 = myXmlDoc3.CreateElement("serie5");         // PI
                                                 conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[(((qtyGruposEdad * 12) + 3) * 6) + filaInicialTabla2, 6 + i].Formula).ToString(), out auxVal);
                                                 auxVal = (conversionResult) ? (auxVal) : 0;
                                                 auxVal = Math.Round(auxVal, 2);
@@ -2242,7 +2250,7 @@ namespace Paho.Controllers
                                                 //anotherAuxXmlNode.InnerText = (conversionResult) ? (auxVal*100).ToString(new CultureInfo("en-US")) : "0";
                                                 auxXmlNode3.AppendChild(anotherAuxXmlNode3);
 
-                                                anotherAuxXmlNode3 = myXmlDoc3.CreateElement("serie5");         // 
+                                                anotherAuxXmlNode3 = myXmlDoc3.CreateElement("serie6");         // IB
                                                 conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[(((qtyGruposEdad * 12) + 3) * 5) + filaInicialTabla2, 6 + i].Formula).ToString(), out auxVal);
                                                 auxVal = (conversionResult) ? (auxVal) : 0;
                                                 auxVal = Math.Round(auxVal, 2);
@@ -2250,7 +2258,7 @@ namespace Paho.Controllers
                                                 //anotherAuxXmlNode.InnerText = (conversionResult) ? (auxVal*100).ToString(new CultureInfo("en-US")) : "0";
                                                 auxXmlNode3.AppendChild(anotherAuxXmlNode3);
 
-                                                anotherAuxXmlNode3 = myXmlDoc3.CreateElement("serie6");         // 
+                                                anotherAuxXmlNode3 = myXmlDoc3.CreateElement("serie7");         // Influenza A/H3N2
                                                 conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[(((qtyGruposEdad * 12) + 3) * 4) + filaInicialTabla2, 6 + i].Formula).ToString(), out auxVal);
                                                 auxVal = (conversionResult) ? (auxVal) : 0;
                                                 auxVal = Math.Round(auxVal, 2);
@@ -2258,7 +2266,7 @@ namespace Paho.Controllers
                                                 //anotherAuxXmlNode.InnerText = (conversionResult) ? (auxVal*100).ToString(new CultureInfo("en-US")) : "0";
                                                 auxXmlNode3.AppendChild(anotherAuxXmlNode3);
 
-                                                anotherAuxXmlNode3 = myXmlDoc3.CreateElement("serie7");         // 
+                                                anotherAuxXmlNode3 = myXmlDoc3.CreateElement("serie8");         // Influenza A/H1
                                                 conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[(((qtyGruposEdad * 12) + 3) * 3) + filaInicialTabla2, 6 + i].Formula).ToString(), out auxVal);
                                                 auxVal = (conversionResult) ? (auxVal) : 0;
                                                 auxVal = Math.Round(auxVal, 2);
@@ -2266,7 +2274,7 @@ namespace Paho.Controllers
                                                 //anotherAuxXmlNode.InnerText = (conversionResult) ? (auxVal*100).ToString(new CultureInfo("en-US")) : "0";
                                                 auxXmlNode3.AppendChild(anotherAuxXmlNode3);
 
-                                                anotherAuxXmlNode3 = myXmlDoc3.CreateElement("serie8");         // 
+                                                anotherAuxXmlNode3 = myXmlDoc3.CreateElement("serie9");         // Influenza A no subtipiticable
                                                 conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[(((qtyGruposEdad * 12) + 3) * 2) + filaInicialTabla2, 6 + i].Formula).ToString(), out auxVal);
                                                 auxVal = (conversionResult) ? (auxVal) : 0;
                                                 auxVal = Math.Round(auxVal, 2);
@@ -2274,35 +2282,29 @@ namespace Paho.Controllers
                                                 //anotherAuxXmlNode.InnerText = (conversionResult) ? (auxVal*100).ToString(new CultureInfo("en-US")) : "0";
                                                 auxXmlNode3.AppendChild(anotherAuxXmlNode3);
 
-                                                anotherAuxXmlNode3 = myXmlDoc3.CreateElement("serie9");         // 
+                                                anotherAuxXmlNode3 = myXmlDoc3.CreateElement("serie10");         // Influenza A No Subtipificada
                                                 conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[(((qtyGruposEdad * 12) + 3) * 1) + filaInicialTabla2, 6 + i].Formula).ToString(), out auxVal);
                                                 auxVal = (conversionResult) ? (auxVal) : 0;
                                                 auxVal = Math.Round(auxVal, 2);
                                                 anotherAuxXmlNode3.InnerText = auxVal.ToString(new CultureInfo("en-US"));
-                                                //anotherAuxXmlNode.InnerText = (conversionResult) ? (auxVal*100).ToString(new CultureInfo("en-US")) : "0";
                                                 auxXmlNode3.AppendChild(anotherAuxXmlNode3);
 
-                                                anotherAuxXmlNode3 = myXmlDoc3.CreateElement("serie10");         // 
+                                                anotherAuxXmlNode3 = myXmlDoc3.CreateElement("serie11");         // Influenza A(H1N1)pdm09
                                                 conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[(((qtyGruposEdad * 12) + 3) * 0) + filaInicialTabla2, 6 + i].Formula).ToString(), out auxVal);
                                                 auxVal = (conversionResult) ? (auxVal) : 0;
                                                 auxVal = Math.Round(auxVal, 2);
                                                 anotherAuxXmlNode3.InnerText = auxVal.ToString(new CultureInfo("en-US"));
-                                                //anotherAuxXmlNode.InnerText = (conversionResult) ? (auxVal*100).ToString(new CultureInfo("en-US")) : "0";
                                                 auxXmlNode3.AppendChild(anotherAuxXmlNode3);
 
-                                                anotherAuxXmlNode3 = myXmlDoc3.CreateElement("serie11");         // 
-                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[(((qtyGruposEdad * 12) + 3) * 14) + 3 + filaInicialTabla2, 6 + i].Formula).ToString(), out auxVal);
+                                                anotherAuxXmlNode3 = myXmlDoc3.CreateElement("serie12");         // % Positivos a Influenza
+                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[(((qtyGruposEdad * 12) + 3) * 15) + 3 + filaInicialTabla2, 6 + i].Formula).ToString(), out auxVal);
                                                 auxVal = (conversionResult) ? (auxVal * 100) : 0;
                                                 auxVal = Math.Round(auxVal, 2);
                                                 anotherAuxXmlNode3.InnerText = auxVal.ToString(new CultureInfo("en-US"));
-                                                //anotherAuxXmlNode.InnerText = (conversionResult) ? (auxVal*100).ToString(new CultureInfo("en-US")) : "0";
                                                 auxXmlNode3.AppendChild(anotherAuxXmlNode3);
 
                                                 myXmlNode3.AppendChild(auxXmlNode3);
-                                                /*yearXmlNode3.AppendChild(auxXmlNode3);*/
-                                            }
-                                            /*myXmlNode3.AppendChild(yearXmlNode3);*/
-                                            //-----Fin de llenado de la parte de datos de Graph3
+                                            }   //-----Fin de llenado de la parte de datos de Graph3
 
                                             //***************************************** GRAPH 4: Llenado de datos para Graph4------------------
                                             XmlNode yearXmlNode4;
@@ -2313,30 +2315,21 @@ namespace Paho.Controllers
                                             yearXmlNode4.Attributes.Append(yearNodeAtt4);
                                             //yearXmlNode4.AppendChild(yearNodeAtt4);
 
-                                            int nFITaAG = 3;       // Fila inicio tabla Grupos de Edad
+                                            int nFITaAG = 3;       // Fila inicio tabla Grupos de Edad (Hoja: Parameters)
                                             //for (int i = 11; i < (11+qtyGruposEdad); i++)
                                             for (int i = nFITaAG; i < (nFITaAG + qtyGruposEdad); i++)
                                             {
                                                 auxXmlNode4 = myXmlDoc4.CreateElement("graphDataItem");
 
                                                 anotherAuxXmlNode4 = myXmlDoc4.CreateElement("edad");
-
-                                                ////if (CountryID_ == 3 || CountryID_ == 7 || CountryID_ == 9 || CountryID_ == 15)
-                                                ////{
-                                                ////    anotherAuxXmlNode4.InnerText = ep.Workbook.Worksheets[1].Cells["BJ" + i.ToString()].Value.ToString();       //BJ: Columna con los grupos de edad en hoja tablas
-                                                ////}
-                                                ////else
-                                                ////{
-                                                ////    anotherAuxXmlNode4.InnerText = ep.Workbook.Worksheets[1].Cells["BK" + i.ToString()].Value.ToString();       //BK: Columna con los grupos de edad en hoja tablas
-                                                ////}
-                                                anotherAuxXmlNode4.InnerText = ep.Workbook.Worksheets["Parameters"].Cells["C" + i.ToString()].Value.ToString();       //BK: Columna con los grupos de edad en hoja tablas
-
+                                                anotherAuxXmlNode4.InnerText = ep.Workbook.Worksheets["Parameters"].Cells["C" + i.ToString()].Value.ToString();       //C: Columna con los grupos de edad en hoja Parameters
                                                 auxXmlNode4.AppendChild(anotherAuxXmlNode4);
 
                                                 decimal auxVal;
                                                 bool conversionResult;
 
-                                                for (int j = 0; j < 10; j++)
+                                                //for (int j = 0; j < 10; j++)
+                                                for (int j = 0; j < (qytVirusEspecificos + 1); j++)         // Incluyendo Otros
                                                 {
                                                     string labelVirus = "";
 
@@ -2349,36 +2342,40 @@ namespace Paho.Controllers
                                                             labelVirus = "serie2";//"Adenovirus";
                                                             break;
                                                         case 2:
-                                                            labelVirus = "serie3";//"VSR";
+                                                            labelVirus = "serie3";//"SARS-CoV-2";
                                                             break;
                                                         case 3:
-                                                            labelVirus = "serie4";//"Parainfluenza";
+                                                            labelVirus = "serie4";//"VSR";
                                                             break;
                                                         case 4:
-                                                            labelVirus = "serie5";//"Influenza B";
+                                                            labelVirus = "serie5";//"Parainfluenza";
                                                             break;
                                                         case 5:
-                                                            labelVirus = "serie6";//"Influenza A/H3";
+                                                            labelVirus = "serie6";//"Influenza B";
                                                             break;
                                                         case 6:
-                                                            labelVirus = "serie7";//"Influenza A/H1";
+                                                            labelVirus = "serie7";//"Influenza A/H3";
                                                             break;
                                                         case 7:
-                                                            labelVirus = "serie8";//"Influenza A No Subtipificable";
+                                                            labelVirus = "serie8";//"Influenza A/H1";
                                                             break;
                                                         case 8:
-                                                            labelVirus = "serie9";//"Influenza A No Suptipificada";
+                                                            labelVirus = "serie9";//"Influenza A No Subtipificable";
                                                             break;
                                                         case 9:
-                                                            labelVirus = "serie10";//"Influenza A(H1N1)pdm09";
+                                                            labelVirus = "serie10";//"Influenza A No Suptipificada";
                                                             break;
                                                         case 10:
-                                                            labelVirus = "serie11";//"SARS-CoV-2";
+                                                            labelVirus = "serie11";//"Influenza A(H1N1)pdm09";
                                                             break;
+                                                        
                                                     }
                                                     anotherAuxXmlNode4 = myXmlDoc4.CreateElement(labelVirus);
                                                     //conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells["BG" + (indiceInicial - (((qtyGruposEdad*12)+3) * j) + (12 * (i - 11)) ).ToString()].Formula).ToString(), out auxVal);
-                                                    conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells["BG" + (indiceInicial - (((qtyGruposEdad * 12) + 3) * j) + (12 * (i - nFITaAG))).ToString()].Formula).ToString(), out auxVal);
+                                                    //conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells["BG" + (indiceInicial - (((qtyGruposEdad * 12) + 3) * j) + (12 * (i - nFITaAG))).ToString()].Formula).ToString(), out auxVal);
+                                                    //int xxx = (indiceInicial - (((qtyGruposEdad * 12) + 3) * j) + (12 * (i - nFITaAG)));
+                                                    //int yyy = (indiceInicial - (qtyRowsVirus * j) + (12 * (i - nFITaAG)));
+                                                    conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells["BG" + (indiceInicial - (qtyRowsVirus * j) + (12 * (i - nFITaAG))).ToString()].Formula).ToString(), out auxVal);
 
                                                     auxVal = (conversionResult) ? (auxVal) : 0;
                                                     anotherAuxXmlNode4.InnerText = auxVal.ToString(new CultureInfo("en-US"));
@@ -2387,6 +2384,7 @@ namespace Paho.Controllers
 
                                                 }
                                             }
+
                                             myXmlNode4.AppendChild(yearXmlNode4);
                                             //-----Fin de llenado de la parte de datos de Graph4
 
@@ -2401,7 +2399,7 @@ namespace Paho.Controllers
                                             yearXmlNode5.Attributes.Append(yearNodeAtt5);
                                             //yearXmlNode5.AppendChild(yearNodeAtt5);
 
-                                            int nFITaEs = 11;
+                                            int nFITaEs = 11;                                       // Fila inicial tbla de estadios(Hosp, UCI y Def) en hoja "Parameters"
                                             //for (int i = 18; i < 21; i++)
                                             for (int i = nFITaEs; i < nFITaEs + 3; i++)
                                             {
@@ -2417,7 +2415,8 @@ namespace Paho.Controllers
                                                 decimal auxVal;
                                                 bool conversionResult;
 
-                                                for (int j = 0; j < 10; j++)
+                                                //for (int j = 0; j < 10; j++)
+                                                for (int j = 0; j < (qytVirusEspecificos + 1); j++)     // Incluyendo Otros
                                                 {
                                                     string labelVirus = "";
 
@@ -2430,33 +2429,39 @@ namespace Paho.Controllers
                                                             labelVirus = "serie2";//"Adenovirus";
                                                             break;
                                                         case 2:
-                                                            labelVirus = "serie3";//"VSR";
+                                                            labelVirus = "serie3";//"SARS-CoV-2";
                                                             break;
                                                         case 3:
-                                                            labelVirus = "serie4";//"Parainfluenza";
+                                                            labelVirus = "serie4";//"VSR";
                                                             break;
                                                         case 4:
-                                                            labelVirus = "serie5";//"Influenza B";
+                                                            labelVirus = "serie5";//"Parainfluenza";
                                                             break;
                                                         case 5:
-                                                            labelVirus = "serie6";//"Influenza A/H3";
+                                                            labelVirus = "serie6";//"Influenza B";
                                                             break;
                                                         case 6:
-                                                            labelVirus = "serie7";//"Influenza A/H1";
+                                                            labelVirus = "serie7";//"Influenza A/H3";
                                                             break;
                                                         case 7:
-                                                            labelVirus = "serie8";//"Influenza A No Subtipificable";
+                                                            labelVirus = "serie8";//"Influenza A/H1";
                                                             break;
                                                         case 8:
-                                                            labelVirus = "serie9";//"Influenza A No Suptipificada";
+                                                            labelVirus = "serie9";//"Influenza A No Subtipificable";
                                                             break;
                                                         case 9:
-                                                            labelVirus = "serie10";//"Influenza A(H1N1)pdm09";
+                                                            labelVirus = "serie10";//"Influenza A No Suptipificada";
                                                             break;
+                                                        case 10:
+                                                            labelVirus = "serie11";//"Influenza A(H1N1)pdm09";
+                                                            break;
+                                                        
                                                     }
+
                                                     anotherAuxXmlNode5 = myXmlDoc5.CreateElement(labelVirus);
                                                     //conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells["BK" + (indiceInicial2 - (((qtyGruposEdad * 12) + 3) * j) + (3 * (i - 18))).ToString()].Formula).ToString(), out auxVal);
-                                                    conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells["BJ" + (indiceInicial2 - (((qtyGruposEdad * 12) + 3) * j) + (3 * (i - nFITaEs))).ToString()].Formula).ToString(), out auxVal);
+                                                    //conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells["BJ" + (indiceInicial2 - (((qtyGruposEdad * 12) + 3) * j) + (3 * (i - nFITaEs))).ToString()].Formula).ToString(), out auxVal);
+                                                    conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells["BJ" + (indiceInicial2 - (qtyRowsVirus * j) + (3 * (i - nFITaEs))).ToString()].Formula).ToString(), out auxVal);
 
                                                     auxVal = (conversionResult) ? (auxVal) : 0;
                                                     anotherAuxXmlNode5.InnerText = auxVal.ToString(new CultureInfo("en-US"));
@@ -2506,7 +2511,7 @@ namespace Paho.Controllers
                                             //indiceInicial4 = 883;       // Virus Otros
                                             //altoGrupo = 75;             // Tamaño virus otros
                                             indiceInicial3 = filaInicialTabla2 + (positionIBInTabla - 1) * qtyRowsVirus;       // Influenza B
-                                            indiceInicial4 = filaInicialTabla2 + qytVirusEspecificos * qtyRowsVirus;       // Virus Otros
+                                            indiceInicial4 = filaInicialTabla2 + qytVirusEspecificos * qtyRowsVirus;            // Virus Otros
                                             altoGrupo = qtyRowsVirus;             // Tamaño virus otros
                                         }
                                         else
@@ -2569,43 +2574,43 @@ namespace Paho.Controllers
                                         myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (1 * altoGrupo))].Value.ToString();   // Adenovirus
                                         myXmlDoc3.DocumentElement.AppendChild(myXmlNode3);
 
-                                        //myXmlNode3 = myXmlDoc3.CreateElement("graphSeries3Label");
-                                        //myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (2 * altoGrupo))].Value.ToString();   // SARS-CoV-2
-                                        //myXmlDoc3.DocumentElement.AppendChild(myXmlNode3);
-
                                         myXmlNode3 = myXmlDoc3.CreateElement("graphSeries3Label");
-                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (3 * altoGrupo))].Value.ToString();   // VRS
+                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (2 * altoGrupo))].Value.ToString();   // SARS-CoV-2
                                         myXmlDoc3.DocumentElement.AppendChild(myXmlNode3);
 
                                         myXmlNode3 = myXmlDoc3.CreateElement("graphSeries4Label");
-                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (4 * altoGrupo))].Value.ToString();   // Parainfluenza
+                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (3 * altoGrupo))].Value.ToString();   // VRS
                                         myXmlDoc3.DocumentElement.AppendChild(myXmlNode3);
 
                                         myXmlNode3 = myXmlDoc3.CreateElement("graphSeries5Label");
-                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["A" + (indiceInicial4 - (5 * altoGrupo))].Value.ToString();   // IB
+                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (4 * altoGrupo))].Value.ToString();   // Parainfluenza
                                         myXmlDoc3.DocumentElement.AppendChild(myXmlNode3);
 
                                         myXmlNode3 = myXmlDoc3.CreateElement("graphSeries6Label");
-                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (6 * altoGrupo))].Value.ToString();   // Influenza A/H3N2
+                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["A" + (indiceInicial4 - (5 * altoGrupo))].Value.ToString();   // IB
                                         myXmlDoc3.DocumentElement.AppendChild(myXmlNode3);
 
                                         myXmlNode3 = myXmlDoc3.CreateElement("graphSeries7Label");
-                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (7 * altoGrupo))].Value.ToString();   // Influenza A/H1
+                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (6 * altoGrupo))].Value.ToString();   // Influenza A/H3N2
                                         myXmlDoc3.DocumentElement.AppendChild(myXmlNode3);
 
                                         myXmlNode3 = myXmlDoc3.CreateElement("graphSeries8Label");
-                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (8 * altoGrupo))].Value.ToString();   // Influenza A no subtipiticable
+                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (7 * altoGrupo))].Value.ToString();   // Influenza A/H1
                                         myXmlDoc3.DocumentElement.AppendChild(myXmlNode3);
 
                                         myXmlNode3 = myXmlDoc3.CreateElement("graphSeries9Label");
-                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (9 * altoGrupo))].Value.ToString();   // Influenza A No Subtipificada
+                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (8 * altoGrupo))].Value.ToString();   // Influenza A no subtipiticable
                                         myXmlDoc3.DocumentElement.AppendChild(myXmlNode3);
 
                                         myXmlNode3 = myXmlDoc3.CreateElement("graphSeries10Label");
-                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (10 * altoGrupo))].Value.ToString();  // Influenza A(H1N1)pdm09
+                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (9 * altoGrupo))].Value.ToString();   // Influenza A No Subtipificada
                                         myXmlDoc3.DocumentElement.AppendChild(myXmlNode3);
 
                                         myXmlNode3 = myXmlDoc3.CreateElement("graphSeries11Label");
+                                        myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (10 * altoGrupo))].Value.ToString();  // Influenza A(H1N1)pdm09
+                                        myXmlDoc3.DocumentElement.AppendChild(myXmlNode3);
+
+                                        myXmlNode3 = myXmlDoc3.CreateElement("graphSeries12Label");
                                         myXmlNode3.InnerText = auxEp.Workbook.Worksheets[1].Cells["A" + (indiceInicial4 + (5 * altoGrupo) + 3)].Value.ToString();   // % Positivos a virus respiratorios
                                         myXmlDoc3.DocumentElement.AppendChild(myXmlNode3);
                                         //----------------Fin del armado de la estructura de datos para la gráfica
@@ -2618,39 +2623,39 @@ namespace Paho.Controllers
                                         myXmlNode4.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (1 * altoGrupo))].Value.ToString();   // Adenovirus
                                         myXmlDoc4.DocumentElement.AppendChild(myXmlNode4);
 
-                                        //myXmlNode4 = myXmlDoc4.CreateElement("graphSeries3Label");
-                                        //myXmlNode4.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (2 * altoGrupo))].Value.ToString();   // SARS-CoV-2
-                                        //myXmlDoc4.DocumentElement.AppendChild(myXmlNode4);
-
                                         myXmlNode4 = myXmlDoc4.CreateElement("graphSeries3Label");
-                                        myXmlNode4.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (3 * altoGrupo))].Value.ToString();   // VSR
+                                        myXmlNode4.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (2 * altoGrupo))].Value.ToString();   // SARS-CoV-2
                                         myXmlDoc4.DocumentElement.AppendChild(myXmlNode4);
 
                                         myXmlNode4 = myXmlDoc4.CreateElement("graphSeries4Label");
-                                        myXmlNode4.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (4 * altoGrupo))].Value.ToString();   // 
+                                        myXmlNode4.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (3 * altoGrupo))].Value.ToString();   // VSR
                                         myXmlDoc4.DocumentElement.AppendChild(myXmlNode4);
 
                                         myXmlNode4 = myXmlDoc4.CreateElement("graphSeries5Label");
-                                        myXmlNode4.InnerText = auxEp.Workbook.Worksheets[1].Cells["A" + (indiceInicial4 - (5 * altoGrupo))].Value.ToString();   // 
+                                        myXmlNode4.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (4 * altoGrupo))].Value.ToString();   // 
                                         myXmlDoc4.DocumentElement.AppendChild(myXmlNode4);
 
                                         myXmlNode4 = myXmlDoc4.CreateElement("graphSeries6Label");
-                                        myXmlNode4.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (6 * altoGrupo))].Value.ToString();   // 
+                                        myXmlNode4.InnerText = auxEp.Workbook.Worksheets[1].Cells["A" + (indiceInicial4 - (5 * altoGrupo))].Value.ToString();   // 
                                         myXmlDoc4.DocumentElement.AppendChild(myXmlNode4);
 
                                         myXmlNode4 = myXmlDoc4.CreateElement("graphSeries7Label");
-                                        myXmlNode4.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (7 * altoGrupo))].Value.ToString();   // 
+                                        myXmlNode4.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (6 * altoGrupo))].Value.ToString();   // 
                                         myXmlDoc4.DocumentElement.AppendChild(myXmlNode4);
 
                                         myXmlNode4 = myXmlDoc4.CreateElement("graphSeries8Label");
-                                        myXmlNode4.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (8 * altoGrupo))].Value.ToString();   // 
+                                        myXmlNode4.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (7 * altoGrupo))].Value.ToString();   // 
                                         myXmlDoc4.DocumentElement.AppendChild(myXmlNode4);
 
                                         myXmlNode4 = myXmlDoc4.CreateElement("graphSeries9Label");
-                                        myXmlNode4.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (9 * altoGrupo))].Value.ToString();   // Influenza A No Subtipificada
+                                        myXmlNode4.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (8 * altoGrupo))].Value.ToString();   // 
                                         myXmlDoc4.DocumentElement.AppendChild(myXmlNode4);
 
                                         myXmlNode4 = myXmlDoc4.CreateElement("graphSeries10Label");
+                                        myXmlNode4.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (9 * altoGrupo))].Value.ToString();   // Influenza A No Subtipificada
+                                        myXmlDoc4.DocumentElement.AppendChild(myXmlNode4);
+
+                                        myXmlNode4 = myXmlDoc4.CreateElement("graphSeries11Label");
                                         myXmlNode4.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (10 * altoGrupo))].Value.ToString();   // Influenza A(H1N1)pdm09
                                         myXmlDoc4.DocumentElement.AppendChild(myXmlNode4);
 
@@ -2664,39 +2669,39 @@ namespace Paho.Controllers
                                         myXmlNode5.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (1 * altoGrupo))].Value.ToString();   // Adenovirus
                                         myXmlDoc5.DocumentElement.AppendChild(myXmlNode5);
 
-                                        //myXmlNode5 = myXmlDoc5.CreateElement("graphSeries3Label");
-                                        //myXmlNode5.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (2 * altoGrupo))].Value.ToString();   // SARS-CoV-2
-                                        //myXmlDoc5.DocumentElement.AppendChild(myXmlNode5);
-
                                         myXmlNode5 = myXmlDoc5.CreateElement("graphSeries3Label");
-                                        myXmlNode5.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (3 * altoGrupo))].Value.ToString();   // VSR
+                                        myXmlNode5.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (2 * altoGrupo))].Value.ToString();   // SARS-CoV-2
                                         myXmlDoc5.DocumentElement.AppendChild(myXmlNode5);
 
                                         myXmlNode5 = myXmlDoc5.CreateElement("graphSeries4Label");
-                                        myXmlNode5.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (4 * altoGrupo))].Value.ToString();   // 
+                                        myXmlNode5.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (3 * altoGrupo))].Value.ToString();   // VSR
                                         myXmlDoc5.DocumentElement.AppendChild(myXmlNode5);
 
                                         myXmlNode5 = myXmlDoc5.CreateElement("graphSeries5Label");
-                                        myXmlNode5.InnerText = auxEp.Workbook.Worksheets[1].Cells["A" + (indiceInicial4 - (5 * altoGrupo))].Value.ToString();   // 
+                                        myXmlNode5.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (4 * altoGrupo))].Value.ToString();   // Parainfluenza
                                         myXmlDoc5.DocumentElement.AppendChild(myXmlNode5);
 
                                         myXmlNode5 = myXmlDoc5.CreateElement("graphSeries6Label");
-                                        myXmlNode5.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (6 * altoGrupo))].Value.ToString();   // 
+                                        myXmlNode5.InnerText = auxEp.Workbook.Worksheets[1].Cells["A" + (indiceInicial4 - (5 * altoGrupo))].Value.ToString();   // Influenza B
                                         myXmlDoc5.DocumentElement.AppendChild(myXmlNode5);
 
                                         myXmlNode5 = myXmlDoc5.CreateElement("graphSeries7Label");
-                                        myXmlNode5.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (7 * altoGrupo))].Value.ToString();   // 
+                                        myXmlNode5.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (6 * altoGrupo))].Value.ToString();   // Influenza A/H3N2
                                         myXmlDoc5.DocumentElement.AppendChild(myXmlNode5);
 
                                         myXmlNode5 = myXmlDoc5.CreateElement("graphSeries8Label");
-                                        myXmlNode5.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (8 * altoGrupo))].Value.ToString();   // 
+                                        myXmlNode5.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (7 * altoGrupo))].Value.ToString();   // Influenza A/H1
                                         myXmlDoc5.DocumentElement.AppendChild(myXmlNode5);
 
                                         myXmlNode5 = myXmlDoc5.CreateElement("graphSeries9Label");
-                                        myXmlNode5.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (9 * altoGrupo))].Value.ToString();   // Influenza A No Subtipificada
+                                        myXmlNode5.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (8 * altoGrupo))].Value.ToString();   // Influenza A no subtipiticable
                                         myXmlDoc5.DocumentElement.AppendChild(myXmlNode5);
 
                                         myXmlNode5 = myXmlDoc5.CreateElement("graphSeries10Label");
+                                        myXmlNode5.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (9 * altoGrupo))].Value.ToString();   // Influenza A No Subtipificada
+                                        myXmlDoc5.DocumentElement.AppendChild(myXmlNode5);
+
+                                        myXmlNode5 = myXmlDoc5.CreateElement("graphSeries11Label");
                                         myXmlNode5.InnerText = auxEp.Workbook.Worksheets[1].Cells["B" + (indiceInicial4 - (10 * altoGrupo))].Value.ToString();   // Influenza A(H1N1)pdm09
                                         myXmlDoc5.DocumentElement.AppendChild(myXmlNode5);
 

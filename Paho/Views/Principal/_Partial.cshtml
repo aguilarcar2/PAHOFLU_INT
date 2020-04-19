@@ -1680,7 +1680,6 @@
                 margin: 5px;
             }
         </style>
-
         <div id="containerGraph0">
             <!--Inicio de gráficas-->
             <!--Gráfica Epidemiológica 1-->
@@ -1800,6 +1799,7 @@
                                 "synchronizeGrid":true,
                                 "valueAxes": [{
                                     "id":"v1",
+                                    "stackType": "regular",
                                     "axisColor": "#FF6600",
                                     "axisThickness": 2,
                                     "axisAlpha": 1,
@@ -1825,7 +1825,7 @@
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
                                         if (info.values.value)
-                                            return String(info.values.value);
+                                            return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
                                         else
                                             return '';
                                     }
@@ -1839,7 +1839,7 @@
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
                                         if (info.values.value)
-                                            return String(info.values.value);
+                                            return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
                                         else
                                             return '';
                                     }
@@ -1853,7 +1853,7 @@
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
                                         if (info.values.value)
-                                            return String(info.values.value);
+                                            return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
                                         else
                                             return '';
                                     }
@@ -1867,7 +1867,7 @@
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
                                         if (info.values.value)
-                                            return String(info.values.value);
+                                            return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
                                         else
                                             return '';
                                     }
@@ -1881,7 +1881,7 @@
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
                                         if (info.values.value)
-                                            return String(info.values.value);
+                                            return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
                                         else
                                             return '';
                                     }
@@ -1895,7 +1895,7 @@
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
                                         if (info.values.value)
-                                            return String(info.values.value);
+                                            return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
                                         else
                                             return '';
                                     }
@@ -1912,7 +1912,7 @@
                                     "fillAlphas": 0,
                                     "balloonFunction": function(info) {
                                         if (info.values.value)
-                                            return String(info.values.value);
+                                            return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
                                         else
                                             return '';
                                     }
@@ -2057,7 +2057,8 @@
                                         serie8: element2.serie8,
                                         serie9: element2.serie9,
                                         serie10: element2.serie10,
-                                        serie11: element2.serie11
+                                        serie11: element2.serie11,
+                                        serie12: element2.serie12
                                     });
                                 });
 
@@ -2067,8 +2068,7 @@
                             chartDataLength = chartData.length;
                             if(chartDataLength>0){
                                 for(i = chartDataLength-1; i>0;i--){
-                                    //alert(chartData[i].semana);
-                                    if(chartData[i].serie1==0 && chartData[i].serie2==0 && chartData[i].serie3==0 && chartData[i].serie4==0 && chartData[i].serie5==0 && chartData[i].serie6==0 && chartData[i].serie7==0 && chartData[i].serie8==0 && chartData[i].serie9==0 && chartData[i].serie10==0 && chartData[i].serie11==0){
+                                    if(chartData[i].serie1==0 && chartData[i].serie2==0 && chartData[i].serie3==0 && chartData[i].serie4==0 && chartData[i].serie5==0 && chartData[i].serie6==0 && chartData[i].serie7==0 && chartData[i].serie8==0 && chartData[i].serie9==0 && chartData[i].serie10==0 && chartData[i].serie11==0 && chartData[i].serie12==0){
                                         chartData.pop();
                                     }
                                     else{
@@ -2076,13 +2076,12 @@
                                     }
                                 }
                             }
-                            chartDataLength = chartData.length;
-                            //alert(chartDataLength);
+
                             chartData.reverse();
+                            chartDataLength = chartData.length;
                             if(chartDataLength>0){
                                 for(i = chartDataLength-1; i>0;i--){
-                                    //alert(chartData[i].semana);
-                                    if(chartData[i].serie1==0 && chartData[i].serie2==0 && chartData[i].serie3==0 && chartData[i].serie4==0 && chartData[i].serie5==0 && chartData[i].serie6==0 && chartData[i].serie7==0 && chartData[i].serie8==0 && chartData[i].serie9==0 && chartData[i].serie10==0 && chartData[i].serie11==0){
+                                    if(chartData[i].serie1==0 && chartData[i].serie2==0 && chartData[i].serie3==0 && chartData[i].serie4==0 && chartData[i].serie5==0 && chartData[i].serie6==0 && chartData[i].serie7==0 && chartData[i].serie8==0 && chartData[i].serie9==0 && chartData[i].serie10==0 && chartData[i].serie11==0 && chartData[i].serie12==0){
                                         chartData.pop();
                                     }
                                     else{
@@ -2090,7 +2089,7 @@
                                     }
                                 }
                             }
-                            chartData.reverse();
+                            chartData.reverse();        // Retornando al orden original del array
                             //-----------------FIN de Quita los ceros del fin y del inicio del array----------------------
 
                             var chart = AmCharts.makeChart("divGraph3", {
@@ -2098,7 +2097,14 @@
                                 "theme": "light",
                                 "mouseWheelZoomEnabled":false,
                                 "legend": {
-                                    "useGraphSettings": true
+                                    //"useGraphSettings": true,
+                                    //"maxColumns": 3,
+                                    //"position": "bottom"
+                                    "horizontalGap": 10,
+                                    "maxColumns": 3,
+                                    "position": "bottom",
+                                    "useGraphSettings": true,
+                                    "markerSize": 10
                                 },
                                 "titles":   [
                                                 {
@@ -2110,6 +2116,7 @@
                                 "synchronizeGrid":true,
                                 "valueAxes": [{
                                     "id":"v1",
+                                    "stackType": "regular",
                                     "axisColor": "#FF6600",
                                     "axisThickness": 2,
                                     "axisAlpha": 1,
@@ -2135,7 +2142,7 @@
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
                                         if (info.values.value)
-                                            return String(info.values.value);
+                                            return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
                                         else
                                             return '';
                                     }
@@ -2149,7 +2156,21 @@
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
                                         if (info.values.value)
-                                            return String(info.values.value);
+                                            return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
+                                        else
+                                            return '';
+                                    }
+                                }, {
+                                    /*SARS-CoV-2*/
+                                    "valueAxis": "v1",
+                                    "lineColor": "#9900CC",
+                                    "title": jsonX.graph.graphSeries3Label,
+                                    "valueField": "serie3",
+                                    "type": "column",
+                                    "fillAlphas": 1,
+                                    "balloonFunction": function(info) {
+                                        if (info.values.value)
+                                            return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
                                         else
                                             return '';
                                     }
@@ -2157,13 +2178,13 @@
                                     /*VSR*/
                                     "valueAxis": "v1",
                                     "lineColor": "#0070c0",
-                                    "title": jsonX.graph.graphSeries3Label,
-                                    "valueField": "serie3",
+                                    "title": jsonX.graph.graphSeries4Label,
+                                    "valueField": "serie4",
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
                                         if (info.values.value)
-                                            return String(info.values.value);
+                                            return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
                                         else
                                             return '';
                                     }
@@ -2171,13 +2192,13 @@
                                     /*parainfluenza*/
                                     "valueAxis": "v1",
                                     "lineColor": "#7030a0",
-                                    "title": jsonX.graph.graphSeries4Label,
-                                    "valueField": "serie4",
+                                    "title": jsonX.graph.graphSeries5Label,
+                                    "valueField": "serie5",
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
                                         if (info.values.value)
-                                            return String(info.values.value);
+                                            return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
                                         else
                                             return '';
                                     }
@@ -2185,13 +2206,13 @@
                                     /*Influenza B*/
                                     "valueAxis": "v1",
                                     "lineColor": "#99cc00",
-                                    "title": jsonX.graph.graphSeries5Label,
-                                    "valueField": "serie5",
+                                    "title": jsonX.graph.graphSeries6Label,
+                                    "valueField": "serie6",
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
                                         if (info.values.value)
-                                            return String(info.values.value);
+                                            return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
                                         else
                                             return '';
                                     }
@@ -2199,13 +2220,13 @@
                                     /*Influenza A/H3*/
                                     "valueAxis": "v1",
                                     "lineColor": "#00b0f0",
-                                    "title": jsonX.graph.graphSeries6Label,
-                                    "valueField": "serie6",
+                                    "title": jsonX.graph.graphSeries7Label,
+                                    "valueField": "serie7",
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
                                         if (info.values.value)
-                                            return String(info.values.value);
+                                            return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
                                         else
                                             return '';
                                     }
@@ -2213,13 +2234,13 @@
                                     /*Influenza A h1*/
                                     "valueAxis": "v1",
                                     "lineColor": "#ff0000",
-                                    "title": jsonX.graph.graphSeries7Label,
-                                    "valueField": "serie7",
+                                    "title": jsonX.graph.graphSeries8Label,
+                                    "valueField": "serie8",
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
                                         if (info.values.value)
-                                            return String(info.values.value);
+                                            return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
                                         else
                                             return '';
                                     }
@@ -2227,13 +2248,13 @@
                                     /*Influenza A no subtipificable*/
                                     "valueAxis": "v1",
                                     "lineColor": "#000000",
-                                    "title": jsonX.graph.graphSeries8Label,
-                                    "valueField": "serie8",
+                                    "title": jsonX.graph.graphSeries9Label,
+                                    "valueField": "serie9",
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
                                         if (info.values.value)
-                                            return String(info.values.value);
+                                            return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
                                         else
                                             return '';
                                     }
@@ -2241,13 +2262,13 @@
                                     /*Influenza A no suptipificada*/
                                     "valueAxis": "v1",
                                     "lineColor": "#ffff00",
-                                    "title": jsonX.graph.graphSeries9Label,
-                                    "valueField": "serie9",
+                                    "title": jsonX.graph.graphSeries10Label,
+                                    "valueField": "serie10",
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
                                         if (info.values.value)
-                                            return String(info.values.value);
+                                            return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
                                         else
                                             return '';
                                     }
@@ -2255,13 +2276,13 @@
                                     /*Influenza AH1N1*/
                                     "valueAxis": "v1",
                                     "lineColor": "#ff9900",
-                                    "title": jsonX.graph.graphSeries10Label,
-                                    "valueField": "serie10",
+                                    "title": jsonX.graph.graphSeries11Label,
+                                    "valueField": "serie11",
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
                                         if (info.values.value)
-                                            return String(info.values.value);
+                                            return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
                                         else
                                             return '';
                                     }
@@ -2272,13 +2293,13 @@
                                     "bullet": "triangleUp",
                                     "bulletBorderThickness": 1,
                                     "hideBulletsCount": 40,
-                                    "title": jsonX.graph.graphSeries11Label,
-                                    "valueField": "serie11",
+                                    "title": jsonX.graph.graphSeries12Label,
+                                    "valueField": "serie12",
                                     "type": "line",
                                     "fillAlphas": 0,
                                     "balloonFunction": function(info) {
                                         if (info.values.value)
-                                            return String(info.values.value);
+                                            return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
                                         else
                                             return '';
                                     }
@@ -2326,7 +2347,6 @@
                     });
                 })
             };
-
         </script>
 
         <style>
@@ -2422,7 +2442,8 @@
                                         serie7: element2.serie7,
                                         serie8: element2.serie8,
                                         serie9: element2.serie9,
-                                        serie10: element2.serie10
+                                        serie10: element2.serie10,
+                                        serie11: element2.serie11
                                     });
                                 });
 
@@ -2495,11 +2516,32 @@
                                     "balloonFunction": function(info) {
                                         if (info.values.value){
                                             return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
+                                        }
+                                        else
+                                            return '';
+                                    }
+                                }, {
+                                    /*SARS-CoV-2*/
+                                    "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                                    "fillAlphas": 1,
+                                    "labelText": "[[value]]",
+                                    "lineAlpha": 0.3,
+                                    "type": "column",
+                                    "valueAxis": "v1",
+                                    "lineColor": "#9900CC",
+                                    "title": jsonX.graph.graphSeries3Label,
+                                    "valueField": "serie3",
+                                    "type": "column",
+                                    "fillAlphas": 1,
+                                    "balloonFunction": function(info) {
+                                        if (info.values.value){
+                                            return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
 
                                         }
                                         else
                                             return '';
                                     }
+                                //}, {
                                 }, {
                                     /*VSR*/
                                     "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
@@ -2509,8 +2551,8 @@
                                     "type": "column",
                                     "valueAxis": "v1",
                                     "lineColor": "#0070c0",
-                                    "title": jsonX.graph.graphSeries3Label,
-                                    "valueField": "serie3",
+                                    "title": jsonX.graph.graphSeries4Label,
+                                    "valueField": "serie4",
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
@@ -2530,8 +2572,8 @@
                                     "type": "column",
                                     "valueAxis": "v1",
                                     "lineColor": "#7030a0",
-                                    "title": jsonX.graph.graphSeries4Label,
-                                    "valueField": "serie4",
+                                    "title": jsonX.graph.graphSeries5Label,
+                                    "valueField": "serie5",
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
@@ -2551,8 +2593,8 @@
                                     "type": "column",
                                     "valueAxis": "v1",
                                     "lineColor": "#99cc00",
-                                    "title": jsonX.graph.graphSeries5Label,
-                                    "valueField": "serie5",
+                                    "title": jsonX.graph.graphSeries6Label,
+                                    "valueField": "serie6",
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
@@ -2572,8 +2614,8 @@
                                     "type": "column",
                                     "valueAxis": "v1",
                                     "lineColor": "#00b0f0",
-                                    "title": jsonX.graph.graphSeries6Label,
-                                    "valueField": "serie6",
+                                    "title": jsonX.graph.graphSeries7Label,
+                                    "valueField": "serie7",
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
@@ -2593,8 +2635,8 @@
                                     "type": "column",
                                     "valueAxis": "v1",
                                     "lineColor": "#ff0000",
-                                    "title": jsonX.graph.graphSeries7Label,
-                                    "valueField": "serie7",
+                                    "title": jsonX.graph.graphSeries8Label,
+                                    "valueField": "serie8",
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
@@ -2614,8 +2656,8 @@
                                     "type": "column",
                                     "valueAxis": "v1",
                                     "lineColor": "#000000",
-                                    "title": jsonX.graph.graphSeries8Label,
-                                    "valueField": "serie8",
+                                    "title": jsonX.graph.graphSeries9Label,
+                                    "valueField": "serie9",
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
@@ -2635,8 +2677,8 @@
                                     "type": "column",
                                     "valueAxis": "v1",
                                     "lineColor": "#ffff00",
-                                    "title": jsonX.graph.graphSeries9Label,
-                                    "valueField": "serie9",
+                                    "title": jsonX.graph.graphSeries10Label,
+                                    "valueField": "serie10",
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
@@ -2656,8 +2698,8 @@
                                     "type": "column",
                                     "valueAxis": "v1",
                                     "lineColor": "#ff9900",
-                                    "title": jsonX.graph.graphSeries10Label,
-                                    "valueField": "serie10",
+                                    "title": jsonX.graph.graphSeries11Label,
+                                    "valueField": "serie11",
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
@@ -2809,7 +2851,8 @@
                                         serie7: element2.serie7,
                                         serie8: element2.serie8,
                                         serie9: element2.serie9,
-                                        serie10: element2.serie10
+                                        serie10: element2.serie10,
+                                        serie11: element2.serie11
                                     });
                                 });
 
@@ -2887,6 +2930,27 @@
                                             return '';
                                     }
                                 }, {
+                                    /*SARS-CoV-2*/
+                                    "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                                    "fillAlphas": 1,
+                                    "labelText": "[[value]]",
+                                    "lineAlpha": 0.3,
+                                    "type": "column",
+                                    "valueAxis": "v1",
+                                    "lineColor": "#9900CC",
+                                    "title": jsonX.graph.graphSeries3Label,
+                                    "valueField": "serie3",
+                                    "type": "column",
+                                    "fillAlphas": 1,
+                                    "balloonFunction": function(info) {
+                                        if (info.values.value){
+                                            return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
+
+                                        }
+                                        else
+                                            return '';
+                                    }
+                                }, {
                                     /*VSR*/
                                     "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
                                     "fillAlphas": 1,
@@ -2895,8 +2959,8 @@
                                     "type": "column",
                                     "valueAxis": "v1",
                                     "lineColor": "#0070c0",
-                                    "title": jsonX.graph.graphSeries3Label,
-                                    "valueField": "serie3",
+                                    "title": jsonX.graph.graphSeries4Label,
+                                    "valueField": "serie4",
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
@@ -2916,8 +2980,8 @@
                                     "type": "column",
                                     "valueAxis": "v1",
                                     "lineColor": "#7030a0",
-                                    "title": jsonX.graph.graphSeries4Label,
-                                    "valueField": "serie4",
+                                    "title": jsonX.graph.graphSeries5Label,
+                                    "valueField": "serie5",
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
@@ -2937,8 +3001,8 @@
                                     "type": "column",
                                     "valueAxis": "v1",
                                     "lineColor": "#99cc00",
-                                    "title": jsonX.graph.graphSeries5Label,
-                                    "valueField": "serie5",
+                                    "title": jsonX.graph.graphSeries6Label,
+                                    "valueField": "serie6",
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
@@ -2958,14 +3022,13 @@
                                     "type": "column",
                                     "valueAxis": "v1",
                                     "lineColor": "#00b0f0",
-                                    "title": jsonX.graph.graphSeries6Label,
-                                    "valueField": "serie6",
+                                    "title": jsonX.graph.graphSeries7Label,
+                                    "valueField": "serie7",
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
                                         if (info.values.value){
                                             return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-
                                         }
                                         else
                                             return '';
@@ -2979,8 +3042,8 @@
                                     "type": "column",
                                     "valueAxis": "v1",
                                     "lineColor": "#ff0000",
-                                    "title": jsonX.graph.graphSeries7Label,
-                                    "valueField": "serie7",
+                                    "title": jsonX.graph.graphSeries8Label,
+                                    "valueField": "serie8",
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
@@ -3000,8 +3063,8 @@
                                     "type": "column",
                                     "valueAxis": "v1",
                                     "lineColor": "#000000",
-                                    "title": jsonX.graph.graphSeries8Label,
-                                    "valueField": "serie8",
+                                    "title": jsonX.graph.graphSeries9Label,
+                                    "valueField": "serie9",
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
@@ -3021,8 +3084,8 @@
                                     "type": "column",
                                     "valueAxis": "v1",
                                     "lineColor": "#ffff00",
-                                    "title": jsonX.graph.graphSeries9Label,
-                                    "valueField": "serie9",
+                                    "title": jsonX.graph.graphSeries10Label,
+                                    "valueField": "serie10",
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
@@ -3042,8 +3105,8 @@
                                     "type": "column",
                                     "valueAxis": "v1",
                                     "lineColor": "#ff9900",
-                                    "title": jsonX.graph.graphSeries10Label,
-                                    "valueField": "serie10",
+                                    "title": jsonX.graph.graphSeries11Label,
+                                    "valueField": "serie11",
                                     "type": "column",
                                     "fillAlphas": 1,
                                     "balloonFunction": function(info) {
@@ -4266,7 +4329,6 @@
                                             "fillAlphas": 1,
                                             "balloonFunction": function(info) {
                                                 if (info.values.value)
-                                                    //return String(info.values.value);
                                                     return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
                                                 else
                                                     return '';
@@ -4285,10 +4347,8 @@
                                             "type": "column",
                                             "fillAlphas": 1,
                                             "balloonFunction": function(info) {
-                                                if (info.values.value){
+                                                if (info.values.value)
                                                     return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-
-                                                }
                                                 else
                                                     return '';
                                             }
@@ -4306,10 +4366,8 @@
                                             "type": "column",
                                             "fillAlphas": 1,
                                             "balloonFunction": function(info) {
-                                                if (info.values.value){
+                                                if (info.values.value)
                                                     return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-
-                                                }
                                                 else
                                                     return '';
                                             }
@@ -4327,9 +4385,8 @@
                                             "type": "column",
                                             "fillAlphas": 1,
                                             "balloonFunction": function(info) {
-                                                if (info.values.value){
+                                                if (info.values.value)
                                                     return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                                }
                                                 else
                                                     return '';
                                             }
@@ -4347,9 +4404,8 @@
                                             "type": "column",
                                             "fillAlphas": 1,
                                             "balloonFunction": function(info) {
-                                                if (info.values.value){
+                                                if (info.values.value)
                                                     return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                                }
                                                 else
                                                     return '';
                                             }
@@ -4367,9 +4423,8 @@
                                             "type": "column",
                                             "fillAlphas": 1,
                                             "balloonFunction": function(info) {
-                                                if (info.values.value){
+                                                if (info.values.value)
                                                     return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                                }
                                                 else
                                                     return '';
                                             }
@@ -4387,9 +4442,8 @@
                                             "type": "column",
                                             "fillAlphas": 1,
                                             "balloonFunction": function(info) {
-                                                if (info.values.value){
+                                                if (info.values.value)
                                                     return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                                }
                                                 else
                                                     return '';
                                             }
@@ -4591,9 +4645,8 @@
                                         "type": "column",
                                         "fillAlphas": 1,
                                         "balloonFunction": function(info) {
-                                            if (info.values.value){
+                                            if (info.values.value)
                                                 return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                            }
                                             else
                                                 return '';
                                         }
@@ -4611,10 +4664,8 @@
                                         "type": "column",
                                         "fillAlphas": 1,
                                         "balloonFunction": function(info) {
-                                            if (info.values.value){
+                                            if (info.values.value)
                                                 return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-
-                                            }
                                             else
                                                 return '';
                                         }
@@ -4632,9 +4683,8 @@
                                         "type": "column",
                                         "fillAlphas": 1,
                                         "balloonFunction": function(info) {
-                                            if (info.values.value){
+                                            if (info.values.value)
                                                 return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                            }
                                             else
                                                 return '';
                                         }
@@ -4652,9 +4702,8 @@
                                         "type": "column",
                                         "fillAlphas": 1,
                                         "balloonFunction": function(info) {
-                                            if (info.values.value){
+                                            if (info.values.value)
                                                 return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                            }
                                             else
                                                 return '';
                                         }
@@ -4672,9 +4721,8 @@
                                         "type": "column",
                                         "fillAlphas": 1,
                                         "balloonFunction": function(info) {
-                                            if (info.values.value){
+                                            if (info.values.value)
                                                 return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                            }
                                             else
                                                 return '';
                                         }
@@ -4693,9 +4741,8 @@
                                             "type": "column",
                                             "fillAlphas": 1,
                                             "balloonFunction": function(info) {
-                                                if (info.values.value){
+                                                if (info.values.value)
                                                     return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                                }
                                                 else
                                                     return '';
                                             }
@@ -4713,9 +4760,8 @@
                                             "type": "column",
                                             "fillAlphas": 1,
                                             "balloonFunction": function(info) {
-                                                if (info.values.value){
+                                                if (info.values.value)
                                                     return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                                }
                                                 else
                                                     return '';
                                             }
@@ -4733,9 +4779,8 @@
                                             "type": "column",
                                             "fillAlphas": 1,
                                             "balloonFunction": function(info) {
-                                                if (info.values.value){
+                                                if (info.values.value)
                                                     return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                                }
                                                 else
                                                     return '';
                                             }
@@ -4753,9 +4798,8 @@
                                             "type": "column",
                                             "fillAlphas": 1,
                                             "balloonFunction": function(info) {
-                                                if (info.values.value){
+                                                if (info.values.value)
                                                     return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                                }
                                                 else
                                                     return '';
                                             }
@@ -4924,24 +4968,23 @@
                                     }],
                                     "graphs": [
                                         {
-                                        /*0 a <2 años*/
-                                        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
-                                        "fillAlphas": 1,
-                                        "labelText": "[[value]]",
-                                        "lineAlpha": 0.3,
-                                        "type": "column",
-                                        "valueAxis": "v1",
-                                        "lineColor": "#00b0f0",
-                                        "title": jsonX.graph.graphSeries1Label,
-                                        "valueField": "serie1",
-                                        "type": "column",
-                                        "fillAlphas": 1,
-                                        "balloonFunction": function(info) {
-                                            if (info.values.value)
-                                                //return String(info.values.value);
-                                                return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                            else
-                                                return '';
+                                            /*0 a <2 años*/
+                                            "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                                            "fillAlphas": 1,
+                                            "labelText": "[[value]]",
+                                            "lineAlpha": 0.3,
+                                            "type": "column",
+                                            "valueAxis": "v1",
+                                            "lineColor": "#00b0f0",
+                                            "title": jsonX.graph.graphSeries1Label,
+                                            "valueField": "serie1",
+                                            "type": "column",
+                                            "fillAlphas": 1,
+                                            "balloonFunction": function(info) {
+                                                if (info.values.value)
+                                                    return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
+                                                else
+                                                    return '';
                                             }
                                         }, {
                                             /*2 a <5 años*/
@@ -4957,10 +5000,8 @@
                                             "type": "column",
                                             "fillAlphas": 1,
                                             "balloonFunction": function(info) {
-                                                if (info.values.value){
+                                                if (info.values.value)
                                                     return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-
-                                                }
                                                 else
                                                     return '';
                                             }
@@ -4978,10 +5019,8 @@
                                             "type": "column",
                                             "fillAlphas": 1,
                                             "balloonFunction": function(info) {
-                                                if (info.values.value){
+                                                if (info.values.value)
                                                     return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-
-                                                }
                                                 else
                                                     return '';
                                             }
@@ -4999,9 +5038,8 @@
                                             "type": "column",
                                             "fillAlphas": 1,
                                             "balloonFunction": function(info) {
-                                                if (info.values.value){
+                                                if (info.values.value)
                                                     return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                                }
                                                 else
                                                     return '';
                                             }
@@ -5019,9 +5057,8 @@
                                             "type": "column",
                                             "fillAlphas": 1,
                                             "balloonFunction": function(info) {
-                                                if (info.values.value){
+                                                if (info.values.value)
                                                     return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                                }
                                                 else
                                                     return '';
                                             }
@@ -5039,9 +5076,8 @@
                                             "type": "column",
                                             "fillAlphas": 1,
                                             "balloonFunction": function(info) {
-                                                if (info.values.value){
+                                                if (info.values.value)
                                                     return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                                }
                                                 else
                                                     return '';
                                             }
@@ -5060,9 +5096,8 @@
                                             "type": "column",
                                             "fillAlphas": 1,
                                             "balloonFunction": function(info) {
-                                                if (info.values.value){
+                                                if (info.values.value)
                                                     return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                                }
                                                 else
                                                     return '';
                                             }
@@ -5080,9 +5115,8 @@
                                                 "type": "column",
                                                 "fillAlphas": 1,
                                                 "balloonFunction": function(info) {
-                                                    if (info.values.value){
+                                                    if (info.values.value)
                                                         return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                                    }
                                                     else
                                                         return '';
                                                 }
@@ -5100,9 +5134,8 @@
                                                 "type": "column",
                                                 "fillAlphas": 1,
                                                 "balloonFunction": function(info) {
-                                                    if (info.values.value){
+                                                    if (info.values.value)
                                                         return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
-                                                    }
                                                     else
                                                         return '';
                                                 }
@@ -5177,12 +5210,11 @@
                 margin: 5px;
             }
         </style>
-
         <div id="containerGraph12">
             <div id="loaderGraph12" class="loaderGraph"><!-- Place at bottom of page --></div>
             <div id="divGraph12"></div>
         </div>
-        <!--<script>GetGraphData12();</script>-->
+
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxFIN Gráfica 12 - Fallecidos IRAG x GE xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx Gráfica 9 - ETI 1 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <script>
@@ -5315,10 +5347,10 @@
                                         "fillAlphas": 1,
                                         "balloonFunction": function(info) {
                                             if (info.values.value)
-                                                return String(info.values.value);
+                                                return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+"</b></span>";
                                             else
                                                 return '';
-                                            }
+                                        }
                                         },
                                         {
                                         /*% ETI del total de consultas*/
@@ -5333,10 +5365,10 @@
                                         "fillAlphas": 0,
                                         "balloonFunction": function(info) {
                                             if (info.values.value)
-                                                return String(info.values.value) + "%";
+                                                return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+" %</b></span>";
                                             else
                                                 return '';
-                                            }
+                                        }
                                         }],
                                     "chartScrollbar": {},
                                     "chartCursor": {
@@ -5407,12 +5439,11 @@
                 margin: 5px;
             }
         </style>
-
         <div id="containerGraph9">
             <div id="loaderGraph9" class="loaderGraph"><!-- Place at bottom of page --></div>
             <div id="divGraph9"></div>
         </div>
-        <!--<script>GetGraphData9();</script>-->
+
         <!--xxxxxxxxxxxxxxxxxxxxxx"integersOnly": true,xxxxxxxxxxxxxxxxxxxxxxxxxxxFIN Gráfica 9 - ETI 1 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGráfica 10 - ETI 2 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <script>
@@ -5479,7 +5510,6 @@
                                 chartDataLength = chartData.length;
                                 if(chartDataLength>0){
                                     for(i = chartDataLength-1; i>0;i--){
-                                        //alert(chartData[i].semana);
                                         if(chartData[i].serie1==0 && chartData[i].serie2==0){
                                             chartData.pop();
                                         }
@@ -5488,12 +5518,11 @@
                                         }
                                     }
                                 }
-                                chartDataLength = chartData.length;
-                                //alert(chartDataLength);
+
                                 chartData.reverse();
+                                chartDataLength = chartData.length;
                                 if(chartDataLength>0){
                                     for(i = chartDataLength-1; i>0;i--){
-                                        //alert(chartData[i].semana);
                                         if(chartData[i].serie1==0 && chartData[i].serie2==0){
                                             chartData.pop();
                                         }
@@ -5545,7 +5574,7 @@
                                         "fillAlphas": 1,
                                         "balloonFunction": function(info) {
                                             if (info.values.value)
-                                                return String(info.values.value);
+                                                return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+" %</b></span>";
                                             else
                                                 return '';
                                             }
@@ -5563,7 +5592,7 @@
                                         "fillAlphas": 0,
                                         "balloonFunction": function(info) {
                                             if (info.values.value)
-                                                return String(info.values.value) + "%";
+                                                return "<b>"+info.graph.legendTextReal+"</b><br><span style='font-size:14px'>" + info.category + ": <b>"+info.values.value+" %</b></span>";
                                             else
                                                 return '';
                                             }
@@ -5637,12 +5666,11 @@
                 margin: 5px;
             }
         </style>
-
         <div id="containerGraph10">
             <div id="loaderGraph10" class="loaderGraph"><!-- Place at bottom of page --></div>
             <div id="divGraph10"></div>
         </div>
-        <!--<script>GetGraphData10();</script>-->
+
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxFIN Gráfica 10 - ETI 2 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxControles para los mapasxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <script>
@@ -5734,6 +5762,7 @@
             </div>
 
         </div>
+
         <!---xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx MAPA 1 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx--->
         <!-- Chart code -->
         <script>
@@ -5926,8 +5955,7 @@
                             var chartData = [];
                             var chartTitle = jsonX.map.mapTitle;
                             var chartCountry = jsonX.map.mapCountry;
-                            //alert(chartTitle);
-                            //alert(chartCountry);
+
                             $.each(jsonX, function(index, element) {
                                 //alert(JSON.stringify(element.mapData));
                                 $.each(element.mapData.areaData, function(index2, element2) {
@@ -5945,8 +5973,7 @@
                                     });
                                 });
                             });
-                            //console.log("chartData");
-                            //console.log(chartData);
+
                             // calculate which map to be used
                             var currentMap = defaultMap;
                             var titles = [];
@@ -5996,12 +6023,7 @@
                                     setTimeout( updateHeatmap, 100 );
                                     return;
                                 }
-                                /*console.log("X1");
-                                console.log(chartData);
-                                console.log(chartData.length);
-                                console.log(map.dataProvider.areas.length);
-                                console.log("X1");*/
-                                //for ( var i = 0; i < map.dataProvider.areas.length; i++ ) {
+
                                 for ( var i = 0; i < chartData.length; i++ ) {
                                     var A = chartData[i].infA.valueOf();
                                     var B = chartData[i].infB.valueOf();
@@ -6611,7 +6633,7 @@
 
         <!-- HTML -->
         <script>
-            @*var CountryIDM = @Html.Raw(Model.CountryID);
+            var CountryIDM = @Html.Raw(Model.CountryID);
             addMapCheckbox($('#txtName').val());
 
             GetMapData1();
@@ -6621,7 +6643,7 @@
             }
             if(CountryIDM == 9 || CountryIDM == 15){
                 GetMapData3();                              // Health
-            }*@
+            }
         </script>
 
         <style>

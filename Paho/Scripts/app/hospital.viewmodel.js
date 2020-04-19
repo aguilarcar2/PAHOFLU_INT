@@ -597,7 +597,6 @@
         }
     });
 
-
     self.CaseIsSample = ko.computed(function () {
         return (app.Views.Contact.ActiveBOL) ? ( (self.IsSample() === "true") ? true : (app.Views.Contact.SurvInusual() == 1) ? true :  false) : true;
     });
@@ -708,6 +707,22 @@
             }
         }
     });
+
+    self.FlowType = ko.observable(1);
+
+    self.LabFreeVisible = ko.computed(function () {
+        bReturn = false;
+
+        if (self.FlowType() == 2) {
+            bReturn = true;
+        }
+        //else
+        //    console.log("ocultar");
+            //self.ReasonSamplingID("");
+
+        return bReturn;
+    }, self);
+
     self.labs = ko.computed(function () {
           return app.Views.Home.labs();       
     }, self);

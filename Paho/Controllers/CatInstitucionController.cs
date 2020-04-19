@@ -3,6 +3,7 @@ using PagedList;
 using Paho.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
@@ -194,33 +195,85 @@ namespace Paho.Controllers
         }
 
         // POST: CatAgeGroup/Edit/5
-        [HttpPost, ActionName("Edit")]
+        [HttpPost]      ///, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public ActionResult EditPost(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            var catalog = db.Institutions.Find(id);
-            if (TryUpdateModel(catalog, "",
-               new string[] { "AreaID", "FullName", "Name", "AccessLevel", "InstID", "Father_ID", "SARI", "ILI", "surv_unusual", "PCR", "IFI",
-                   "Active", "sentinel", "orig_country","cod_region_institucional","cod_region_salud","cod_region_pais","InstType", "cod_institution_type",
-                   "OrdenPrioritybyLab", "NPHL", "LocationTypeID", "ForeignCountryID", "ForeignInstitutionAddress", "LabNIC", "CountryID" }))
-            {
-                try
-                {
-                    db.SaveChanges();
+        //public ActionResult EditPost(int? id, InstitutionType InstType)
+        //{
+        //    if (id == null)
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-                    return RedirectToAction("Index");
-                }
-                catch (RetryLimitExceededException /* dex */)
-                {
-                    ModelState.AddModelError("", "No es posible guardar los datos. Intente de nuevo, si el problema persiste contacte al administrador.");
-                }
+        //    var catalog = db.Institutions.Find(id);
+
+        //    if ((int)InstType == 1)
+        //        catalog.InstType = InstitutionType.Hospital;
+        //    else if ((int)InstType == 2)
+        //        catalog.InstType = InstitutionType.Lab;
+        //    else if ((int)InstType == 3)
+        //        catalog.InstType = InstitutionType.Admin;
+
+        //    //    //,"InstType"
+        //    if (TryUpdateModel(catalog, "",
+        //           new string[] { "AreaID", "FullName", "Name", "AccessLevel", "InstID", "Father_ID", "SARI", "ILI", "surv_unusual", "PCR", "IFI",
+        //               "Active", "sentinel", "orig_country","cod_region_institucional","cod_region_salud","cod_region_pais", "cod_institution_type",
+        //               "OrdenPrioritybyLab", "NPHL", "LocationTypeID", "ForeignCountryID", "ForeignInstitutionAddress", "LabNIC", "CountryID" }))
+        //    {
+        //        try
+        //        {
+
+
+        //            db.SaveChanges();
+
+        //            return RedirectToAction("Index");
+        //        }
+        //        catch (RetryLimitExceededException /* dex */)
+        //        {
+        //            ModelState.AddModelError("", "No es posible guardar los datos. Intente de nuevo, si el problema persiste contacte al administrador.");
+        //        }
+        //    }
+        //    return View(catalog);
+        //}
+        /*
+            [Bind(Include =
+            "AreaID, FullName, Name, AccessLevel, cod_institution_type, InstID, Father_ID, sentinel, SARI, ILI, surv_unusual, PCR, IFI, Active, orig_country, " + 
+            "sentinel, cod_region_institucional, cod_region_salud, cod_region_pais, InstType, OrdenPrioritybyLab, NPHL, LocationTypeID, ForeignCountryID, " + 
+            "ForeignInstitutionAddress, LabNIC, CountryID")]
+         **/
+        public ActionResult Edit([Bind(Include = "ID, AreaID, FullName, Name, AccessLevel, cod_institution_type, InstID, Father_ID, sentinel, SARI, ILI, surv_unusual, PCR, IFI, Active, orig_country, " +
+            "sentinel, cod_region_institucional, cod_region_salud, cod_region_pais, InstType, OrdenPrioritybyLab, NPHL, LocationTypeID, ForeignCountryID, " +
+            "ForeignInstitutionAddress, LabNIC, CountryID")] Lab catalog)
+        {
+            if (ModelState.IsValid)
+            {
+                //...
+                // Empleando area capturado podemos ajustar los valores del modelo a guardar
+                //...
+
+                ////if (catalog is Hospital)
+                //if (catalog.InstType == InstitutionType.Hospital)
+                //{
+                //    //catalog.InstType = InstitutionType.Hospital;
+                //    catalog.InstitutionType = (int)InstitutionType.Hospital;
+                //}
+                //else if (catalog.InstType == InstitutionType.Lab)
+                //{
+                //    //catalog.InstType = InstitutionType.Lab;
+                //    catalog.InstitutionType = (int)InstitutionType.Lab;
+                //}
+                //else
+                //{
+                //    //catalog.InstType = InstitutionType.Admin;
+                //    catalog.InstitutionType = (int)InstitutionType.Admin;
+                //}
+
+                db.Entry(catalog).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
             }
+            //ViewBag.CountryID = new SelectList(db.Countries, "ID", "Code", area.CountryID);
+
             return View(catalog);
         }
+
 
         // GET: CatAgeGroup/Delete/5
         public ActionResult Delete(int? id, bool? saveChangesError = false)

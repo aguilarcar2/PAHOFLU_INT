@@ -97,6 +97,13 @@
 
     string LabelSectionIsolationData = "Datos de aislamiento";
 
+    string LabelFlowType = "Tipo flujo";
+    string LabelFlowLinear = "Lineal";
+    string LabelFlowFree = "Libre";
+    string LabelLaboratoryIFI = "Laboratorio IFI";
+    string LabelLaboratoryPCR = "Laboratorio PCR";
+
+
 }
 
 <!-- ko with: home -->
@@ -3778,7 +3785,6 @@
                 <label class="btn btn-default">
                     <input type="radio" name="IsSample" id="IsSample" value="false" data-bind="checked: IsSample"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelNo"))
                 </label>
-
             </div>
 
             <div class="col-md-7" data-bind="visible: ReasonNotSamplingVisible()">
@@ -3817,10 +3823,11 @@
             </div>
         </div>
 
-        <!-- Fecha toma de muestra/ Tipo de muestra / ... -->
+        <!-- Label Nro Muestra / Fecha toma de muestra / Tipo de muestra / ... -->
         <div id="NotSample" class="row rowform" data-target="#IsSample">
             <div class="col-md-12">
                 <div id="Toma" class="collapse in">
+                    <!-- Label Muestra 1 -->
                     <div class="row rowform" data-bind="visible:DisableCHI">
                         <div class="col-md-12">
                             <div style="font-weight:bold;font-size:11px">
@@ -3829,6 +3836,7 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Fecha toma de muestra / Tipo de muestra -->
                     <div class="row rowform">
                         <div class="col-md-5">
                             <div class='input-group'>
@@ -3877,6 +3885,7 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Fecha envio / Tipo flujo / Laboratorio(s) -->
                     <div class="row rowform">
                         <div class="col-md-5">
                             <div class='input-group'>
@@ -3886,12 +3895,25 @@
                                 <input id="ShipDate" type='text' class="form-control " data-bind='datepicker: ShipDate, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
                             </div>
                         </div>
+                        @*<div class="col-md-2">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @LabelFlowType
+                                </span>
+                                <label class="btn btn-default">
+                                    <input type="radio" name="FlowType" id="FlowType" value=1 data-bind="checked: FlowType"> @LabelFlowLinear
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type="radio" name="FlowType" id="FlowType" value=2 data-bind="checked: FlowType"> @LabelFlowFree
+                                </label>
+                            </div>
+                        </div>*@
+                        <!-- <div class="col-md-7" data-bind="visible: !LabFreeVisible()"> -->
                         <div class="col-md-7">
                             <div class='input-group'>
                                 <span class="input-group-addon">
                                     @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelLab"))
                                 </span>
-
                                     <select id="ShipLab" class="form-control" data-bind="options: LabsHospital,
                                     optionsText: 'Name',
                                     optionsValue: 'Id',
@@ -3899,6 +3921,26 @@
 
                             </div>
                         </div>
+                        @*<div class="col-md-offset-5" data-bind="visible: LabFreeVisible()">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @LabelLaboratoryIFI:
+                                </span>
+                                <select id="LabFreeMu1L1_ID" class="form-control" data-bind="options: LabsHospital,
+                                    optionsText: 'Name',
+                                    optionsValue: 'Id',
+                                    value: LabId"></select>
+                            </div>
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @LabelLaboratoryPCR:
+                                </span>
+                                <select id="LabFreeMu1L2_ID" class="form-control" data-bind="options: LabsHospital,
+                                    optionsText: 'Name',
+                                    optionsValue: 'Id',
+                                    value: LabId"></select>
+                            </div>
+                        </div>*@
                     </div>
                     @* Muestra 2 *@
                     <div class="row rowform" data-bind="visible:VisibleMuestra2">

@@ -60,16 +60,19 @@
     function toggleAccessLevel(isEdit) {
         accessLevel = $("#AccessLevel").val();
         console.log(accessLevel);
+
+        $("#div-father").hide();
+
         if (accessLevel == "Service") {
             $("#div-father").show();
             if (isEdit) return;
-            loadFatherInst();
+                loadFatherInst();
         }
         else if (accessLevel == "Area") {
             $("#RegionInstitucionalGroup").hide();
             $("#RegionSaludGroup").hide();
             $("#RegionPaisGroup").hide();
-            $("#div-father").hide();
+            //$("#div-father").hide();
         }
         else if (accessLevel != "Area" && accessLevel != "Service") {
             if ($("#cod_region_institucional").children().length > 1)
@@ -80,15 +83,18 @@
 
             if ($("#cod_region_pais").children().length > 1)
                 $("#RegionPaisGroup").show();
+
+            //$("#div-father").hide();
         }
         else {
-            $("#div-father").hide();
+            //$("#div-father").hide();
         }
     }
 
     function toggleInstitutionType() {
-        accessLevel = $("#InstitutionType").val();
-        if (accessLevel == "Lab") {
+        //accessLevel = $("#InstitutionType").val();
+        institutionType = $("#InstitutionType").val();
+        if (institutionType == "Lab") {
             $("#div-PCR").show();
             $("#div-IFI").show();
             $("#div-NPHL").show();
@@ -101,6 +107,11 @@
             $("#div-OPbL").hide();
             $("#div-LabNIC").hide();
         }
+
+        if ($("#InstitutionType").val() == "Hospital")
+            $("#div-father").show();
+        else 
+            $("#div-father").hide();
     }
 
     function toggleLocationTypeID() {                       //#### CAFQ: 180911
@@ -123,7 +134,9 @@
     });
 
     $("#InstitutionType").change(function () {
+        console.log("AAA->START");
         toggleInstitutionType();
+        console.log("AAA-END");
     });
 
     $("#cod_region_institucional").change(function () {
