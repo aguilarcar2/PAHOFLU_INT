@@ -1457,8 +1457,8 @@
             //self.Destin(""); Desactivado por requerimiento de RRR
             $("#HospExDate").focus();
         }
-        
-        if (app.Views.Contact.TransferToHospitalILI() == true && app.Views.Contact.SurvILI())
+       
+        if (app.Views.Contact.TransferToHospitalILI() == true && app.Views.Contact.SurvILI() && self.hospitalIDCaseToReferHospital() == "")
         {
             msg += "\n" + viewValidateSelectReferedToHospital;
             //Validación para institución referida
