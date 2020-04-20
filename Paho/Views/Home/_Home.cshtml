@@ -3535,14 +3535,14 @@
                                     @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelHospitalCaseGenerating"))
                                 </span>
 
-                                <select id="cmbInstitutionsCaseToReferHospital" class="form-control" style="max-width:85%;" data-bind="options: app.Views.Home.InstitutionsCaseToReferHospital,
+                                <select id="cmbInstitutionsCaseToReferHospital" class="form-control case_letter" style="max-width:85%;" data-bind="options: app.Views.Home.InstitutionsCaseToReferHospital,
                                 optionsText: 'Name',
                                 optionsValue: 'Id',
                                 value: hospitalIDCaseToReferHospital "></select>
                             </div>
                         </div>
                         <div class="col-md-2 input-group" id="InstReferName_div"   data-bind="visible:ViewRefer">
-                            <input id="InstReferName" type='text' class="form-control " data-bind='value:InstReferName' />
+                            <input id="InstReferName" type='text' class="form-control case_letter " data-bind='value:InstReferName' />
                         </div> 
 
 

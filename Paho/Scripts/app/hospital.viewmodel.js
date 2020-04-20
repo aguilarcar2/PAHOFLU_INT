@@ -1843,7 +1843,7 @@
                 HospitalizedInNumber: self.HospitalizedInNumber(),
                 Destin: self.Destin(),
                 FalleDate: $("#FalleDate").val() == "" ? null : moment(date_falle).format(date_format_ISO),
-                InstReferName: self.InstReferName(),
+                InstReferName: self.InstReferName().toLocaleUpperCase(),
                 HospitalID_CaseToReferID : self.hospitalIDCaseToReferHospital(),
                 IsSample: self.IsSample() === "true" ? true : (self.IsSample() === "false" ? false : null),
                 ReasonNotSamplingID: self.ReasonNotSamplingID(),
