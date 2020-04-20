@@ -3511,7 +3511,7 @@
                         </div>
                         <div class="col-md-2" id="Destin_div"  data-bind="visible: app.Views.Contact.NotShowHospitalization() ||  app.Views.Contact.ShowReferToHospitalILI()">
                             <div class='input-group'>
-                                <select id="Destin" class="form-control" data-bind="value: Destin" style="width:150px;">
+                                <select id="Destin" class="form-control" data-bind="value: Destin" style="width:180px;">
                                     <option value="">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSelect"))</option>
                                     @if (ViewBag.UsrCtry == 3)
                                         {<option value="U">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelHealed"))</option>}
@@ -3535,7 +3535,7 @@
                                     @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelHospitalCaseGenerating"))
                                 </span>
 
-                                <select id="cmbInstitutionsCaseToReferHospital" class="form-control case_letter" style="max-width:85%;" data-bind="options: app.Views.Home.InstitutionsCaseToReferHospital,
+                                <select id="cmbInstitutionsCaseToReferHospital" class="form-control" style="max-width:85%;" data-bind="options: app.Views.Home.InstitutionsCaseToReferHospital,
                                 optionsText: 'Name',
                                 optionsValue: 'Id',
                                 value: hospitalIDCaseToReferHospital "></select>
