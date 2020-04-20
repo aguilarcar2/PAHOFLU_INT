@@ -38,6 +38,7 @@ function ContactViewModel(app, dataModel) {
     self.SavePrev_var = ko.observable(true);
     self.IsSurv = ko.observable("");
     self.SurvInusual = ko.observable(false);
+    self.TransferToHospitalILI = ko.observable(false);
     self.SurvInusual.subscribe(function (inusualOK) {               //#### CAFQ
         if (!inusualOK) {
             app.Views.Risk.ResetRiskInusual();
@@ -535,6 +536,7 @@ function ContactViewModel(app, dataModel) {
         }      
     }, self);
 
+
     self.SurvSARI = ko.computed(function () {
         if (self.IsSurv() != "2") {
             return true;
@@ -545,6 +547,15 @@ function ContactViewModel(app, dataModel) {
 
     self.SurvILI = ko.computed(function () {
         if (self.IsSurv() == "2") {
+            return true;
+        } else {
+            return false;
+        }
+    }, self);
+
+    self.ShowReferToHospitalILI = ko.computed(function () {
+        if (self.SurvILI() && self.TransferToHospitalILI() == true) // Referido a otro Hospital desde un ETI
+        {
             return true;
         } else {
             return false;
@@ -714,6 +725,9 @@ function ContactViewModel(app, dataModel) {
         self.flow_institution(0);
         self.flow_record(0);
         self.DataStatement(1);
+        // Valor Default para la institución cuando es ILI 
+        //console.log("reset Contact");
+        self.TransferToHospitalILI(false);
         // Regiones
         self.region_institucional(app.Views.Home.UsrRegInst());
         self.region_salud(app.Views.Home.UsrRegSalud());
@@ -1147,7 +1161,7 @@ function ContactViewModel(app, dataModel) {
             return true;
             //} else if ($("#ITy").val() != "2" && app.Views.Home.UserRole() == "clo_case" && app.Views.Hospital.CaseStatus() == "") {
         } else if ($("#ITy").val() != "2" && app.Views.Home.URclo_case() == true && app.Views.Hospital.CaseStatus() == "") {
-            console.log("Flow_Local_Institution_Epi _ URclo_case");
+            //console.log("Flow_Local_Institution_Epi _ URclo_case");
             return true;
         } 
         //else if ((self.flow_record() == 0 && self.DataStatement() == 1) ||  (self.flow_record() == self.flow_institution() && self.DataStatement() == 2) || (self.Id() == "") || (self.flow_record() == self.flow_max() && (self.DataStatement() == 2 || self.DataStatement() == null))) {  // Case Status ==3 cuando esta cerrado  -- Modificacion requerida por RRR 20170924 no desactivar en caso cerrado

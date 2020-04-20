@@ -2872,6 +2872,16 @@
                         </div>
                         @*}*@
                     </div>
+
+                    <div class="row rowform" data-bind="visible: app.Views.Contact.SurvILI">
+                        <div class="col-md-7">
+                            <div style="font-weight:bold;font-size:9px">
+                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelCaseReferToHospitalILI")) <br />
+                                <button id="ReferedILI" type="button" class="btn btn-primary btn-next" onclick="app.Views.Hospital.ActivateReferToHospital(true);">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalBtnReftoHosp"))</button>
+                                <hr style="margin-top:3px; margin-bottom:0px; border-width:1px  0  0; " />
+                            </div>
+                        </div>
+                    </div>
                     <!-- Inusitado: Temperatura -->
                     <div class="row rowform" data-bind="visible: app.Views.Contact.IsInusitado">
                         <div class="col-md-3" data-bind="visible: app.Views.Contact.ActiveBOL">
@@ -3395,7 +3405,7 @@
         </div>
 
         <!-- Datos de hospitalizacion -->
-        <div class="row rowform" id="Hospitalization_div" data-bind="visible: app.Views.Contact.NotShowHospitalization">
+        <div class="row rowform" id="Hospitalization_div" data-bind="visible: app.Views.Contact.NotShowHospitalization() ||  app.Views.Contact.ShowReferToHospitalILI()">
             <div class="col-md-12">
                 <button type="button" style="background-color:#B2BABB; color:#000000" class="btn btn-group-justified" data-toggle="collapse" data-target="#Fechas">
                     @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelHospitalizationInformation"))
@@ -3405,7 +3415,7 @@
                 <div id="Fechas" class="collapse in">
 			        @if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 15 || ViewBag.UsrCtry ==3){
                         <!-- Servicio / Diagnóstico principal de ingreso -->
-                        <div class="row rowform">
+                        <div class="row rowform" data-bind="visible: app.Views.Contact.NotShowHospitalization">
                             <!-- Servicio -->
                             <div class="col-md-4">
                                 <div class='input-group'>
@@ -3428,7 +3438,7 @@
                             </div>
                         </div>
                         <!-- Otro diagnostico de admisión -->					
-                        <div class="row rowform" data-bind="visible:EnableCHI()">
+                        <div class="row rowform" data-bind="visible:EnableCHI() && app.Views.Contact.NotShowHospitalization">
                             <div class="col-md-7">
                                 <div class='input-group'>
                                     <span class="input-group-addon">
@@ -3442,7 +3452,7 @@
                     @if (ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 18 && ViewBag.UsrCtry != 17)
                     {
                         <!-- Diagnóstico egreso rel. IRAG / Otro diagnostico de egreso -->
-                        <div class="row rowform" data-bind="visible:app.Views.Contact.NoActiveBOL">
+                        <div class="row rowform" data-bind="visible:app.Views.Contact.NoActiveBOL() && app.Views.Contact.NotShowHospitalization()">
                             <div class="col-md-6">
                                 <div class='input-group'>
                                     <span class="input-group-addon">
@@ -3465,30 +3475,30 @@
 
                     <!-- Labels Fecha de ingreso / Fecha de egreso, etc-->
                     <div class="row rowform">
-                        <div class="col-md-2">
+                        <div class="col-md-2" data-bind="visible: app.Views.Contact.NotShowHospitalization">
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-2" data-bind="visible: app.Views.Contact.NotShowHospitalization">
                             @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelAdmissionDate"))
                         </div>
                         <div class="col-md-1" data-bind="visible:false">
                             @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelEW"))
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-2" data-bind="visible: app.Views.Contact.NotShowHospitalization">
                             @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelExitDate"))
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-2" data-bind="visible: app.Views.Contact.NotShowHospitalization() ||  app.Views.Contact.ShowReferToHospitalILI()">
                             @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelExitCondition"))
                         </div>
-                        <div class="col-md-2" data-bind="visible: ViewFallecido">
+                        <div class="col-md-2" data-bind="visible: ViewFallecido && app.Views.Contact.NotShowHospitalization">
                             @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelDeathDate"))
                         </div>
                     </div>
 
                     <div id="div_hospital" class="row rowform">
-                        <div class="col-md-2">
+                        <div class="col-md-2" data-bind="visible: app.Views.Contact.NotShowHospitalization">
                             @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelHospitalization")) <font color="#FF0000">*</font>
                         </div>
-                        <div class="col-md-2 input-group">
+                        <div class="col-md-2 input-group" data-bind="visible: app.Views.Contact.NotShowHospitalization">
                             <div>
                                 <input id="HospAmDate" type='text' class="form-control " data-bind='datepicker: HospAmDate, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
                             </div>
@@ -3496,10 +3506,10 @@
                         <div class="col-md-1" data-bind="visible:false">
                             <input id="HospEW" type='text' readonly="readonly" class="form-control" data-bind="value: HospEW" />
                         </div>
-                        <div class="col-md-2 input-group">
+                        <div class="col-md-2 input-group" data-bind="visible: app.Views.Contact.NotShowHospitalization">
                             <input id="HospExDate" type='text' class="form-control " data-bind='datepicker: HospExDate, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-2" id="Destin_div"  data-bind="visible: app.Views.Contact.NotShowHospitalization() ||  app.Views.Contact.ShowReferToHospitalILI()">
                             <div class='input-group'>
                                 <select id="Destin" class="form-control" data-bind="value: Destin" style="width:150px;">
                                     <option value="">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSelect"))</option>
@@ -3516,16 +3526,31 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-2 input-group" data-bind="visible:ViewFallecido">
+                        <div class="col-md-2 input-group" data-bind="visible:ViewFallecido  && app.Views.Contact.NotShowHospitalization">
                             <input id="FalleDate" type='text' class="form-control " data-bind='datepicker: FalleDate, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
                         </div>
-                        <div class="col-md-2 input-group" data-bind="visible:ViewRefer">
-                            <input id="InstReferName" type='text' class="form-control " data-bind='value:InstReferName' />
+                        <div class="col-md-6" data-bind="visible:ViewReferILI">
+                            <div id="HealthCaseToReferHospital" class='input-group' data-bind="visible:ViewReferILI">
+                                <span class="input-group-addon">
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelHospitalCaseGenerating"))
+                                </span>
+
+                                <select id="cmbInstitutionsCaseToReferHospital" class="form-control" style="max-width:85%;" data-bind="options: app.Views.Home.InstitutionsCaseToReferHospital,
+                                optionsText: 'Name',
+                                optionsValue: 'Id',
+                                value: hospitalIDCaseToReferHospital "></select>
+                            </div>
                         </div>
+                        <div class="col-md-2 input-group" id="InstReferName_div"   data-bind="visible:ViewRefer">
+                            <input id="InstReferName" type='text' class="form-control " data-bind='value:InstReferName' />
+                        </div> 
+
+
+
                     </div>
 
                     <!-- Hospitalizado en / Numero o identificacion -->
-                    <div class="row rowform" data-bind="visible: EnableHON()">
+                    <div class="row rowform" data-bind="visible: EnableHON() && app.Views.Contact.NotShowHospitalization()">
                         <div class="input-group col-md-3">
                             <span class="input-group-addon">
                                 @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelHospitalizedIn")) <font color="#FF0000">*</font>
@@ -3537,7 +3562,7 @@
                                     optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel")) '">
                             </select>
                         </div>
-                        <div class="col-md-3" data-bind="visible: IsHospitalizedIn">
+                        <div class="col-md-3" data-bind="visible: IsHospitalizedIn() && app.Views.Contact.NotShowHospitalization">
                             <div class='input-group'>
                                 <span class="input-group-addon">
                                     Número o identificación
@@ -3580,7 +3605,7 @@
                     </div>*@                
 
                     <!-- UCI -->
-                    <div class="row rowform" data-bind="visible: EnableICUHon()">
+                    <div class="row rowform" data-bind="visible: EnableICUHon() && app.Views.Contact.NotShowHospitalization()">
                         <div class="input-group col-md-3">
                             <span class="input-group-addon">
                                 @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelUPC")) <font color="#FF0000">*</font>
@@ -3593,7 +3618,7 @@
                         </div>
                     </div>
                     <!-- Labels UCI -->
-                    <div class="row rowform" data-bind="visible:EnableICUDate">
+                    <div class="row rowform" data-bind="visible:EnableICUDate() && app.Views.Contact.NotShowHospitalization()">
                         <div class="col-md-2">
 
                         </div>
@@ -3610,7 +3635,7 @@
                         </div>
                     </div>
                     <!-- Campos UCI -->
-                    <div class="row rowform" data-bind="visible:EnableICUDate">
+                    <div class="row rowform" data-bind="visible:EnableICUDate() && app.Views.Contact.NotShowHospitalization()">
                         <div class="col-md-2">
                             @(ViewBag.UsrCtry != 7 ? (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelICU")) : (((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelUPC")))
                         </div>
@@ -3648,7 +3673,7 @@
                     }
 			        @if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 15 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 11 || ViewBag.UsrCtry == 119)
                     {
-                        <div class="row rowform">
+                        <div class="row rowform" data-bind="visible: app.Views.Contact.NotShowHospitalization">
                             <!-- <div class="col-md-3" data-bind="visible:EnableCHI() && app.Views.Contact.NoActiveBOL()"> -->
                             <div class="@((ViewBag.UsrCtry == 11 || ViewBag.UsrCtry == 119) ?  "col-md-2" : "col-md-3")" data-bind="visible:(EnableCHI() && app.Views.Contact.NoActiveBOL()) || app.Views.Contact.ActiveDOM() || app.Views.Contact.ActiveCAY()">
                                 <label class="btn btn-default">
@@ -3738,7 +3763,7 @@
                     <!-- Comentario -->
                     @if (ViewBag.UsrCtry == 15)
                     {
-                        <div class="row rowform">
+                        <div class="row rowform" data-bind="visible: app.Views.Contact.NotShowHospitalization">
                             <div class="col-md-10">
                                 <div class='input-group'>
                                     <span class="input-group-addon">
@@ -6716,6 +6741,7 @@
     var labsExternal = @Html.Raw(Json.Encode(Model.LabsExternal));
     var institutions = @Html.Raw(Json.Encode(Model.Institutions));
     var InstitutionsCaseGenerarting = @Html.Raw(Json.Encode(Model.InstitutionsCaseGenerarting));
+    var InstitutionsCaseToReferHospital = @Html.Raw(Json.Encode(Model.InstitutionsCaseToReferHospital));
     var reasonnotsampling = @Html.Raw(Json.Encode(Model.ReasonNotSampling));
     var reasonsampling = @Html.Raw(Json.Encode(Model.ReasonSampling));
 
@@ -6822,6 +6848,7 @@
     var viewValidateOnsetLtNotiDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateOnsetLtNotiDate")))";
     var viewValidateDiagnosticDateGtOnsetFeverDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateDiagnosticDateGtOnsetFeverDate")))";
     var viewValidateSelectSypmtom = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSelectSypmtom")))";
+    var viewValidateSelectReferedToHospital = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSelectReferedToHospital")))";
     var viewValidateHospDateRequired = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateHospDateRequired")))";
     var viewValidateHospDateInvalid = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateHospDateInvalid")))";
 
@@ -7258,6 +7285,7 @@
 <script type="text/javascript">
     function loadData(id) {
         //alert(id);
+        app.Views.Home.ResetFluCase();
         app.Views.Home.EditFluCase();
         app.Views.Contact.GetContact(id);
         app.Views.Home.FlowData();

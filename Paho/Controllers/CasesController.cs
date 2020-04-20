@@ -1082,7 +1082,11 @@ namespace Paho.Controllers
                 {
                     var DateDummyRange1 = DateFeverDummy.Date.AddDays(1);
                     var DateDummyRange2 = DateFeverDummy.Date.AddDays(-10);
-                    var flucases = db.FluCases.Where(f => f.Surv == Surv && f.NoExpediente == NoExpediente.ToUpper() && (f.FeverDate < DateDummyRange1 && f.FeverDate >= DateDummyRange2)).ToList();
+                    var flucases = db.FluCases.Where(f => f.Surv == Surv  // Tipo de vigilancia
+                                                          && f.NoExpediente.ToUpper() == NoExpediente.ToUpper() // Númedo de documento
+                                                          && f.HospitalID == HospitalId // Establecimiento
+                                                          && (f.FeverDate < DateDummyRange1 && f.FeverDate >= DateDummyRange2) // Unicamente pueden registrar los pacientes con 10 días de diferencia de inicio de síntomas
+                                                          ).ToList();
 
                     if (flucases.Any())
                     {
@@ -1674,6 +1678,7 @@ namespace Paho.Controllers
                     InstReferName = flucase.InstReferName,
                     Destin = flucase.Destin,
                     DestinICU = flucase.DestinICU,
+                    hospitalIDCaseToReferHospital = flucase.HospitalID_CaseToReferID,
                     HallRadio = flucase.HallRadio,
                     HallRadioFindings = flucase.HallRadioFindings,      //#### CAFQ
                     UCInt = flucase.UCInt,                              // Unidad de cuidados intermedios
@@ -1832,6 +1837,7 @@ namespace Paho.Controllers
                 int? HospitalizedIn,
                 string HospitalizedInNumber,
                 string Destin,
+                long? HospitalID_CaseToReferID,
                 bool? IsSample,
                 int? ReasonNotSamplingID,
                 string ReasonNotSamplingOther,
@@ -1994,6 +2000,7 @@ namespace Paho.Controllers
             flucase.Destin = Destin;
             flucase.FalleDate = FalleDate;
             flucase.InstReferName = InstReferName;
+            flucase.HospitalID_CaseToReferID = HospitalID_CaseToReferID;
             flucase.IsSample = IsSample;
             flucase.ReasonNotSamplingID = ReasonNotSamplingID;
             flucase.ReasonNotSamplingOther = ReasonNotSamplingOther;

@@ -31,6 +31,7 @@ namespace Paho.Models
         public IEnumerable<LookupView<CatReasonNotSampling>> ReasonNotSampling { get; set; }
         public IEnumerable<LookupView<CatReasonSampling>> ReasonSampling { get; set; }
         public IEnumerable<LookupView<Institution>> InstitutionsCaseGenerarting { get; set; }
+        public IEnumerable<LookupView<Institution>> InstitutionsCaseToReferHospital { get; set; }
         public IEnumerable<LookupView<CatAgeGroup>> CatAgeGroupCountry { get; set; }            //**** CAFQ: 200327
         public Array LabsExternal { get; set; }
         public Array LabsHospital_cmb { get; set;  }
@@ -1343,8 +1344,10 @@ namespace Paho.Models
         public int? HospitalizedIn { get; set; }
         [MaxLength(1)]
         public string Destin { get; set; }
+
         public string DestinICU { get; set; }
         public string InstReferName { get; set; }
+        public long? HospitalID_CaseToReferID { get; set; }
         public DateTime? FalleDate { get; set; }
         public bool? IsSample { get; set; }
         public int? ReasonNotSamplingID { get; set; }
@@ -2242,6 +2245,7 @@ namespace Paho.Models
                    p.Destin,
                    p.DestinICU,
                    p.InstReferName,
+                   p.HospitalID_CaseToReferID,
                    p.FalleDate,
                    p.IsSample,
                    p.ReasonNotSamplingID,

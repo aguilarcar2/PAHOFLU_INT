@@ -56,6 +56,7 @@
     self.selectedRegionId = ko.observable("");
     self.institutions = ko.observableArray(institutions);
     self.InstitutionsCaseGenerarting = ko.observableArray(InstitutionsCaseGenerarting);
+    self.InstitutionsCaseToReferHospital = ko.observableArray(InstitutionsCaseToReferHospital);
     self.selectedInstitutionId = ko.observable("");
     self.SCasenumber = ko.observable("");
     self.SNStartDate = ko.observable("");
@@ -699,7 +700,9 @@
             }
 
             if (app.Views.Contact.SurvILI() == true) {
-                console.log("ILI true  ")
+
+
+                //console.log("ILI true  ")
                 $("a[href*='tab-case']").show();
                 $("#tab-case").show();
                 $("#CaseStatus").attr("disabled", false);
@@ -782,6 +785,13 @@
             $("div[id^='Test_'] :input").prop('disabled', false);
             $("#NPHL_section :input").prop('disabled', false);
             
+        }
+
+        // Activación de referido al hospital de un ILI
+        //console.log("app.Views.Contact.TransferToHospitalILI() -- " + app.Views.Contact.TransferToHospitalILI());
+        if (app.Views.Contact.TransferToHospitalILI() == true ) {
+            //console.log("ActivateReferToHospital -  TransferToHospitalILI");
+            app.Views.Hospital.ActivateReferToHospital(true);
         }
 
     };      // END self.FlowDataCaseStatus
@@ -941,8 +951,7 @@
             
         }
         self.ViewTestCR();
-
-
+            
 
         $("#PrintM1").prop('disabled', false);
         $("#PrintM2").prop('disabled', false);

@@ -277,6 +277,17 @@
     self.Destin = ko.observable("");
     self.FalleDate = ko.observable(new Date());
     self.InstReferName = ko.observable("");
+    self.hospitalIDCaseToReferHospital = ko.observable("");
+
+    self.hospitalIDCaseToReferHospital.subscribe(function (NewReferHospital) {
+        //console.log(NewReferHospital);
+        if (NewReferHospital == "999999") {
+            $("#InstReferName_div").show();
+        } else {
+            $("#InstReferName_div").hide();
+        }
+    });
+
 
     self.ICU = ko.observable("");
     self.HospitalizedIn = ko.observable("");
@@ -334,7 +345,12 @@
     }, self);
    
     self.ViewRefer = ko.computed(function () {
-        return (self.Destin() == 'R') ? true : false;
+        return (self.Destin() == 'R' && app.Views.Contact.SurvSARI()) ? true : false;
+
+    }, self);
+
+    self.ViewReferILI = ko.computed(function () {
+        return (self.Destin() == 'R' && app.Views.Contact.SurvILI() && app.Views.Contact.TransferToHospitalILI() == true) ? true : false;
 
     }, self);
 
@@ -501,7 +517,29 @@
         }
     };
 
-    
+    self.ActivateReferToHospital = function (Activacion) {
+
+        
+        app.Views.Contact.TransferToHospitalILI(Activacion);
+        app.Views.Contact.ShowReferToHospitalILI();
+        $("#InstReferName").hide();
+        self.Destin("R");
+        //$("#Destin_div :select").prop("disabled", true);
+        $('#Destin_div').children().children().prop('disabled', true);
+
+
+        //$("#Hospitalization_div").show();
+        $("a[href*='tab-case']").show();
+        $("#tab-case").show();
+        //console.log("Case Status" + self.CaseStatus());
+        if (self.CaseStatus() == "") {
+            $("#CaseStatus").attr("disabled", false);
+        }     
+        else {
+            $("#CaseStatus").attr("disabled", true);
+        }
+        $("#tabs").tabs("refresh");
+    };
 
     
     self.IsSample = ko.observable(false);
@@ -531,7 +569,7 @@
             //console.log("IsSample True");
 
             if (app.Views.Contact.SurvILI() == true && app.Views.Lab.FinalResult() && app.Views.Lab.CanConclude() == true) {
-                console.log(" ILI tab case");
+                //console.log(" ILI tab case");
                 //$("#CaseStatus").attr("disabled", false);
                 $("a[href*='tab-case']").show();
                 $("#tab-case").show();
@@ -558,7 +596,7 @@
 
             if (self.IsSample() === "false" && self.Destin != "" && self.HospExDate() != "" )
             {
-                    console.log("Sample is false");
+                    //console.log("Sample is false");
                     $("a[href*='tab-case']").show();
                     $("#tab-case").show();
                     $("#CaseStatus").attr("disabled", false);
@@ -921,7 +959,7 @@
                 }
             }
             else {
-                console.log("Aquí else ");
+                //console.log("Aquí else ");
                 $("#casedefinitionwarning").hide();
             }
 
@@ -1073,7 +1111,7 @@
     //(app.Views.Contact.SurvSARI() == true || app.Views.Contact.SurvInusual() == true)
         if ((app.Views.Contact.IsSurv() != "" || app.Views.Contact.SurvInusual() == true) && NewDestin != null && NewDestin != "") {
             //console.log("Destin subscribe");
-            if (self.HospExDate() == "" || self.HospExDate() == "undefined" || self.HospExDate() == null)
+            if ((self.HospExDate() == "" || self.HospExDate() == "undefined" || self.HospExDate() == null) && app.Views.Contact.SurvSARI() == true)
             {
                 alert(viewValidateExitDateBeforeDestin);
                 //self.Destin(""); Desactivado por requerimiento de RRR
@@ -1083,14 +1121,14 @@
                 $("#tabs").tabs("refresh");
                 $("#HospExDate").focus();
             } else if (NewDestin != "" && self.IsSample() === "false") {
-                console.log("destin is sample false");
+                //console.log("destin is sample false");
                 $("a[href*='tab-case']").show();
                 $("#tab-case").show();
                 $("#CaseStatus").attr("disabled", false);
                 $("#tabs").tabs("refresh");
                 if (self.UsrCountry() == 9 && NewDestin == 'D') { self.FalleDate(self.HospExDate()); }
              } else if (NewDestin != "" && self.IsSample() === "true" && app.Views.Lab.FinalResult() != "" && typeof app.Views.Lab.FinalResult() != "undefined" && app.Views.Lab.CanConclude() == true) {
-                 console.log("destin finalresult - can conclude");
+                 //console.log("destin finalresult - can conclude");
                  $("a[href*='tab-case']").show();
                 $("#tab-case").show();
                 $("#CaseStatus").attr("disabled", false);
@@ -1103,7 +1141,7 @@
                 if (self.UsrCountry() == 9 && NewDestin == 'D') { self.FalleDate(self.HospExDate()); }
              }
              else if (self.IsSample() === "true" && app.Views.Lab.NPHL_Processed() === "false") {  // preguntar a Rodrigo
-                 console.log("destin is sample true");
+                 //console.log("destin is sample true");
                  $("a[href*='tab-case']").show();
                  $("#tab-case").show();
                  $("#CaseStatus").attr("disabled", false);
@@ -1111,14 +1149,14 @@
                  if (self.UsrCountry() == 9 && NewDestin == 'D') { self.FalleDate(self.HospExDate()); }
              }
              else if (self.IsSample() === "true" && app.Views.Lab.Processed() === "false") {  // preguntar a Rodrigo
-                 console.log("destin processed false");
+                 //console.log("destin processed false");
                     $("a[href*='tab-case']").show();
                     $("#tab-case").show();
                     $("#CaseStatus").attr("disabled", false);
                     $("#tabs").tabs("refresh");
                     if (self.UsrCountry() == 9 && NewDestin == 'D') { self.FalleDate(self.HospExDate()); }
             } else if (app.Views.Contact.Id() != null) {
-               console.log("destin  else");
+               //console.log("destin  else");
                 $("a[href*='tab-case']").hide();
                 $("#tab-case").hide();
                 $("#CaseStatus").attr("disabled", true);
@@ -1186,6 +1224,7 @@
         self.Destin(null);
         self.Destin("");
         self.DestinICU("");
+        self.hospitalIDCaseToReferHospital("");
         self.HallRadio("");
         self.HallRadioFindings("");          //#### CAFQ
         self.UCInt("");
@@ -1413,11 +1452,21 @@
             }
         }
 
-        if ((self.HospExDate() == "" || self.HospExDate() == "undefined" || self.HospExDate() == null) && self.Destin() != "") {
+        if (((self.HospExDate() == "" || self.HospExDate() == "undefined" || self.HospExDate() == null) && self.Destin() != "") && app.Views.Contact.TransferToHospitalILI() == false) {
             msg += "\n" + viewValidateExitDateRequired;
             //self.Destin(""); Desactivado por requerimiento de RRR
             $("#HospExDate").focus();
         }
+        
+        if (app.Views.Contact.TransferToHospitalILI() == true && app.Views.Contact.SurvILI())
+        {
+            msg += "\n" + viewValidateSelectReferedToHospital;
+            //Validación para institución referida
+            $("#cmbInstitutionsCaseToReferHospital").focus();
+            
+
+        }
+
         
          
         // Validaciones de Chile
@@ -1551,6 +1600,11 @@
                 self.Destin(data.Destin);
                 self.DestinICU(data.DestinICU);
                 self.InstReferName(data.InstReferName);
+                self.hospitalIDCaseToReferHospital(data.hospitalIDCaseToReferHospital);
+                if (data.hospitalIDCaseToReferHospital > 0 && data.hospitalIDCaseToReferHospital != null) 
+                    app.Views.Contact.TransferToHospitalILI(true);
+                    
+
                 if (data.FalleDate)
                     self.FalleDate(moment(data.FalleDate).clone().toDate());
                 else self.FalleDate(null);
@@ -1790,6 +1844,7 @@
                 Destin: self.Destin(),
                 FalleDate: $("#FalleDate").val() == "" ? null : moment(date_falle).format(date_format_ISO),
                 InstReferName: self.InstReferName(),
+                HospitalID_CaseToReferID : self.hospitalIDCaseToReferHospital(),
                 IsSample: self.IsSample() === "true" ? true : (self.IsSample() === "false" ? false : null),
                 ReasonNotSamplingID: self.ReasonNotSamplingID(),
                 ReasonNotSamplingOther: self.ReasonNotSamplingOther(),

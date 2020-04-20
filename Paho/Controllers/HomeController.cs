@@ -17,6 +17,7 @@ namespace Paho.Controllers
             var CaseViewModel = new CaseViewModel();
             IQueryable<Institution> institutions = null;
             IQueryable<Institution> InstitutionsCaseGenerating = null;
+            IQueryable<Institution> InstitutionsCaseToReferHospital = null;
             IQueryable<Region> regions = null;
             IQueryable<Area> areas = null;
 
@@ -236,6 +237,24 @@ namespace Paho.Controllers
             }
 
             CaseViewModel.InstitutionsCaseGenerarting = institutionsCaseGeneratingDisplay;
+
+            // Health institution Case To Refer 
+            InstitutionsCaseToReferHospital = db.Institutions.OfType<Hospital>().Where(i => i.CountryID == user.Institution.CountryID);
+            var institutionsCaseToReferHospitalDisplay = InstitutionsCaseToReferHospital.Select(i => new LookupView<Institution>()
+            {
+                Id = i.ID.ToString(),
+                Name = i.Name
+            })
+               .OrderBy(a => a.Name).ToList();
+            if (institutionsCaseToReferHospitalDisplay.Count() > 1)
+            {
+                var all = new LookupView<Institution> { Id = "", Name = getMsg("msgSelectLabel") };
+                var other = new LookupView<Institution> { Id = "999999", Name = getMsg("msgSelectOther") };
+                institutionsCaseToReferHospitalDisplay.Insert(0, all);
+                institutionsCaseToReferHospitalDisplay.Insert(institutionsCaseToReferHospitalDisplay.Count(), other);
+            }
+
+            CaseViewModel.InstitutionsCaseToReferHospital = institutionsCaseToReferHospitalDisplay;
 
             //**** Informacion del usuario
             var region_institucional_usr = user.Institution.cod_region_institucional;
