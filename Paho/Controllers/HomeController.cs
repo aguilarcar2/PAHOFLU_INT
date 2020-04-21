@@ -239,7 +239,7 @@ namespace Paho.Controllers
             CaseViewModel.InstitutionsCaseGenerarting = institutionsCaseGeneratingDisplay;
 
             // Health institution Case To Refer 
-            InstitutionsCaseToReferHospital = db.Institutions.OfType<Hospital>().Where(i => i.CountryID == user.Institution.CountryID);
+            InstitutionsCaseToReferHospital = db.Institutions.OfType<Hospital>().Where(i => i.CountryID == user.Institution.CountryID && i.SARI == true);
             var institutionsCaseToReferHospitalDisplay = InstitutionsCaseToReferHospital.Select(i => new LookupView<Institution>()
             {
                 Id = i.ID.ToString(),
