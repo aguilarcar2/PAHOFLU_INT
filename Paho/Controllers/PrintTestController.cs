@@ -25,7 +25,7 @@ namespace Paho.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetPrint(string Report, int? CountryID, int? InstitutionID, int? RecordID, int? NumSample)
+        public ActionResult GetPrint(string Report, int? CountryID, int? InstitutionID, int? RecordID, int? NumSample, int? SARSCoV2)
         {
             try
             {
@@ -36,10 +36,11 @@ namespace Paho.Controllers
                 int? HospitalID_ = InstitutionID ?? 0;
                 int? RecordID_ = RecordID;
                 int? NumSample_ = NumSample;
-                string AppSetings_form = (Report == "Cases" ) ? "FormRecordTemplate" : "PrintTestTemplate";
+                string AppSetings_form = (Report == "Cases" ) ? "FormRecordTemplate" :  (Report == "CasesBrote_PDF") ? "FormRecordTemplateSARSCoV2" : "PrintTestTemplate";
+                int SARSCoV_2 = (Report == "CasesBrote_PDF") ? 1 : 0 ;
                 string Path_Print = ConfigurationManager.AppSettings[AppSetings_form];
                 string Sample_Print_ = "Imp_Mue_" + RecordID_.ToString() + "_" + NumSample_.ToString() + "_" + DateTime.Now.ToString("yyyy_MM_dd_hh_mm");
-                string Record_Print_ = "PAHOFLU_Record_" + RecordID_.ToString() + "_" + DateTime.Now.ToString("yyyy_MM_dd_hh_mm");
+                string Record_Print_ = "PAHOFLU_Record_" + RecordID_.ToString() + "_" + DateTime.Now.ToString("yyyy_MM_dd_hh_mm_ss");
 
 
                 if (Report == "" )
@@ -58,9 +59,14 @@ namespace Paho.Controllers
                         int startRow = 1;
                         bool insertRow = false;
 
-                        AppendDataToExcel(CountryID_, RecordID_, NumSample_, HospitalID_, excelWorkBook, Report, startRow, startColumn, 1, insertRow);
+                        if (Report == "SARSCOV2")
+                            Report = "CasesBrote_PDF";
 
-                        var excelPackage_Print = excelPackage;
+                        AppendDataToExcel(CountryID_, RecordID_, NumSample_, HospitalID_, excelWorkBook, Report, startRow, startColumn, 1, insertRow, SARSCoV_2);
+
+                        //var excelPackage_Print = excelPackage;
+
+                        //excelPackage.SaveAs()
 
                         excelPackage.SaveAs(ms);
                         
@@ -76,8 +82,9 @@ namespace Paho.Controllers
                     Workbook workbook = new Workbook();
 
                     workbook.LoadFromStream(ms);
-                    //workbook.SaveToFile(Path_Print + Sample_Print_ + ".pdf", Spire.Xls.FileFormat.PDF);
-                    workbook.SaveToStream(pdfs,Spire.Xls.FileFormat.PDF);
+                    //workbook.SaveToFile(Path_Print.Replace("{countryId}", CountryID_.ToString()) + Sample_Print_ + ".pdf", Spire.Xls.FileFormat.PDF);
+                    workbook.SaveToFile(Path_Print.Replace("{countryId}", CountryID_.ToString()) + Sample_Print_ + ".xlsx");
+                    workbook.SaveToStream(pdfs, Spire.Xls.FileFormat.PDF);
 
                 }
                 catch (System.Exception ex)
@@ -188,7 +195,7 @@ namespace Paho.Controllers
             AssignValueCell(2, 2, excelWorksheet, reader_, "Id");
         }
 
-        private void AppendDataToExcel(int? countryId, int? recordID, int? NumSample, int? hospitalId, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row)
+        private void AppendDataToExcel(int? countryId, int? recordID, int? NumSample, int? hospitalId, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? SARSCoV2)
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
             var excelWorksheet = excelWorkBook.Worksheets[sheet];
@@ -214,196 +221,196 @@ namespace Paho.Controllers
                     {
                         while (reader.Read())
                         {
-                            if (storedProcedure == "ExportLab") { 
-                            var col = column;
-                            //excelWorksheet.Cells[7, 15].Value = reader.GetValue(reader.GetOrdinal("Id")).ToString();
-                            AssignValueCell(7, 15, excelWorksheet, reader, "Id");
-                            //Fila 8
-                            excelWorksheet.Cells[8, 9].Value = reader.GetValue(reader.GetOrdinal("NameComplete")).ToString();
-                            //Fila 9
-                            excelWorksheet.Cells[9, 4].Value = reader.GetValue(reader.GetOrdinal("RUT")).ToString();
-                            DateTime DateTransform_;
-                            bool isDate_ = DateTime.TryParse(reader.GetValue(reader.GetOrdinal("Fecha_Nacimiento")).ToString(), out DateTransform_);
-                            excelWorksheet.Cells[9, 15].Value = DateTransform_;
-                            //Fila 10 
-                            excelWorksheet.Cells[10, 4].Value = reader.GetValue(reader.GetOrdinal("edad_comp")).ToString();
-                            excelWorksheet.Cells[10, 13].Value = reader.GetValue(reader.GetOrdinal("Sexo")).ToString();
-                            //Fila 11 
-                            excelWorksheet.Cells[11, 5].Value = reader.GetValue(reader.GetOrdinal("Establecimiento")).ToString();
-                            excelWorksheet.Cells[11, 13].Value = reader.GetValue(reader.GetOrdinal("region")).ToString();
+                            if (storedProcedure == "ExportLab") {
+                                var col = column;
+                                //excelWorksheet.Cells[7, 15].Value = reader.GetValue(reader.GetOrdinal("Id")).ToString();
+                                AssignValueCell(7, 15, excelWorksheet, reader, "Id");
+                                //Fila 8
+                                excelWorksheet.Cells[8, 9].Value = reader.GetValue(reader.GetOrdinal("NameComplete")).ToString();
+                                //Fila 9
+                                excelWorksheet.Cells[9, 4].Value = reader.GetValue(reader.GetOrdinal("RUT")).ToString();
+                                DateTime DateTransform_;
+                                bool isDate_ = DateTime.TryParse(reader.GetValue(reader.GetOrdinal("Fecha_Nacimiento")).ToString(), out DateTransform_);
+                                excelWorksheet.Cells[9, 15].Value = DateTransform_;
+                                //Fila 10 
+                                excelWorksheet.Cells[10, 4].Value = reader.GetValue(reader.GetOrdinal("edad_comp")).ToString();
+                                excelWorksheet.Cells[10, 13].Value = reader.GetValue(reader.GetOrdinal("Sexo")).ToString();
+                                //Fila 11 
+                                excelWorksheet.Cells[11, 5].Value = reader.GetValue(reader.GetOrdinal("Establecimiento")).ToString();
+                                excelWorksheet.Cells[11, 13].Value = reader.GetValue(reader.GetOrdinal("region")).ToString();
 
-                            //Fila 14
-                            isDate_ = DateTime.TryParse(reader.GetValue(reader.GetOrdinal("Inicio_sintomas")).ToString(), out DateTransform_);
-                            excelWorksheet.Cells[14, 6].Value = DateTransform_;
-                            excelWorksheet.Cells[14, 15].Value = reader.GetValue(reader.GetOrdinal("Fiebre_Historiafiebre")).ToString();
+                                //Fila 14
+                                isDate_ = DateTime.TryParse(reader.GetValue(reader.GetOrdinal("Inicio_sintomas")).ToString(), out DateTransform_);
+                                excelWorksheet.Cells[14, 6].Value = DateTransform_;
+                                excelWorksheet.Cells[14, 15].Value = reader.GetValue(reader.GetOrdinal("Fiebre_Historiafiebre")).ToString();
 
-                            //Fila 16
-                            isDate_ = DateTime.TryParse(reader.GetValue(reader.GetOrdinal("Fecha_muestra")).ToString(), out DateTransform_);
-                            excelWorksheet.Cells[16, 8].Value = DateTransform_;
+                                //Fila 16
+                                isDate_ = DateTime.TryParse(reader.GetValue(reader.GetOrdinal("Fecha_muestra")).ToString(), out DateTransform_);
+                                excelWorksheet.Cells[16, 8].Value = DateTransform_;
 
-                            //Fila 17
-                            excelWorksheet.Cells[17, 5].Value = reader.GetValue(reader.GetOrdinal("Tipo_muestra")).ToString();
+                                //Fila 17
+                                excelWorksheet.Cells[17, 5].Value = reader.GetValue(reader.GetOrdinal("Tipo_muestra")).ToString();
 
-                            //Fila 19
-                            excelWorksheet.Cells[19, 6].Value = reader.GetValue(reader.GetOrdinal("Destino")).ToString();
+                                //Fila 19
+                                excelWorksheet.Cells[19, 6].Value = reader.GetValue(reader.GetOrdinal("Destino")).ToString();
 
-                            // Revision de los datos de los resultados del laboratorio
+                                // Revision de los datos de los resultados del laboratorio
 
-                            for (var i = 1; i < 7; i++)
-                            {
-                                if (reader.GetValue(reader.GetOrdinal("procesado_proceso_" + i.ToString())).ToString() != "")
+                                for (var i = 1; i < 7; i++)
                                 {
-                                    if (reader.GetValue(reader.GetOrdinal("tipo_proceso_proceso_" + i.ToString())).ToString() == "IF")
+                                    if (reader.GetValue(reader.GetOrdinal("procesado_proceso_" + i.ToString())).ToString() != "")
                                     {
-                                        //excelWorksheet.Cells[35, 6].Value = reader.GetValue(reader.GetOrdinal("lab_proceso_" + i.ToString())).ToString();
-
-                                        excelWorksheet.Cells[36, 6].Value += reader.GetValue(reader.GetOrdinal("resultado_proceso_" + i.ToString())).ToString().ToUpper() + ((reader.GetValue(reader.GetOrdinal("virus_proceso_" + i.ToString())).ToString() != "") ? " - " + reader.GetValue(reader.GetOrdinal("virus_proceso_" + i.ToString())).ToString().ToUpper() + " , " : ", ");
-
-                                        isDate_ = DateTime.TryParse(reader.GetValue(reader.GetOrdinal("fecha_fin_proceso_" + i.ToString())).ToString(), out DateTransform_);
-                                        excelWorksheet.Cells[37, 4].Value = DateTransform_;
-                                        excelWorksheet.Cells[38, 6].Value += ((excelWorksheet.Cells[38, 6].Value != "" && excelWorksheet.Cells[38, 6].Value != null) ? ", " : " ") + reader.GetValue(reader.GetOrdinal("lab_proceso_" + i.ToString())).ToString();
-                                    }
-
-                                    if (reader.GetValue(reader.GetOrdinal("tipo_proceso_proceso_" + i.ToString())).ToString() == "PCR")
-                                    {
-                                        if (reader.GetValue(reader.GetOrdinal("virus_proceso_" + i.ToString())).ToString() == "Influenza A")
+                                        if (reader.GetValue(reader.GetOrdinal("tipo_proceso_proceso_" + i.ToString())).ToString() == "IF")
                                         {
-                                            excelWorksheet.Cells[23, 6].Value += " " + reader.GetValue(reader.GetOrdinal("resultado_proceso_" + i.ToString())).ToString().ToUpper();
-                                            excelWorksheet.Cells[23, 15].Value += (reader.GetValue(reader.GetOrdinal("CT_virus_proceso_" + i.ToString())).ToString() != "") ? " " + reader.GetValue(reader.GetOrdinal("CT_virus_proceso_" + i.ToString())).ToString() : "";
-                                            if (reader.GetValue(reader.GetOrdinal("CTRL_virus_proceso_" + i.ToString())).ToString() != "")
-                                            {
-                                                excelWorksheet.Cells[28, 6].Value += " POSITIVO,";
-                                                excelWorksheet.Cells[28, 15].Value += (reader.GetValue(reader.GetOrdinal("CTRL_virus_proceso_" + i.ToString())).ToString() != "") ? " " + reader.GetValue(reader.GetOrdinal("CTRL_virus_proceso_" + i.ToString())).ToString() : "";
-                                            }
-                                            if (reader.GetValue(reader.GetOrdinal("subtipo_proceso_" + i.ToString())).ToString().Contains("H1"))
-                                            {
-                                                excelWorksheet.Cells[25, 6].Value += " " + reader.GetValue(reader.GetOrdinal("subtipo_resultado_proceso_" + i.ToString())).ToString().ToUpper();
-                                                excelWorksheet.Cells[25, 15].Value += (reader.GetValue(reader.GetOrdinal("CT_subtype_proceso_" + i.ToString())).ToString() != "") ? " " + reader.GetValue(reader.GetOrdinal("CT_subtype_proceso_" + i.ToString())).ToString() : "";
-                                                if (reader.GetValue(reader.GetOrdinal("CTRL_subtype_proceso_" + i.ToString())).ToString() != "")
-                                                {
-                                                    excelWorksheet.Cells[30, 6].Value += " POSITIVO,";
-                                                    excelWorksheet.Cells[30, 15].Value += (reader.GetValue(reader.GetOrdinal("CTRL_subtype_proceso_" + i.ToString())).ToString() != "") ? " " + reader.GetValue(reader.GetOrdinal("CTRL_subtype_proceso_" + i.ToString())).ToString() : "";
-                                                }
-                                            }
+                                            //excelWorksheet.Cells[35, 6].Value = reader.GetValue(reader.GetOrdinal("lab_proceso_" + i.ToString())).ToString();
 
-                                            if (reader.GetValue(reader.GetOrdinal("subtipo_proceso_" + i.ToString())).ToString().Contains("H3"))
-                                            {
-                                                excelWorksheet.Cells[26, 6].Value += " " + reader.GetValue(reader.GetOrdinal("subtipo_resultado_proceso_" + i.ToString())).ToString().ToUpper();
-                                                excelWorksheet.Cells[26, 15].Value += (reader.GetValue(reader.GetOrdinal("CT_subtype_proceso_" + i.ToString())).ToString() != "") ? " " + reader.GetValue(reader.GetOrdinal("CT_subtype_proceso_" + i.ToString())).ToString() : "";
-                                                if (reader.GetValue(reader.GetOrdinal("CTRL_subtype_proceso_" + i.ToString())).ToString() != "")
-                                                {
-                                                    excelWorksheet.Cells[31, 6].Value += " POSITIVO,";
-                                                    excelWorksheet.Cells[31, 15].Value += (reader.GetValue(reader.GetOrdinal("CTRL_subtype_proceso_" + i.ToString())).ToString() != "") ? " " + reader.GetValue(reader.GetOrdinal("CTRL_subtype_proceso_" + i.ToString())).ToString() : "";
-                                                }
-                                            }
-                                            if (reader.GetValue(reader.GetOrdinal("subtipo_2_proceso_" + i.ToString())).ToString().Contains("H1"))
-                                            {
-                                                excelWorksheet.Cells[25, 6].Value += " " + reader.GetValue(reader.GetOrdinal("subtipo_resultado_2_proceso_" + i.ToString())).ToString().ToUpper();
-                                                excelWorksheet.Cells[25, 15].Value += (reader.GetValue(reader.GetOrdinal("CT_subtype_2_proceso_" + i.ToString())).ToString() != "") ? " " + reader.GetValue(reader.GetOrdinal("CT_subtype_2_proceso_" + i.ToString())).ToString() : "";
-                                                if (reader.GetValue(reader.GetOrdinal("CTRL_subtype_2_proceso_" + i.ToString())).ToString() != "")
-                                                {
-                                                    excelWorksheet.Cells[30, 6].Value += " POSITIVO,";
-                                                    excelWorksheet.Cells[30, 15].Value += (reader.GetValue(reader.GetOrdinal("CTRL_subtype_2_proceso_" + i.ToString())).ToString() != "") ? " " + reader.GetValue(reader.GetOrdinal("CTRL_subtype_2_proceso_" + i.ToString())).ToString() : "";
-                                                }
-                                            }
-                                            if (reader.GetValue(reader.GetOrdinal("subtipo_2_proceso_" + i.ToString())).ToString().Contains("H3"))
-                                            {
-                                                excelWorksheet.Cells[26, 6].Value += " " + reader.GetValue(reader.GetOrdinal("subtipo_resultado_2_proceso_" + i.ToString())).ToString().ToUpper();
-                                                excelWorksheet.Cells[26, 15].Value += (reader.GetValue(reader.GetOrdinal("CT_subtype_2_proceso_" + i.ToString())).ToString() != "") ? " " + reader.GetValue(reader.GetOrdinal("CT_subtype_2_proceso_" + i.ToString())).ToString() : "";
-                                                if (reader.GetValue(reader.GetOrdinal("CTRL_subtype_2_proceso_" + i.ToString())).ToString() != "")
-                                                {
-                                                    excelWorksheet.Cells[31, 6].Value += " POSITIVO,";
-                                                    excelWorksheet.Cells[31, 15].Value += (reader.GetValue(reader.GetOrdinal("CTRL_subtype_2_proceso_" + i.ToString())).ToString() != "") ? " " + reader.GetValue(reader.GetOrdinal("CTRL_subtype_2_proceso_" + i.ToString())).ToString() : "";
-                                                }
-                                            }
+                                            excelWorksheet.Cells[36, 6].Value += reader.GetValue(reader.GetOrdinal("resultado_proceso_" + i.ToString())).ToString().ToUpper() + ((reader.GetValue(reader.GetOrdinal("virus_proceso_" + i.ToString())).ToString() != "") ? " - " + reader.GetValue(reader.GetOrdinal("virus_proceso_" + i.ToString())).ToString().ToUpper() + " , " : ", ");
 
-                                            //excelWorksheet.Cells[27, 6].Value += " " + reader.GetValue(reader.GetOrdinal("resultado_proceso_" + i.ToString())).ToString().ToUpper();
-                                            excelWorksheet.Cells[27, 6].Value += " " + "POSITIVO,";
-                                            excelWorksheet.Cells[27, 15].Value += (reader.GetValue(reader.GetOrdinal("RNP_proceso_" + i.ToString())).ToString() != "") ? ((excelWorksheet.Cells[27, 15].Value != "" && excelWorksheet.Cells[27, 15].Value != null) ? ", " : " ") + reader.GetValue(reader.GetOrdinal("RNP_proceso_" + i.ToString())).ToString() : "";
-                                            if (reader.GetValue(reader.GetOrdinal("CTRL_RNP_proceso_" + i.ToString())).ToString() != "")
-                                            {
-                                                excelWorksheet.Cells[32, 6].Value += " POSITIVO,";
-                                                excelWorksheet.Cells[32, 15].Value += (reader.GetValue(reader.GetOrdinal("CTRL_RNP_proceso_" + i.ToString())).ToString() != "") ? ((excelWorksheet.Cells[32, 15].Value != "" && excelWorksheet.Cells[32, 15].Value != null) ? ", " : " ") + reader.GetValue(reader.GetOrdinal("CTRL_RNP_proceso_" + i.ToString())).ToString() : "";
-                                            }
-                                            if (reader.GetValue(reader.GetOrdinal("resultado_proceso_" + i.ToString())).ToString() == "Negativo")
-                                            {
-                                                //excelWorksheet.Cells[23, 6].Value += " NEGATIVO";
-                                                //excelWorksheet.Cells[27, 6].Value += " NEGATIVO";
-                                                //excelWorksheet.Cells[34, 6].Value += " NEGATIVO";
-                                                //excelWorksheet.Cells[32, 6].Value += " POSITIVO";
-                                                //excelWorksheet.Cells[32, 15].Value += " " + reader.GetValue(reader.GetOrdinal("CTRL_RNP_proceso_" + i.ToString())).ToString();
-                                                if (reader.GetValue(reader.GetOrdinal("CTRL_Negative_proceso_" + i.ToString())).ToString() != "")
-                                                {
-                                                    excelWorksheet.Cells[33, 6].Value += " NEGATIVO,";
-                                                    excelWorksheet.Cells[33, 15].Value += (reader.GetValue(reader.GetOrdinal("CTRL_Negative_proceso_" + i.ToString())).ToString() != "") ? " " + reader.GetValue(reader.GetOrdinal("CTRL_Negative_proceso_" + i.ToString())).ToString() : "";
-                                                }
-                                            }
-                                            //excelWorksheet.Cells[26, 4].Value = Convert.ToDouble(reader.GetValue(reader.GetOrdinal("RNP_proceso_" + i.ToString())).ToString());
-                                        }
-                                        else if (reader.GetValue(reader.GetOrdinal("virus_proceso_" + i.ToString())).ToString() == "Influenza B")
-                                        {
-                                            excelWorksheet.Cells[24, 6].Value += " " + reader.GetValue(reader.GetOrdinal("resultado_proceso_" + i.ToString())).ToString().ToUpper();
-                                            excelWorksheet.Cells[24, 15].Value += (reader.GetValue(reader.GetOrdinal("CT_virus_proceso_" + i.ToString())).ToString() != "") ? ((excelWorksheet.Cells[24, 15].Value != "" && excelWorksheet.Cells[24, 15].Value != null) ? ", " : " ") + reader.GetValue(reader.GetOrdinal("CT_virus_proceso_" + i.ToString())).ToString() : "";
-                                            if (reader.GetValue(reader.GetOrdinal("CTRL_virus_proceso_" + i.ToString())).ToString() != "")
-                                            {
-                                                excelWorksheet.Cells[29, 6].Value += " POSITIVO,";
-                                                excelWorksheet.Cells[29, 15].Value += (reader.GetValue(reader.GetOrdinal("CTRL_virus_proceso_" + i.ToString())).ToString() != "") ? reader.GetValue(reader.GetOrdinal("CTRL_virus_proceso_" + i.ToString())).ToString() : "";
-                                            }
-                                            //excelWorksheet.Cells[27, 6].Value += " " + reader.GetValue(reader.GetOrdinal("resultado_proceso_" + i.ToString())).ToString().ToUpper();
-                                            excelWorksheet.Cells[27, 6].Value += " " + " POSITIVO,";
-                                            excelWorksheet.Cells[27, 15].Value += (reader.GetValue(reader.GetOrdinal("RNP_proceso_" + i.ToString())).ToString() != "") ? ((excelWorksheet.Cells[27, 15].Value != "" && excelWorksheet.Cells[27, 15].Value != null) ? ", " : " ") + reader.GetValue(reader.GetOrdinal("RNP_proceso_" + i.ToString())).ToString() : "";
-                                            if (reader.GetValue(reader.GetOrdinal("CTRL_RNP_proceso_" + i.ToString())).ToString() != "")
-                                            {
-                                                excelWorksheet.Cells[32, 6].Value += " POSITIVO,";
-                                                excelWorksheet.Cells[32, 15].Value += (reader.GetValue(reader.GetOrdinal("CTRL_RNP_proceso_" + i.ToString())).ToString() != "") ? ((excelWorksheet.Cells[32, 15].Value != "" && excelWorksheet.Cells[32, 15].Value != null) ? ", " : " ") + reader.GetValue(reader.GetOrdinal("CTRL_RNP_proceso_" + i.ToString())).ToString() : "";
-                                            }
-                                            if (reader.GetValue(reader.GetOrdinal("resultado_proceso_" + i.ToString())).ToString() == "Negativo")
-                                            {
-                                                //excelWorksheet.Cells[23, 6].Value += " NEGATIVO";
-                                                //excelWorksheet.Cells[27, 6].Value += " NEGATIVO";
-                                                //excelWorksheet.Cells[34, 6].Value += " NEGATIVO";
-                                                //excelWorksheet.Cells[32, 6].Value += " POSITIVO";
-                                                //excelWorksheet.Cells[32, 15].Value += " " + reader.GetValue(reader.GetOrdinal("CTRL_RNP_proceso_" + i.ToString())).ToString();
-                                                if (reader.GetValue(reader.GetOrdinal("CTRL_Negative_proceso_" + i.ToString())).ToString() != "")
-                                                {
-                                                    excelWorksheet.Cells[33, 6].Value += " NEGATIVO,";
-                                                    excelWorksheet.Cells[33, 15].Value += (reader.GetValue(reader.GetOrdinal("CTRL_Negative_proceso_" + i.ToString())).ToString() != "") ? ((excelWorksheet.Cells[33, 15].Value != "" && excelWorksheet.Cells[33, 15].Value != null) ? ", " : " ") + reader.GetValue(reader.GetOrdinal("CTRL_Negative_proceso_" + i.ToString())).ToString() : "";
-                                                }
-                                            }
-                                        }
-                                        else if (!(reader.GetValue(reader.GetOrdinal("virus_proceso_" + i.ToString())).ToString() == "Influenza B" && reader.GetValue(reader.GetOrdinal("virus_proceso_" + i.ToString())).ToString() == "Influenza A"))
-                                        {
-                                            excelWorksheet.Cells[34, 6].Value += ((excelWorksheet.Cells[34, 6].Value != "" && excelWorksheet.Cells[34, 6].Value != null) ? " , " : " ") + " " + reader.GetValue(reader.GetOrdinal("resultado_proceso_" + i.ToString())).ToString().ToUpper() + " - " + reader.GetValue(reader.GetOrdinal("virus_proceso_" + i.ToString())).ToString().ToUpper();
-                                            excelWorksheet.Cells[34, 15].Value += (reader.GetValue(reader.GetOrdinal("CT_virus_proceso_" + i.ToString())).ToString() != "") ? ((excelWorksheet.Cells[34, 15].Value != "" && excelWorksheet.Cells[34, 15].Value != null) ? " , " : " ") + reader.GetValue(reader.GetOrdinal("CT_virus_proceso_" + i.ToString())).ToString() : "";
-                                            excelWorksheet.Cells[27, 6].Value += " POSITIVO,";
-                                            //((excelWorksheet.Cells[27, 6].Value != "" && excelWorksheet.Cells[27, 6].Value != null) ? ", " : " ") // Modificacion segun requerimiento Rodrigo Chile
-                                            excelWorksheet.Cells[27, 15].Value += (reader.GetValue(reader.GetOrdinal("RNP_proceso_" + i.ToString())).ToString() != "") ? ((excelWorksheet.Cells[27, 15].Value != "" && excelWorksheet.Cells[27, 15].Value != null) ? ", " : " ") + reader.GetValue(reader.GetOrdinal("RNP_proceso_" + i.ToString())).ToString() : "";
-                                            excelWorksheet.Cells[32, 6].Value += ((excelWorksheet.Cells[32, 6].Value != "" && excelWorksheet.Cells[32, 6].Value != null) ? " , " : " ") + " POSITIVO,";
-                                            excelWorksheet.Cells[32, 15].Value += (reader.GetValue(reader.GetOrdinal("CTRL_RNP_proceso_" + i.ToString())).ToString() != "") ? ((excelWorksheet.Cells[32, 15].Value != "" && excelWorksheet.Cells[32, 15].Value != null) ? " , " : " ") + reader.GetValue(reader.GetOrdinal("CTRL_RNP_proceso_" + i.ToString())).ToString() : "";
-
-                                            if (reader.GetValue(reader.GetOrdinal("resultado_proceso_" + i.ToString())).ToString() == "Negativo")
-                                            {
-                                                if (reader.GetValue(reader.GetOrdinal("CTRL_Negative_proceso_" + i.ToString())).ToString() != "")
-                                                {
-                                                    excelWorksheet.Cells[33, 6].Value += " NEGATIVO,";
-                                                    excelWorksheet.Cells[33, 15].Value += (reader.GetValue(reader.GetOrdinal("CTRL_Negative_proceso_" + i.ToString())).ToString() != "") ? ", " + reader.GetValue(reader.GetOrdinal("CTRL_Negative_proceso_" + i.ToString())).ToString() : "";
-                                                }
-                                            }
+                                            isDate_ = DateTime.TryParse(reader.GetValue(reader.GetOrdinal("fecha_fin_proceso_" + i.ToString())).ToString(), out DateTransform_);
+                                            excelWorksheet.Cells[37, 4].Value = DateTransform_;
+                                            excelWorksheet.Cells[38, 6].Value += ((excelWorksheet.Cells[38, 6].Value != "" && excelWorksheet.Cells[38, 6].Value != null) ? ", " : " ") + reader.GetValue(reader.GetOrdinal("lab_proceso_" + i.ToString())).ToString();
                                         }
 
-                                        //excelWorksheet.Cells[27, 15].Value += " " + reader.GetValue(reader.GetOrdinal("RNP_proceso_" + i.ToString())).ToString();
-                                        excelWorksheet.Cells[22, 6].Value += " " + ((excelWorksheet.Cells[22, 6].Value != "" && excelWorksheet.Cells[22, 6].Value != null) ? ", " : " ") + reader.GetValue(reader.GetOrdinal("lab_proceso_" + i.ToString())).ToString();
-                                        isDate_ = DateTime.TryParse(reader.GetValue(reader.GetOrdinal("fecha_fin_proceso_" + i.ToString())).ToString(), out DateTransform_);
-                                        excelWorksheet.Cells[35, 15].Value = DateTransform_;
+                                        if (reader.GetValue(reader.GetOrdinal("tipo_proceso_proceso_" + i.ToString())).ToString() == "PCR")
+                                        {
+                                            if (reader.GetValue(reader.GetOrdinal("virus_proceso_" + i.ToString())).ToString() == "Influenza A")
+                                            {
+                                                excelWorksheet.Cells[23, 6].Value += " " + reader.GetValue(reader.GetOrdinal("resultado_proceso_" + i.ToString())).ToString().ToUpper();
+                                                excelWorksheet.Cells[23, 15].Value += (reader.GetValue(reader.GetOrdinal("CT_virus_proceso_" + i.ToString())).ToString() != "") ? " " + reader.GetValue(reader.GetOrdinal("CT_virus_proceso_" + i.ToString())).ToString() : "";
+                                                if (reader.GetValue(reader.GetOrdinal("CTRL_virus_proceso_" + i.ToString())).ToString() != "")
+                                                {
+                                                    excelWorksheet.Cells[28, 6].Value += " POSITIVO,";
+                                                    excelWorksheet.Cells[28, 15].Value += (reader.GetValue(reader.GetOrdinal("CTRL_virus_proceso_" + i.ToString())).ToString() != "") ? " " + reader.GetValue(reader.GetOrdinal("CTRL_virus_proceso_" + i.ToString())).ToString() : "";
+                                                }
+                                                if (reader.GetValue(reader.GetOrdinal("subtipo_proceso_" + i.ToString())).ToString().Contains("H1"))
+                                                {
+                                                    excelWorksheet.Cells[25, 6].Value += " " + reader.GetValue(reader.GetOrdinal("subtipo_resultado_proceso_" + i.ToString())).ToString().ToUpper();
+                                                    excelWorksheet.Cells[25, 15].Value += (reader.GetValue(reader.GetOrdinal("CT_subtype_proceso_" + i.ToString())).ToString() != "") ? " " + reader.GetValue(reader.GetOrdinal("CT_subtype_proceso_" + i.ToString())).ToString() : "";
+                                                    if (reader.GetValue(reader.GetOrdinal("CTRL_subtype_proceso_" + i.ToString())).ToString() != "")
+                                                    {
+                                                        excelWorksheet.Cells[30, 6].Value += " POSITIVO,";
+                                                        excelWorksheet.Cells[30, 15].Value += (reader.GetValue(reader.GetOrdinal("CTRL_subtype_proceso_" + i.ToString())).ToString() != "") ? " " + reader.GetValue(reader.GetOrdinal("CTRL_subtype_proceso_" + i.ToString())).ToString() : "";
+                                                    }
+                                                }
+
+                                                if (reader.GetValue(reader.GetOrdinal("subtipo_proceso_" + i.ToString())).ToString().Contains("H3"))
+                                                {
+                                                    excelWorksheet.Cells[26, 6].Value += " " + reader.GetValue(reader.GetOrdinal("subtipo_resultado_proceso_" + i.ToString())).ToString().ToUpper();
+                                                    excelWorksheet.Cells[26, 15].Value += (reader.GetValue(reader.GetOrdinal("CT_subtype_proceso_" + i.ToString())).ToString() != "") ? " " + reader.GetValue(reader.GetOrdinal("CT_subtype_proceso_" + i.ToString())).ToString() : "";
+                                                    if (reader.GetValue(reader.GetOrdinal("CTRL_subtype_proceso_" + i.ToString())).ToString() != "")
+                                                    {
+                                                        excelWorksheet.Cells[31, 6].Value += " POSITIVO,";
+                                                        excelWorksheet.Cells[31, 15].Value += (reader.GetValue(reader.GetOrdinal("CTRL_subtype_proceso_" + i.ToString())).ToString() != "") ? " " + reader.GetValue(reader.GetOrdinal("CTRL_subtype_proceso_" + i.ToString())).ToString() : "";
+                                                    }
+                                                }
+                                                if (reader.GetValue(reader.GetOrdinal("subtipo_2_proceso_" + i.ToString())).ToString().Contains("H1"))
+                                                {
+                                                    excelWorksheet.Cells[25, 6].Value += " " + reader.GetValue(reader.GetOrdinal("subtipo_resultado_2_proceso_" + i.ToString())).ToString().ToUpper();
+                                                    excelWorksheet.Cells[25, 15].Value += (reader.GetValue(reader.GetOrdinal("CT_subtype_2_proceso_" + i.ToString())).ToString() != "") ? " " + reader.GetValue(reader.GetOrdinal("CT_subtype_2_proceso_" + i.ToString())).ToString() : "";
+                                                    if (reader.GetValue(reader.GetOrdinal("CTRL_subtype_2_proceso_" + i.ToString())).ToString() != "")
+                                                    {
+                                                        excelWorksheet.Cells[30, 6].Value += " POSITIVO,";
+                                                        excelWorksheet.Cells[30, 15].Value += (reader.GetValue(reader.GetOrdinal("CTRL_subtype_2_proceso_" + i.ToString())).ToString() != "") ? " " + reader.GetValue(reader.GetOrdinal("CTRL_subtype_2_proceso_" + i.ToString())).ToString() : "";
+                                                    }
+                                                }
+                                                if (reader.GetValue(reader.GetOrdinal("subtipo_2_proceso_" + i.ToString())).ToString().Contains("H3"))
+                                                {
+                                                    excelWorksheet.Cells[26, 6].Value += " " + reader.GetValue(reader.GetOrdinal("subtipo_resultado_2_proceso_" + i.ToString())).ToString().ToUpper();
+                                                    excelWorksheet.Cells[26, 15].Value += (reader.GetValue(reader.GetOrdinal("CT_subtype_2_proceso_" + i.ToString())).ToString() != "") ? " " + reader.GetValue(reader.GetOrdinal("CT_subtype_2_proceso_" + i.ToString())).ToString() : "";
+                                                    if (reader.GetValue(reader.GetOrdinal("CTRL_subtype_2_proceso_" + i.ToString())).ToString() != "")
+                                                    {
+                                                        excelWorksheet.Cells[31, 6].Value += " POSITIVO,";
+                                                        excelWorksheet.Cells[31, 15].Value += (reader.GetValue(reader.GetOrdinal("CTRL_subtype_2_proceso_" + i.ToString())).ToString() != "") ? " " + reader.GetValue(reader.GetOrdinal("CTRL_subtype_2_proceso_" + i.ToString())).ToString() : "";
+                                                    }
+                                                }
+
+                                                //excelWorksheet.Cells[27, 6].Value += " " + reader.GetValue(reader.GetOrdinal("resultado_proceso_" + i.ToString())).ToString().ToUpper();
+                                                excelWorksheet.Cells[27, 6].Value += " " + "POSITIVO,";
+                                                excelWorksheet.Cells[27, 15].Value += (reader.GetValue(reader.GetOrdinal("RNP_proceso_" + i.ToString())).ToString() != "") ? ((excelWorksheet.Cells[27, 15].Value != "" && excelWorksheet.Cells[27, 15].Value != null) ? ", " : " ") + reader.GetValue(reader.GetOrdinal("RNP_proceso_" + i.ToString())).ToString() : "";
+                                                if (reader.GetValue(reader.GetOrdinal("CTRL_RNP_proceso_" + i.ToString())).ToString() != "")
+                                                {
+                                                    excelWorksheet.Cells[32, 6].Value += " POSITIVO,";
+                                                    excelWorksheet.Cells[32, 15].Value += (reader.GetValue(reader.GetOrdinal("CTRL_RNP_proceso_" + i.ToString())).ToString() != "") ? ((excelWorksheet.Cells[32, 15].Value != "" && excelWorksheet.Cells[32, 15].Value != null) ? ", " : " ") + reader.GetValue(reader.GetOrdinal("CTRL_RNP_proceso_" + i.ToString())).ToString() : "";
+                                                }
+                                                if (reader.GetValue(reader.GetOrdinal("resultado_proceso_" + i.ToString())).ToString() == "Negativo")
+                                                {
+                                                    //excelWorksheet.Cells[23, 6].Value += " NEGATIVO";
+                                                    //excelWorksheet.Cells[27, 6].Value += " NEGATIVO";
+                                                    //excelWorksheet.Cells[34, 6].Value += " NEGATIVO";
+                                                    //excelWorksheet.Cells[32, 6].Value += " POSITIVO";
+                                                    //excelWorksheet.Cells[32, 15].Value += " " + reader.GetValue(reader.GetOrdinal("CTRL_RNP_proceso_" + i.ToString())).ToString();
+                                                    if (reader.GetValue(reader.GetOrdinal("CTRL_Negative_proceso_" + i.ToString())).ToString() != "")
+                                                    {
+                                                        excelWorksheet.Cells[33, 6].Value += " NEGATIVO,";
+                                                        excelWorksheet.Cells[33, 15].Value += (reader.GetValue(reader.GetOrdinal("CTRL_Negative_proceso_" + i.ToString())).ToString() != "") ? " " + reader.GetValue(reader.GetOrdinal("CTRL_Negative_proceso_" + i.ToString())).ToString() : "";
+                                                    }
+                                                }
+                                                //excelWorksheet.Cells[26, 4].Value = Convert.ToDouble(reader.GetValue(reader.GetOrdinal("RNP_proceso_" + i.ToString())).ToString());
+                                            }
+                                            else if (reader.GetValue(reader.GetOrdinal("virus_proceso_" + i.ToString())).ToString() == "Influenza B")
+                                            {
+                                                excelWorksheet.Cells[24, 6].Value += " " + reader.GetValue(reader.GetOrdinal("resultado_proceso_" + i.ToString())).ToString().ToUpper();
+                                                excelWorksheet.Cells[24, 15].Value += (reader.GetValue(reader.GetOrdinal("CT_virus_proceso_" + i.ToString())).ToString() != "") ? ((excelWorksheet.Cells[24, 15].Value != "" && excelWorksheet.Cells[24, 15].Value != null) ? ", " : " ") + reader.GetValue(reader.GetOrdinal("CT_virus_proceso_" + i.ToString())).ToString() : "";
+                                                if (reader.GetValue(reader.GetOrdinal("CTRL_virus_proceso_" + i.ToString())).ToString() != "")
+                                                {
+                                                    excelWorksheet.Cells[29, 6].Value += " POSITIVO,";
+                                                    excelWorksheet.Cells[29, 15].Value += (reader.GetValue(reader.GetOrdinal("CTRL_virus_proceso_" + i.ToString())).ToString() != "") ? reader.GetValue(reader.GetOrdinal("CTRL_virus_proceso_" + i.ToString())).ToString() : "";
+                                                }
+                                                //excelWorksheet.Cells[27, 6].Value += " " + reader.GetValue(reader.GetOrdinal("resultado_proceso_" + i.ToString())).ToString().ToUpper();
+                                                excelWorksheet.Cells[27, 6].Value += " " + " POSITIVO,";
+                                                excelWorksheet.Cells[27, 15].Value += (reader.GetValue(reader.GetOrdinal("RNP_proceso_" + i.ToString())).ToString() != "") ? ((excelWorksheet.Cells[27, 15].Value != "" && excelWorksheet.Cells[27, 15].Value != null) ? ", " : " ") + reader.GetValue(reader.GetOrdinal("RNP_proceso_" + i.ToString())).ToString() : "";
+                                                if (reader.GetValue(reader.GetOrdinal("CTRL_RNP_proceso_" + i.ToString())).ToString() != "")
+                                                {
+                                                    excelWorksheet.Cells[32, 6].Value += " POSITIVO,";
+                                                    excelWorksheet.Cells[32, 15].Value += (reader.GetValue(reader.GetOrdinal("CTRL_RNP_proceso_" + i.ToString())).ToString() != "") ? ((excelWorksheet.Cells[32, 15].Value != "" && excelWorksheet.Cells[32, 15].Value != null) ? ", " : " ") + reader.GetValue(reader.GetOrdinal("CTRL_RNP_proceso_" + i.ToString())).ToString() : "";
+                                                }
+                                                if (reader.GetValue(reader.GetOrdinal("resultado_proceso_" + i.ToString())).ToString() == "Negativo")
+                                                {
+                                                    //excelWorksheet.Cells[23, 6].Value += " NEGATIVO";
+                                                    //excelWorksheet.Cells[27, 6].Value += " NEGATIVO";
+                                                    //excelWorksheet.Cells[34, 6].Value += " NEGATIVO";
+                                                    //excelWorksheet.Cells[32, 6].Value += " POSITIVO";
+                                                    //excelWorksheet.Cells[32, 15].Value += " " + reader.GetValue(reader.GetOrdinal("CTRL_RNP_proceso_" + i.ToString())).ToString();
+                                                    if (reader.GetValue(reader.GetOrdinal("CTRL_Negative_proceso_" + i.ToString())).ToString() != "")
+                                                    {
+                                                        excelWorksheet.Cells[33, 6].Value += " NEGATIVO,";
+                                                        excelWorksheet.Cells[33, 15].Value += (reader.GetValue(reader.GetOrdinal("CTRL_Negative_proceso_" + i.ToString())).ToString() != "") ? ((excelWorksheet.Cells[33, 15].Value != "" && excelWorksheet.Cells[33, 15].Value != null) ? ", " : " ") + reader.GetValue(reader.GetOrdinal("CTRL_Negative_proceso_" + i.ToString())).ToString() : "";
+                                                    }
+                                                }
+                                            }
+                                            else if (!(reader.GetValue(reader.GetOrdinal("virus_proceso_" + i.ToString())).ToString() == "Influenza B" && reader.GetValue(reader.GetOrdinal("virus_proceso_" + i.ToString())).ToString() == "Influenza A"))
+                                            {
+                                                excelWorksheet.Cells[34, 6].Value += ((excelWorksheet.Cells[34, 6].Value != "" && excelWorksheet.Cells[34, 6].Value != null) ? " , " : " ") + " " + reader.GetValue(reader.GetOrdinal("resultado_proceso_" + i.ToString())).ToString().ToUpper() + " - " + reader.GetValue(reader.GetOrdinal("virus_proceso_" + i.ToString())).ToString().ToUpper();
+                                                excelWorksheet.Cells[34, 15].Value += (reader.GetValue(reader.GetOrdinal("CT_virus_proceso_" + i.ToString())).ToString() != "") ? ((excelWorksheet.Cells[34, 15].Value != "" && excelWorksheet.Cells[34, 15].Value != null) ? " , " : " ") + reader.GetValue(reader.GetOrdinal("CT_virus_proceso_" + i.ToString())).ToString() : "";
+                                                excelWorksheet.Cells[27, 6].Value += " POSITIVO,";
+                                                //((excelWorksheet.Cells[27, 6].Value != "" && excelWorksheet.Cells[27, 6].Value != null) ? ", " : " ") // Modificacion segun requerimiento Rodrigo Chile
+                                                excelWorksheet.Cells[27, 15].Value += (reader.GetValue(reader.GetOrdinal("RNP_proceso_" + i.ToString())).ToString() != "") ? ((excelWorksheet.Cells[27, 15].Value != "" && excelWorksheet.Cells[27, 15].Value != null) ? ", " : " ") + reader.GetValue(reader.GetOrdinal("RNP_proceso_" + i.ToString())).ToString() : "";
+                                                excelWorksheet.Cells[32, 6].Value += ((excelWorksheet.Cells[32, 6].Value != "" && excelWorksheet.Cells[32, 6].Value != null) ? " , " : " ") + " POSITIVO,";
+                                                excelWorksheet.Cells[32, 15].Value += (reader.GetValue(reader.GetOrdinal("CTRL_RNP_proceso_" + i.ToString())).ToString() != "") ? ((excelWorksheet.Cells[32, 15].Value != "" && excelWorksheet.Cells[32, 15].Value != null) ? " , " : " ") + reader.GetValue(reader.GetOrdinal("CTRL_RNP_proceso_" + i.ToString())).ToString() : "";
+
+                                                if (reader.GetValue(reader.GetOrdinal("resultado_proceso_" + i.ToString())).ToString() == "Negativo")
+                                                {
+                                                    if (reader.GetValue(reader.GetOrdinal("CTRL_Negative_proceso_" + i.ToString())).ToString() != "")
+                                                    {
+                                                        excelWorksheet.Cells[33, 6].Value += " NEGATIVO,";
+                                                        excelWorksheet.Cells[33, 15].Value += (reader.GetValue(reader.GetOrdinal("CTRL_Negative_proceso_" + i.ToString())).ToString() != "") ? ", " + reader.GetValue(reader.GetOrdinal("CTRL_Negative_proceso_" + i.ToString())).ToString() : "";
+                                                    }
+                                                }
+                                            }
+
+                                            //excelWorksheet.Cells[27, 15].Value += " " + reader.GetValue(reader.GetOrdinal("RNP_proceso_" + i.ToString())).ToString();
+                                            excelWorksheet.Cells[22, 6].Value += " " + ((excelWorksheet.Cells[22, 6].Value != "" && excelWorksheet.Cells[22, 6].Value != null) ? ", " : " ") + reader.GetValue(reader.GetOrdinal("lab_proceso_" + i.ToString())).ToString();
+                                            isDate_ = DateTime.TryParse(reader.GetValue(reader.GetOrdinal("fecha_fin_proceso_" + i.ToString())).ToString(), out DateTransform_);
+                                            excelWorksheet.Cells[35, 15].Value = DateTransform_;
+                                        }
                                     }
                                 }
+
+                                //row++;
+
                             }
-
-                            //row++;
-
-                        }
                             // Empieza la impresion de la ficha fisica
-                            else if (storedProcedure == "Cases"){
+                            else if (storedProcedure == "Cases" && SARSCoV2 == 0) {
 
                                 excelWorksheet.Cells[2, 2].Value = excelWorksheet.Cells[2, 2].Value + " " + reader.GetValue(reader.GetOrdinal("ID")).ToString();
                                 // Datos de vigilancia
@@ -441,7 +448,7 @@ namespace Paho.Controllers
                                 AssignValueCell(11, 31, excelWorksheet, reader, "Edad"); // Fecha de nacimiento
                                 AssignValueCell(11, 41, excelWorksheet, reader, "Tipo_edad"); // Fecha de nacimiento
                                 AssignValueCell(12, 9, excelWorksheet, reader, "Grupo_Edad"); // Grupo de edad
-                                 if (reader.GetValue(reader.GetOrdinal("Sexo")).ToString()  == "Femenino")
+                                if (reader.GetValue(reader.GetOrdinal("Sexo")).ToString() == "Femenino")
                                 {
                                     AssignValueCell_value(12, 41, excelWorksheet, "X", "String");
                                 }
@@ -489,11 +496,11 @@ namespace Paho.Controllers
 
                                 AssignValueCell(23, 9, excelWorksheet, reader, "Latitud"); // Latitud
                                 AssignValueCell(23, 31, excelWorksheet, reader, "Longitud"); // Longitud
-                                
+
                                 // Embarazada
                                 if ((reader.GetSchemaTable().Select("ColumnName = 'Embarazada'").Length > 0)) {
                                     if (reader.GetValue(reader.GetOrdinal("Embarazada")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("Embarazada")).ToString().ToUpper() == "YES")
-                                    { MarkCell(29, 11,excelWorksheet); }
+                                    { MarkCell(29, 11, excelWorksheet); }
                                     else if (reader.GetValue(reader.GetOrdinal("Embarazada")).ToString().ToUpper() == "NO")
                                     { MarkCell(29, 15, excelWorksheet); }
                                     else if (reader.GetValue(reader.GetOrdinal("Embarazada")).ToString().ToUpper() == "NO DATA" || reader.GetValue(reader.GetOrdinal("Embarazada")).ToString().ToUpper() == "SIN INFORMACIÓN")
@@ -662,12 +669,12 @@ namespace Paho.Controllers
                                 AssignValueCell(79, 30, excelWorksheet, reader, "Hosp_egre_fecha"); // Fecha de egreso de hospitalizacion
                                 AssignValueCell(80, 9, excelWorksheet, reader, "cond_egreso"); // Fecha de egreso de hospitalizacion
                                 AssignValueCell(80, 30, excelWorksheet, reader, "FalleDate"); // Fecha de egreso de hospitalizacion
-                                
+
                                 // UCI
                                 AssignValueCell(82, 9, excelWorksheet, reader, "UCI_ing_fecha"); // Fecha de ingreso a hospitalizacion
                                 AssignValueCell(82, 30, excelWorksheet, reader, "UCI_egre_fecha"); // Fecha de egreso de hospitalizacion
 
-                                 
+
 
                                 if ((reader.GetSchemaTable().Select("ColumnName = 'Hallazgo_rad'").Length > 0))
                                     if (reader.GetValue(reader.GetOrdinal("Hallazgo_rad")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("Hallazgo_rad")).ToString().ToUpper() == "YES")
@@ -680,7 +687,7 @@ namespace Paho.Controllers
                                                                           //Falta Unidad critica
                                                                           //Falta ventilacion mecanica no invasiva
 
-                                 
+
                                 if ((reader.GetSchemaTable().Select("ColumnName = 'ECMO'").Length > 0))
                                     if (reader.GetValue(reader.GetOrdinal("ECMO")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("ECMO")).ToString().ToUpper() == "YES")
                                     { MarkCell(84, 22, excelWorksheet); } // ECMO
@@ -699,7 +706,7 @@ namespace Paho.Controllers
                                 }
 
                                 // Muestras
-                                
+
                                 AssignValueCell(87, 10, excelWorksheet, reader, "Fecha_muestra"); // Fecha toma de muestra
                                 AssignValueCell(87, 34, excelWorksheet, reader, "Tipo_muestra"); // Fecha toma de muestra
                                 AssignValueCell(88, 10, excelWorksheet, reader, "Fecha_envio"); // Fecha toma de muestra
@@ -776,18 +783,407 @@ namespace Paho.Controllers
                                 AssignValueCell((user.Institution.CountryID == 17) ? 106 : 99, 40, excelWorksheet, reader, "Res_fin_Linaje_3"); // Linaje 3
 
                                 //Estatus del caso
-                                
+
                                 AssignValueCell((user.Institution.CountryID == 17) ? 108 : 101, 10, excelWorksheet, reader, "Estatus_caso"); // Estsado del caso
                                 AssignValueCell((user.Institution.CountryID == 17) ? 108 : 101, 31, excelWorksheet, reader, "Caso_cerrado_fecha"); // Fecha de cierre de caso
                                 AssignValueCell((user.Institution.CountryID == 17) ? 109 : 102, 10, excelWorksheet, reader, "Observaciones"); // Observaciones del caso
 
 
                             }
+
+                            // Empieza la impresion de la ficha fisica
+                            else if (storedProcedure == "CasesBrote_PDF" && SARSCoV2 == 1)
+                            {
+                                AssignValueCell(6, 19, excelWorksheet, reader, "report_date");
+                                AssignValueCell(7, 19, excelWorksheet, reader, "report_country");
+                                // Porqué se le tomaron muestras para COVID-19:
+                                if ((reader.GetSchemaTable().Select("ColumnName = 'ReasonSamplingID'").Length > 0))
+                                {
+                                    if (reader.GetValue(reader.GetOrdinal("ReasonSamplingID")).ToString().ToUpper() == "1" )
+                                    {
+                                        MarkCell(9, 4, excelWorksheet);
+
+                                    } // Contacto de un caso
+
+                                    if (reader.GetValue(reader.GetOrdinal("ReasonSamplingID")).ToString().ToUpper() == "2" )
+                                    {
+                                        MarkCell(9, 12, excelWorksheet);
+
+                                    } // Buscó atención por enfermedad
+
+                                    if (reader.GetValue(reader.GetOrdinal("ReasonSamplingID")).ToString().ToUpper() == "3" )
+                                    {
+                                        MarkCell(9, 23, excelWorksheet);
+
+                                    } // Detectado en punto de entrada
+
+                                    if (reader.GetValue(reader.GetOrdinal("ReasonSamplingID")).ToString().ToUpper() == "4" )
+                                    {
+                                        MarkCell(9, 34, excelWorksheet);
+
+                                    } // Repatriación
+
+                                    if (reader.GetValue(reader.GetOrdinal("ReasonSamplingID")).ToString().ToUpper() == "5")
+                                    {
+                                        MarkCell(10, 4, excelWorksheet);
+
+                                    } // Sistemas de vigilancia de rutina de enfermedades respiratorias agudas(ej.Influenza)
+
+                                    //if (reader.GetValue(reader.GetOrdinal("ReasonSamplingID")).ToString().ToUpper() == "6" )
+                                    //{ MarkCell(10, 30, excelWorksheet); } // Otro
+                                }
+
+                                AssignValueCell(11, 20, excelWorksheet, reader, "report_test_reason_other");
+
+
+                                //  Sección 1: Información del Paciente
+                                AssignValueCell(13, 17, excelWorksheet, reader, "patinfo_ID");
+                                AssignValueCell(14, 11, excelWorksheet, reader, "patinfo_ageonset");
+                                AssignValueCell(14, 21, excelWorksheet, reader, "patinfo_ageonsetunit");
+                                if ((reader.GetSchemaTable().Select("ColumnName = 'Gender'").Length > 0))
+                                {
+                                    if (reader.GetValue(reader.GetOrdinal("Gender")).ToString().ToUpper() == "1" )
+                                    { MarkCell(15, 11, excelWorksheet); } // Contacto de un caso
+
+                                    if (reader.GetValue(reader.GetOrdinal("Gender")).ToString().ToUpper() == "2" )
+                                    { MarkCell(15, 16, excelWorksheet); } // Buscó atención por enfermedad
+
+                                }
+
+                                AssignValueCell(16, 16, excelWorksheet, reader, "patinfo_idadmin0");
+                                AssignValueCell(17, 20, excelWorksheet, reader, "patinfo_idadmin1");
+                                AssignValueCell(18, 14, excelWorksheet, reader, "patinfo_resadmin0");
+
+                                // Sección 2: Información Clínica
+
+                                AssignValueCell(20, 20, excelWorksheet, reader, "Lab_date1");
+
+                                if ((reader.GetSchemaTable().Select("ColumnName = 'patcourse_asymp'").Length > 0))
+                                {
+                                    if (reader.GetValue(reader.GetOrdinal("patcourse_asymp")).ToString().ToUpper() == "NO")
+                                    { MarkCell(22, 4, excelWorksheet); }
+                                    else if (reader.GetValue(reader.GetOrdinal("patcourse_asymp")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("patcourse_asymp")).ToString().ToUpper() == "YES")
+                                    { MarkCell(22, 14, excelWorksheet); }
+                                    else if (reader.GetValue(reader.GetOrdinal("patcourse_asymp")).ToString().ToUpper() == "UNKNOWN" || reader.GetValue(reader.GetOrdinal("patcourse_asymp")).ToString().ToUpper() == "SIN INFORMACIÓN")
+                                    { MarkCell(22, 17, excelWorksheet); }
+                                }
+
+                                AssignValueCell(23, 22, excelWorksheet, reader, "patcourse_dateonset");
+
+                                if ((reader.GetSchemaTable().Select("ColumnName = 'Comcond_present'").Length > 0))
+                                {
+                                    if (reader.GetValue(reader.GetOrdinal("Comcond_present")).ToString().ToUpper() == "NO")
+                                    { MarkCell(25, 14, excelWorksheet); }
+                                    else if (reader.GetValue(reader.GetOrdinal("Comcond_present")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("Comcond_present")).ToString().ToUpper() == "YES")
+                                    { MarkCell(25, 17, excelWorksheet); }
+                                    else if (reader.GetValue(reader.GetOrdinal("Comcond_present")).ToString().ToUpper() == "UNKNOWN" || reader.GetValue(reader.GetOrdinal("Comcond_present")).ToString().ToUpper() == "SIN INFORMACIÓN")
+                                    { MarkCell(25, 20, excelWorksheet); }
+                                }
+
+                                if ((reader.GetSchemaTable().Select("ColumnName = 'Comcond_preg'").Length > 0))
+                                {
+                                    if (reader.GetValue(reader.GetOrdinal("Comcond_preg")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("Comcond_preg")).ToString().ToUpper() == "YES")
+                                    { MarkCell(27, 4, excelWorksheet); }
+                                }
+
+                                AssignValueCell(27, 12, excelWorksheet, reader, "Comcond_pregt");
+
+                                if ((reader.GetSchemaTable().Select("ColumnName = 'Comcond_partum'").Length > 0))
+                                {
+                                    if (reader.GetValue(reader.GetOrdinal("Comcond_partum")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("Comcond_partum")).ToString().ToUpper() == "YES")
+                                    { MarkCell(27, 22, excelWorksheet); }
+                                }
+
+                                if ((reader.GetSchemaTable().Select("ColumnName = 'Comcond_immuno'").Length > 0))
+                                {
+                                    if (reader.GetValue(reader.GetOrdinal("Comcond_immuno")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("Comcond_immuno")).ToString().ToUpper() == "YES")
+                                    { MarkCell(28, 22, excelWorksheet); }
+                                }
+
+
+                                if ((reader.GetSchemaTable().Select("ColumnName = 'Comcond_cardi'").Length > 0))
+                                {
+                                    if (reader.GetValue(reader.GetOrdinal("Comcond_cardi")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("Comcond_cardi")).ToString().ToUpper() == "YES")
+                                    { MarkCell(28, 4, excelWorksheet); }
+                                }
+
+                                if ((reader.GetSchemaTable().Select("ColumnName = 'Comcond_diabetes'").Length > 0))
+                                {
+                                    if (reader.GetValue(reader.GetOrdinal("Comcond_diabetes")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("Comcond_diabetes")).ToString().ToUpper() == "YES")
+                                    { MarkCell(29, 4, excelWorksheet); }
+                                }
+
+
+                                if ((reader.GetSchemaTable().Select("ColumnName = 'Comcond_renal'").Length > 0))
+                                {
+                                    if (reader.GetValue(reader.GetOrdinal("Comcond_renal")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("Comcond_renal")).ToString().ToUpper() == "YES")
+                                    { MarkCell(29, 22, excelWorksheet); }
+                                }
+
+                                if ((reader.GetSchemaTable().Select("ColumnName = 'Comcond_liver'").Length > 0))
+                                {
+                                    if (reader.GetValue(reader.GetOrdinal("Comcond_liver")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("Comcond_liver")).ToString().ToUpper() == "YES")
+                                    { MarkCell(30, 4, excelWorksheet); }
+                                }
+
+                                if ((reader.GetSchemaTable().Select("ColumnName = 'Comcond_lung'").Length > 0))
+                                {
+                                    if (reader.GetValue(reader.GetOrdinal("Comcond_lung")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("Comcond_lung")).ToString().ToUpper() == "YES")
+                                    { MarkCell(30, 22, excelWorksheet); }
+                                }
+
+                                if ((reader.GetSchemaTable().Select("ColumnName = 'Comcond_neuro'").Length > 0))
+                                {
+                                    if (reader.GetValue(reader.GetOrdinal("Comcond_neuro")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("Comcond_neuro")).ToString().ToUpper() == "YES")
+                                    { MarkCell(31, 4, excelWorksheet); }
+                                }
+
+
+                                if ((reader.GetSchemaTable().Select("ColumnName = 'Comcond_malig'").Length > 0))
+                                {
+                                    if (reader.GetValue(reader.GetOrdinal("Comcond_malig")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("Comcond_malig")).ToString().ToUpper() == "YES")
+                                    { MarkCell(31, 22, excelWorksheet); }
+                                }
+
+                                AssignValueCell(32, 11, excelWorksheet, reader, "Comcond_other");
+
+                                if ((reader.GetSchemaTable().Select("ColumnName = 'patcourse_admit'").Length > 0))
+                                {
+                                    if (reader.GetValue(reader.GetOrdinal("patcourse_admit")).ToString().ToUpper() == "NO")
+                                    { MarkCell(34, 11, excelWorksheet); }
+                                    else if (reader.GetValue(reader.GetOrdinal("patcourse_admit")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("patcourse_admit")).ToString().ToUpper() == "YES")
+                                    { MarkCell(34, 14, excelWorksheet); }
+                                    else if (reader.GetValue(reader.GetOrdinal("patcourse_admit")).ToString().ToUpper() == "UNKNOWN" || reader.GetValue(reader.GetOrdinal("patcourse_admit")).ToString().ToUpper() == "SIN INFORMACIÓN")
+                                    { MarkCell(34, 17, excelWorksheet); }
+                                }
+
+                                AssignValueCell(35, 13, excelWorksheet, reader, "patcourse_presHCF");
+
+                                if ((reader.GetSchemaTable().Select("ColumnName = 'patcourse_icu'").Length > 0))
+                                {
+                                    if (reader.GetValue(reader.GetOrdinal("patcourse_icu")).ToString().ToUpper() == "NO")
+                                    { MarkCell(37, 24, excelWorksheet); }
+                                    else if (reader.GetValue(reader.GetOrdinal("patcourse_icu")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("patcourse_icu")).ToString().ToUpper() == "YES")
+                                    { MarkCell(37, 27, excelWorksheet); }
+                                    else if (reader.GetValue(reader.GetOrdinal("patcourse_icu")).ToString().ToUpper() == "UNKNOWN" || reader.GetValue(reader.GetOrdinal("patcourse_icu")).ToString().ToUpper() == "SIN INFORMACIÓN")
+                                    { MarkCell(37, 30, excelWorksheet); }
+                                }
+
+                                if ((reader.GetSchemaTable().Select("ColumnName = 'patcourse_vent'").Length > 0))
+                                {
+                                    if (reader.GetValue(reader.GetOrdinal("patcourse_vent")).ToString().ToUpper() == "NO")
+                                    { MarkCell(38, 24, excelWorksheet); }
+                                    else if (reader.GetValue(reader.GetOrdinal("patcourse_vent")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("patcourse_vent")).ToString().ToUpper() == "YES")
+                                    { MarkCell(38, 27, excelWorksheet); }
+                                    else if (reader.GetValue(reader.GetOrdinal("patcourse_vent")).ToString().ToUpper() == "UNKNOWN" || reader.GetValue(reader.GetOrdinal("patcourse_vent")).ToString().ToUpper() == "SIN INFORMACIÓN")
+                                    { MarkCell(38, 30, excelWorksheet); }
+                                }
+
+                                if ((reader.GetSchemaTable().Select("ColumnName = 'patcourse_ecmo'").Length > 0))
+                                {
+                                    if (reader.GetValue(reader.GetOrdinal("patcourse_ecmo")).ToString().ToUpper() == "NO")
+                                    { MarkCell(39, 24, excelWorksheet); }
+                                    else if (reader.GetValue(reader.GetOrdinal("patcourse_ecmo")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("patcourse_ecmo")).ToString().ToUpper() == "YES")
+                                    { MarkCell(39, 27, excelWorksheet); }
+                                    else if (reader.GetValue(reader.GetOrdinal("patcourse_ecmo")).ToString().ToUpper() == "UNKNOWN" || reader.GetValue(reader.GetOrdinal("patcourse_ecmo")).ToString().ToUpper() == "SIN INFORMACIÓN")
+                                    { MarkCell(39, 30, excelWorksheet); }
+                                }
+
+                                if ((reader.GetSchemaTable().Select("ColumnName = 'patcourse_iso'").Length > 0))
+                                {
+                                    if (reader.GetValue(reader.GetOrdinal("patcourse_iso")).ToString().ToUpper() == "NO")
+                                    { MarkCell(41, 29, excelWorksheet); }
+                                    else if (reader.GetValue(reader.GetOrdinal("patcourse_iso")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("patcourse_iso")).ToString().ToUpper() == "YES")
+                                    { MarkCell(41, 32, excelWorksheet); }
+                                    else if (reader.GetValue(reader.GetOrdinal("patcourse_iso")).ToString().ToUpper() == "UNKNOWN" || reader.GetValue(reader.GetOrdinal("patcourse_iso")).ToString().ToUpper() == "SIN INFORMACIÓN")
+                                    { MarkCell(41, 35, excelWorksheet); }
+                                }
+
+                                AssignValueCell(42, 11, excelWorksheet, reader, "patcourse_dateiso");
+
+                                // Sección 3: Información de esposición y antecedentes de viaje en los 14 dias previos al inicio de síntomas (antes de informas si es asintomático)
+
+                                if ((reader.GetSchemaTable().Select("ColumnName = 'patinfo_occuhcw'").Length > 0))
+                                {
+                                    if (reader.GetValue(reader.GetOrdinal("patinfo_occuhcw")).ToString().ToUpper() == "NO")
+                                    { MarkCell(46, 27, excelWorksheet); }
+                                    else if (reader.GetValue(reader.GetOrdinal("patinfo_occuhcw")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("patinfo_occuhcw")).ToString().ToUpper() == "YES")
+                                    { MarkCell(46, 30, excelWorksheet); }
+                                    else if (reader.GetValue(reader.GetOrdinal("patinfo_occuhcw")).ToString().ToUpper() == "UNKNOWN" || reader.GetValue(reader.GetOrdinal("patinfo_occuhcw")).ToString().ToUpper() == "SIN INFORMACIÓN")
+                                    { MarkCell(46, 33, excelWorksheet); }
+                                }
+
+                                AssignValueCell(47, 15, excelWorksheet, reader, "patinfo_occuhcw_country");
+                                AssignValueCell(47, 28, excelWorksheet, reader, "patinfo_occuhcw_city");
+                                AssignValueCell(48, 16, excelWorksheet, reader, "patinfo_occuhcw_name");
+
+
+                                if ((reader.GetSchemaTable().Select("ColumnName = 'expo_travel'").Length > 0))
+                                {
+                                    if (reader.GetValue(reader.GetOrdinal("expo_travel")).ToString().ToUpper() == "NO")
+                                    { MarkCell(53, 22, excelWorksheet); }
+                                    else if (reader.GetValue(reader.GetOrdinal("expo_travel")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("expo_travel")).ToString().ToUpper() == "YES")
+                                    { MarkCell(53, 25, excelWorksheet); }
+                                    else if (reader.GetValue(reader.GetOrdinal("expo_travel")).ToString().ToUpper() == "UNKNOWN" || reader.GetValue(reader.GetOrdinal("expo_travel")).ToString().ToUpper() == "SIN INFORMACIÓN")
+                                    { MarkCell(53, 28, excelWorksheet); }
+                                }
+
+                                AssignValueCell(56, 5, excelWorksheet, reader, "expo_travel_country1");
+                                AssignValueCell(56, 16, excelWorksheet, reader, "expo_travel_city1");
+                                AssignValueCell(56, 29, excelWorksheet, reader, "expo_travel_date1");
+
+                                AssignValueCell(57, 5, excelWorksheet, reader, "expo_travel_country2");
+                                AssignValueCell(57, 16, excelWorksheet, reader, "expo_travel_city2");
+                                AssignValueCell(57, 29, excelWorksheet, reader, "expo_travel_date2");
+
+                                AssignValueCell(58, 5, excelWorksheet, reader, "expo_travel_country3");
+                                AssignValueCell(58, 16, excelWorksheet, reader, "expo_travel_city3");
+                                AssignValueCell(58, 29, excelWorksheet, reader, "expo_travel_date3");
+
+                                if ((reader.GetSchemaTable().Select("ColumnName = 'expo_visit_healthcare'").Length > 0))
+                                {
+                                    if (reader.GetValue(reader.GetOrdinal("expo_visit_healthcare")).ToString().ToUpper() == "NO")
+                                    { MarkCell(60, 7, excelWorksheet); }
+                                    else if (reader.GetValue(reader.GetOrdinal("expo_visit_healthcare")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("expo_visit_healthcare")).ToString().ToUpper() == "YES")
+                                    { MarkCell(60, 10, excelWorksheet); }
+                                    else if (reader.GetValue(reader.GetOrdinal("expo_visit_healthcare")).ToString().ToUpper() == "UNKNOWN" || reader.GetValue(reader.GetOrdinal("expo_visit_healthcare")).ToString().ToUpper() == "SIN INFORMACIÓN")
+                                    { MarkCell(60, 13, excelWorksheet); }
+                                }
+
+                                if ((reader.GetSchemaTable().Select("ColumnName = 'expo_contact_case'").Length > 0))
+                                {
+                                    if (reader.GetValue(reader.GetOrdinal("expo_contact_case")).ToString().ToUpper() == "NO")
+                                    { MarkCell(62, 7, excelWorksheet); }
+                                    else if (reader.GetValue(reader.GetOrdinal("expo_contact_case")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("expo_contact_case")).ToString().ToUpper() == "YES")
+                                    { MarkCell(62, 10, excelWorksheet); }
+                                    else if (reader.GetValue(reader.GetOrdinal("expo_contact_case")).ToString().ToUpper() == "UNKNOWN" || reader.GetValue(reader.GetOrdinal("expo_contact_case")).ToString().ToUpper() == "SIN INFORMACIÓN")
+                                    { MarkCell(62, 13, excelWorksheet); }
+                                }
+
+                                AssignValueCell(65, 4, excelWorksheet, reader, "expo_case_setting_detail");
+
+                                AssignValueCell(67, 5, excelWorksheet, reader, "expo_ID1");
+                                AssignValueCell(67, 18, excelWorksheet, reader, "expo_case_date_first1");
+                                AssignValueCell(67, 29, excelWorksheet, reader, "expo_case_date_last1");
+
+                                AssignValueCell(68, 5, excelWorksheet, reader, "expo_ID2");
+                                AssignValueCell(68, 18, excelWorksheet, reader, "expo_case_date_first2");
+                                AssignValueCell(68, 29, excelWorksheet, reader, "expo_case_date_last2");
+
+                                AssignValueCell(69, 5, excelWorksheet, reader, "expo_ID3");
+                                AssignValueCell(69, 18, excelWorksheet, reader, "expo_case_date_first3");
+                                AssignValueCell(69, 29, excelWorksheet, reader, "expo_case_date_last3");
+
+                                AssignValueCell(70, 17, excelWorksheet, reader, "expo_case_location");
+
+                                // Sección 4: Evolución: completar y reenviar el formulario completo tan pronto se conozca el resultado de la en enfermedad o después de 30 días desde el reporte inicial
+
+                                AssignValueCell(73, 14, excelWorksheet, reader, "outcome_submitted_date");
+
+                                if ((reader.GetSchemaTable().Select("ColumnName = 'outcome_asymp'").Length > 0))
+                                {
+                                    if (reader.GetValue(reader.GetOrdinal("outcome_asymp")).ToString().ToUpper() == "NO")
+                                    { MarkCell(75, 6, excelWorksheet); }
+                                    else if (reader.GetValue(reader.GetOrdinal("outcome_asymp")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("outcome_asymp")).ToString().ToUpper() == "YES")
+                                    { MarkCell(76, 6, excelWorksheet); }
+                                    //else if (reader.GetValue(reader.GetOrdinal("outcome_asymp")).ToString().ToUpper() == "UNKNOWN" || reader.GetValue(reader.GetOrdinal("outcome_asymp")).ToString().ToUpper() == "SIN INFORMACIÓN")
+                                    //{ MarkCell(62, 13, excelWorksheet); }
+                                }
+
+                                if ((reader.GetSchemaTable().Select("ColumnName = 'outcome_patcourse_admit'").Length > 0))
+                                {
+                                    if (reader.GetValue(reader.GetOrdinal("outcome_patcourse_admit")).ToString().ToUpper() == "NO")
+                                    { MarkCell(79, 11, excelWorksheet); }
+                                    else if (reader.GetValue(reader.GetOrdinal("outcome_patcourse_admit")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("outcome_patcourse_admit")).ToString().ToUpper() == "YES")
+                                    { MarkCell(79, 14, excelWorksheet); }
+                                    else if (reader.GetValue(reader.GetOrdinal("outcome_patcourse_admit")).ToString().ToUpper() == "UNKNOWN" || reader.GetValue(reader.GetOrdinal("outcome_patcourse_admit")).ToString().ToUpper() == "SIN INFORMACIÓN")
+                                    { MarkCell(79, 17, excelWorksheet); }
+                                }
+
+                                AssignValueCell(81, 13, excelWorksheet, reader, "outcome_patcourse_presHCF");
+
+                                if ((reader.GetSchemaTable().Select("ColumnName = 'outcome_patcourse_icu'").Length > 0))
+                                {
+                                    if (reader.GetValue(reader.GetOrdinal("outcome_patcourse_icu")).ToString().ToUpper() == "NO")
+                                    { MarkCell(82, 25, excelWorksheet); }
+                                    else if (reader.GetValue(reader.GetOrdinal("outcome_patcourse_icu")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("outcome_patcourse_icu")).ToString().ToUpper() == "YES")
+                                    { MarkCell(82, 28, excelWorksheet); }
+                                    else if (reader.GetValue(reader.GetOrdinal("outcome_patcourse_icu")).ToString().ToUpper() == "UNKNOWN" || reader.GetValue(reader.GetOrdinal("outcome_patcourse_icu")).ToString().ToUpper() == "SIN INFORMACIÓN")
+                                    { MarkCell(82, 31, excelWorksheet); }
+                                }
+
+                                if ((reader.GetSchemaTable().Select("ColumnName = 'outcome_patcourse_vent'").Length > 0))
+                                {
+                                    if (reader.GetValue(reader.GetOrdinal("outcome_patcourse_vent")).ToString().ToUpper() == "NO")
+                                    { MarkCell(83, 25, excelWorksheet); }
+                                    else if (reader.GetValue(reader.GetOrdinal("outcome_patcourse_vent")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("outcome_patcourse_vent")).ToString().ToUpper() == "YES")
+                                    { MarkCell(83, 28, excelWorksheet); }
+                                    else if (reader.GetValue(reader.GetOrdinal("outcome_patcourse_vent")).ToString().ToUpper() == "UNKNOWN" || reader.GetValue(reader.GetOrdinal("outcome_patcourse_vent")).ToString().ToUpper() == "SIN INFORMACIÓN")
+                                    { MarkCell(83, 31, excelWorksheet); }
+                                }
+
+                                if ((reader.GetSchemaTable().Select("ColumnName = 'outcome_patcourse_ecmo'").Length > 0))
+                                {
+                                    if (reader.GetValue(reader.GetOrdinal("outcome_patcourse_ecmo")).ToString().ToUpper() == "NO")
+                                    { MarkCell(84, 25, excelWorksheet); }
+                                    else if (reader.GetValue(reader.GetOrdinal("outcome_patcourse_ecmo")).ToString().ToUpper() == "SI" || reader.GetValue(reader.GetOrdinal("outcome_patcourse_ecmo")).ToString().ToUpper() == "YES")
+                                    { MarkCell(84, 28, excelWorksheet); }
+                                    else if (reader.GetValue(reader.GetOrdinal("outcome_patcourse_ecmo")).ToString().ToUpper() == "UNKNOWN" || reader.GetValue(reader.GetOrdinal("outcome_patcourse_ecmo")).ToString().ToUpper() == "SIN INFORMACIÓN")
+                                    { MarkCell(84, 31, excelWorksheet); }
+                                }
+
+                                // outcome_patcourse_status
+                                if ((reader.GetSchemaTable().Select("ColumnName = 'outcome_patcourse_status'").Length > 0))
+                                {
+                                    if (reader.GetValue(reader.GetOrdinal("outcome_patcourse_status")).ToString().ToUpper() == "A")
+                                    { MarkCell(86, 4, excelWorksheet); } // 
+
+                                    if (reader.GetValue(reader.GetOrdinal("outcome_patcourse_status")).ToString().ToUpper() == "S")
+                                    { MarkCell(86, 11, excelWorksheet); } // 
+
+                                    if (reader.GetValue(reader.GetOrdinal("outcome_patcourse_status")).ToString().ToUpper() == "D")
+                                    { MarkCell(86, 22, excelWorksheet); } // 
+
+                                    if (reader.GetValue(reader.GetOrdinal("outcome_patcourse_status")).ToString().ToUpper() == "O")
+                                    { MarkCell(86, 27, excelWorksheet); } // 
+
+                                }
+
+                                AssignValueCell(87, 15, excelWorksheet, reader, "outcome_patcourse_status_other");
+                                AssignValueCell(88, 25, excelWorksheet, reader, "outcome_date_of_outcome");
+
+
+                                // outcome_lab_result
+
+                                if ((reader.GetSchemaTable().Select("ColumnName = 'outcome_lab_result'").Length > 0))
+                                {
+                                    if (reader.GetValue(reader.GetOrdinal("outcome_lab_result")).ToString().ToUpper() == "P")
+                                    { MarkCell(90, 10, excelWorksheet); } // 
+
+                                    if (reader.GetValue(reader.GetOrdinal("outcome_lab_result")).ToString().ToUpper() == "N")
+                                    { MarkCell(90, 15, excelWorksheet); } // 
+
+                                    if (reader.GetValue(reader.GetOrdinal("outcome_lab_result")).ToString().ToUpper() == "I")
+                                    { MarkCell(90, 20, excelWorksheet); } // 
+
+
+                                }
+
+                                //outcome_contacts_followed
+                                AssignValueCell(91, 21, excelWorksheet, reader, "outcome_contacts_followed");
+
+                                //outcome_contacts_followed_unknown
+                                if ((reader.GetSchemaTable().Select("ColumnName = 'outcome_contacts_followed_unknown'").Length > 0))
+                                {
+                                         MarkCell(91, 29, excelWorksheet); 
+                                }
+
+                            }
                         }
                     }
                     command.Parameters.Clear();
                     con.Close();
-                    if ((storedProcedure == "Cases"))
+                    if ((storedProcedure == "Cases" && SARSCoV2==0))
                     {
                         FluCase flucase = db.FluCases.Find(recordID);
                         var ListTest = flucase.CaseLabTests.OrderBy(x=> x.flow_test).ThenByDescending(z => z.CatTestType != null ? z.CatTestType.orden : 99).ThenBy(m => m.CatTestResult != null ? m.CatTestResult.orden : 99).ThenBy(z => z.TestDate != null ? z.TestDate : DateTime.Now);

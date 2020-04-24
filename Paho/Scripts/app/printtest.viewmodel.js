@@ -47,10 +47,18 @@ function PrintTestViewModel(app, dataModel) {
 	};
 
 	self.GeneratebyList = function (record_id) {
-	    console.log(app.Views.Home.selectedInstitutionId());
+	    //console.log(app.Views.Home.selectedInstitutionId());
 	    var namevalues = { Report: "Cases", CountryID: app.Views.Home.selectedCountryId() ? app.Views.Home.selectedCountryId() : app.Views.Home.UsrCountry(), InstitutionID: "" , RecordID: record_id, NumSample: "" }
 
 	        self.RendertoPDF(app.dataModel.getPrintTest + "?" + $.param(namevalues, true));
+
+	};
+
+	self.GeneratebyList_SARSCov2 = function (record_id) {
+	    //console.log(app.Views.Home.selectedInstitutionId());
+	    var namevalues = { Report: "CasesBrote_PDF", CountryID: app.Views.Home.selectedCountryId() ? app.Views.Home.selectedCountryId() : app.Views.Home.UsrCountry(), InstitutionID: "", RecordID: record_id, NumSample: "" }
+
+	    self.RendertoPDF(app.dataModel.getPrintTest + "?" + $.param(namevalues, true));
 
 	};
 };

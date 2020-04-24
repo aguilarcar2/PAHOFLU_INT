@@ -717,6 +717,7 @@ namespace Paho.Controllers
                                          x.FN_D,
                                          x.NE_D ?? "",
                                          "<img src='/Content/themes/base/images/PDF.png' alt='print'/> ",
+                                         "<img src='/Content/themes/base/images/PDF_SARSCoV2.png' alt='print'/> ",
                                          x.VR_IF_D == null ? "" :  x.VR_IF_D.TestResultID == null ? "": x.VR_IF_D.TestResultID.ToString() == "P" ? x.VR_IF_D.CatVirusType == null ? "" : (user.Institution.Country.Language == "SPA" ? x.VR_IF_D.CatVirusType.SPA : x.VR_IF_D.CatVirusType.ENG) :  x.VR_IF_D.TestResultID == null  ? ""  : user.Institution.Country.Language == "SPA" ? db.CatTestResult.Where(j=> j.value == x.VR_IF_D.TestResultID.ToString()).FirstOrDefault().description : db.CatTestResult.Where(j=> j.value == x.VR_IF_D.TestResultID.ToString()).FirstOrDefault().ENG ,
                                          x.VR_PCR_D == null ? "" : x.VR_PCR_D.TestResultID == null ? 
                                                         "": x.VR_PCR_D.TestResultID.ToString() == "P" ?  
