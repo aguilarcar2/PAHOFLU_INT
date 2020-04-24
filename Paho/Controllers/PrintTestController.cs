@@ -83,7 +83,7 @@ namespace Paho.Controllers
 
                     workbook.LoadFromStream(ms);
                     //workbook.SaveToFile(Path_Print.Replace("{countryId}", CountryID_.ToString()) + Sample_Print_ + ".pdf", Spire.Xls.FileFormat.PDF);
-                    workbook.SaveToFile(Path_Print.Replace("{countryId}", CountryID_.ToString()) + Sample_Print_ + ".xlsx");
+                    //workbook.SaveToFile(Path_Print.Replace("{countryId}", CountryID_.ToString()) + Sample_Print_ + ".xlsx");
                     workbook.SaveToStream(pdfs, Spire.Xls.FileFormat.PDF);
 
                 }
