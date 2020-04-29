@@ -12,14 +12,7 @@ using System.Web.Mvc;
 using System.Xml;
 //-------------------
 using Microsoft.AspNet.Identity;
-/*/------------------
-using Paho.Models;
 
-using Paho.Reports.Entities;
-using System.Drawing;
-using System.Net;
-using System.Data.Entity;
-*/
 
 namespace Paho.Controllers {
     [Authorize(Roles = "Admin, Staff")]

@@ -290,6 +290,7 @@
     <Compile Include="Controllers\CatSampleReasonsNoProcessedController.cs" />
     <Compile Include="Controllers\CatVirusLinajesController.cs" />
     <Compile Include="Controllers\ColonyController.cs" />
+    <Compile Include="Controllers\ExportDataController.cs" />
     <Compile Include="Controllers\HamletController.cs" />
     <Compile Include="Controllers\ImportPadronController.cs" />
     <Compile Include="Controllers\NeighborhoodController.cs" />
@@ -2471,6 +2472,7 @@
     <Folder Include="Concrete\" />
     <Folder Include="Views\AssignFinalResult\" />
     <Folder Include="Views\Country\" />
+    <Folder Include="Views\ExportData\" />
     <Folder Include="Views\ExportGraphics\" />
     <Folder Include="Views\ExportLab\" />
     <Folder Include="Views\GetImportLab\" />
