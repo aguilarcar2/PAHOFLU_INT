@@ -9,6 +9,10 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using Newtonsoft.Json;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using Newtonsoft.Json.Linq;
 
 namespace WSConsume
 {
@@ -18,9 +22,27 @@ namespace WSConsume
         {
             System.Console.WriteLine("Invocando WS PAHO - CR Inciensa->STAR");
 
-            CargarDesdeWS();
+            //CargarDesdeWS();
+            Console.WriteLine("Cantidad de argumentos: {0}", args.Length);
+            foreach (string argumento in args)
+            {
+                Console.WriteLine("Argumentos: {0}", argumento);
+            }
+            //Console.ReadKey();
 
-            System.Console.WriteLine("Invocando WS PAHO - CR Inciensa->END");
+            if (args.Length == 0)
+            {
+                CargarDesdeWS();
+
+                System.Console.WriteLine("Invocando WS PAHO - CR Inciensa->END");
+            }
+            else if(args[0].ToUpper() == "IMPORT")
+            {
+                ImportDataToINCIENSAWS();
+            }
+
+
+            
         }
 
         public static bool CargarDesdeWS()
@@ -190,6 +212,225 @@ namespace WSConsume
             }
             // Apply only if it has a Total row at the end and hast SUM in range, i.e. SUM(A1:A4)
             //excelWorksheet.DeleteRow(row, 2);
+        }
+
+        public static async Task<bool> ImportDataToINCIENSAWS()
+        {
+            try
+            {
+
+                var url = ConfigurationManager.AppSettings["ExportDataURLBase"] + "?DpvmuszJE_=9&Mbmhvbkf_=SPA&Qspdfcvsf_=1";
+                var url_1 = ConfigurationManager.AppSettings["ExportDataURLBase"] + "?DpvmuszJE_=9&Mbmhvbkf_=SPA&Qspdfcvsf_=2";
+                var url_2 = ConfigurationManager.AppSettings["ExportDataURLBase"] + "?DpvmuszJE_=9&Mbmhvbkf_=SPA&Qspdfcvsf_=3";
+
+                var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+
+                /** Empieza la exportación de los datos a INCIENSA **/
+                ///** Tabla Export_Info_Case_CR_temporal *** //
+                System.Console.WriteLine("Invocando WS PAHO to INCIENSA Export_Info_Case_CR_temporal ->BEGIN");
+
+                System.Console.WriteLine("CargarDesdeWS-> URL -> " + url);
+                var httpWebRequestQR = (HttpWebRequest)WebRequest.Create(url);
+                httpWebRequestQR.ContentType = "application/json";
+                httpWebRequestQR.Method = "GET";
+
+                System.Console.WriteLine("CargarDesdeWS-> GET -> " + httpWebRequestQR.Address.PathAndQuery ); 
+                var httpResponseQR = (HttpWebResponse)httpWebRequestQR.GetResponse();
+                using (var streamReader = new StreamReader(httpResponseQR.GetResponseStream()))
+                {
+                    var resultQR = streamReader.ReadToEnd();
+                    string jsonStringsign = resultQR;
+                    dynamic jsonWS = Newtonsoft.Json.JsonConvert.DeserializeObject(jsonStringsign);
+
+                    //System.Console.WriteLine("CargarDesdeWS-> jsonTables -> " + jsonStringsign);
+
+                    DataTable dt = (DataTable)JsonConvert.DeserializeObject(jsonStringsign, (typeof(DataTable)));
+
+                    //for (int i = 0; i < dt.Columns.Count; i++)
+                    //{
+                    //    if (dt.Columns[i].ColumnName == "Inicio_sintomas"
+                    //        || dt.Columns[i].ColumnName == "Fecha_muestra"
+                    //        || dt.Columns[i].ColumnName == "Fecha_notificacion"
+                    //        || dt.Columns[i].ColumnName == "Fecha_registro"
+                    //        || dt.Columns[i].ColumnName == "Fecha_Nacimiento"
+                    //        || dt.Columns[i].ColumnName == "DestFechaLlegada1"
+                    //        //|| dt.Columns[i].ColumnName == "DestFechaSalida1"
+                    //        //|| dt.Columns[i].ColumnName == "DestFechaLlegada2"
+                    //        //|| dt.Columns[i].ColumnName == "DestFechaSalida2"
+                    //        //|| dt.Columns[i].ColumnName == "DestPrevSintoma3"
+                    //        //|| dt.Columns[i].ColumnName == "DestFechaLlegada3"
+                    //        //|| dt.Columns[i].ColumnName == "DestFechaSalida3"
+                    //        //|| dt.Columns[i].ColumnName == "Fecha_primera_dosis"
+                    //        //|| dt.Columns[i].ColumnName == "Fecha_segunda_dosis"
+                    //        //|| dt.Columns[i].ColumnName == "Neumococo_fecha"
+                    //        //|| dt.Columns[i].ColumnName == "Antiviral_fecha"
+                    //        //|| dt.Columns[i].ColumnName == "Fecha_diag"
+                    //        //|| dt.Columns[i].ColumnName == "hosp_ing_fecha"
+                    //        //|| dt.Columns[i].ColumnName == "Hosp_egre_fecha"
+                    //        //|| dt.Columns[i].ColumnName == "InfeccHospitFecha"
+                    //        //|| dt.Columns[i].ColumnName == "UCI_ing_fecha"
+                    //        //|| dt.Columns[i].ColumnName == "UCI_egre_fecha"
+                    //        //|| dt.Columns[i].ColumnName == "Fecha_envio"
+                    //        //|| dt.Columns[i].ColumnName == "Caso_cerrado_fecha"
+                    //        //|| dt.Columns[i].ColumnName == "Recepcion_fecha"
+                    //        //|| dt.Columns[i].ColumnName == "RecDate_National"
+                    //        //|| dt.Columns[i].ColumnName == "Res_fin_fecha"
+                    //        //|| dt.Columns[i].ColumnName == "FeverDate"
+                    //        )
+                    //    {
+                    //        dt.Columns[i].DataType = typeof(DateTime?);
+                    //    }
+                    //}
+
+                    using (var con = new SqlConnection(consString))
+                    {
+
+                        SqlCommand command_DELETE = new SqlCommand("DELETE FROM Export_Info_Case_CR_temporal", con);
+                        command_DELETE.Connection.Open();
+                        command_DELETE.ExecuteNonQuery();
+                        command_DELETE.Connection.Close();
+
+                        using (var sqlBulkCopy = new SqlBulkCopy(con))
+                        {
+                            sqlBulkCopy.DestinationTableName = "dbo.Export_Info_Case_CR_temporal";
+                            sqlBulkCopy.BulkCopyTimeout = 1200;
+                            con.Open();
+                            sqlBulkCopy.WriteToServer(dt);
+                            con.Close();
+                        }
+                    }
+
+                }
+
+                System.Console.WriteLine("Invocando WS PAHO to INCIENSA  Export_Info_Case_CR_temporal ->END");
+
+
+                ///** Tabla Export_Info_Case_CR_temporal *** //
+                System.Console.WriteLine("Invocando WS PAHO to INCIENSA Export_Info_Test_Case_CR_temporal ->BEGIN");
+
+                System.Console.WriteLine("CargarDesdeWS-> URL -> " + url_1);
+                var httpWebRequestQR_2 = (HttpWebRequest)WebRequest.Create(url_1);
+                httpWebRequestQR_2.ContentType = "application/json";
+                httpWebRequestQR_2.Method = "GET";
+
+                System.Console.WriteLine("CargarDesdeWS-> GET -> " + httpWebRequestQR_2.Address.PathAndQuery);
+                var httpResponseQR_2 = (HttpWebResponse)httpWebRequestQR_2.GetResponse();
+                using (var streamReader = new StreamReader(httpResponseQR_2.GetResponseStream()))
+                {
+                    var resultQR = streamReader.ReadToEnd();
+                    string jsonStringsign = resultQR;
+                    dynamic jsonWS = Newtonsoft.Json.JsonConvert.DeserializeObject(jsonStringsign);
+
+                    //System.Console.WriteLine("CargarDesdeWS-> jsonTables -> " + jsonStringsign);
+
+                    DataTable dt = (DataTable)JsonConvert.DeserializeObject(jsonStringsign, (typeof(DataTable)));
+
+
+                    using (var con = new SqlConnection(consString))
+                    {
+
+                        SqlCommand command_DELETE = new SqlCommand("DELETE FROM Export_Info_Test_Case_CR_temporal", con);
+                        command_DELETE.Connection.Open();
+                        command_DELETE.ExecuteNonQuery();
+                        command_DELETE.Connection.Close();
+
+                        using (var sqlBulkCopy = new SqlBulkCopy(con))
+                        {
+                            sqlBulkCopy.DestinationTableName = "dbo.Export_Info_Test_Case_CR_temporal";
+                            sqlBulkCopy.BulkCopyTimeout = 1200;
+                            con.Open();
+                            sqlBulkCopy.WriteToServer(dt);
+                            con.Close();
+                        }
+                    }
+
+                }
+
+                System.Console.WriteLine("Invocando WS PAHO to INCIENSA  Export_Info_Test_Case_CR_temporal ->END");
+
+
+                ///** Tabla Export_INCIENSA_CR_temporal *** //
+                System.Console.WriteLine("Invocando WS PAHO to INCIENSA Export_INCIENSA_CR_temporal ->BEGIN");
+
+                System.Console.WriteLine("CargarDesdeWS-> URL -> " + url_2);
+                var httpWebRequestQR_3 = (HttpWebRequest)WebRequest.Create(url_2);
+                httpWebRequestQR_3.ContentType = "application/json";
+                httpWebRequestQR_3.Method = "GET";
+
+                System.Console.WriteLine("CargarDesdeWS-> GET -> " + httpWebRequestQR_3.Address.PathAndQuery);
+                var httpResponseQR_3 = (HttpWebResponse)httpWebRequestQR_3.GetResponse();
+                using (var streamReader = new StreamReader(httpResponseQR_3.GetResponseStream()))
+                {
+                    var resultQR = streamReader.ReadToEnd();
+                    string jsonStringsign = resultQR;
+                    dynamic jsonWS = Newtonsoft.Json.JsonConvert.DeserializeObject(jsonStringsign);
+
+                    //System.Console.WriteLine("CargarDesdeWS-> jsonTables -> " + jsonStringsign);
+
+                    DataTable dt = (DataTable)JsonConvert.DeserializeObject(jsonStringsign, (typeof(DataTable)));
+
+
+                    using (var con = new SqlConnection(consString))
+                    {
+
+                        SqlCommand command_DELETE = new SqlCommand("DELETE FROM Export_INCIENSA_CR_temporal", con);
+                        command_DELETE.Connection.Open();
+                        command_DELETE.ExecuteNonQuery();
+                        command_DELETE.Connection.Close();
+
+                        using (var sqlBulkCopy = new SqlBulkCopy(con))
+                        {
+                            sqlBulkCopy.DestinationTableName = "dbo.Export_INCIENSA_CR_temporal";
+                            sqlBulkCopy.BulkCopyTimeout = 1200;
+                            con.Open();
+                            sqlBulkCopy.WriteToServer(dt);
+                            con.Close();
+                        }
+                    }
+
+                }
+
+                System.Console.WriteLine("Invocando WS PAHO to INCIENSA  Export_INCIENSA_CR_temporal ->END");
+
+                using (var con = new SqlConnection(consString))
+                {
+
+                    using (var command = new SqlCommand("Export_Temporal_to_Historic_Case_CR", con)
+                    {
+                        CommandType = CommandType.StoredProcedure
+                    })
+                    {
+                        command.Connection.Open();
+                        command.ExecuteNonQuery();
+                        command.Connection.Close();
+                    }
+                }
+
+
+            }
+            catch (Exception e)
+            {
+                //ViewBag.Message = "El archivo no se pudo cargar, por favor, compruebe el archivo -  " + e.Message;
+                System.Console.WriteLine("El archivo no se pudo cargar, por favor verifique -  " + e.Message);
+            }
+
+            return true;
+
+        }
+
+        static async Task<string> PostURI(Uri u, HttpContent c)
+        {
+            var response = string.Empty;
+            using (var client = new HttpClient())
+            {
+                HttpResponseMessage result = await client.PostAsync(u, c);
+                if (result.IsSuccessStatusCode)
+                {
+                    response = result.StatusCode.ToString();
+                }
+            }
+            return response;
         }
     }
 }
