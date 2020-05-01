@@ -22,7 +22,7 @@ namespace Paho.Controllers
         }
 
         [WebMethod]
-        public string GetData(int DpvmuszJE_, string Mbmhvbkf_, int Qspdfcvsf_)
+        public string GetData(int DpvmuszJE_, string Mbmhvbkf_, int Qspdfcvsf_, string dLfz)
         //  Parameters  
         //     DpvmuszJE_ ->  CountryID_        //
         //     Mbmhvbkf_ ->  Languaje_        //
@@ -41,9 +41,16 @@ namespace Paho.Controllers
                 DataTable dt_InfoTest = new DataTable();
                 DataTable dt_InfoINCIENSA = new DataTable();
 
-                if (IP_Addr_Host == ConfigurationManager.AppSettings["IPHostWSINCIENSA"])
+                string cKeyValidate = ConfigurationManager.AppSettings["KeyHostWSINCIENSA"];
+
+                if (dLfz != cKeyValidate)
                 {
-                    using (var con = new SqlConnection(consString))
+                    return "No válido";
+                }
+
+                //if (IP_Addr_Host == ConfigurationManager.AppSettings["IPHostWSINCIENSA"])
+                //{
+                using (var con = new SqlConnection(consString))
                     {
                         var jsondata_app = new List<Object>();
                         var item_data_InfoCase = new Dictionary<string, Object>();
@@ -60,7 +67,7 @@ namespace Paho.Controllers
 
                         if (Qspdfcvsf_ == 1)
                         {
-                            using (var command = new SqlCommand("Export_Info_Case_CR_SP", con) { CommandType = CommandType.StoredProcedure })
+                            using (var command = new SqlCommand("Export_Info_Case_CR_SP", con) { CommandType = CommandType.StoredProcedure, CommandTimeout = 2000 })
                             {
                                 DateTime AnioReport = DateTime.Now;
                                 command.Parameters.Clear();
@@ -82,7 +89,7 @@ namespace Paho.Controllers
 
                         if (Qspdfcvsf_ == 2)
                         {
-                            using (var command_1 = new SqlCommand("Export_Info_Test_Case_CR_SP", con) { CommandType = CommandType.StoredProcedure })
+                            using (var command_1 = new SqlCommand("Export_Info_Test_Case_CR_SP", con) { CommandType = CommandType.StoredProcedure, CommandTimeout = 2000 })
                             {
                                 command_1.Parameters.Clear();
 
@@ -101,7 +108,7 @@ namespace Paho.Controllers
 
                         if (Qspdfcvsf_ == 3)
                         {
-                            using (var command_2 = new SqlCommand("Export_INCIENSA_CR_SP", con) { CommandType = CommandType.StoredProcedure })
+                            using (var command_2 = new SqlCommand("Export_INCIENSA_CR_SP", con) { CommandType = CommandType.StoredProcedure, CommandTimeout = 2000 })
                             {
                                 command_2.Parameters.Clear();
 
@@ -132,7 +139,7 @@ namespace Paho.Controllers
 
                         return null;
                     }
-            }
+            //}
             }
             catch (Exception e)
             {

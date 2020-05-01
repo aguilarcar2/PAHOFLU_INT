@@ -219,9 +219,9 @@ namespace WSConsume
             try
             {
 
-                var url = ConfigurationManager.AppSettings["ExportDataURLBase"] + "?DpvmuszJE_=9&Mbmhvbkf_=SPA&Qspdfcvsf_=1";
-                var url_1 = ConfigurationManager.AppSettings["ExportDataURLBase"] + "?DpvmuszJE_=9&Mbmhvbkf_=SPA&Qspdfcvsf_=2";
-                var url_2 = ConfigurationManager.AppSettings["ExportDataURLBase"] + "?DpvmuszJE_=9&Mbmhvbkf_=SPA&Qspdfcvsf_=3";
+                var url = ConfigurationManager.AppSettings["ExportDataURLBase"] + "?DpvmuszJE_=9&Mbmhvbkf_=SPA&Qspdfcvsf_=1&dLfz=" + ConfigurationManager.AppSettings["KeyHostWSINCIENSA"];
+                var url_1 = ConfigurationManager.AppSettings["ExportDataURLBase"] + "?DpvmuszJE_=9&Mbmhvbkf_=SPA&Qspdfcvsf_=2&dLfz=" + ConfigurationManager.AppSettings["KeyHostWSINCIENSA"];
+                var url_2 = ConfigurationManager.AppSettings["ExportDataURLBase"] + "?DpvmuszJE_=9&Mbmhvbkf_=SPA&Qspdfcvsf_=3&dLfz=" + ConfigurationManager.AppSettings["KeyHostWSINCIENSA"];
 
                 var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
