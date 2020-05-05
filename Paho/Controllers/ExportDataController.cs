@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -79,12 +81,27 @@ namespace Paho.Controllers
                                 command.Parameters.Clear();
                                 con.Close();
 
-                                //item_data_InfoCase.Add("Export_Info_Case_CR", JsonConvert.SerializeObject(dt_InfoCase, Formatting.Indented));
-                                item_data_InfoCaseString = JsonConvert.SerializeObject(dt_InfoCase, Formatting.Indented);
-                                item_data_InfoCase_Dynamic = jsInfoINCIENSA.Deserialize<dynamic>(item_data_InfoCaseString);
+                                Newtonsoft.Json.JsonSerializer json = new Newtonsoft.Json.JsonSerializer();
+                                json.NullValueHandling = NullValueHandling.Ignore;
+                                json.ObjectCreationHandling = Newtonsoft.Json.ObjectCreationHandling.Replace;
+                                json.MissingMemberHandling = Newtonsoft.Json.MissingMemberHandling.Ignore;
+                                json.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                                json.Converters.Add(new DataTableConverter());
+                                json.NullValueHandling = NullValueHandling.Include;
+                                StringWriter sw = new StringWriter();
+                                Newtonsoft.Json.JsonTextWriter writer = new JsonTextWriter(sw);
+                                writer.Formatting = Formatting.Indented;
+                                writer.QuoteChar = '"';
+                                json.Serialize(writer, dt_InfoCase);
 
-                                return item_data_InfoCaseString;
-                            }
+                                item_data_InfoCaseString = sw.ToString();
+                                writer.Close();
+                                sw.Close();
+
+                                //item_data_InfoCaseString = JsonConvert.SerializeObject(dt_InfoCase, Formatting.Indented);
+
+                                return item_data_InfoCaseString.Replace("\\\"", "'").Replace("\"\"", "\"null\"");
+                             }
                         }
 
                         if (Qspdfcvsf_ == 2)
@@ -98,11 +115,27 @@ namespace Paho.Controllers
                                 command_1.Parameters.Clear();
                                 con.Close();
 
-                                //item_data_InfoTest.Add("Export_Info_Test_Case_CR", JsonConvert.SerializeObject(dt_InfoTest, Formatting.Indented));
-                                item_data_InfoTestString = JsonConvert.SerializeObject(dt_InfoTest, Formatting.Indented);
-                                item_data_InfoTest_Dynamic = jsInfoINCIENSA.Deserialize<dynamic>(item_data_InfoTestString);
+                                Newtonsoft.Json.JsonSerializer json = new Newtonsoft.Json.JsonSerializer();
+                                json.NullValueHandling = NullValueHandling.Ignore;
+                                json.ObjectCreationHandling = Newtonsoft.Json.ObjectCreationHandling.Replace;
+                                json.MissingMemberHandling = Newtonsoft.Json.MissingMemberHandling.Ignore;
+                                json.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                                json.NullValueHandling = NullValueHandling.Include;
+                                json.Converters.Add(new DataTableConverter());
+                                StringWriter sw = new StringWriter();
+                                Newtonsoft.Json.JsonTextWriter writer = new JsonTextWriter(sw);
+                                writer.Formatting = Formatting.Indented;
+                                writer.QuoteChar = '"';
+                                json.Serialize(writer, dt_InfoTest);
 
-                                return item_data_InfoTestString;
+                                item_data_InfoTestString = sw.ToString();
+                                writer.Close();
+                                sw.Close();
+
+                                //item_data_InfoTestString = JsonConvert.SerializeObject(dt_InfoTest, Formatting.Indented);
+                                ////item_data_InfoTest_Dynamic = jsInfoINCIENSA.Deserialize<dynamic>(item_data_InfoTestString);
+
+                                return item_data_InfoTestString.Replace("\\\"", "'").Replace("\"\"", "\"null\"");
                             }
                         }
 
@@ -117,10 +150,27 @@ namespace Paho.Controllers
                                 command_2.Parameters.Clear();
                                 con.Close();
 
-                                item_data_InfoINCIENSAString = JsonConvert.SerializeObject(dt_InfoINCIENSA, Formatting.Indented);
-                                item_data_InfoINCIENSA_Dynamic = jsInfoINCIENSA.Deserialize<dynamic>(item_data_InfoINCIENSAString);
 
-                                return item_data_InfoINCIENSAString;
+                                Newtonsoft.Json.JsonSerializer json = new Newtonsoft.Json.JsonSerializer() ;
+                                json.NullValueHandling = NullValueHandling.Ignore;
+                                json.ObjectCreationHandling = Newtonsoft.Json.ObjectCreationHandling.Replace;
+                                json.MissingMemberHandling = Newtonsoft.Json.MissingMemberHandling.Ignore;
+                                json.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                                json.NullValueHandling = NullValueHandling.Include;
+                                json.Converters.Add(new DataTableConverter());
+                                StringWriter sw = new StringWriter();
+                                Newtonsoft.Json.JsonTextWriter writer = new JsonTextWriter(sw);
+                                writer.Formatting = Formatting.Indented;
+                                writer.QuoteChar = '"';
+                                json.Serialize(writer, dt_InfoINCIENSA);
+
+                                item_data_InfoINCIENSAString = sw.ToString();
+                                writer.Close();
+                                sw.Close();
+                                //item_data_InfoINCIENSAString = JsonConvert.SerializeObject(dt_InfoINCIENSA, Formatting.Indented);
+                                ////item_data_InfoINCIENSA_Dynamic = jsInfoINCIENSA.Deserialize<dynamic>(item_data_InfoINCIENSAString);
+
+                                return item_data_InfoINCIENSAString.Replace("\\\"", "'").Replace("\"\"", "\"null\"");
 
                             }
                         }
@@ -143,7 +193,7 @@ namespace Paho.Controllers
             }
             catch (Exception e)
             {
-                ViewBag.Message = "El reporte no se pudo generar, por favor intente de nuevo: " + e.Message;
+                return  "+++  El reporte no se pudo generar, por favor intente de nuevo: " + e.Message + " ---";
             }
 
             return null;

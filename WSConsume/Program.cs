@@ -241,11 +241,23 @@ namespace WSConsume
                 {
                     var resultQR = streamReader.ReadToEnd();
                     string jsonStringsign = resultQR;
-                    dynamic jsonWS = Newtonsoft.Json.JsonConvert.DeserializeObject(jsonStringsign);
 
-                    //System.Console.WriteLine("CargarDesdeWS-> jsonTables -> " + jsonStringsign);
+                    File.WriteAllText(@"C:\Temp\csc.json", jsonStringsign);
+                    //dynamic jsonWS = Newtonsoft.Json.JsonConvert.DeserializeObject(jsonStringsign);
+                    //System.Console.WriteLine("CargarDesdeWS-> jsonWS -> " + jsonWS.GetType());
+                    //var i = 1;
+                    //foreach (var obj in jsonWS)
+                    //{
+                    //    //Console.WriteLine(obj);
+                    //    i = i + 1;
+                    //    if (i == 5) break;
+                    //}
+                    //System.Console.WriteLine("CargarDesdeWS-> jsonStringsign -> +++++ ");
 
                     DataTable dt = (DataTable)JsonConvert.DeserializeObject(jsonStringsign, (typeof(DataTable)));
+
+                    //System.Console.WriteLine("CargarDesdeWS-> dt -> +++++ ");
+
 
                     //for (int i = 0; i < dt.Columns.Count; i++)
                     //{
@@ -320,12 +332,10 @@ namespace WSConsume
                 {
                     var resultQR = streamReader.ReadToEnd();
                     string jsonStringsign = resultQR;
-                    dynamic jsonWS = Newtonsoft.Json.JsonConvert.DeserializeObject(jsonStringsign);
-
+                    //dynamic jsonWS = Newtonsoft.Json.JsonConvert.DeserializeObject(jsonStringsign);
                     //System.Console.WriteLine("CargarDesdeWS-> jsonTables -> " + jsonStringsign);
 
                     DataTable dt = (DataTable)JsonConvert.DeserializeObject(jsonStringsign, (typeof(DataTable)));
-
 
                     using (var con = new SqlConnection(consString))
                     {
@@ -364,12 +374,10 @@ namespace WSConsume
                 {
                     var resultQR = streamReader.ReadToEnd();
                     string jsonStringsign = resultQR;
-                    dynamic jsonWS = Newtonsoft.Json.JsonConvert.DeserializeObject(jsonStringsign);
-
+                    //dynamic jsonWS = Newtonsoft.Json.JsonConvert.DeserializeObject(jsonStringsign);
                     //System.Console.WriteLine("CargarDesdeWS-> jsonTables -> " + jsonStringsign);
 
                     DataTable dt = (DataTable)JsonConvert.DeserializeObject(jsonStringsign, (typeof(DataTable)));
-
 
                     using (var con = new SqlConnection(consString))
                     {
@@ -388,14 +396,12 @@ namespace WSConsume
                             con.Close();
                         }
                     }
-
                 }
 
                 System.Console.WriteLine("Invocando WS PAHO to INCIENSA  Export_INCIENSA_CR_temporal ->END");
 
                 using (var con = new SqlConnection(consString))
                 {
-
                     using (var command = new SqlCommand("Export_Temporal_to_Historic_Case_CR", con)
                     {
                         CommandType = CommandType.StoredProcedure
@@ -419,6 +425,23 @@ namespace WSConsume
 
         }
 
+        public object Deserialize(string jsonText, Type valueType)
+        {
+            Newtonsoft.Json.JsonSerializer json = new Newtonsoft.Json.JsonSerializer();
+
+            json.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+            json.ObjectCreationHandling = Newtonsoft.Json.ObjectCreationHandling.Replace;
+            json.MissingMemberHandling = Newtonsoft.Json.MissingMemberHandling.Ignore;
+            json.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+
+            StringReader sr = new StringReader(jsonText);
+            Newtonsoft.Json.JsonTextReader reader = new JsonTextReader(sr);
+            object result = json.Deserialize(reader, valueType);
+            reader.Close();
+
+            return result;
+        }
+
         static async Task<string> PostURI(Uri u, HttpContent c)
         {
             var response = string.Empty;
@@ -432,5 +455,56 @@ namespace WSConsume
             }
             return response;
         }
+
+        public static DataTable JsonToDataTable(string json, string tableName)
+        {
+            bool columnsCreated = false;
+            DataTable dt = new DataTable(tableName);
+
+            Newtonsoft.Json.Linq.JObject root = Newtonsoft.Json.Linq.JObject.Parse(json);
+            Newtonsoft.Json.Linq.JArray items = (Newtonsoft.Json.Linq.JArray)root[tableName];
+
+            Newtonsoft.Json.Linq.JObject item = default(Newtonsoft.Json.Linq.JObject);
+            Newtonsoft.Json.Linq.JToken jtoken = default(Newtonsoft.Json.Linq.JToken);
+
+            for (int i = 0; i <= items.Count - 1; i++)
+            {
+                // Create the columns once
+                if (columnsCreated == false)
+                {
+                    item = (Newtonsoft.Json.Linq.JObject)items[i];
+                    jtoken = item.First;
+
+                    while (jtoken != null)
+                    {
+                        dt.Columns.Add(new DataColumn(((Newtonsoft.Json.Linq.JProperty)jtoken).Name.ToString()));
+                        jtoken = jtoken.Next;
+                    }
+
+                    columnsCreated = true;
+                }
+
+                // Add each of the columns into a new row then put that new row into the DataTable
+                item = (Newtonsoft.Json.Linq.JObject)items[i];
+                jtoken = item.First;
+
+                // Create the new row, put the values into the columns then add the row to the DataTable
+                DataRow dr = dt.NewRow();
+
+                while (jtoken != null)
+                {
+                    dr[((Newtonsoft.Json.Linq.JProperty)jtoken).Name.ToString()] = ((Newtonsoft.Json.Linq.JProperty)jtoken).Value.ToString();
+                    jtoken = jtoken.Next;
+                }
+
+                dt.Rows.Add(dr);
+            }
+
+            return dt;
+
+        }
+
     }
+
+
 }
