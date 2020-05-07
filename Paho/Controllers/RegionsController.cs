@@ -52,6 +52,23 @@ namespace Paho.Controllers
                 }
 
             }
+            else if (user.Institution.AccessLevel == AccessLevel.Area)
+            {
+                if (user.Institution.cod_region_salud != null)
+                {
+                    regions = regions.Where(s => s.CountryID == user.Institution.CountryID && s.orig_country == user.Institution.cod_region_salud && s.tipo_region == 2);
+                }
+                else if (user.Institution.cod_region_institucional != null)
+                {
+                    regions = regions.Where(s => s.CountryID == user.Institution.CountryID && s.orig_country == user.Institution.cod_region_institucional && s.tipo_region == 1);
+                }
+                else if (user.Institution.cod_region_pais != null)
+                {
+                    regions = regions.Where(s => s.CountryID == user.Institution.CountryID && s.orig_country == user.Institution.cod_region_pais && s.tipo_region == 3);
+                }  
+
+
+            }
             //var UsrLang = user.Institution.Country.Language;
 
             //if (UsrLang.ToUpper() == "ENG")
@@ -65,7 +82,7 @@ namespace Paho.Controllers
             //{
             //    regions = regions.Include(r => r.CatRegionType.SPA);
             //}
-            
+
             //regions = regions.Include(x => x.Cat_Country);
 
             if (!string.IsNullOrEmpty(searchString))

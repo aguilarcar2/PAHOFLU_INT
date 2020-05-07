@@ -72,6 +72,14 @@
             $("#RegionInstitucionalGroup").hide();
             $("#RegionSaludGroup").hide();
             $("#RegionPaisGroup").hide();
+            if ($("#cod_region_institucional").children().length > 1)
+                $("#RegionInstitucionalGroup").show();
+
+            if ($("#cod_region_salud").children().length > 1)
+                $("#RegionSaludGroup").show();
+
+            if ($("#cod_region_pais").children().length > 1)
+                $("#RegionPaisGroup").show();
             //$("#div-father").hide();
         }
         else if (accessLevel != "Area" && accessLevel != "Service") {

@@ -689,6 +689,9 @@ namespace Paho.Controllers
                                 }
                             }
 
+                            var nWeekActual = PAHOClassUtilities.semanasActualEpidemiologico();
+                            var nYearActual = DateTime.Today.Year;
+
                             /////////////////////////////////////// VIRUS IRAG  ////////////////////////////////////////////////////////////////////////7
 
                             //var excelWs_VIRUSES_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "SARI VIRUSES" : "Virus Identificados"];

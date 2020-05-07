@@ -88,6 +88,10 @@ namespace Paho.Controllers
                     .ThenBy(o => o.Name);*/
                 }
             }
+            else if (user.Institution.AccessLevel == AccessLevel.Area)
+            {
+                catalogo = catalogo.Where(s => s.Neighborhood.State.Area.CountryID == user.Institution.CountryID);
+            }
 
             int pageSize = _pageSize;
             int pageNumber = (page ?? 1);
@@ -115,6 +119,10 @@ namespace Paho.Controllers
                     cat_countries = cat_countries.Where(s => s.ID == user.Institution.CountryID);
                 }
             }
+            else if (user.Institution.AccessLevel == AccessLevel.Area)
+            {
+                cat_countries = cat_countries.Where(s => s.ID == user.Institution.CountryID);
+            }
 
             ViewBag.Countries = new SelectList(cat_countries, "ID", "Name");
 
@@ -133,6 +141,11 @@ namespace Paho.Controllers
                     areas = areas.Where(s => s.CountryID == user.Institution.CountryID)
                                     .OrderBy(o => o.Country.Name).ThenBy(o => o.Name);
                 }
+            }
+            else if (user.Institution.AccessLevel == AccessLevel.Area)
+            {
+                areas = areas.Where(s => s.CountryID == user.Institution.CountryID)
+                                    .OrderBy(o => o.Country.Name).ThenBy(o => o.Name);
             }
 
             ViewBag.Areas = new SelectList(areas, "ID", "Name");
@@ -177,6 +190,10 @@ namespace Paho.Controllers
                     cat_countries = cat_countries.Where(s => s.ID == user.Institution.CountryID);
                 }
             }
+            else if (user.Institution.AccessLevel == AccessLevel.Area)
+            {
+                cat_countries = cat_countries.Where(s => s.ID == user.Institution.CountryID);
+            }
 
             ViewBag.Countries = new SelectList(cat_countries, "ID", "Name");
 
@@ -195,6 +212,11 @@ namespace Paho.Controllers
                     cat_areas = cat_areas.Where(s => s.CountryID == user.Institution.CountryID)
                                     .OrderBy(o => o.Country.Name).ThenBy(o => o.Name);
                 }
+            }
+            else if (user.Institution.AccessLevel == AccessLevel.Area)
+            {
+                cat_areas = cat_areas.Where(s => s.CountryID == user.Institution.CountryID)
+                                    .OrderBy(o => o.Country.Name).ThenBy(o => o.Name);
             }
 
             ViewBag.Areas = new SelectList(cat_areas, "ID", "Name");

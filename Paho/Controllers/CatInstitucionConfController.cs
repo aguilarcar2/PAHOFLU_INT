@@ -46,6 +46,26 @@ namespace Paho.Controllers
                            c.InstitutionTo.CountryID == countryId && 
                            c.InstitutionParent.CountryID == countryId
                            select c;
+
+            if (user.Institution.AccessLevel == AccessLevel.Area)
+            {
+                if (user.Institution.cod_region_salud != null)
+                {
+                    catalogo = catalogo.Where(j => j.InstitutionParent.cod_region_salud == user.Institution.cod_region_salud);
+                }
+                else if (user.Institution.cod_region_institucional != null)
+                {
+                    catalogo = catalogo.Where(j =>  j.InstitutionParent.cod_region_institucional == user.Institution.cod_region_institucional);
+                }
+                else if (user.Institution.cod_region_pais != null)
+                {
+                    catalogo = catalogo.Where(j => j.InstitutionParent.cod_region_pais == user.Institution.cod_region_pais);
+                }
+
+
+            }
+
+
             if (!string.IsNullOrEmpty(searchString))
             {
                 catalogo = catalogo.Where(s => 

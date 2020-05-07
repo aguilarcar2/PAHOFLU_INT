@@ -41,7 +41,7 @@ namespace Paho.Controllers
             ViewBag.CurrentFilter = searchString;
 
             //var catalogo = from c in db.Institutions where c.CountryID == countryId select c;
-            var catalogo = from c in db.Institutions select c;
+            var catalogo = from c in db.Institutions select c ;
 
             if (user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
             {
@@ -57,6 +57,24 @@ namespace Paho.Controllers
             else if (user.Institution.AccessLevel == AccessLevel.Country)
             {
                 catalogo = catalogo.Where(j => j.CountryID == countryId);       //.OrderBy(j => j.CountryID).ThenBy(j => j.FullName);
+            }
+
+            else if (user.Institution.AccessLevel == AccessLevel.Area)
+            {
+                if (user.Institution.cod_region_salud != null)
+                {
+                    catalogo = catalogo.Where(j => j.CountryID == countryId && j.cod_region_salud == user.Institution.cod_region_salud);
+                }
+                else if ( user.Institution.cod_region_institucional != null)
+                {
+                    catalogo = catalogo.Where(j => j.CountryID == countryId && j.cod_region_salud == user.Institution.cod_region_institucional);
+                }
+                else if (user.Institution.cod_region_pais != null)
+                {
+                    catalogo = catalogo.Where(j => j.CountryID == countryId && j.cod_region_salud == user.Institution.cod_region_pais);
+                }
+
+
             }
 
             if (!string.IsNullOrEmpty(searchString))

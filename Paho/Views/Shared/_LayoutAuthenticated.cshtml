@@ -165,7 +165,7 @@
 						@*<li class="dropdown">  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Mantenimiento <b class="caret"></b></a>*@
                         <li class="dropdown">  <a href="#" id="MaintenanceM" class="dropdown-toggle" data-toggle="dropdown">@(Paho.Controllers.ResourcesM.SgetMessage("viewLayoutAuthenticated_LabelMaintenance", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) <b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                @if (@ViewBag.UserInstitutionType == 3)
+                                @if (ViewBag.UserInstitutionType == 3 && ViewBag.InstAccesLevel == 2)
                                 {
 								    <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuDiccionarioView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Diccionario", new { area = "" }, null) </li>
                                     <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelArea", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Area", new { area = "" }, null)</li>
@@ -187,6 +187,12 @@
                                     {
                                         <li> @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuImportPadronView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "ImportPadron", new { area = "" }, null) </li>
                                     }
+                                }
+
+                                @if (@ViewBag.UsrCtry == 15 && ViewBag.UserInstitutionType == 3)
+                                {
+                                  <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelColony", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Colony", new { area = "" }, null)</li>
+                                  <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgRegion", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "Regions", new { area = "" }, null)</li>
                                 }
 
                                 <li>@Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgMenuCatInstitucionView", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Index", "CatInstitucion", new { area = "" }, null)</li>
