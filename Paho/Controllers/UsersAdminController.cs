@@ -74,7 +74,7 @@ namespace Paho.Controllers
             var countryId = user.Institution.CountryID ?? 0;
             var Institution_Id = user.InstitutionID ?? 0;
             var Region_id = user.Institution.cod_region_institucional ?? 0;
-
+            var Region_id_salud = user.Institution.cod_region_salud ?? 0;
             //****
             ViewBag.CurrentSort = sortOrder;
             //ViewBag.ShortNameParm = "userShortName";
@@ -105,6 +105,12 @@ namespace Paho.Controllers
             {
                 ListUser = await UserManager.Users.Where(j => j.Institution.CountryID == countryId)
                                             .OrderBy(s => s.FirstName1).ThenBy(s => s.FirstName2).ThenBy(s => s.LastName1).ThenBy(s => s.LastName2).ToListAsync();
+            }
+            else if (user.Institution.AccessLevel == AccessLevel.Area)
+            {
+
+                ListUser = await UserManager.Users.Where(j => j.Institution.cod_region_salud == Region_id_salud)
+                                            .OrderBy(s => s.Institution.Country.Code).ThenBy(s => s.Institution.Name).ThenBy(s => s.UserName).ThenBy(s => s.FirstName1).ToListAsync();
             }
 
             setUserRolesListJoin(ListUser);     //#### CAFQ: 180530
@@ -234,6 +240,18 @@ namespace Paho.Controllers
                                         Selected = false
                                     };
             }
+            else if (user_id.Institution.AccessLevel == AccessLevel.Area)
+            {
+                model.Institutions = from value in db.Institutions
+                                     where value.cod_region_salud == user_id.Institution.cod_region_salud && value.Active == true
+                                     orderby value.CountryID, value.FullName
+                                     select new SelectListItem
+                                     {
+                                         Text = value.FullName,
+                                         Value = value.ID.ToString(),
+                                         Selected = false
+                                     };
+            }
             else if (user_id.Institution.AccessLevel == AccessLevel.SelfOnly)
             {
                 model.Institutions = from value in db.Institutions
@@ -329,6 +347,18 @@ namespace Paho.Controllers
                                                      Value = value.ID.ToString(),
                                                      Selected = false
                                                  };
+                }
+                else if (user_id.Institution.AccessLevel == AccessLevel.Area)
+                {
+                    userViewModel.Institutions = from value in db.Institutions
+                                         where value.cod_region_salud == user_id.Institution.cod_region_salud && value.Active == true
+                                         orderby value.CountryID, value.FullName
+                                         select new SelectListItem
+                                         {
+                                             Text = value.FullName,
+                                             Value = value.ID.ToString(),
+                                             Selected = false
+                                         };
                 }
                 else if (user_id.Institution.AccessLevel == AccessLevel.SelfOnly)
                 {
@@ -433,6 +463,18 @@ namespace Paho.Controllers
                                     Value = value.ID.ToString(),
                                     Selected = false
                                 };
+            }
+            else if (user_id.Institution.AccessLevel == AccessLevel.Area)
+            {
+                institutions = from value in db.Institutions
+                                     where value.cod_region_salud == user_id.Institution.cod_region_salud && value.Active == true
+                                     orderby value.CountryID, value.FullName
+                                     select new SelectListItem
+                                     {
+                                         Text = value.FullName,
+                                         Value = value.ID.ToString(),
+                                         Selected = false
+                                     };
             }
             else if (user_id.Institution.AccessLevel == AccessLevel.SelfOnly)
             {
