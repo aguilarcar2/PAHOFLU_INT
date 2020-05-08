@@ -34,7 +34,7 @@
                 }
             }
         });
-
+         
         $("#Surv").prop("disabled", bDisable);
     });
     self.Surv = ko.observable("");
