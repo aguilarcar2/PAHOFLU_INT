@@ -5297,6 +5297,13 @@
                     <div class="row rowform">
                         <div class="col-md-3">
                             <div class='input-group'>
+                                <button id="revome_LabTest_2" type="button" style="background-color: #77dd77; color: white; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px;" class="btn btn-primary" data-bind="enable: CanDeleteProcess,visible:CanDeleteProcess, click: $parent.removeLabTest.bind($data,2)">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelRemoveResult"))</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowform">
+                        <div class="col-md-3">
+                            <div class='input-group'>
                                 <div data-bind="visible: CanEdit()">
                                     <select name="DrpProcLab" id="DrpProcLab" class="form-control" data-bind="options:$parent.LabsResult,
                                         optionsText: 'Name',
@@ -5712,6 +5719,13 @@
                     <div class="row rowform">
                         <div class="col-md-3">
                             <div class='input-group'>
+                                <button id="revome_LabTest_3" type="button" style="background-color: #77dd77; color: white; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px;" class="btn btn-primary" data-bind="enable: CanDeleteProcess,visible:CanDeleteProcess, click: $parent.removeLabTest.bind($data,3)">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelRemoveResult"))</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowform">
+                        <div class="col-md-3">
+                            <div class='input-group'>
                                 <div data-bind="visible: CanEdit()">
                                     <select name="DrpProcLab" id="DrpProcLab" class="form-control" data-bind="options:$parent.LabsResult,
                                         optionsText: 'Name',
@@ -6052,6 +6066,13 @@
                 </div>
                 <div id="LabTestsExternal" data-bind="foreach: { data: LabTestsExternal }">
                     <div class="row rowform" style="border-bottom:dashed; border-bottom-width:thin; padding-bottom:5px;">
+                        <div class="row rowform">
+                            <div class="col-md-3">
+                                <div class='input-group'>
+                                    <button id="revome_LabTest_External" type="button" style="background-color: #77dd77; color: white; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px;" class="btn btn-primary" data-bind="enable: CanDeleteProcess,visible:CanDeleteProcess, click: $parent.removeLabTest.bind($data,999)">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelRemoveResult"))</button>
+                                </div>
+                            </div>
+                        </div>
                         <div class="row rowform">
                             <div class="col-md-3">
                                 <div class='input-group'>

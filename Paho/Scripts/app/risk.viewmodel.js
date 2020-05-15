@@ -526,10 +526,12 @@
             self.Pregnant(null);
             self.Pperium(null);
             self.Trimester(null);
-            $("#Pperium, #Primero, #Segundo, #Tercera, #Desconocido").prop('disabled', true);
+            //#Pperium,
+            $("#Primero, #Segundo, #Tercera, #Desconocido").prop('disabled', true);
         }
         else {
-            $("#Pperium, #Primero, #Segundo, #Tercera, #Desconocido").prop('disabled', false);
+            //#Pperium,
+            $("#Primero, #Segundo, #Tercera, #Desconocido").prop('disabled', false);
         }
     });
    
