@@ -691,6 +691,7 @@ namespace Paho.Controllers
                                      //FLOW_VIRUS = db.InstitutionConfEndFlowByVirus.Where(i => i.ID == flucase.CaseLabTests.Where(e => e.inst_conf_end_flow_by_virus != null).OrderByDescending(d => d.flow_test).FirstOrDefault().inst_conf_end_flow_by_virus).FirstOrDefault(),
                                      ICON_COMMEN = flucase.Comments == "" || flucase.Comments == null ? "" : commentsHtml,
                                      ICON_COMMEN_CLOSE = flucase.ObservationCase == "" || flucase.ObservationCase == null ? "" : commentsHtml,
+                                     SARSCoV2_Positive = flucase.CaseLabTests.Where(j=> j.VirusTypeID == 14 && j.TestResultID == "P").Any(),
                                      VI_OK = (from a in db.InstitutionConfEndFlowByVirus
                                               join p in db.InstitutionsConfiguration on a.id_InstCnf equals p.ID
                                               //join dt in db.Institutions on p.InstitutionFromID equals dt.ID
@@ -746,6 +747,9 @@ namespace Paho.Controllers
                                                                 (user.Institution.Country.Language == "SPA" ? "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.SPA+"'/> " + x.CS_D_Cat.SPA : "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.ENG+"'/> " + x.CS_D_Cat.ENG ))
                                         */
                                         x.VI_OK == true ?
+                                            (x.SARSCoV2_Positive == true) ? ( "<img src='/Content/themes/base/images/open.png' />" )
+                                            :
+                                            //(
                                            // Los que tienen configuración de Virus para el cierre de caso
                                             (x.FLOW_VIRUS != null ?
                                                // si es negativo
@@ -790,6 +794,7 @@ namespace Paho.Controllers
                                                         (user.Institution.Country.Language == "SPA" ? "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.SPA+"'/> " + x.CS_D_Cat.SPA : "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.ENG+"'/> " + x.CS_D_Cat.ENG )
                                                     )
                                             )
+                                        //)
                                      }
                                    }).ToArray();
 
@@ -2005,14 +2010,39 @@ namespace Paho.Controllers
             flucase.IsSample = IsSample;
             flucase.ReasonNotSamplingID = ReasonNotSamplingID;
             flucase.ReasonNotSamplingOther = ReasonNotSamplingOther;
+            if (SampleDate != null && flucase.SampleDate == null)
+            {
+                flucase.DateInsertSampleDate = DateTime.Now;
+            }
             flucase.SampleDate = SampleDate;
             flucase.SampleType = SampleType;
             flucase.ShipDate = ShipDate;
             flucase.LabID = LabId;
+            // Segunda muestra asignación de fecha de primer ingreso
+            if (SampleDate2 != null && flucase.SampleDate2 == null)
+            {
+                flucase.DateInsertSampleDate2 = DateTime.Now;
+                // modificación del flujo si es positivo a SARS-CoV-2
+                if (flucase.flow != 99 && flucase.CaseLabTests.Where(j => j.VirusTypeID== 14 && j.TestResultID== "P").Any())
+                {
+                    flucase.flow = 0;
+                    flucase.statement = 2;
+                } 
+            }
             flucase.SampleDate2 = SampleDate2;
             flucase.SampleType2 = SampleType2;
             flucase.ShipDate2 = ShipDate2;
             flucase.LabID2 = LabId2;
+            if (SampleDate3 != null && flucase.SampleDate3 == null)
+            {
+                flucase.DateInsertSampleDate3 = DateTime.Now;
+                // modificación del flujo ya existe un negativo para a SARS-CoV-2
+                if (flucase.flow != 99 && flucase.CaseLabTests.Where(j => j.VirusTypeID == 14 && j.TestResultID == "N" && j.SampleNumber > 1).Any())
+                {
+                    flucase.flow = 0;
+                    flucase.statement = 2;
+                }
+            }
             flucase.SampleDate3 = SampleDate3;
             flucase.SampleType3 = SampleType3;
             flucase.ShipDate3 = ShipDate3;
@@ -2323,7 +2353,36 @@ namespace Paho.Controllers
             var flow_statement = flucase.statement ?? 1;
             var flow_open_always = false;
             var flow_max_record = db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID).OrderByDescending(j => j.Priority).FirstOrDefault().Priority;
+            var SARSCoV2_Days_After_Positive = 14;  // Configuración para los días para la segunda muestra negativa del SARS-CoV-2
+            var SARSCoV2_Days_After_First_Negative = 2;  // Configuración para los días para la segunda muestra negativa del SARS-CoV-2
+            var SARSCoV2_First_Positive_Temp = flucase.CaseLabTests.Where(j => j.VirusTypeID == 14 && j.TestResultID == "P").OrderBy(z => z.SampleNumber).ThenBy(z => z.TestDate).Any();  // Variable temporal en lo que se desarrolla el flujo de cierre por virus
+            var SARSCoV2_First_Positive_Date_Temp = flucase.SampleDate;  // Variable temporal en lo que se desarrolla el flujo de cierre por virus
+            var flucase_SampleDate_Temp = (DateTime)flucase.SampleDate;
+            ////
+            var SARSCoV2_First_Negative_After_Positive_Temp = false; // Variable temporal en lo que se desarrolla el flujo de cierre por virus
+            var SARSCoV2_First_Negative_After_Positive_Date_Temp = DateTime.Now; // Variable temporal en lo que se desarrolla el flujo de cierre por virus
+            var SARSCoV2_First_Negative_Sample_Number = 0;
+            ////
+            var flucase_SampleDate2_Temp = (flucase.SampleDate2 != null) ? (DateTime)flucase.SampleDate2 : DateTime.Now;
+            var SARSCoV2_Second_Negative_After_Positive_Temp = false; // Variable temporal en lo que se desarrolla el flujo de cierre por virus
+            /////
 
+            if (SARSCoV2_First_Positive_Temp)
+            {
+                var temp_CaseLabTest_First_Negative = flucase.CaseLabTests.Where(j => j.VirusTypeID == 14 && j.TestResultID == "N" && j.TestDate > flucase_SampleDate_Temp.AddDays(SARSCoV2_Days_After_Positive) && j.SampleNumber > 1).OrderBy(z => z.SampleNumber).ThenBy(z => z.TestDate);
+                SARSCoV2_First_Negative_After_Positive_Temp = temp_CaseLabTest_First_Negative.Any();
+                SARSCoV2_First_Negative_After_Positive_Date_Temp = (SARSCoV2_First_Negative_After_Positive_Temp) ? (DateTime)flucase.SampleDate2 : DateTime.Now;
+                SARSCoV2_First_Negative_Sample_Number = (SARSCoV2_First_Negative_After_Positive_Temp) ? (int)temp_CaseLabTest_First_Negative.FirstOrDefault().SampleNumber : 0;
+            }
+               
+
+            if (SARSCoV2_First_Positive_Temp && SARSCoV2_First_Negative_After_Positive_Temp )
+            {
+                var temp_CaseLabTest_Second_Negative = flucase.CaseLabTests.Where(j => j.VirusTypeID == 14 && j.TestResultID == "N" && j.TestDate > flucase_SampleDate2_Temp.AddDays(SARSCoV2_Days_After_First_Negative) && j.SampleNumber > SARSCoV2_First_Negative_Sample_Number).OrderBy(z => z.SampleNumber).ThenBy(z => z.TestDate);
+                SARSCoV2_Second_Negative_After_Positive_Temp = temp_CaseLabTest_Second_Negative.Any();
+            } 
+            
+            
             var LabForeignCountry = db.InstitutionForeignConf.Where(z => z.InstitutionLocal.CountryID == user.Institution.CountryID).Any();
             var LabForeignInstitutionLocal = db.InstitutionForeignConf.Where(y => y.InstitutionLocalID == user.InstitutionID).Any();
             // Chequeo de muestas segun configuracion de virus por flujo actual
@@ -2960,7 +3019,10 @@ namespace Paho.Controllers
                       .ToArray(),
                     LabsResult = institutions.Select(x => new { Id = x.ID.ToString(), x.Name }).ToList(),
                     SubTypeByLabRes = GetSubTypebyLab(user.InstitutionID),
-                    CanConclude = canConclude & canConclude_Sample_1 & canConclude_Sample_2 & canConclude_Sample_3,
+                    CanConclude = (SARSCoV2_First_Positive_Temp) ? canConclude & canConclude_Sample_1 & canConclude_Sample_2 & canConclude_Sample_3 && SARSCoV2_Second_Negative_After_Positive_Temp : canConclude & canConclude_Sample_1 & canConclude_Sample_2 & canConclude_Sample_3,
+                    SARSCoV2_Positive =  SARSCoV2_First_Positive_Temp,
+                    SARSCoV2_Negative_1 = SARSCoV2_First_Negative_After_Positive_Temp,
+                    SARSCoV2_Negative_2 = SARSCoV2_Second_Negative_After_Positive_Temp,
                     SaveAndAdd_1 = SaveAndAdd_1,
                     SaveAndAdd_2 = SaveAndAdd_2,
                     SaveAndAdd_3 = SaveAndAdd_3
@@ -3097,6 +3159,13 @@ namespace Paho.Controllers
             var PCR_Count = 0;
             var user = UserManager.FindById(User.Identity.GetUserId());
             var canConclude_test = true;
+            var SARSCoV2_First_Positive_Temp = false;  // Variable temporal en lo que se desarrolla el flujo de cierre por virus
+            var SARSCoV2_First_Positive_Date_Temp = DateTime.Now;  // Variable temporal en lo que se desarrolla el flujo de cierre por virus
+            var SARSCoV2_First_Negative_After_Positive_Temp = false; // Variable temporal en lo que se desarrolla el flujo de cierre por virus
+            var SARSCoV2_First_Negative_After_Positive_Date_Temp = DateTime.Now;  // Variable temporal en lo que se desarrolla el flujo de cierre por virus
+            var SARSCoV2_Second_Negative_After_Positive_Temp = false; // Variable temporal en lo que se desarrolla el flujo de cierre por virus
+            var SARSCoV2_Days_After_Positive = 14;  // Configuración para los días para la segunda muestra negativa del SARS-CoV-2
+            var SARSCoV2_Days_After_First_Negative = 14;  // Configuración para los días para la segunda muestra negativa del SARS-CoV-2
 
 
             flucase = db.FluCases.Find(id);
@@ -3193,6 +3262,8 @@ namespace Paho.Controllers
 
             //flucase.flow = 2;
             //if (db.CaseLabTests.Count() > 0) PCR_IFI_RecordHistory = true;
+            
+
 
             db.CaseLabTests.RemoveRange(flucase.CaseLabTests);
             var existrecordlabtest = false;
@@ -3200,10 +3271,44 @@ namespace Paho.Controllers
             
             if (LabTests != null) {
                 foreach (LabTestViewModel labTestViewModel in LabTests.OrderBy(x=>x.SampleNumber)
-                    //.ThenBy(x => x.InstPriority)
                       .ThenBy(z => z.TestDate)
                       //.ThenBy(d => d.CatTestType != null ? d.CatTestType.orden : null)
                       .ThenBy(y=>y.LabID)) {
+
+                    // Section SARS-CoV-2 Begin
+
+
+                    if ( labTestViewModel.VirusTypeID == 14)
+                    {
+                        if (labTestViewModel.TestResultID == "P" && SARSCoV2_First_Positive_Temp == false)
+                        {
+                            SARSCoV2_First_Positive_Temp = true;
+                            SARSCoV2_First_Positive_Date_Temp =  (DateTime)flucase.SampleDate;
+
+                        }
+                        else if (labTestViewModel.TestResultID == "N" && labTestViewModel.SampleNumber > 1 && SARSCoV2_First_Positive_Temp == true && SARSCoV2_First_Negative_After_Positive_Temp == false)
+                        {
+                            var DateTempPositive = SARSCoV2_First_Positive_Date_Temp.AddDays(SARSCoV2_Days_After_Positive);
+                            if (flucase.SampleDate2 >= DateTempPositive)
+                            {
+                                SARSCoV2_First_Negative_After_Positive_Temp = true;
+                                SARSCoV2_First_Negative_After_Positive_Date_Temp = (DateTime)flucase.SampleDate2;
+                            }
+                        }
+                        else if (labTestViewModel.TestResultID == "N" && labTestViewModel.SampleNumber > 2 && SARSCoV2_First_Positive_Temp == true && SARSCoV2_First_Negative_After_Positive_Temp == true)
+                        {
+                            var DateTempFirstNegative = SARSCoV2_First_Negative_After_Positive_Date_Temp.AddDays(SARSCoV2_Days_After_First_Negative);
+
+                            if ( flucase.SampleDate3 >= DateTempFirstNegative )
+                            {
+                                SARSCoV2_Second_Negative_After_Positive_Temp = true;
+                            }
+
+                        }
+                    }
+
+
+                    // Section SARS-CoV-2 End
 
                     if (labTestViewModel.LabID == user.InstitutionID)
                         existrecordlabtest = true;
@@ -3369,7 +3474,24 @@ namespace Paho.Controllers
 
                 if ((actual_flow_Sample_2 - preview_flow_sample_2) == 1 || (actual_flow_Sample_2 - preview_flow_sample_2) == 0)
                 {
-                    flow_complete_Sample_2 = true;
+
+                    if (SARSCoV2_First_Positive_Temp == true)
+                    {
+                        if (SARSCoV2_First_Negative_After_Positive_Temp == true )
+                        {
+                            flow_complete_Sample_2 = true;
+                        }
+                        else
+                        {
+                            flow_complete_Sample_2 = false;
+                        }
+
+                    } else
+                    {
+                        flow_complete_Sample_2 = true;
+                    }
+
+
                 }
                 else
                 {
@@ -3389,7 +3511,22 @@ namespace Paho.Controllers
 
                 if ((actual_flow_Sample_3 - preview_flow_sample_3) == 1 || (actual_flow_Sample_3 - preview_flow_sample_3) == 0)
                 {
-                    flow_complete_Sample_3 = true;
+                    if (SARSCoV2_First_Positive_Temp == true)
+                    {
+                        if (SARSCoV2_Second_Negative_After_Positive_Temp == true)
+                        {
+                            flow_complete_Sample_3 = true;
+                        }
+                        else
+                        {
+                            flow_complete_Sample_3 = false;
+                        }
+
+                    }
+                    else
+                    {
+                        flow_complete_Sample_3 = true;
+                    }
                 }
                 else
                 {
@@ -3502,6 +3639,7 @@ namespace Paho.Controllers
 
             data_sample = data_sample_1 & data_sample_2 & data_sample_3;
 
+            // Asignación del flujo del registro
 
             if ((user.Institution is Lab && existrecordlabtest == true) || (user.Institution.NPHL == true && user.Institution.CountryID != 25))
             {
@@ -3526,6 +3664,24 @@ namespace Paho.Controllers
                     if (ifclosecase == true)
                     {
                         flucase.flow = flow_original_flucase;
+                    }
+                    else if (SARSCoV2_First_Positive_Temp)  // SARS-CoV-2 si existe un positivo
+                    {
+                        if (SARSCoV2_Second_Negative_After_Positive_Temp && DataStatement == 2 )
+                        {
+                            flucase.flow = flow_temp;
+
+                        }
+                        else if (DataStatement == 2)
+                        {
+                            if (SARSCoV2_First_Positive_Temp && SARSCoV2_First_Negative_After_Positive_Temp == false)
+                                flucase.flow = 0;
+                        }
+                        else
+                        {
+                            flucase.flow = flow_temp;
+                        }
+
                     }
                     else if (flow_complete_Sample_1 == true && flow_complete_Sample_2 == true && flow_complete_Sample_3 == true)
                     {

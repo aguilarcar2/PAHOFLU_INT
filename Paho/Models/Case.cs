@@ -1353,16 +1353,19 @@ namespace Paho.Models
         public int? ReasonNotSamplingID { get; set; }
         public string ReasonNotSamplingOther { get; set; }
         public DateTime? SampleDate { get; set; }           // Sample 1
+        public DateTime? DateInsertSampleDate { get; set; } // Sample 1 Date Registered in the system
         [MaxLength(2)]
         public string SampleType { get; set; }
         public DateTime? ShipDate { get; set; }
         public long? LabID { get; set; }
-        public DateTime? SampleDate2 { get; set; }          // Sample 2
+        public DateTime? SampleDate2 { get; set; }           // Sample 2
+        public DateTime? DateInsertSampleDate2 { get; set; } // Sample 2 Date Registered in the system
         [MaxLength(2)]
         public string SampleType2 { get; set; }
         public DateTime? ShipDate2 { get; set; }
         public long? LabID2 { get; set; }
-        public DateTime? SampleDate3 { get; set; }          // Sample 3
+        public DateTime? SampleDate3 { get; set; }           // Sample 3
+        public DateTime? DateInsertSampleDate3 { get; set; } // Sample 3 Date Registered in the system
         [MaxLength(2)]
         public string SampleType3 { get; set; }
         public DateTime? ShipDate3 { get; set; }
@@ -2251,14 +2254,17 @@ namespace Paho.Models
                    p.ReasonNotSamplingID,
                    p.ReasonNotSamplingOther,
                    p.SampleDate,
+                   p.DateInsertSampleDate,
                    p.SampleType,
                    p.ShipDate,
                    p.LabID,
                    p.SampleDate2,
+                   p.DateInsertSampleDate2,
                    p.SampleType2,
                    p.ShipDate2,
                    p.LabID2,
                    p.SampleDate3,
+                   p.DateInsertSampleDate3,
                    p.SampleType3,
                    p.ShipDate3,
                    p.LabID3,

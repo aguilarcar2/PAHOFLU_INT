@@ -73,6 +73,12 @@
                                 <img src="~/Content/themes/base/images/Logo_MINSAL_BO.png" style="padding-left:17px;" />
                             </div>
                         }
+                        @if (ViewBag.UsrCtry == 15)
+                        {
+                            <div class="col-md-1" dstyle="padding-right:0px;">
+                                <img src="~/Content/themes/base/images/Logo_Gobierno_HN.png" style="padding-left:-7px;" />
+                            </div>
+                        }
                     </div>
 
                 </td>
@@ -92,8 +98,16 @@
                         </div>
                     </div>
                 </td>
-                <td width="13%">
+                <td width="25%">
+                    @if (ViewBag.UsrCtry == 15)
+                    {
+                        <div class="col-md-1" dstyle="padding-right:0px;">
+                            <img src="~/Content/themes/base/images/Logo_Secretaria_Salud_HN.png" style="padding-left:17px;" />
+                        </div>
+                    }
+
                 </td>
+
             </tr>
         </table>
     </div>

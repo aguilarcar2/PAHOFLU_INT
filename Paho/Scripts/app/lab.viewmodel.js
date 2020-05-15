@@ -1623,6 +1623,9 @@ function LabViewModel(app, dataModel) {
 
     self.validatebeforeadd = function (nextStep, SaveVerif) {
         var msg = "";
+        var MaxPCR = 6;
+        var MaxIFI = 3;
+
         self.ArrayValidate((nextStep == 1) ? self.LabTests() : (nextStep == 2) ? self.LabTests_Sample2() : self.LabTests_Sample3());
         for (index = 0; index < self.ArrayValidate().length; ++index) {
             date_1 = self.ArrayValidate()[index].TestDate();
@@ -1771,7 +1774,7 @@ function LabViewModel(app, dataModel) {
         if (SaveVerif == 1 && ArrayValidate.length > 1)
             ArrayValidate.length = ArrayValidate.length - 1;
 
-        if (ArrayValidate.length >= 4)
+        if (ArrayValidate.length > MaxPCR)
             msg += "\n" + msgValidateProcessPCR3times;
                 //For PCR can not be more than 3 processes for the same laboratory
                 //"Para PCR no puede ser mayor a 3 procesos para el mismo laboratorio";
@@ -1779,7 +1782,7 @@ function LabViewModel(app, dataModel) {
         ArrayValidate = $.grep(self.ArrayValidate(), function (v) {
             return (v.TestType() === "1" && v.ProcLab() == self.UsrInstID());
         });
-        if (ArrayValidate.length >= 4)
+        if (ArrayValidate.length > MaxIFI)
             msg += "\n" + msgValidateProcessIFI3times;
                 //For IF it can not be more than 3 processes for the same laboratory
                 //"Para IF no puede ser mayor a 3 procesos para el mismo laboratorio";
