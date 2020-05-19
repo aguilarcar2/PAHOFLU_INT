@@ -26,6 +26,9 @@ namespace Paho.Controllers
     [Authorize(Roles = "Admin, Report")]
     public class ExportarController : ControllerBase
     {
+        static private int NUMBER_VIRUS_AND_VIRUSSUBTYPE = 11;
+        //const double PI = 3.14;
+
         // GET:Exportar
         public ActionResult Index()
         {
@@ -2235,7 +2238,8 @@ namespace Paho.Controllers
             int widthT2 = 57;
             row = (startRow - 1) + (3 * 3 * 3 * (nGrEd + 1)) - 1;           // Ultima fila tabla 1
             int rowIT2 = row + 11 + 1;                                      // Tabla 2: fila inicio 
-            int rowFT2 = rowIT2 + (((3 * 4 * nGrEd) + 3) * 14) - 1;
+            //int rowFT2 = rowIT2 + (((3 * 4 * nGrEd) + 3) * 14) - 1;
+            int rowFT2 = rowIT2 + (((3 * 4 * nGrEd) + 3) * (NUMBER_VIRUS_AND_VIRUSSUBTYPE + 4)) - 1;         // Tabla 2: fila final
 
             for (nI = 1; nI <= nAnios; ++nI)
             {
@@ -2352,14 +2356,15 @@ namespace Paho.Controllers
             R6_ActualizarFormulaCeldasTablas(excelWorksheet, wsPara, wsTemp, nAnios, colW, row, col, srTA, startColumn, 0, height2_TA, srTA - 2, widthYear_TA, heightYear_WK, nCoWiCopy, false);
 
             //---- T5 VR SE
-            cTemp = (string)wsPara.Cells[77, 2].Value;
+            cTemp = (string)wsPara.Cells[77, 2].Value;                  // Hoja: T5 VR SE
             row = Convert.ToInt32(wsPara.Cells[77, 3].Value);
             col = Convert.ToInt32(wsPara.Cells[77, 4].Value);
             wsTemp = excelWorkBook.Worksheets[cTemp];
-            colW = 13;
-            srTA = (startRow - 1) + (27 * (nGrEd + 1)) + 11;
+            //colW = 13;
+            colW = NUMBER_VIRUS_AND_VIRUSSUBTYPE + 3;               // Incluye SARS-CoV-2 y Num. Muestras Negativas, Num. Muestras analizadas y Num Muestras positivas
+            srTA = (startRow - 1) + (27 * (nGrEd + 1)) + 11;            // Fila inicio T2 Hoja "Tablas" (208: nGrEd = 6)
             //widthYear_TA = 57;
-            widthYear_TA = widthT2;
+            widthYear_TA = widthT2;                                     // 
             height2_TA = 3 * 4 * nGrEd + 3;
             heightYear_WK = 54;         // EW + Total   
             nCoWiCopy = colW + 2;
@@ -2473,26 +2478,33 @@ namespace Paho.Controllers
             cTemp = (string)wsPara.Cells[78, 2].Value;
             ExcelWorksheet wsHoT6 = excelWorkBook.Worksheets[cTemp];         // "T6 Tipo virus edad grav."
 
-            int rowI = Convert.ToInt32(wsPara.Cells[62, 2].Value);
-            int colI = Convert.ToInt32(wsPara.Cells[63, 2].Value);
+            int rowI = Convert.ToInt32(wsPara.Cells[62, 2].Value);          // Fila inicio tabla 1 en hoja T6
+            int colI = Convert.ToInt32(wsPara.Cells[63, 2].Value);          // Columna inicio tabla 1 en hoja T6
+            //int highI = 12;                                                 // Alto tabla 1 en Hoja T6 (incluye SARS-CoV-2)
+            int highI = NUMBER_VIRUS_AND_VIRUSSUBTYPE;                                                 // Alto tabla 1 en Hoja T6 (incluye SARS-CoV-2)
+
             for (nI = 1; nI <= nAnios; ++nI)
             {
                 int nAnio = _YearFrom + (nI - 1);
                 if (nI > 1)
                 {
-                    wsHoT6.Cells[rowI - 1, colI, rowI + 10, colI + nGrEd].Copy(wsHoT6.Cells[rowI - 1, colI + (nI - 1) * (nGrEd + 1)]);
+                    wsHoT6.Cells[rowI - 1, colI, rowI + highI, colI + nGrEd].Copy(wsHoT6.Cells[rowI - 1, colI + (nI - 1) * (nGrEd + 1)]);
 
+                    int colx = colI + (nI - 1) * (nGrEd + 1);
                     int r = rowIT2 + 3;
 
                     for (int a = 1; a <= nGrEd; a++)
                     {
-                        for (int n = 1; n <= 10; n++)
+                        wsHoT6.Cells[rowI - 1, colx + (a - 1)].FormulaR1C1 = wsHoT6.Cells[rowI - 1, colI + (a - 1)].FormulaR1C1;
+
+                        //for (int n = 1; n <= 10; n++)
+                        for (int n = 1; n <= highI; n++)
                         {
-                            int c = _startColumn + (nI - 1) * 57 + 53;
+                            int c = _startColumn + (nI - 1) * 57 + 53;          // Columna final i-esimo anio
 
                             cTemp = "=" + excelWorksheet.Cells[r + (n - 1) * 75 + (a - 1) * 12, c].FullAddress;
-                            int aa = rowI + (n - 1);
-                            int bb = colI + (nI - 1) * (nGrEd + 1) + (a - 1);
+                            //int aa = rowI + (n - 1);
+                            //int bb = colI + (nI - 1) * (nGrEd + 1) + (a - 1);
                             wsHoT6.Cells[rowI + (n - 1), colI + (nI - 1) * (nGrEd + 1) + (a - 1)].Formula = cTemp;
                         }
                     }
@@ -2526,18 +2538,23 @@ namespace Paho.Controllers
             //---- Tabla: T6 Tipo virus edad grav (Hosp., UCI, Def.)
             rowI = Convert.ToInt32(wsPara.Cells[64, 2].Value);
             colI = Convert.ToInt32(wsPara.Cells[65, 2].Value);
+            highI = NUMBER_VIRUS_AND_VIRUSSUBTYPE;
+
             for (nI = 1; nI <= nAnios; ++nI)
             {
                 int nAnio = _YearFrom + (nI - 1);
                 if (nI > 1)
                 {
-                    wsHoT6.Cells[rowI - 2, colI, rowI + 10, colI + 2].Copy(wsHoT6.Cells[rowI - 2, colI + (nI - 1) * 3]);
+                    //wsHoT6.Cells[rowI - 2, colI, rowI + 10, colI + 2].Copy(wsHoT6.Cells[rowI - 2, colI + (nI - 1) * 3]);
+                    wsHoT6.Cells[rowI - 2, colI, rowI + highI, colI + 2].Copy(wsHoT6.Cells[rowI - 2, colI + (nI - 1) * 3]);
+
                     for (int a = 1; a <= 3; a++)
                     {
                         int rT = rowIT2 + 4;                // 208 + 4 = 212
 
                         int colD = colI + (nI - 1) * 3 + (a - 1);
-                        for (int n = 1; n <= 10; n++)
+                        //for (int n = 1; n <= 10; n++)
+                        for (int n = 1; n <= highI; n++)
                         {
                             int cT = _startColumn + (nI - 1) * 57 + 56;
                             cTemp = "=" + excelWorksheet.Cells[rT + (n - 1) * 75 + (a - 1) * 3, cT].FullAddress;
@@ -2637,7 +2654,8 @@ namespace Paho.Controllers
         private static void R6_GraficoVirus_100StackedColumnAG(ExcelWorksheet excelWorksheet, ExcelWorksheet wsPara, ExcelWorksheet wsHoGr,
             int rowI_TA, int colI_TA, int nGrEd, int nAnios, int _startColumn, List<int> weekByYear, string chart, Dictionary<string, object> aPara)
         {
-            int NUM_TIPOS_SUBTIPOS_VIRUS = 10;
+            //int NUM_TIPOS_SUBTIPOS_VIRUS = 11;              // Incluye SARS-CoV-2
+            int NUM_TIPOS_SUBTIPOS_VIRUS = NUMBER_VIRUS_AND_VIRUSSUBTYPE;              // Incluye SARS-CoV-2
 
             //---- Elimando los graficos de plantilla
             for (int nX = wsHoGr.Drawings.Count - 1; nX >= 0; nX--)
@@ -2733,7 +2751,7 @@ namespace Paho.Controllers
         private static void R6_GraficoVirus_100StackedColumn(ExcelWorksheet excelWorksheet, ExcelWorksheet wsPara, ExcelWorksheet wsHoGr,
             int rowI_TA, int colI_TA, int nGrEd, int nAnios, int _startColumn, List<int> weekByYear, string chart, Dictionary<string, object> aPara)
         {
-            int NUM_TIPOS_SUBTIPOS_VIRUS = 10;
+            int NUM_TIPOS_SUBTIPOS_VIRUS = NUMBER_VIRUS_AND_VIRUSSUBTYPE;                              // Incluye SARS-CoV-2
 
             //---- Elimando los graficos de plantilla
             for (int nX = wsHoGr.Drawings.Count - 1; nX >= 0; nX--)
@@ -2919,7 +2937,8 @@ namespace Paho.Controllers
             var myChartG2 = wsHoG2.Drawings.AddChart(chart, eChartType.ColumnStacked);
             int row = rowIT2;
             int col = 0;
-            int nNuVi = (chart == "G2_0") ? 6 : 10;     // Nro de virus a mostra en el grafico
+            //int nNuVi = (chart == "G2_0") ? 6 : 10;     // Nro de virus a mostra en el grafico
+            int nNuVi = (chart == "G2_0") ? 6 : NUMBER_VIRUS_AND_VIRUSSUBTYPE;     // Nro de virus a mostra en el grafico
 
             for (int nJ = 1; nJ <= nNuVi; ++nJ)         // Influenza A(H1N1)pdm09, Influenza A No Subtipificada, ..., Influenza B
             {
