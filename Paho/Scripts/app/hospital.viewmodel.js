@@ -790,10 +790,11 @@
                             self.SampleDate2(null);
                         }
 
-                        if (moment(current_value).diff(date_fever_, 'days', false) > 15) {
-                            alert(viewValidateSample2DateLtOnsetDate);
-                            self.SampleDate2(null);
-                        }
+                        // Cantidad de días para poder ingresar la segunda muestra
+                        //if (moment(current_value).diff(date_fever_, 'days', false) > 15) {
+                        //    alert(viewValidateSample2DateLtOnsetDate);
+                        //    self.SampleDate2(null);
+                        //}
                     }
                 }
             }
@@ -846,11 +847,12 @@
                         alert(viewValidateSample3DateGtSample2Date);
                         self.SampleDate3(null);
                     }
+                    //Cantidad de días para la segunda muestra
 
-                    if (moment(current_value).diff(date_fever_, 'days', false) > 15) {
-                        alert(viewValidateSample3DateLtOnsetDate);
-                        self.SampleDate3(null);
-                    }
+                    //if (moment(current_value).diff(date_fever_, 'days', false) > 15) {
+                    //    alert(viewValidateSample3DateLtOnsetDate);
+                    //    self.SampleDate3(null);
+                    //}
                 }
             }
         }
