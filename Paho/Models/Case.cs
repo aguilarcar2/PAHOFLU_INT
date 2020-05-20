@@ -1180,6 +1180,11 @@ namespace Paho.Models
         public bool? TrabLaboratorio { get; set; }                  //#### CAFQ
         public int? TrabLaboratorioRama { get; set; }               //#### CAFQ
         public Decimal? Temperatura { get; set; }                   //#### CAFQ
+
+        public bool? Asymptomatic { get; set; }                     //#### CAFQ: 200519
+        public bool? Anosmy { get; set; }                           //#### CAFQ: 200519
+        public bool? Dysgeusia { get; set; }                        //#### CAFQ: 200519
+
         public bool? Mialgia { get; set; }                          //#### CAFQ
         public bool? Erupcion { get; set; }                         //#### CAFQ
         public string ErupcionLocaliz { get; set; }                 //#### CAFQ
@@ -2269,8 +2274,11 @@ namespace Paho.Models
                    p.ShipDate3,
                    p.LabID3,
                    p.Adenopatia,
-                   p.Wheezing,                        //#### CAFQ: 180619
+                   p.Wheezing,                          //#### CAFQ: 180619
                    p.AntecedentesFiebre,
+                   p.Asymptomatic,                      //#### CAFQ: 200519
+                   p.Anosmy,                            //#### CAFQ: 200519
+                   p.Dysgeusia,                         //#### CAFQ: 200519
                    p.Rinorrea,
                    p.Malestar,
                    p.Nauseas,
@@ -2391,8 +2399,6 @@ namespace Paho.Models
                    p.GeneticGroup,                              // Grupo genetico
                    p.GeneticGroup_2,
                    p.GeneticGroup_3,
-
-
 
                    p.CaseStatus,
                    p.CloseDate,

@@ -603,13 +603,21 @@ function ContactViewModel(app, dataModel) {
         }
     }, self);
 
-    self.SurvILI = ko.computed(function () {
-        if (self.IsSurv() == "2") {
+    self.IsSurv_SARI_OR_ILI = ko.computed(function () {
+        if (self.IsSurv() == "1" || self.IsSurv() == "2") {
             return true;
         } else {
             return false;
         }
     }, self);
+
+    //self.SurvILI = ko.computed(function () {
+    //    if (self.IsSurv() == "2") {
+    //        return true;
+    //    } else {
+    //        return false;
+    //    }
+    //}, self);
 
     self.SurvILICR = ko.computed(function () {
         if (self.IsSurv() == "2" && self.UsrCountry() == 9) {

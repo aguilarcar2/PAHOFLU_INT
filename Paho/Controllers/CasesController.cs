@@ -1009,8 +1009,6 @@ namespace Paho.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-
-
         [HttpGet]
         public JsonResult DeleteCase(int id)
         {
@@ -1714,15 +1712,14 @@ namespace Paho.Controllers
                     Adenopatia = flucase.Adenopatia,
                     Wheezing = flucase.Wheezing,                                        //#### CAFQ: 180619
                     AntecedentesFiebre = flucase.AntecedentesFiebre,
+
+                    Asymptomatic = flucase.Asymptomatic,                //#### CAFQ: 200519
+                    Anosmy = flucase.Anosmy,                            //#### CAFQ: 200519
+                    Dysgeusia = flucase.Dysgeusia,                      //#### CAFQ: 200519
+
                     Rinorrea = flucase.Rinorrea,
-                    //Malestar = flucase.Malestar,
-                    //Nauseas = flucase.Nauseas,
-                    //DolorMuscular = flucase.DolorMuscular,
-                    //Disnea = flucase.Disnea,
-                    //DolorCabeza = flucase.DolorCabeza,
                     Estridor = flucase.Estridor,
                     Tos = flucase.Tos,
-
                     Temperatura = flucase.Temperatura,                                  //#### CAFQ
                     DolorCabeza = flucase.DolorCabeza,
                     Mialgia = flucase.Mialgia,                                          //#### CAFQ
@@ -1860,14 +1857,14 @@ namespace Paho.Controllers
                 DateTime? ShipDate3,
                 long? LabId3,
                 bool? Adenopatia,
-                bool? Wheezing,       
+                bool? Wheezing,
                 bool? AntecedentesFiebre,
+
+                bool? Asymptomatic,                     //#### CAFQ: 200519
+                bool? Anosmy,                           //#### CAFQ: 200519
+                bool? Dysgeusia,                        //#### CAFQ: 200519
+
                 bool? Rinorrea,
-                //bool? Malestar,
-                //bool? Nauseas,
-                //bool? DolorMuscular,
-                //bool? Disnea,
-                //bool? DolorCabeza,
                 bool? Estridor,
                 bool? Tos,
                 Decimal? Temperatura,                           //#### CAFQ
@@ -2052,12 +2049,12 @@ namespace Paho.Controllers
             flucase.Adenopatia = Adenopatia;
             flucase.Wheezing = Wheezing;                            //#### CAFQ: 180619
             flucase.AntecedentesFiebre = AntecedentesFiebre;
+
+            flucase.Asymptomatic = Asymptomatic;                    //#### CAFQ: 200519
+            flucase.Anosmy = Anosmy;                                //#### CAFQ: 200519
+            flucase.Dysgeusia = Dysgeusia;                          //#### CAFQ: 200519
+
             flucase.Rinorrea = Rinorrea;
-            //flucase.Malestar = Malestar;
-            //flucase.Nauseas = Nauseas;
-            //flucase.DolorMuscular = DolorMuscular;
-            //flucase.Disnea = Disnea;
-            //flucase.DolorCabeza = DolorCabeza;
             flucase.Estridor = Estridor;
             flucase.Tos = Tos;
             flucase.Temperatura = Temperatura;                      //#### CAFQ

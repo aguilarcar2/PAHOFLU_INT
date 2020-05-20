@@ -890,6 +890,13 @@
 
     self.Adenopatia = ko.observable("");
     self.Wheezing = ko.observable("");                  //#### CAFQ: 180619
+
+    self.Asymptomatic = ko.observable("");              //#### CAFQ: 200519
+    self.Anosmy = ko.observable("");                    //#### CAFQ: 200519
+    self.Dysgeusia = ko.observable("");                 //#### CAFQ: 200519
+
+
+
     self.AntecedentesFiebre = ko.observable("");
     self.Rinorrea = ko.observable("");
     self.Malestar = ko.observable("");
@@ -902,7 +909,7 @@
     self.IrritabilityConfusion = ko.observable("");
 
     self.Disnea = ko.observable("");
-    self.DolorCabeza = ko.observable("");
+    //self.DolorCabeza = ko.observable("");
     self.Estridor = ko.observable("");
     self.Tos = ko.observable("");
     self.Tiraje = ko.observable("");
@@ -990,7 +997,7 @@
         }
     }, self);
     self.Temperatura = ko.observable().extend({ numeric: 1 });                      //**** CAFQ
-    self.DolorCabeza = ko.observable("");                                           //**** CAFQ
+    self.DolorCabeza = ko.observable("");        //Cefalea                          //**** CAFQ
     self.Mialgia = ko.observable("");                                               //**** CAFQ
     self.Erupcion = ko.observable("");                                              //**** CAFQ
     self.ErupcionLocaliz = ko.observable("");                                       //**** CAFQ
@@ -1038,6 +1045,37 @@
     self.IsInfeHospPrev = ko.computed(function () {               //**** CAFQ
         return (self.InfeccHospit() == "1") ? true : false;
     }, self);                                             //**** CAFQ*/
+
+    self.IsAsymptomatic = ko.computed(function () {
+        if (self.Asymptomatic() == "1") {
+            self.AntecedentesFiebre("");
+            self.Temperatura("");
+            self.Tos("");
+            self.DifResp("");
+
+            self.Rinorrea("");
+            self.Disnea("");
+            self.Escalofrios("");
+            self.DolorMuscular("");  
+            self.DolorMuscularLocaliz("");
+
+            self.Odinofagia("");
+
+            self.Nauseas("");
+            self.DiarreaAguda("");
+            self.AlteracEstadoMental("");
+            self.Anosmy("");
+
+            self.Dysgeusia("");
+            self.DolorCabeza("");
+            self.Otro("");
+            self.OtroDesc("");
+
+            return true;
+        } else {
+            return false;
+        }
+    }, self);
 
     //**** Estado del caso / Evolucion
     self.CaseStatus = ko.observable("");
@@ -1257,6 +1295,11 @@
         self.Adenopatia("");
         self.Wheezing("");                   //#### CAFQ: 180619
         self.AntecedentesFiebre("");
+
+        self.Asymptomatic("");              //#### CAFQ: 200519
+        self.Anosmy("");                    //#### CAFQ: 200519
+        self.Dysgeusia("");                 //#### CAFQ: 200519
+
         self.Rinorrea("");
         self.Malestar("");
         self.Nauseas("");
@@ -1605,11 +1648,11 @@
                 self.hospitalIDCaseToReferHospital(data.hospitalIDCaseToReferHospital);
                 if (data.hospitalIDCaseToReferHospital > 0 && data.hospitalIDCaseToReferHospital != null) 
                     app.Views.Contact.TransferToHospitalILI(true);
-                    
 
                 if (data.FalleDate)
                     self.FalleDate(moment(data.FalleDate).clone().toDate());
                 else self.FalleDate(null);
+
                 self.SalonVal(data.SalonVal);
                 if (data.SalonVal != "" && data.SalonVal != null) {
                     $.getJSON("/cases/GetSalonID", { ID: data.SalonVal }, function (data, status) {
@@ -1665,6 +1708,11 @@
                 self.Adenopatia(data.Adenopatia);
                 self.Wheezing(data.Wheezing);               		        //#### CAFQ: 180619
                 self.AntecedentesFiebre(data.AntecedentesFiebre);
+
+                self.Asymptomatic(data.Asymptomatic);                       //#### CAFQ: 200519
+                self.Anosmy(data.Anosmy);                                   //#### CAFQ: 200519
+                self.Dysgeusia(data.Dysgeusia);                             //#### CAFQ: 200519
+                
                 self.Rinorrea(data.Rinorrea);
                 self.Malestar(data.Malestar);
                 self.Nauseas(data.Nauseas);
@@ -1865,6 +1913,11 @@
                 Adenopatia: self.Adenopatia() != true ? false : self.Adenopatia(),
                 Wheezing: self.Wheezing() != true ? false : self.Wheezing(),                    //#### CAFQ: 180619
                 AntecedentesFiebre: self.AntecedentesFiebre() != true ? false : self.AntecedentesFiebre(),
+
+                Asymptomatic: self.Asymptomatic() != true ? false : self.Asymptomatic(),        //#### CAFQ: 200519
+                Anosmy: self.Anosmy() != true ? false : self.Anosmy(),                          //#### CAFQ: 200519
+                Dysgeusia: self.Dysgeusia() != true ? false : self.Dysgeusia(),                 //#### CAFQ: 200519
+
                 Rinorrea: self.Rinorrea() != true ? false : self.Rinorrea(),
                 Malestar: self.Malestar() != true ? false : self.Malestar(),
                 Nauseas: self.Nauseas() != true ? false : self.Nauseas(),
