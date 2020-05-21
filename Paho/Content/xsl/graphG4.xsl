@@ -26,6 +26,7 @@
 					<serie8><xsl:value-of select="sum(//graph/graphData/year/graphDataItem[edad=$etario]/serie8)"/></serie8>
 					<serie9><xsl:value-of select="sum(//graph/graphData/year/graphDataItem[edad=$etario]/serie9)"/></serie9>
 					<serie10><xsl:value-of select="sum(//graph/graphData/year/graphDataItem[edad=$etario]/serie10)"/></serie10>
+					<serie11><xsl:value-of select="sum(//graph/graphData/year/graphDataItem[edad=$etario]/serie11)"/></serie11>
 				</graphDataItem>
 			</xsl:for-each>				
 		</graphData>
@@ -39,6 +40,7 @@
 		<graphSeries8Label><xsl:value-of select="graphSeries8Label"/></graphSeries8Label>
 		<graphSeries9Label><xsl:value-of select="graphSeries9Label"/></graphSeries9Label>
 		<graphSeries10Label><xsl:value-of select="graphSeries10Label"/></graphSeries10Label>
+		<graphSeries11Label><xsl:value-of select="graphSeries11Label"/></graphSeries11Label>
 	</graph>
 </xsl:template>
 
