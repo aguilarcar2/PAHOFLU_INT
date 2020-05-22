@@ -1263,14 +1263,9 @@ namespace Paho.Controllers
                                     myXmlNode0.InnerText = getMsg("viewSituationalMap1Title");
                                     break;
                                 case "GetMapData2":
-                                    /*if (CountryID_ == 9)
-                                        myXmlNode0.InnerText = getMsg("viewSituationalMap2Title") + " INSTITUCIONAL";
-                                    else
-                                        myXmlNode0.InnerText = getMsg("viewSituationalMap2Title");*/
                                     myXmlNode0.InnerText = getMsg("viewSituationalMap2Title") + ((CountryID_ == 9) ? " INSTITUCIONAL" : "");
                                     break;
                                 case "GetMapData3":
-                                    //myXmlNode0.InnerText = getMsg("viewSituationalMap2Title") + " SALUD";
                                     myXmlNode0.InnerText = getMsg("viewSituationalMap2Title") + ((CountryID_ == 9) ? " SALUD" : "");
                                     break;
                             }
@@ -1305,7 +1300,6 @@ namespace Paho.Controllers
                                     myXmlNode0.InnerText = "DOI";
                                     break;
                                 case 15:
-                                    //myXmlNode0.InnerText = "HN";                    // Honduras
                                     if (GetMapDataSP == "GetMapData1")
                                         myXmlNode0.InnerText = "HN";
                                     else if (GetMapDataSP == "GetMapData3")
@@ -1329,8 +1323,8 @@ namespace Paho.Controllers
                                         mapVal.Add(reader["AreaID"].ToString().Trim());
                                         mapVal.Add(reader["1"].ToString().Trim());
                                         mapVal.Add(reader["2"].ToString().Trim());
-                                        //mapVal.Add(reader["3"].ToString().Trim());
                                         mapVal.Add(reader["6"].ToString().Trim());
+                                        mapVal.Add(reader["14"].ToString().Trim());
                                         mapVal.Add(reader["9"].ToString().Trim());
                                         mapVals.Add(mapVal);
 
@@ -1356,9 +1350,9 @@ namespace Paho.Controllers
                                         anotherAuxXmlNode0.InnerText = reader["6"].ToString().Trim();
                                         auxXmlNode0.AppendChild(anotherAuxXmlNode0);
 
-                                        /*anotherAuxXmlNode0 = myXmlDoc0.CreateElement("ah1n1");
-                                        anotherAuxXmlNode0.InnerText = reader["3"].ToString().Trim();
-                                        auxXmlNode0.AppendChild(anotherAuxXmlNode0);*/
+                                        anotherAuxXmlNode0 = myXmlDoc0.CreateElement("sars");
+                                        anotherAuxXmlNode0.InnerText = reader["14"].ToString().Trim();
+                                        auxXmlNode0.AppendChild(anotherAuxXmlNode0);
 
                                         anotherAuxXmlNode0 = myXmlDoc0.CreateElement("other");
                                         anotherAuxXmlNode0.InnerText = reader["9"].ToString().Trim();
@@ -1434,13 +1428,13 @@ namespace Paho.Controllers
                             }
                         }                      
                     }
-                }                
-                //Fin de la revisión de si existen los datos para la gráfica
+                }   //Fin de la revisión de si existen los datos para la gráfica
+
                 return Json(JsonConvert.SerializeXmlNode(myXmlDoc0));
             }
             catch (Exception e)
             {
-                ViewBag.Message = "El reporte no se pudo generar, por favor intente de nuevo";
+                ViewBag.Message = "El reporte no se pudo generar, por favor intente de nuevo. " + e.Message;
             }
             return null;
         }

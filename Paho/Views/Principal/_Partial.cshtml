@@ -1,7 +1,12 @@
 ﻿@model Paho.Models.PrincipalViewModel
+
+@{
+    string LabelRSV = Paho.Controllers.ResourcesM.SgetMessage("viewSituationalRSV", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelOther = Paho.Controllers.ResourcesM.SgetMessage("viewSituationalOther", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+}
+
 <!-- ko with: app.Views.Principal -->
-
-
 @if (ViewBag.UsrCtry > 0)
 {
     <div class="row rowform" data-bind="visibility: true" style="margin-left:5px;">
@@ -5672,7 +5677,8 @@
         </div>
 
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxFIN Gráfica 10 - ETI 2 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
-        <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxControles para los mapasxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+
+        <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx Controles para los MAPAS xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <script>
             /**
                 * This demo uses our own method of determining user's location
@@ -5777,7 +5783,7 @@
                     dataMapEti = 1;
                         }
 
-                            //Esta sección sirve para consolidar los años seleccionados en un string separado por comas
+                //Esta sección sirve para consolidar los años seleccionados en un string separado por comas
                 var allMapVals = [];
                 var yrsMap = "";
                 $('#map_c_b :checked').each(function() {
@@ -5965,11 +5971,9 @@
                                         infA: element2.infA,
                                         infB: element2.infB,
                                         vrs: element2.vrs,
-                                        //ah1n1: element2.ah1n1,
-                                        //ah3: element2.ah3,
+                                        sars: element2.sars,
                                         other: element2.other,
-                                        //total: (parseInt(element2.infA) + parseInt(element2.infB) + parseInt(element2.vrs) + parseInt(element2.ah1n1) + parseInt(element2.ah3))
-                                        total: (parseInt(element2.infA) + parseInt(element2.infB) + parseInt(element2.vrs) + parseInt(element2.other)) //+ parseInt(element2.ah3))
+                                        total: (parseInt(element2.infA) + parseInt(element2.infB) + parseInt(element2.vrs) + parseInt(element2.sars) + parseInt(element2.other))
                                     });
                                 });
                             });
@@ -6028,11 +6032,12 @@
                                     var A = chartData[i].infA.valueOf();
                                     var B = chartData[i].infB.valueOf();
                                     var VRS = chartData[i].vrs.valueOf();
-                                    //var AH1N1 = chartData[i].ah1n1.valueOf();
+                                    var SARS = chartData[i].sars.valueOf();
                                     var other = chartData[i].other.valueOf();
                                     var total = chartData[i].total.valueOf();
                                     //map.dataProvider.areas[ i ].description = "Influenza A: " + A + "<br/>Influenza B: " + B + "<br/>" + "VRS" + ": " + VRS + "<br/>OTHER: " + other + "<br/>Total: "+ total;//Math.round( Math.random() * 10000 );
-                                    map.dataProvider.areas[ i ].description = "Influenza A: " + A + "<br/>Influenza B: " + B + "<br/>" + "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalRSV"))" + ": " + VRS + "<br/>" + "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalOther"))" + ": " + other + "<br/>Total: "+ total;//Math.round( Math.random() * 10000 );
+                                    @*map.dataProvider.areas[ i ].description = "Influenza A: " + A + "<br/>Influenza B: " + B + "<br/>" + "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalRSV"))" + ": " + VRS + "<br/>" + "@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalOther"))" + ": " + other + "<br/>Total: "+ total;//Math.round( Math.random() * 10000 );*@
+                                    map.dataProvider.areas[ i ].description = "Influenza A: " + A + "<br/>Influenza B: " + B + "<br/>" + "@(LabelRSV)" + ": " + VRS + "<br/>" + "SARS-CoV-2" + ": " + SARS + "<br/>" + "@(LabelOther)" + ": " + other + "<br/>Total: " + total;     //Math.round( Math.random() * 10000 );
 
                                     map.dataProvider.areas[ i ].value = total;
                                 }
