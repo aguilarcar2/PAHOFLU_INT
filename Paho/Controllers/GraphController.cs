@@ -1817,7 +1817,7 @@ namespace Paho.Controllers
 
                                         if (CountryID_ == 18 || CountryID_ == 25)
                                             qtyGruposEdad = 8;
-                                        if(CountryID_ == 17 || CountryID_ == 119 || CountryID_ == 11)
+                                        else if(CountryID_ == 17 || CountryID_ == 119 || CountryID_ == 11)
                                             qtyGruposEdad = 9;
                                         else
                                             qtyGruposEdad = 6;
@@ -2021,45 +2021,52 @@ namespace Paho.Controllers
                                             //int qtyRowsGrupoEdad = 27;      // Tabla 1: 3 * 3 * 3
                                             //int qytVirusEspecificos = 10;   // Tabla 2
 
-                                            if (CountryID_ == 3 || CountryID_ == 7 || CountryID_ == 9 || CountryID_ == 15)
-                                            {
-                                                qtyGruposEdad = 6;
-                                                //filaInicialTabla2 = 208;        // 8 + ((6 + 1) * 27) + 11 -> Vigilancia de Influenza y otros Virus Respiratorios 
-                                                //indiceInicial = 886;            // 208 + (10 * 75) + 3 -> Positivos para otros virus respiratorios\Other
-                                                //indiceInicial2 = 887;
-                                                qtyRowsVirus = 3 + (qtyGruposEdad * (4 * 3));               // Tabla 2: 3 + (6 * (4 * 3))
-                                                //filaInicialTabla2 = filaInicial + ((qtyGruposEdad + 1) * qtyRowsGrupoEdad) + 11;    // 8 + ((6 + 1) * 27) + 11 -> Vigilancia de Influenza y otros Virus Respiratorios 
-                                                filaInicialTabla2 = filaInicial + qtyRowsTabla1 + 11;                     //-> Vigilancia de Influenza y otros Virus Respiratorios 
-                                                indiceInicial = filaInicialTabla2 + (qytVirusEspecificos * qtyRowsVirus) + 3;       // 208 + (10 * 75) + 3 -> Positivos para otros virus respiratorios\Other
-                                                indiceInicial2 = indiceInicial + 1;
-                                            }
-                                            else
-                                            {
-                                                if (CountryID_ == 17 || CountryID_ == 119 || CountryID_ == 11)
-                                                {
-                                                    qtyGruposEdad = 9;
-                                                    //filaInicialTabla2 = 289;    // Vigilancia de Influenza y otros Virus Respiratorios 
-                                                    //indiceInicial = 1291;       // Other
-                                                    //indiceInicial2 = 1292;
-                                                    qtyRowsVirus = 3 + (qtyGruposEdad * (4 * 3));               // Tabla 2: 3 + (6 * (4 * 3))
-                                                    //filaInicialTabla2 = filaInicial + ((qtyGruposEdad + 1) * qtyRowsGrupoEdad) + 11;    // 8 + ((6 + 1) * 27) + 11 -> Vigilancia de Influenza y otros Virus Respiratorios 
-                                                    filaInicialTabla2 = filaInicial + qtyRowsTabla1 + 11;                     //-> Vigilancia de Influenza y otros Virus Respiratorios 
-                                                    indiceInicial = filaInicialTabla2 + (qytVirusEspecificos * qtyRowsVirus) + 3;       // 208 + (10 * 75) + 3 -> Positivos para otros virus respiratorios\Other
-                                                    indiceInicial2 = indiceInicial + 1;
-                                                }
-                                                else                            // 25: Surinam y 18: Sta Lucia
-                                                {
-                                                    qtyGruposEdad = 8;
-                                                    //filaInicialTabla2 = 262;    // Vigilancia de Influenza y otros Virus Respiratorios 
-                                                    //indiceInicial = 1156;       // Other
-                                                    //indiceInicial2 = 1157;
-                                                    qtyRowsVirus = 3 + (qtyGruposEdad * (4 * 3));               // Tabla 2: 3 + (6 * (4 * 3))
-                                                    //filaInicialTabla2 = filaInicial + ((qtyGruposEdad + 1) * qtyRowsGrupoEdad) + 11;    // 8 + ((6 + 1) * 27) + 11 -> Vigilancia de Influenza y otros Virus Respiratorios 
-                                                    filaInicialTabla2 = filaInicial + qtyRowsTabla1 + 11;                     //-> Vigilancia de Influenza y otros Virus Respiratorios 
-                                                    indiceInicial = filaInicialTabla2 + (qytVirusEspecificos * qtyRowsVirus) + 3;       // 208 + (10 * 75) + 3 -> Positivos para otros virus respiratorios\Other
-                                                    indiceInicial2 = indiceInicial + 1;
-                                                }
-                                            }
+                                            ////if (CountryID_ == 3 || CountryID_ == 7 || CountryID_ == 9 || CountryID_ == 15)
+                                            ////{
+                                            ////    //qtyGruposEdad = 6;
+                                            ////    //filaInicialTabla2 = 208;        // 8 + ((6 + 1) * 27) + 11 -> Vigilancia de Influenza y otros Virus Respiratorios 
+                                            ////    //indiceInicial = 886;            // 208 + (10 * 75) + 3 -> Positivos para otros virus respiratorios\Other
+                                            ////    //indiceInicial2 = 887;
+                                            ////    qtyRowsVirus = 3 + (qtyGruposEdad * (4 * 3));               // Tabla 2: 3 + (6 * (4 * 3))
+                                            ////    //filaInicialTabla2 = filaInicial + ((qtyGruposEdad + 1) * qtyRowsGrupoEdad) + 11;    // 8 + ((6 + 1) * 27) + 11 -> Vigilancia de Influenza y otros Virus Respiratorios 
+                                            ////    filaInicialTabla2 = filaInicial + qtyRowsTabla1 + 11;                     //-> Vigilancia de Influenza y otros Virus Respiratorios 
+                                            ////    indiceInicial = filaInicialTabla2 + (qytVirusEspecificos * qtyRowsVirus) + 3;       // 208 + (10 * 75) + 3 -> Positivos para otros virus respiratorios\Other
+                                            ////    indiceInicial2 = indiceInicial + 1;
+                                            ////}
+                                            ////else
+                                            ////{
+                                            ////    if (CountryID_ == 17 || CountryID_ == 119 || CountryID_ == 11)
+                                            ////    {
+                                            ////        //qtyGruposEdad = 9;
+                                            ////        //filaInicialTabla2 = 289;    // Vigilancia de Influenza y otros Virus Respiratorios 
+                                            ////        //indiceInicial = 1291;       // Other
+                                            ////        //indiceInicial2 = 1292;
+                                            ////        qtyRowsVirus = 3 + (qtyGruposEdad * (4 * 3));               // Tabla 2: 3 + (6 * (4 * 3))
+                                            ////        //filaInicialTabla2 = filaInicial + ((qtyGruposEdad + 1) * qtyRowsGrupoEdad) + 11;    // 8 + ((6 + 1) * 27) + 11 -> Vigilancia de Influenza y otros Virus Respiratorios 
+                                            ////        filaInicialTabla2 = filaInicial + qtyRowsTabla1 + 11;                     //-> Vigilancia de Influenza y otros Virus Respiratorios 
+                                            ////        indiceInicial = filaInicialTabla2 + (qytVirusEspecificos * qtyRowsVirus) + 3;       // 208 + (10 * 75) + 3 -> Positivos para otros virus respiratorios\Other
+                                            ////        indiceInicial2 = indiceInicial + 1;
+                                            ////    }
+                                            ////    else                            // 25: Surinam y 18: Sta Lucia
+                                            ////    {
+                                            ////        //qtyGruposEdad = 8;
+                                            ////        //filaInicialTabla2 = 262;    // Vigilancia de Influenza y otros Virus Respiratorios 
+                                            ////        //indiceInicial = 1156;       // Other
+                                            ////        //indiceInicial2 = 1157;
+                                            ////        qtyRowsVirus = 3 + (qtyGruposEdad * (4 * 3));               // Tabla 2: 3 + (6 * (4 * 3))
+                                            ////        //filaInicialTabla2 = filaInicial + ((qtyGruposEdad + 1) * qtyRowsGrupoEdad) + 11;    // 8 + ((6 + 1) * 27) + 11 -> Vigilancia de Influenza y otros Virus Respiratorios 
+                                            ////        filaInicialTabla2 = filaInicial + qtyRowsTabla1 + 11;                     //-> Vigilancia de Influenza y otros Virus Respiratorios 
+                                            ////        indiceInicial = filaInicialTabla2 + (qytVirusEspecificos * qtyRowsVirus) + 3;       // 208 + (10 * 75) + 3 -> Positivos para otros virus respiratorios\Other
+                                            ////        indiceInicial2 = indiceInicial + 1;
+                                            ////    }
+                                            ////}
+
+                                            qtyRowsVirus = 3 + (qtyGruposEdad * (4 * 3));               // Tabla 2: 3 + (6 * (4 * 3))
+                                            filaInicialTabla2 = filaInicial + qtyRowsTabla1 + 11;                     //-> Vigilancia de Influenza y otros Virus Respiratorios 
+                                            indiceInicial = filaInicialTabla2 + (qytVirusEspecificos * qtyRowsVirus) + 3;       // 208 + (10 * 75) + 3 -> Positivos para otros virus respiratorios\Other
+                                            indiceInicial2 = indiceInicial + 1;
+
+
                                             //--------------Fin Parámetros dependiendo del país del gráficos-----------
 
                                             for (int i = 0; i < 53; i++)
