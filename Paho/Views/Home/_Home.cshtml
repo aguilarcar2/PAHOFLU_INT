@@ -4962,6 +4962,91 @@
             </div>
         }
 
+        <!-- Visualizacion resultados de INCIENSA - CR -- Sección NIC pero utilizando los campos de NPHL -->
+        @if ( ViewBag.UsrCtry == 9)
+        {
+            <div class="row rowform" id="NIC_section" desactivado_data-bind="visible:NIC_display">
+                <div class="col-md-12">
+                    <button type="button" style="background-color:#B2BABB; color:#000000" class="btn btn-group-justified" data-toggle="collapse" data-target="#NICsection">
+                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabInt"))
+                        <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
+                    </button>
+                    <div id="NICsection" class="collapse in">
+                        <div class="row rowform">
+                            <div class="col-md-2_5">
+                                <div class='input-group'>
+                                    <span class="input-group-addon">
+                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabIntRecDate"))
+                                    </span>
+                                    <input id="Rec_Date_NPHL" name="Rec_Date_NPHL" type='text' class="form-control " data-bind='datepicker: Rec_Date_NPHL, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
+                                </div>
+                            </div>
+                            <div class="col-md-2_5">
+                                <div class='input-group'>
+                                    <span class="input-group-addon">
+                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigLabIntLabelTemp"))
+                                    </span>
+                                    <input id="Temp_NPHL" name="Temp_NPHL" type='text' class="form-control case_letter" data-bind="value: Temp_NPHL" />
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class='input-group'>
+                                    <span class="input-group-addon">
+                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigLabIntLabelBarCode"))
+                                    </span>
+                                    <input id="Identification_Test_NPHL" name="Identification_Test_NPHL" type='text' class="form-control case_letter" data-bind="value: Identification_Test_NPHL" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row rowform">
+                            <div class="col-md-3">
+                                <span>
+                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabNPHLLabelProcessed"))
+                                </span>
+                                <label class="btn btn-default">
+                                    <input type="radio" name="NPHL_Processed" id="NPHL_Processed" value="true" data-bind="checked: NPHL_Processed"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabNPHLLabelYes"))
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type="radio" name="NPHL_Processed" id="NPHL_Processed" value="false" checked data-bind="checked: NPHL_Processed"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabNPHLLabelNo"))
+                                </label>
+                            </div>
+                            <div class="col-md-5" data-bind="visible:NotShowNPHL_Processed">
+                                <div class='input-group'>
+                                    <span class="input-group-addon">
+                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabNPHLLabelCauseNotProcessed"))
+                                    </span>
+                                    <select id="NPHL_NoProRenId" class="form-control" data-bind="options: CSNP,
+                            optionsText: 'Name',
+                            optionsValue: 'Id',
+                            optionsCaption: 'Select...',
+                            value: NPHL_NoProRenId"></select>
+                                    <input id="NPHL_NoReason" type='text' class="form-control case_letter" data-bind="value: NPHL_NoProRen , visible:NotShowNPHL_ProcessedOther" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row rowform">
+                            <div class="col-md-8">
+                                <div class='input-group'>
+                                    <span class="input-group-addon">
+                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabIntObservationsNPHL"))
+                                    </span>
+                                    <textarea class="form-control case_letter" rows="1" style="max-width: 900px;" id="Observation_NPHL" name="Observation_NPHL" data-bind="value: Observation_NPHL"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <br />
+
+                    <button type="button" style="background-color:#B2BABB; color:#000000" class="btn btn-group-justified" data-toggle="collapse" data-target="#NICsection">
+                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabTest"))
+                        <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
+                    </button>
+                </div>
+            </div>
+        }     
+
         <div class="row rowform">
             <div class="col-md-12">
                 <div style="font-weight:bold;font-size:11px">

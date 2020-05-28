@@ -691,7 +691,7 @@ namespace Paho.Controllers
                                      //FLOW_VIRUS = db.InstitutionConfEndFlowByVirus.Where(i => i.ID == flucase.CaseLabTests.Where(e => e.inst_conf_end_flow_by_virus != null).OrderByDescending(d => d.flow_test).FirstOrDefault().inst_conf_end_flow_by_virus).FirstOrDefault(),
                                      ICON_COMMEN = flucase.Comments == "" || flucase.Comments == null ? "" : commentsHtml,
                                      ICON_COMMEN_CLOSE = flucase.ObservationCase == "" || flucase.ObservationCase == null ? "" : commentsHtml,
-                                     SARSCoV2_Positive = flucase.CaseLabTests.Where(j=> j.VirusTypeID == 14 && j.TestResultID == "P").Any(),
+                                     SARSCoV2_Positive = (user.Institution.CountryID == 7) ? false : flucase.CaseLabTests.Where(j=> j.VirusTypeID == 14 && j.TestResultID == "P").Any(),
                                      VI_OK = (from a in db.InstitutionConfEndFlowByVirus
                                               join p in db.InstitutionsConfiguration on a.id_InstCnf equals p.ID
                                               //join dt in db.Institutions on p.InstitutionFromID equals dt.ID
@@ -2783,6 +2783,7 @@ namespace Paho.Controllers
                     CanIFILab = CanIFILab,
                     InstFlow_NPHL = user.Institution.NPHL != null ? (bool)user.Institution.NPHL : false,
                     ExistAnyInstitutionFlow_NPHL = user.Institution.CountryID != 15 ? db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(i => i.InstitutionParentID == flucase.HospitalID && i.InstitutionTo.NPHL == true).Any() : false,
+                    Is_NIC = user.Institution.LabNIC, // hay que revisar mejor de donde se extrae esta información
                 // Lab Foreign
                 ForeignLabCountry = LabForeignCountry,
                     ForeignLabLocal = LabForeignInstitutionLocal,
@@ -3016,7 +3017,7 @@ namespace Paho.Controllers
                       .ToArray(),
                     LabsResult = institutions.Select(x => new { Id = x.ID.ToString(), x.Name }).ToList(),
                     SubTypeByLabRes = GetSubTypebyLab(user.InstitutionID),
-                    CanConclude = (SARSCoV2_First_Positive_Temp) ? canConclude & canConclude_Sample_1 & canConclude_Sample_2 & canConclude_Sample_3 && SARSCoV2_Second_Negative_After_Positive_Temp : canConclude & canConclude_Sample_1 & canConclude_Sample_2 & canConclude_Sample_3,
+                    CanConclude = (SARSCoV2_First_Positive_Temp && user_cty != 7) ? canConclude & canConclude_Sample_1 & canConclude_Sample_2 & canConclude_Sample_3 && SARSCoV2_Second_Negative_After_Positive_Temp : canConclude & canConclude_Sample_1 & canConclude_Sample_2 & canConclude_Sample_3,
                     SARSCoV2_Positive =  SARSCoV2_First_Positive_Temp,
                     SARSCoV2_Negative_1 = SARSCoV2_First_Negative_After_Positive_Temp,
                     SARSCoV2_Negative_2 = SARSCoV2_Second_Negative_After_Positive_Temp,
@@ -3162,7 +3163,7 @@ namespace Paho.Controllers
             var SARSCoV2_First_Negative_After_Positive_Date_Temp = DateTime.Now;  // Variable temporal en lo que se desarrolla el flujo de cierre por virus
             var SARSCoV2_Second_Negative_After_Positive_Temp = false; // Variable temporal en lo que se desarrolla el flujo de cierre por virus
             var SARSCoV2_Days_After_Positive = 14;  // Configuración para los días para la segunda muestra negativa del SARS-CoV-2
-            var SARSCoV2_Days_After_First_Negative = 14;  // Configuración para los días para la segunda muestra negativa del SARS-CoV-2
+            var SARSCoV2_Days_After_First_Negative = 2;  // Configuración para los días para la segunda muestra negativa del SARS-CoV-2
 
 
             flucase = db.FluCases.Find(id);
@@ -3275,7 +3276,7 @@ namespace Paho.Controllers
                     // Section SARS-CoV-2 Begin
 
 
-                    if ( labTestViewModel.VirusTypeID == 14)
+                    if ( labTestViewModel.VirusTypeID == 14 && user.Institution.CountryID != 7)
                     {
                         if (labTestViewModel.TestResultID == "P" && SARSCoV2_First_Positive_Temp == false)
                         {

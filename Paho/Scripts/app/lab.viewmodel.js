@@ -602,6 +602,7 @@ function LabViewModel(app, dataModel) {
     self.ISPID = ko.observable(97);                                     //Es 97 porque es el ID de la tabla institución
     self.NPHL = ko.observable(false);    // Variable que identifica si el usuario que ingresa la información de laboratorio es NPHL
     self.NPHL_FlowExist = ko.observable(false);  // Variable que identifica que en el flujo de la ficha existe una institución NPHL oh que no ingrese test
+    self.NIC_display = ko.observable(false);  // Variable que sirve para desplegar los datos de INCIENSA por el momento
     self.ForeignLabCountry = ko.observable(false);
     self.ForeignLabLocal = ko.observable(false);
     self.flow_max_record = ko.observable("");
@@ -1825,6 +1826,7 @@ function LabViewModel(app, dataModel) {
                 self.NPHL(data.InstFlow_NPHL);
 
                 self.NPHL_FlowExist(data.ExistAnyInstitutionFlow_NPHL);
+                self.NIC_display(data.Is_NIC);
 
                 (data.RecDate) ? self.RecDate(moment(data.RecDate).clone().toDate()) : self.RecDate(null);
                 self.Identification_Test(data.Identification_Test);
