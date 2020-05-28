@@ -1492,7 +1492,7 @@ namespace Paho.Controllers
                 Year = string.Join(",", years);
                 //Fin tratamiento año
 
-                //Inicio de revisión si los datos para la gráfica, año, hospital, etc. existen o no
+                //Inicio de revisión si los datos para la gráfica, año, hospital, etc. existen o no en la tabla GraphCache
                 string resultGetGraphData = "";
                 var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
                 using (var con = new SqlConnection(consString))
@@ -3063,7 +3063,8 @@ namespace Paho.Controllers
 
                 for (nJ = nX; nJ <= nSePe; nJ++)
                 {
-                    if (nS > nSePe)
+                    //if (nS > nSePe)
+                    if (nS >= nSePe)
                         break;
                     else
                     {
@@ -3124,6 +3125,7 @@ namespace Paho.Controllers
                     Dictionary<string, decimal> datosCol = (Dictionary<string, decimal>)aColus.ElementAt(2);
 
                     int nAL = 0;
+                    int prueba = 0;
                     foreach (KeyValuePair<string, decimal> kvp in aResu)
                     {
                         decimal nTemp = 0;
@@ -3145,6 +3147,8 @@ namespace Paho.Controllers
 
                             ++nAL;
                         }
+
+                        ++prueba;
                     }
                     ++nR;
                 }
@@ -3368,8 +3372,22 @@ namespace Paho.Controllers
 
                         aParaLiBa.Add(excelWorksheet.Cells[row - 1, col + 1].Value);                        // Label serie1 (anio a medir)
 
-                        nAnio = Convert.ToInt32(cAnio);
-                        --nAnio;
+                        if(cAnio.Length > 4)
+                        {
+                            //int value = param.Length - length;
+                            //string result = param.Substring(value, length);
+                            //return result;
+                            int value = cAnio.Length - 4;
+                            string result = cAnio.Substring(value, 4);
+
+                            nAnio = Convert.ToInt32(result);
+                            --nAnio;
+                        }
+                        else
+                        {
+                            nAnio = Convert.ToInt32(cAnio);
+                            --nAnio;
+                        }
 
                         for (int nI = 1; nI <= 7; ++nI)
                         {
