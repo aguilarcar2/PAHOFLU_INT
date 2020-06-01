@@ -491,8 +491,8 @@
     };
 
     self.FlowData = function () {
+        console.log("self.FlowData->START");
         //console.log("FlowData - frecord_flowMax -- " + app.Views.Contact.flow_max() + ", frecord_flowdata -- " + app.Views.Contact.flow_record() + ", finsti_flowdata -- " + app.Views.Contact.flow_institution() + ", dataStatement_flowdata -- " + app.Views.Contact.DataStatement() + ", userRole " + self.UserRole() + ", Inst" + $("#ITy").val());
-        
 
         //if (($("#ITy").val() != 2) && self.UserRole() == "adm") {
         if (($("#ITy").val() != 2) && self.URadm() == true) {
@@ -520,7 +520,9 @@
             $("#tab-contact :input, #tab-GEO :input, #tab-hospital :input, #tab-risk :input, #tab-case :input").attr('disabled', true);
             self.ModDataNo();
             $("#tab-lab :input").prop('disabled', true);
-        }
+         }
+
+        console.log("self.FlowData->START");
     };
 
     self.FlowDataHospital = function () {
@@ -800,7 +802,7 @@
     };      // END self.FlowDataCaseStatus
 
     self.FlowDataLab = function () {
-        //console.log("self.FlowDataLab->START");
+        console.log("self.FlowDataLab->START");
 
         //console.log("Tipo flow->" + app.Views.Hospital.FlowType1());
         ////console.log("canEditLFF->" + canEditLFF); 
@@ -851,7 +853,7 @@
     }
 
     self.EnableTestNationalGlobal = function () {
-        console.log("EnableTestNationalGloba->START");
+        //console.log("EnableTestNationalGloba->START");
         //console.log(app.Views.Lab.NPHL_FlowExist());
         if ($("#ITy").val() == "2" && ( self.UsrCountry() == 15 || self.UsrCountry() == 9 || (self.UsrCountry() == 25 && app.Views.Lab.NPHL_FlowExist() ))  && app.Views.Lab.flow_max_record() == app.Views.Contact.flow_institution() && app.Views.Contact.Flow_Local_Institution_Lab()) {
             console.log("Opcion true");
@@ -890,11 +892,11 @@
             $("#NoReason").attr('disabled', false);
             $("#Identification_Test").attr('disabled', false);
         }
-        console.log("EnableTestNationalGloba->END");
+        //console.log("EnableTestNationalGloba->END");
     }
 
     self.ViewTestCR = function () {
-        console.log("self.ViewTestCR->START");
+        //console.log("self.ViewTestCR->START");
             //console.log("----   Lab NIC CR ----");
             //console.log(lab_NIC_usr);
             //console.log(app.Views.Contact.flow_institution());
@@ -914,11 +916,11 @@
                     $("div[id^='Test_1'] :input").prop('disabled', true);
                 }
             }
-        console.log("self.ViewTestCR->END");
+        //console.log("self.ViewTestCR->END");
     }
 
     self.FlowDataLabAfter = function () {
-        console.log("Home - FlowDataLabAfter->START");
+        //console.log("Home - FlowDataLabAfter->START");
 
         var flow_check = $.grep(app.Views.Lab.LabTests(), function (x) {
             //console.log("P1");
@@ -926,8 +928,10 @@
             return x.EndFlow() === "TRUE";
         });
         //console.log(flow_check.length);
-        
+        //console.log("1x1");
+        //console.log(app.Views.Lab.canEditLFF);
         //console.log(app.Views.Lab.canEditLFF());
+        //console.log("1x2");
         if ($("#ITy").val() == "2" && (app.Views.Hospital.FlowType1() == 2) && (app.Views.Lab.canEditLFF() == true)) {
             //console.log("P1-FF");
             $("#tab-lab :input").prop('disabled', false);
@@ -976,7 +980,7 @@
         $("#PrintM2").prop('disabled', false);
         $("#PrintM3").prop('disabled', false);
 
-        console.log("Home - FlowDataLabAfter->START");
+        //console.log("Home - FlowDataLabAfter->START");
     };
 
 

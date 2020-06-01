@@ -1809,7 +1809,7 @@ function LabViewModel(app, dataModel) {
             //canEditLFF = data.CanEditLFF;
             self.canEditLFF(data.CanEditLFF)
             //console.log(labsFF_list);
-            //console.log(self.canEditLFF());
+            console.log(self.canEditLFF());
             //console.log("GLGJ1-ENDD");
 
                 // Laboratorio intermedio

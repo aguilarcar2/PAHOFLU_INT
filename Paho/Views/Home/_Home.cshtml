@@ -2844,8 +2844,8 @@
             </div>
         }
 
-        <!-- Inusitados: Sintomatologia -->
-        <div class="row rowform" data-bind="visible: IsInusitadoSintomatologia">
+        <!-- Inusitados: Sintomatologia -->                         <!-- 200601: IsInusitadoSintomatologia -> Siempre esta retornando 'true' -->
+        <div class="row rowform" data-bind="visible: IsInusitadoSintomatologia"> 
             <div class="col-md-12">
                 <button type="button" style="background-color:#B2BABB; color:#000000" class="btn btn-group-justified" data-toggle="collapse" data-target="#sintomatologia">
                     @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSymptomatology"))
@@ -3214,6 +3214,7 @@
                             </div>
                         </div>
                     </div>
+
                     <!-- IRAG/ETI: Sintomatologia -->
                     <div class="row rowform">
                         <!-- Rinorrea y Disnea para Jamaica e IC -->
