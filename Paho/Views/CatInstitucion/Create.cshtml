@@ -1,5 +1,12 @@
 ﻿@model Paho.Models.Institution
 
+@{
+    string labelAllowFreeFlow = Paho.Controllers.ResourcesM.SgetMessage("msgAllowFreeFlow", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    //string labelCountry = Paho.Controllers.ResourcesM.SgetMessage("msgViewExportarLabelCountry", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    //string labelFieldSelect = Paho.Controllers.ResourcesM.SgetMessage("msgViewExportarFieldSelect", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+}
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -151,21 +158,27 @@
                 @Html.EditorFor(model => model.Active, new { htmlAttributes = new { @class = "form-control" } })
             </div>
         </div>
-
+        <!-- Centinela -->
         <div class="form-group vertical-align">
             @Html.LabelFor(model => model.sentinel, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgSentinel", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
             <div class="col-md-1">
                 @Html.EditorFor(model => model.sentinel, new { htmlAttributes = new { @class = "form-control" } })
             </div>
         </div>
-
+        <!-- Flow Free -->  <!-- //#### CAFQ: FL-200526 -->
+        <div class="form-group vertical-align" id="div-FlowFree">
+            @Html.LabelFor(model => model.FlowFree, (labelAllowFreeFlow) + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
+            <div class="col-md-1">
+                @Html.EditorFor(model => model.FlowFree, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+        <!-- Laboratorio Intermedio (NPHL) -->
         <div class="form-group vertical-align" id="div-NPHL">
             @Html.LabelFor(model => model.NPHL, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgNPHL", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
             <div class="col-md-1">
                 @Html.EditorFor(model => model.NPHL, new { htmlAttributes = new { @class = "form-control" } })
             </div>
         </div>
-
         <!-- Laboratorio NIC -->
         <div class="form-group vertical-align" id="div-LabNIC">
             @Html.LabelFor(model => model.LabNIC, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgLabNIC", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })

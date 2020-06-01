@@ -28,6 +28,8 @@ namespace Paho.Models
         public IEnumerable<LookupView<Region>> Regions { get; set; }
         public IEnumerable<LookupView<Institution>> Institutions { get; set; }
         public IEnumerable<LookupView<Lab>> Labs { get; set; }
+        public IEnumerable<LookupView<Lab>> LabsIFI { get; set; }
+        public IEnumerable<LookupView<Lab>> LabsPCR { get; set; }
         public IEnumerable<LookupView<CatReasonNotSampling>> ReasonNotSampling { get; set; }
         public IEnumerable<LookupView<CatReasonSampling>> ReasonSampling { get; set; }
         public IEnumerable<LookupView<Institution>> InstitutionsCaseGenerarting { get; set; }
@@ -71,6 +73,8 @@ namespace Paho.Models
         // Paginador
         public Array caselist_interval_1 { get; set; }
         public Array caselist_interval_2 { get; set; }
+
+        public bool inst_flowfree_active { get; set; }         //#### CAFQ: FL-200526
     }
 
     public class LabTestViewModel : CaseBase
@@ -828,6 +832,7 @@ namespace Paho.Models
         public virtual Country Country { get; set; }
         public virtual Area Area { get; set; }
         public bool sentinel { get; set; }
+        public bool FlowFree { get; set; }              //#### CAFQ: FL-200526
         [DisplayName("IRAG:")]
         public bool SARI { get; set; }
         [DisplayName("ETI:")]
@@ -1056,6 +1061,19 @@ namespace Paho.Models
         public string value_Cat_TestResult { get; set; }
         public int? id_Cat_VirusType { get; set; }
         public int? id_Cat_Subtype { get; set; }
+    }
+
+    public class InstitutionFlowFreeLabs
+    {
+        public int ID { get; set; }
+        public int FluCaseID { get; set; }
+        public long? LabID { get; set; }
+        public int? Orden { get; set; }
+        public int? Statement { get; set; }
+        public int? Sample { get; set; }
+
+        //[ForeignKey("FluCaseID")]
+        //public virtual FluCase Institution { get; set; }
     }
 
     public class FluCase : CaseBase
@@ -1349,7 +1367,6 @@ namespace Paho.Models
         public int? HospitalizedIn { get; set; }
         [MaxLength(1)]
         public string Destin { get; set; }
-
         public string DestinICU { get; set; }
         public string InstReferName { get; set; }
         public long? HospitalID_CaseToReferID { get; set; }
@@ -1363,18 +1380,23 @@ namespace Paho.Models
         public string SampleType { get; set; }
         public DateTime? ShipDate { get; set; }
         public long? LabID { get; set; }
-        public DateTime? SampleDate2 { get; set; }           // Sample 2
+        public DateTime? SampleDate2 { get; set; }          // Sample 2
         public DateTime? DateInsertSampleDate2 { get; set; } // Sample 2 Date Registered in the system
         [MaxLength(2)]
         public string SampleType2 { get; set; }
         public DateTime? ShipDate2 { get; set; }
         public long? LabID2 { get; set; }
-        public DateTime? SampleDate3 { get; set; }           // Sample 3
+        public DateTime? SampleDate3 { get; set; }          // Sample 3
         public DateTime? DateInsertSampleDate3 { get; set; } // Sample 3 Date Registered in the system
         [MaxLength(2)]
         public string SampleType3 { get; set; }
         public DateTime? ShipDate3 { get; set; }
         public long? LabID3 { get; set; }
+        //#### 200419
+        public int? FlowType1 { get; set; }
+        public long? LabFreeMu1L1_ID { get; set; }
+        public long? LabFreeMu1L2_ID { get; set; }
+        //#### 
         public bool? Adenopatia { get; set; }
         public bool? AntecedentesFiebre { get; set; }
         public bool? Rinorrea { get; set; }
@@ -1944,23 +1966,24 @@ namespace Paho.Models
         public DbSet<State> States { get; set; }
         public DbSet<CatParishPostOfficeJM> CatParishPostOfficeJM { get; set; }
         public DbSet<Neighborhood> Neighborhoods { get; set; }
-		public DbSet<Hamlet> Hamlets { get; set; }                          //#### CAFQ: 181018
+		public DbSet<Hamlet> Hamlets { get; set; }
         public DbSet<Colony> Colonies { get; set; }
         public DbSet<Institution> Institutions { get; set; }
         public DbSet<InstitutionConfiguration> InstitutionsConfiguration { get; set; }
         public DbSet<InstitutionConfEndFlowByVirus> InstitutionConfEndFlowByVirus { get; set; }
-        public DbSet<InstitutionLocationType> InstitutionLocationType { get; set; }     //#### CAFQ: 180911
+        public DbSet<InstitutionFlowFreeLabs> InstitutionFlowFreeLab { get; set; }              //#### 200419 Flow free
+        public DbSet<InstitutionLocationType> InstitutionLocationType { get; set; }
         public DbSet<CatDiag> CIE10 { get; set; }
         public DbSet<CatServicios> Salones { get; set; }
         public DbSet<FluCase> FluCases { get; set; }
         public DbSet<VirusType> VirusTypes { get; set; }
         public DbSet<TestResult> TestResults { get; set; }
-        public DbSet<CatDashboardLink> CatDashboarLinks { get; set; }               //#### CAFQ
-        public DbSet<CatOccupation> CatOccupations { get; set; }                    //#### CAFQ
-        public DbSet<CatTrabSaludRama> CatTrabSaludRamas { get; set; }              //#### CAFQ
-        public DbSet<CatTrabLaboRama> CatTrabLaboRamas { get; set; }                //#### CAFQ
+        public DbSet<CatDashboardLink> CatDashboarLinks { get; set; }
+        public DbSet<CatOccupation> CatOccupations { get; set; }
+        public DbSet<CatTrabSaludRama> CatTrabSaludRamas { get; set; }
+        public DbSet<CatTrabLaboRama> CatTrabLaboRamas { get; set; }
         //Catalogos
-        
+
         public DbSet<CatSurv> CatSurv { get; set; }
         public DbSet<CatRegionType> CatRegionType { get; set; }
         public DbSet<CatSampleNoProcessed> CatSampleNoProcessed { get; set; }
@@ -2258,23 +2281,28 @@ namespace Paho.Models
                    p.IsSample,
                    p.ReasonNotSamplingID,
                    p.ReasonNotSamplingOther,
-                   p.SampleDate,
+                   p.SampleDate,            // Muestra 1
                    p.DateInsertSampleDate,
                    p.SampleType,
                    p.ShipDate,
                    p.LabID,
-                   p.SampleDate2,
-                   p.DateInsertSampleDate2,
+                   p.SampleDate2,           // Muestra 2
+                   p.DateInsertSampleDate2, 
                    p.SampleType2,
                    p.ShipDate2,
                    p.LabID2,
-                   p.SampleDate3,
+                   p.SampleDate3,           // Muestra 3
                    p.DateInsertSampleDate3,
                    p.SampleType3,
+                   //#### 200419
+                   p.FlowType1,
+                   p.LabFreeMu1L1_ID,
+                   p.LabFreeMu1L2_ID,
+                   //#### 
                    p.ShipDate3,
                    p.LabID3,
                    p.Adenopatia,
-                   p.Wheezing,                          //#### CAFQ: 180619
+                   p.Wheezing,                        //#### CAFQ: 180619
                    p.AntecedentesFiebre,
                    p.Asymptomatic,                      //#### CAFQ: 200519
                    p.Anosmy,                            //#### CAFQ: 200519
@@ -2399,6 +2427,8 @@ namespace Paho.Models
                    p.GeneticGroup,                              // Grupo genetico
                    p.GeneticGroup_2,
                    p.GeneticGroup_3,
+
+
 
                    p.CaseStatus,
                    p.CloseDate,

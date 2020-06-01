@@ -116,10 +116,15 @@
             $("#div-LabNIC").hide();
         }
 
-        if ($("#InstitutionType").val() == "Hospital")
+        if ($("#InstitutionType").val() == "Hospital"){
             $("#div-father").show();
-        else 
+            $("#div-FlowFree").show();                      //#### CAFQ: FL-200526
+        }
+        else {
             $("#div-father").hide();
+            $("#FlowFree").prop("checked", false);          //#### CAFQ: FL-200526
+            $("#div-FlowFree").hide();                      //#### CAFQ: FL-200526
+        }
     }
 
     function toggleLocationTypeID() {                       //#### CAFQ: 180911

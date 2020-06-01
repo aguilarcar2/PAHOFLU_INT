@@ -545,16 +545,19 @@
     self.IsSample = ko.observable(false);
     $("#NotSample :input, #tab-lab :input").prop('disabled', true);
     self.IsSample.subscribe(function (NewIsSample) {
+        //console.log("self.IsSample.subscribe->START");          //#### CAFQ: FL-200526
         if (self.IsSample() === "true") {
             $("a[href*='tab-lab']").show();
             $("#tab-lab").show();
             $("#tabs").tabs("refresh");
             if ($("#ITy").val() == 1)
             {
+                //console.log("a1");          //#### CAFQ: FL-200526
                 $("#tab-lab :input").prop('disabled', true);
                 $("#NotSample :input").prop('disabled', false);
-  
+                self.FlowType1("1");          //#### CAFQ: FL-200526
             } else {
+                //console.log("a2");          //#### CAFQ: FL-200526
                 //$("#NotSample :input, #tab-lab :input").prop('disabled', false);
                 if (app.Views.Hospital.CaseStatus == "3") {
                     $("#tabs :input").prop('disabled', true);
@@ -563,10 +566,6 @@
                     $("#NotSample :input").prop('disabled', true);
                 }
             }
-
-            //console.log("IsSample True");
-            //console.log("IsSample SurvILI" + app.Views.Contact.SurvILI());
-            //console.log("IsSample True");
 
             if (app.Views.Contact.SurvILI() == true && app.Views.Lab.FinalResult() && app.Views.Lab.CanConclude() == true) {
                 //console.log(" ILI tab case");
@@ -593,6 +592,7 @@
             self.SampleType3(null);
             self.ShipDate3(null);
             self.LabId3(null);
+            self.FlowType1("");          //#### CAFQ: FL-200526
 
             if (self.IsSample() === "false" && self.Destin != "" && self.HospExDate() != "" )
             {
@@ -746,26 +746,53 @@
         }
     });
 
-    self.FlowType = ko.observable(1);
-
-    self.LabFreeVisible = ko.computed(function () {
-        bReturn = false;
-
-        if (self.FlowType() == 2) {
-            bReturn = true;
-        }
-        //else
-        //    console.log("ocultar");
-            //self.ReasonSamplingID("");
-
-        return bReturn;
-    }, self);
+    //self.FlowType = ko.observable(1);
 
     self.labs = ko.computed(function () {
           return app.Views.Home.labs();       
     }, self);
     self.LabsHospital = ko.observableArray();
     self.LabId = ko.observable("");
+
+    //**************************** #### 200419
+    self.labsOnlyPCR = ko.computed(function () {
+        return app.Views.Home.labspcr();
+    }, self);
+
+    self.labsOnlyIFI = ko.computed(function () {
+        return app.Views.Home.labsifi();
+    }, self);
+
+
+    self.FlowType1 = ko.observable("1"); 
+    self.SelectedLabFree11_ID = ko.observable("");              // Muestra 1: labs 1 y 2
+    self.SelectedLabFree12_ID = ko.observable("");
+
+    self.LabFreeVisible = ko.computed(function () {
+        bReturn = false;
+
+        if (self.FlowType1() == 2) {     // Flow free
+            bReturn = true;
+        }
+        else {
+            self.SelectedLabFree11_ID("");
+            self.SelectedLabFree12_ID("");
+        }
+
+        return bReturn;
+    }, self);
+
+    self.TipoFlujoVisible = ko.computed(function () {
+        bReturn = false;
+
+        if (self.FlowType1() == 2 || inst_flowfree_active == true) {     // Flow free
+            bReturn = true;
+        }
+
+        return bReturn;
+    }, self);
+
+    //**************************** 
 
     self.SampleDate2 = ko.observable(new Date());
     //if (self.UsrCountry() == 7 || self.UsrCountry() == 3 || self.UsrCountry() == 25) {
@@ -895,8 +922,6 @@
     self.Anosmy = ko.observable("");                    //#### CAFQ: 200519
     self.Dysgeusia = ko.observable("");                 //#### CAFQ: 200519
 
-
-
     self.AntecedentesFiebre = ko.observable("");
     self.Rinorrea = ko.observable("");
     self.Malestar = ko.observable("");
@@ -948,9 +973,6 @@
                 $("#casedefinitionwarning").show();
             }
         }
-
-
-
     });
 
     self.AntecedentesFiebre.subscribe(function (NewAntecedentesFiebre) {
@@ -997,7 +1019,7 @@
         }
     }, self);
     self.Temperatura = ko.observable().extend({ numeric: 1 });                      //**** CAFQ
-    self.DolorCabeza = ko.observable("");        //Cefalea                          //**** CAFQ
+    self.DolorCabeza = ko.observable("");                                           //**** CAFQ
     self.Mialgia = ko.observable("");                                               //**** CAFQ
     self.Erupcion = ko.observable("");                                              //**** CAFQ
     self.ErupcionLocaliz = ko.observable("");                                       //**** CAFQ
@@ -1148,9 +1170,16 @@
     //****
 
     self.Destin.subscribe(function (NewDestin) {
-    //(app.Views.Contact.SurvSARI() == true || app.Views.Contact.SurvInusual() == true)
+        //console.log("self.Destin.subscribe->START");
+        //(app.Views.Contact.SurvSARI() == true || app.Views.Contact.SurvInusual() == true)
+
+        //console.log("FinalResult->" + app.Views.Lab.FinalResult());
+        //console.log("CanConclude->" + app.Views.Lab.CanConclude());
+        //console.log("NewDestin->" + NewDestin);
+        //console.log("Destin 11");
+
         if ((app.Views.Contact.IsSurv() != "" || app.Views.Contact.SurvInusual() == true) && NewDestin != null && NewDestin != "") {
-            //console.log("Destin subscribe");
+            //console.log("Destin 22");
             if ((self.HospExDate() == "" || self.HospExDate() == "undefined" || self.HospExDate() == null) && app.Views.Contact.SurvSARI() == true)
             {
                 alert(viewValidateExitDateBeforeDestin);
@@ -1169,12 +1198,13 @@
                 if (self.UsrCountry() == 9 && NewDestin == 'D') { self.FalleDate(self.HospExDate()); }
              } else if (NewDestin != "" && self.IsSample() === "true" && app.Views.Lab.FinalResult() != "" && typeof app.Views.Lab.FinalResult() != "undefined" && app.Views.Lab.CanConclude() == true) {
                  //console.log("destin finalresult - can conclude");
-                 $("a[href*='tab-case']").show();
+                $("a[href*='tab-case']").show();
                 $("#tab-case").show();
                 $("#CaseStatus").attr("disabled", false);
                 $("#tabs").tabs("refresh");
                 if (self.UsrCountry() == 9 && NewDestin == 'D') { self.FalleDate(self.HospExDate()); }
              } else if (self.IsSample() === "true" && app.Views.Lab.FinalResult() != "" && typeof app.Views.Lab.FinalResult() != "undefined" && app.Views.Lab.CanConclude() == true) {
+                 //console.log("destin 33");
                 $("a[href*='tab-case']").show();
                 $("#tab-case").show();
                 $("#tabs").tabs("refresh");
@@ -1190,20 +1220,22 @@
              }
              else if (self.IsSample() === "true" && app.Views.Lab.Processed() === "false") {  // preguntar a Rodrigo
                  //console.log("destin processed false");
-                    $("a[href*='tab-case']").show();
-                    $("#tab-case").show();
-                    $("#CaseStatus").attr("disabled", false);
-                    $("#tabs").tabs("refresh");
-                    if (self.UsrCountry() == 9 && NewDestin == 'D') { self.FalleDate(self.HospExDate()); }
+                $("a[href*='tab-case']").show();
+                $("#tab-case").show();
+                $("#CaseStatus").attr("disabled", false);
+                $("#tabs").tabs("refresh");
+                if (self.UsrCountry() == 9 && NewDestin == 'D') { self.FalleDate(self.HospExDate()); }
             } else if (app.Views.Contact.Id() != null) {
                //console.log("destin  else");
                 $("a[href*='tab-case']").hide();
                 $("#tab-case").hide();
                 $("#CaseStatus").attr("disabled", true);
                 if (self.UsrCountry() == 9 && NewDestin == 'D') { self.FalleDate(self.HospExDate()); }
+            } 
+            else {
+                //console.log("destin - NO ingreso a algun IF");
             }
             //$("#tabs").tabs("refresh");
-
         } else if (NewDestin == null || NewDestin == "") {
             //console.log("destin sin datos");
             $("a[href*='tab-case']").hide();
@@ -1214,6 +1246,7 @@
             self.CloseDate(null);
         }
 
+        //console.log("self.Destin.subscribe->END");
       });
 
     self.CaseStatus.subscribe(function (NewDestin) {
@@ -1280,18 +1313,23 @@
         self.IsSample(false);
         self.ReasonNotSamplingID("");
         self.ReasonNotSamplingOther("");       
-        self.SampleDate (null);
+        self.SampleDate (null);             // Muestra 1
         self.SampleType("");
         self.ShipDate(null);
         self.LabId("");
-        self.SampleDate2(null);
+        self.SampleDate2(null);             // Muestra 2
         self.SampleType2("");
         self.ShipDate2(null);
         self.LabId2("");
-        self.SampleDate3(null);
+        self.SampleDate3(null);             // Muestra 3
         self.SampleType3("");
         self.ShipDate3(null);
         self.LabId3("");
+        //#### 200419
+        self.FlowType1("");
+        self.SelectedLabFree11_ID("");
+        self.SelectedLabFree12_ID("");
+        //#### 
         self.Adenopatia("");
         self.Wheezing("");                   //#### CAFQ: 180619
         self.AntecedentesFiebre("");
@@ -1652,7 +1690,6 @@
                 if (data.FalleDate)
                     self.FalleDate(moment(data.FalleDate).clone().toDate());
                 else self.FalleDate(null);
-
                 self.SalonVal(data.SalonVal);
                 if (data.SalonVal != "" && data.SalonVal != null) {
                     $.getJSON("/cases/GetSalonID", { ID: data.SalonVal }, function (data, status) {
@@ -1676,7 +1713,6 @@
                 else self.DiagPrinAdm("");
 
                 self.DiagOtroAdm(data.DiagOtroAdm);
-
                 //Primera muestra
                 if (data.SampleDate)
                     self.SampleDate(moment(data.SampleDate).clone().toDate());
@@ -1704,7 +1740,11 @@
                     self.ShipDate3(moment(data.ShipDate3).clone().toDate());
                 else self.ShipDate3(null);
                 self.LabId3(data.LabId3);
-
+                //#### 200419 - Flow free
+                self.FlowType1(data.FlowType1);
+                self.SelectedLabFree11_ID(data.LabFreeMu1L1_ID);
+                self.SelectedLabFree12_ID(data.LabFreeMu1L2_ID);
+                //#### 
                 self.Adenopatia(data.Adenopatia);
                 self.Wheezing(data.Wheezing);               		        //#### CAFQ: 180619
                 self.AntecedentesFiebre(data.AntecedentesFiebre);
@@ -1910,6 +1950,12 @@
                 SampleType3: self.SampleType3(),
                 ShipDate3: $("#ShipDate3").val() == "" ? null : moment(date_ship3).format(date_format_ISO),
                 LabId3: $("#SampleDate3").val() == "" ? null : self.LabId3(),
+                //#### 200419
+                FlowType1: self.FlowType1() == 2 ? self.FlowType1() : 1,
+                LabFreeMu1L1_ID: $("#SampleDate1").val() == "" ? null : self.SelectedLabFree11_ID(),
+                LabFreeMu1L2_ID: $("#SampleDate1").val() == "" ? null : self.SelectedLabFree12_ID(),
+
+                //####
                 Adenopatia: self.Adenopatia() != true ? false : self.Adenopatia(),
                 Wheezing: self.Wheezing() != true ? false : self.Wheezing(),                    //#### CAFQ: 180619
                 AntecedentesFiebre: self.AntecedentesFiebre() != true ? false : self.AntecedentesFiebre(),

@@ -39,6 +39,88 @@ namespace Paho.Controllers
             db.SaveChanges();
         }
 
+        public void InstitutionFlowFreeLabRecord(int flucaseid, long? labid1, long? labid2, int? statement, int sample)
+        {
+            if (labid1 != null)
+            {
+                var existe = db.InstitutionFlowFreeLab.Where(x => x.FluCaseID == flucaseid && x.Orden == 1).FirstOrDefault();
+                if(existe == null)
+                {
+                    InstitutionFlowFreeLabs instflowfrelab;
+                    instflowfrelab = new InstitutionFlowFreeLabs();
+
+                    instflowfrelab.FluCaseID = flucaseid;
+                    instflowfrelab.LabID = labid1;
+                    instflowfrelab.Orden = 1;
+                    instflowfrelab.Statement = statement;
+                    instflowfrelab.Sample = sample;
+
+                    db.Entry(instflowfrelab).State = EntityState.Added;
+                    db.SaveChanges();
+                }
+            }
+
+            //****
+            if (labid2 != null)
+            {
+                var existe = db.InstitutionFlowFreeLab.Where(x => x.FluCaseID == flucaseid && x.Orden == 2).FirstOrDefault();
+
+                if (existe == null)
+                {
+                    InstitutionFlowFreeLabs instflowfrelab2 = new InstitutionFlowFreeLabs();
+
+                    instflowfrelab2.FluCaseID = flucaseid;
+                    instflowfrelab2.LabID = labid2;
+                    instflowfrelab2.Orden = 2;
+                    instflowfrelab2.Statement = statement;
+                    instflowfrelab2.Sample = sample;
+
+                    db.Entry(instflowfrelab2).State = EntityState.Added;
+                    db.SaveChanges();
+                }
+            }
+        }
+
+        public void InstitutionFlowFreeLabRecordUpdate(int flucaseid, long? labid, int sample)
+        {
+            if (labid != null)
+            {
+                InstitutionFlowFreeLabs instflowfrelab;
+
+                instflowfrelab = db.InstitutionFlowFreeLab.Where(x => x.FluCaseID == flucaseid && x.LabID == labid).FirstOrDefault();
+
+
+                if (instflowfrelab != null)
+                {
+                    instflowfrelab.Statement = 2;
+
+                    db.Entry(instflowfrelab).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+
+                //flucase = db.FluCases.Find(id);
+                //flucase.HospitalID = HospitalId;
+                //flucase.HospitalID_CaseGenerating = HospitalID_CaseGenerating;
+                //flucase.Surv = (SInusual == true) ? 4 : Surv;
+                //db.Entry(flucase).State = EntityState.Modified;
+
+                //if (existe <= 0)
+                //{
+                //    InstitutionFlowFreeLabs instflowfrelab;
+                //    instflowfrelab = new InstitutionFlowFreeLabs();
+
+                //    instflowfrelab.FluCaseID = flucaseid;
+                //    instflowfrelab.LabID = labid1;
+                //    instflowfrelab.Orden = 1;
+                //    instflowfrelab.Statement = statement;
+                //    instflowfrelab.Sample = sample;
+
+                //    db.Entry(instflowfrelab).State = EntityState.Added;
+                //    db.SaveChanges();
+                //}
+            }
+        }
+
         public ActionResult GetCountries()
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
@@ -457,10 +539,29 @@ namespace Paho.Controllers
                         flucases = db.FluCases.Where(y => institutions_service.Contains(y.HospitalID));
                     }
                 }
-            } else if (InstitutionDB == 0 ) {
+            }
+            else if (InstitutionDB == 0)
+            {
                 flucases = db.FluCases.Where(f => f.CountryID == UsrCtry);
-            } else {
-                flucases = db.FluCases.Where(f => f.HospitalID == InstitutionDB);
+            }
+            else
+            {
+                var labsFF = db.InstitutionFlowFreeLab.Where(x => x.LabID == UsrInstitution);       //#### 200419 Flow free
+                var labsFF_list = from x in labsFF
+                                  select new { x.FluCaseID, x.Statement };
+
+
+                //flucases = flucases.Where(f => (f.FlowType1 == 2) ? labsFF_list.Any(x => x.FluCaseID == f.ID) : Listlabs.Contains(f.HospitalID));            //#### 200419 Flow free
+                //flucases = db.FluCases.Where(f => f.HospitalID == InstitutionDB);
+
+
+                if (ITy == 1)
+                {
+                    flucases = db.FluCases.Where(f => f.HospitalID == InstitutionDB);
+                }
+                else {
+                    flucases = db.FluCases.Where(f => (f.FlowType1 == 2) ? labsFF_list.Any(x => x.FluCaseID == f.ID) : f.HospitalID == InstitutionDB);
+                }
             }
 
             if (user.Institution.CountryID == 11)               //#### CAFQ: 181008
@@ -501,7 +602,8 @@ namespace Paho.Controllers
                 if (list_areas.Any())
                 {
                     flucases = flucases.Where(k => list_areas.Contains(k.HospitalID));
-                } else
+                }
+                else
                 {
                     flucases = flucases.Where(k => k.Hospital.AreaID == AreaId_);
                 }
@@ -513,34 +615,87 @@ namespace Paho.Controllers
 
             if (ITy == 2)
             {
-                var labs = db.Institutions.Where(f => f.ID == institutionId);
+                var labs = db.Institutions.Where(i => i.ID == institutionId);
                 var list_labs = labs.ToList();
-                var institutionsConfiguration = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>()
-                                        .Where(i => i.InstitutionToID == user.Institution.ID);
 
-                if (InstitutionDB == 0 && institutionsConfiguration.Any())
+                var institutionsConfiguration = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>()
+                                        .Where(c => c.InstitutionToID == user.Institution.ID);
+
+                var labsFF = db.InstitutionFlowFreeLab.Where(x => x.LabID == UsrInstitution);       //#### 200419 Flow free
+                var labsFF_list = from x in labsFF
+                                  select new { x.FluCaseID, x.Statement };
+
+                //#### CAFQ: FL-200526
+                // ORIGINAL:
+                //if (InstitutionDB == 0 && institutionsConfiguration.Any())
+                //{
+                //    var Listlabs = institutionsConfiguration.Select(i => i.InstitutionParentID).ToList();
+                //    flucases = flucases.Where(f => Listlabs.Contains(f.HospitalID));  
+                //}
+                if (InstitutionDB == 0 && institutionsConfiguration.Any())                  //#### 200419 Flow free
                 {
                     var Listlabs = institutionsConfiguration.Select(i => i.InstitutionParentID).ToList();
-                    flucases = flucases.Where(f => Listlabs.Contains(f.HospitalID));
+                    if ( user.Institution.LabNIC == true)
+                    {
+                        flucases = flucases.Where(f => Listlabs.Contains(f.HospitalID));            //#### 200419 Flow free
+                    }
+                    else
+                    {
+                        flucases = flucases.Where(f => (f.FlowType1 == 2) ? 
+                                                        labsFF_list.Any(x => x.FluCaseID == f.ID) : 
+                                                        Listlabs.Contains(f.HospitalID));            //#### 200419 Flow free
+                    }
                 }
+                else if(InstitutionDB == 0 && labsFF.Any())
+                {
+                    flucases = flucases.Where(f => labsFF_list.Any(x => x.FluCaseID == f.ID));
+                }
+                //#### END
 
                 if (!institutionsConfiguration.Any())
                 {
                     flucases = flucases.Where(f => f.IsSample == true);
                     //InstitutionDB = labs;
 
-                    if (list_labs.Count() > 0) {
+                    if (list_labs.Count() > 0)
+                    {
                         InstitutionDB = int.Parse(list_labs[0].Father_ID.ToString());
                         flucases = flucases.Where(f => f.HospitalID == InstitutionDB);
                     }
                 }
 
-                if (SPend == true)
+                if (SPend == true)                  //Para bandeja de pendientes
                 {
                     flucases = flucases.Where(f => f.CaseStatus == null);
+                    //#### CAFQ: FL-200526
+                    // ORIGINAL:
+                    //if (institutionsConfiguration.Any())
+                    //{
+                    //    if (institutionsConfiguration.Where(c => c.InstitutionToID == user.InstitutionID && c.InstitutionFrom.NPHL == true).Any())
+                    //    {
+                    //        flucases = flucases.Where(d => d.IsSample == true && ((d.SampleDate != null && d.NPHL_Processed != false) || (d.SampleDate2 != null && d.NPHL_Processed_2 != false)));
+                    //    }
+
+                    //    if (user.Institution.CountryID == 15)
+                    //    {
+                    //        flucases = flucases.Where(h => (h.IsSample == true && (h.Processed != false || h.Processed_National != false)) && (((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault() - 1)) && (h.statement == 2 || h.statement == null)) || ((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault())) && (h.statement == 1 || h.statement == null))));
+                    //    }
+                    //    else
+                    //    {
+                    //        flucases = flucases.Where(h => (h.IsSample == true && h.Processed != false) && (((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault() - 1)) && (h.statement == 2 || h.statement == null)) || ((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault())) && (h.statement == 1 || h.statement == null))));
+                    //    }
+
+                    //    //Es la escepción únicamente para AZP  -- tengo que mejorar el query para hacerlo automatico
+                    //    if (user.Institution.CountryID != 25)
+                    //        flucases = flucases.Where(i => i.CaseLabTests.Where(x => (x.inst_conf_end_flow_by_virus == 0 || x.inst_conf_end_flow_by_virus == null) || x.statement_test == 1).Any() || i.CaseLabTests.Count == 0);
+                    //}
+                    //else
+                    //{
+                    //    flucases = flucases.Where(f => f.IsSample == true && (f.Processed != false || f.NPHL_Processed != false) && f.FinalResult == null);
+                    //    flucases = flucases.Where(h => h.flow == 0);
+                    //}
                     if (institutionsConfiguration.Any())
                     {
-
                         if (institutionsConfiguration.Where(c => c.InstitutionToID == user.InstitutionID && c.InstitutionFrom.NPHL == true).Any())
                         {
                             flucases = flucases.Where(d => d.IsSample == true && ((d.SampleDate != null && d.NPHL_Processed != false) || (d.SampleDate2 != null && d.NPHL_Processed_2 != false)));
@@ -552,24 +707,24 @@ namespace Paho.Controllers
                         }
                         else
                         {
-                            flucases = flucases.Where(h => (h.IsSample == true && h.Processed != false) && (((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault() - 1)) && (h.statement == 2 || h.statement == null)) || ((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault())) && (h.statement == 1 || h.statement == null))));
+                            //#### CAFQ: FL-200526
+                            //ORIG: flucases = flucases.Where(h => (h.IsSample == true && h.Processed != false) && (((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault() - 1)) && (h.statement == 2 || h.statement == null)) || ((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault())) && (h.statement == 1 || h.statement == null))));
+                            flucases = flucases.Where(h => (h.IsSample == true && h.Processed != false) && (h.FlowType1 == 2) ?
+                                                                                                           labsFF_list.Any(x => x.FluCaseID == h.ID && x.Statement != 2) :
+                                                                                                           ((((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault() - 1)) && (h.statement == 2 || h.statement == null)) || ((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault())) && (h.statement == 1 || h.statement == null)))));
                         }
-
 
                         //Es la escepción únicamente para AZP  -- tengo que mejorar el query para hacerlo automatico
                         if (user.Institution.CountryID != 25)
-                            flucases = flucases.Where(i => i.CaseLabTests.Where(x => (x.inst_conf_end_flow_by_virus == 0 || x.inst_conf_end_flow_by_virus == null)  || x.statement_test == 1).Any() || i.CaseLabTests.Count == 0);
-
+                            flucases = flucases.Where(i => i.CaseLabTests.Where(x => (x.inst_conf_end_flow_by_virus == 0 || x.inst_conf_end_flow_by_virus == null) || x.statement_test == 1).Any() || i.CaseLabTests.Count == 0);
                     }
                     else
                     {
                         flucases = flucases.Where(f => f.IsSample == true && (f.Processed != false || f.NPHL_Processed != false) && f.FinalResult == null);
                         flucases = flucases.Where(h => h.flow == 0);
                     }
-
+                    //#### END
                 }
-
-
             }
 
             if (RecordId > 0)
@@ -579,7 +734,7 @@ namespace Paho.Controllers
 
             if (SPend == true && ITy != 2)
             {
-                flucases = flucases.Where(f => (f.Surv== 1 && (f.Destin == "" || f.Destin == null)) || (f.CaseStatus != 3 && f.CaseStatus != 2 )  );
+                flucases = flucases.Where(f => (f.Surv == 1 && (f.Destin == "" || f.Destin == null)) || (f.CaseStatus != 3 && f.CaseStatus != 2));
             }
 
             if (SNotiDateS != "" && SNotiDateS != "undefined")
@@ -596,7 +751,8 @@ namespace Paho.Controllers
             }
 
 
-            if (ShospReg != "" && ShospReg != "undefined") {
+            if (ShospReg != "" && ShospReg != "undefined")
+            {
                 flucases = flucases.Where(g => g.NationalId == ShospReg);
             }
 
@@ -630,78 +786,78 @@ namespace Paho.Controllers
             string MissingDischargeHtml = " <img src='/Content/themes/base/images/MissingDischarge.png' alt='" + getMsg("msgFlucasesMessageReadytoClose") + "'/>";
             string openHtml = "<img src='/Content/themes/base/images/open.png' alt='" + getMsg("msgFlucasesMessageNoStatus") + "'/>" + getMsg("msgFlucasesMessageNoStatus");
 
-            var  Arrayrows = (from flucase in flucases
-                                 select new
-                                 {
-                                     surv_ID = flucase.Surv,
-                                     surv_IDInusual = flucase.SurvInusual,    //#### CAFQ: 180604 - Jamaica Universal
-                                     ready_close = ( // revisar si ya existe un resultado con el flujo y existe un laboratorio con el campo conclusion que ya ingreso los resultados
-                                                    (flucase.flow == db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID && i.Conclusion == true).OrderBy(x => x.Priority).FirstOrDefault().Priority && flucase.statement == 2) 
-                                                     // si la muestra no fue tomada
-                                                    || (flucase.IsSample == false)
-                                                    || ((user.Institution.CountryID == 9)  ? ( flucase.CaseLabTests.Where( z =>  db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID && i.Conclusion == true ).Select(y => y.ID).ToList().Contains((long)z.inst_cnf_orig)).Any() && flucase.statement == 2) : false)
-                                                    // Para honduras si el laboratorio regional no proceso la muestra
-                                                    || ((user.Institution.CountryID == 15) ? (flucase.Processed_National == false && flucase.Processed == false) : false)
-                                                    || ((user.Institution.CountryID == 17) ? (flucase.NPHL_Processed == false) : false)
-                                                    || ((user.Institution.CountryID != 15) && (user.Institution.CountryID != 17) && (user.Institution.CountryID != 9) && flucase.Processed == false)
-                                                    // Para Jamaica si el NPHL no proceso la muestra
-                                                    //|| ((user.Institution.CountryID == 17 && user.Institution.CountryID != 15) ? (flucase.NPHL_Processed == false) : (flucase.Processed == false))
-                                                    //|| (flucase.Processed == false)
-                                                    // La segunda y tercera muestra tampoco fueron tomadas
-                                                    || (flucase.Processed2 == false) 
-                                                    || (flucase.Processed3 == false)) ? 1 : 0,
-                                     //dummy_ready_close = (),
-                                     ready_close2 = ( // revisar si ya existe un resultado con el flujo
-                                                    (flucase.flow == db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID).OrderByDescending(x => x.Priority).FirstOrDefault().Priority && flucase.statement == 2)
-                                                    // si la muestra no fue tomada
-                                                    || (flucase.IsSample == false)
-                                                    // Para honduras si el laboratorio regional no proceso la muestra y Para Jamaica si el NPHL no proceso la muestra
-                                                    || ((user.Institution.CountryID == 15) ? ( flucase.Processed_National == false && flucase.Processed == false) : (user.Institution.CountryID == 17 && user.Institution.CountryID != 15) ? (flucase.NPHL_Processed == false) : (flucase.Processed == false))
-                                                    // 
-                                                    || (flucase.Processed2 == false)
-                                                    // La segunda y tercera muestra tampoco fueron tomadas
-                                                    || (flucase.Processed2 == false) || (flucase.Processed3 == false)) ? 1 : 0,
-                                     ready_close_missing_Discharge = ((flucase.Destin == null || flucase.Destin == "" ) ? 1 : 0),
-                                     ready_close_missing_DateEx = ((flucase.HospExDate == null) ? 1 : 0),
-                                     id_D = flucase.ID,
-                                     H_D = flucase.HospitalDate,
-                                     LN_D = flucase.LName1 + " " + flucase.LName2 ?? "",
-                                     FN_D = flucase.FName1 + " " + flucase.FName2 ?? "",
-                                     NE_D = flucase.NoExpediente ?? "",
-                                     IS_D = flucase.IsSample,
-                                     FR_ID = flucase.FinalResult,
-                                     FR_D_C = flucase.CatVirusType_FR1,
-                                     D_D = flucase.Destin,
-                                     FRVT_ID = flucase.FinalResultVirusTypeID,
-                                     P_D = flucase.Processed,
-                                     P_D_N = flucase.Processed_National,
-                                     P_D_NPHL = flucase.NPHL_Processed,
-                                     CS_D = flucase.CaseStatus,
-                                     CS_D_Cat = flucase.CatStatusCase,
-                                     VR_IF_D = flucase.CaseLabTests.Where(e => e.TestType == 1 && e.Processed != null).OrderBy(y => y.CatVirusType.orden).ThenBy(d => d.SampleNumber).ThenBy(u => u.TestDate).FirstOrDefault(),
-                                     VR_PCR_D = flucase.CaseLabTests.Where(e => e.TestType == 2 && e.Processed != null)
-                                                .OrderBy(y => y.CatVirusType.orden)
-                                                .ThenBy(d => d.CatTestResult.orden)
-                                                .ThenBy(d => d.SampleNumber)
-                                                .ThenBy(u => u.TestDate).FirstOrDefault(),
-                                     HEALTH_INST = flucase.Hospital.Name ?? "",
-                                     FLOW_FLUCASE = flucase.flow,
-                                     TEST_LAST = flucase.CaseLabTests.Where(e => e.Processed != null).OrderByDescending(d => d.flow_test).FirstOrDefault(),
-                                     FLOW_VIRUS = db.InstitutionConfEndFlowByVirus.Where(i => i.ID == flucase.CaseLabTests.Where(e => e.Processed != null).OrderByDescending(d => d.flow_test).ThenByDescending(c => c.inst_conf_end_flow_by_virus).FirstOrDefault().inst_conf_end_flow_by_virus).FirstOrDefault(),
-                                     //FLOW_VIRUS = db.InstitutionConfEndFlowByVirus.Where(i => i.ID == flucase.CaseLabTests.Where(e => e.inst_conf_end_flow_by_virus != null).OrderByDescending(d => d.flow_test).FirstOrDefault().inst_conf_end_flow_by_virus).FirstOrDefault(),
-                                     ICON_COMMEN = flucase.Comments == "" || flucase.Comments == null ? "" : commentsHtml,
-                                     ICON_COMMEN_CLOSE = flucase.ObservationCase == "" || flucase.ObservationCase == null ? "" : commentsHtml,
-                                     SARSCoV2_Positive = (user.Institution.CountryID == 7) ? false : flucase.CaseLabTests.Where(j=> j.VirusTypeID == 14 && j.TestResultID == "P").Any(),
-                                     VI_OK = (from a in db.InstitutionConfEndFlowByVirus
-                                              join p in db.InstitutionsConfiguration on a.id_InstCnf equals p.ID
-                                              //join dt in db.Institutions on p.InstitutionFromID equals dt.ID
-                                              where  p.InstitutionParentID == flucase.HospitalID
-                                              //dt.CountryID == flucase.CountryID &&  // AM desactivar este parametro del país porque no pertenece al parametro del país de la institución, sino a la residencia del paciente.
-                                              select new
-                                              {
-                                                  ID = a.ID
-                                              }).Any()
-                                 }).AsEnumerable()
+            var Arrayrows = (from flucase in flucases
+                             select new
+                             {
+                                 surv_ID = flucase.Surv,
+                                 surv_IDInusual = flucase.SurvInusual,    //#### CAFQ: 180604 - Jamaica Universal
+                                 ready_close = ( // revisar si ya existe un resultado con el flujo y existe un laboratorio con el campo conclusion que ya ingreso los resultados
+                                                (flucase.flow == db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID && i.Conclusion == true).OrderBy(x => x.Priority).FirstOrDefault().Priority && flucase.statement == 2)
+                                                // si la muestra no fue tomada
+                                                || (flucase.IsSample == false)
+                                                || ((user.Institution.CountryID == 9) ? (flucase.CaseLabTests.Where(z => db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID && i.Conclusion == true).Select(y => y.ID).ToList().Contains((long)z.inst_cnf_orig)).Any() && flucase.statement == 2) : false)
+                                                // Para honduras si el laboratorio regional no proceso la muestra
+                                                || ((user.Institution.CountryID == 15) ? (flucase.Processed_National == false && flucase.Processed == false) : false)
+                                                || ((user.Institution.CountryID == 17) ? (flucase.NPHL_Processed == false) : false)
+                                                || ((user.Institution.CountryID != 15) && (user.Institution.CountryID != 17) && (user.Institution.CountryID != 9) && flucase.Processed == false)
+                                                // Para Jamaica si el NPHL no proceso la muestra
+                                                //|| ((user.Institution.CountryID == 17 && user.Institution.CountryID != 15) ? (flucase.NPHL_Processed == false) : (flucase.Processed == false))
+                                                //|| (flucase.Processed == false)
+                                                // La segunda y tercera muestra tampoco fueron tomadas
+                                                || (flucase.Processed2 == false)
+                                                || (flucase.Processed3 == false)) ? 1 : 0,
+                                 //dummy_ready_close = (),
+                                 ready_close2 = ( // revisar si ya existe un resultado con el flujo
+                                                (flucase.flow == db.InstitutionsConfiguration.Where(i => i.InstitutionParentID == flucase.HospitalID).OrderByDescending(x => x.Priority).FirstOrDefault().Priority && flucase.statement == 2)
+                                                // si la muestra no fue tomada
+                                                || (flucase.IsSample == false)
+                                                // Para honduras si el laboratorio regional no proceso la muestra y Para Jamaica si el NPHL no proceso la muestra
+                                                || ((user.Institution.CountryID == 15) ? (flucase.Processed_National == false && flucase.Processed == false) : (user.Institution.CountryID == 17 && user.Institution.CountryID != 15) ? (flucase.NPHL_Processed == false) : (flucase.Processed == false))
+                                                // 
+                                                || (flucase.Processed2 == false)
+                                                // La segunda y tercera muestra tampoco fueron tomadas
+                                                || (flucase.Processed2 == false) || (flucase.Processed3 == false)) ? 1 : 0,
+                                 ready_close_missing_Discharge = ((flucase.Destin == null || flucase.Destin == "") ? 1 : 0),
+                                 ready_close_missing_DateEx = ((flucase.HospExDate == null) ? 1 : 0),
+                                 id_D = flucase.ID,
+                                 H_D = flucase.HospitalDate,
+                                 LN_D = flucase.LName1 + " " + flucase.LName2 ?? "",
+                                 FN_D = flucase.FName1 + " " + flucase.FName2 ?? "",
+                                 NE_D = flucase.NoExpediente ?? "",
+                                 IS_D = flucase.IsSample,
+                                 FR_ID = flucase.FinalResult,
+                                 FR_D_C = flucase.CatVirusType_FR1,
+                                 D_D = flucase.Destin,
+                                 FRVT_ID = flucase.FinalResultVirusTypeID,
+                                 P_D = flucase.Processed,
+                                 P_D_N = flucase.Processed_National,
+                                 P_D_NPHL = flucase.NPHL_Processed,
+                                 CS_D = flucase.CaseStatus,
+                                 CS_D_Cat = flucase.CatStatusCase,
+                                 VR_IF_D = flucase.CaseLabTests.Where(e => e.TestType == 1 && e.Processed != null).OrderBy(y => y.CatVirusType.orden).ThenBy(d => d.SampleNumber).ThenBy(u => u.TestDate).FirstOrDefault(),
+                                 VR_PCR_D = flucase.CaseLabTests.Where(e => e.TestType == 2 && e.Processed != null)
+                                            .OrderBy(y => y.CatVirusType.orden)
+                                            .ThenBy(d => d.CatTestResult.orden)
+                                            .ThenBy(d => d.SampleNumber)
+                                            .ThenBy(u => u.TestDate).FirstOrDefault(),
+                                 HEALTH_INST = flucase.Hospital.Name ?? "",
+                                 FLOW_FLUCASE = flucase.flow,
+                                 TEST_LAST = flucase.CaseLabTests.Where(e => e.Processed != null).OrderByDescending(d => d.flow_test).FirstOrDefault(),
+                                 FLOW_VIRUS = db.InstitutionConfEndFlowByVirus.Where(i => i.ID == flucase.CaseLabTests.Where(e => e.Processed != null).OrderByDescending(d => d.flow_test).ThenByDescending(c => c.inst_conf_end_flow_by_virus).FirstOrDefault().inst_conf_end_flow_by_virus).FirstOrDefault(),
+                                 //FLOW_VIRUS = db.InstitutionConfEndFlowByVirus.Where(i => i.ID == flucase.CaseLabTests.Where(e => e.inst_conf_end_flow_by_virus != null).OrderByDescending(d => d.flow_test).FirstOrDefault().inst_conf_end_flow_by_virus).FirstOrDefault(),
+                                 ICON_COMMEN = flucase.Comments == "" || flucase.Comments == null ? "" : commentsHtml,
+                                 ICON_COMMEN_CLOSE = flucase.ObservationCase == "" || flucase.ObservationCase == null ? "" : commentsHtml,
+                                 SARSCoV2_Positive = (user.Institution.CountryID == 7) ? false : flucase.CaseLabTests.Where(j=> j.VirusTypeID == 14 && j.TestResultID == "P").Any(),
+                                 VI_OK = (from a in db.InstitutionConfEndFlowByVirus
+                                          join p in db.InstitutionsConfiguration on a.id_InstCnf equals p.ID
+                                          //join dt in db.Institutions on p.InstitutionFromID equals dt.ID
+                                          where p.InstitutionParentID == flucase.HospitalID
+                                          //dt.CountryID == flucase.CountryID &&  // AM desactivar este parametro del país porque no pertenece al parametro del país de la institución, sino a la residencia del paciente.
+                                          select new
+                                          {
+                                              ID = a.ID
+                                          }).Any()
+                             }).AsEnumerable()
                                    .Select(x => new
                                    {
                                        id = x.id_D.ToString(),
@@ -720,24 +876,24 @@ namespace Paho.Controllers
                                          "<img src='/Content/themes/base/images/PDF.png' alt='print'/> ",
                                          "<img src='/Content/themes/base/images/PDF_SARSCoV2.png' alt='print'/> ",
                                          x.VR_IF_D == null ? "" :  x.VR_IF_D.TestResultID == null ? "": x.VR_IF_D.TestResultID.ToString() == "P" ? x.VR_IF_D.CatVirusType == null ? "" : (user.Institution.Country.Language == "SPA" ? x.VR_IF_D.CatVirusType.SPA : x.VR_IF_D.CatVirusType.ENG) :  x.VR_IF_D.TestResultID == null  ? ""  : user.Institution.Country.Language == "SPA" ? db.CatTestResult.Where(j=> j.value == x.VR_IF_D.TestResultID.ToString()).FirstOrDefault().description : db.CatTestResult.Where(j=> j.value == x.VR_IF_D.TestResultID.ToString()).FirstOrDefault().ENG ,
-                                         x.VR_PCR_D == null ? "" : x.VR_PCR_D.TestResultID == null ? 
-                                                        "": x.VR_PCR_D.TestResultID.ToString() == "P" ?  
-                                                                x.VR_PCR_D.CatVirusType == null ? 
-                                                                    "" : 
-                                                                    x.VR_PCR_D.CatVirusType.SPA.Contains("Influenza A") == true ? 
-                                                                        x.VR_PCR_D.CatVirusSubType == null ? 
-                                                                            "" : 
-                                                                            x.VR_PCR_D.TestResultID_VirusSubType_2 == "P" ? 
-                                                                                (user.Institution.Country.Language == "SPA" ?  
-                                                                                    x.VR_PCR_D.CatVirusSubType_2.SPA : 
+                                         x.VR_PCR_D == null ? "" : x.VR_PCR_D.TestResultID == null ?
+                                                        "": x.VR_PCR_D.TestResultID.ToString() == "P" ?
+                                                                x.VR_PCR_D.CatVirusType == null ?
+                                                                    "" :
+                                                                    x.VR_PCR_D.CatVirusType.SPA.Contains("Influenza A") == true ?
+                                                                        x.VR_PCR_D.CatVirusSubType == null ?
+                                                                            "" :
+                                                                            x.VR_PCR_D.TestResultID_VirusSubType_2 == "P" ?
+                                                                                (user.Institution.Country.Language == "SPA" ?
+                                                                                    x.VR_PCR_D.CatVirusSubType_2.SPA :
                                                                                     x.VR_PCR_D.CatVirusSubType_2.ENG ) :
                                                                                     (user.Institution.Country.Language == "SPA" ?
                                                                                     x.VR_PCR_D.CatVirusSubType.SPA :
-                                                                                    x.VR_PCR_D.CatVirusSubType.ENG ) : 
+                                                                                    x.VR_PCR_D.CatVirusSubType.ENG ) :
                                                                         (user.Institution.Country.Language == "SPA" ? x.VR_PCR_D.CatVirusType.SPA : x.VR_PCR_D.CatVirusType.ENG) :
-                                                                     x.VR_PCR_D.TestResultID == null ? "" : 
-                                                                  user.Institution.Country.Language == "SPA" ? 
-                                                                  db.CatTestResult.Where(j=> j.value == x.VR_PCR_D.TestResultID.ToString()).FirstOrDefault().description : 
+                                                                     x.VR_PCR_D.TestResultID == null ? "" :
+                                                                  user.Institution.Country.Language == "SPA" ?
+                                                                  db.CatTestResult.Where(j=> j.value == x.VR_PCR_D.TestResultID.ToString()).FirstOrDefault().description :
                                                                   db.CatTestResult.Where(j=> j.value == x.VR_PCR_D.TestResultID.ToString()).FirstOrDefault().ENG,
                                          x.IS_D == false ? getMsg("msgFlucasesMessageNoSample") : x.FR_ID == "P" ? x.FR_D_C == null ? "" : (user.Institution.Country.Language == "SPA" ? x.FR_D_C.SPA : x.FR_D_C.ENG) : (x.P_D == false) ? getMsg("msgFlucasesMessageNotProcessed") : x.FR_ID == "N" ? getMsg("msgFlucasesMessageNegative") : x.FR_ID == "I" ? getMsg("msgFlucasesMessageIndeterminated") : (x.P_D_N == false) ? getMsg("msgFlucasesMessageNotProcessed") : (x.P_D_NPHL == false) ? getMsg("msgFlucasesMessageNotProcessed") : ""  ,
                                          x.HEALTH_INST ?? "",
@@ -753,13 +909,13 @@ namespace Paho.Controllers
                                            // Los que tienen configuración de Virus para el cierre de caso
                                             (x.FLOW_VIRUS != null ?
                                                // si es negativo
-                                               ((x.FR_ID == "N") ? 
+                                               ((x.FR_ID == "N") ?
                                                     (x.FLOW_VIRUS.value_Cat_TestResult==x.FR_ID && x.FLOW_FLUCASE != 99 ?
                                                         readyCloseHtml + ( ((x.ready_close_missing_Discharge == 1 || x.ready_close_missing_DateEx == 1 ) && user.Institution.CountryID == 17) ? MissingDischargeHtml : "")
                                                         : (x.ready_close2 == 1 && x.FLOW_FLUCASE != 99 ?
-                                                                readyCloseHtml  + ( ((x.ready_close_missing_Discharge == 1 || x.ready_close_missing_DateEx == 1 ) && user.Institution.CountryID == 17) ? MissingDischargeHtml : "") 
+                                                                readyCloseHtml  + ( ((x.ready_close_missing_Discharge == 1 || x.ready_close_missing_DateEx == 1 ) && user.Institution.CountryID == 17) ? MissingDischargeHtml : "")
                                                                 : (x.CS_D_Cat == null ?
-                                                                            openHtml 
+                                                                            openHtml
                                                                             : (user.Institution.Country.Language == "SPA" ? "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.SPA+"'/> " + x.CS_D_Cat.SPA : "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.ENG+"'/> " + x.CS_D_Cat.ENG )
                                                                     )
                                                             )
@@ -781,12 +937,12 @@ namespace Paho.Controllers
                                                     readyCloseHtml + ( ((x.ready_close_missing_Discharge == 1 || x.ready_close_missing_DateEx == 1 ) && user.Institution.CountryID == 17) ? MissingDischargeHtml : "")  :
                                                     (x.CS_D_Cat == null ?
                                                        openHtml :
-                                                        (user.Institution.Country.Language == "SPA" ? "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.SPA+"'/> " + x.CS_D_Cat.SPA : "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.ENG+"'/> " + x.CS_D_Cat.ENG ) 
+                                                        (user.Institution.Country.Language == "SPA" ? "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.SPA+"'/> " + x.CS_D_Cat.SPA : "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.ENG+"'/> " + x.CS_D_Cat.ENG )
                                                     )
                                                 )
                                             )
                                             :
-                                            
+
                                             (x.ready_close == 1 && x.FLOW_FLUCASE != 99 ?
                                                   readyCloseHtml +  ( ((x.ready_close_missing_Discharge == 1 || x.ready_close_missing_DateEx == 1 ) && user.Institution.CountryID == 17) ? MissingDischargeHtml : "")  :
                                                     (x.CS_D_Cat == null ?
@@ -794,20 +950,20 @@ namespace Paho.Controllers
                                                         (user.Institution.Country.Language == "SPA" ? "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.SPA+"'/> " + x.CS_D_Cat.SPA : "<img src='/Content/themes/base/images/"+(x.CS_D == 3 || x.CS_D == 2 ? "close":"open" )+".png' alt='"+x.CS_D_Cat.ENG+"'/> " + x.CS_D_Cat.ENG )
                                                     )
                                             )
-                                        //)
                                      }
                                    }).ToArray();
 
-                jsondata.Add(new
-                {
-                    total = totalPages,
-                    page = page,
-                    records = totalRecords,
-                    rows = Arrayrows
-                });
+            jsondata.Add(new
+            {
+                total = totalPages,
+                page = page,
+                records = totalRecords,
+                rows = Arrayrows
+            });
 
             return Json(jsondata[0], JsonRequestBehavior.AllowGet);
         }
+
 
         public ActionResult GetCIE10( string term, int max, string code)
         {
@@ -1009,6 +1165,8 @@ namespace Paho.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+
+
         [HttpGet]
         public JsonResult DeleteCase(int id)
         {
@@ -1086,7 +1244,7 @@ namespace Paho.Controllers
                 {
                     var DateDummyRange1 = DateFeverDummy.Date.AddDays(1);
                     var DateDummyRange2 = DateFeverDummy.Date.AddDays(-10);
-                    var flucases = db.FluCases.Where(f => f.Surv == Surv  // Tipo de vigilancia
+                    var flucases = db.FluCases.Where(f => f.Surv == Surv  // Tipo de vigilancia 
                                                           && f.NoExpediente.ToUpper() == NoExpediente.ToUpper() // Númedo de documento
                                                           && f.HospitalID == HospitalId // Establecimiento
                                                           && (f.FeverDate < DateDummyRange1 && f.FeverDate >= DateDummyRange2) // Unicamente pueden registrar los pacientes con 10 días de diferencia de inicio de síntomas
@@ -1709,6 +1867,9 @@ namespace Paho.Controllers
                     SampleType3 = flucase.SampleType3,
                     ShipDate3 = flucase.ShipDate3,
                     LabId3 = flucase.LabID3,
+                    FlowType1 = flucase.FlowType1,                        //#### 200419 Flow free
+                    LabFreeMu1L1_ID = flucase.LabFreeMu1L1_ID,
+                    LabFreeMu1L2_ID = flucase.LabFreeMu1L2_ID,
                     Adenopatia = flucase.Adenopatia,
                     Wheezing = flucase.Wheezing,                                        //#### CAFQ: 180619
                     AntecedentesFiebre = flucase.AntecedentesFiebre,
@@ -1720,6 +1881,7 @@ namespace Paho.Controllers
                     Rinorrea = flucase.Rinorrea,
                     Estridor = flucase.Estridor,
                     Tos = flucase.Tos,
+
                     Temperatura = flucase.Temperatura,                                  //#### CAFQ
                     DolorCabeza = flucase.DolorCabeza,
                     Mialgia = flucase.Mialgia,                                          //#### CAFQ
@@ -1856,8 +2018,12 @@ namespace Paho.Controllers
                 string SampleType3,                     // Sample 3
                 DateTime? ShipDate3,
                 long? LabId3,
+                int? FlowType1,                          //#### 200419
+                long? LabFreeMu1L1_ID,
+                long? LabFreeMu1L2_ID,                  //####
+                //int SampleFF,
                 bool? Adenopatia,
-                bool? Wheezing,
+                bool? Wheezing,       
                 bool? AntecedentesFiebre,
 
                 bool? Asymptomatic,                     //#### CAFQ: 200519
@@ -2011,7 +2177,7 @@ namespace Paho.Controllers
             {
                 flucase.DateInsertSampleDate = DateTime.Now;
             }
-            flucase.SampleDate = SampleDate;
+            flucase.SampleDate = SampleDate;                // Muestra 1
             flucase.SampleType = SampleType;
             flucase.ShipDate = ShipDate;
             flucase.LabID = LabId;
@@ -2026,7 +2192,7 @@ namespace Paho.Controllers
                     flucase.statement = 2;
                 } 
             }
-            flucase.SampleDate2 = SampleDate2;
+            flucase.SampleDate2 = SampleDate2;              // Muestra 2
             flucase.SampleType2 = SampleType2;
             flucase.ShipDate2 = ShipDate2;
             flucase.LabID2 = LabId2;
@@ -2040,14 +2206,17 @@ namespace Paho.Controllers
                     flucase.statement = 2;
                 }
             }
-            flucase.SampleDate3 = SampleDate3;
+            flucase.SampleDate3 = SampleDate3;              // Muestra 3
             flucase.SampleType3 = SampleType3;
             flucase.ShipDate3 = ShipDate3;
             flucase.LabID3 = LabId3;
+            flucase.FlowType1 = FlowType1;                            //#### 200419
+            flucase.LabFreeMu1L1_ID = LabFreeMu1L1_ID;
+            flucase.LabFreeMu1L2_ID = LabFreeMu1L2_ID;              //####
             flucase.InsertDate = DateTime.Now;
             //flucase.UserID = User.Identity.Name;
             flucase.Adenopatia = Adenopatia;
-            flucase.Wheezing = Wheezing;                            //#### CAFQ: 180619
+            flucase.Wheezing = Wheezing;
             flucase.AntecedentesFiebre = AntecedentesFiebre;
 
             flucase.Asymptomatic = Asymptomatic;                    //#### CAFQ: 200519
@@ -2148,6 +2317,11 @@ namespace Paho.Controllers
 
             if (flucase.flow == 99 && ifclosecase == false )
                 HistoryRecord(flucase.ID, 1, flucase.flow, 9);
+
+
+            InstitutionFlowFreeLabRecord(flucase.ID, flucase.LabFreeMu1L1_ID, flucase.LabFreeMu1L2_ID, null, 1);
+
+
 
             return Json("Success");
         }
@@ -2328,6 +2502,17 @@ namespace Paho.Controllers
             institutions = db.Institutions.OfType<Lab>().Where(i => i.ID == user.Institution.ID);
             var institutionsIds = institutions.Select(x => (long?)x.ID).ToArray();
             var user_cty = user.Institution.CountryID;
+
+
+            //#### 
+            var labsFF = db.InstitutionFlowFreeLab.Where(x => x.FluCaseID ==Id);       //#### 200419 Flow free
+            var labsFF_temp = from x in labsFF
+                              orderby x.FluCaseID, x.Sample, x.Orden
+                              select new { x.FluCaseID, x.Statement, x.Sample, x.Orden };
+            var labsFF_list = labsFF_temp.ToList();
+
+            bool canEditLFF = db.InstitutionFlowFreeLab.Where(x => x.FluCaseID == Id && x.LabID == user.Institution.ID && x.Statement != 2).Any();       //#### 200419 Flow free
+            //#### 
 
             //var InstFlow_NPHL = false;
             //var ExistInstitutionFlow_NPHL = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where( i => i.InstitutionParentID == flucase.HospitalID && i.InstitutionTo.NPHL == true).Any();
@@ -2692,6 +2877,80 @@ namespace Paho.Controllers
                 //canConclude = institutionsConfiguration.Count(x => x.Conclusion == 1) > 0; // Original - modificado por AM
             }
 
+            //#### CAFQ: FL-200526
+            if (flucase.FlowType1 == 2)             // Flujo Libre
+            {
+                var instFlowFree = db.InstitutionFlowFreeLab.Where(i => i.FluCaseID == flucase.ID && i.Statement != 2);
+                if (instFlowFree.Any())
+                {
+                    canConclude = false;
+                }
+                else
+                {
+                    var instFlowFreLab = db.InstitutionFlowFreeLab.Where(i => i.FluCaseID == flucase.ID && i.Statement == 2)         // Lab final FF
+                                           .OrderByDescending(i => i.Orden);
+
+                    var id_LabFrom_FF = instFlowFreLab.FirstOrDefault().LabID;              // Ultimo lab que ingreso datos
+
+                    var id_TestType_FF = 0;
+                    if (instFlowFreLab.FirstOrDefault().Orden == 2)
+                        id_TestType_FF = 2;     // PCR
+                    else
+                        id_TestType_FF = 1;     // IFI
+
+                    var instConfigRecords = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(i => i.InstitutionFromID == id_LabFrom_FF);   // Flujos x establec. donde participa Lab final FF
+                    if (instConfigRecords.Any())
+                    {   // Tomando datos del 1ro
+                        var id_InstCnf_FF = instConfigRecords.FirstOrDefault().ID;
+                        var id_LabTo_FF = instConfigRecords.FirstOrDefault().InstitutionToID;           // Lab Next
+
+                        var list_by_virus_labfrom_FF = db.InstitutionConfEndFlowByVirus.Where(y => y.id_InstCnf == id_InstCnf_FF && y.id_Cat_TestType == id_TestType_FF);
+
+                        if (list_by_virus_labfrom_FF.Any())
+                        {
+                            var list_by_virus_labfrom_FF_CLT = db.CaseLabTests.Where(y => y.FluCaseID == flucase.ID && y.LabID == id_LabFrom_FF && y.Processed == true && 
+                                                                                          y.SampleNumber == 1 && y.TestType == id_TestType_FF);       // Lista de virus registrados x lab en CaseLabTest 
+                            bool nextFlow = false;
+                            foreach (var recordCLT in list_by_virus_labfrom_FF_CLT)
+                            {
+                                foreach (var recordICEFBV in list_by_virus_labfrom_FF)
+                                {
+                                    if (recordCLT.VirusTypeID == recordICEFBV.id_Cat_VirusType && recordCLT.TestResultID == recordICEFBV.value_Cat_TestResult)
+                                    {
+                                        nextFlow = true;
+                                        break;
+                                    }
+                                }
+
+                                if (nextFlow == true)
+                                    break;
+                            }
+
+                            if (nextFlow == true)           // Existe siguiente paso fuera del Flow Free definido
+                            {
+                                var list_test_save_send_lab = db.CaseLabTests.Where(y => y.FluCaseID == flucase.ID && y.LabID == id_LabTo_FF && y.Processed == true &&
+                                                                                         y.SampleNumber == 1 && y.statement_test == 2);
+
+                                if (list_test_save_send_lab.Any())
+                                    canConclude = true; 
+                                else
+                                    canConclude = false; 
+                            }                                
+                            else
+                                canConclude = true;
+                        }
+                        else                                // No existe flujo por virus
+                        {
+                            canConclude = true;
+                        }
+                    }
+                    else                // No existe flujo por establecimiento
+                    {
+                        canConclude = false;
+                    }
+                }
+            }
+
             if (flucase != null)
             {
                 return Json(new
@@ -2784,10 +3043,14 @@ namespace Paho.Controllers
                     InstFlow_NPHL = user.Institution.NPHL != null ? (bool)user.Institution.NPHL : false,
                     ExistAnyInstitutionFlow_NPHL = user.Institution.CountryID != 15 ? db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(i => i.InstitutionParentID == flucase.HospitalID && i.InstitutionTo.NPHL == true).Any() : false,
                     Is_NIC = user.Institution.LabNIC, // hay que revisar mejor de donde se extrae esta información
-                // Lab Foreign
-                ForeignLabCountry = LabForeignCountry,
+                    // Lab Foreign
+                    ForeignLabCountry = LabForeignCountry,
                     ForeignLabLocal = LabForeignInstitutionLocal,
-                LabTests = (
+                    //#### Lab Flow Free
+                    LabsFF_List = labsFF_list,
+                    CanEditLFF = canEditLFF,
+                    //####
+                    LabTests = (
                           from caselabtest in flucase.CaseLabTests
                           where caselabtest.SampleNumber == 1 || caselabtest.SampleNumber == null
                           select new
@@ -3017,10 +3280,13 @@ namespace Paho.Controllers
                       .ToArray(),
                     LabsResult = institutions.Select(x => new { Id = x.ID.ToString(), x.Name }).ToList(),
                     SubTypeByLabRes = GetSubTypebyLab(user.InstitutionID),
-                    CanConclude = (SARSCoV2_First_Positive_Temp && user_cty != 7) ? canConclude & canConclude_Sample_1 & canConclude_Sample_2 & canConclude_Sample_3 && SARSCoV2_Second_Negative_After_Positive_Temp : canConclude & canConclude_Sample_1 & canConclude_Sample_2 & canConclude_Sample_3,
+                    //ORIGINAL: CanConclude = (SARSCoV2_First_Positive_Temp && user_cty != 7) ? canConclude & canConclude_Sample_1 & canConclude_Sample_2 & canConclude_Sample_3 && SARSCoV2_Second_Negative_After_Positive_Temp : canConclude & canConclude_Sample_1 & canConclude_Sample_2 & canConclude_Sample_3,
+                    CanConclude = (flucase.FlowType1 == 2) ?                //#### CAFQ: FL-200526
+                                  canConclude : 
+                                  ((SARSCoV2_First_Positive_Temp && user_cty != 7) ? canConclude & canConclude_Sample_1 & canConclude_Sample_2 & canConclude_Sample_3 && SARSCoV2_Second_Negative_After_Positive_Temp : canConclude & canConclude_Sample_1 & canConclude_Sample_2 & canConclude_Sample_3),    //#### CAFQ: FL-200526
                     SARSCoV2_Positive =  SARSCoV2_First_Positive_Temp,
-                    SARSCoV2_Negative_1 = SARSCoV2_First_Negative_After_Positive_Temp,
-                    SARSCoV2_Negative_2 = SARSCoV2_Second_Negative_After_Positive_Temp,
+                    SARSCoV2_Negative_1=SARSCoV2_First_Negative_After_Positive_Temp,
+                    SARSCoV2_Negative_2=SARSCoV2_Second_Negative_After_Positive_Temp,
                     SaveAndAdd_1 = SaveAndAdd_1,
                     SaveAndAdd_2 = SaveAndAdd_2,
                     SaveAndAdd_3 = SaveAndAdd_3
@@ -3260,13 +3526,13 @@ namespace Paho.Controllers
 
             //flucase.flow = 2;
             //if (db.CaseLabTests.Count() > 0) PCR_IFI_RecordHistory = true;
-            
-
 
             db.CaseLabTests.RemoveRange(flucase.CaseLabTests);
             var existrecordlabtest = false;
             flucase.CaseLabTests = new List<CaseLabTest>();
-            
+
+            var father_establec_virtual = (long)0;          // A emplear en FF
+
             if (LabTests != null) {
                 foreach (LabTestViewModel labTestViewModel in LabTests.OrderBy(x=>x.SampleNumber)
                       .ThenBy(z => z.TestDate)
@@ -3316,12 +3582,40 @@ namespace Paho.Controllers
                         existrecordlabtest = true;
                     if (labTestViewModel.TestType == 1) IFI_RecordHistory = true;
                     if (labTestViewModel.TestType == 2) PCR_RecordHistory = true;
+
                     // Campos para controlar el flujo de la muestra
-                    var Flow_Test = db.InstitutionsConfiguration.Where(i => i.InstitutionToID == labTestViewModel.LabID && i.InstitutionParentID == flucase.HospitalID).Any() ? db.InstitutionsConfiguration.Where(i => i.InstitutionToID == labTestViewModel.LabID && i.InstitutionParentID == flucase.HospitalID).FirstOrDefault().Priority : 0;
+                    var Flow_Test = db.InstitutionsConfiguration.Where(i => i.InstitutionToID == labTestViewModel.LabID && i.InstitutionParentID == flucase.HospitalID).Any() ? 
+                                                                        db.InstitutionsConfiguration.Where(i => i.InstitutionToID == labTestViewModel.LabID && i.InstitutionParentID == flucase.HospitalID).FirstOrDefault().Priority : 
+                                                                        0;
+
                     var Statement_Test = (flucase.flow != 99) ? DataStatement : flucase.statement;
                     var Flow_Flucase = flucase.flow;
                     var Statement_Flucase = (flucase.flow != 99) ?  DataStatement : flucase.statement;
-                    var Institution_Conf_Original = db.InstitutionsConfiguration.Where(i => i.InstitutionToID == labTestViewModel.LabID && i.InstitutionParentID == flucase.HospitalID).Any() ? db.InstitutionsConfiguration.Where(i => i.InstitutionToID == labTestViewModel.LabID && i.InstitutionParentID == flucase.HospitalID).FirstOrDefault().ID : 0;
+
+                    //#### CAFQ: FL-200526
+                    //ORIGINAL: var Institution_Conf_Original = db.InstitutionsConfiguration.Where(i => i.InstitutionToID == labTestViewModel.LabID && i.InstitutionParentID == flucase.HospitalID).Any() ? db.InstitutionsConfiguration.Where(i => i.InstitutionToID == labTestViewModel.LabID && i.InstitutionParentID == flucase.HospitalID).FirstOrDefault().ID : 0;
+
+                    father_establec_virtual = 0;
+                    var Institution_Conf_Original = (long)0;
+                    if (flucase.FlowType1 == 2)                     // Flujo libre
+                    {
+                        //Institution_Conf_Original = db.InstitutionsConfiguration.Where(i => i.InstitutionToID == labTestViewModel.LabID && i.InstitutionToID == user.Institution.ID).Any() ?
+                        //                            db.InstitutionsConfiguration.Where(i => i.InstitutionToID == labTestViewModel.LabID && i.InstitutionToID == user.Institution.ID).FirstOrDefault().ID :
+                        //                            0;
+                        Institution_Conf_Original = db.InstitutionsConfiguration.Where(i => i.InstitutionToID == user.Institution.ID).Any() ?
+                                                    //db.InstitutionsConfiguration.Where(i => i.InstitutionToID == labTestViewModel.LabID && i.InstitutionParentID == flucase.HospitalID).FirstOrDefault().Priority :
+                                                    db.InstitutionsConfiguration.Where(i => i.InstitutionToID == user.Institution.ID).FirstOrDefault().ID :
+                                                    0;
+                        father_establec_virtual = (long)db.InstitutionsConfiguration.Where(i => i.ID == Institution_Conf_Original).FirstOrDefault().InstitutionParentID;
+                    }
+                    else
+                    {
+                        Institution_Conf_Original = db.InstitutionsConfiguration.Where(i => i.InstitutionToID == labTestViewModel.LabID && i.InstitutionParentID == flucase.HospitalID).Any() ?
+                                                    db.InstitutionsConfiguration.Where(i => i.InstitutionToID == labTestViewModel.LabID && i.InstitutionParentID == flucase.HospitalID).FirstOrDefault().ID :
+                                                    0;
+                    }
+                    //#### CAFQ: END
+
                     //var Inst_Conf_End_Flow_By_Virus = labTestViewModel.TestResultID == "P"?  db.InstitutionConfEndFlowByVirus.Where(j => j.id_Lab == labTestViewModel.LabID && j.id_Cat_TestType == labTestViewModel.TestType && j.value_Cat_TestResult == labTestViewModel.TestResultID && j.id_Cat_VirusType == labTestViewModel.VirusTypeID ).Any() ? db.InstitutionConfEndFlowByVirus.Where(j => j.id_Lab == labTestViewModel.LabID && j.id_Cat_TestType == labTestViewModel.TestType && j.value_Cat_TestResult == labTestViewModel.TestResultID && j.id_Cat_VirusType == labTestViewModel.VirusTypeID).FirstOrDefault().ID : 0 : db.InstitutionConfEndFlowByVirus.Where(j => j.id_Lab == labTestViewModel.LabID && j.id_Cat_TestType == labTestViewModel.TestType && j.value_Cat_TestResult == labTestViewModel.TestResultID ).Any() ? db.InstitutionConfEndFlowByVirus.Where(j => j.id_Lab == labTestViewModel.LabID && j.id_Cat_TestType == labTestViewModel.TestType && j.value_Cat_TestResult == labTestViewModel.TestResultID).FirstOrDefault().ID : 0;
                     var Inst_Conf_End_Flow_By_Virus = labTestViewModel.TestResultID == "P" ? 
                                                           db.InstitutionConfEndFlowByVirus.Where(j => j.id_Lab == labTestViewModel.LabID && j.id_Cat_TestType == labTestViewModel.TestType && j.value_Cat_TestResult == labTestViewModel.TestResultID && j.id_Cat_VirusType == labTestViewModel.VirusTypeID).Any()  //Positivo -- Flujo por virus
@@ -3377,7 +3671,8 @@ namespace Paho.Controllers
                         }
                     );
                 }
-            } else if (user.Institution.CountryID != 15)
+            }
+            else if (user.Institution.CountryID != 15)
             {
                 if (((flucase.SampleDate == null && flucase.Processed == null) || flucase.Processed == false) &&
                        ((flucase.SampleDate2 == null && flucase.Processed2 == null) || flucase.Processed2 == false) &&
@@ -3386,7 +3681,7 @@ namespace Paho.Controllers
                     existrecordlabtest = true;
                 }
             }
-              else if (user.Institution.CountryID == 15)
+            else if (user.Institution.CountryID == 15)
             {
                 if (((flucase.SampleDate == null && flucase.Processed == null && flucase.Processed_National == null) || (flucase.Processed == false && (flucase.Processed_National == false || flucase.Processed_National == null))) &&
                        ((flucase.SampleDate2 == null && flucase.Processed2 == null) || flucase.Processed2 == false) &&
@@ -3398,11 +3693,25 @@ namespace Paho.Controllers
 
             //var Sample_1_process = LabTests.OrderBy(z => z.TestDate).ThenBy(y => y.LabID).Where(x => x.SampleNumber == 1);
 
-            
-            var list_institution_conf = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(i => i.InstitutionParentID == flucase.HospitalID && i.Conclusion == true).OrderBy(x => x.Priority).Select(t => t.InstitutionToID).ToList();
 
+            var list_institution_conf = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(i => i.InstitutionParentID == flucase.HospitalID && i.Conclusion == true)
+                                                                                                       .OrderBy(x => x.Priority)
+                                                                                                       .Select(t => t.InstitutionToID).ToList();
             var flow_max_record = db.InstitutionsConfiguration.Where(z => z.InstitutionParentID == flucase.HospitalID).OrderByDescending(x => x.Priority).FirstOrDefault().Priority;
             var flow_min_record = db.InstitutionsConfiguration.Where(z => z.InstitutionParentID == flucase.HospitalID).OrderBy(x => x.Priority).FirstOrDefault().Priority;
+
+            if (flucase.FlowType1 == 2)                     // Flujo libre
+            {
+                list_institution_conf = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(i => i.InstitutionParentID == father_establec_virtual && i.Conclusion == true)
+                                                                                                       .OrderBy(x => x.Priority)
+                                                                                                       .Select(t => t.InstitutionToID).ToList();
+
+                flow_max_record = db.InstitutionsConfiguration.Where(z => z.InstitutionParentID == father_establec_virtual).OrderByDescending(x => x.Priority).FirstOrDefault().Priority;
+                flow_min_record = db.InstitutionsConfiguration.Where(z => z.InstitutionParentID == father_establec_virtual).OrderBy(x => x.Priority).FirstOrDefault().Priority;
+            }                
+
+            //var flow_max_record = db.InstitutionsConfiguration.Where(z => z.InstitutionParentID == flucase.HospitalID).OrderByDescending(x => x.Priority).FirstOrDefault().Priority;
+            //var flow_min_record = db.InstitutionsConfiguration.Where(z => z.InstitutionParentID == flucase.HospitalID).OrderBy(x => x.Priority).FirstOrDefault().Priority;
 
             var Sample_1_process = flucase.CaseLabTests.Where(x => x.SampleNumber == 1).OrderBy(y => y.flow_test).ThenBy(z => z.TestDate);
             var flow_complete_Sample_1 = (Sample_1_process.Count() > 0) ? false : (flucase.SampleDate != null && flucase.Processed != null) ? (flucase.Processed == false) ? true : false : true;
@@ -3642,6 +3951,11 @@ namespace Paho.Controllers
             if ((user.Institution is Lab && existrecordlabtest == true) || (user.Institution.NPHL == true && user.Institution.CountryID != 25))
             {
                 var institutionsConfiguration = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(i => i.InstitutionToID == user.Institution.ID && i.InstitutionParentID == flucase.HospitalID);
+                if (flucase.FlowType1 == 2)         // Flujo libre
+                {
+                    institutionsConfiguration = db.InstitutionsConfiguration.OfType<InstitutionConfiguration>().Where(i => i.InstitutionToID == user.Institution.ID && i.InstitutionParentID == father_establec_virtual);
+                }
+
                 var flow_temp = institutionsConfiguration.First().Priority;
                 var flow_original_flucase = flucase.flow;
 
@@ -3801,6 +4115,11 @@ namespace Paho.Controllers
 
             if (PCR_RecordHistory && PCR_Count == 0)
                 HistoryRecord(flucase.ID, 4, flucase.flow, 8);
+
+
+            //user = Institution
+            long? labId = user.Institution.ID;
+            InstitutionFlowFreeLabRecordUpdate(flucase.ID, labId, 1);
 
             return result;
         }

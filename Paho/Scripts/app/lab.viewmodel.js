@@ -1,4 +1,5 @@
 ﻿function LabTest(SampleNumber) {
+    console.log("function LabTest->START");
     var self = this;
     var date_receive = new Date();
     var date_format_ = app.dataModel.date_format_;
@@ -576,9 +577,12 @@
             }
         }
     };
+
+    //console.log("function LabTest->END");
 };
 
 function LabViewModel(app, dataModel) {
+    //console.log("LabViewModel->START");
     var self = this;
     var date_format_ = app.dataModel.date_format_;
     var date_format_moment = app.dataModel.date_format_moment;
@@ -1791,9 +1795,22 @@ function LabViewModel(app, dataModel) {
         return msg;
     };
 
+    var labsFF_list = null;         // FF para el caso
+    //var canEditLFF = null;          // Puede editar por FF
+    self.canEditLFF = ko.observable("");
+
+
     self.GetLab = function (id) {
+        //console.log("self.GetLab->START");
         self.Id = id;       
         $.getJSON(app.dataModel.getLabUrl, { id: id }, function (data, status) {
+            //console.log("GLGJ1-START");
+            labsFF_list = data.LabsFF_List;
+            //canEditLFF = data.CanEditLFF;
+            self.canEditLFF(data.CanEditLFF)
+            //console.log(labsFF_list);
+            //console.log(self.canEditLFF());
+            //console.log("GLGJ1-ENDD");
 
                 // Laboratorio intermedio
                 (data.Rec_Date_NPHL) ? self.Rec_Date_NPHL(moment(data.Rec_Date_NPHL).clone().toDate()) : self.Rec_Date_NPHL(null);
@@ -1835,7 +1852,7 @@ function LabViewModel(app, dataModel) {
                 self.NoProRenId(data.NoProRenId);
                 self.TempSample1(data.TempSample1);
                 self.hasGet(true);
-                console.log(self.hasGet());
+                //console.log(self.hasGet());
                 (data.RecDate2) ? self.RecDate2(moment(data.RecDate2).clone().toDate()) : self.RecDate2(null);
                 self.Identification_Test2(data.Identification_Test2);
                 self.Processed2((data.Processed2 != null) ? data.Processed2.toString() : "");
@@ -1926,7 +1943,7 @@ function LabViewModel(app, dataModel) {
                             labtest.TestDate(moment(data.LabTests[index].TestDate).clone().toDate());
                         labtest.TestResultID((app.Views.Home.UsrCountry() == 7 && data.LabTests[index].TestType == 1 && data.LabTests[index].TestResultID == 'N' && data.LabTests[index].VirusTypeID == 1) ? 'NA' : (app.Views.Home.UsrCountry() == 7 && data.LabTests[index].TestType == 1 && data.LabTests[index].TestResultID == 'N' && data.LabTests[index].VirusTypeID == 2) ? 'NB' : data.LabTests[index].TestResultID);
                         labtest.VirusTypeID((app.Views.Home.UsrCountry() == 7 && data.LabTests[index].TestType == 1 && data.LabTests[index].TestResultID == 'N') ? null : data.LabTests[index].VirusTypeID);
-                        console.log(labtest.TestResultID());
+                        //console.log(labtest.TestResultID());
                         labtest.CTVirusType(data.LabTests[index].CTVirusType);
                         labtest.CTRLVirusType(data.LabTests[index].CTRLVirusType);
                         labtest.OtherVirusTypeID(data.LabTests[index].OtherVirusTypeID);
@@ -2154,6 +2171,7 @@ function LabViewModel(app, dataModel) {
              .fail(function (jqXHR, textStatus, errorThrown) {
                  alert(errorThrown);
              })
+        //console.log("self.GetLab->END");
     };
 
 
@@ -3151,7 +3169,7 @@ function LabViewModel(app, dataModel) {
         return true;
     };
 
-
+    //console.log("LabViewModel->END");
 }
 
 app.addViewModel({

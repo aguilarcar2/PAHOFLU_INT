@@ -41,7 +41,7 @@ namespace Paho.Controllers
             ViewBag.CurrentFilter = searchString;
 
             //var catalogo = from c in db.Institutions where c.CountryID == countryId select c;
-            var catalogo = from c in db.Institutions select c ;
+            var catalogo = from c in db.Institutions select c;
 
             if (user.Institution.AccessLevel == AccessLevel.SelfOnly || user.Institution.AccessLevel == AccessLevel.Service)
             {
@@ -150,8 +150,8 @@ namespace Paho.Controllers
         public ActionResult Create(
             [Bind(Include =
             "AreaID, FullName, Name, AccessLevel, cod_institution_type, InstID, Father_ID, sentinel, SARI, ILI, surv_unusual, PCR, IFI, Active, orig_country, " + 
-            "sentinel, cod_region_institucional, cod_region_salud, cod_region_pais, InstType, OrdenPrioritybyLab, NPHL, LocationTypeID, ForeignCountryID, " + 
-            "ForeignInstitutionAddress, LabNIC, CountryID")]
+            "sentinel, cod_region_institucional, cod_region_salud, cod_region_pais, InstType, OrdenPrioritybyLab, NPHL, LocationTypeID, ForeignCountryID, " +
+            "ForeignInstitutionAddress, LabNIC, CountryID, FlowFree")]
             Hospital catalog)
         {
             try
@@ -258,7 +258,7 @@ namespace Paho.Controllers
          **/
         public ActionResult Edit([Bind(Include = "ID, AreaID, FullName, Name, AccessLevel, cod_institution_type, InstID, Father_ID, sentinel, SARI, ILI, surv_unusual, PCR, IFI, Active, orig_country, " +
             "sentinel, cod_region_institucional, cod_region_salud, cod_region_pais, InstType, OrdenPrioritybyLab, NPHL, LocationTypeID, ForeignCountryID, " +
-            "ForeignInstitutionAddress, LabNIC, CountryID")] Lab catalog)
+            "ForeignInstitutionAddress, LabNIC, CountryID, FlowFree")] Lab catalog)
         {
             if (ModelState.IsValid)
             {

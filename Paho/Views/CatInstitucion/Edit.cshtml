@@ -1,5 +1,12 @@
 ﻿@model Paho.Models.Institution
 
+@{
+    string labelAllowFreeFlow = Paho.Controllers.ResourcesM.SgetMessage("msgAllowFreeFlow", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    //string labelCountry = Paho.Controllers.ResourcesM.SgetMessage("msgViewExportarLabelCountry", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    //string labelFieldSelect = Paho.Controllers.ResourcesM.SgetMessage("msgViewExportarFieldSelect", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+}
+
 @using (Html.BeginForm(new { @class = "con" }))
 {
     @Html.AntiForgeryToken()
@@ -148,6 +155,13 @@
             @Html.LabelFor(model => model.sentinel, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgSentinel", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
             <div class="col-md-1">
                 @Html.EditorFor(model => model.sentinel, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+        <!-- Flow Free -->  <!-- //#### CAFQ: FL-200526 -->
+        <div class="form-group vertical-align" id="div-FlowFree">
+            @Html.LabelFor(model => model.FlowFree, (labelAllowFreeFlow) + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
+            <div class="col-md-1">
+                @Html.EditorFor(model => model.FlowFree, new { htmlAttributes = new { @class = "form-control" } })
             </div>
         </div>
         <!-- Laboratorio intermedio -->

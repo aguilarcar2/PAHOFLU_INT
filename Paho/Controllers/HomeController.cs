@@ -45,6 +45,8 @@ namespace Paho.Controllers
             var DoS = DateTime.Now.ToString(getMsg("msgDatePickerConfig"));
             var date_format = getMsg("msgDateFormatDP");
 
+            CaseViewModel.inst_flowfree_active = user.Institution.FlowFree;
+
             //CaseViewModel.UsrCtry = user.Institution.CountryID;
             CaseViewModel.DatePickerConfig = DoS;
             CaseViewModel.DateFormatDP = date_format;
@@ -547,6 +549,21 @@ namespace Paho.Controllers
                                       Name = institution.Name
                                   }).ToArray();
 
+
+            CaseViewModel.LabsPCR = (from institution in db.Institutions.OfType<Lab>().Where(i => i.CountryID == user.Institution.CountryID && i.PCR == true)
+                                  select new LookupView<Lab>()
+                                  {
+                                      Id = institution.ID.ToString(),
+                                      Name = institution.Name
+                                  }).ToArray();
+
+            CaseViewModel.LabsIFI = (from institution in db.Institutions.OfType<Lab>().Where(i => i.CountryID == user.Institution.CountryID && i.IFI == true)
+                                     select new LookupView<Lab>()
+                                     {
+                                         Id = institution.ID.ToString(),
+                                         Name = institution.Name
+                                     }).ToArray();
+
             // Combo de laboratorios externos
             var LabsForeign = db.InstitutionForeignConf.Where(z => z.InstitutionLocal.CountryID == user.Institution.CountryID).Select(x => x.InstitutionForeignID);
 
@@ -560,7 +577,6 @@ namespace Paho.Controllers
                                                   Name = institution.Name
                                               })
                       .ToArray();
-
             }
             else
             {

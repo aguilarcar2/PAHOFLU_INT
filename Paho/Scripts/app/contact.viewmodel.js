@@ -347,9 +347,6 @@ function ContactViewModel(app, dataModel) {
             //console.log("s2");
             self.AgeMonths(null);
         }
-        //console.log("s2");
-        //console.log(self.AgeMonths());
-        //console.log("s2a_");
 
         //if (self.AgeMonths() != "") {            //**** CAFQ: 200327
         if (isNaN(self.AgeMonths()) == false) {            //**** CAFQ: 200327
@@ -359,21 +356,11 @@ function ContactViewModel(app, dataModel) {
                 var Id = reg.Id;
                 var MI = parseInt(reg.Name);
                 var MF = parseInt(reg.orden);
-                //console.log("MI->" + MI);
-                //console.log("MF->" + MF);
-                //console.log("SAM->" + self.AgeMonths());
                 if (parseInt(self.AgeMonths()) >= MI && parseInt(self.AgeMonths()) <= MF) {
-                    //console.log("===");
-                    //console.log(self.AgeMonths());
-                    //console.log(MI);
-                    //console.log(MF);
                     self.AgeGroupSelected(Id);
                 }
             });
         }
-        //console.log("self.AgeGroupSelected->" + self.AgeGroupSelected());
-        //console.log(self.AgeGroupSelected());
-        //console.log("self.AgeGroupSelected->END");
     };
 
     self.Age.subscribe(function (newage) {
@@ -535,7 +522,6 @@ function ContactViewModel(app, dataModel) {
             return false;
         }      
     }, self);
-
 
     self.SurvSARI = ko.computed(function () {
         if (self.IsSurv() != "2") {
@@ -1119,36 +1105,48 @@ function ContactViewModel(app, dataModel) {
     };
     // Revision del flujo si es epidemiologico o laboratorio
     self.Flow_Local_Institution_Lab = function () {
-        if ($("#ITy").val() == "2" && app.Views.Home.URmod_lab() == true) {
+        if ($("#ITy").val() == "2" && app.Views.Hospital.FlowType1() == 2) {
+            //console.log("FLOW FREE")
+            return true;
+        }
+        //if ($("#ITy").val() == "2" && app.Views.Home.URmod_lab() == true) {
+        else if ($("#ITy").val() == "2" && app.Views.Home.URmod_lab() == true) {
+            //console.log("LI_1");
             return true;
         } else if ((self.flow_close_case() == 99 && self.flow_open_always() == true)) {
+            //console.log("LI_2");
             return true;
-        } else if ((self.flow_record() == (self.flow_institution() - 1) && (self.DataStatement() == 2 || self.DataStatement() == null || self.flow_open_always() == true) && app.Views.Home.SaveAndAdd_1() == true))
-        {
+        } else if ((self.flow_record() == (self.flow_institution() - 1) && (self.DataStatement() == 2 || self.DataStatement() == null || self.flow_open_always() == true) && app.Views.Home.SaveAndAdd_1() == true)) {
+            //console.log("LI_3");
             return true;
-        } else if ((self.flow_record() == self.flow_institution() && (self.DataStatement() == 1 || self.DataStatement() == null || self.flow_open_always() == true)))
-        {
+        } else if ((self.flow_record() == self.flow_institution() && (self.DataStatement() == 1 || self.DataStatement() == null || self.flow_open_always() == true))) {
+            //console.log("LI_4");
             return true;
         }
         else {
             //console.log("Flow Lab - false");
+            //console.log("LI_5");
             return false;
         }
-
     }
 
-
     self.Flow_Local_Institution_Lab_send = function () {
-
-        if ($("#ITy").val() != "2" && app.Views.Home.URmod_lab() == true) {
-            return false;
-        } else if ((self.flow_record() == (self.flow_institution() - 1) && (self.DataStatement() == 2 || self.DataStatement() == null || self.flow_open_always() == true) && app.Views.Home.SaveAndAdd_1() == true) || (self.flow_record() == self.flow_institution() && (self.DataStatement() == 1 || self.DataStatement() == null || self.flow_open_always() == true)) || (self.flow_close_case() == 99 && self.flow_open_always() == true)) {
-            return true;
+        //console.log("Flow_Local_Institution_Lab_send->START")
+        if (app.Views.Hospital.FlowType1() == 2 && app.Views.Lab.canEditLFF() == true && app.Views.Home.URmod_lab() == false) {
+            if ($("#ITy").val() == "2")              //&& app.Views.Home.URmod_lab() == true) {
+                return true;
+            else
+                return false;
+        } else {
+            if ($("#ITy").val() != "2" && app.Views.Home.URmod_lab() == true) {
+                return false;
+            } else if ((self.flow_record() == (self.flow_institution() - 1) && (self.DataStatement() == 2 || self.DataStatement() == null || self.flow_open_always() == true) && app.Views.Home.SaveAndAdd_1() == true) || (self.flow_record() == self.flow_institution() && (self.DataStatement() == 1 || self.DataStatement() == null || self.flow_open_always() == true)) || (self.flow_close_case() == 99 && self.flow_open_always() == true)) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
-        else {
-            return false;
-        }
-
     };
 
     self.Flow_Local_Institution_Epi = function () {
