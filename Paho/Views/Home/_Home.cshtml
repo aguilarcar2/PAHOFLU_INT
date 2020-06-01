@@ -4360,7 +4360,8 @@
                                 <span class="input-group-addon">
                                     @LabelOutcomeDateResubmission
                                 </span>
-                                <input id="OutcomeDateResubmission" name="OutcomeDateResubmission" type='text' class="form-control " data-bind='datepicker: OutcomeDateResubmission, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
+                                <input id="OutcomeDateResubmission" name="OutcomeDateResubmission" type='text' class="form-control " data-bind='datepicker: OutcomeDateResubmission, enable: EnableOutcomeDateResubmission, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
+                                @*<input id="OutcomeDateResubmission" name="OutcomeDateResubmission" type='text' class="form-control " data-bind='datepicker: OutcomeDateResubmission, enable: EnableOuDaResu, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />*@
                             </div>
                         </div>
                     </div>
@@ -4389,7 +4390,8 @@
                                     <span class="input-group-addon">
                                         @LabelOutcomeDateOnsetSymptoms
                                     </span>
-                                    <input id="OutcomeDateOnsetSymptoms" name="OutcomeDateOnsetSymptoms" type='text' class="form-control " data-bind='enable: OutcomeDateOnsetSymptomsEnable, datepicker: OutcomeDateOnsetSymptoms, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
+                                    @*<input id="OutcomeDateOnsetSymptoms" name="OutcomeDateOnsetSymptoms" type='text' class="form-control " data-bind='enable: OutcomeDateOnsetSymptomsEnable, datepicker: OutcomeDateOnsetSymptoms, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />*@
+                                    <input id="OutcomeDateOnsetSymptoms" name="OutcomeDateOnsetSymptoms" type='text' class="form-control " data-bind='enable: EnableOutcomeDateOnsetSymptoms, datepicker: OutcomeDateOnsetSymptoms, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
                                 </div>
                             </div>
                         </div>
@@ -4519,7 +4521,7 @@
                                 <span class="input-group-addon">
                                     @LabelOutcomeDateRelease
                                 </span>
-                                <input id="OutcomeDateRelease" name="OutcomeDateRelease" type='text' class="form-control " data-bind='datepicker: OutcomeDateRelease, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
+                                <input id="OutcomeDateRelease" name="OutcomeDateRelease" type='text' class="form-control " data-bind='enable: EnableOutcomeDateRelease, datepicker: OutcomeDateRelease, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
                             </div>
                         </div>
                     </div>
@@ -4528,7 +4530,7 @@
                         <div class="col-md-6">
                             <div class='input-group'>
                                 <span class="input-group-addon">@LabelOutcomeDateLastLabTest</span>
-                                <input id="OutcomeDateLastLabTest" name="OutcomeDateLastLabTest" type='text' class="form-control " data-bind='datepicker: OutcomeDateLastLabTest, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
+                                <input id="OutcomeDateLastLabTest" name="OutcomeDateLastLabTest" type='text' class="form-control " data-bind='enable: EnableOutcomeDateLastLabTest, datepicker: OutcomeDateLastLabTest, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
                             </div>
                         </div>
                         <!-- Resultado -->

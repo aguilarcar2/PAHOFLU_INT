@@ -219,7 +219,6 @@
 
         if (current_value == null)
         {
-
             $("a[href*='tab-case']").hide();
             $("#tab-case").hide();
             $("#CaseStatus").attr("disabled", true);
@@ -1069,33 +1068,42 @@
     }, self);                                             //**** CAFQ*/
 
     self.IsAsymptomatic = ko.computed(function () {
-        if (self.Asymptomatic() == "1") {
-            self.AntecedentesFiebre("");
-            self.Temperatura("");
-            self.Tos("");
-            self.DifResp("");
+        console.log("ITY->" + $("#ITy").val());
 
-            self.Rinorrea("");
-            self.Disnea("");
-            self.Escalofrios("");
-            self.DolorMuscular("");  
-            self.DolorMuscularLocaliz("");
+        if ($("#ITy").val() == 1) {                     // Epidemiologia
+            if (self.Asymptomatic() == "1") {
+                console.log("ITY->1");
+                self.AntecedentesFiebre("");
+                self.Temperatura("");
+                self.Tos("");
+                self.DifResp("");
 
-            self.Odinofagia("");
+                self.Rinorrea("");
+                self.Disnea("");
+                self.Escalofrios("");
+                self.DolorMuscular("");
+                self.DolorMuscularLocaliz("");
 
-            self.Nauseas("");
-            self.DiarreaAguda("");
-            self.AlteracEstadoMental("");
-            self.Anosmy("");
+                self.Odinofagia("");
 
-            self.Dysgeusia("");
-            self.DolorCabeza("");
-            self.Otro("");
-            self.OtroDesc("");
+                self.Nauseas("");
+                self.DiarreaAguda("");
+                self.AlteracEstadoMental("");
+                self.Anosmy("");
 
+                self.Dysgeusia("");
+                self.DolorCabeza("");
+                self.Otro("");
+                self.OtroDesc("");
+
+                return true;
+            } else {
+                return false;
+            }
+        }
+        else
+        {
             return true;
-        } else {
-            return false;
         }
     }, self);
 
@@ -1105,33 +1113,44 @@
     self.CloseDate = ko.observable(new Date());
     self.ObservationCase = ko.observable("");
     self.EnableCloseDate = ko.computed(function () {
-        var result = (self.UsrCountry() == 7) ? self.CaseStatus() == "3" || self.CaseStatus() == "2" : (self.UsrCountry() != 7) ? self.CaseStatus() == "1" ||  self.CaseStatus() == "3" || self.CaseStatus() == "2" : false; if (!result) self.CloseDate(null); return result;
+        var result = (self.UsrCountry() == 7) ? self.CaseStatus() == "3" || self.CaseStatus() == "2"
+                                              : (self.UsrCountry() != 7) ? self.CaseStatus() == "1" || self.CaseStatus() == "3" || self.CaseStatus() == "2"
+                                                                         : false;
+        if (!result)
+            self.CloseDate(null);
+
+        return result;
     }, self);
 
     self.OutcomeDateResubmission = ko.observable(null);
+    self.EnableOutcomeDateResubmission = ko.computed(function () {         // CaseStatus -> 1: Bajo estudio, 2: Descartado y 3: Cerrado
+        var result = (self.UsrCountry() == 7) ? self.CaseStatus() == "3" || self.CaseStatus() == "2"
+                                              : (self.UsrCountry() != 7) ? self.CaseStatus() == "1" || self.CaseStatus() == "3" || self.CaseStatus() == "2"
+                                                                         : false;
+        if (!result) self.OutcomeDateResubmission(null);
+        return result;
+    }, self);
+
     self.OutcomeDevelopSymptoms = ko.observable(null);
+
     self.OutcomeDateOnsetSymptoms = ko.observable(null);
-    self.OutcomeDateOnsetSymptomsEnable = ko.computed(function () {
-        var temp = (self.CaseStatus() == "") ? true : false;            // Para que se ejecute open case
-
-        var result = (self.OutcomeDevelopSymptoms() == 1) ? true : false;
-
-        if (!result) 
-            self.OutcomeDateOnsetSymptoms(null);
-
+    self.EnableOutcomeDateOnsetSymptoms = ko.computed(function () {         // CaseStatus -> 1: Bajo estudio, 2: Descartado y 3: Cerrado
+        var result = (self.UsrCountry() == 7) ? self.CaseStatus() == "3" || self.CaseStatus() == "2"
+                                              : (self.UsrCountry() != 7) ? self.CaseStatus() == "1" || self.CaseStatus() == "3" || self.CaseStatus() == "2"
+                                                                         : false;
+        if (!result) self.OutcomeDateOnsetSymptoms(null);
         return result;
     }, self);
     
     self.OutcomeAdmissionPrevReported = ko.observable(null);
     self.OutcomeDateFirstAdmission = ko.observable(null);
+
     self.OutcomeDateFirstAdmissionEnable = ko.computed(function () {
         var temp = (self.CaseStatus() == "") ? true : false;            // Para que se ejecute open case
 
         var result = (self.OutcomeAdmissionPrevReported() == 1) ? true : false;
 
-        if (!result)
-            self.OutcomeDateFirstAdmission(null);
-
+        if (!result) self.OutcomeDateFirstAdmission(null);
         return result;
     }, self);
     self.OutcomeUCI = ko.observable(null);
@@ -1145,14 +1164,27 @@
 
         var result = (self.OutcomeDestin() == "O") ? true : false;
 
-        if (!result)
-            self.OutcomeDestinOther(null);
-
+        if (!result) self.OutcomeDestinOther(null);
         return result;
     }, self);
 
     self.OutcomeDateRelease = ko.observable(null);
+    self.EnableOutcomeDateRelease = ko.computed(function () {         // CaseStatus -> 1: Bajo estudio, 2: Descartado y 3: Cerrado
+        var result = (self.UsrCountry() == 7) ? self.CaseStatus() == "3" || self.CaseStatus() == "2"
+                                              : (self.UsrCountry() != 7) ? self.CaseStatus() == "1" || self.CaseStatus() == "3" || self.CaseStatus() == "2"
+                                                                         : false;
+        if (!result) self.OutcomeDateRelease(null);
+        return result;
+    }, self);
+
     self.OutcomeDateLastLabTest = ko.observable(null);
+    self.EnableOutcomeDateLastLabTest = ko.computed(function () {         // CaseStatus -> 1: Bajo estudio, 2: Descartado y 3: Cerrado
+        var result = (self.UsrCountry() == 7) ? self.CaseStatus() == "3" || self.CaseStatus() == "2"
+                                              : (self.UsrCountry() != 7) ? self.CaseStatus() == "1" || self.CaseStatus() == "3" || self.CaseStatus() == "2"
+                                                                         : false;
+        if (!result) self.OutcomeDateLastLabTest(null);
+        return result;
+    }, self);
 
     self.OutcomeResultsLastTest = ko.observable(null);
     self.OutcomeTotalHighRisk = ko.observable(null);
