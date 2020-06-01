@@ -37,6 +37,7 @@
     self.URrpt = ko.observable(URlerpt);
 
     self.UsrCountry = ko.observable(selcty);
+	self.UsrInstID = ko.observable($('#IIDL').val());  // ID de la institución del usuario  																						   
     // Alert Definition
     self.AlertDefinitionBegin = ko.observable(AlertDefinitionBegin);
     self.AlertDefinitionEnd = ko.observable(AlertDefinitionEnd);
@@ -778,6 +779,20 @@
             
         }
 
+        if ($("#ITy").val() == "2"  && self.UsrCountry() == 9 && self.UsrInstID() == 60) {
+            //console.log("aqui _ CaseStatus 2 and NPHL"); //
+            //$("#tab-lab :input").prop('disabled', true);
+            $("div[id^='Test_'] :input").prop('disabled', true);
+
+            $("#Rec_Date_NPHL").prop('disabled', false);
+            $("#Temp_NPHL").prop('disabled', false);
+            $("#Identification_Test_NPHL").prop('disabled', false);
+            $("#Ship_Date_NPHL").prop('disabled', false);
+            $("#Observation_NPHL").prop('disabled', false);
+            $("input[id*='NPHL_Processed']").prop('disabled', false);
+            $("#NPHL_NoProRenId").prop('disabled', false);
+            $("#NPHL_NoReason").prop('disabled', false);
+        }
         if (self.URmod_lab() == true) {
             console.log("aqui _ CaseStatus _ rol mod_lab");
             //$("#tab-lab :input").prop('disabled', false);

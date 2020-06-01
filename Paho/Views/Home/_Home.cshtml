@@ -4982,7 +4982,7 @@
                     </button>
                     <div id="NICsection" class="collapse in">
                         <div class="row rowform">
-                            <div class="col-md-2_5">
+                            <div class="col-md-3_5">
                                 <div class='input-group'>
                                     <span class="input-group-addon">
                                         @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabIntRecDate"))
@@ -4990,7 +4990,7 @@
                                     <input id="Rec_Date_NPHL" name="Rec_Date_NPHL" type='text' class="form-control " data-bind='datepicker: Rec_Date_NPHL, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
                                 </div>
                             </div>
-                            <div class="col-md-2_5">
+                            <div class="col-md-3">
                                 <div class='input-group'>
                                     <span class="input-group-addon">
                                         @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigLabIntLabelTemp"))
@@ -4998,17 +4998,9 @@
                                     <input id="Temp_NPHL" name="Temp_NPHL" type='text' class="form-control case_letter" data-bind="value: Temp_NPHL" />
                                 </div>
                             </div>
-                            <div class="col-md-5">
-                                <div class='input-group'>
-                                    <span class="input-group-addon">
-                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigLabIntLabelBarCode"))
-                                    </span>
-                                    <input id="Identification_Test_NPHL" name="Identification_Test_NPHL" type='text' class="form-control case_letter" data-bind="value: Identification_Test_NPHL" />
-                                </div>
-                            </div>
                         </div>
                         <div class="row rowform">
-                            <div class="col-md-3">
+                            <div class="col-md-3_5">
                                 <span>
                                     @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabNPHLLabelProcessed"))
                                 </span>
@@ -5018,6 +5010,14 @@
                                 <label class="btn btn-default">
                                     <input type="radio" name="NPHL_Processed" id="NPHL_Processed" value="false" checked data-bind="checked: NPHL_Processed"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabNPHLLabelNo"))
                                 </label>
+                            </div>
+                            <div class="col-md-5">
+                                <div class='input-group'>
+                                    <span class="input-group-addon">
+                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigLabIntLabelBarCode"))
+                                    </span>
+                                    <input id="Identification_Test_NPHL" name="Identification_Test_NPHL" type='text' class="form-control case_letter" data-bind="value: Identification_Test_NPHL" />
+                                </div>
                             </div>
                             <div class="col-md-5" data-bind="visible:NotShowNPHL_Processed">
                                 <div class='input-group'>
@@ -5030,16 +5030,6 @@
                             optionsCaption: 'Select...',
                             value: NPHL_NoProRenId"></select>
                                     <input id="NPHL_NoReason" type='text' class="form-control case_letter" data-bind="value: NPHL_NoProRen , visible:NotShowNPHL_ProcessedOther" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row rowform">
-                            <div class="col-md-8">
-                                <div class='input-group'>
-                                    <span class="input-group-addon">
-                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabIntObservationsNPHL"))
-                                    </span>
-                                    <textarea class="form-control case_letter" rows="1" style="max-width: 900px;" id="Observation_NPHL" name="Observation_NPHL" data-bind="value: Observation_NPHL"></textarea>
                                 </div>
                             </div>
                         </div>
