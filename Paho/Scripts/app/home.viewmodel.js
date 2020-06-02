@@ -81,7 +81,6 @@
         return typeof self.selectedInstitutionId() !== "undefined" && self.selectedInstitutionId() !== "" && !self.editMode();
     });
 
-
     // Inicia EsRut validacion para Chile
     self.revisarDigito = function (componente) {
         var crut = componente
@@ -272,7 +271,6 @@
         self.selectedInstitutionId() != "" ?  app.Views.Contact.hospitalName($('#Hospitals option:selected').text()) : "";
     };
 
-
     self.CancelEdit = function () {
         $("#Hospitals option:selected").prop("selected", false);
         $("#Hospitals option:first").attr('selected', 'selected');
@@ -298,7 +296,6 @@
         //app.Views.Lab.LabsExterno(self.labs());
 
     };
-
 
     self.ResetFluCase = function () {
         app.Views.Contact.ResetContact();
@@ -458,7 +455,6 @@
         }
 
     });
-
        
     Sammy(function () {
         this.get('#home', function () {           
@@ -998,7 +994,6 @@
         //console.log("Home - FlowDataLabAfter->START");
     };
 
-
     self.ModDataNo = function () {
             $("#RegDate").attr('disabled', true);
             $("#FeverDate").attr('disabled', true);
@@ -1042,7 +1037,6 @@
 
         //alert(JSON.stringify(element));
     };
-   
 
     self.GetRecordHistory = function (id) {
         $.postJSON(app.dataModel.getRecordHistoryURL, {caseId: id})

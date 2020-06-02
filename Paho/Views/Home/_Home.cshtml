@@ -121,8 +121,9 @@
     string LabelInusitadosOtro = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistInusitadosOtro", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string LabelInusitadosDescripcionOtro = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistInusitadosDescripcionOtro", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 
-
-
+    string LabelAntiViralSinInformacion = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabRiskLabelAntiviralTreatmentTypeNoInfo", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelAntiViralSOther = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabRiskLabelAntiviralTreatmentTypeOther", ViewBag.UsrCtry, ViewBag.UsrCtryLang); 
+    
 }
 
 <!-- ko with: home -->
@@ -2241,7 +2242,7 @@
                         <span class="input-group-addon">
                                 @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentType"))
                         </span>
-                        <select id="AntiViralType" name="AntiViralType" class="form-control" style="max-width: 150px" data-bind='value: AntiViralType , enable: EnableAntiViralType'>
+                        <select id="AntiViralType" name="AntiViralType" class="form-control" style="max-width: 180px" data-bind='value: AntiViralType , enable: EnableAntiViralType'>
                             <option value=""> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel"))</option>
                             <option value="1">Oseltamivir</option>
                             <option value="2">Zanamivir</option>
@@ -2249,10 +2250,16 @@
 							    <option value="3">Amantadine</option>
                                 <option value="4">Rimantadine</option>
 							}
-                            <option value="5"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentTypeNoInfo"))</option>
+                            @if (ViewBag.UsrCtry == 15)
+                            {
+                                <option value="6">Tratamiento Catracho</option>
+                                <option value="7">Tratamiento Maíz</option>
+                            }
+                            <option value="5"> @LabelAntiViralSinInformacion</option> 
                             @if (ViewBag.UsrCtry == 25)
                             {
-                                <option value="6">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentTypeOther"))</option>
+                                @*<option value="6">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentTypeOther"))</option>*@
+                                <option value="6">@LabelAntiViralSOther</option>
                             }
                         </select>
                         &nbsp;&nbsp;
@@ -6898,52 +6905,51 @@
 
 @*@if (User.IsInRole("Admin")  || User.IsInRole("Staff") || User.IsInRole("Reader") || User.IsInRole("Modify_Epi") || User.IsInRole("Modify_Lab"))
 {*@
+    <!-- Botones: Guardar / Retornar / Nuevo Registro ... etc -->
     <div id="botones" data-bind="with: app.Views.Contact, visible: shouldtabs">
         <div class="row rowform">
             <div class="col-md-12">
                 <div class="btn-group">
                     @if (User.IsInRole("Admin") || User.IsInRole("Staff") || User.IsInRole("Close_case") || User.IsInRole("Modify_Epi") || User.IsInRole("Modify_Lab"))
                     {
-                        @*<button id="saveGeneralPrev" type="button" class="btn btn-primary" data-bind="click: SavePrev, visible: false">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigGeneralSavePrevious"))</button>*@
                         <button id="saveGeneralPrev" type="button" class="btn btn-primary" data-bind="click: SavePrev, visible: false">@LabelSavePrevious</button>
                         <span></span>
-                        @*<button id="saveGeneral_1" type="button" class="btn btn-primary" data-bind="click: Save.bind($data,1), visible:app.Views.Contact.Flow_Local_Institution_Epi() || app.Views.Contact.Flow_Local_Institution_Lab()">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigGeneralSaveAndExit"))</button>*@
-                        <button id="saveGeneral_1" type="button" class="btn btn-primary" data-bind="click: Save.bind($data,1), visible:app.Views.Contact.Flow_Local_Institution_Epi() || app.Views.Contact.Flow_Local_Institution_Lab()">@LabelSaveAndExit</button>
-
+                        <!-- Guardar y salir -->
+                        <button id="saveGeneral_1" type="button" class="btn btn-primary" data-bind="click: Save.bind($data,1), visible: app.Views.Contact.Flow_Local_Institution_Epi() || app.Views.Contact.Flow_Local_Institution_Lab()">@LabelSaveAndExit</button>
                         <span></span>
+
                         if (ViewBag.UserInstitutionType == 1 )
                         {
-                            @*<button id="saveGeneral_2" type="button" class="btn btn-primary" data-bind="click: Save.bind($data,0), visible:app.Views.Contact.Flow_Local_Institution_Epi()">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigGeneralSaveAndNew"))</button>*@
-                            <button id="saveGeneral_2" type="button" class="btn btn-primary" data-bind="click: Save.bind($data,0), visible:app.Views.Contact.Flow_Local_Institution_Epi()">@LabelSaveAndNew</button>
+                            <button id="saveGeneral_2" type="button" class="btn btn-primary" data-bind="click: Save.bind($data,0), visible: app.Views.Contact.Flow_Local_Institution_Epi()">@LabelSaveAndNew</button>
                             <span></span>
                         }
+
                         if (ViewBag.UserInstitutionType == 2 )
                         {
-                            @*<button id="saveGeneral_lab" type="button" class="btn btn-primary" data-bind="click: Save.bind($data,2), visible:app.Views.Contact.Flow_Local_Institution_Lab_send()">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigGeneralSaveAndSend"))</button>*@
-                            <button id="saveGeneral_lab" type="button" class="btn btn-primary" data-bind="click: Save.bind($data,2), visible:app.Views.Contact.Flow_Local_Institution_Lab_send()">@LabelSaveAndSend</button>
+                            <button id="saveGeneral_lab" type="button" class="btn btn-primary" data-bind="click: Save.bind($data,2), visible: app.Views.Contact.Flow_Local_Institution_Lab_send()">@LabelSaveAndSend</button>
                             <span></span>
                         }
                     }
-                    @*<button id="cancelGeneral" type="button" class="btn btn-primary" data-bind="click: Cancel">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigGeneralBack"))</button>*@
+
                     <button id="cancelGeneral" type="button" class="btn btn-primary" data-bind="click: Cancel">@LabelBack</button>
+
                     @if (ViewBag.UserInstitutionType == 1)
                     {
                         if (User.IsInRole("Admin") || User.IsInRole("Staff"))
                         {
                             <span></span>
-                            @*<button id="Reset" type="button" class="btn btn-primary" data-bind="click: AddFluCase , visible: false">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigGeneralNewRecord"))</button>*@
                             <button id="Reset" type="button" class="btn btn-primary" data-bind="click: AddFluCase , visible: false">@LabelNewRecord</button>
                         }
                     }
+
                     <span></span>
                     @if (User.IsInRole("Admin") || User.IsInRole("Delete"))
                     {
-                        @*<button id="Borrar" type="button" class="btn btn-primary btn-danger" data-bind="click: Borrar">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigGeneralDelete"))</button>*@
                         <button id="Borrar" type="button" class="btn btn-primary btn-danger" data-bind="click: Borrar">@LabelDelete</button>
                         <span></span>
                     }
+
                     <div class="btn-group" >
-                        @*<button id="PrintRecord" type="button" class="btn btn-primary" data-bind="click:app.Views.PrintTest.Generate.bind($data,'record'), visible:true" data-toggle="modal" data-target=".bs-example-modal-lg">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabLabelPrint"))</button>*@
                         <button id="PrintRecord" type="button" class="btn btn-primary" data-bind="click:app.Views.PrintTest.Generate.bind($data,'record'), visible:true" data-toggle="modal" data-target=".bs-example-modal-lg">@LabelPrint</button>
                     </div>
                 </div>
@@ -6985,10 +6991,6 @@
     var reasonsampling = @Html.Raw(Json.Encode(Model.ReasonSampling));
     var labspcr = @Html.Raw(Json.Encode(Model.LabsPCR));
     var labsifi = @Html.Raw(Json.Encode(Model.LabsIFI));
-
-    //console.log("LAB PCR");
-    //console.log(labspcr);
-    //console.log("LAB PCR END");
 
     var inst_flowfree_active = @Html.Raw(Json.Encode(Model.inst_flowfree_active));      //#### CAFQ: FL-200526  true/flase
 
@@ -7134,7 +7136,6 @@
     var viewValidateSavedInfo = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSavedInfo")))";
     var viewValidateSavedRecord = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("viewValidateSavedRecord")))";
 
-
     /* Labs AM */
     var msgValidationTestDateInvalidDate = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationTestDateInvalidDate")))";
     var msgValidationTestDateProcessAlert = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationTestDateProcessAlert")))";
@@ -7173,7 +7174,6 @@
     var msgValidationSampleDateValidateS3 = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationSampleDateValidateS3")))";
     var msgValidationShippingDateValidateS3 = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationShippingDateValidateS3")))";
     var msgValidationShippingDateValidateICS3 = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidationShippingDateValidateICS3")))";
-
 
     var msgValidateProcessSelectLab = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessSelectLab")))";
     var msgValidateProcessProcessLab = "@(Html.Raw(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgValidateProcessProcessLab")))";
@@ -7533,8 +7533,6 @@
 
                             }
                     );
-
-
         }, 300);
         $("#caselist_pend").setColProp('IFI',{hidden:true}).trigger('reloadGrid');
     });

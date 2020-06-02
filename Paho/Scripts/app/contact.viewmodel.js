@@ -978,10 +978,10 @@ function ContactViewModel(app, dataModel) {
                 self.flow_institution(data.flow_institution);
                 self.flow_max(data.flow_max);
                 self.flow_open_always(data.flow_open_always);
-                self.IntsFlow([]);
+                self.IntsFlow([]);                                          // Lista de laboratorios que participan en el flujo de un caso
                 if (data.IntsFlow != "") {
-                    //console.log("Array de Instituciones ----- " + data.IntsFlow.length);
-                    //console.log(data.IntsFlow);
+                    console.log("Array de Instituciones ----- " + data.IntsFlow.length);
+                    console.log(data.IntsFlow);
                     for (index = 0; index < data.IntsFlow.length; ++index) {
                         var instflow = new InstitutionsFlow();
                         instflow.LabID = data.IntsFlow[index].Id;
