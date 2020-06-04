@@ -2196,6 +2196,113 @@ namespace Paho.Controllers
         }
         
         //**** Reporte epidemiologico
+        static private void Antecedentes_DataToSheetExcel(string consString, ExcelWorkbook excelWorkBook, int AntecedentesType, int starRowAntec, int starColAntec, int countryId, int? regionId, 
+            string languaje_, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, string VirusList="")
+        {
+            int row, column;
+
+            using (var con = new SqlConnection(consString))
+            {
+                using (var command = new SqlCommand("R6_antecedentes", con) { CommandType = CommandType.StoredProcedure, CommandTimeout = 1200 })
+                {
+                    var excelParameters = excelWorkBook.Worksheets["Parameters"];
+                    string sheetNameAntec;
+                    var rowInicPara = 0;
+                    var colInicPara = 0;
+
+                    if (AntecedentesType == 1)              // Todos los virus
+                    {
+                        sheetNameAntec = (string)excelParameters.Cells[79, 2].Value;             // "Antecedentes"
+                        rowInicPara = Convert.ToInt32(excelParameters.Cells[79, 3].Value);
+                        colInicPara = Convert.ToInt32(excelParameters.Cells[79, 4].Value);
+                    }
+                    else if (AntecedentesType == 2)         // Para el SARS-CoV-2
+                    {
+                        sheetNameAntec = (string)excelParameters.Cells[81, 2].Value;             // "Antecedentes SARS-CoV-2"
+                        rowInicPara = Convert.ToInt32(excelParameters.Cells[81, 3].Value);
+                        colInicPara = Convert.ToInt32(excelParameters.Cells[81, 4].Value);
+                    }
+                    else
+                        return; 
+
+                    command.Parameters.Clear();
+                    command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
+                    command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
+                    command.Parameters.Add("@Languaje", SqlDbType.Text).Value = languaje_;
+                    command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
+                    command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
+                    command.Parameters.Add("@Mes_", SqlDbType.Int).Value = month;
+                    command.Parameters.Add("@SE", SqlDbType.Int).Value = se;
+                    command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
+                    command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
+                    command.Parameters.Add("@yearFrom", SqlDbType.Int).Value = YearFrom;
+                    command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
+                    command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;                        //#### CAFQ
+                    command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;          //#### CAFQ
+                    if(VirusList.Length > 0)
+                        command.Parameters.Add("@VirusList", SqlDbType.Text).Value = VirusList;                   //#### CAFQ -> 14: virus SARS-CoV-2
+
+                    con.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (starRowAntec == 0)
+                        {
+                            //row = 11;
+                            //column = 2;
+                            row = rowInicPara;
+                            column = colInicPara - 1;
+                        }
+                        else
+                        {
+                            row = starRowAntec;
+                            column = starColAntec;
+                        }
+
+                        var contador_salto = 0;
+
+                        var excelWorksheet2 = excelWorkBook.Worksheets[sheetNameAntec];
+                        while (reader.Read())
+                        {
+                            var col = column;
+                            var colcont = 1;
+                            for (int i = 0; i < 6; i++)
+                            {
+                                /////////////var cell = excelWorksheet2.Cells[startRow, col + colcont];
+                                excelWorksheet2.Cells[row, col + colcont].Value = reader.GetValue(i);
+                                if (i == 1 || i == 3)
+                                {
+                                    colcont += 4;
+                                }
+                                else
+                                {
+                                    colcont += 2;
+                                }
+                            }
+                            contador_salto++;
+                            if (contador_salto == 1 || contador_salto == 10)
+                            {
+                                row += 3;
+                            }
+                            else
+                            {
+                                if (contador_salto == 12 || contador_salto == 16 || contador_salto == 23)
+                                {
+                                    row += 2;
+                                }
+                                else
+                                {
+                                    row++;
+                                }
+                            }
+                        }
+                    }
+
+                    command.Parameters.Clear();
+                    con.Close();
+                }
+            }
+        }
+
         private static void AppendDataToExcel_R6_SeveralYears(string languaje_, int countryId, int? regionId, int? year,
             int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook,
             string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry,
@@ -2238,7 +2345,6 @@ namespace Paho.Controllers
             int widthT2 = 57;
             row = (startRow - 1) + (3 * 3 * 3 * (nGrEd + 1)) - 1;           // Ultima fila tabla 1
             int rowIT2 = row + 11 + 1;                                      // Tabla 2: fila inicio 
-            //int rowFT2 = rowIT2 + (((3 * 4 * nGrEd) + 3) * 14) - 1;
             int rowFT2 = rowIT2 + (((3 * 4 * nGrEd) + 3) * (NUMBER_VIRUS_AND_VIRUSSUBTYPE + 4)) - 1;         // Tabla 2: fila final
 
             for (nI = 1; nI <= nAnios; ++nI)
@@ -2263,7 +2369,6 @@ namespace Paho.Controllers
                     }
                 }
                 excelWorksheet.Cells[rowIT2 - 3, col].Value = nAnio;
-
             }
 
             //---- Antecedentes
@@ -2300,9 +2405,47 @@ namespace Paho.Controllers
                 else if ((nI % 3) == 0)
                 {
                     wsTemp.Cells[row - 5, colD, row + 41, colD + widthYear_AN - 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    //wsTemp.Cells[row - 5, colD, row + 41, colD + widthYear_AN - 1].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(171, 235, 198));
                     wsTemp.Cells[row - 5, colD, row + 41, colD + widthYear_AN - 1].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(163, 228, 215));
                 }                    
+                //****
+            }
+
+            //---- Antecedentes SARS-CoV-2
+            cTemp = (string)wsPara.Cells[81, 2].Value;
+            row = Convert.ToInt32(wsPara.Cells[81, 3].Value);
+            col = Convert.ToInt32(wsPara.Cells[81, 4].Value);
+            wsTemp = excelWorkBook.Worksheets[cTemp];
+            widthYear_AN = 2 * 3 * 3;
+
+            for (nI = 1; nI <= nAnios; ++nI)
+            {
+                int nAnio = _YearFrom + (nI - 1);
+
+                //**** Campos data para el anio nI
+                int colD = col + (nI - 1) * widthYear_AN;
+                if (nI > 1)
+                {
+                    wsTemp.Cells[row - 5, col, row + 41, col + widthYear_AN - 1].Copy(wsTemp.Cells[row - 5, colD]);
+                    for (int nW = 1; nW <= widthYear_AN; nW++)
+                        wsTemp.Column(colD + (nW - 1)).Width = 6;
+                }
+                wsTemp.Cells[row - 5, colD].Value = nAnio;
+                //**** Background
+                if ((nI % 3) == 1)
+                {
+                    wsTemp.Cells[row - 5, colD, row + 41, colD + widthYear_AN - 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    wsTemp.Cells[row - 5, colD, row + 41, colD + widthYear_AN - 1].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(133, 193, 233));
+                }
+                else if ((nI % 3) == 2)
+                {
+                    wsTemp.Cells[row - 5, colD, row + 41, colD + widthYear_AN - 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    wsTemp.Cells[row - 5, colD, row + 41, colD + widthYear_AN - 1].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(245, 203, 167));
+                }
+                else if ((nI % 3) == 0)
+                {
+                    wsTemp.Cells[row - 5, colD, row + 41, colD + widthYear_AN - 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    wsTemp.Cells[row - 5, colD, row + 41, colD + widthYear_AN - 1].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(163, 228, 215));
+                }
                 //****
             }
 
@@ -2313,7 +2456,6 @@ namespace Paho.Controllers
             wsTemp = excelWorkBook.Worksheets[cTemp];
             int colW = 3;
             int srTA = (startRow - 1) + (27 * nGrEd);
-            //int widthYear_TA = 54;
             int widthYear_TA = widthT1;            
             int heightYear_WK = 53;
             int nCoWiCopy = colW;
@@ -2328,7 +2470,6 @@ namespace Paho.Controllers
             wsTemp = excelWorkBook.Worksheets[cTemp];
             colW = nGrEd * 3;
             srTA = (startRow - 1);
-            //widthYear_TA = 54;
             widthYear_TA = widthT1;
             heightYear_WK = 53;
             nCoWiCopy = colW;
@@ -2342,7 +2483,6 @@ namespace Paho.Controllers
             wsTemp = excelWorkBook.Worksheets[cTemp];                                   // Worksheet de trabajo (WK)
             colW = 6;                                                                   // Columnas de datos en WK
             srTA = (startRow - 1) + (27 * (nGrEd + 1)) + 11;                            // nGrEd = 6 => 208 (Influenza A(H1N1)pdm09) en TA
-            //widthYear_TA = 57;
             widthYear_TA = widthT2;
             int height2_TA = 3 * 4 * nGrEd + 3;
             heightYear_WK = 54;                         // EW + Total   
@@ -2360,10 +2500,10 @@ namespace Paho.Controllers
             row = Convert.ToInt32(wsPara.Cells[77, 3].Value);
             col = Convert.ToInt32(wsPara.Cells[77, 4].Value);
             wsTemp = excelWorkBook.Worksheets[cTemp];
-            //colW = 13;
+
             colW = NUMBER_VIRUS_AND_VIRUSSUBTYPE + 3;               // Incluye SARS-CoV-2 y Num. Muestras Negativas, Num. Muestras analizadas y Num Muestras positivas
             srTA = (startRow - 1) + (27 * (nGrEd + 1)) + 11;            // Fila inicio T2 Hoja "Tablas" (208: nGrEd = 6)
-            //widthYear_TA = 57;
+
             widthYear_TA = widthT2;                                     // 
             height2_TA = 3 * 4 * nGrEd + 3;
             heightYear_WK = 54;         // EW + Total   
@@ -2379,8 +2519,6 @@ namespace Paho.Controllers
             for (nI = 1; nI <= nAnios; ++nI)
             {
                 int nAnio = _YearFrom + (nI - 1);
-                //col = _startColumn + (nI - 1) * 54;
-                //colT2 = _startColumn + (nI - 1) * 57;               // Se enviara a traves del parametro CasosNPHL
                 col = _startColumn + (nI - 1) * widthT1;
                 colT2 = _startColumn + (nI - 1) * widthT2;               // Se enviara a traves del parametro CasosNPHL
                 int colAntec = starColAntec + (nI - 1) * 18;
@@ -2393,7 +2531,6 @@ namespace Paho.Controllers
             //############################# Grafico hoja: "G1 %IRAG"
             Dictionary<string, decimal> aPara = new Dictionary<string, decimal>();
             cTemp = (string)wsPara.Cells[66, 2].Value;
-            //ExcelWorksheet wsHoG1 = excelWorkBook.Worksheets["G1 %IRAG"];
             ExcelWorksheet wsHoG1 = excelWorkBook.Worksheets[cTemp];
 
             //---- Elimando los graficos de plantilla
@@ -2462,25 +2599,21 @@ namespace Paho.Controllers
 
             //############################# Grafico hoja: "G2 Influenza"
             cTemp = (string)wsPara.Cells[67, 2].Value;
-            //ExcelWorksheet wsHoG2 = excelWorkBook.Worksheets["G2 Influenza"];
             ExcelWorksheet wsHoG2 = excelWorkBook.Worksheets[cTemp];
             R6_GraficoVirus_ColumnStacked(excelWorksheet, wsPara, wsHoG2, rowIT2, rowFT2, nGrEd, nAnios, _startColumn, weekByYear, "G2_0");
 
             //############################# Grafico hoja: "G3 Todos virus"
             cTemp = (string)wsPara.Cells[68, 2].Value;
-            //ExcelWorksheet wsHoG3 = excelWorkBook.Worksheets["G3 Todos virus"];
             ExcelWorksheet wsHoG3 = excelWorkBook.Worksheets[cTemp];
             R6_GraficoVirus_ColumnStacked(excelWorksheet, wsPara, wsHoG3, rowIT2, rowFT2, nGrEd, nAnios, _startColumn, weekByYear, "G3_0");
 
 
             //############################# Grafico hoja: "G4 Grupos Edad"
-            //---- Tabla: T6 Tipo virus edad grav (Age Group)
             cTemp = (string)wsPara.Cells[78, 2].Value;
             ExcelWorksheet wsHoT6 = excelWorkBook.Worksheets[cTemp];         // "T6 Tipo virus edad grav."
 
             int rowI = Convert.ToInt32(wsPara.Cells[62, 2].Value);          // Fila inicio tabla 1 en hoja T6
             int colI = Convert.ToInt32(wsPara.Cells[63, 2].Value);          // Columna inicio tabla 1 en hoja T6
-            //int highI = 12;                                                 // Alto tabla 1 en Hoja T6 (incluye SARS-CoV-2)
             int highI = NUMBER_VIRUS_AND_VIRUSSUBTYPE;                                                 // Alto tabla 1 en Hoja T6 (incluye SARS-CoV-2)
 
             for (nI = 1; nI <= nAnios; ++nI)
@@ -2497,14 +2630,11 @@ namespace Paho.Controllers
                     {
                         wsHoT6.Cells[rowI - 1, colx + (a - 1)].FormulaR1C1 = wsHoT6.Cells[rowI - 1, colI + (a - 1)].FormulaR1C1;
 
-                        //for (int n = 1; n <= 10; n++)
                         for (int n = 1; n <= highI; n++)
                         {
                             int c = _startColumn + (nI - 1) * 57 + 53;          // Columna final i-esimo anio
 
                             cTemp = "=" + excelWorksheet.Cells[r + (n - 1) * 75 + (a - 1) * 12, c].FullAddress;
-                            //int aa = rowI + (n - 1);
-                            //int bb = colI + (nI - 1) * (nGrEd + 1) + (a - 1);
                             wsHoT6.Cells[rowI + (n - 1), colI + (nI - 1) * (nGrEd + 1) + (a - 1)].Formula = cTemp;
                         }
                     }
@@ -2545,7 +2675,6 @@ namespace Paho.Controllers
                 int nAnio = _YearFrom + (nI - 1);
                 if (nI > 1)
                 {
-                    //wsHoT6.Cells[rowI - 2, colI, rowI + 10, colI + 2].Copy(wsHoT6.Cells[rowI - 2, colI + (nI - 1) * 3]);
                     wsHoT6.Cells[rowI - 2, colI, rowI + highI, colI + 2].Copy(wsHoT6.Cells[rowI - 2, colI + (nI - 1) * 3]);
 
                     for (int a = 1; a <= 3; a++)
@@ -2553,7 +2682,6 @@ namespace Paho.Controllers
                         int rT = rowIT2 + 4;                // 208 + 4 = 212
 
                         int colD = colI + (nI - 1) * 3 + (a - 1);
-                        //for (int n = 1; n <= 10; n++)
                         for (int n = 1; n <= highI; n++)
                         {
                             int cT = _startColumn + (nI - 1) * 57 + 56;
@@ -3562,82 +3690,15 @@ namespace Paho.Controllers
             /*Inserción de tablas en el tab  de antecedentes del reporte R6*/
             if (storedProcedure == "R6")
             {
-                using (var con = new SqlConnection(consString))
-                {
-                    using (var command = new SqlCommand("R6_antecedentes", con) { CommandType = CommandType.StoredProcedure, CommandTimeout = 1200 })
-                    {
-                        command.Parameters.Clear();
-                        command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
-                        command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
-                        command.Parameters.Add("@Languaje", SqlDbType.Text).Value = languaje_;
-                        command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
-                        command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
-                        command.Parameters.Add("@Mes_", SqlDbType.Int).Value = month;
-                        command.Parameters.Add("@SE", SqlDbType.Int).Value = se;
-                        command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
-                        command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
-                        command.Parameters.Add("@yearFrom", SqlDbType.Int).Value = YearFrom;
-                        command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
-                        command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;                        //#### CAFQ
-                        command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;          //#### CAFQ
-                        con.Open();
+                //**** Virus: Todos
+                Antecedentes_DataToSheetExcel(consString, excelWorkBook, 1, starRowAntec, starColAntec, countryId, regionId, languaje_, year, hospitalId, month, se, startDate,
+                    endDate, YearFrom, YearTo, Surv, SurvInusual);
 
-                        using (var reader = command.ExecuteReader())
-                        {
-                            if(starRowAntec == 0)
-                            {
-                                row = 11;
-                                column = 2;
-                            }
-                            else
-                            {
-                                row = starRowAntec;
-                                column = starColAntec;
-                            }
-
-                            var contador_salto = 0;
-                            var excelWorksheet2 = excelWorkBook.Worksheets[2];
-                            while (reader.Read())
-                            {
-                                var col = column;
-                                var colcont = 1;
-                                for (int i = 0; i < 6; i++)
-                                {
-                                    var cell = excelWorksheet2.Cells[startRow, col + colcont];
-                                    excelWorksheet2.Cells[row, col + colcont].Value = reader.GetValue(i);
-                                    if (i == 1 || i == 3)
-                                    {
-                                        colcont += 4;
-                                    }
-                                    else
-                                    {
-                                        colcont += 2;
-                                    }
-                                }
-                                contador_salto++;
-                                if (contador_salto == 1 || contador_salto == 10)
-                                {
-                                    row += 3;
-                                }
-                                else
-                                {
-                                    if (contador_salto == 12 || contador_salto == 16 || contador_salto == 23)
-                                    {
-                                        row += 2;
-                                    }
-                                    else
-                                    {
-                                        row++;
-                                    }
-                                }
-                            }
-                        }
-
-                        command.Parameters.Clear();
-                        con.Close();
-                    }
-                }
+                //**** Virus: SARS-CoV-2
+                Antecedentes_DataToSheetExcel(consString, excelWorkBook, 2, starRowAntec, starColAntec, countryId, regionId, languaje_, year, hospitalId, month, se, startDate,
+                    endDate, YearFrom, YearTo, Surv, SurvInusual, "14");
             }
+
             /*Fin inserción tablas*/
 
             /*-----------------------Inserción de los parámetros usados para la generación del reporte al Excel--------------------------------------*/
@@ -3653,7 +3714,6 @@ namespace Paho.Controllers
                 if (storedProcedure == "ML1")
                     setDatosAdicionales(excelWorksheet, startRow, startColumn);
             }
-
             /*-----------------------Fin de la Inserción de los parámetros usados para la generación del reporte al Excel--------------------------------------*/
 
             // Apply only if it has a Total row at the end and hast SUM in range, i.e. SUM(A1:A4)
@@ -3760,7 +3820,6 @@ namespace Paho.Controllers
             }
             var casesummaryDetails = casesummary.CaseSummaryDetails.ToArray();
 
-
             try
             {
                 var ms = new MemoryStream();
@@ -3806,8 +3865,6 @@ namespace Paho.Controllers
                             row++;
                         }
                         //[{"Id":1799,"CaseSummaryId":297,"AgeGroup":1,"ETIDenoFem":0,"ETIDenoMaso":0,"ETIDenoST":0,"ETINumFem":0,"ETINumMaso":0,"ETINumST":0,"ETINumEmerST":0,"HospFem":10,"HospMaso":7,"HospST":17,"UCIFem":6,"UCIMaso":4,"UCIST":10,"DefFem":0,"DefMaso":0,"DefST":0,"NeuFem":0,"NeuMaso":0,"NeuST":0,"CCSARIFem":0,"CCSARIMaso":0,"CCSARIST":0,"VentFem":0,"VentMaso":0,"VentST":0},{"Id":1800,"CaseSummaryId":297,"AgeGroup":2,"ETIDenoFem":0,"ETIDenoMaso":0,"ETIDenoST":0,"ETINumFem":0,"ETINumMaso":0,"ETINumST":0,"ETINumEmerST":0,"HospFem":4,"HospMaso":5,"HospST":9,"UCIFem":0,"UCIMaso":1,"UCIST":1,"DefFem":0,"DefMaso":0,"DefST":0,"NeuFem":0,"NeuMaso":0,"NeuST":0,"CCSARIFem":0,"CCSARIMaso":0,"CCSARIST":0,"VentFem":0,"VentMaso":0,"VentST":0},{"Id":1801,"CaseSummaryId":297,"AgeGroup":3,"ETIDenoFem":0,"ETIDenoMaso":0,"ETIDenoST":0,"ETINumFem":0,"ETINumMaso":0,"ETINumST":0,"ETINumEmerST":0,"HospFem":20,"HospMaso":15,"HospST":35,"UCIFem":0,"UCIMaso":3,"UCIST":3,"DefFem":0,"DefMaso":0,"DefST":0,"NeuFem":0,"NeuMaso":0,"NeuST":0,"CCSARIFem":0,"CCSARIMaso":0,"CCSARIST":0,"VentFem":0,"VentMaso":0,"VentST":0},{"Id":1802,"CaseSummaryId":297,"AgeGroup":4,"ETIDenoFem":0,"ETIDenoMaso":0,"ETIDenoST":0,"ETINumFem":0,"ETINumMaso":0,"ETINumST":0,"ETINumEmerST":0,"HospFem":118,"HospMaso":26,"HospST":144,"UCIFem":5,"UCIMaso":1,"UCIST":6,"DefFem":0,"DefMaso":0,"DefST":0,"NeuFem":0,"NeuMaso":0,"NeuST":0,"CCSARIFem":0,"CCSARIMaso":0,"CCSARIST":0,"VentFem":0,"VentMaso":0,"VentST":0},{"Id":1803,"CaseSummaryId":297,"AgeGroup":5,"ETIDenoFem":0,"ETIDenoMaso":0,"ETIDenoST":0,"ETINumFem":0,"ETINumMaso":0,"ETINumST":0,"ETINumEmerST":0,"HospFem":41,"HospMaso":39,"HospST":80,"UCIFem":5,"UCIMaso":5,"UCIST":10,"DefFem":0,"DefMaso":0,"DefST":0,"NeuFem":0,"NeuMaso":0,"NeuST":0,"CCSARIFem":0,"CCSARIMaso":0,"CCSARIST":0,"VentFem":0,"VentMaso":0,"VentST":0},{"Id":1804,"CaseSummaryId":297,"AgeGroup":6,"ETIDenoFem":0,"ETIDenoMaso":0,"ETIDenoST":0,"ETINumFem":0,"ETINumMaso":0,"ETINumST":0,"ETINumEmerST":0,"HospFem":41,"HospMaso":42,"HospST":83,"UCIFem":6,"UCIMaso":10,"UCIST":16,"DefFem":2,"DefMaso":6,"DefST":8,"NeuFem":0,"NeuMaso":0,"NeuST":0,"CCSARIFem":0,"CCSARIMaso":0,"CCSARIST":0,"VentFem":0,"VentMaso":0,"VentST":0}]
-
-
 
                         excelPackage.SaveAs(ms);
                     }
@@ -3914,29 +3971,6 @@ namespace Paho.Controllers
 
             return null;
         }
-
-        /*public JsonResult GetReportsForCountry(int countryID)
-        {
-            ////var epiYear = DateTime.Now.Year.ToString();
-            ////int intEpiYear = Int32.Parse(epiYear);
-            List<Dictionary<string, int>> reportsPerCountry = new List<Dictionary<string, int>>();
-            Dictionary<string, int> dictionary = new Dictionary<string, int>();
-
-            var reportCountry = db.ReportsCountries.FirstOrDefault(s => s.CountryID == countryID && s.active == true);
-            if (reportCountry == null)
-            {
-
-            }
-            else
-            {
-
-                dictionary.Add(reportCountry.description, reportCountry.ID);
-            }
-
-                reportsPerCountry.Add(dictionary);
-
-            return Json(reportsPerCountry, JsonRequestBehavior.AllowGet);
-        }*/
 
         private static void AppendDataToExcel_REVELAC(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string reportTemplate, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId)         //#### CAFQ
         {

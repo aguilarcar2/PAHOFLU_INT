@@ -938,13 +938,8 @@
             //console.log("Home - FlowDataLabAfter - EndFlow " + x.EndFlow());
             return x.EndFlow() === "TRUE";
         });
-        //console.log(flow_check.length);
-        //console.log("1x1");
-        //console.log(app.Views.Lab.canEditLFF);
-        //console.log(app.Views.Lab.canEditLFF());
-        //console.log("1x2");
-        if ($("#ITy").val() == "2" && (app.Views.Hospital.FlowType1() == 2) && (app.Views.Lab.canEditLFF() == true)) {
-            //console.log("P1-FF");
+
+        if ($("#ITy").val() == "2" && (app.Views.Hospital.FlowType1() == 2) && (app.Views.Lab.canEdit_FF() == true)) {      // Flujo Libre
             $("#tab-lab :input").prop('disabled', false);
         }
         //if (($("#ITy").val() == "1" || $("#ITy").val() == "3") && flow_check.length > 0) {

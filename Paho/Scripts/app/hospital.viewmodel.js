@@ -753,7 +753,7 @@
     self.LabsHospital = ko.observableArray();
     self.LabId = ko.observable("");
 
-    //**************************** #### 200419
+    //**************************** Flujo Libre: 200419
     self.labsOnlyPCR = ko.computed(function () {
         return app.Views.Home.labspcr();
     }, self);
@@ -762,10 +762,10 @@
         return app.Views.Home.labsifi();
     }, self);
 
-
     self.FlowType1 = ko.observable("1"); 
     self.SelectedLabFree11_ID = ko.observable("");              // Muestra 1: labs 1 y 2
     self.SelectedLabFree12_ID = ko.observable("");
+    //self.InstCantEdit_FF = ko.observable();                     // Establecimiento(Lab) puede ingresar/editar datos de LAB
 
     self.LabFreeVisible = ko.computed(function () {
         bReturn = false;
@@ -1776,9 +1776,13 @@
                 self.FlowType1(data.FlowType1);
                 self.SelectedLabFree11_ID(data.LabFreeMu1L1_ID);
                 self.SelectedLabFree12_ID(data.LabFreeMu1L2_ID);
+                //self.InstCantEdit_FF(data.InstCantEdit_FF);                 // Establecimiento(Lab) puede ingresar/editar datos LAB
+                //console.log("GH->1")
+                //console.log(self.InstCantEdit_FF());
+                //console.log("GH->2")
                 //#### 
                 self.Adenopatia(data.Adenopatia);
-                self.Wheezing(data.Wheezing);               		        //#### CAFQ: 180619
+                self.Wheezing(data.Wheezing);
                 self.AntecedentesFiebre(data.AntecedentesFiebre);
 
                 self.Asymptomatic(data.Asymptomatic);                       //#### CAFQ: 200519
@@ -1803,15 +1807,15 @@
                 self.DolorMuscularLocaliz(data.DolorMuscularLocaliz);       //#### CAFQ
                 self.Disnea(data.Disnea);                                   //#### CAFQ
                 self.SintomHemorrag(data.SintomHemorrag);                     //#### CAFQ
-                self.SintomHemorragDesc(data.SintomHemorragDesc);                     //#### CAFQ
-                self.AlteracEstadoMental(data.AlteracEstadoMental);                     //#### CAFQ
-                self.Altralgia(data.Altralgia);                     //#### CAFQ
-                self.Escalofrios(data.Escalofrios);                     //#### CAFQ
-                self.Conjuntivitis(data.Conjuntivitis);                     //#### CAFQ
-                self.Rinitis(data.Rinitis);                     //#### CAFQ
-                self.DiarreaAguda(data.DiarreaAguda);                     //#### CAFQ
-                self.DiarreaCronica(data.DiarreaCronica);                     //#### CAFQ
-                self.Mareo(data.Mareo);                     //#### CAFQ
+                self.SintomHemorragDesc(data.SintomHemorragDesc);
+                self.AlteracEstadoMental(data.AlteracEstadoMental);
+                self.Altralgia(data.Altralgia);
+                self.Escalofrios(data.Escalofrios);
+                self.Conjuntivitis(data.Conjuntivitis);
+                self.Rinitis(data.Rinitis);
+                self.DiarreaAguda(data.DiarreaAguda);
+                self.DiarreaCronica(data.DiarreaCronica);
+                self.Mareo(data.Mareo);
                 self.FalloDesarrollo(data.FalloDesarrollo);                     //#### CAFQ
                 self.Hepatomegalea(data.Hepatomegalea);                    //#### CAFQ
                 self.Ictericia(data.Ictericia);                    //#### CAFQ
@@ -1899,7 +1903,7 @@
                 //        console.log(self.LabsHospital());
                 //    });
                 //} else {
-                    self.LabsHospital(data.LabsHospital);
+                self.LabsHospital(data.LabsHospital);
                 //}
             })
             .fail(function(jqXHR, textStatus, errorThrown) {

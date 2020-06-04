@@ -1797,128 +1797,129 @@ function LabViewModel(app, dataModel) {
 
     var labsFF_list = null;         // FF para el caso
     //var canEditLFF = null;          // Puede editar por FF
-    self.canEditLFF = ko.observable("");
+    self.canEdit_FF = ko.observable("");
 
 
     self.GetLab = function (id) {
-        //console.log("self.GetLab->START");
+        console.log("self.GetLab->START");
         self.Id = id;       
         $.getJSON(app.dataModel.getLabUrl, { id: id }, function (data, status) {
             //console.log("GLGJ1-START");
             labsFF_list = data.LabsFF_List;
             //canEditLFF = data.CanEditLFF;
-            self.canEditLFF(data.CanEditLFF)
+            self.canEdit_FF(data.CanEditLFF);
             //console.log(labsFF_list);
-            console.log(self.canEditLFF());
-            //console.log("GLGJ1-ENDD");
+            //console.log("self.canEdit_FF()->1");
+            //console.log(self.canEdit_FF());                         // NO BLOQUEAR
+            //console.log("self.canEdit_FF()->2");
 
-                // Laboratorio intermedio
-                (data.Rec_Date_NPHL) ? self.Rec_Date_NPHL(moment(data.Rec_Date_NPHL).clone().toDate()) : self.Rec_Date_NPHL(null);
-                self.Identification_Test_NPHL(data.Identification_Test_NPHL);
-                self.Temp_NPHL(data.Temp_NPHL);
-                self.Observation_NPHL(data.Observation_NPHL);
-                self.NPHL_Processed((data.NPHL_Processed != null) ? data.NPHL_Processed.toString() : "");
-                self.NPHL_NoProRenId(data.NPHL_NoProRenId);
-                self.NPHL_NoProRen(data.NPHL_NoProRen);
-                (data.Ship_Date_NPHL) ? self.Ship_Date_NPHL(moment(data.Ship_Date_NPHL).clone().toDate()) : self.Ship_Date_NPHL(null);
+            // Laboratorio intermedio
+            (data.Rec_Date_NPHL) ? self.Rec_Date_NPHL(moment(data.Rec_Date_NPHL).clone().toDate()) : self.Rec_Date_NPHL(null);
+            self.Identification_Test_NPHL(data.Identification_Test_NPHL);
+            self.Temp_NPHL(data.Temp_NPHL);
+            self.Observation_NPHL(data.Observation_NPHL);
+            self.NPHL_Processed((data.NPHL_Processed != null) ? data.NPHL_Processed.toString() : "");
+            self.NPHL_NoProRenId(data.NPHL_NoProRenId);
+            self.NPHL_NoProRen(data.NPHL_NoProRen);
+            (data.Ship_Date_NPHL) ? self.Ship_Date_NPHL(moment(data.Ship_Date_NPHL).clone().toDate()) : self.Ship_Date_NPHL(null);
 
-                (data.Rec_Date_NPHL_2) ? self.Rec_Date_NPHL_2(moment(data.Rec_Date_NPHL_2).clone().toDate()) : self.Rec_Date_NPHL_2(null);
-                self.Identification_Test_NPHL_2(data.Identification_Test_NPHL_2);
-                self.Temp_NPHL_2(data.Temp_NPHL_2);                
-                self.Observation_NPHL_2(data.Observation_NPHL_2);
-                self.NPHL_Processed_2((data.NPHL_Processed_2 != null) ? data.NPHL_Processed_2.toString() : "");
-                self.NPHL_NoProRenId_2(data.NPHL_NoProRenId_2);
-                self.NPHL_NoProRen_2(data.NPHL_NoProRen_2);
-                (data.Ship_Date_NPHL_2) ? self.Ship_Date_NPHL_2(moment(data.Ship_Date_NPHL_2).clone().toDate()) : self.Ship_Date_NPHL_2(null);
+            (data.Rec_Date_NPHL_2) ? self.Rec_Date_NPHL_2(moment(data.Rec_Date_NPHL_2).clone().toDate()) : self.Rec_Date_NPHL_2(null);
+            self.Identification_Test_NPHL_2(data.Identification_Test_NPHL_2);
+            self.Temp_NPHL_2(data.Temp_NPHL_2);                
+            self.Observation_NPHL_2(data.Observation_NPHL_2);
+            self.NPHL_Processed_2((data.NPHL_Processed_2 != null) ? data.NPHL_Processed_2.toString() : "");
+            self.NPHL_NoProRenId_2(data.NPHL_NoProRenId_2);
+            self.NPHL_NoProRen_2(data.NPHL_NoProRen_2);
+            (data.Ship_Date_NPHL_2) ? self.Ship_Date_NPHL_2(moment(data.Ship_Date_NPHL_2).clone().toDate()) : self.Ship_Date_NPHL_2(null);
 
-                (data.Rec_Date_NPHL_3) ? self.Rec_Date_NPHL_3(moment(data.Rec_Date_NPHL_3).clone().toDate()) : self.Rec_Date_NPHL_3(null);
-                self.Identification_Test_NPHL_3(data.Identification_Test_NPHL_3);
-                self.Temp_NPHL_3(data.Temp_NPHL_3);
-                self.Observation_NPHL_3(data.Observation_NPHL_3);
-                self.NPHL_Processed_3((data.NPHL_Processed_3 != null) ? data.NPHL_Processed_3.toString() : "");
-                self.NPHL_NoProRenId_3(data.NPHL_NoProRenId_3);
-                self.NPHL_NoProRen_3(data.NPHL_NoProRen_3);
-                (data.Ship_Date_NPHL_3) ? self.Ship_Date_NPHL_3(moment(data.Ship_Date_NPHL_3).clone().toDate()) : self.Ship_Date_NPHL_3(null);
+            (data.Rec_Date_NPHL_3) ? self.Rec_Date_NPHL_3(moment(data.Rec_Date_NPHL_3).clone().toDate()) : self.Rec_Date_NPHL_3(null);
+            self.Identification_Test_NPHL_3(data.Identification_Test_NPHL_3);
+            self.Temp_NPHL_3(data.Temp_NPHL_3);
+            self.Observation_NPHL_3(data.Observation_NPHL_3);
+            self.NPHL_Processed_3((data.NPHL_Processed_3 != null) ? data.NPHL_Processed_3.toString() : "");
+            self.NPHL_NoProRenId_3(data.NPHL_NoProRenId_3);
+            self.NPHL_NoProRen_3(data.NPHL_NoProRen_3);
+            (data.Ship_Date_NPHL_3) ? self.Ship_Date_NPHL_3(moment(data.Ship_Date_NPHL_3).clone().toDate()) : self.Ship_Date_NPHL_3(null);
 
-                self.NPHL(data.InstFlow_NPHL);
+            self.NPHL(data.InstFlow_NPHL);
 
-                self.NPHL_FlowExist(data.ExistAnyInstitutionFlow_NPHL);
-                self.NIC_display(data.Is_NIC);
+            self.NPHL_FlowExist(data.ExistAnyInstitutionFlow_NPHL);
+            self.NIC_display(data.Is_NIC);
 
-                (data.RecDate) ? self.RecDate(moment(data.RecDate).clone().toDate()) : self.RecDate(null);
-                self.Identification_Test(data.Identification_Test);
-                self.Processed((data.Processed != null) ? data.Processed.toString() : "");
-                self.NoProRen(data.NoProRen);
-                self.NoProRenId(data.NoProRenId);
-                self.TempSample1(data.TempSample1);
-                self.hasGet(true);
-                //console.log(self.hasGet());
-                (data.RecDate2) ? self.RecDate2(moment(data.RecDate2).clone().toDate()) : self.RecDate2(null);
-                self.Identification_Test2(data.Identification_Test2);
-                self.Processed2((data.Processed2 != null) ? data.Processed2.toString() : "");
-                self.NoProRen2(data.NoProRen2);
-                self.NoProRenId2(data.NoProRenId2);
-                self.TempSample2(data.TempSample2);
+            (data.RecDate) ? self.RecDate(moment(data.RecDate).clone().toDate()) : self.RecDate(null);
+            self.Identification_Test(data.Identification_Test);
+            self.Processed((data.Processed != null) ? data.Processed.toString() : "");
+            self.NoProRen(data.NoProRen);
+            self.NoProRenId(data.NoProRenId);
+            self.TempSample1(data.TempSample1);
+            self.hasGet(true);
+            //console.log(self.hasGet());
+            (data.RecDate2) ? self.RecDate2(moment(data.RecDate2).clone().toDate()) : self.RecDate2(null);
+            self.Identification_Test2(data.Identification_Test2);
+            self.Processed2((data.Processed2 != null) ? data.Processed2.toString() : "");
+            self.NoProRen2(data.NoProRen2);
+            self.NoProRenId2(data.NoProRenId2);
+            self.TempSample2(data.TempSample2);
 
-                (data.RecDate3) ? self.RecDate3(moment(data.RecDate3).clone().toDate()) : self.RecDate3(null);
-                self.Identification_Test3(data.Identification_Test3);
-                self.Processed3((data.Processed3 != null) ? data.Processed3.toString() : "");
-                self.NoProRen3(data.NoProRen3);
-                self.NoProRenId3(data.NoProRenId3);
-                self.TempSample3(data.TempSample3);
+            (data.RecDate3) ? self.RecDate3(moment(data.RecDate3).clone().toDate()) : self.RecDate3(null);
+            self.Identification_Test3(data.Identification_Test3);
+            self.Processed3((data.Processed3 != null) ? data.Processed3.toString() : "");
+            self.NoProRen3(data.NoProRen3);
+            self.NoProRenId3(data.NoProRenId3);
+            self.TempSample3(data.TempSample3);
 
-                (data.RecDate_National) ? self.RecDate_National(moment(data.RecDate_National).clone().toDate()) : self.RecDate_National(null);
-                self.Identification_Test_National(data.Identification_Test_National);
-                self.Processed_National((data.Processed_National != null) ? data.Processed_National.toString() : "");
-                self.NoProRen_National(data.NoProRen_National);
-                self.NoProRenId_National(data.NoProRenId_National);
-                self.TempSample_National(data.TempSample_National);
+            (data.RecDate_National) ? self.RecDate_National(moment(data.RecDate_National).clone().toDate()) : self.RecDate_National(null);
+            self.Identification_Test_National(data.Identification_Test_National);
+            self.Processed_National((data.Processed_National != null) ? data.Processed_National.toString() : "");
+            self.NoProRen_National(data.NoProRen_National);
+            self.NoProRenId_National(data.NoProRenId_National);
+            self.TempSample_National(data.TempSample_National);
 
-                (data.EndLabDate) ? self.EndLabDate(moment(data.EndLabDate).clone().toDate()) : self.EndLabDate(null);
-                self.FResult(data.FResult);
-                self.Comments(data.Comments);
-                self.FinalResult(data.FinalResult);
-                self.FinalResultVirusTypeID(data.FinalResultVirusTypeID);
-                self.FinalResultVirusSubTypeID(data.FinalResultVirusSubTypeID);
-                self.FinalResultVirusLineageID(data.FinalResultVirusLineageID);
-                self.FinalResult_2(data.FinalResult_2);
-                self.FinalResultVirusTypeID_2(data.FinalResultVirusTypeID_2);
-                self.FinalResultVirusSubTypeID_2(data.FinalResultVirusSubTypeID_2);
-                self.FinalResultVirusLineageID_2(data.FinalResultVirusLineageID_2);
-                self.FinalResult_3(data.FinalResult_3);
-                self.FinalResultVirusTypeID_3(data.FinalResultVirusTypeID_3);
-                self.FinalResultVirusSubTypeID_3(data.FinalResultVirusSubTypeID_3);
-                self.FinalResultVirusLineageID_3(data.FinalResultVirusLineageID_3);
+            (data.EndLabDate) ? self.EndLabDate(moment(data.EndLabDate).clone().toDate()) : self.EndLabDate(null);
+            self.FResult(data.FResult);
+            self.Comments(data.Comments);
+            self.FinalResult(data.FinalResult);
+            self.FinalResultVirusTypeID(data.FinalResultVirusTypeID);
+            self.FinalResultVirusSubTypeID(data.FinalResultVirusSubTypeID);
+            self.FinalResultVirusLineageID(data.FinalResultVirusLineageID);
+            self.FinalResult_2(data.FinalResult_2);
+            self.FinalResultVirusTypeID_2(data.FinalResultVirusTypeID_2);
+            self.FinalResultVirusSubTypeID_2(data.FinalResultVirusSubTypeID_2);
+            self.FinalResultVirusLineageID_2(data.FinalResultVirusLineageID_2);
+            self.FinalResult_3(data.FinalResult_3);
+            self.FinalResultVirusTypeID_3(data.FinalResultVirusTypeID_3);
+            self.FinalResultVirusSubTypeID_3(data.FinalResultVirusSubTypeID_3);
+            self.FinalResultVirusLineageID_3(data.FinalResultVirusLineageID_3);
                 
-                self.GeneticGroup(data.GeneticGroup);
-                self.GeneticGroup_2(data.GeneticGroup_2);
-                self.GeneticGroup_3(data.GeneticGroup_3);
+            self.GeneticGroup(data.GeneticGroup);
+            self.GeneticGroup_2(data.GeneticGroup_2);
+            self.GeneticGroup_3(data.GeneticGroup_3);
                 
-                // Comentariado porque el laboratorio no puede cerrar el caso
-                //if (self.FinalResult() != "" ) {
-                //    $("#CaseStatus").attr("disabled", false);
-                //} else
-                //{
-                //    $("#CaseStatus").attr("disabled", true);
-                //}
-                self.LabsResult(data.LabsResult);
-                self.SubTypeByLabRes(data.SubTypeByLabRes);
-                self.CanConclude(data.CanConclude);
-                app.Views.Home.CanConclude(data.CanConclude);
-                app.Views.Home.SaveAndAdd_1(data.SaveAndAdd_1);
-                app.Views.Home.SaveAndAdd_2(data.SaveAndAdd_2);
-                app.Views.Home.SaveAndAdd_3(data.SaveAndAdd_3);
-                //app.Views.Contact.flow_record(data.flow_record);
-                //app.Views.Contact.flow_institution(data.flow_institution);
-                //$("#o_S").val(data.DataStatement);
-                self.CanIFILab(data.CanIFILab);
-                self.CanPCRLab(data.CanPCRLab);
+            // Comentariado porque el laboratorio no puede cerrar el caso
+            //if (self.FinalResult() != "" ) {
+            //    $("#CaseStatus").attr("disabled", false);
+            //} else
+            //{
+            //    $("#CaseStatus").attr("disabled", true);
+            //}
+            self.LabsResult(data.LabsResult);
+            self.SubTypeByLabRes(data.SubTypeByLabRes);
+            self.CanConclude(data.CanConclude);
+            app.Views.Home.CanConclude(data.CanConclude);
+            app.Views.Home.SaveAndAdd_1(data.SaveAndAdd_1);
+            app.Views.Home.SaveAndAdd_2(data.SaveAndAdd_2);
+            app.Views.Home.SaveAndAdd_3(data.SaveAndAdd_3);
+            //app.Views.Contact.flow_record(data.flow_record);
+            //app.Views.Contact.flow_institution(data.flow_institution);
+            //$("#o_S").val(data.DataStatement);
+            self.CanIFILab(data.CanIFILab);
+            self.CanPCRLab(data.CanPCRLab);
 
-                self.ForeignLabCountry(data.ForeignLabCountry);
-                self.ForeignLabLocal(data.ForeignLabLocal);
-                self.flow_max_record(data.flow_max_record);
-                //console.log("max_flow " + self.flow_max_record());
-                //console.log("flow_institution " + app.Views.Contact.flow_institution());
+            self.ForeignLabCountry(data.ForeignLabCountry);
+            self.ForeignLabLocal(data.ForeignLabLocal);
+            self.flow_max_record(data.flow_max_record);
+            //console.log("max_flow " + self.flow_max_record());
+            //console.log("flow_institution " + app.Views.Contact.flow_institution());
 
                 self.LabTests([]);
                 if (data.LabTests != "") {                  

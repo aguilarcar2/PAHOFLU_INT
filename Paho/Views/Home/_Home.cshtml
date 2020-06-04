@@ -122,8 +122,10 @@
     string LabelInusitadosDescripcionOtro = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistInusitadosDescripcionOtro", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 
     string LabelAntiViralSinInformacion = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabRiskLabelAntiviralTreatmentTypeNoInfo", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
-    string LabelAntiViralSOther = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabRiskLabelAntiviralTreatmentTypeOther", ViewBag.UsrCtry, ViewBag.UsrCtryLang); 
-    
+    string LabelAntiViralOther = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabRiskLabelAntiviralTreatmentTypeOther", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelAntiViralType = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabRiskLabelAntiviralTreatmentType", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelAntiViral = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabRiskLabelAntiviral", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
 }
 
 <!-- ko with: home -->
@@ -2176,161 +2178,161 @@
         <!-- Antiviral -->
         <div class="row rowform">
             <div class="col-md-12">
-            <button type="button" style="background-color:#B2BABB; color:#000000" class="btn btn-group-justified" data-toggle="collapse" data-target="#antiviral">
-                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviral"))
-                <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
-            </button>
-            <div id="antiviral" class="collapse in">
-                <!-- Tratamiento de antiviral? / Fecha de administración de antiviral -->
-                <div class="row rowform">
-                    <div class="col-md-7">
-                        <div class='input-group'>
-                            <span class="input-group-addon">
-                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatment")) <font color="#FF0000">*</font>
-                            </span>
-                            <label class="btn btn-default">
-                                <input type="radio" name="AntiViral" id="AntiViral" value="1" data-bind="checked: AntiViral">  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentYes"))
-                            </label>
-                            <label class="btn btn-default">
-                                <input type="radio" name="AntiViral" id="AntiViral" value="2" data-bind="checked: AntiViral">  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentNo"))
-                            </label>
-                            <label class="btn btn-default">
-                                <input type="radio" name="AntiViral" id="AntiViral" value="9" data-bind="checked: AntiViral">  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentUnknown"))
-                            </label>
-                        </div>
-                    </div>
-                    @if (ViewBag.UsrCtry != 7)
-                    {
-                        <div class="col-md-3">
+                <button type="button" style="background-color:#B2BABB; color:#000000" class="btn btn-group-justified" data-toggle="collapse" data-target="#antiviral">
+                        @*@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviral"))*@
+                    @LabelAntiViral
+                    <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
+                </button>
+                <div id="antiviral" class="collapse in">
+                    <!-- Tratamiento de antiviral? / Fecha de administración de antiviral -->
+                    <div class="row rowform">
+                        <div class="col-md-7">
                             <div class='input-group'>
                                 <span class="input-group-addon">
-                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentDoseDate"))
+                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatment")) <font color="#FF0000">*</font>
                                 </span>
-                                <input id="AntiViralDate" type='text' class="form-control " data-bind='datepicker: AntiViralDate, enable: EnableAntiViralDate, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
+                                <label class="btn btn-default">
+                                    <input type="radio" name="AntiViral" id="AntiViral" value="1" data-bind="checked: AntiViral">  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentYes"))
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type="radio" name="AntiViral" id="AntiViral" value="2" data-bind="checked: AntiViral">  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentNo"))
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type="radio" name="AntiViral" id="AntiViral" value="9" data-bind="checked: AntiViral">  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentUnknown"))
+                                </label>
                             </div>
                         </div>
-                    }
+                        @if (ViewBag.UsrCtry != 7)
+                        {
+                            <div class="col-md-3">
+                                <div class='input-group'>
+                                    <span class="input-group-addon">
+                                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentDoseDate"))
+                                    </span>
+                                    <input id="AntiViralDate" type='text' class="form-control " data-bind='datepicker: AntiViralDate, enable: EnableAntiViralDate, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
+                                </div>
+                            </div>
+                        }
 
-                </div>
+                    </div>
                 
-                @if (ViewBag.UsrCtry == 7)
-                {
-                    <!-- Fecha de inicio de antiviral / Fecha de fin de antiviral -->
-                    <div class="row rowform">
-                        <div class="col-md-4">
-                            <div class='input-group'>
-                                <span class="input-group-addon">
-                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentStartDate"))
-                                </span>
-                                <input id="AntiViralDate" type='text' class="form-control " data-bind='datepicker: AntiViralDate, enable: EnableAntiViralDate, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class='input-group'>
-                                <span class="input-group-addon">
-                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentEndDate"))
-                                </span>
-                                <input id="AntiViralDateEnd" type='text' class="form-control " data-bind='datepicker: AntiViralDateEnd, enable: EnableAntiViralDateEnd, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
-                            </div>
-                        </div>
-                    </div>
-                }
-
-                <!-- Tipo de antiviral / Dosis / Nro días tratamiento -->
-                <div class="row rowform">
-                    <div class='input-group col-md-4'>
-                        <span class="input-group-addon">
-                                @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentType"))
-                        </span>
-                        <select id="AntiViralType" name="AntiViralType" class="form-control" style="max-width: 180px" data-bind='value: AntiViralType , enable: EnableAntiViralType'>
-                            <option value=""> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel"))</option>
-                            <option value="1">Oseltamivir</option>
-                            <option value="2">Zanamivir</option>
-							@if (ViewBag.UsrCtry != 7 && ViewBag.UsrCtry != 9  && ViewBag.UsrCtry != 3){
-							    <option value="3">Amantadine</option>
-                                <option value="4">Rimantadine</option>
-							}
-                            @if (ViewBag.UsrCtry == 15)
-                            {
-                                <option value="6">Tratamiento Catracho</option>
-                                <option value="7">Tratamiento Maíz</option>
-                            }
-                            <option value="5"> @LabelAntiViralSinInformacion</option> 
-                            @if (ViewBag.UsrCtry == 25)
-                            {
-                                @*<option value="6">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentTypeOther"))</option>*@
-                                <option value="6">@LabelAntiViralSOther</option>
-                            }
-                        </select>
-                        &nbsp;&nbsp;
-                        <input id="AntiViralTypeOther" name="AntiViralTypeOther" type='text' class="form-control case_letter" data-bind='value: AntiViralTypeOther, visible: AntiViralTypeOtherVisible()' />
-                    </div>
-                    @if (ViewBag.UsrCtry != 7 && ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 18 && ViewBag.UsrCtry != 17)
+                    @if (ViewBag.UsrCtry == 7)
                     {
-                        <div class='input-group col-md-3' id="DoseOseltamivir">
-                            <span class="input-group-addon">
-                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentOseltaDose"))
-                            </span>
-                            <select id="OseltaDose" name="OseltaDose" class="form-control" style="max-width: 150px" data-bind='value: OseltaDose, enable: EnableOseltamivir, visible:false'>
-                                <option value="0"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel"))</option>
-                                <option value="1">75 mg bid x 5 días</option>
-                                <option value="2">75 mg bid x 10 días</option>
-                                <option value="3">150 mg bid x 5 días</option>
-                                <option value="4">150 mg bid x 10 días</option>
-                                <option value="5">Dosis pediatríca</option>
-                                <option value="6">Otra</option>
-                            </select>
-                            <input id="AntiViralDose" type='text' class="form-control case_letter" data-bind='value: AntiViralDose, enable:EnableAntiviralDose' />
+                        <!-- Fecha de inicio de antiviral / Fecha de fin de antiviral -->
+                        <div class="row rowform">
+                            <div class="col-md-4">
+                                <div class='input-group'>
+                                    <span class="input-group-addon">
+                                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentStartDate"))
+                                    </span>
+                                    <input id="AntiViralDate" type='text' class="form-control " data-bind='datepicker: AntiViralDate, enable: EnableAntiViralDate, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class='input-group'>
+                                    <span class="input-group-addon">
+                                            @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentEndDate"))
+                                    </span>
+                                    <input id="AntiViralDateEnd" type='text' class="form-control " data-bind='datepicker: AntiViralDateEnd, enable: EnableAntiViralDateEnd, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
+                                </div>
+                            </div>
                         </div>
                     }
-                    @if (ViewBag.UsrCtry == 15)
-                    {
-                        <!-- Nº días de tratamiento -->
-                        <div class="col-md-3">
-                            <div class='input-group'>
+
+                    <!-- Tipo de antiviral / Dosis / Nro días tratamiento -->
+                    <div class="row rowform">
+                        <div class='input-group col-md-4'>
+                            <span class="input-group-addon">
+                                    @*@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentType"))*@
+                                @LabelAntiViralType
+                            </span>
+                            <select id="AntiViralType" name="AntiViralType" class="form-control" style="max-width: 190px" data-bind='value: AntiViralType , enable: EnableAntiViralType'>
+                                <option value=""> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel"))</option>
+                                <option value="1">Oseltamivir</option>
+                                <option value="2">Zanamivir</option>
+							    @if (ViewBag.UsrCtry != 7 && ViewBag.UsrCtry != 9  && ViewBag.UsrCtry != 3){
+							        <option value="3">Amantadine</option>
+                                    <option value="4">Rimantadine</option>
+							    }
+                                @if (ViewBag.UsrCtry == 15)
+                                {
+                                    <option value="6">Tratamiento Catracho</option>
+                                    <option value="7">Tratamiento Maíz</option>
+                                }
+                                <option value="5"> @LabelAntiViralSinInformacion</option> 
+                                @if (ViewBag.UsrCtry == 25)
+                                {
+                                    <option value="6">@LabelAntiViralOther</option>
+                                }
+                            </select>
+                            &nbsp;&nbsp;
+                            <input id="AntiViralTypeOther" name="AntiViralTypeOther" type='text' class="form-control case_letter" data-bind='value: AntiViralTypeOther, visible: AntiViralTypeOtherVisible()' />
+                        </div>
+                        @if (ViewBag.UsrCtry != 7 && ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 18 && ViewBag.UsrCtry != 17)
+                        {
+                            <div class='input-group col-md-3' id="DoseOseltamivir">
                                 <span class="input-group-addon">
-                                    Nº días de tratamiento
+                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentOseltaDose"))
                                 </span>
-                                <input id="AntiViralDays" type='text' class="form-control case_letter" data-bind="value: AntiViralDays, enable: EnableAntiViralDays" />
+                                <select id="OseltaDose" name="OseltaDose" class="form-control" style="max-width: 150px" data-bind='value: OseltaDose, enable: EnableOseltamivir, visible:false'>
+                                    <option value="0"> @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel"))</option>
+                                    <option value="1">75 mg bid x 5 días</option>
+                                    <option value="2">75 mg bid x 10 días</option>
+                                    <option value="3">150 mg bid x 5 días</option>
+                                    <option value="4">150 mg bid x 10 días</option>
+                                    <option value="5">Dosis pediatríca</option>
+                                    <option value="6">Otra</option>
+                                </select>
+                                <input id="AntiViralDose" type='text' class="form-control case_letter" data-bind='value: AntiViralDose, enable:EnableAntiviralDose' />
+                            </div>
+                        }
+                        <!-- Nº días de tratamiento -->
+                        @if (ViewBag.UsrCtry == 15)
+                        {
+                            <div class="col-md-3">
+                                <div class='input-group'>
+                                    <span class="input-group-addon">
+                                        Nº días de tratamiento
+                                    </span>
+                                    <input id="AntiViralDays" type='text' class="form-control case_letter" data-bind="value: AntiViralDays, enable: EnableAntiViralDays" />
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    @if (ViewBag.UsrCtry == 11)
+                    {
+                        <!-- Tratamiento antibiotico / Nombre antibiotico -->
+                        <div class="row rowform">
+                            <div class="col-md-5">
+                                <div class='input-group'>
+                                    <span class="input-group-addon">
+                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntibioticTreatment")) <font color="#FF0000">*</font>
+                                    </span>
+                                    <label class="btn btn-default">
+                                        <input type="radio" name="Antibiotic" id="Antibiotic" value="1" data-bind="checked: Antibiotic">  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentYes"))
+                                    </label>
+                                    <label class="btn btn-default">
+                                        <input type="radio" name="Antibiotic" id="Antibiotic" value="2" data-bind="checked: Antibiotic">  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentNo"))
+                                    </label>
+                                    <label class="btn btn-default">
+                                        <input type="radio" name="Antibiotic" id="Antibiotic" value="9" data-bind="checked: Antibiotic">  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentUnknown"))
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6" data-bind='visible:VisibleAntibioticName'>
+                                <div class='input-group'>
+                                    <span class="input-group-addon">
+                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntibioticTreatmentName"))
+                                    </span>
+                                    <input id="AntibioticName" name="AntibioticName" type='text' class="form-control case_letter" data-bind='value: AntibioticName' />
+                                </div>
                             </div>
                         </div>
                     }
                 </div>
-
-                @if (ViewBag.UsrCtry == 11)
-                {
-                    <!-- Tratamiento antibiotico / Nombre antibiotico -->
-                    <div class="row rowform">
-                        <div class="col-md-5">
-                            <div class='input-group'>
-                                <span class="input-group-addon">
-                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntibioticTreatment")) <font color="#FF0000">*</font>
-                                </span>
-                                <label class="btn btn-default">
-                                    <input type="radio" name="Antibiotic" id="Antibiotic" value="1" data-bind="checked: Antibiotic">  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentYes"))
-                                </label>
-                                <label class="btn btn-default">
-                                    <input type="radio" name="Antibiotic" id="Antibiotic" value="2" data-bind="checked: Antibiotic">  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentNo"))
-                                </label>
-                                <label class="btn btn-default">
-                                    <input type="radio" name="Antibiotic" id="Antibiotic" value="9" data-bind="checked: Antibiotic">  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentUnknown"))
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6" data-bind='visible:VisibleAntibioticName'>
-                            <div class='input-group'>
-                                <span class="input-group-addon">
-                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntibioticTreatmentName"))
-                                </span>
-                                <input id="AntibioticName" name="AntibioticName" type='text' class="form-control case_letter" data-bind='value: AntibioticName' />
-                            </div>
-                        </div>
-                    </div>
-                }
-
             </div>
-        </div>
         </div>
 
         <!-- Factores de riesgo y otras comorbilidades -->
@@ -6955,7 +6957,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 @* } *@
 
@@ -6989,16 +6990,10 @@
     var InstitutionsCaseToReferHospital = @Html.Raw(Json.Encode(Model.InstitutionsCaseToReferHospital));
     var reasonnotsampling = @Html.Raw(Json.Encode(Model.ReasonNotSampling));
     var reasonsampling = @Html.Raw(Json.Encode(Model.ReasonSampling));
+
     var labspcr = @Html.Raw(Json.Encode(Model.LabsPCR));
     var labsifi = @Html.Raw(Json.Encode(Model.LabsIFI));
-
     var inst_flowfree_active = @Html.Raw(Json.Encode(Model.inst_flowfree_active));      //#### CAFQ: FL-200526  true/flase
-
-    //console.log("z1a");
-    //console.log(inst_flowfree_active)
-    //console.log(labs);
-    //console.log("z2a");
-
 
     @*console.log("d1");
     var canEditLFF = @(ViewBag.CanEditLFF);         // Editar FF

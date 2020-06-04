@@ -21,6 +21,7 @@ function ContactViewModel(app, dataModel) {
     self.hasGet = ko.observable(false);
     self.hasHospitalID = ko.observable("");
     self.IntsFlow = ko.observableArray();
+    self.InstCantEdit_FF = ko.observableArray();                 // Establecimiento(Lab) puede ingresar/editar datos LAB
 
     self.FeverDateDummy = ko.observable("");
 
@@ -972,6 +973,10 @@ function ContactViewModel(app, dataModel) {
                 self.selectedCountryCaseDiagnosedID(data.CountryCaseDiagnosedID);   //#### 200225
                 self.UniqueCaseIdentif(data.UniqueCaseIdentif);                     //#### 200225
                 self.FirstAdministLevel(data.FirstAdministLevel);                   //#### 200225
+                self.InstCantEdit_FF(data.InstCantEdit_FF);                 // Establecimiento(Lab) puede ingresar/editar datos LAB
+                console.log("GH->1")
+                console.log(self.InstCantEdit_FF());
+                console.log("GH->2")
 
                 self.DataStatement(data.DataStatement);
                 self.flow_record(data.flow_record);
@@ -1103,36 +1108,32 @@ function ContactViewModel(app, dataModel) {
          );
         return true;
     };
+
     // Revision del flujo si es epidemiologico o laboratorio
     self.Flow_Local_Institution_Lab = function () {
-        if ($("#ITy").val() == "2" && app.Views.Hospital.FlowType1() == 2) {
-            //console.log("FLOW FREE")
+        //console.log("self.Flow_Local_Institution_Lab->START");
+        if ($("#ITy").val() == "2" && app.Views.Hospital.FlowType1() == 2 & self.InstCantEdit_FF() == true) {     // Flujo libre
             return true;
         }
         //if ($("#ITy").val() == "2" && app.Views.Home.URmod_lab() == true) {
         else if ($("#ITy").val() == "2" && app.Views.Home.URmod_lab() == true) {
-            //console.log("LI_1");
             return true;
         } else if ((self.flow_close_case() == 99 && self.flow_open_always() == true)) {
-            //console.log("LI_2");
             return true;
         } else if ((self.flow_record() == (self.flow_institution() - 1) && (self.DataStatement() == 2 || self.DataStatement() == null || self.flow_open_always() == true) && app.Views.Home.SaveAndAdd_1() == true)) {
-            //console.log("LI_3");
             return true;
         } else if ((self.flow_record() == self.flow_institution() && (self.DataStatement() == 1 || self.DataStatement() == null || self.flow_open_always() == true))) {
-            //console.log("LI_4");
             return true;
         }
         else {
-            //console.log("Flow Lab - false");
-            //console.log("LI_5");
             return false;
         }
+        //console.log("self.Flow_Local_Institution_Lab->END");
     }
 
     self.Flow_Local_Institution_Lab_send = function () {
         //console.log("Flow_Local_Institution_Lab_send->START")
-        if (app.Views.Hospital.FlowType1() == 2 && app.Views.Lab.canEditLFF() == true && app.Views.Home.URmod_lab() == false) {
+        if (app.Views.Hospital.FlowType1() == 2 && app.Views.Lab.canEdit_FF() == true && app.Views.Home.URmod_lab() == false) {
             if ($("#ITy").val() == "2")              //&& app.Views.Home.URmod_lab() == true) {
                 return true;
             else

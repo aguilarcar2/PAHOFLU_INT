@@ -81,43 +81,21 @@ namespace Paho.Controllers
             }
         }
 
-        public void InstitutionFlowFreeLabRecordUpdate(int flucaseid, long? labid, int sample)
+        public void InstitutionFlowFreeLabRecordUpdate(int flucaseid, long? labid, int sample, int? statement)
         {
             if (labid != null)
             {
                 InstitutionFlowFreeLabs instflowfrelab;
-
                 instflowfrelab = db.InstitutionFlowFreeLab.Where(x => x.FluCaseID == flucaseid && x.LabID == labid).FirstOrDefault();
-
 
                 if (instflowfrelab != null)
                 {
-                    instflowfrelab.Statement = 2;
+                    //instflowfrelab.Statement = 2;
+                    instflowfrelab.Statement = statement;
 
                     db.Entry(instflowfrelab).State = EntityState.Modified;
                     db.SaveChanges();
                 }
-
-                //flucase = db.FluCases.Find(id);
-                //flucase.HospitalID = HospitalId;
-                //flucase.HospitalID_CaseGenerating = HospitalID_CaseGenerating;
-                //flucase.Surv = (SInusual == true) ? 4 : Surv;
-                //db.Entry(flucase).State = EntityState.Modified;
-
-                //if (existe <= 0)
-                //{
-                //    InstitutionFlowFreeLabs instflowfrelab;
-                //    instflowfrelab = new InstitutionFlowFreeLabs();
-
-                //    instflowfrelab.FluCaseID = flucaseid;
-                //    instflowfrelab.LabID = labid1;
-                //    instflowfrelab.Orden = 1;
-                //    instflowfrelab.Statement = statement;
-                //    instflowfrelab.Sample = sample;
-
-                //    db.Entry(instflowfrelab).State = EntityState.Added;
-                //    db.SaveChanges();
-                //}
             }
         }
 
@@ -1074,6 +1052,19 @@ namespace Paho.Controllers
 
         }
 
+        private bool IsInstCantEdit_FF(int id, long id_inst)
+        {
+            bool resu = false;
+
+            //var instCantEdit_FF_List = db.InstitutionFlowFreeLab.Where(d => d.FluCaseID == flucase.ID && d.LabID == user.Institution.ID && d.Statement != 2);
+            var instCantEdit_FF_List = db.InstitutionFlowFreeLab.Where(d => d.FluCaseID == id && d.LabID == id_inst && d.Statement != 2);
+            //bool instCantEdit_FF = false;
+            if (instCantEdit_FF_List.Any())
+                resu = true;
+
+            return resu;
+        }
+
         // GET: Cases/Delete/5
         public ActionResult GetContact(int Id)
         {
@@ -1120,6 +1111,15 @@ namespace Paho.Controllers
                 flow_max = institutionsConfigurationMax.First().Priority;
             }
 
+            //**** Flujo Libre
+            //var instCantEdit_FF_List = db.InstitutionFlowFreeLab.Where(d => d.FluCaseID == flucase.ID && d.LabID == user.Institution.ID && d.Statement != 2);
+            //bool instCantEdit_FF = false;
+            //if (instCantEdit_FF_List.Any())
+            //    instCantEdit_FF = true;
+
+            bool instCantEdit_FF = IsInstCantEdit_FF(flucase.ID, user.Institution.ID);
+            //**** 
+
             var result =
                  new
                  {
@@ -1151,6 +1151,7 @@ namespace Paho.Controllers
                      CountryCaseDiagnosedID = flucase.CountryCaseDiagnosedID,                       //#### 200225
                      UniqueCaseIdentif = flucase.UniqueCaseIdentif,                                 //#### 200225
                      FirstAdministLevel = flucase.FirstAdministLevel,                               //#### 200225
+                     InstCantEdit_FF = instCantEdit_FF,                         // Flujo libre: El establecimento(Lab) puede editar
 
                      flow_record = flucase.flow,
                      flow_institution = flow_local_lab,
@@ -1160,7 +1161,7 @@ namespace Paho.Controllers
                      region_salud = region_salud.FirstOrDefault(),
                      region_pais = region_pais.FirstOrDefault(),
                      selectedServiceId = (db.Institutions.Where(j => j.ID == flucase.HospitalID).FirstOrDefault().AccessLevel == (AccessLevel)6) ? flucase.HospitalID : 0,
-                     IntsFlow = CLOrdDisplay,
+                     IntsFlow = CLOrdDisplay           // Laboratorios participantes en el caso
                  };
             return Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -2499,19 +2500,24 @@ namespace Paho.Controllers
 
 
             var user = UserManager.FindById(User.Identity.GetUserId());
+            var user_cty = user.Institution.CountryID;
             institutions = db.Institutions.OfType<Lab>().Where(i => i.ID == user.Institution.ID);
             var institutionsIds = institutions.Select(x => (long?)x.ID).ToArray();
-            var user_cty = user.Institution.CountryID;
+            //**** Flujo libre
+            if (flucase.FlowType1 == 2)
+            {
+                institutionsIds = db.InstitutionFlowFreeLab.Where(i => i.FluCaseID == flucase.ID && i.Statement != 2).Select(x => (long?)x.LabID).ToArray();
+            }
+            //****
 
-
-            //#### 
             var labsFF = db.InstitutionFlowFreeLab.Where(x => x.FluCaseID ==Id);       //#### 200419 Flow free
             var labsFF_temp = from x in labsFF
                               orderby x.FluCaseID, x.Sample, x.Orden
                               select new { x.FluCaseID, x.Statement, x.Sample, x.Orden };
             var labsFF_list = labsFF_temp.ToList();
 
-            bool canEditLFF = db.InstitutionFlowFreeLab.Where(x => x.FluCaseID == Id && x.LabID == user.Institution.ID && x.Statement != 2).Any();       //#### 200419 Flow free
+            //bool canEditLFF = db.InstitutionFlowFreeLab.Where(x => x.FluCaseID == Id && x.LabID == user.Institution.ID && x.Statement != 2).Any();       //#### 200419 Flow free
+            bool canEditL_FF = IsInstCantEdit_FF(flucase.ID, user.Institution.ID);
             //#### 
 
             //var InstFlow_NPHL = false;
@@ -3048,7 +3054,7 @@ namespace Paho.Controllers
                     ForeignLabLocal = LabForeignInstitutionLocal,
                     //#### Lab Flow Free
                     LabsFF_List = labsFF_list,
-                    CanEditLFF = canEditLFF,
+                    CanEditLFF = canEditL_FF,
                     //####
                     LabTests = (
                           from caselabtest in flucase.CaseLabTests
@@ -4119,7 +4125,7 @@ namespace Paho.Controllers
 
             //user = Institution
             long? labId = user.Institution.ID;
-            InstitutionFlowFreeLabRecordUpdate(flucase.ID, labId, 1);
+            InstitutionFlowFreeLabRecordUpdate(flucase.ID, labId, 1, DataStatement);
 
             return result;
         }
