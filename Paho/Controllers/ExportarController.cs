@@ -1352,7 +1352,8 @@ namespace Paho.Controllers
                         }
                         else
                         {
-                            AppendDataToExcel(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, AreaID_, CasosNPHL, Sentinel);        //#### CAFQ
+                            AppendDataToExcel(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, 
+                                insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, AreaID_, CasosNPHL, Sentinel);        //#### CAFQ
                         }
 
                         excelPackage.SaveAs(ms);
@@ -5462,6 +5463,7 @@ namespace Paho.Controllers
                 }
             }
         }
+
         public static string ColumnAdress(int col)
         {
             if (col <= 26)

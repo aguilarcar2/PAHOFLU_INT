@@ -69,897 +69,24 @@ namespace Paho.Controllers
             var json = JsonConvert.SerializeObject(resultGetDataYears);
             return Json(json);
         }
-
-        private static void xxxAppendDataToExcelPrevioCambiosAgeGroup(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? irag_, int?eti_)
-        {
-
-            var excelWorksheet = excelWorkBook.Worksheets[sheet];
-            var row = startRow;
-            var column = startColumn;
-
-            var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            using (var con = new SqlConnection(consString))
-            {
-                using (var command = new SqlCommand(storedProcedure, con) { CommandType = CommandType.StoredProcedure })
-                {
-                    command.Parameters.Clear();
-                    command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
-                    command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
-                    command.Parameters.Add("@Languaje", SqlDbType.Text).Value = languaje_;
-                    command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
-                    command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
-                    command.Parameters.Add("@Mes_", SqlDbType.Int).Value = month;
-                    command.Parameters.Add("@SE", SqlDbType.Int).Value = se;
-                    command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
-                    command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
-                    command.Parameters.Add("@IRAG", SqlDbType.Int).Value = irag_;
-                    command.Parameters.Add("@ETI", SqlDbType.Int).Value = eti_;
-
-                    con.Open();
-                    if ((storedProcedure == "R5"))
-                    {
-                        IDictionary<int, string> formulas1 = new Dictionary<int, string>();
-                        formulas1[1] = "=VRS!B{{toreplace}}";
-                        formulas1[2] = "=VRS!C{{toreplace}} + Ad!C{{toreplace}} + Parainfluenza!C{{toreplace}} + 'Inf A'!C{{toreplace}} + 'Inf B'!C{{toreplace}} + Metapnemovirus!C{{toreplace}}";
-                        formulas1[3] = "=VRS!C{{toreplace}}";
-                        formulas1[4] = "=Ad!C{{toreplace}}";
-                        formulas1[5] = "=Parainfluenza!C{{toreplace}}";
-                        formulas1[6] = "='Inf A'!C{{toreplace}}";
-                        formulas1[7] = "='Inf B'!C{{toreplace}}";
-                        formulas1[8] = "=Metapnemovirus!C{{toreplace}}";
-                        formulas1[9] = "=VRS!J{{toreplace}}";
-                        formulas1[10] = "=VRS!K{{toreplace}}+Ad!K{{toreplace}}+Parainfluenza!K{{toreplace}}+'Inf A'!K{{toreplace}}+'Inf B'!K{{toreplace}}+Metapnemovirus!K{{toreplace}}";
-                        formulas1[11] = "=VRS!K{{toreplace}}";
-                        formulas1[12] = "=Ad!K{{toreplace}}";
-                        formulas1[13] = "=Parainfluenza!K{{toreplace}}";
-                        formulas1[14] = "='Inf A'!K{{toreplace}}";
-                        formulas1[15] = "='Inf B'!K{{toreplace}}";
-                        formulas1[16] = "=Metapnemovirus!K{{toreplace}}";
-                        formulas1[17] = "=D{{toreplace}}+E{{toreplace}}+F{{toreplace}}+G{{toreplace}}+H{{toreplace}}+I{{toreplace}}";
-                        formulas1[18] = "=L{{toreplace}}+M{{toreplace}}+N{{toreplace}}+O{{toreplace}}+P{{toreplace}}+Q{{toreplace}}";
-                        for (int i = 1; i <= 7; i++)
-                        {
-                            var virustype = 0;
-                            switch (i)
-                            {
-                                case 2:
-                                    virustype = 6;
-                                    break;
-                                case 3:
-                                    virustype = 7;
-                                    break;
-                                case 4:
-                                    virustype = 13;
-                                    break;
-                                case 5:
-                                    virustype = 1;
-                                    break;
-                                case 6:
-                                    virustype = 2;
-                                    break;
-                                case 7:
-                                    virustype = 8;
-                                    break;
-                            }
-                            command.Parameters.Clear();
-                            command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
-                            command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
-                            command.Parameters.Add("@Languaje", SqlDbType.Text).Value = languaje_;
-                            command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
-                            command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
-                            command.Parameters.Add("@Mes_", SqlDbType.Int).Value = month;
-                            command.Parameters.Add("@SE", SqlDbType.Int).Value = se;
-                            command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
-                            command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
-                            command.Parameters.Add("@Virus_type", SqlDbType.Int).Value = virustype;
-                            var excelWorksheet2 = excelWorkBook.Worksheets[i];
-
-
-
-                            using (var reader = command.ExecuteReader())
-                            {
-                                row = 3;
-                                column = 1;
-                                var tipo_anterior = 1;
-                                while (reader.Read())
-                                {
-                                    if (Convert.ToInt32(reader.GetValue(15)) != tipo_anterior)
-                                    {
-                                        row++;
-                                    }
-                                    tipo_anterior = Convert.ToInt32(reader.GetValue(15));
-                                    var col = 1;
-                                    var readercont = 0;
-                                    int stylerow;
-                                    if (tipo_anterior == 1)
-                                    {
-                                        stylerow = 2;
-                                    }
-                                    else
-                                    {
-                                        stylerow = row + 1;
-                                    }
-                                    excelWorksheet2.InsertRow(row, 1);
-                                    //excelWorksheet.InsertRow(row, 1);
-                                    for (int j = 0; j < 17; j++)
-                                    {
-
-                                        var cell = excelWorksheet2.Cells[stylerow, col + j];
-                                        if (tipo_anterior == 2 && j > 8)
-                                        {
-                                        }
-                                        else
-                                        {
-                                            if (i > 1 || j == 0)
-                                            {
-                                                if (j == 2)
-                                                {
-                                                    excelWorksheet2.Cells[row, col + j].Formula = formulas1[17].Replace("{{toreplace}}", row.ToString()); ;
-                                                }
-                                                else
-                                                {
-                                                    if (j == 10)
-                                                    {
-                                                        excelWorksheet2.Cells[row, col + j].Formula = formulas1[18].Replace("{{toreplace}}", row.ToString()); ;
-                                                    }
-                                                    else
-                                                    {
-                                                        excelWorksheet2.Cells[row, col + j].Value = reader.GetValue(readercont);
-                                                        readercont++;
-                                                    }
-                                                }
-
-
-                                            }
-                                            else
-                                            {
-                                                if (formulas1.ContainsKey(j))
-                                                {
-                                                    //                                                excelWorksheet2.Cells[row, col + j].Value = 8555;
-                                                    excelWorksheet2.Cells[row, col + j].Formula = formulas1[j].Replace("{{toreplace}}", row.ToString()); ;
-                                                    //excelWorksheet2.Cells[row, col + j].Formula = "=5+1";
-
-                                                }
-
-                                            }
-                                        }
-                                        excelWorksheet2.Cells[row, col + j].StyleID = cell.StyleID;
-                                    }
-
-                                    row++;
-
-                                }
-                                //Si se borran las rows auxiliares, las referencias de las funciones ya no funcionan?
-                                //excelWorksheet2.DeleteRow(row);
-                                //excelWorksheet2.DeleteRow(2);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if ((storedProcedure == "R6"))
-                        {
-                            using (var reader = command.ExecuteReader())
-                            {
-                                row = 9;
-                                column = 6;
-                                var contador_salto = 0;
-                                while (reader.Read())
-                                {
-                                    var col = column;
-                                    //excelWorksheet.InsertRow(row, 1);
-
-                                    //excelWorksheet.Cells[row, 1].Value = reader.GetValue(3).ToString();
-                                    for (int i = 0; i < 53; i++)
-                                    {
-                                        var cell = excelWorksheet.Cells[startRow, col + i];
-                                        excelWorksheet.Cells[row, col + i].Value = reader.GetValue(i);
-                                    }
-                                    contador_salto++;
-                                    if (contador_salto % 4 == 2)
-                                    {
-                                        row += 2;
-                                    }
-                                    else
-                                    {
-                                        if (contador_salto % 4 == 0)
-                                        {
-                                            row += 5;
-                                        }
-                                        else
-                                        {
-                                            row++;
-                                        }
-                                    }
-
-                                }
-                            }
-                            /*Inicia llenado de Tabla2. Este reporte, en el mismo tab tiene 2 tablas, con aspectos diferentes entre ellas*/
-                            using (var command2 = new SqlCommand(storedProcedure + "_2", con) { CommandType = CommandType.StoredProcedure })
-                            {
-                                command2.Parameters.Clear();
-                                command2.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
-                                command2.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
-                                command2.Parameters.Add("@Languaje", SqlDbType.Text).Value = languaje_;
-                                command2.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
-                                command2.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
-                                command2.Parameters.Add("@Mes_", SqlDbType.Int).Value = month;
-                                command2.Parameters.Add("@SE", SqlDbType.Int).Value = se;
-                                command2.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
-                                command2.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
-                                command2.Parameters.Add("@IRAG", SqlDbType.Int).Value = irag_;
-                                command2.Parameters.Add("@ETI", SqlDbType.Int).Value = eti_;
-                                var con2 = new SqlConnection(consString);
-                                con2.Open();
-
-                                using (var reader2 = command2.ExecuteReader())
-                                {
-                                    row = 212;
-                                    column = 6;
-                                    var contador_salto2 = 0;
-                                    while (reader2.Read())
-                                    {
-                                        var col2 = column;
-                                        //excelWorksheet.InsertRow(row, 1);
-
-                                        //excelWorksheet.Cells[row, 1].Value = reader.GetValue(3).ToString();
-                                        for (int i = 5; i < 58; i++)
-                                        {
-                                            var cell = excelWorksheet.Cells[startRow, col2 + i - 5];
-                                            excelWorksheet.Cells[row, col2 + i - 5].Value = reader2.GetValue(i);
-                                        }
-                                        contador_salto2++;
-                                        if (contador_salto2 % 48 == 0)
-                                        {
-                                            row += 5;
-                                        }
-                                        else
-                                        {
-                                            if (contador_salto2 % 2 == 0)
-                                            {
-                                                row += 2;
-                                            }
-                                            else
-                                            {
-                                                row++;
-                                            }
-                                        }
-
-                                    }
-                                }
-
-                                /*Termina llenado de Tabla2*/
-                            }
-                        }
-                        else
-                        {
-                            using (var reader = command.ExecuteReader())
-                            {
-                                while (reader.Read())
-                                {
-                                    var col = column;
-                                    if (row > startRow && insert_row == true) excelWorksheet.InsertRow(row, 1);
-
-                                    for (var i = 0; i < reader.FieldCount; i++)
-                                    {
-                                        var cell = excelWorksheet.Cells[startRow, col];
-                                        if (reader.GetValue(i) != null)
-                                        {
-                                            int number;
-                                            bool isNumber = int.TryParse(reader.GetValue(i).ToString(), out number);
-
-                                            DateTime dt;
-                                            bool isDate = DateTime.TryParse(reader.GetValue(i).ToString(), out dt);
-
-                                            if (isNumber)
-                                            {
-                                                excelWorksheet.Cells[row, col].Value = number;
-                                            }
-                                            else
-                                            {
-                                                if (isDate)
-                                                {
-                                                    excelWorksheet.Cells[row, col].Value = dt;
-                                                }
-                                                else
-                                                {
-                                                    excelWorksheet.Cells[row, col].Value = reader.GetValue(i).ToString();
-                                                }
-
-                                            }
-                                            excelWorksheet.Cells[row, col].StyleID = cell.StyleID;
-                                        }
-                                        col++;
-                                    }
-
-                                    row++;
-                                }
-                            }
-                        }
-                    }
-                    command.Parameters.Clear();
-                    con.Close();
-
-                }
-            }
-            /*Inserción de tablas en el tab  de antecedentes del reporte R6*/
-            if (storedProcedure == "R6")
-            {
-                using (var con = new SqlConnection(consString))
-                {
-                    using (var command = new SqlCommand("R6_antecedentes", con) { CommandType = CommandType.StoredProcedure })
-                    {
-                        command.Parameters.Clear();
-                        command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
-                        command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
-                        command.Parameters.Add("@Languaje", SqlDbType.Text).Value = languaje_;
-                        command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
-                        command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
-                        command.Parameters.Add("@Mes_", SqlDbType.Int).Value = month;
-                        command.Parameters.Add("@SE", SqlDbType.Int).Value = se;
-                        command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
-                        command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
-
-                        con.Open();
-
-                        using (var reader = command.ExecuteReader())
-                        {
-                            row = 11;
-                            column = 2;
-                            var contador_salto = 0;
-                            var excelWorksheet2 = excelWorkBook.Worksheets[2];
-                            while (reader.Read())
-                            {
-                                var col = column;
-                                var colcont = 1;
-                                for (int i = 0; i < 6; i++)
-                                {
-                                    var cell = excelWorksheet2.Cells[startRow, col + colcont];
-                                    excelWorksheet2.Cells[row, col + colcont].Value = reader.GetValue(i);
-                                    if (i == 1 || i == 3)
-                                    {
-                                        colcont += 4;
-                                    }
-                                    else
-                                    {
-                                        colcont += 2;
-                                    }
-
-
-                                }
-                                contador_salto++;
-                                if (contador_salto == 1 || contador_salto == 10)
-                                {
-                                    row += 3;
-                                }
-                                else
-                                {
-                                    if (contador_salto == 12 || contador_salto == 16 || contador_salto == 23)
-                                    {
-                                        row += 2;
-                                    }
-                                    else
-                                    {
-                                        row++;
-                                    }
-                                }
-
-
-                            }
-                        }
-
-                        command.Parameters.Clear();
-                        con.Close();
-
-                    }
-                }
-            }
-            /*Fin inserción tablas*/
-
-            //inserción de labels y logo en el Excel
-            if (ReportCountry != null)
-            {
-                //inserción de labels
-                using (var con = new SqlConnection(consString))
-                {
-                    using (var command = new SqlCommand("select * from ReportCountryConfig where ReportCountryID = @ReportCountryID", con))
-                    {
-                        command.Parameters.Clear();
-                        command.Parameters.Add("@ReportCountryID", SqlDbType.Int).Value = ReportCountry;
-
-                        con.Open();
-                        using (var reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                int insertrow = (int)reader["row"];
-                                int insertcol = (int)reader["col"];
-                                /**************Inicia inserción de labels automáticos*******************/
-                                /*Si en la base de datos, el label se encierra dentro de dobles llaves {{parametro}}, el parámetro se cambiará por el parámetro correspondiente de búsqueda ingresado en el formulario*/
-                                /*Llenado parámetros que vienen del formulario*/
-                                string labelCountry = "";
-                                string labelHospital = "";
-                                string labelYear = "";
-                                string labelSE = "";
-                                string labelStartDate = "";
-                                string labelEndDate = "";
-
-                                //Obtención del pais y llenado en la variable
-                                if (countryId > 0)
-                                {
-                                    using (var command2 = new SqlCommand("select * from Country where ID = @CountryID", con))
-                                    {
-                                        command2.Parameters.Clear();
-                                        command2.Parameters.Add("@CountryID", SqlDbType.Int).Value = countryId;
-                                        using (var reader2 = command2.ExecuteReader())
-                                        {
-                                            while (reader2.Read())
-                                            {
-                                                labelCountry += reader2["Name"];
-                                            }
-                                        }
-                                        command2.Parameters.Clear();
-                                    }
-                                }
-                                if (hospitalId > 0)
-                                {
-                                    using (var command2 = new SqlCommand("select * from Institution where ID = @InstitutionID", con))
-                                    {
-                                        command2.Parameters.Clear();
-                                        command2.Parameters.Add("@InstitutionID", SqlDbType.Int).Value = hospitalId;
-                                        using (var reader2 = command2.ExecuteReader())
-                                        {
-                                            while (reader2.Read())
-                                            {
-                                                labelHospital += reader2["FullName"];
-                                            }
-                                        }
-                                        command2.Parameters.Clear();
-                                    }
-                                }
-                                if (year > 0)
-                                {
-                                    labelYear += year;
-                                }
-                                if (se > 0)
-                                {
-                                    labelSE += se;
-                                }
-                                if (startDate.HasValue)
-                                {
-                                    labelStartDate += startDate.ToString();
-                                    DateTime oDate = Convert.ToDateTime(labelStartDate);
-                                    labelStartDate = oDate.Date.ToString();
-                                }
-                                if (endDate.HasValue)
-                                {
-                                    labelEndDate += endDate.ToString();
-                                    DateTime oDate = Convert.ToDateTime(labelEndDate);
-                                    labelEndDate = oDate.Date.ToString();
-                                }
-                                /*Fin llenado parámetros*/
-
-                                string label = reader["label"].ToString();
-                                if (label != "")
-                                {
-                                    if (label.StartsWith("{{") && label.EndsWith("}}"))
-                                    {
-                                        switch (label)
-                                        {
-                                            case "{{country}}":
-                                                label = (labelCountry != "" ? ("Pais:" + labelCountry) : "");
-                                                break;
-                                            case "{{institution}}":
-                                                label = (labelHospital != "" ? ("Inst:" + labelHospital) : "");
-                                                break;
-                                            case "{{year}}":
-                                                label = (labelYear != "" ? ("Año:" + labelYear) : "");
-                                                break;
-                                            case "{{se}}":
-                                                label = (labelSE != "" ? ("SE:" + labelSE) : "");
-                                                break;
-                                            case "{{startDate}}":
-                                                label = (labelStartDate != "" ? ("Del:" + labelStartDate) : "");
-                                                break;
-                                            case "{{endDate}}":
-                                                label = (labelEndDate != "" ? ("Al:" + labelEndDate) : "");
-                                                break;
-                                            case "{{fullinstitution}}":
-                                                label = (labelCountry != "" ? ("Pais:" + labelCountry) : "") + " " + (labelHospital != "" ? ("Inst:" + labelHospital) : "");
-                                                break;
-                                            case "{{fulldate}}":
-                                                label = (labelYear != "" ? ("Año:" + labelYear) : "") + " " + (labelSE != "" ? ("SE:" + labelSE) : "") + " " + (labelStartDate != "" ? ("Del:" + labelStartDate) : "") + " " + (labelEndDate != "" ? ("Al:" + labelEndDate) : "");
-                                                break;
-                                        }
-
-                                    }
-                                    excelWorksheet.Cells[insertrow, insertcol].Value = label;
-                                }
-                            }
-                        }
-                        command.Parameters.Clear();
-                        con.Close();
-                    }
-                }
-                //inserción de logo
-                using (var con = new SqlConnection(consString))
-                {
-                    using (var command = new SqlCommand("select * from ReportCountry where ID = @ReportCountryID", con))
-                    {
-                        command.Parameters.Clear();
-                        command.Parameters.Add("@ReportCountryID", SqlDbType.Int).Value = ReportCountry;
-
-                        con.Open();
-                        using (var reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                int insertrow = (int)reader["logoRow"];
-                                int insertcol = (int)reader["logoCol"];
-                                String imagurl = (String)reader["logo"];
-                                if (imagurl != "")
-                                {
-                                    WebClient wc = new WebClient();
-                                    byte[] bytes = wc.DownloadData(imagurl);
-                                    MemoryStream ms = new MemoryStream(bytes);
-                                    Bitmap newImage = new Bitmap(System.Drawing.Image.FromStream(ms));
-                                    excelWorksheet.Row(insertrow).Height = newImage.Height;
-                                    var picture = excelWorksheet.Drawings.AddPicture("reportlogo", newImage);
-                                    picture.SetPosition(insertrow, -(newImage.Height), insertcol, -100);
-                                    //picture.SetPosition(insertrow, 0, insertcol, 0);
-                                }
-                            }
-                        }
-                        command.Parameters.Clear();
-                        con.Close();
-                    }
-                }
-
-            }
-
-        }
-
-        private static void AppendDataToExcel(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? irag_, int? eti_)
+        
+        private static void AppendDataToExcel(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, 
+            DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? irag_, int? eti_)
         {
             try
             {
+                var excelParameters = excelWorkBook.Worksheets["Parameters"];
+                string excelSheetAntecedName = (string)excelParameters.Cells[79, 2].Value;
+                string excelSheetAntecedSARSName = (string)excelParameters.Cells[81, 2].Value;
+
                 var excelWorksheet = excelWorkBook.Worksheets[sheet];
-            var row = startRow;
-            var column = startColumn;
+                var row = startRow;
+                var column = startColumn;
 
-            var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            using (var con = new SqlConnection(consString))
-            {
-                using (var command = new SqlCommand(storedProcedure, con) { CommandType = CommandType.StoredProcedure })
-                {
-                    command.Parameters.Clear();
-                    command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
-                    command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
-                    command.Parameters.Add("@Languaje", SqlDbType.Text).Value = languaje_;
-                    command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
-                    command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
-                    command.Parameters.Add("@Mes_", SqlDbType.Int).Value = month;
-                    command.Parameters.Add("@SE", SqlDbType.Int).Value = se;
-                    command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
-                    command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
-                    command.Parameters.Add("@IRAG", SqlDbType.Int).Value = irag_;
-                    command.Parameters.Add("@ETI", SqlDbType.Int).Value = eti_;
-
-                    con.Open();
-                    if ((storedProcedure == "R5"))
-                    {
-                        IDictionary<int, string> formulas1 = new Dictionary<int, string>();
-                        formulas1[1] = "=VRS!B{{toreplace}}";
-                        formulas1[2] = "=VRS!C{{toreplace}} + Ad!C{{toreplace}} + Parainfluenza!C{{toreplace}} + 'Inf A'!C{{toreplace}} + 'Inf B'!C{{toreplace}} + Metapnemovirus!C{{toreplace}}";
-                        formulas1[3] = "=VRS!C{{toreplace}}";
-                        formulas1[4] = "=Ad!C{{toreplace}}";
-                        formulas1[5] = "=Parainfluenza!C{{toreplace}}";
-                        formulas1[6] = "='Inf A'!C{{toreplace}}";
-                        formulas1[7] = "='Inf B'!C{{toreplace}}";
-                        formulas1[8] = "=Metapnemovirus!C{{toreplace}}";
-                        formulas1[9] = "=VRS!J{{toreplace}}";
-                        formulas1[10] = "=VRS!K{{toreplace}}+Ad!K{{toreplace}}+Parainfluenza!K{{toreplace}}+'Inf A'!K{{toreplace}}+'Inf B'!K{{toreplace}}+Metapnemovirus!K{{toreplace}}";
-                        formulas1[11] = "=VRS!K{{toreplace}}";
-                        formulas1[12] = "=Ad!K{{toreplace}}";
-                        formulas1[13] = "=Parainfluenza!K{{toreplace}}";
-                        formulas1[14] = "='Inf A'!K{{toreplace}}";
-                        formulas1[15] = "='Inf B'!K{{toreplace}}";
-                        formulas1[16] = "=Metapnemovirus!K{{toreplace}}";
-                        formulas1[17] = "=D{{toreplace}}+E{{toreplace}}+F{{toreplace}}+G{{toreplace}}+H{{toreplace}}+I{{toreplace}}";
-                        formulas1[18] = "=L{{toreplace}}+M{{toreplace}}+N{{toreplace}}+O{{toreplace}}+P{{toreplace}}+Q{{toreplace}}";
-                        for (int i = 1; i <= 7; i++)
-                        {
-                            var virustype = 0;
-                            switch (i)
-                            {
-                                case 2:
-                                    virustype = 6;
-                                    break;
-                                case 3:
-                                    virustype = 7;
-                                    break;
-                                case 4:
-                                    virustype = 13;
-                                    break;
-                                case 5:
-                                    virustype = 1;
-                                    break;
-                                case 6:
-                                    virustype = 2;
-                                    break;
-                                case 7:
-                                    virustype = 8;
-                                    break;
-                            }
-                            command.Parameters.Clear();
-                            command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
-                            command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
-                            command.Parameters.Add("@Languaje", SqlDbType.Text).Value = languaje_;
-                            command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
-                            command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
-                            command.Parameters.Add("@Mes_", SqlDbType.Int).Value = month;
-                            command.Parameters.Add("@SE", SqlDbType.Int).Value = se;
-                            command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
-                            command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
-                            command.Parameters.Add("@Virus_type", SqlDbType.Int).Value = virustype;
-                            var excelWorksheet2 = excelWorkBook.Worksheets[i];
-
-
-
-                            using (var reader = command.ExecuteReader())
-                            {
-                                row = 3;
-                                column = 1;
-                                var tipo_anterior = 1;
-                                while (reader.Read())
-                                {
-                                    if (Convert.ToInt32(reader.GetValue(15)) != tipo_anterior)
-                                    {
-                                        row++;
-                                    }
-                                    tipo_anterior = Convert.ToInt32(reader.GetValue(15));
-                                    var col = 1;
-                                    var readercont = 0;
-                                    int stylerow;
-                                    if (tipo_anterior == 1)
-                                    {
-                                        stylerow = 2;
-                                    }
-                                    else
-                                    {
-                                        stylerow = row + 1;
-                                    }
-                                    excelWorksheet2.InsertRow(row, 1);
-                                    //excelWorksheet.InsertRow(row, 1);
-                                    for (int j = 0; j < 17; j++)
-                                    {
-
-                                        var cell = excelWorksheet2.Cells[stylerow, col + j];
-                                        if (tipo_anterior == 2 && j > 8)
-                                        {
-                                        }
-                                        else
-                                        {
-                                            if (i > 1 || j == 0)
-                                            {
-                                                if (j == 2)
-                                                {
-                                                    excelWorksheet2.Cells[row, col + j].Formula = formulas1[17].Replace("{{toreplace}}", row.ToString()); ;
-                                                }
-                                                else
-                                                {
-                                                    if (j == 10)
-                                                    {
-                                                        excelWorksheet2.Cells[row, col + j].Formula = formulas1[18].Replace("{{toreplace}}", row.ToString()); ;
-                                                    }
-                                                    else
-                                                    {
-                                                        excelWorksheet2.Cells[row, col + j].Value = reader.GetValue(readercont);
-                                                        readercont++;
-                                                    }
-                                                }
-
-
-                                            }
-                                            else
-                                            {
-                                                if (formulas1.ContainsKey(j))
-                                                {
-                                                    //                                                excelWorksheet2.Cells[row, col + j].Value = 8555;
-                                                    excelWorksheet2.Cells[row, col + j].Formula = formulas1[j].Replace("{{toreplace}}", row.ToString()); ;
-                                                    //excelWorksheet2.Cells[row, col + j].Formula = "=5+1";
-
-                                                }
-
-                                            }
-                                        }
-                                        excelWorksheet2.Cells[row, col + j].StyleID = cell.StyleID;
-                                    }
-
-                                    row++;
-
-                                }
-                                //Si se borran las rows auxiliares, las referencias de las funciones ya no funcionan?
-                                //excelWorksheet2.DeleteRow(row);
-                                //excelWorksheet2.DeleteRow(2);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if ((storedProcedure == "R6"))
-                        {
-                            using (var reader = command.ExecuteReader())
-                            {
-                                row = 9;
-                                column = 6;
-                                var contador_salto = 0;
-                                while (reader.Read())
-                                {
-                                    var col = column;
-                                    //excelWorksheet.InsertRow(row, 1);
-
-                                    //excelWorksheet.Cells[row, 1].Value = reader.GetValue(3).ToString();
-                                    for (int i = 0; i < 53; i++)
-                                    {
-                                        var cell = excelWorksheet.Cells[startRow, col + i];
-                                        excelWorksheet.Cells[row, col + i].Value = reader.GetValue(i);
-                                    }
-                                    contador_salto++;
-                                    if (contador_salto % 4 == 2)
-                                    {
-                                        row += 2;
-                                    }
-                                    else
-                                    {
-                                        if (contador_salto % 4 == 0)
-                                        {
-                                            row += 5;
-                                        }
-                                        else
-                                        {
-                                            row++;
-                                        }
-                                    }
-
-                                }
-                            }
-                            /*Inicia llenado de Tabla2. Este reporte, en el mismo tab tiene 2 tablas, con aspectos diferentes entre ellas*/
-                            using (var command2 = new SqlCommand(storedProcedure + "_2", con) { CommandType = CommandType.StoredProcedure })
-                            {
-                                command2.Parameters.Clear();
-                                command2.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
-                                command2.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
-                                command2.Parameters.Add("@Languaje", SqlDbType.Text).Value = languaje_;
-                                command2.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
-                                command2.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
-                                command2.Parameters.Add("@Mes_", SqlDbType.Int).Value = month;
-                                command2.Parameters.Add("@SE", SqlDbType.Int).Value = se;
-                                command2.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
-                                command2.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
-                                command2.Parameters.Add("@IRAG", SqlDbType.Int).Value = irag_;
-                                command2.Parameters.Add("@ETI", SqlDbType.Int).Value = eti_;
-                                var con2 = new SqlConnection(consString);
-                                con2.Open();
-
-                                using (var reader2 = command2.ExecuteReader())
-                                {
-                                    //row = 212;
-                                    int nAnDa = 0;                                  // qytFilasxVirusSelect para tabla 2 en el SELECT
-                                    if (countryId == 25 || countryId == 18)
-                                    {
-                                        row = row - 1 + (9 * 3) + 15;               // Inicio tabla 2
-                                        nAnDa = 8 * 8;                              // 8: Nº Age Group
-                                    }
-                                    else
-                                    {
-                                        if (countryId == 17 || countryId == 119 || countryId == 11)
-                                        {
-                                            row = row - 1 + (9 * 3) + 15;           // Inicio tabla 2
-                                            nAnDa = 9 * 8;                          // 9: Nº Age Group
-                                        }
-                                        else
-                                        {
-                                            row = 212;                  // Inicio tabla 2
-                                            nAnDa = 6 * 8;              // 6: Nº Age Group
-                                        }
-                                    }
-                                    column = 6;
-
-                                    var contador_salto2 = 0;
-                                    while (reader2.Read())
-                                    {
-                                        var col2 = column;
-                                        //excelWorksheet.InsertRow(row, 1);
-
-                                        //excelWorksheet.Cells[row, 1].Value = reader.GetValue(3).ToString();
-                                        for (int i = 5; i < 58; i++)
-                                        {
-                                            var cell = excelWorksheet.Cells[startRow, col2 + i - 5];
-                                            excelWorksheet.Cells[row, col2 + i - 5].Value = reader2.GetValue(i);
-                                        }
-                                        contador_salto2++;
-
-                                        //if (contador_salto2 % 48 == 0)
-                                        if (contador_salto2 % nAnDa == 0)
-                                        {
-                                            row += 5;
-                                        }
-                                        else
-                                        {
-                                            if (contador_salto2 % 2 == 0)
-                                            {
-                                                row += 2;
-                                            }
-                                            else
-                                            {
-                                                row++;
-                                            }
-                                        }
-
-                                    }
-                                }
-
-                                /*Termina llenado de Tabla2*/
-                            }
-                        }
-                        else
-                        {
-                            using (var reader = command.ExecuteReader())
-                            {
-                                while (reader.Read())
-                                {
-                                    var col = column;
-                                    if (row > startRow && insert_row == true) excelWorksheet.InsertRow(row, 1);
-
-                                    for (var i = 0; i < reader.FieldCount; i++)
-                                    {
-                                        var cell = excelWorksheet.Cells[startRow, col];
-                                        if (reader.GetValue(i) != null)
-                                        {
-                                            int number;
-                                            bool isNumber = int.TryParse(reader.GetValue(i).ToString(), out number);
-
-                                            DateTime dt;
-                                            bool isDate = DateTime.TryParse(reader.GetValue(i).ToString(), out dt);
-
-                                            if (isNumber)
-                                            {
-                                                excelWorksheet.Cells[row, col].Value = number;
-                                            }
-                                            else
-                                            {
-                                                if (isDate)
-                                                {
-                                                    excelWorksheet.Cells[row, col].Value = dt;
-                                                }
-                                                else
-                                                {
-                                                    excelWorksheet.Cells[row, col].Value = reader.GetValue(i).ToString();
-                                                }
-
-                                            }
-                                            excelWorksheet.Cells[row, col].StyleID = cell.StyleID;
-                                        }
-                                        col++;
-                                    }
-
-                                    row++;
-                                }
-                            }
-                        }
-                    }
-                    command.Parameters.Clear();
-                    con.Close();
-
-                }
-            }
-            /*Inserción de tablas en el tab  de antecedentes del reporte R6*/
-            if (storedProcedure == "R6")
-            {
+                var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
                 using (var con = new SqlConnection(consString))
                 {
-                    using (var command = new SqlCommand("R6_antecedentes", con) { CommandType = CommandType.StoredProcedure })
+                    using (var command = new SqlCommand(storedProcedure, con) { CommandType = CommandType.StoredProcedure })
                     {
                         command.Parameters.Clear();
                         command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
@@ -973,62 +100,410 @@ namespace Paho.Controllers
                         command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
                         command.Parameters.Add("@IRAG", SqlDbType.Int).Value = irag_;
                         command.Parameters.Add("@ETI", SqlDbType.Int).Value = eti_;
-                        command.CommandTimeout = 300;
 
                         con.Open();
-
-                        using (var reader = command.ExecuteReader())
+                        if ((storedProcedure == "R5"))
                         {
-                            row = 11;
-                            column = 2;
-                            var contador_salto = 0;
-                            var excelWorksheet2 = excelWorkBook.Worksheets[2];
-                            while (reader.Read())
+                            IDictionary<int, string> formulas1 = new Dictionary<int, string>();
+                            formulas1[1] = "=VRS!B{{toreplace}}";
+                            formulas1[2] = "=VRS!C{{toreplace}} + Ad!C{{toreplace}} + Parainfluenza!C{{toreplace}} + 'Inf A'!C{{toreplace}} + 'Inf B'!C{{toreplace}} + Metapnemovirus!C{{toreplace}}";
+                            formulas1[3] = "=VRS!C{{toreplace}}";
+                            formulas1[4] = "=Ad!C{{toreplace}}";
+                            formulas1[5] = "=Parainfluenza!C{{toreplace}}";
+                            formulas1[6] = "='Inf A'!C{{toreplace}}";
+                            formulas1[7] = "='Inf B'!C{{toreplace}}";
+                            formulas1[8] = "=Metapnemovirus!C{{toreplace}}";
+                            formulas1[9] = "=VRS!J{{toreplace}}";
+                            formulas1[10] = "=VRS!K{{toreplace}}+Ad!K{{toreplace}}+Parainfluenza!K{{toreplace}}+'Inf A'!K{{toreplace}}+'Inf B'!K{{toreplace}}+Metapnemovirus!K{{toreplace}}";
+                            formulas1[11] = "=VRS!K{{toreplace}}";
+                            formulas1[12] = "=Ad!K{{toreplace}}";
+                            formulas1[13] = "=Parainfluenza!K{{toreplace}}";
+                            formulas1[14] = "='Inf A'!K{{toreplace}}";
+                            formulas1[15] = "='Inf B'!K{{toreplace}}";
+                            formulas1[16] = "=Metapnemovirus!K{{toreplace}}";
+                            formulas1[17] = "=D{{toreplace}}+E{{toreplace}}+F{{toreplace}}+G{{toreplace}}+H{{toreplace}}+I{{toreplace}}";
+                            formulas1[18] = "=L{{toreplace}}+M{{toreplace}}+N{{toreplace}}+O{{toreplace}}+P{{toreplace}}+Q{{toreplace}}";
+                            for (int i = 1; i <= 7; i++)
                             {
-                                var col = column;
-                                var colcont = 1;
-                                for (int i = 0; i < 6; i++)
+                                var virustype = 0;
+                                switch (i)
                                 {
-                                    var cell = excelWorksheet2.Cells[startRow, col + colcont];
-                                    excelWorksheet2.Cells[row, col + colcont].Value = reader.GetValue(i);
-                                    if (i == 1 || i == 3)
+                                    case 2:
+                                        virustype = 6;
+                                        break;
+                                    case 3:
+                                        virustype = 7;
+                                        break;
+                                    case 4:
+                                        virustype = 13;
+                                        break;
+                                    case 5:
+                                        virustype = 1;
+                                        break;
+                                    case 6:
+                                        virustype = 2;
+                                        break;
+                                    case 7:
+                                        virustype = 8;
+                                        break;
+                                }
+                                command.Parameters.Clear();
+                                command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
+                                command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
+                                command.Parameters.Add("@Languaje", SqlDbType.Text).Value = languaje_;
+                                command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
+                                command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
+                                command.Parameters.Add("@Mes_", SqlDbType.Int).Value = month;
+                                command.Parameters.Add("@SE", SqlDbType.Int).Value = se;
+                                command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
+                                command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
+                                command.Parameters.Add("@Virus_type", SqlDbType.Int).Value = virustype;
+                                var excelWorksheet2 = excelWorkBook.Worksheets[i];
+
+                                using (var reader = command.ExecuteReader())
+                                {
+                                    row = 3;
+                                    column = 1;
+                                    var tipo_anterior = 1;
+                                    while (reader.Read())
                                     {
-                                        colcont += 4;
-                                    }
-                                    else
-                                    {
-                                        colcont += 2;
-                                    }
+                                        if (Convert.ToInt32(reader.GetValue(15)) != tipo_anterior)
+                                        {
+                                            row++;
+                                        }
+                                        tipo_anterior = Convert.ToInt32(reader.GetValue(15));
+                                        var col = 1;
+                                        var readercont = 0;
+                                        int stylerow;
+                                        if (tipo_anterior == 1)
+                                        {
+                                            stylerow = 2;
+                                        }
+                                        else
+                                        {
+                                            stylerow = row + 1;
+                                        }
+                                        excelWorksheet2.InsertRow(row, 1);
+                                        //excelWorksheet.InsertRow(row, 1);
+                                        for (int j = 0; j < 17; j++)
+                                        {
+
+                                            var cell = excelWorksheet2.Cells[stylerow, col + j];
+                                            if (tipo_anterior == 2 && j > 8)
+                                            {
+                                            }
+                                            else
+                                            {
+                                                if (i > 1 || j == 0)
+                                                {
+                                                    if (j == 2)
+                                                    {
+                                                        excelWorksheet2.Cells[row, col + j].Formula = formulas1[17].Replace("{{toreplace}}", row.ToString()); ;
+                                                    }
+                                                    else
+                                                    {
+                                                        if (j == 10)
+                                                        {
+                                                            excelWorksheet2.Cells[row, col + j].Formula = formulas1[18].Replace("{{toreplace}}", row.ToString()); ;
+                                                        }
+                                                        else
+                                                        {
+                                                            excelWorksheet2.Cells[row, col + j].Value = reader.GetValue(readercont);
+                                                            readercont++;
+                                                        }
+                                                    }
 
 
-                                }
-                                contador_salto++;
-                                if (contador_salto == 1 || contador_salto == 10)
-                                {
-                                    row += 3;
-                                }
-                                else
-                                {
-                                    if (contador_salto == 12 || contador_salto == 16 || contador_salto == 23)
-                                    {
-                                        row += 2;
+                                                }
+                                                else
+                                                {
+                                                    if (formulas1.ContainsKey(j))
+                                                    {
+                                                        excelWorksheet2.Cells[row, col + j].Formula = formulas1[j].Replace("{{toreplace}}", row.ToString()); ;
+                                                    }
+                                                }
+                                            }
+                                            excelWorksheet2.Cells[row, col + j].StyleID = cell.StyleID;
+                                        }
+
+                                        row++;
                                     }
-                                    else
+                                    //Si se borran las rows auxiliares, las referencias de las funciones ya no funcionan?
+                                    //excelWorksheet2.DeleteRow(row);
+                                    //excelWorksheet2.DeleteRow(2);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if ((storedProcedure == "R6"))
+                            {
+                                using (var reader = command.ExecuteReader())
+                                {
+                                    row = 9;
+                                    column = 6;
+                                    var contador_salto = 0;
+                                    while (reader.Read())
                                     {
+                                        var col = column;
+                                        //excelWorksheet.InsertRow(row, 1);
+
+                                        //excelWorksheet.Cells[row, 1].Value = reader.GetValue(3).ToString();
+                                        for (int i = 0; i < 53; i++)
+                                        {
+                                            var cell = excelWorksheet.Cells[startRow, col + i];
+                                            excelWorksheet.Cells[row, col + i].Value = reader.GetValue(i);
+                                        }
+                                        contador_salto++;
+                                        if (contador_salto % 4 == 2)
+                                        {
+                                            row += 2;
+                                        }
+                                        else
+                                        {
+                                            if (contador_salto % 4 == 0)
+                                            {
+                                                row += 5;
+                                            }
+                                            else
+                                            {
+                                                row++;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                /*Inicia llenado de Tabla2 en la misma hoja excel. Este reporte, en el mismo tab tiene 2 tablas, con aspectos diferentes entre ellas*/
+                                using (var command2 = new SqlCommand(storedProcedure + "_2", con) { CommandType = CommandType.StoredProcedure })
+                                {
+                                    command2.Parameters.Clear();
+                                    command2.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
+                                    command2.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
+                                    command2.Parameters.Add("@Languaje", SqlDbType.Text).Value = languaje_;
+                                    command2.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
+                                    command2.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
+                                    command2.Parameters.Add("@Mes_", SqlDbType.Int).Value = month;
+                                    command2.Parameters.Add("@SE", SqlDbType.Int).Value = se;
+                                    command2.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
+                                    command2.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
+                                    command2.Parameters.Add("@IRAG", SqlDbType.Int).Value = irag_;
+                                    command2.Parameters.Add("@ETI", SqlDbType.Int).Value = eti_;
+                                    var con2 = new SqlConnection(consString);
+                                    con2.Open();
+
+                                    using (var reader2 = command2.ExecuteReader())
+                                    {
+                                        //row = 212;
+                                        int nAnDa = 0;                                  // qytFilasxVirusSelect para tabla 2 en el SELECT
+                                        if (countryId == 25 || countryId == 18)
+                                        {
+                                            row = row - 1 + (9 * 3) + 15;               // Inicio tabla 2
+                                            nAnDa = 8 * 8;                              // 8: Nº Age Group
+                                        }
+                                        else
+                                        {
+                                            if (countryId == 17 || countryId == 119 || countryId == 11)
+                                            {
+                                                row = row - 1 + (9 * 3) + 15;           // Inicio tabla 2
+                                                nAnDa = 9 * 8;                          // 9: Nº Age Group
+                                            }
+                                            else
+                                            {
+                                                row = 212;                  // Inicio tabla 2
+                                                nAnDa = 6 * 8;              // 6: Nº Age Group
+                                            }
+                                        }
+                                        column = 6;
+
+                                        var contador_salto2 = 0;
+                                        while (reader2.Read())
+                                        {
+                                            var col2 = column;
+                                            //excelWorksheet.InsertRow(row, 1);
+
+                                            //excelWorksheet.Cells[row, 1].Value = reader.GetValue(3).ToString();
+                                            for (int i = 5; i < 58; i++)
+                                            {
+                                                var cell = excelWorksheet.Cells[startRow, col2 + i - 5];
+                                                excelWorksheet.Cells[row, col2 + i - 5].Value = reader2.GetValue(i);
+                                            }
+                                            contador_salto2++;
+
+                                            //if (contador_salto2 % 48 == 0)
+                                            if (contador_salto2 % nAnDa == 0)
+                                            {
+                                                row += 5;
+                                            }
+                                            else
+                                            {
+                                                if (contador_salto2 % 2 == 0)
+                                                {
+                                                    row += 2;
+                                                }
+                                                else
+                                                {
+                                                    row++;
+                                                }
+                                            }
+
+                                        }
+                                    }
+
+                                    /*Termina llenado de Tabla2*/
+                                }
+                            }
+                            else        // R1, R2, etc.
+                            {
+                                using (var reader = command.ExecuteReader())
+                                {
+                                    while (reader.Read())
+                                    {
+                                        var col = column;
+                                        if (row > startRow && insert_row == true) excelWorksheet.InsertRow(row, 1);
+
+                                        for (var i = 0; i < reader.FieldCount; i++)
+                                        {
+                                            var cell = excelWorksheet.Cells[startRow, col];
+                                            if (reader.GetValue(i) != null)
+                                            {
+                                                int number;
+                                                bool isNumber = int.TryParse(reader.GetValue(i).ToString(), out number);
+
+                                                DateTime dt;
+                                                bool isDate = DateTime.TryParse(reader.GetValue(i).ToString(), out dt);
+
+                                                if (isNumber)
+                                                {
+                                                    excelWorksheet.Cells[row, col].Value = number;
+                                                }
+                                                else
+                                                {
+                                                    if (isDate)
+                                                    {
+                                                        excelWorksheet.Cells[row, col].Value = dt;
+                                                    }
+                                                    else
+                                                    {
+                                                        excelWorksheet.Cells[row, col].Value = reader.GetValue(i).ToString();
+                                                    }
+                                                }
+                                                excelWorksheet.Cells[row, col].StyleID = cell.StyleID;
+                                            }
+                                            col++;
+                                        }
+
                                         row++;
                                     }
                                 }
-
-
                             }
                         }
-
                         command.Parameters.Clear();
                         con.Close();
-
                     }
                 }
-            }
+
+            /*Inserción de tablas en el tab  de antecedentes del reporte R6*/
+            if (storedProcedure == "R6")
+            {
+                    //Antecedentes_DataToSheetExcel(string consString, ExcelWorkbook excelWorkBook, int AntecedentesType, int starRowAntec, int starColAntec, int countryId, int ? regionId,
+                    //    string languaje_, int ? year, int ? hospitalId, int ? month, int ? se, DateTime ? startDate, DateTime ? endDate, int ? YearFrom, int ? YearTo, int ? Surv, bool ? SurvInusual, string VirusList = "")
+                    //, int? irag_, int? eti_
+                    int IRAG = Convert.ToInt32(irag_);
+                    int ETI = Convert.ToInt32(eti_);
+
+                    int Surv;
+                    if (IRAG == 0 && ETI == 0)
+                    {
+                        Surv = 0;
+                    }
+                    else if (IRAG == 1 && ETI == 1)
+                    {
+                        Surv = 0;
+                    }
+                    else if (ETI == 1)
+                    {
+                        Surv = 2;
+                    }
+                    else
+                        Surv = IRAG;
+
+                    Antecedentes_DataToSheetExcel(consString, excelWorkBook, 1, 0, 0, countryId, regionId, languaje_, year, hospitalId, month, se, startDate, endDate, null, null, Surv, null);
+
+                    Antecedentes_DataToSheetExcel(consString, excelWorkBook, 2, 0, 0, countryId, regionId, languaje_, year, hospitalId, month, se, startDate, endDate, null, null, Surv, null, "14");
+
+                    //using (var con = new SqlConnection(consString))
+                    //{
+                    //    using (var command = new SqlCommand("R6_antecedentes", con) { CommandType = CommandType.StoredProcedure })
+                    //    {
+                    //        command.Parameters.Clear();
+                    //        command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
+                    //        command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
+                    //        command.Parameters.Add("@Languaje", SqlDbType.Text).Value = languaje_;
+                    //        command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
+                    //        command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
+                    //        command.Parameters.Add("@Mes_", SqlDbType.Int).Value = month;
+                    //        command.Parameters.Add("@SE", SqlDbType.Int).Value = se;
+                    //        command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
+                    //        command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
+                    //        command.Parameters.Add("@IRAG", SqlDbType.Int).Value = irag_;
+                    //        command.Parameters.Add("@ETI", SqlDbType.Int).Value = eti_;
+                    //        command.CommandTimeout = 300;
+
+                    //        con.Open();
+
+                    //        using (var reader = command.ExecuteReader())
+                    //        {
+                    //            row = 11;
+                    //            column = 2;
+                    //            var contador_salto = 0;
+                    //            //var excelWorksheet2 = excelWorkBook.Worksheets[2];
+                    //            var excelWorksheet2 = excelWorkBook.Worksheets[excelSheetAntecedName];
+                    //            while (reader.Read())
+                    //            {
+                    //                var col = column;
+                    //                var colcont = 1;
+                    //                for (int i = 0; i < 6; i++)
+                    //                {
+                    //                    var cell = excelWorksheet2.Cells[startRow, col + colcont];
+                    //                    excelWorksheet2.Cells[row, col + colcont].Value = reader.GetValue(i);
+                    //                    if (i == 1 || i == 3)
+                    //                    {
+                    //                        colcont += 4;
+                    //                    }
+                    //                    else
+                    //                    {
+                    //                        colcont += 2;
+                    //                    }
+
+
+                    //                }
+                    //                contador_salto++;
+                    //                if (contador_salto == 1 || contador_salto == 10)
+                    //                {
+                    //                    row += 3;
+                    //                }
+                    //                else
+                    //                {
+                    //                    if (contador_salto == 12 || contador_salto == 16 || contador_salto == 23)
+                    //                    {
+                    //                        row += 2;
+                    //                    }
+                    //                    else
+                    //                    {
+                    //                        row++;
+                    //                    }
+                    //                }
+
+
+                    //            }
+                    //        }
+
+                    //        command.Parameters.Clear();
+                    //        con.Close();
+
+                    //    }
+                    //}
+                }
             /*Fin inserción tablas*/
 
             //inserción de labels y logo en el Excel
@@ -1206,7 +681,113 @@ namespace Paho.Controllers
             }
 
             //return null;
+        }
 
+        static private void Antecedentes_DataToSheetExcel(string consString, ExcelWorkbook excelWorkBook, int AntecedentesType, int starRowAntec, int starColAntec, int countryId, int? regionId,
+            string languaje_, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, string VirusList = "")
+        {
+            int row, column;
+
+            using (var con = new SqlConnection(consString))
+            {
+                using (var command = new SqlCommand("R6_antecedentes", con) { CommandType = CommandType.StoredProcedure, CommandTimeout = 1200 })
+                {
+                    var excelParameters = excelWorkBook.Worksheets["Parameters"];
+                    string sheetNameAntec;
+                    var rowInicPara = 0;
+                    var colInicPara = 0;
+
+                    if (AntecedentesType == 1)              // Todos los virus
+                    {
+                        sheetNameAntec = (string)excelParameters.Cells[79, 2].Value;             // "Antecedentes"
+                        rowInicPara = Convert.ToInt32(excelParameters.Cells[79, 3].Value);
+                        colInicPara = Convert.ToInt32(excelParameters.Cells[79, 4].Value);
+                    }
+                    else if (AntecedentesType == 2)         // Para el SARS-CoV-2
+                    {
+                        sheetNameAntec = (string)excelParameters.Cells[81, 2].Value;             // "Antecedentes SARS-CoV-2"
+                        rowInicPara = Convert.ToInt32(excelParameters.Cells[81, 3].Value);
+                        colInicPara = Convert.ToInt32(excelParameters.Cells[81, 4].Value);
+                    }
+                    else
+                        return;
+
+                    command.Parameters.Clear();
+                    command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
+                    command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
+                    command.Parameters.Add("@Languaje", SqlDbType.Text).Value = languaje_;
+                    command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
+                    command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
+                    command.Parameters.Add("@Mes_", SqlDbType.Int).Value = month;
+                    command.Parameters.Add("@SE", SqlDbType.Int).Value = se;
+                    command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
+                    command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
+                    command.Parameters.Add("@yearFrom", SqlDbType.Int).Value = YearFrom;
+                    command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
+                    command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;                        //#### CAFQ
+                    command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;          //#### CAFQ
+                    if (VirusList.Length > 0)
+                        command.Parameters.Add("@VirusList", SqlDbType.Text).Value = VirusList;                   //#### CAFQ -> 14: virus SARS-CoV-2
+
+                    con.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (starRowAntec == 0)
+                        {
+                            //row = 11;
+                            //column = 2;
+                            row = rowInicPara;
+                            column = colInicPara - 1;
+                        }
+                        else
+                        {
+                            row = starRowAntec;
+                            column = starColAntec;
+                        }
+
+                        var contador_salto = 0;
+
+                        var excelWorksheet2 = excelWorkBook.Worksheets[sheetNameAntec];
+                        while (reader.Read())
+                        {
+                            var col = column;
+                            var colcont = 1;
+                            for (int i = 0; i < 6; i++)
+                            {
+                                /////////////var cell = excelWorksheet2.Cells[startRow, col + colcont];
+                                excelWorksheet2.Cells[row, col + colcont].Value = reader.GetValue(i);
+                                if (i == 1 || i == 3)
+                                {
+                                    colcont += 4;
+                                }
+                                else
+                                {
+                                    colcont += 2;
+                                }
+                            }
+                            contador_salto++;
+                            if (contador_salto == 1 || contador_salto == 10)
+                            {
+                                row += 3;
+                            }
+                            else
+                            {
+                                if (contador_salto == 12 || contador_salto == 16 || contador_salto == 23)
+                                {
+                                    row += 2;
+                                }
+                                else
+                                {
+                                    row++;
+                                }
+                            }
+                        }
+                    }
+
+                    command.Parameters.Clear();
+                    con.Close();
+                }
+            }
         }
 
         public JsonResult GetMapDataTuned(string Report, int CountryID, int? RegionID, int? StateID, int? HospitalID, string Year, int? Month, int? SE, DateTime? StartDate, DateTime? EndDate, int? ReportCountry, string Graph, int? IRAG, int? ETI)
@@ -1459,8 +1040,10 @@ namespace Paho.Controllers
                 string Languaje_ = user.Institution.Country.Language ?? "SPA";
                 int? ETI_ = ETI;
                 int? IRAG_ = IRAG;
-                //IRAG_ = (IRAG_ == 0 && ETI_ == 0) ? 1 : IRAG_;          //#### CAFQ: 180312 
-                //*******************
+                //******************************************************************************** 
+                //IRAG_ = (IRAG_ == 0 && ETI_ == 0) ? 1 : IRAG_;          //#### CAFQ: 2000607
+                //********************************************************************************
+
                 AgeGroupsCountry = PAHOClassUtilities.getNumberAgeGroupCountry(CountryID_);
                 ColFirst_AG_IRAG_Casos = ColFirst_AG_IRAG_InfPos + AgeGroupsCountry;
 
@@ -1632,9 +1215,11 @@ namespace Paho.Controllers
                             using (var excelPackage2 = new ExcelPackage(fs))
                             {
                                 var excelWorkBook2 = excelPackage2.Workbook;
+                                var excelSheetParametes = excelWorkBook2.Worksheets["Parameters"];
+                                string antecedentesSheetName = (string)excelSheetParametes.Cells[79, 2].Value;
+                                string antecedentesSARSSheetName = (string)excelSheetParametes.Cells[81, 2].Value;
 
                                 bool insertRow = true;
-
 
                                 if (reportTemplate == "R1" || reportTemplate == "R2" || reportTemplate == "R4" || reportTemplate == "D1")
                                 {
@@ -1651,6 +1236,7 @@ namespace Paho.Controllers
                                     case "Graph5":
                                         //------------Documento de Excel para los datos-------------
                                         ExcelPackage auxEp = new ExcelPackage();
+
                                         //----------------Definición de los años en los cuales se hará la generación del reporte
                                         if (Year == "")
                                         {
@@ -1837,20 +1423,24 @@ namespace Paho.Controllers
                                             int yrInt = 0;
                                             yrConversion = Int32.TryParse(yr, out yrInt);
 
-                                            AppendDataToExcel(Languaje_, CountryID_, RegionID_, yrInt, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, IRAG_, ETI_);
+                                            AppendDataToExcel(Languaje_, CountryID_, RegionID_, yrInt, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1,
+                                                insertRow, ReportCountry, IRAG_, ETI_);
+
                                             excelPackage.SaveAs(ms);
                                             ms.Position = 0;
                                             // Cargamos el excel resultante para su manipulacion
                                             ExcelPackage ep = new ExcelPackage(ms);
                                             auxEp = ep;
+                                            //string nameSheetAntecedentes = "";
+                                            ExcelWorksheet excelAntecedentesSheet = ep.Workbook.Worksheets[antecedentesSheetName];
 
-                                            //########################################### DESARROLLO: Prueba de grabado de archivo
+                                            ////########################################### DESARROLLO: Prueba de grabado de archivo
                                             //ExcelPackage ep11 = new ExcelPackage(ms);
                                             //string path = @"C:\Temp\sal1.xlsx";
                                             //Stream stream = System.IO.File.Create(path);
                                             //ep11.SaveAs(stream);
                                             //stream.Close();
-                                            //########################################### 
+                                            ////########################################### 
 
                                             //***************************************** GRAPH 0: Llenado de datos para Graph0
                                             decimal auxVal0;
@@ -1872,29 +1462,37 @@ namespace Paho.Controllers
 
                                             auxXmlNode0 = myXmlDoc0.CreateElement("header");
                                             headerAtt = myXmlDoc0.CreateAttribute("name");
-                                            headerAtt.InnerText = ep.Workbook.Worksheets[2].Cells[7, 1].Value.ToString();
+                                            //headerAtt.InnerText = ep.Workbook.Worksheets[2].Cells[7, 1].Value.ToString();
+                                            headerAtt.InnerText = excelAntecedentesSheet.Cells[7, 1].Value.ToString();
                                             auxXmlNode0.InnerText = "";
                                             auxXmlNode0.Attributes.Append(headerAtt);
                                             myAuxXmlNode0.AppendChild(auxXmlNode0);
 
                                             auxXmlNode0 = myXmlDoc0.CreateElement("header");
                                             headerAtt = myXmlDoc0.CreateAttribute("name");
-                                            headerAtt.InnerText = ep.Workbook.Worksheets[2].Cells[7, 3].Value.ToString();
-                                            auxXmlNode0.InnerText = ep.Workbook.Worksheets[2].Cells[8, 3].Value.ToString();
+                                            //headerAtt.InnerText = ep.Workbook.Worksheets[2].Cells[7, 3].Value.ToString();
+                                            //auxXmlNode0.InnerText = ep.Workbook.Worksheets[2].Cells[8, 3].Value.ToString();
+                                            headerAtt.InnerText = excelAntecedentesSheet.Cells[7, 3].Value.ToString();
+                                            auxXmlNode0.InnerText = excelAntecedentesSheet.Cells[8, 3].Value.ToString();
                                             auxXmlNode0.Attributes.Append(headerAtt);
                                             myAuxXmlNode0.AppendChild(auxXmlNode0);
 
                                             auxXmlNode0 = myXmlDoc0.CreateElement("header");
                                             headerAtt = myXmlDoc0.CreateAttribute("name");
-                                            headerAtt.InnerText = ep.Workbook.Worksheets[2].Cells[7, 3].Value.ToString();
-                                            auxXmlNode0.InnerText = ep.Workbook.Worksheets[2].Cells[8, 9].Value.ToString();
+                                            //headerAtt.InnerText = ep.Workbook.Worksheets[2].Cells[7, 3].Value.ToString();
+                                            //auxXmlNode0.InnerText = ep.Workbook.Worksheets[2].Cells[8, 9].Value.ToString();
+                                            headerAtt.InnerText = excelAntecedentesSheet.Cells[7, 3].Value.ToString();
+                                            auxXmlNode0.InnerText = excelAntecedentesSheet.Cells[8, 9].Value.ToString();
+
                                             auxXmlNode0.Attributes.Append(headerAtt);
                                             myAuxXmlNode0.AppendChild(auxXmlNode0);
 
                                             auxXmlNode0 = myXmlDoc0.CreateElement("header");
                                             headerAtt = myXmlDoc0.CreateAttribute("name");
-                                            headerAtt.InnerText = ep.Workbook.Worksheets[2].Cells[7, 3].Value.ToString();
-                                            auxXmlNode0.InnerText = ep.Workbook.Worksheets[2].Cells[8, 15].Value.ToString();
+                                            //headerAtt.InnerText = ep.Workbook.Worksheets[2].Cells[7, 3].Value.ToString();
+                                            //auxXmlNode0.InnerText = ep.Workbook.Worksheets[2].Cells[8, 15].Value.ToString();
+                                            headerAtt.InnerText = excelAntecedentesSheet.Cells[7, 3].Value.ToString();
+                                            auxXmlNode0.InnerText = excelAntecedentesSheet.Cells[8, 15].Value.ToString();
                                             auxXmlNode0.Attributes.Append(headerAtt);
                                             myAuxXmlNode0.AppendChild(auxXmlNode0);
 
@@ -1908,45 +1506,54 @@ namespace Paho.Controllers
 
                                             auxXmlNode0 = myXmlDoc0.CreateElement("subheader");
                                             headerAtt = myXmlDoc0.CreateAttribute("name");
-                                            headerAtt.InnerText = ep.Workbook.Worksheets[2].Cells[10, 7].Value.ToString();
-                                            conversionResult0 = decimal.TryParse(ep.Workbook.Worksheets[2].Calculate(ep.Workbook.Worksheets[2].Cells[11, 7].Formula).ToString(), out auxVal0);
+                                            //headerAtt.InnerText = ep.Workbook.Worksheets[2].Cells[10, 7].Value.ToString();
+                                            //conversionResult0 = decimal.TryParse(ep.Workbook.Worksheets[2].Calculate(ep.Workbook.Worksheets[2].Cells[11, 7].Formula).ToString(), out auxVal0);
+                                            headerAtt.InnerText = excelAntecedentesSheet.Cells[10, 7].Value.ToString();
+                                            conversionResult0 = decimal.TryParse(excelAntecedentesSheet.Calculate(excelAntecedentesSheet.Cells[11, 7].Formula).ToString(), out auxVal0);
                                             auxXmlNode0.InnerText = auxVal0.ToString();
                                             auxXmlNode0.Attributes.Append(headerAtt);
                                             myAuxXmlNode0.AppendChild(auxXmlNode0);
 
                                             auxXmlNode0 = myXmlDoc0.CreateElement("subheader");
                                             headerAtt = myXmlDoc0.CreateAttribute("name");
-                                            headerAtt.InnerText = ep.Workbook.Worksheets[2].Cells[10, 8].Value.ToString();                                            
+                                            //headerAtt.InnerText = ep.Workbook.Worksheets[2].Cells[10, 8].Value.ToString();
+                                            headerAtt.InnerText = excelAntecedentesSheet.Cells[10, 8].Value.ToString();
                                             auxXmlNode0.InnerText = "";
                                             auxXmlNode0.Attributes.Append(headerAtt);
                                             myAuxXmlNode0.AppendChild(auxXmlNode0);
 
                                             auxXmlNode0 = myXmlDoc0.CreateElement("subheader");
                                             headerAtt = myXmlDoc0.CreateAttribute("name");
-                                            headerAtt.InnerText = ep.Workbook.Worksheets[2].Cells[10, 13].Value.ToString();
-                                            conversionResult0 = decimal.TryParse(ep.Workbook.Worksheets[2].Calculate(ep.Workbook.Worksheets[2].Cells[11, 13].Formula).ToString(), out auxVal0);
+                                            //headerAtt.InnerText = ep.Workbook.Worksheets[2].Cells[10, 13].Value.ToString();
+                                            //conversionResult0 = decimal.TryParse(ep.Workbook.Worksheets[2].Calculate(ep.Workbook.Worksheets[2].Cells[11, 13].Formula).ToString(), out auxVal0);
+                                            headerAtt.InnerText = excelAntecedentesSheet.Cells[10, 13].Value.ToString();
+                                            conversionResult0 = decimal.TryParse(excelAntecedentesSheet.Calculate(excelAntecedentesSheet.Cells[11, 13].Formula).ToString(), out auxVal0);
                                             auxXmlNode0.InnerText = auxVal0.ToString();
                                             auxXmlNode0.Attributes.Append(headerAtt);
                                             myAuxXmlNode0.AppendChild(auxXmlNode0);
 
                                             auxXmlNode0 = myXmlDoc0.CreateElement("subheader");
                                             headerAtt = myXmlDoc0.CreateAttribute("name");
-                                            headerAtt.InnerText = ep.Workbook.Worksheets[2].Cells[10, 14].Value.ToString();
+                                            //headerAtt.InnerText = ep.Workbook.Worksheets[2].Cells[10, 14].Value.ToString();
+                                            headerAtt.InnerText = excelAntecedentesSheet.Cells[10, 14].Value.ToString();
                                             auxXmlNode0.InnerText = "";
                                             auxXmlNode0.Attributes.Append(headerAtt);
                                             myAuxXmlNode0.AppendChild(auxXmlNode0);
 
                                             auxXmlNode0 = myXmlDoc0.CreateElement("subheader");
                                             headerAtt = myXmlDoc0.CreateAttribute("name");
-                                            headerAtt.InnerText = ep.Workbook.Worksheets[2].Cells[10, 19].Value.ToString();
-                                            conversionResult0 = decimal.TryParse(ep.Workbook.Worksheets[2].Calculate(ep.Workbook.Worksheets[2].Cells[11, 19].Formula).ToString(), out auxVal0);
+                                            //headerAtt.InnerText = ep.Workbook.Worksheets[2].Cells[10, 19].Value.ToString();
+                                            //conversionResult0 = decimal.TryParse(ep.Workbook.Worksheets[2].Calculate(ep.Workbook.Worksheets[2].Cells[11, 19].Formula).ToString(), out auxVal0);
+                                            headerAtt.InnerText = excelAntecedentesSheet.Cells[10, 19].Value.ToString();
+                                            conversionResult0 = decimal.TryParse(excelAntecedentesSheet.Calculate(excelAntecedentesSheet.Cells[11, 19].Formula).ToString(), out auxVal0);
                                             auxXmlNode0.InnerText = auxVal0.ToString();
                                             auxXmlNode0.Attributes.Append(headerAtt);
                                             myAuxXmlNode0.AppendChild(auxXmlNode0);
 
                                             auxXmlNode0 = myXmlDoc0.CreateElement("subheader");
                                             headerAtt = myXmlDoc0.CreateAttribute("name");
-                                            headerAtt.InnerText = ep.Workbook.Worksheets[2].Cells[10, 20].Value.ToString();
+                                            //headerAtt.InnerText = ep.Workbook.Worksheets[2].Cells[10, 20].Value.ToString();
+                                            headerAtt.InnerText = excelAntecedentesSheet.Cells[10, 20].Value.ToString();
                                             auxXmlNode0.InnerText = "";
                                             auxXmlNode0.Attributes.Append(headerAtt);
                                             myAuxXmlNode0.AppendChild(auxXmlNode0);
@@ -1973,12 +1580,15 @@ namespace Paho.Controllers
                                                     auxXmlNode0.Attributes.Append(colNo);                                                    
                                                     if (j == 0)
                                                     {
-                                                        auxXmlNode0.InnerText = ep.Workbook.Worksheets[2].Cells[filas[i], columnas[j]].Value==null?string.Empty: ep.Workbook.Worksheets[2].Cells[filas[i], columnas[j]].Value.ToString();
-                                                        auxXmlNode0.InnerText = ep.Workbook.Worksheets[2].Cells[filas[i], columnas[j]+1].Value == null ? auxXmlNode0.InnerText : auxXmlNode0.InnerText + ep.Workbook.Worksheets[2].Cells[filas[i], columnas[j]+1].Value.ToString();
+                                                        //auxXmlNode0.InnerText = ep.Workbook.Worksheets[2].Cells[filas[i], columnas[j]].Value==null?string.Empty: ep.Workbook.Worksheets[2].Cells[filas[i], columnas[j]].Value.ToString();
+                                                        //auxXmlNode0.InnerText = ep.Workbook.Worksheets[2].Cells[filas[i], columnas[j]+1].Value == null ? auxXmlNode0.InnerText : auxXmlNode0.InnerText + ep.Workbook.Worksheets[2].Cells[filas[i], columnas[j]+1].Value.ToString();
+                                                        auxXmlNode0.InnerText = excelAntecedentesSheet.Cells[filas[i], columnas[j]].Value == null ? string.Empty : excelAntecedentesSheet.Cells[filas[i], columnas[j]].Value.ToString();
+                                                        auxXmlNode0.InnerText = excelAntecedentesSheet.Cells[filas[i], columnas[j] + 1].Value == null ? auxXmlNode0.InnerText : auxXmlNode0.InnerText + excelAntecedentesSheet.Cells[filas[i], columnas[j] + 1].Value.ToString();
                                                     }
                                                     else
                                                     {
-                                                        conversionResult0 = decimal.TryParse(ep.Workbook.Worksheets[2].Calculate(ep.Workbook.Worksheets[2].Cells[filas[i], columnas[j]].Formula)==null?"0":ep.Workbook.Worksheets[2].Calculate(ep.Workbook.Worksheets[2].Cells[filas[i], columnas[j]].Formula).ToString(), out auxVal0);
+                                                        //conversionResult0 = decimal.TryParse(ep.Workbook.Worksheets[2].Calculate(ep.Workbook.Worksheets[2].Cells[filas[i], columnas[j]].Formula)==null?"0":ep.Workbook.Worksheets[2].Calculate(ep.Workbook.Worksheets[2].Cells[filas[i], columnas[j]].Formula).ToString(), out auxVal0);
+                                                        conversionResult0 = decimal.TryParse(excelAntecedentesSheet.Calculate(excelAntecedentesSheet.Cells[filas[i], columnas[j]].Formula) == null ? "0" : excelAntecedentesSheet.Calculate(excelAntecedentesSheet.Cells[filas[i], columnas[j]].Formula).ToString(), out auxVal0);
                                                         auxXmlNode0.InnerText = auxVal0.ToString();
                                                         if (columnas[j] % 2 == 0)
                                                         {
@@ -1995,12 +1605,6 @@ namespace Paho.Controllers
                                             }
                                             myXmlNode0.AppendChild(yearXmlNode0);
                                             //------------------------Fin Row 1---------------------------------
-
-                                            //conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[176, 6 + i].Formula).ToString(), out auxVal);
-                                            //auxVal = (conversionResult) ? (auxVal * 100) : 0;
-                                            //auxVal = Math.Round(auxVal, 2);
-                                            //anotherAuxXmlNode.InnerText = auxVal.ToString(new CultureInfo("en-US"));
-                                            //
                                             //-----------Fin de llenado de datos para Graph0
 
                                             //***************************************** GRAPH 1: Llenado de datos para Graph1------------------

@@ -2243,7 +2243,6 @@
                     <div class="row rowform">
                         <div class='input-group col-md-4'>
                             <span class="input-group-addon">
-                                    @*@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelAntiviralTreatmentType"))*@
                                 @LabelAntiViralType
                             </span>
                             <select id="AntiViralType" name="AntiViralType" class="form-control" style="max-width: 190px" data-bind='value: AntiViralType , enable: EnableAntiViralType'>
@@ -2256,8 +2255,8 @@
 							    }
                                 @if (ViewBag.UsrCtry == 15)
                                 {
-                                    <option value="6">Tratamiento Catracho</option>
-                                    <option value="7">Tratamiento Maíz</option>
+                                    <option value="7">Tratamiento Catracho</option>
+                                    <option value="8">Tratamiento Maíz</option>
                                 }
                                 <option value="5"> @LabelAntiViralSinInformacion</option> 
                                 @if (ViewBag.UsrCtry == 25)
