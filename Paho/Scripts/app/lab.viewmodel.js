@@ -13,6 +13,8 @@
     self.Id = "";
     self.UsrCountry = ko.observable(app.Views.Home.UsrCountry());   // Pais del usuario logueado
     self.UsrInstID = ko.observable($('#IIDL').val());               // ID de la institucion del usuario
+    self.Is_NIC = ko.observable(false);               // ID de la institucion del usuario
+    self.OrderFlow = ko.observable("");
     self.CaseLabID = "";
     self.OrdenLabID = 99;
     self.hasGet_Local = ko.observable(app.Views.Lab.hasGet());
@@ -90,14 +92,69 @@
 
     self.TestDate.subscribe(function (newTestDate) {
         var current_value = jQuery.type(newTestDate) === 'date' ? newTestDate : parseDate(newTestDate, date_format_);
-        //date_receive = (SampleNumber == 1) ? parseDate($("#RecDate").val(), date_format_) : (SampleNumber == 2) ? parseDate($("#RecDate2").val(), date_format_) : (SampleNumber == 2) ? parseDate($("#RecDate3").val(), date_format_) : null;
-        //date_receive = typeof (date_receive) == "object" ? date_receive : parseDate(date_receive, date_format_);
-        date_receive = (SampleNumber == 1) ? jQuery.type(app.Views.Lab.RecDate()) === 'date' ? app.Views.Lab.RecDate() : parseDate($("#RecDate").val(), date_format_) : (SampleNumber == 2) ? jQuery.type(app.Views.Lab.RecDate2()) === 'date' ? app.Views.Lab.RecDate2() : parseDate($("#RecDate2").val(), date_format_) : (SampleNumber == 3) ? jQuery.type(app.Views.Lab.RecDate3()) === 'date' ? app.Views.Lab.RecDate3() : parseDate($("#RecDate3").val(), date_format_) : null;
+        date_receive = (SampleNumber == 1) ? jQuery.type(app.Views.Lab.RecDate()) === 'date' ? app.Views.Lab.RecDate() : parseDate($("#RecDate").val(), date_format_)
+                       : (SampleNumber == 2) ? jQuery.type(app.Views.Lab.RecDate2()) === 'date' ? app.Views.Lab.RecDate2() : parseDate($("#RecDate2").val(), date_format_)
+                       : (SampleNumber == 3) ? jQuery.type(app.Views.Lab.RecDate3()) === 'date' ? app.Views.Lab.RecDate3() : parseDate($("#RecDate3").val(), date_format_)
+                       : null;
 
-        if (date_receive == null && (self.UsrCountry() == 15 || self.UsrCountry() == 9 ||  (self.UsrCountry() == 25)))
+        if (date_receive == null && (self.UsrCountry() == 15 ||  (self.UsrCountry() == 25)))
         {
             date_receive = (SampleNumber == 1) ? jQuery.type(app.Views.Lab.RecDate_National()) === 'date' ? app.Views.Lab.RecDate_National() : parseDate($("#RecDate_National").val(), date_format_) :  null;
         }
+
+        if (self.UsrCountry() == 9) {
+
+            if (self.Is_NIC() == true) {
+                //console.log("OrderFlow NIC - LabTest -> " + self.OrderFlow());
+                date_receive = (SampleNumber == 1) ? jQuery.type(app.Views.Lab.Rec_Date_NPHL()) === 'date' ? app.Views.Lab.Rec_Date_NPHL() : parseDate($("#Rec_Date_NPHL").val(), date_format_)
+                            : (SampleNumber == 2) ? jQuery.type(app.Views.Lab.Rec_Date_NPHL_2()) === 'date' ? app.Views.Lab.Rec_Date_NPHL_2() : parseDate($("#Rec_Date_NPHL_2").val(), date_format_)
+                            : (SampleNumber == 3) ? jQuery.type(app.Views.Lab.Rec_Date_NPHL_3()) === 'date' ? app.Views.Lab.Rec_Date_NPHL_3() : parseDate($("#Rec_Date_NPHL_3").val(), date_format_)
+                            : null;
+            }
+
+            if (self.OrderFlow() == 1 && self.Is_NIC() == false) {
+                //console.log("OrderFlow 1 - LabTest -> " + self.OrderFlow());
+                date_receive = (SampleNumber == 1) ? jQuery.type(app.Views.Lab.RecDate()) === 'date' ? app.Views.Lab.RecDate() : parseDate($("#RecDate").val(), date_format_)
+                       : (SampleNumber == 2) ? jQuery.type(app.Views.Lab.RecDate2()) === 'date' ? app.Views.Lab.RecDate2() : parseDate($("#RecDate2").val(), date_format_)
+                       : (SampleNumber == 3) ? jQuery.type(app.Views.Lab.RecDate3()) === 'date' ? app.Views.Lab.RecDate3() : parseDate($("#RecDate3").val(), date_format_)
+                       : null;
+            }    
+
+            if (self.OrderFlow() == 2 && self.Is_NIC() == false) {
+                //console.log("OrderFlow 2 - LabTest -> " + self.OrderFlow());
+                date_receive = (SampleNumber == 1) ? jQuery.type(app.Views.Lab.RecDate_National()) === 'date' ? app.Views.Lab.RecDate_National() : parseDate($("#RecDate_National").val(), date_format_) : null;
+
+            }
+                
+
+            if ( date_receive == null) {
+                //console.log("date_receive - NPHL - LabTest -> " + self.OrderFlow());
+                date_receive = (SampleNumber == 1) ? jQuery.type(app.Views.Lab.Rec_Date_NPHL()) === 'date' ? app.Views.Lab.Rec_Date_NPHL() : parseDate($("#Rec_Date_NPHL").val(), date_format_)
+                            : (SampleNumber == 2) ? jQuery.type(app.Views.Lab.Rec_Date_NPHL_2()) === 'date' ? app.Views.Lab.Rec_Date_NPHL_2() : parseDate($("#Rec_Date_NPHL_2").val(), date_format_)
+                            : (SampleNumber == 3) ? jQuery.type(app.Views.Lab.Rec_Date_NPHL_3()) === 'date' ? app.Views.Lab.Rec_Date_NPHL_3() : parseDate($("#Rec_Date_NPHL_3").val(), date_format_)
+                            : null;
+
+                if (date_receive == null)
+                {
+                    //console.log("date_receive - National - LabTest -> " + self.OrderFlow());
+                    date_receive = (SampleNumber == 1) ? jQuery.type(app.Views.Lab.RecDate_National()) === 'date' ? app.Views.Lab.RecDate_National() : parseDate($("#RecDate_National").val(), date_format_) : null;
+                }
+
+                if (date_receive == null) {
+                    //console.log("date_receive - RecDate - LabTest -> " + self.OrderFlow());
+                    date_receive = (SampleNumber == 1) ? jQuery.type(app.Views.Lab.RecDate()) === 'date' ? app.Views.Lab.RecDate() : parseDate($("#RecDate").val(), date_format_)
+                                : (SampleNumber == 2) ? jQuery.type(app.Views.Lab.RecDate2()) === 'date' ? app.Views.Lab.RecDate2() : parseDate($("#RecDate2").val(), date_format_)
+                                : (SampleNumber == 3) ? jQuery.type(app.Views.Lab.RecDate3()) === 'date' ? app.Views.Lab.RecDate3() : parseDate($("#RecDate3").val(), date_format_)
+                                : null;
+                }
+
+            }
+                
+        }
+
+        //console.log("Is_NIC - LabTest -> " + self.Is_NIC());
+        //console.log("date_receive - LabTest -> " + date_receive);
+
 
         if (date_receive == null || date_receive == "") {
             //alert("Por favor ingrese antes la fecha de recepción de muestra de la Muestra 1");
@@ -1354,6 +1411,7 @@ function LabViewModel(app, dataModel) {
     };
 
     self.addLabTest = function (sample_number, data) {
+        console.log("addLabTest -> START");
         var erroMsg = self.validatebeforeadd(1,2);
         if (erroMsg) {
             alert(erroMsg);
@@ -1376,7 +1434,7 @@ function LabViewModel(app, dataModel) {
         } else if (sample_number == 999) {
             self.LabTestsExternal.push(labtest);
         }
-         
+        console.log("addLabTest -> END");
     };
 
     self.removeLabTest = function (sample_number, data) {
@@ -1506,6 +1564,7 @@ function LabViewModel(app, dataModel) {
         var msg = "";
         rec_date = jQuery.type(self.RecDate()) === 'date' ? self.RecDate() : parseDate($("#RecDate").val(), date_format_);
         rec_date_national = jQuery.type(self.RecDate_National()) === 'date' ? self.RecDate_National() : parseDate($("#RecDate_National").val(), date_format_);
+        rec_date_NIC = jQuery.type(self.Rec_Date_NPHL()) === 'date' ? self.Rec_Date_NPHL() : parseDate($("#Rec_Date_NPHL").val(), date_format_);
         date_close_date_lab = jQuery.type(self.EndLabDate()) === 'date' ? self.EndLabDate() :  parseDate($("#EndLabDate").val(), date_format_);
         //var date_ShipDate = new Date();
         date_ShipDate = jQuery.type(app.Views.Hospital.ShipDate()) === 'date' ? app.Views.Hospital.ShipDate() : parseDate($("#ShipDate").val(), date_format_);
@@ -1604,12 +1663,36 @@ function LabViewModel(app, dataModel) {
             }
         }
 
+        if (app.Views.Hospital.IsSample() === "true" && $("#ITy").val() != 1 && self.NPHL_Processed() == "true") {
+            if ($("#Rec_Date_NPHL").val() == "")
+                msg += "\n" + msgValidateRecDateRequired;
+            //"Fecha de recepción es requerida";
+            if ($("#Rec_Date_NPHL").val() != "" && !moment(moment(rec_date_NIC).format(date_format_moment), [date_format_moment], true).isValid())
+                msg += "\n" + msgValidateRecDateInvalid;
+
+            if (date_ShipDate != null && rec_date_NIC != null && moment(rec_date_NIC).isBefore(moment(date_ShipDate), 'days'))
+                msg += "\n" + msgValidateRecDateShipDate;
+            //"'Fecha de recepcion' no puede ser anterior a la 'Fecha de envío'";
+
+            if (self.NPHL_Processed() == "true") {
+                if (self.LabTests().length <= 0) {
+                    msg += "\n" + msgValidateInsertResult;
+                    //"Inserte al menos un resultado";
+                }
+            }
+        }
+
         if (self.Processed() == "false" &&  self.NoProRenId() == "") {
             msg += "\n" + msgValidateProcessedReason;
                 //"Indique la razón porque no fue procesada la muestra";
         }
 
         if (self.Processed_National() == "false" && self.NoProRenId_National() == "") {
+            msg += "\n" + msgValidateProcessedReason;
+            //"Indique la razón porque no fue procesada la muestra";
+        }
+
+        if (self.NPHL_Processed() == "false" && self.NPHL_NoProRenId() == "") {
             msg += "\n" + msgValidateProcessedReason;
             //"Indique la razón porque no fue procesada la muestra";
         }
@@ -1631,17 +1714,34 @@ function LabViewModel(app, dataModel) {
         var MaxPCR = 6;
         var MaxIFI = 3;
 
+        console.log("validatebeforeadd -> Start");
+
         self.ArrayValidate((nextStep == 1) ? self.LabTests() : (nextStep == 2) ? self.LabTests_Sample2() : self.LabTests_Sample3());
         for (index = 0; index < self.ArrayValidate().length; ++index) {
             date_1 = self.ArrayValidate()[index].TestDate();
             date_2 = self.ArrayValidate()[index].TestEndDate();
             date_Received = self.RecDate();
+            date_National = self.RecDate_National();
+            date_NIC = self.Rec_Date_NPHL();
+
+            //date_receive_lab2 = jQuery.type(self.RecDate_National()) === 'date' ? self.RecDate_National() : parseDate($("#RecDate_National").val(), date_format_);
+            //date_receive_lab3 = (nextStep == 1) ? jQuery.type(self.Rec_Date_NPHL()) === 'date' ? self.Rec_Date_NPHL() : parseDate($("#Rec_Date_NPHL").val(), date_format_)
+            //                    : (nextStep == 2) ? jQuery.type(self.Rec_Date_NPHL_2()) === 'date' ? self.Rec_Date_NPHL_2() : parseDate($("#Rec_Date_NPHL_2").val(), date_format_) 
+            //                    : (nextStep == 3) ? jQuery.type(self.Rec_Date_NPHL_3()) === 'date' ? self.Rec_Date_NPHL_3() : parseDate($("#Rec_Date_NPHL_3").val(), date_format_)
+            //                    : null;
+
             var date_test_start = new Date();
             var date_test_final = new Date();
             var date_RecDate = new Date();
+            var date_RecDate2 = new Date();
+            var date_RecDate3 = new Date();
             date_test_start = jQuery.type(date_1) === 'date' ? date_1 : parseDate(date_1, date_format_);
             date_test_final = jQuery.type(date_2) === 'date' ? date_2 : parseDate(date_2, date_format_);
             date_RecDate = jQuery.type(date_Received) === 'date' ? date_Received : parseDate($("#RecDate").val(), date_format_);
+            date_RecDate2 = jQuery.type(date_National) === 'date' ? date_National : parseDate($("#RecDate_National").val(), date_format_);
+            date_RecDate3 = jQuery.type(date_NIC) === 'date' ? date_NIC : parseDate($("#Rec_Date_NPHL").val(), date_format_);
+
+            console.log("Is_NIC - validatebeforeadd -> ");
 
             if (self.ArrayValidate()[index].ProcLab() === "" || typeof self.ArrayValidate()[index].ProcLab() === "undefined")
                 msg += "\n" + msgValidateProcessSelectLab;
@@ -1936,6 +2036,8 @@ function LabViewModel(app, dataModel) {
                         labtest.EndFlow(data.LabTests[index].EndFlow);
                         labtest.ProcLab(data.LabTests[index].ProcLab.toString());
                         labtest.LabID(data.LabTests[index].ProcLab.toString());
+                        labtest.Is_NIC(data.LabTests[index].Is_NIC);
+                        labtest.OrderFlow(data.LabTests[index].OrderFlow);
                         labtest.ProcLabName(data.LabTests[index].ProcLabName.toString());
                         labtest.ProcessLab(data.LabTests[index].ProcessLab.toString());
                         labtest.TestType(data.LabTests[index].TestType);
@@ -1994,6 +2096,8 @@ function LabViewModel(app, dataModel) {
                         labtest_s2.ProcLab(data.LabTests_Sample2[index].ProcLab.toString());
                         //console.log("--ProcLab Sample2 -- " + labtest.ProcLab());
                         labtest_s2.LabID(data.LabTests_Sample2[index].ProcLab.toString());
+                        labtest.Is_NIC(data.LabTests_Sample2[index].Is_NIC);
+                        labtest.OrderFlow(data.LabTests_Sample2[index].OrderFlow);
                         labtest_s2.ProcLabName(data.LabTests_Sample2[index].ProcLabName.toString());
                         labtest_s2.ProcessLab(data.LabTests_Sample2[index].ProcessLab.toString());
                         labtest_s2.TestType(data.LabTests_Sample2[index].TestType);
@@ -2047,6 +2151,8 @@ function LabViewModel(app, dataModel) {
                         labtest_s3.ProcLab(data.LabTests_Sample3[index].ProcLab.toString());
                         //console.log("--ProcLab Sample3 -- " + labtest.ProcLab());
                         labtest_s3.LabID(data.LabTests_Sample3[index].ProcLab.toString());
+                        labtest.Is_NIC(data.LabTests_Sample3[index].Is_NIC);
+                        labtest.OrderFlow(data.LabTests_Sample3[index].OrderFlow);
                         labtest_s3.ProcLabName(data.LabTests_Sample3[index].ProcLabName.toString());
                         labtest_s3.ProcessLab(data.LabTests_Sample3[index].ProcessLab.toString());
                         labtest_s3.TestType(data.LabTests_Sample3[index].TestType);
