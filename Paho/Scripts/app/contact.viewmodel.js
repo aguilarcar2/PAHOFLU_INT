@@ -296,13 +296,16 @@ function ContactViewModel(app, dataModel) {
             if (self.DocumentType() == 1 && (string_length != 9 || isNaN(self.NoExpediente()) == true )) {
                 alert(msgValidationDocumentFormat);
                 self.NoExpediente("");
-            } else if (self.DocumentType() == 2 && string_length != 10) {
-                alert(msgValidationInsuredNumber);
-                self.NoExpediente("");
-            } else if (self.DocumentType() == 3 && string_length != 14) {
-                alert(msgValidationInternalDoc);
-                self.NoExpediente("");
             }
+
+            // Desactivado para CR por el momento por la pandemia de SARS-CoV-2
+            //else if (self.DocumentType() == 2 && string_length != 10) {
+            //    alert(msgValidationInsuredNumber);
+            //    self.NoExpediente("");
+            //} else if (self.DocumentType() == 3 && string_length != 14) {
+            //    alert(msgValidationInternalDoc);
+            //    self.NoExpediente("");
+            //}
 
         }
 

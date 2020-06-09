@@ -3295,9 +3295,12 @@ namespace Paho.Controllers
                     LabsResult = institutions.Select(x => new { Id = x.ID.ToString(), x.Name }).ToList(),
                     SubTypeByLabRes = GetSubTypebyLab(user.InstitutionID),
                     //ORIGINAL: CanConclude = (SARSCoV2_First_Positive_Temp && user_cty != 7) ? canConclude & canConclude_Sample_1 & canConclude_Sample_2 & canConclude_Sample_3 && SARSCoV2_Second_Negative_After_Positive_Temp : canConclude & canConclude_Sample_1 & canConclude_Sample_2 & canConclude_Sample_3,
+                    //CanConclude = (flucase.FlowType1 == 2) ?                //#### CAFQ: FL-200526
+                    //              canConclude : 
+                    //              ((SARSCoV2_First_Positive_Temp && user_cty != 7) ? canConclude & canConclude_Sample_1 & canConclude_Sample_2 & canConclude_Sample_3 && SARSCoV2_Second_Negative_After_Positive_Temp : canConclude & canConclude_Sample_1 & canConclude_Sample_2 & canConclude_Sample_3),    //#### CAFQ: FL-200526
                     CanConclude = (flucase.FlowType1 == 2) ?                //#### CAFQ: FL-200526
                                   canConclude : 
-                                  ((SARSCoV2_First_Positive_Temp && user_cty != 7) ? canConclude & canConclude_Sample_1 & canConclude_Sample_2 & canConclude_Sample_3 && SARSCoV2_Second_Negative_After_Positive_Temp : canConclude & canConclude_Sample_1 & canConclude_Sample_2 & canConclude_Sample_3),    //#### CAFQ: FL-200526
+                                 (canConclude & canConclude_Sample_1 & canConclude_Sample_2 & canConclude_Sample_3),    //#### JAMM - 20200607 - Desactivar la conclusión del caso esperar a tener segunda muestra negativa
                     SARSCoV2_Positive =  SARSCoV2_First_Positive_Temp,
                     SARSCoV2_Negative_1=SARSCoV2_First_Negative_After_Positive_Temp,
                     SARSCoV2_Negative_2=SARSCoV2_Second_Negative_After_Positive_Temp,
