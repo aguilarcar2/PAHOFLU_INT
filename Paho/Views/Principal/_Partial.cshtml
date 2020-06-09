@@ -107,7 +107,7 @@
                                         //        serie3: element2.serie3,
                                         //        serie4: element2.serie4
                                         //    });
-                                        //}                                        
+                                        //}
                                     });
                                 });
 
@@ -146,7 +146,7 @@
                                             "valueField": "serie1",
                                             "type": "line",
                                             "fillAlphas": 0
-                                            }, 
+                                            },
                                             {
                                             "valueAxis": "v1",
                                             "lineColor": "#000000",
@@ -158,7 +158,7 @@
                                             "valueField": "serie2",
                                             "type": "line",
                                             "fillAlphas": 0
-                                            }, 
+                                            },
                                             {
                                             "valueAxis": "v1",
                                             "lineColor": "#FFFF00",
@@ -170,7 +170,7 @@
                                             "valueField": "serie3",
                                             "type": "line",
                                             "fillAlphas": 0
-                                            }, 
+                                            },
                                             {
                                             "valueAxis": "v1",
                                             "lineColor": "#FABF8F",
@@ -389,18 +389,17 @@
 
         <div id="containerGraph7">
             @*
-            <div class="col-md-6">
-                <span id="LBPais">
-                    País: @((ViewBag.UsrCtry == 7) ? "CHILE" : (ViewBag.UsrCtry == 9) ? "COSTA RICA" : "BOLIVIA")
-                </span>
-            </div>
+                <div class="col-md-6">
+                    <span id="LBPais">
+                        País: @((ViewBag.UsrCtry == 7) ? "CHILE" : (ViewBag.UsrCtry == 9) ? "COSTA RICA" : "BOLIVIA")
+                    </span>
+                </div>
             *@
             <div id="loaderGraph7" class="loaderGraph"></div>
             <div id="divGraph7"></div>
         </div>
         <!--<script>GetGraphData7();</script>-->
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxFIN Gráfica 7 - Lineas Basales xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
-
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGráfica 8 - Indicadores de Desempeño xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <script>
                 var jsonX;
@@ -799,13 +798,11 @@
                 </table>
             </div>
         </div>
-        <!--<script>GetGraphData8();</script>-->
+
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxFIN Gráfica 8 - Indicadores de Desempeño xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
-        
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGráfica 1 - Epidemiológico 1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <script>
             var expanded = false;
-
 
             function showCheckboxes() {
                 var checkboxes = document.getElementById("c_b");
@@ -838,7 +835,6 @@
                 //Esta sección sirve para consolidar los años seleccionados en un string separado por comas
                 var allVals = [];
                 var yrs = "";
-
 
                 //alert($("#anios").val());
                 $(document).ready(function () {
@@ -922,6 +918,8 @@
                             $("#containerControl0").hide(0);
                             $("#divGraph0").hide(0);
                             $("#loaderGraph0").show();
+                            $("#divGraph0a").hide(0);               // Antecedentes SARS-CoV-2
+                            $("#loaderGraph0a").show();             // Antecedentes SARS-CoV-2
                             $("#divGraph1").hide(0);
                             $("#loaderGraph1").show();
                             $("#divGraph2").hide(0);
@@ -949,6 +947,8 @@
                             $("#containerControl0").show();
                             $("#divGraph0").show();
                             $("#loaderGraph0").hide(0);
+                            $("#divGraph0a").show();                    // Antecedentes SARS-CoV-2
+                            $("#loaderGraph0a").hide(0);                // Antecedentes SARS-CoV-2
                             $("#divGraph1").show();
                             $("#loaderGraph1").hide(0);
                             $("#divGraph2").show();
@@ -1145,7 +1145,8 @@
                             GetGraphData3();
                             GetGraphData4();
                             GetGraphData5();
-                            GetGraphData0();
+                            GetGraphData0();                // Antecedentes
+                            GetGraphData0a();               // Antecedentes SARS-CoV-2
                             GetGraphData11();
                             GetGraphData12();
                             GetGraphData9();
@@ -1428,9 +1429,8 @@
         </div>
 
         <script>GetGraphData1();</script>
-        <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxFIN Gráfica 1 - Epidemiológico 1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
-        
-        <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGráfica 0 - Epidemiológico 1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+        <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxFIN Gráfica 1 - Epidemiológico xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+        <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGráfica0: Antecedentes - Epidemiológico xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <script>
                 $(document).mouseup(function(e)
                 {
@@ -1693,8 +1693,7 @@
             <div id="divGraph0"></div>
         </div>
 
-        <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxFIN Gráfica 0 - Epidemiológico 1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
-        
+        <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxFIN Gráfica 0 - Epidemiológico xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGráfica 2 - Epidemiológico 2xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <script>
             var jsonX;
@@ -2001,8 +2000,8 @@
             <div id="divGraph2"></div>
         </div>
 
-        <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxFIN Gráfica 2 - Epidemiológico 2xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
-        <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGráfica 3 - Epidemiológico 3xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+        <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxFIN Gráfica 2 - Epidemiológico 2xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+        <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGráfica 3 - Epidemiológico 3 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <script>
             var jsonX;
             function GetGraphData3() {
@@ -2387,8 +2386,271 @@
             <div id="divGraph3"></div>
         </div>
 
-        <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxFIN Gráfica 3 - Epidemiológico 3xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
-        <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGráfica 4 - Epidemiológico 4xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+        <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx Gráfica 3: FIN              xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+        <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx Gráfica 0a: Antecedentes SARS-CoV-2 - Epidemiológico xxxxxxxxxxxxxxxxxxxxxxxx-->
+        <script>
+                //$(document).mouseup(function(e)
+                //{
+                //    //var container = $("#c_b");
+                //    var subcontainer = $("#c_b");
+                //    var subcontainer2 = $("#map_c_b");
+                //    // if the target of the click isn't the container nor a descendant of the container
+                //    if (!subcontainer.is(e.target) && subcontainer.has(e.target).length === 0  )
+                //    {
+                //        subcontainer.hide();
+                //        expanded = false;
+                //    }
+                //    if (!subcontainer2.is(e.target) && subcontainer2.has(e.target).length === 0  )
+                //    {
+                //        subcontainer2.hide();
+                //        expandedMap = false;
+                //    }
+                //});
+
+                var jsonX;
+                function GetGraphData0a() {
+                    var dataRegion = 0;
+                    var dataHospital = 0;
+                    var dataIrag = 0;
+                    var dataEti = 0;
+                    if($("#chkCountry").is(':checked')){
+                        //alert("Pais chequeado");
+                        dataRegion = 0;
+                        dataHospital = 0;
+                        dataIrag = 1;
+                        dataEti = 0;
+                    }
+                    else{
+                        dataRegion = $("#Regions option:selected").val();
+                        dataHospital = $("#Hospitals option:selected").val();
+                        if($("#chkIrag").is(':checked')){
+                            dataIrag = 1;
+                        }
+                        if($("#chkEti").is(':checked')){
+                            dataEti = 1;
+                        }
+                    }
+                    //Esta sección sirve para consolidar los años seleccionados en un string separado por comas
+                    var allVals = [];
+                    var yrs = "";
+                    $('#c_b :checked').each(function() {
+                        allVals.push($(this).val());
+                    });
+                    yrs = allVals.join();
+                    $("#anios").val(yrs);
+
+                    $(document).ready(function () {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/Graph/GetGraphDataTuned',
+                            data: "{'CountryID':" + GraphCountryID +",'Year':'" + $("#anios").val() + "','Graph':'Graph0a','RegionID':'" + dataRegion + "', 'HospitalID':'" + dataHospital + "', 'IRAG':'" + dataIrag + "', 'ETI':'" + dataEti + "'}",
+                            contentType: "application/json",
+                            dataType: 'json',
+                            success: function (data) {
+                                var json_obj = JSON.parse(data);
+                                jsonX = JSON.parse(data);
+                                var chartData = [];
+                                $.each(jsonX, function(index, element) {
+                                    //alert (JSON.stringify(element));
+                                    var container = $('#divGraph0a');
+                                    container.empty();
+
+                                    $('<p />', { text: jsonX.graph.graphTitle, class:'amcharts-title amcharts-title-own' }).appendTo(container);
+                                    //alert (JSON.stringify(element.graphTitle));
+                                    $('<table />', {id:'tableAntecedentesA', class:'table-own' }).appendTo(container);
+                                    var container = $('#tableAntecedentesA');
+                                    $('<tr />', {id:'trheadersA',class:'table-tr-own'}).appendTo(container);
+                                    var container = $('#trheadersA');
+                                    $.each(element.graphHeaders.header, function(index2, element2) {
+                                        var colspanThis = 1;
+                                        if(index2>0){
+                                            colspanThis = 2;
+                                        }
+                                        $('<td />', {id:'tdheadersA',colspan:colspanThis, class:'table-td-own', text:element2 }).appendTo(container);
+                                    });
+                                    var container = $('#tableAntecedentesA');
+                                    $('<tr />', {id:'trsubheadersA',class:'table-subtr-own' }).appendTo(container);
+                                    var container = $('#trsubheadersA');
+                                    $.each(element.subGraphHeaders.subheader, function(index2, element2) {
+                                        $('<td />', {id:'tdsubheadersA',class:'table-subtd-own', text:element2 }).appendTo(container);
+                                    });
+
+                                    var container = $('#tableAntecedentesA');
+                                    $.each(element.row, function(index2, element2) {
+                                        var clase = "";
+
+                                        if(index2==0){
+                                            clase= clase + " bold";
+                                        }
+                                        if(index2 == 7){
+                                            clase = clase + " gray-background";
+                                        }
+                                        if(index2 == 8 || index2 == 9 || index2 == 10 ){
+                                            clase = clase + " lgray-background";
+                                        }
+                                        if(index2==14){
+                                            clase = clase + " bold";
+                                            clase = clase + " gray-background";
+                                        }
+                                        if(index2==15){
+                                            $('<tr />', {id:'trdataA'+index2+'_1',class:'table-trdata-own gray-background bold'}).appendTo(container);
+                                            var tempContainer = $('#'+'trdataA'+index2+'_1');
+                                            //$('<td />', {id:'tddata',class:'table-tddata-own', text:"Otros aspectos" }).appendTo(tempContainer);
+                                            $('<td />', {id:'tddataA',class:'table-tddata-own', text:"@(((Paho.Controllers.PrincipalController)this.ViewContext.Controller).getMsg("viewSituationalOtherAspects"))" }).appendTo(tempContainer);
+                                            $('<td />', {id:'tddataA',class:'table-tddata-own'}).appendTo(tempContainer);
+                                            $('<td />', {id:'tddataA',class:'table-tddata-own'}).appendTo(tempContainer);
+                                            $('<td />', {id:'tddataA',class:'table-tddata-own'}).appendTo(tempContainer);
+                                            $('<td />', {id:'tddataA',class:'table-tddata-own'}).appendTo(tempContainer);
+                                            $('<td />', {id:'tddataA',class:'table-tddata-own'}).appendTo(tempContainer);
+                                            $('<td />', {id:'tddataA',class:'table-tddata-own'}).appendTo(tempContainer);
+                                        }
+                                        $('<tr />', {id:'trdataA'+index2,class:'table-trdata-own '+clase }).appendTo(container);
+                                        var container2 = $('#trdataA'+index2);
+                                        $.each(element2.col, function(index3, element3) {
+                                            if(index2 == 7)                     // Obesidad
+                                                if(index3 == 0)
+                                                    $('<td />', {id:'tddataA',class:'table-tddata-own', text:element3 }).appendTo(container2);
+                                                else
+                                                    $('<td />', {id:'tddataA',class:'table-tddata-own', text:'' }).appendTo(container2);
+                                            else
+                                                $('<td />', {id:'tddataA',class:'table-tddata-own', text:element3 }).appendTo(container2);
+
+                                            ////////$('<td />', {id:'tddata',class:'table-tddata-own', text:element3 }).appendTo(container2);
+                                            //alert (JSON.stringify(element2));
+                                        });
+                                    });
+                                });
+
+                                //-----------------Quita los ceros del fin y del inicio del array----------------------
+                                chartDataLength = chartData.length;
+                                if(chartDataLength>0){
+                                    for(i = chartDataLength-1; i>0;i--){
+                                        //alert(chartData[i].semana);
+                                        if(chartData[i].serie1==0 && chartData[i].serie2==0 && chartData[i].serie3==0 && chartData[i].serie4==0 && chartData[i].serie5==0 && chartData[i].serie6==0 && chartData[i].serie7==0){
+                                            chartData.pop();
+                                        }
+                                        else{
+                                            break;
+                                        }
+                                    }
+                                }
+                                chartDataLength = chartData.length;
+                                //alert(chartDataLength);
+                                chartData.reverse();
+                                if(chartDataLength>0){
+                                    for(i = chartDataLength-1; i>0;i--){
+                                        //alert(chartData[i].semana);
+                                        if(chartData[i].serie1==0 && chartData[i].serie2==0 && chartData[i].serie3==0 && chartData[i].serie4==0 && chartData[i].serie5==0 && chartData[i].serie6==0 && chartData[i].serie7==0){
+                                            chartData.pop();
+                                        }
+                                        else{
+                                            break;
+                                        }
+                                    }
+                                }
+                                chartData.reverse();
+                                //-----------------FIN de Quita los ceros del fin y del inicio del array----------------------
+
+
+                                //chart.zoomToIndexes(chart.dataProvider.length - 10, chart.dataProvider.length - 1);
+                            }
+                        });
+                    })
+                };
+        </script>
+
+        <style>
+            .bold {
+                font-weight: bold;
+            }
+
+            .gray-background {
+                background-color: lightgrey;
+            }
+
+            .lgray-background {
+                background-color: #f3f3f3;
+            }
+
+            .table-own {
+                border: solid black 1px;
+                font-family: Verdana;
+                font-size: 11px;
+            }
+
+            .table-tr-own {
+                border: solid black 1px;
+                font-weight: bold;
+                background-color: lightgray;
+            }
+
+            .table-td-own {
+                border: solid black 1px;
+            }
+
+            .table-trdata-own {
+                border: solid black 1px;
+                padding: 3px;
+            }
+
+            .table-tddata-own {
+                border: solid black 1px;
+                padding: 3px;
+            }
+
+            .table-subtr-own {
+                border: solid black 1px;
+                font-weight: bold;
+                color: #7d7d7d;
+            }
+
+            .table-subtd-own {
+                border: solid black 1px;
+            }
+
+            .amcharts-title-own {
+                font-family: Verdana;
+                font-size: 15px;
+                font-weight: bold;
+                text-align: center;
+                padding-top: 13px;
+            }
+
+            .loaderGraph {
+                display: block;
+                position: fixed;
+                z-index: 1000;
+                top: 0;
+                left: 0;
+                width: 750px;
+                height: 600px;
+                background: rgba( 255, 255, 255, .8 ) url('/Content/themes/base/images/ajax-loader.gif') 50% 50% no-repeat;
+            }
+
+            #divGraph0a {
+                display: none;
+                width: 100%;
+                height: 600px;
+                padding: 15px 48px;
+            }
+
+            #containerGraph0a {
+                border: solid #e4e4e4 1px;
+                width: 48%;
+                float: left;
+                margin: 5px;
+            }
+        </style>
+        <div id="containerGraph0a">
+            <!--Inicio de gráficas-->
+            <!--Gráfica Epidemiológica 1-->
+            <!--button onclick="GetGraphData2()">Generate</button-->
+            <div id="loaderGraph0a" class="loaderGraph"><!-- Place at bottom of page --></div>
+            <div id="divGraph0a"></div>
+        </div>
+
+        <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx Gráfica 0a: FIN             xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+        <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx Gráfica 4 - Epidemiológico 4xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <script>
             var jsonX;
             function GetGraphData4() {
@@ -2796,7 +3058,7 @@
             <div id="divGraph4"></div>
         </div>
 
-        <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxFIN Gráfica 4 - Epidemiológico 4xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+        <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx Gráfica 4: FIN  - Epidemiológico 4xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGráfica 5 - Epidemiológico 5xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <script>
             var jsonX;
@@ -5677,7 +5939,6 @@
         </div>
 
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxFIN Gráfica 10 - ETI 2 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
-
         <!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx Controles para los MAPAS xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
         <script>
             /**
@@ -6635,7 +6896,6 @@
         </script>
 
         <!---xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx MAPA 3 END xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx--->
-
         <!-- HTML -->
         <script>
             var CountryIDM = @Html.Raw(Model.CountryID);

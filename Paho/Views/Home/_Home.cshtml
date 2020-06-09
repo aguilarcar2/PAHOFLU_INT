@@ -2253,15 +2253,15 @@
 							        <option value="3">Amantadine</option>
                                     <option value="4">Rimantadine</option>
 							    }
-                                @if (ViewBag.UsrCtry == 15)
-                                {
-                                    <option value="7">Tratamiento Catracho</option>
-                                    <option value="8">Tratamiento Maíz</option>
-                                }
                                 <option value="5"> @LabelAntiViralSinInformacion</option> 
                                 @if (ViewBag.UsrCtry == 25)
                                 {
                                     <option value="6">@LabelAntiViralOther</option>
+                                }
+                                @if (ViewBag.UsrCtry == 15)
+                                {
+                                    <option value="7">Tratamiento Catracho</option>
+                                    <option value="8">Tratamiento Maíz</option>
                                 }
                             </select>
                             &nbsp;&nbsp;

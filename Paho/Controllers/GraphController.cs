@@ -36,12 +36,12 @@ namespace Paho.Controllers
             return View();
         }
 
-        public JsonResult GetGraphDataSample(string Report, int CountryID, int? RegionID, int? HospitalID, string Year, int? Month, int? SE, DateTime? StartDate, DateTime? EndDate, int? ReportCountry, string Graph)
-        {
-            string jsontext = "{\"graph\":{\"graphTitle\":\"Distribución de las proporciones de hospitalizaciones, admisiones en UCI y fallecidos por IRAG según SE\",\"graphXAxisTitle\":\"Semana Epidemiológica\",\"graphYAxisTitle\":\"Porcentaje\",\"graphData\":{\"graphDataItem\":[{\"semana\":\"2017-1\",\"serie1\":\"1.55\",\"serie2\":\"3.53\",\"serie3\":\"2.06\"},{\"semana\":\"2017-2\",\"serie1\":\"1.94\",\"serie2\":\"2.46\",\"serie3\":\"3.19\"},{\"semana\":\"2017-3\",\"serie1\":\"1.61\",\"serie2\":\"3.40\",\"serie3\":\"4.55\"},{\"semana\":\"2017-4\",\"serie1\":\"1.23\",\"serie2\":\"3.00\",\"serie3\":\"0\"},{\"semana\":\"2017-5\",\"serie1\":\"1.33\",\"serie2\":\"2.14\",\"serie3\":\"3.03\"},{\"semana\":\"2017-6\",\"serie1\":\"1.70\",\"serie2\":\"3.98\",\"serie3\":\"0\"},{\"semana\":\"2017-7\",\"serie1\":\"1.38\",\"serie2\":\"1.84\",\"serie3\":\"1.92\"},{\"semana\":\"2017-8\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-9\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-10\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-11\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-12\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-13\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-14\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-15\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-16\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-17\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-18\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-19\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-20\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-21\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-22\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-23\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-24\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-25\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-26\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-27\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-28\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-29\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-30\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-31\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-32\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-33\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-34\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-35\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-36\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-37\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-38\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-39\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-40\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-41\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-42\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-43\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-44\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-45\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-46\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-47\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-48\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-49\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-50\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-51\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-52\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-53\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"}]},\"graphSeries1Label\":\"% de IRAG\",\"graphSeries2Label\":\"% de IRAG en UCI\",\"graphSeries3Label\":\"% de fallecidos por IRAG\"}}";
-            return Json(jsontext);
-        }
-        
+        //public JsonResult GetGraphDataSample(string Report, int CountryID, int? RegionID, int? HospitalID, string Year, int? Month, int? SE, DateTime? StartDate, DateTime? EndDate, int? ReportCountry, string Graph)
+        //{
+        //    string jsontext = "{\"graph\":{\"graphTitle\":\"Distribución de las proporciones de hospitalizaciones, admisiones en UCI y fallecidos por IRAG según SE\",\"graphXAxisTitle\":\"Semana Epidemiológica\",\"graphYAxisTitle\":\"Porcentaje\",\"graphData\":{\"graphDataItem\":[{\"semana\":\"2017-1\",\"serie1\":\"1.55\",\"serie2\":\"3.53\",\"serie3\":\"2.06\"},{\"semana\":\"2017-2\",\"serie1\":\"1.94\",\"serie2\":\"2.46\",\"serie3\":\"3.19\"},{\"semana\":\"2017-3\",\"serie1\":\"1.61\",\"serie2\":\"3.40\",\"serie3\":\"4.55\"},{\"semana\":\"2017-4\",\"serie1\":\"1.23\",\"serie2\":\"3.00\",\"serie3\":\"0\"},{\"semana\":\"2017-5\",\"serie1\":\"1.33\",\"serie2\":\"2.14\",\"serie3\":\"3.03\"},{\"semana\":\"2017-6\",\"serie1\":\"1.70\",\"serie2\":\"3.98\",\"serie3\":\"0\"},{\"semana\":\"2017-7\",\"serie1\":\"1.38\",\"serie2\":\"1.84\",\"serie3\":\"1.92\"},{\"semana\":\"2017-8\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-9\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-10\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-11\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-12\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-13\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-14\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-15\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-16\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-17\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-18\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-19\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-20\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-21\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-22\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-23\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-24\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-25\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-26\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-27\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-28\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-29\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-30\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-31\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-32\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-33\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-34\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-35\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-36\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-37\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-38\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-39\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-40\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-41\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-42\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-43\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-44\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-45\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-46\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-47\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-48\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-49\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-50\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-51\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-52\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"},{\"semana\":\"2017-53\",\"serie1\":\"0\",\"serie2\":\"0\",\"serie3\":\"0\"}]},\"graphSeries1Label\":\"% de IRAG\",\"graphSeries2Label\":\"% de IRAG en UCI\",\"graphSeries3Label\":\"% de fallecidos por IRAG\"}}";
+        //    return Json(jsontext);
+        //}
+
         public JsonResult GetYears(int countryId)
         {
             //string resultGetDataYears = "";
@@ -52,25 +52,24 @@ namespace Paho.Controllers
             {
                 using (var command = new SqlCommand("GetDataYears", con) { CommandType = CommandType.StoredProcedure, CommandTimeout = 1200 })
                 {
-                    command.Parameters.Clear();                    
+                    command.Parameters.Clear();
                     con.Open();
                     command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
                     using (var reader = command.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            //resultGetDataYears = reader["DataYear"].ToString().Trim();
                             resultGetDataYears.Add(reader["DataYear"].ToString().Trim());
-
                         }
                     }
                 }
             }
+
             var json = JsonConvert.SerializeObject(resultGetDataYears);
             return Json(json);
         }
-        
-        private static void AppendDataToExcel(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, 
+
+        private static void AppendDataToExcel(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate,
             DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? irag_, int? eti_)
         {
             try
@@ -402,277 +401,193 @@ namespace Paho.Controllers
                     }
                 }
 
-            /*Inserción de tablas en el tab  de antecedentes del reporte R6*/
-            if (storedProcedure == "R6")
-            {
-                    //Antecedentes_DataToSheetExcel(string consString, ExcelWorkbook excelWorkBook, int AntecedentesType, int starRowAntec, int starColAntec, int countryId, int ? regionId,
-                    //    string languaje_, int ? year, int ? hospitalId, int ? month, int ? se, DateTime ? startDate, DateTime ? endDate, int ? YearFrom, int ? YearTo, int ? Surv, bool ? SurvInusual, string VirusList = "")
-                    //, int? irag_, int? eti_
+                /* Antecedentes: Inserción de datos en el tab de antecedentes del reporte R6*/
+                if (storedProcedure == "R6")
+                {
                     int IRAG = Convert.ToInt32(irag_);
                     int ETI = Convert.ToInt32(eti_);
 
                     int Surv;
-                    if (IRAG == 0 && ETI == 0)
-                    {
+                    if ((IRAG == 0 && ETI == 0) || (IRAG == 1 && ETI == 1))
                         Surv = 0;
-                    }
-                    else if (IRAG == 1 && ETI == 1)
-                    {
-                        Surv = 0;
-                    }
                     else if (ETI == 1)
-                    {
                         Surv = 2;
-                    }
                     else
                         Surv = IRAG;
 
                     Antecedentes_DataToSheetExcel(consString, excelWorkBook, 1, 0, 0, countryId, regionId, languaje_, year, hospitalId, month, se, startDate, endDate, null, null, Surv, null);
 
                     Antecedentes_DataToSheetExcel(consString, excelWorkBook, 2, 0, 0, countryId, regionId, languaje_, year, hospitalId, month, se, startDate, endDate, null, null, Surv, null, "14");
-
-                    //using (var con = new SqlConnection(consString))
-                    //{
-                    //    using (var command = new SqlCommand("R6_antecedentes", con) { CommandType = CommandType.StoredProcedure })
-                    //    {
-                    //        command.Parameters.Clear();
-                    //        command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
-                    //        command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
-                    //        command.Parameters.Add("@Languaje", SqlDbType.Text).Value = languaje_;
-                    //        command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
-                    //        command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
-                    //        command.Parameters.Add("@Mes_", SqlDbType.Int).Value = month;
-                    //        command.Parameters.Add("@SE", SqlDbType.Int).Value = se;
-                    //        command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
-                    //        command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
-                    //        command.Parameters.Add("@IRAG", SqlDbType.Int).Value = irag_;
-                    //        command.Parameters.Add("@ETI", SqlDbType.Int).Value = eti_;
-                    //        command.CommandTimeout = 300;
-
-                    //        con.Open();
-
-                    //        using (var reader = command.ExecuteReader())
-                    //        {
-                    //            row = 11;
-                    //            column = 2;
-                    //            var contador_salto = 0;
-                    //            //var excelWorksheet2 = excelWorkBook.Worksheets[2];
-                    //            var excelWorksheet2 = excelWorkBook.Worksheets[excelSheetAntecedName];
-                    //            while (reader.Read())
-                    //            {
-                    //                var col = column;
-                    //                var colcont = 1;
-                    //                for (int i = 0; i < 6; i++)
-                    //                {
-                    //                    var cell = excelWorksheet2.Cells[startRow, col + colcont];
-                    //                    excelWorksheet2.Cells[row, col + colcont].Value = reader.GetValue(i);
-                    //                    if (i == 1 || i == 3)
-                    //                    {
-                    //                        colcont += 4;
-                    //                    }
-                    //                    else
-                    //                    {
-                    //                        colcont += 2;
-                    //                    }
-
-
-                    //                }
-                    //                contador_salto++;
-                    //                if (contador_salto == 1 || contador_salto == 10)
-                    //                {
-                    //                    row += 3;
-                    //                }
-                    //                else
-                    //                {
-                    //                    if (contador_salto == 12 || contador_salto == 16 || contador_salto == 23)
-                    //                    {
-                    //                        row += 2;
-                    //                    }
-                    //                    else
-                    //                    {
-                    //                        row++;
-                    //                    }
-                    //                }
-
-
-                    //            }
-                    //        }
-
-                    //        command.Parameters.Clear();
-                    //        con.Close();
-
-                    //    }
-                    //}
                 }
-            /*Fin inserción tablas*/
+                /*Fin inserción tablas*/
 
-            //inserción de labels y logo en el Excel
-            if (ReportCountry != null)
-            {
-                //inserción de labels
-                using (var con = new SqlConnection(consString))
+                //inserción de labels y logo en el Excel
+                if (ReportCountry != null)
                 {
-                    using (var command = new SqlCommand("select * from ReportCountryConfig where ReportCountryID = @ReportCountryID", con))
+                    //inserción de labels
+                    using (var con = new SqlConnection(consString))
                     {
-                        command.Parameters.Clear();
-                        command.Parameters.Add("@ReportCountryID", SqlDbType.Int).Value = ReportCountry;
-
-                        con.Open();
-                        using (var reader = command.ExecuteReader())
+                        using (var command = new SqlCommand("select * from ReportCountryConfig where ReportCountryID = @ReportCountryID", con))
                         {
-                            while (reader.Read())
+                            command.Parameters.Clear();
+                            command.Parameters.Add("@ReportCountryID", SqlDbType.Int).Value = ReportCountry;
+
+                            con.Open();
+                            using (var reader = command.ExecuteReader())
                             {
-                                int insertrow = (int)reader["row"];
-                                int insertcol = (int)reader["col"];
-                                /**************Inicia inserción de labels automáticos*******************/
-                                /*Si en la base de datos, el label se encierra dentro de dobles llaves {{parametro}}, el parámetro se cambiará por el parámetro correspondiente de búsqueda ingresado en el formulario*/
-                                /*Llenado parámetros que vienen del formulario*/
-                                string labelCountry = "";
-                                string labelHospital = "";
-                                string labelYear = "";
-                                string labelSE = "";
-                                string labelStartDate = "";
-                                string labelEndDate = "";
-
-                                //Obtención del pais y llenado en la variable
-                                if (countryId > 0)
+                                while (reader.Read())
                                 {
-                                    using (var command2 = new SqlCommand("select * from Country where ID = @CountryID", con))
+                                    int insertrow = (int)reader["row"];
+                                    int insertcol = (int)reader["col"];
+                                    /**************Inicia inserción de labels automáticos*******************/
+                                    /*Si en la base de datos, el label se encierra dentro de dobles llaves {{parametro}}, el parámetro se cambiará por el parámetro correspondiente de búsqueda ingresado en el formulario*/
+                                    /*Llenado parámetros que vienen del formulario*/
+                                    string labelCountry = "";
+                                    string labelHospital = "";
+                                    string labelYear = "";
+                                    string labelSE = "";
+                                    string labelStartDate = "";
+                                    string labelEndDate = "";
+
+                                    //Obtención del pais y llenado en la variable
+                                    if (countryId > 0)
                                     {
-                                        command2.Parameters.Clear();
-                                        command2.Parameters.Add("@CountryID", SqlDbType.Int).Value = countryId;
-                                        using (var reader2 = command2.ExecuteReader())
+                                        using (var command2 = new SqlCommand("select * from Country where ID = @CountryID", con))
                                         {
-                                            while (reader2.Read())
+                                            command2.Parameters.Clear();
+                                            command2.Parameters.Add("@CountryID", SqlDbType.Int).Value = countryId;
+                                            using (var reader2 = command2.ExecuteReader())
                                             {
-                                                labelCountry += reader2["Name"];
+                                                while (reader2.Read())
+                                                {
+                                                    labelCountry += reader2["Name"];
+                                                }
                                             }
+                                            command2.Parameters.Clear();
                                         }
-                                        command2.Parameters.Clear();
                                     }
-                                }
-                                if (hospitalId > 0)
-                                {
-                                    using (var command2 = new SqlCommand("select * from Institution where ID = @InstitutionID", con))
+                                    if (hospitalId > 0)
                                     {
-                                        command2.Parameters.Clear();
-                                        command2.Parameters.Add("@InstitutionID", SqlDbType.Int).Value = hospitalId;
-                                        using (var reader2 = command2.ExecuteReader())
+                                        using (var command2 = new SqlCommand("select * from Institution where ID = @InstitutionID", con))
                                         {
-                                            while (reader2.Read())
+                                            command2.Parameters.Clear();
+                                            command2.Parameters.Add("@InstitutionID", SqlDbType.Int).Value = hospitalId;
+                                            using (var reader2 = command2.ExecuteReader())
                                             {
-                                                labelHospital += reader2["FullName"];
+                                                while (reader2.Read())
+                                                {
+                                                    labelHospital += reader2["FullName"];
+                                                }
                                             }
+                                            command2.Parameters.Clear();
                                         }
-                                        command2.Parameters.Clear();
                                     }
-                                }
-                                if (year > 0)
-                                {
-                                    labelYear += year;
-                                }
-                                if (se > 0)
-                                {
-                                    labelSE += se;
-                                }
-                                if (startDate.HasValue)
-                                {
-                                    labelStartDate += startDate.ToString();
-                                    DateTime oDate = Convert.ToDateTime(labelStartDate);
-                                    labelStartDate = oDate.Date.ToString();
-                                }
-                                if (endDate.HasValue)
-                                {
-                                    labelEndDate += endDate.ToString();
-                                    DateTime oDate = Convert.ToDateTime(labelEndDate);
-                                    labelEndDate = oDate.Date.ToString();
-                                }
-                                /*Fin llenado parámetros*/
-
-                                string label = reader["label"].ToString();
-                                if (label != "")
-                                {
-                                    if (label.StartsWith("{{") && label.EndsWith("}}"))
+                                    if (year > 0)
                                     {
-                                        switch (label)
+                                        labelYear += year;
+                                    }
+                                    if (se > 0)
+                                    {
+                                        labelSE += se;
+                                    }
+                                    if (startDate.HasValue)
+                                    {
+                                        labelStartDate += startDate.ToString();
+                                        DateTime oDate = Convert.ToDateTime(labelStartDate);
+                                        labelStartDate = oDate.Date.ToString();
+                                    }
+                                    if (endDate.HasValue)
+                                    {
+                                        labelEndDate += endDate.ToString();
+                                        DateTime oDate = Convert.ToDateTime(labelEndDate);
+                                        labelEndDate = oDate.Date.ToString();
+                                    }
+                                    /*Fin llenado parámetros*/
+
+                                    string label = reader["label"].ToString();
+                                    if (label != "")
+                                    {
+                                        if (label.StartsWith("{{") && label.EndsWith("}}"))
                                         {
-                                            case "{{country}}":
-                                                label = (labelCountry != "" ? ("Pais:" + labelCountry) : "");
-                                                break;
-                                            case "{{institution}}":
-                                                label = (labelHospital != "" ? ("Inst:" + labelHospital) : "");
-                                                break;
-                                            case "{{year}}":
-                                                label = (labelYear != "" ? ("Año:" + labelYear) : "");
-                                                break;
-                                            case "{{se}}":
-                                                label = (labelSE != "" ? ("SE:" + labelSE) : "");
-                                                break;
-                                            case "{{startDate}}":
-                                                label = (labelStartDate != "" ? ("Del:" + labelStartDate) : "");
-                                                break;
-                                            case "{{endDate}}":
-                                                label = (labelEndDate != "" ? ("Al:" + labelEndDate) : "");
-                                                break;
-                                            case "{{fullinstitution}}":
-                                                label = (labelCountry != "" ? ("Pais:" + labelCountry) : "") + " " + (labelHospital != "" ? ("Inst:" + labelHospital) : "");
-                                                break;
-                                            case "{{fulldate}}":
-                                                label = (labelYear != "" ? ("Año:" + labelYear) : "") + " " + (labelSE != "" ? ("SE:" + labelSE) : "") + " " + (labelStartDate != "" ? ("Del:" + labelStartDate) : "") + " " + (labelEndDate != "" ? ("Al:" + labelEndDate) : "");
-                                                break;
+                                            switch (label)
+                                            {
+                                                case "{{country}}":
+                                                    label = (labelCountry != "" ? ("Pais:" + labelCountry) : "");
+                                                    break;
+                                                case "{{institution}}":
+                                                    label = (labelHospital != "" ? ("Inst:" + labelHospital) : "");
+                                                    break;
+                                                case "{{year}}":
+                                                    label = (labelYear != "" ? ("Año:" + labelYear) : "");
+                                                    break;
+                                                case "{{se}}":
+                                                    label = (labelSE != "" ? ("SE:" + labelSE) : "");
+                                                    break;
+                                                case "{{startDate}}":
+                                                    label = (labelStartDate != "" ? ("Del:" + labelStartDate) : "");
+                                                    break;
+                                                case "{{endDate}}":
+                                                    label = (labelEndDate != "" ? ("Al:" + labelEndDate) : "");
+                                                    break;
+                                                case "{{fullinstitution}}":
+                                                    label = (labelCountry != "" ? ("Pais:" + labelCountry) : "") + " " + (labelHospital != "" ? ("Inst:" + labelHospital) : "");
+                                                    break;
+                                                case "{{fulldate}}":
+                                                    label = (labelYear != "" ? ("Año:" + labelYear) : "") + " " + (labelSE != "" ? ("SE:" + labelSE) : "") + " " + (labelStartDate != "" ? ("Del:" + labelStartDate) : "") + " " + (labelEndDate != "" ? ("Al:" + labelEndDate) : "");
+                                                    break;
+                                            }
+
                                         }
-
-                                    }
-                                    excelWorksheet.Cells[insertrow, insertcol].Value = label;
-                                }
-                            }
-                        }
-                        command.Parameters.Clear();
-                        con.Close();
-                    }
-                }
-                //inserción de logo
-                using (var con = new SqlConnection(consString))
-                {
-                    using (var command = new SqlCommand("select * from ReportCountry where ID = @ReportCountryID", con))
-                    {
-                        command.Parameters.Clear();
-                        command.Parameters.Add("@ReportCountryID", SqlDbType.Int).Value = ReportCountry;
-
-                        con.Open();
-                        using (var reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                int insertrow = (int)reader["logoRow"];
-                                int insertcol = (int)reader["logoCol"];
-                                String imagurl = (String)reader["logo"];
-                                if (imagurl != "")
-                                {
-                                    try
-                                    {
-                                        WebClient wc = new WebClient();
-                                        byte[] bytes = wc.DownloadData(imagurl);
-                                        MemoryStream ms = new MemoryStream(bytes);
-                                        Bitmap newImage = new Bitmap(System.Drawing.Image.FromStream(ms));
-                                        excelWorksheet.Row(insertrow).Height = newImage.Height;
-                                        var picture = excelWorksheet.Drawings.AddPicture("reportlogo", newImage);
-                                        picture.SetPosition(insertrow, -(newImage.Height), insertcol, -100);
-                                        //picture.SetPosition(insertrow, 0, insertcol, 0);
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        //ViewBag.Message = "No se insertó el logo, porque no es accesible";
+                                        excelWorksheet.Cells[insertrow, insertcol].Value = label;
                                     }
                                 }
                             }
+                            command.Parameters.Clear();
+                            con.Close();
                         }
-                        command.Parameters.Clear();
-                        con.Close();
                     }
-                }
+                    //inserción de logo
+                    using (var con = new SqlConnection(consString))
+                    {
+                        using (var command = new SqlCommand("select * from ReportCountry where ID = @ReportCountryID", con))
+                        {
+                            command.Parameters.Clear();
+                            command.Parameters.Add("@ReportCountryID", SqlDbType.Int).Value = ReportCountry;
 
-            }
+                            con.Open();
+                            using (var reader = command.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    int insertrow = (int)reader["logoRow"];
+                                    int insertcol = (int)reader["logoCol"];
+                                    String imagurl = (String)reader["logo"];
+                                    if (imagurl != "")
+                                    {
+                                        try
+                                        {
+                                            WebClient wc = new WebClient();
+                                            byte[] bytes = wc.DownloadData(imagurl);
+                                            MemoryStream ms = new MemoryStream(bytes);
+                                            Bitmap newImage = new Bitmap(System.Drawing.Image.FromStream(ms));
+                                            excelWorksheet.Row(insertrow).Height = newImage.Height;
+                                            var picture = excelWorksheet.Drawings.AddPicture("reportlogo", newImage);
+                                            picture.SetPosition(insertrow, -(newImage.Height), insertcol, -100);
+                                            //picture.SetPosition(insertrow, 0, insertcol, 0);
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            //ViewBag.Message = "No se insertó el logo, porque no es accesible";
+                                        }
+                                    }
+                                }
+                            }
+                            command.Parameters.Clear();
+                            con.Close();
+                        }
+                    }
+
+                }
             }
             catch (Exception e)
             {
@@ -790,6 +705,217 @@ namespace Paho.Controllers
             }
         }
 
+        private static void XMLCreateStructureForGraphic(XmlDocument myXmlDoc2, ref XmlNode myXmlNode2, string titleGraph, string titleGraphX, string titleGraphY1, string titleGraphY2)
+        {
+            //XmlNode myXmlNode2; XMLCreateStructureForGraphic
+            myXmlDoc2.AppendChild(myXmlDoc2.CreateElement("graph"));
+
+            myXmlNode2 = myXmlDoc2.CreateElement("graphTitle");
+            //myXmlNode2.InnerText = getMsg("viewSituationalGraph2Title");            // Distribución de casos de IRAG según tipos y subtipos de virus de influenza y de las proporciones de positividad de las muestras analizadas según SE de inicio de síntomas
+            myXmlNode2.InnerText = titleGraph;
+            myXmlDoc2.DocumentElement.AppendChild(myXmlNode2);
+
+
+            if (titleGraphX.Length > 0)
+            {
+                myXmlNode2 = myXmlDoc2.CreateElement("graphXAxisTitle");
+                //myXmlNode2.InnerText = getMsg("viewSituationalGraph2XAxisTitle");       // Semana epidemiológica
+                myXmlNode2.InnerText = titleGraphX;
+                myXmlDoc2.DocumentElement.AppendChild(myXmlNode2);
+            }
+
+            if (titleGraphY1.Length > 0)
+            {
+                myXmlNode2 = myXmlDoc2.CreateElement("graphYAxisTitle");
+                //myXmlNode2.InnerText = getMsg("viewSituationalGraph2YAxisTitle");       // Número de casos positivos
+                myXmlNode2.InnerText = titleGraphY1;
+                myXmlDoc2.DocumentElement.AppendChild(myXmlNode2);
+            }
+
+            if (titleGraphY2.Length > 0)
+            {
+                myXmlNode2 = myXmlDoc2.CreateElement("graphYAxisTitle2");
+                //myXmlNode2.InnerText = getMsg("viewSituationalGraph2YAxisTitle2");      // % positivos a influenza
+                myXmlNode2.InnerText = titleGraphY2;
+                myXmlDoc2.DocumentElement.AppendChild(myXmlNode2);
+            }
+
+            myXmlNode2 = myXmlDoc2.CreateElement("graphData");
+            myXmlDoc2.DocumentElement.AppendChild(myXmlNode2);
+        }
+
+
+        // XmlNode auxXmlNode0;    XmlNode anotherAuxXmlNode0;  ///// myXmlNode0
+        private static void XMLPopulateDataGraph0(XmlDocument myXmlDoc0, XmlNode auxXmlNode0, ExcelWorksheet excelAntecedentesSheet, XmlNode myXmlNode0, ExcelPackage ep, string yr, string labelTotalCases)
+        {
+            //***************************************** GRAPH 0: Llenado de datos para Graph0
+            decimal auxVal0;
+            bool conversionResult0;
+
+            XmlNode yearXmlNode0;
+            XmlNode myAuxXmlNode0;
+
+            yearXmlNode0 = myXmlDoc0.CreateElement("year");
+            XmlAttribute yearNodeAtt0;
+            yearNodeAtt0 = myXmlDoc0.CreateAttribute("date");
+            yearNodeAtt0.InnerText = yr;
+            yearXmlNode0.Attributes.Append(yearNodeAtt0);
+
+            myAuxXmlNode0 = myXmlDoc0.CreateElement("graphHeaders");
+            yearXmlNode0.AppendChild(myAuxXmlNode0);
+
+            XmlAttribute headerAtt;
+
+            auxXmlNode0 = myXmlDoc0.CreateElement("header");
+            headerAtt = myXmlDoc0.CreateAttribute("name");
+            //headerAtt.InnerText = ep.Workbook.Worksheets[2].Cells[7, 1].Value.ToString();
+            headerAtt.InnerText = excelAntecedentesSheet.Cells[7, 1].Value.ToString();
+            auxXmlNode0.InnerText = "";
+            auxXmlNode0.Attributes.Append(headerAtt);
+            myAuxXmlNode0.AppendChild(auxXmlNode0);
+
+            auxXmlNode0 = myXmlDoc0.CreateElement("header");
+            headerAtt = myXmlDoc0.CreateAttribute("name");
+            //headerAtt.InnerText = ep.Workbook.Worksheets[2].Cells[7, 3].Value.ToString();
+            //auxXmlNode0.InnerText = ep.Workbook.Worksheets[2].Cells[8, 3].Value.ToString();
+            headerAtt.InnerText = excelAntecedentesSheet.Cells[7, 3].Value.ToString();
+            auxXmlNode0.InnerText = excelAntecedentesSheet.Cells[8, 3].Value.ToString();
+            auxXmlNode0.Attributes.Append(headerAtt);
+            myAuxXmlNode0.AppendChild(auxXmlNode0);
+
+            auxXmlNode0 = myXmlDoc0.CreateElement("header");
+            headerAtt = myXmlDoc0.CreateAttribute("name");
+            //headerAtt.InnerText = ep.Workbook.Worksheets[2].Cells[7, 3].Value.ToString();
+            //auxXmlNode0.InnerText = ep.Workbook.Worksheets[2].Cells[8, 9].Value.ToString();
+            headerAtt.InnerText = excelAntecedentesSheet.Cells[7, 3].Value.ToString();
+            auxXmlNode0.InnerText = excelAntecedentesSheet.Cells[8, 9].Value.ToString();
+
+            auxXmlNode0.Attributes.Append(headerAtt);
+            myAuxXmlNode0.AppendChild(auxXmlNode0);
+
+            auxXmlNode0 = myXmlDoc0.CreateElement("header");
+            headerAtt = myXmlDoc0.CreateAttribute("name");
+            //headerAtt.InnerText = ep.Workbook.Worksheets[2].Cells[7, 3].Value.ToString();
+            //auxXmlNode0.InnerText = ep.Workbook.Worksheets[2].Cells[8, 15].Value.ToString();
+            headerAtt.InnerText = excelAntecedentesSheet.Cells[7, 3].Value.ToString();
+            auxXmlNode0.InnerText = excelAntecedentesSheet.Cells[8, 15].Value.ToString();
+            auxXmlNode0.Attributes.Append(headerAtt);
+            myAuxXmlNode0.AppendChild(auxXmlNode0);
+
+            myAuxXmlNode0 = myXmlDoc0.CreateElement("subGraphHeaders");
+            yearXmlNode0.AppendChild(myAuxXmlNode0);
+
+            auxXmlNode0 = myXmlDoc0.CreateElement("subheader");
+            //auxXmlNode0.InnerText = "Total de casos";
+            //////auxXmlNode0.InnerText = getMsg("viewSituationalTotalCases");
+            auxXmlNode0.InnerText = labelTotalCases;
+            myAuxXmlNode0.AppendChild(auxXmlNode0);
+
+            auxXmlNode0 = myXmlDoc0.CreateElement("subheader");
+            headerAtt = myXmlDoc0.CreateAttribute("name");
+            //headerAtt.InnerText = ep.Workbook.Worksheets[2].Cells[10, 7].Value.ToString();
+            //conversionResult0 = decimal.TryParse(ep.Workbook.Worksheets[2].Calculate(ep.Workbook.Worksheets[2].Cells[11, 7].Formula).ToString(), out auxVal0);
+            headerAtt.InnerText = excelAntecedentesSheet.Cells[10, 7].Value.ToString();
+            conversionResult0 = decimal.TryParse(excelAntecedentesSheet.Calculate(excelAntecedentesSheet.Cells[11, 7].Formula).ToString(), out auxVal0);
+            auxXmlNode0.InnerText = auxVal0.ToString();
+            auxXmlNode0.Attributes.Append(headerAtt);
+            myAuxXmlNode0.AppendChild(auxXmlNode0);
+
+            auxXmlNode0 = myXmlDoc0.CreateElement("subheader");
+            headerAtt = myXmlDoc0.CreateAttribute("name");
+            //headerAtt.InnerText = ep.Workbook.Worksheets[2].Cells[10, 8].Value.ToString();
+            headerAtt.InnerText = excelAntecedentesSheet.Cells[10, 8].Value.ToString();
+            auxXmlNode0.InnerText = "";
+            auxXmlNode0.Attributes.Append(headerAtt);
+            myAuxXmlNode0.AppendChild(auxXmlNode0);
+
+            auxXmlNode0 = myXmlDoc0.CreateElement("subheader");
+            headerAtt = myXmlDoc0.CreateAttribute("name");
+            //headerAtt.InnerText = ep.Workbook.Worksheets[2].Cells[10, 13].Value.ToString();
+            //conversionResult0 = decimal.TryParse(ep.Workbook.Worksheets[2].Calculate(ep.Workbook.Worksheets[2].Cells[11, 13].Formula).ToString(), out auxVal0);
+            headerAtt.InnerText = excelAntecedentesSheet.Cells[10, 13].Value.ToString();
+            conversionResult0 = decimal.TryParse(excelAntecedentesSheet.Calculate(excelAntecedentesSheet.Cells[11, 13].Formula).ToString(), out auxVal0);
+            auxXmlNode0.InnerText = auxVal0.ToString();
+            auxXmlNode0.Attributes.Append(headerAtt);
+            myAuxXmlNode0.AppendChild(auxXmlNode0);
+
+            auxXmlNode0 = myXmlDoc0.CreateElement("subheader");
+            headerAtt = myXmlDoc0.CreateAttribute("name");
+            //headerAtt.InnerText = ep.Workbook.Worksheets[2].Cells[10, 14].Value.ToString();
+            headerAtt.InnerText = excelAntecedentesSheet.Cells[10, 14].Value.ToString();
+            auxXmlNode0.InnerText = "";
+            auxXmlNode0.Attributes.Append(headerAtt);
+            myAuxXmlNode0.AppendChild(auxXmlNode0);
+
+            auxXmlNode0 = myXmlDoc0.CreateElement("subheader");
+            headerAtt = myXmlDoc0.CreateAttribute("name");
+            //headerAtt.InnerText = ep.Workbook.Worksheets[2].Cells[10, 19].Value.ToString();
+            //conversionResult0 = decimal.TryParse(ep.Workbook.Worksheets[2].Calculate(ep.Workbook.Worksheets[2].Cells[11, 19].Formula).ToString(), out auxVal0);
+            headerAtt.InnerText = excelAntecedentesSheet.Cells[10, 19].Value.ToString();
+            conversionResult0 = decimal.TryParse(excelAntecedentesSheet.Calculate(excelAntecedentesSheet.Cells[11, 19].Formula).ToString(), out auxVal0);
+            auxXmlNode0.InnerText = auxVal0.ToString();
+            auxXmlNode0.Attributes.Append(headerAtt);
+            myAuxXmlNode0.AppendChild(auxXmlNode0);
+
+            auxXmlNode0 = myXmlDoc0.CreateElement("subheader");
+            headerAtt = myXmlDoc0.CreateAttribute("name");
+            //headerAtt.InnerText = ep.Workbook.Worksheets[2].Cells[10, 20].Value.ToString();
+            headerAtt.InnerText = excelAntecedentesSheet.Cells[10, 20].Value.ToString();
+            auxXmlNode0.InnerText = "";
+            auxXmlNode0.Attributes.Append(headerAtt);
+            myAuxXmlNode0.AppendChild(auxXmlNode0);
+
+            //------------------------Row 1---------------------------------
+            int[] filas = { 13, 17, 15, 14, 19, 16, 20, 27, 28, 29, 30, 21, 18, 31, 22, 32, 39, 40, 45 };
+            int[] columnas = { 1, 7, 8, 13, 14, 19, 20 };
+            ep.Workbook.CalcMode = ExcelCalcMode.Automatic;
+            for (int i = 0; i < filas.Length; i++)
+            {
+                myAuxXmlNode0 = myXmlDoc0.CreateElement("row");
+                XmlAttribute rowNo;
+                rowNo = myXmlDoc0.CreateAttribute("r_no");
+                rowNo.InnerText = i.ToString();
+                myAuxXmlNode0.Attributes.Append(rowNo);
+                yearXmlNode0.AppendChild(myAuxXmlNode0);
+
+                for (int j = 0; j < columnas.Length; j++)
+                {
+                    auxXmlNode0 = myXmlDoc0.CreateElement("col");
+                    XmlAttribute colNo; ;
+                    colNo = myXmlDoc0.CreateAttribute("c_no");
+                    colNo.InnerText = j.ToString();
+                    auxXmlNode0.Attributes.Append(colNo);
+                    if (j == 0)
+                    {
+                        //auxXmlNode0.InnerText = ep.Workbook.Worksheets[2].Cells[filas[i], columnas[j]].Value==null?string.Empty: ep.Workbook.Worksheets[2].Cells[filas[i], columnas[j]].Value.ToString();
+                        //auxXmlNode0.InnerText = ep.Workbook.Worksheets[2].Cells[filas[i], columnas[j]+1].Value == null ? auxXmlNode0.InnerText : auxXmlNode0.InnerText + ep.Workbook.Worksheets[2].Cells[filas[i], columnas[j]+1].Value.ToString();
+                        auxXmlNode0.InnerText = excelAntecedentesSheet.Cells[filas[i], columnas[j]].Value == null ? string.Empty : excelAntecedentesSheet.Cells[filas[i], columnas[j]].Value.ToString();
+                        auxXmlNode0.InnerText = excelAntecedentesSheet.Cells[filas[i], columnas[j] + 1].Value == null ? auxXmlNode0.InnerText : auxXmlNode0.InnerText + excelAntecedentesSheet.Cells[filas[i], columnas[j] + 1].Value.ToString();
+                    }
+                    else
+                    {
+                        //conversionResult0 = decimal.TryParse(ep.Workbook.Worksheets[2].Calculate(ep.Workbook.Worksheets[2].Cells[filas[i], columnas[j]].Formula)==null?"0":ep.Workbook.Worksheets[2].Calculate(ep.Workbook.Worksheets[2].Cells[filas[i], columnas[j]].Formula).ToString(), out auxVal0);
+                        conversionResult0 = decimal.TryParse(excelAntecedentesSheet.Calculate(excelAntecedentesSheet.Cells[filas[i], columnas[j]].Formula) == null ? "0" : excelAntecedentesSheet.Calculate(excelAntecedentesSheet.Cells[filas[i], columnas[j]].Formula).ToString(), out auxVal0);
+                        auxXmlNode0.InnerText = auxVal0.ToString();
+                        if (columnas[j] % 2 == 0)
+                        {
+                            //auxXmlNode0.InnerText = auxVal0*100;
+                            auxVal0 = auxVal0 * 100;
+                            auxVal0 = Math.Round(auxVal0, 2);
+                            auxXmlNode0.InnerText = auxVal0.ToString(new CultureInfo("en-US"));
+                            auxXmlNode0.InnerText = auxXmlNode0.InnerText + "%";
+                        }
+
+                    }
+                    myAuxXmlNode0.AppendChild(auxXmlNode0);
+                }
+            }
+
+            myXmlNode0.AppendChild(yearXmlNode0);
+            //------------------------Fin Row 1---------------------------------
+            //-----------Fin de llenado de datos para Graph0
+        }
+
         public JsonResult GetMapDataTuned(string Report, int CountryID, int? RegionID, int? StateID, int? HospitalID, string Year, int? Month, int? SE, DateTime? StartDate, DateTime? EndDate, int? ReportCountry, string Graph, int? IRAG, int? ETI)
         {
             try
@@ -813,7 +939,7 @@ namespace Paho.Controllers
                 //string resultGetGraphData = "";
                 XmlDocument myXmlDoc0 = new XmlDocument();
                 List<ArrayList> mapVals = new List<ArrayList>();
-                
+
                 var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
                 if (Year == "")
@@ -828,8 +954,8 @@ namespace Paho.Controllers
                     {
                         command.Parameters.Clear();
                         con.Open();
-                        command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = CountryID_;                        
-                        command.Parameters.Add("@Year", SqlDbType.Text).Value = Year;                       
+                        command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = CountryID_;
+                        command.Parameters.Add("@Year", SqlDbType.Text).Value = Year;
                         command.Parameters.Add("@IRAG", SqlDbType.Int).Value = IRAG_;
                         command.Parameters.Add("@ETI", SqlDbType.Int).Value = ETI_;
 
@@ -1007,7 +1133,7 @@ namespace Paho.Controllers
                                     }
                                     break;
                             }
-                        }                      
+                        }
                     }
                 }   //Fin de la revisión de si existen los datos para la gráfica
 
@@ -1020,7 +1146,7 @@ namespace Paho.Controllers
             return null;
         }
 
-        public JsonResult GetGraphDataTuned(string Report, int CountryID, int? RegionID, int? StateID, int? HospitalID, string Year, 
+        public JsonResult GetGraphDataTuned(string Report, int CountryID, int? RegionID, int? StateID, int? HospitalID, string Year,
             int? Month, int? SE, DateTime? StartDate, DateTime? EndDate, int? ReportCountry, string Graph, int? IRAG, int? ETI)
         {
             try
@@ -1063,6 +1189,12 @@ namespace Paho.Controllers
                 XmlDocument myXmlDoc3 = new XmlDocument();
                 XmlDocument myXmlDoc4 = new XmlDocument();
                 XmlDocument myXmlDoc5 = new XmlDocument();
+                XmlDocument myXmlDoc0a = new XmlDocument();
+
+                string graphTitle;
+                string XAxisTitle;
+                string YAxisTitle1;
+                string YAxisTitle2;
 
                 //Tratamiento de como pueden venir los valores del año
                 if (Year == "")
@@ -1113,7 +1245,8 @@ namespace Paho.Controllers
                     string spSelected = "";
                     switch (Graph)
                     {
-                        case "Graph0"://esta servirá para la tabla de antecedentes                          
+                        case "Graph0"://esta servirá para la tabla de antecedentes
+                        case "Graph0a"://esta servirá para la tabla de antecedentes SARS-CoV-2
                         case "Graph1":
                         case "Graph2":
                         case "Graph3":
@@ -1229,6 +1362,7 @@ namespace Paho.Controllers
                                 switch (Graph)
                                 {
                                     case "Graph0":
+                                    case "Graph0a":
                                     case "Graph1":
                                     case "Graph2":
                                     case "Graph3":
@@ -1256,17 +1390,29 @@ namespace Paho.Controllers
                                         myXmlNode0.InnerText = getMsg("viewSituationalGraph0Title");            // Número y porcentaje de casos por tipo de comorbilidades, en hospitalizaciones, UCI y fallecidos
                                         myXmlDoc0.DocumentElement.AppendChild(myXmlNode0);
 
-                                        myXmlNode0 = myXmlDoc0.CreateElement("graphData"); 
+                                        myXmlNode0 = myXmlDoc0.CreateElement("graphData");
                                         myXmlDoc0.DocumentElement.AppendChild(myXmlNode0);
 
-                                        XmlNode auxXmlNode0;
+                                        XmlNode auxXmlNode0 = null;
                                         XmlNode anotherAuxXmlNode0;
                                         //-----------------Fin del armado de la estructura para Graph0
 
+                                        //----------------Inicio de armado de estructura de datos en XML que contiene los datos para la gráfica Graph0S (ANTECEDENTES SARS-CoV-2)
+                                        graphTitle = getMsg("viewSituationalGraph0aTitle");
+                                        XAxisTitle = "";
+                                        YAxisTitle1 = "";
+                                        YAxisTitle2 = "";
+
+                                        XmlNode myXmlNode0a = null;
+                                        XMLCreateStructureForGraphic(myXmlDoc0a, ref myXmlNode0a, graphTitle, XAxisTitle, YAxisTitle1, YAxisTitle2);
+                                        XmlNode auxXmlNode0a = null;
+                                        XmlNode anotherAuxXmlNode0a;
+                                        //-----------------Fin del armado de la estructura para Graph0S
+
                                         //----------------GRAPH1 - Inicio de armado de estructura de datos en XML que contiene los datos para la gráfica Graph1
-                                        XmlNode myXmlNode;
+                                        /*XmlNode myXmlNode;
                                         myXmlDoc1.AppendChild(myXmlDoc1.CreateElement("graph"));
-                                        
+
                                         myXmlNode = myXmlDoc1.CreateElement("graphTitle");
                                         myXmlNode.InnerText = getMsg("viewSituationalGraph1Title");             // IRAG(%): Hospitalizaciones, admisiones a UCI y Fallecidos
                                         myXmlDoc1.DocumentElement.AppendChild(myXmlNode);
@@ -1283,13 +1429,25 @@ namespace Paho.Controllers
                                         myXmlDoc1.DocumentElement.AppendChild(myXmlNode);
 
                                         XmlNode auxXmlNode;
+                                        XmlNode anotherAuxXmlNode;*/
+
+                                        graphTitle = getMsg("viewSituationalGraph1Title");               // IRAG(%): Hospitalizaciones, admisiones a UCI y Fallecidos
+                                        XAxisTitle = getMsg("viewSituationalGraph1XAxisTitle");          // X: Semana epidemiológica
+                                        YAxisTitle1 = getMsg("viewSituationalGraph1YAxisTitle");         // Y: Porcentaje
+                                        YAxisTitle2 = "";
+
+                                        XmlNode myXmlNode = null;
+                                        XMLCreateStructureForGraphic(myXmlDoc1, ref myXmlNode, graphTitle, XAxisTitle, YAxisTitle1, YAxisTitle2);
+                                        XmlNode auxXmlNode;
                                         XmlNode anotherAuxXmlNode;
+
                                         //-----------------Fin del armado de la estructura para Graph1
 
                                         //----------------GRAPH2: Inicio del armado de la estructura para Graph2
+                                        /*
                                         XmlNode myXmlNode2;
                                         myXmlDoc2.AppendChild(myXmlDoc2.CreateElement("graph"));
-                                        
+
                                         myXmlNode2 = myXmlDoc2.CreateElement("graphTitle");
                                         myXmlNode2.InnerText = getMsg("viewSituationalGraph2Title");            // Distribución de casos de IRAG según tipos y subtipos de virus de influenza y de las proporciones de positividad de las muestras analizadas según SE de inicio de síntomas
                                         myXmlDoc2.DocumentElement.AppendChild(myXmlNode2);
@@ -1311,12 +1469,23 @@ namespace Paho.Controllers
 
                                         XmlNode auxXmlNode2;
                                         XmlNode anotherAuxXmlNode2;
+                                        */
+                                        graphTitle = getMsg("viewSituationalGraph2Title");               // Distribución de casos de IRAG según tipos y subtipos de virus de influenza y de las proporciones de positividad de las muestras analizadas según SE de inicio de síntomas
+                                        XAxisTitle = getMsg("viewSituationalGraph2XAxisTitle");          // X: Semana epidemiológica
+                                        YAxisTitle1 = getMsg("viewSituationalGraph2YAxisTitle");         // Y1: Número de casos positivos
+                                        YAxisTitle2 = getMsg("viewSituationalGraph2YAxisTitle2");        // Y2: % positivos a influenza
+
+                                        XmlNode myXmlNode2 = null;
+                                        XMLCreateStructureForGraphic(myXmlDoc2, ref myXmlNode2, graphTitle, XAxisTitle, YAxisTitle1, YAxisTitle2);
+                                        XmlNode auxXmlNode2;
+                                        XmlNode anotherAuxXmlNode2;
+
                                         //-------------------Fin del armado de la estructura para Graph2
 
                                         //----------------Inicio de armado de estructura de datos para la gráfica Graph 3
-                                        XmlNode myXmlNode3;
+                                        /*XmlNode myXmlNode3;
                                         myXmlDoc3.AppendChild(myXmlDoc3.CreateElement("graph"));
-                                        
+
                                         myXmlNode3 = myXmlDoc3.CreateElement("graphTitle");
                                         myXmlNode3.InnerText = getMsg("viewSituationalGraph3Title");            // Distribución de casos de IRAG según virus respiratorios en vigilancia y de las proporciones de positividad de las muestras analizadas, según SE de inicio de síntomas
                                         myXmlDoc3.DocumentElement.AppendChild(myXmlNode3);
@@ -1337,14 +1506,25 @@ namespace Paho.Controllers
                                         myXmlDoc3.DocumentElement.AppendChild(myXmlNode3);
 
                                         XmlNode auxXmlNode3;
+                                        XmlNode anotherAuxXmlNode3;*/
+
+                                        graphTitle = getMsg("viewSituationalGraph3Title");               // 
+                                        XAxisTitle = getMsg("viewSituationalGraph3XAxisTitle");          // X: Semana epidemiológica
+                                        YAxisTitle1 = getMsg("viewSituationalGraph3YAxisTitle");         // Y1: Número de casos positivos
+                                        YAxisTitle2 = getMsg("viewSituationalGraph3YAxisTitle2");        // Y2: % positivos a influenza
+
+                                        XmlNode myXmlNode3 = null;
+                                        XMLCreateStructureForGraphic(myXmlDoc3, ref myXmlNode3, graphTitle, XAxisTitle, YAxisTitle1, YAxisTitle2);
+                                        XmlNode auxXmlNode3;
                                         XmlNode anotherAuxXmlNode3;
+
                                         //-------------------Fin del armado para la estructura Graph3
 
                                         //------------------Inicio del armado para la estructura de datos para Graph4
                                         //----------------Inicio de armado de estructura de datos en XML que contiene los datos para la gráfica
                                         XmlNode myXmlNode4;
                                         myXmlDoc4.AppendChild(myXmlDoc4.CreateElement("graph"));
-                                        
+
                                         myXmlNode4 = myXmlDoc4.CreateElement("graphTitle");
                                         myXmlNode4.InnerText = getMsg("viewSituationalGraph4Title");            // Distribución de casos de IRAG según tipos y sub tipos virus respiratorios en vigilancia y grupos de edad
                                         myXmlDoc4.DocumentElement.AppendChild(myXmlNode4);
@@ -1367,7 +1547,7 @@ namespace Paho.Controllers
                                         //----------------Inicio de armado de estructura de datos para la gráfica Graph5
                                         XmlNode myXmlNode5;
                                         myXmlDoc5.AppendChild(myXmlDoc5.CreateElement("graph"));
-                                        
+
                                         myXmlNode5 = myXmlDoc5.CreateElement("graphTitle");
                                         myXmlNode5.InnerText = getMsg("viewSituationalGraph5Title");            // Distribución de casos de IRAG según tipos y sub tipos  virus respiratorios en vigilancia y gravedad
                                         myXmlDoc5.DocumentElement.AppendChild(myXmlNode5);
@@ -1403,7 +1583,7 @@ namespace Paho.Controllers
 
                                         if (CountryID_ == 18 || CountryID_ == 25)
                                             qtyGruposEdad = 8;
-                                        else if(CountryID_ == 17 || CountryID_ == 119 || CountryID_ == 11)
+                                        else if (CountryID_ == 17 || CountryID_ == 119 || CountryID_ == 11)
                                             qtyGruposEdad = 9;
                                         else
                                             qtyGruposEdad = 6;
@@ -1431,7 +1611,7 @@ namespace Paho.Controllers
                                             // Cargamos el excel resultante para su manipulacion
                                             ExcelPackage ep = new ExcelPackage(ms);
                                             auxEp = ep;
-                                            //string nameSheetAntecedentes = "";
+
                                             ExcelWorksheet excelAntecedentesSheet = ep.Workbook.Worksheets[antecedentesSheetName];
 
                                             ////########################################### DESARROLLO: Prueba de grabado de archivo
@@ -1443,6 +1623,10 @@ namespace Paho.Controllers
                                             ////########################################### 
 
                                             //***************************************** GRAPH 0: Llenado de datos para Graph0
+
+                                            XMLPopulateDataGraph0(myXmlDoc0, auxXmlNode0, excelAntecedentesSheet, myXmlNode0, ep, yr, getMsg("viewSituationalTotalCases"));
+
+                                            /*************************************************************
                                             decimal auxVal0;
                                             bool conversionResult0;
 
@@ -1498,7 +1682,7 @@ namespace Paho.Controllers
 
                                             myAuxXmlNode0 = myXmlDoc0.CreateElement("subGraphHeaders");
                                             yearXmlNode0.AppendChild(myAuxXmlNode0);
-                                            
+
                                             auxXmlNode0 = myXmlDoc0.CreateElement("subheader");
                                             //auxXmlNode0.InnerText = "Total de casos";
                                             auxXmlNode0.InnerText = getMsg("viewSituationalTotalCases");
@@ -1559,8 +1743,8 @@ namespace Paho.Controllers
                                             myAuxXmlNode0.AppendChild(auxXmlNode0);
 
                                             //------------------------Row 1---------------------------------
-                                            int[] filas = {13,17,15,14,19,16,20,27,28,29,30,21,18,31,22,32,39,40,45};
-                                            int[] columnas = { 1,7,8,13,14,19,20 };
+                                            int[] filas = { 13, 17, 15, 14, 19, 16, 20, 27, 28, 29, 30, 21, 18, 31, 22, 32, 39, 40, 45 };
+                                            int[] columnas = { 1, 7, 8, 13, 14, 19, 20 };
                                             ep.Workbook.CalcMode = ExcelCalcMode.Automatic;
                                             for (int i = 0; i < filas.Length; i++)
                                             {
@@ -1577,7 +1761,7 @@ namespace Paho.Controllers
                                                     XmlAttribute colNo; ;
                                                     colNo = myXmlDoc0.CreateAttribute("c_no");
                                                     colNo.InnerText = j.ToString();
-                                                    auxXmlNode0.Attributes.Append(colNo);                                                    
+                                                    auxXmlNode0.Attributes.Append(colNo);
                                                     if (j == 0)
                                                     {
                                                         //auxXmlNode0.InnerText = ep.Workbook.Worksheets[2].Cells[filas[i], columnas[j]].Value==null?string.Empty: ep.Workbook.Worksheets[2].Cells[filas[i], columnas[j]].Value.ToString();
@@ -1597,13 +1781,22 @@ namespace Paho.Controllers
                                                             auxVal0 = Math.Round(auxVal0, 2);
                                                             auxXmlNode0.InnerText = auxVal0.ToString(new CultureInfo("en-US"));
                                                             auxXmlNode0.InnerText = auxXmlNode0.InnerText + "%";
-                                                        }                                                        
+                                                        }
 
                                                     }
                                                     myAuxXmlNode0.AppendChild(auxXmlNode0);
                                                 }
                                             }
                                             myXmlNode0.AppendChild(yearXmlNode0);
+                                            *************************************************************/
+
+                                            //***************************************** GRAPH 0a: Llenado de datos para Graph0a
+                                            ExcelWorksheet excelAntecedentesSheetSARS = ep.Workbook.Worksheets[antecedentesSARSSheetName];
+
+                                            XMLPopulateDataGraph0(myXmlDoc0a, auxXmlNode0a, excelAntecedentesSheetSARS, myXmlNode0a, ep, yr, getMsg("viewSituationalTotalCases"));
+
+                                            //-----------Fin de llenado de datos para Graph0a
+
                                             //------------------------Fin Row 1---------------------------------
                                             //-----------Fin de llenado de datos para Graph0
 
@@ -1701,7 +1894,7 @@ namespace Paho.Controllers
                                                 auxXmlNode.AppendChild(anotherAuxXmlNode);
 
                                                 anotherAuxXmlNode = myXmlDoc1.CreateElement("serie3");
-                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[(filaInicial + 6 + 9 + 9 +(qtyGruposEdad * qtyRowsGrupoEdad)), 6 + i].Formula).ToString(), out auxVal);
+                                                conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells[(filaInicial + 6 + 9 + 9 + (qtyGruposEdad * qtyRowsGrupoEdad)), 6 + i].Formula).ToString(), out auxVal);
                                                 auxVal = (conversionResult) ? (auxVal * 100) : 0;
                                                 auxVal = Math.Round(auxVal, 2);
                                                 anotherAuxXmlNode.InnerText = auxVal.ToString(new CultureInfo("en-US"));
@@ -1973,7 +2166,7 @@ namespace Paho.Controllers
                                                         case 10:
                                                             labelVirus = "serie11";//"Influenza A(H1N1)pdm09";
                                                             break;
-                                                        
+
                                                     }
                                                     anotherAuxXmlNode4 = myXmlDoc4.CreateElement(labelVirus);
                                                     //conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells["BG" + (indiceInicial - (((qtyGruposEdad*12)+3) * j) + (12 * (i - 11)) ).ToString()].Formula).ToString(), out auxVal);
@@ -2060,7 +2253,7 @@ namespace Paho.Controllers
                                                         case 10:
                                                             labelVirus = "serie11";//"Influenza A(H1N1)pdm09";
                                                             break;
-                                                        
+
                                                     }
 
                                                     anotherAuxXmlNode5 = myXmlDoc5.CreateElement(labelVirus);
@@ -2077,7 +2270,7 @@ namespace Paho.Controllers
                                             myXmlNode5.AppendChild(yearXmlNode5);
                                             //-----Fin de llenado de la parte de datos de Graph5
 
-                                        }   
+                                        }
                                         //****fin for each año
 
                                         /*------------------Etiquetas que solo se pueden sacar después de llenado el Excel, y que solo van 1 vez-------------------*/
@@ -2337,7 +2530,7 @@ namespace Paho.Controllers
                                 xslTransform.Transform(myXmlDoc5, writer);
                             }
                             myXmlDoc5 = tempDoc2;
-                            //---------------------------------------------------------------                            
+                            //--------------------------------------------------------------- GRAPH0
                             xslTransform.Load(ConfigurationManager.AppSettings["graphG0Transform"]);
                             XmlDocument tempDoc0 = new XmlDocument();
                             using (XmlWriter writer = tempDoc0.CreateNavigator().AppendChild())
@@ -2345,6 +2538,15 @@ namespace Paho.Controllers
                                 xslTransform.Transform(myXmlDoc0, writer);
                             }
                             myXmlDoc0 = tempDoc0;
+                            //--------------------------------------------------------------- GRAPH0a
+                            xslTransform.Load(ConfigurationManager.AppSettings["graphG0Transform"]);
+                            XmlDocument tempDoc0a = new XmlDocument();
+                            using (XmlWriter writer = tempDoc0a.CreateNavigator().AppendChild())
+                            {
+                                xslTransform.Transform(myXmlDoc0a, writer);
+                            }
+                            myXmlDoc0a = tempDoc0a;
+                            //---------------------------------------------------------------
 
                             //-----Conversión del XML a JSON
                             string jsonText0 = JsonConvert.SerializeXmlNode(myXmlDoc0);
@@ -2353,11 +2555,12 @@ namespace Paho.Controllers
                             string jsonText3 = JsonConvert.SerializeXmlNode(myXmlDoc3);
                             string jsonText4 = JsonConvert.SerializeXmlNode(myXmlDoc4);
                             string jsonText5 = JsonConvert.SerializeXmlNode(myXmlDoc5);
+                            string jsonText0a = JsonConvert.SerializeXmlNode(myXmlDoc0a);
 
                             //-------Ingreso de los datos a la base de datos, usando los parámetros de búsqueda
                             //Inicio de revisión si los datos para la gráfica, año, hospital, etc. existen o no
 
-                            string[] graficas = { "Graph0", "Graph1", "Graph2", "Graph3", "Graph4", "Graph5" };
+                            string[] graficas = { "Graph0", "Graph1", "Graph2", "Graph3", "Graph4", "Graph5", "Graph0a" };
 
                             foreach (string grafica in graficas)
                             {
@@ -2383,6 +2586,9 @@ namespace Paho.Controllers
                                             break;
                                         case "Graph5":
                                             jsonGraphData = jsonText5;
+                                            break;
+                                        case "Graph0a":
+                                            jsonGraphData = jsonText0a;
                                             break;
                                     }
 
@@ -2449,7 +2655,7 @@ namespace Paho.Controllers
             }
             return null;
         }
-        
+
         private static string graficoIndicadoreDesempenio(string languaje_country, int countryId, string countryName, int? year, int? hospitalId, int? weekFrom, int? weekTo, List<string> datosID)
         {
             var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
@@ -2721,86 +2927,86 @@ namespace Paho.Controllers
             //****
             //if (countryId == 9 || countryId == 7)                     // Costa Rica + Chile
             //{
-                ArrayList arrayList = new ArrayList();
+            ArrayList arrayList = new ArrayList();
 
-                int nR = 0;
-                foreach (List<object> aColus in listGlobal)
-                {
-                    Dictionary<string, decimal> datosCol = (Dictionary<string, decimal>)aColus.ElementAt(2);
+            int nR = 0;
+            foreach (List<object> aColus in listGlobal)
+            {
+                Dictionary<string, decimal> datosCol = (Dictionary<string, decimal>)aColus.ElementAt(2);
 
-                    int nAL = 0;
-                    int prueba = 0;
-                    foreach (KeyValuePair<string, decimal> kvp in aResu)
-                    {
-                        decimal nTemp = 0;
-                        cKey = kvp.Key;
-
-                        if (nR == 0)
-                        {
-                            nTemp = Convert.ToDecimal(datosCol[cKey]) * 100;
-                            cTemp = "\"" + "serie" + (nR + 2).ToString() + "\":\"" + nTemp.ToString("##0.0", new CultureInfo("en-US")) + "\"";          // xxxCurva Epidemica Promedio
-                            arrayList.Add(cTemp);
-                        }
-                        else
-                        {
-                            cTemp = arrayList[nAL].ToString();
-
-                            nTemp = Convert.ToDecimal(datosCol[cKey]) * 100;
-                            cTemp = cTemp + "," + "\"" + "serie" + (nR + 2).ToString() + "\":\"" + nTemp.ToString("##0.0", new CultureInfo("en-US")) + "\"";
-                            arrayList[nAL] = cTemp;
-
-                            ++nAL;
-                        }
-
-                        ++prueba;
-                    }
-                    ++nR;
-                }
-
-                decimal nTemp1 = 0;
-                int nQ = 0;
-
+                int nAL = 0;
+                int prueba = 0;
                 foreach (KeyValuePair<string, decimal> kvp in aResu)
                 {
+                    decimal nTemp = 0;
                     cKey = kvp.Key;
-                    if (String.Compare(kvp.Key, cSeFi, true) <= 0)
+
+                    if (nR == 0)
                     {
-                        cSema = cKey.Substring(cKey.Length - 2, 2);
-
-                        cTemp = "{";
-                        cTemp = cTemp + "\"" + "semana" + "\":\"" + cSema + "\",";
-
-                        nTemp1 = Convert.ToDecimal(kvp.Value) * 100;
-                        string serie1 = "\"" + "serie1" + "\":\"" + nTemp1.ToString("##0.0", new CultureInfo("en-US")) + "\",";
-
-                        cTemp = cTemp + serie1 + arrayList[nQ];
-
-                        cTemp = cTemp + "}";
-
-                        cJS = cJS + "," + cTemp;
-                        ++nQ;
+                        nTemp = Convert.ToDecimal(datosCol[cKey]) * 100;
+                        cTemp = "\"" + "serie" + (nR + 2).ToString() + "\":\"" + nTemp.ToString("##0.0", new CultureInfo("en-US")) + "\"";          // xxxCurva Epidemica Promedio
+                        arrayList.Add(cTemp);
                     }
                     else
-                        break;
+                    {
+                        cTemp = arrayList[nAL].ToString();
+
+                        nTemp = Convert.ToDecimal(datosCol[cKey]) * 100;
+                        cTemp = cTemp + "," + "\"" + "serie" + (nR + 2).ToString() + "\":\"" + nTemp.ToString("##0.0", new CultureInfo("en-US")) + "\"";
+                        arrayList[nAL] = cTemp;
+
+                        ++nAL;
+                    }
+
+                    ++prueba;
                 }
+                ++nR;
+            }
 
-                cJS = "[" + cJS.Substring(1, cJS.Length - 1) + "]";
+            decimal nTemp1 = 0;
+            int nQ = 0;
 
-                //**** Labels de las series
-                jsonTextLB = jsonTextLB + cJS + "},";
-                jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + aParametros[4] + "\",";
-
-                nJ = 2;
-                foreach (List<object> aColus in listGlobal)
+            foreach (KeyValuePair<string, decimal> kvp in aResu)
+            {
+                cKey = kvp.Key;
+                if (String.Compare(kvp.Key, cSeFi, true) <= 0)
                 {
-                    string labelCol = aColus.ElementAt(0).ToString();
-                    //string colorCol = aColus.ElementAt(1).ToString();
-                    jsonTextLB = jsonTextLB + "\"" + "graphSeries" + nJ.ToString() + "Label" + "\":\"" + labelCol + "\",";
-                    ++nJ;
-                }
+                    cSema = cKey.Substring(cKey.Length - 2, 2);
 
-                //jsonTextLB = jsonTextLB + "}}";
-                jsonTextLB = jsonTextLB.Substring(0, jsonTextLB.Length - 1) + "}}";
+                    cTemp = "{";
+                    cTemp = cTemp + "\"" + "semana" + "\":\"" + cSema + "\",";
+
+                    nTemp1 = Convert.ToDecimal(kvp.Value) * 100;
+                    string serie1 = "\"" + "serie1" + "\":\"" + nTemp1.ToString("##0.0", new CultureInfo("en-US")) + "\",";
+
+                    cTemp = cTemp + serie1 + arrayList[nQ];
+
+                    cTemp = cTemp + "}";
+
+                    cJS = cJS + "," + cTemp;
+                    ++nQ;
+                }
+                else
+                    break;
+            }
+
+            cJS = "[" + cJS.Substring(1, cJS.Length - 1) + "]";
+
+            //**** Labels de las series
+            jsonTextLB = jsonTextLB + cJS + "},";
+            jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + aParametros[4] + "\",";
+
+            nJ = 2;
+            foreach (List<object> aColus in listGlobal)
+            {
+                string labelCol = aColus.ElementAt(0).ToString();
+                //string colorCol = aColus.ElementAt(1).ToString();
+                jsonTextLB = jsonTextLB + "\"" + "graphSeries" + nJ.ToString() + "Label" + "\":\"" + labelCol + "\",";
+                ++nJ;
+            }
+
+            //jsonTextLB = jsonTextLB + "}}";
+            jsonTextLB = jsonTextLB.Substring(0, jsonTextLB.Length - 1) + "}}";
             //}
             //else
             //{
@@ -2972,11 +3178,11 @@ namespace Paho.Controllers
                         aParaLiBa.Add(cSeIn);
 
                         vTemp = excelWorksheet.Cells[row + 3, COL_PARAMETROS].Value;                        // Total semanas del periodo
-                        aParaLiBa.Add(vTemp.ToString());         
+                        aParaLiBa.Add(vTemp.ToString());
 
                         aParaLiBa.Add(excelWorksheet.Cells[row - 1, col + 1].Value);                        // Label serie1 (anio a medir)
 
-                        if(cAnio.Length > 4)
+                        if (cAnio.Length > 4)
                         {
                             //int value = param.Length - length;
                             //string result = param.Substring(value, length);
@@ -3021,7 +3227,7 @@ namespace Paho.Controllers
                 var Message_ = "";
                 Message_ = "recuperarDatosExcelLineasBasalesTuned_ERROR: " + e.Message;
                 System.Diagnostics.Debug.WriteLine(Message_);
-            }            
+            }
         }
 
         public static void DatosToDiccionario(ExcelWorksheet excelWorksheet, int row, int colWeek, int colData, int nAnio, List<object> listObjects)
@@ -3376,7 +3582,8 @@ namespace Paho.Controllers
                     }
                     else
                     {
-                        if(countryId == 15){
+                        if (countryId == 15)
+                        {
                             jsonTextLB = jsonTextLB + "\"" + "graphSeries1Label" + "\":\"" + "0 a <1 año" + "\",";
                             jsonTextLB = jsonTextLB + "\"" + "graphSeries2Label" + "\":\"" + "1 a 4 años" + "\",";
                             jsonTextLB = jsonTextLB + "\"" + "graphSeries3Label" + "\":\"" + "5 a 14 años" + "\",";
@@ -3759,7 +3966,7 @@ namespace Paho.Controllers
 
         private string getMsg(string msgView)
         {
-            var user = UserManager.FindById(User.Identity.GetUserId()); 
+            var user = UserManager.FindById(User.Identity.GetUserId());
             string searchedMsg = msgView;
             int? countryID = user.Institution.CountryID;
             string countryLang = user.Institution.Country.Language;
@@ -3772,64 +3979,10 @@ namespace Paho.Controllers
 
         private static string SgetMsg(string msgView, int? countryDisp, string langDisp)
         {
-            string searchedMsg = ResourcesM.SgetMessage(msgView,countryDisp,langDisp);
+            string searchedMsg = ResourcesM.SgetMessage(msgView, countryDisp, langDisp);
             //searchedMsg = myR.getMessage(searchedMsg, 0, "ENG");
             return searchedMsg;
         }
 
     }
 }
-
-/*myAuxXmlNode0 = myXmlDoc0.CreateElement("graphHeaders");
-yearXmlNode0.AppendChild(myAuxXmlNode0);
-
-auxXmlNode0 = myXmlDoc0.CreateElement("header");
-auxXmlNode0.InnerText = ep.Workbook.Worksheets[2].Cells[7, 1].Value.ToString();
-myAuxXmlNode0.AppendChild(auxXmlNode0);
-
-auxXmlNode0 = myXmlDoc0.CreateElement("header");
-auxXmlNode0.InnerText = ep.Workbook.Worksheets[2].Cells[7, 3].Value.ToString() + " " + ep.Workbook.Worksheets[2].Cells[8, 3].Value.ToString();
-myAuxXmlNode0.AppendChild(auxXmlNode0);
-
-auxXmlNode0 = myXmlDoc0.CreateElement("header");
-auxXmlNode0.InnerText = ep.Workbook.Worksheets[2].Cells[7, 3].Value.ToString() + " " + ep.Workbook.Worksheets[2].Cells[8, 9].Value.ToString();
-myAuxXmlNode0.AppendChild(auxXmlNode0);
-
-auxXmlNode0 = myXmlDoc0.CreateElement("header");
-auxXmlNode0.InnerText = ep.Workbook.Worksheets[2].Cells[7, 3].Value.ToString() + " " + ep.Workbook.Worksheets[2].Cells[8, 15].Value.ToString();
-myAuxXmlNode0.AppendChild(auxXmlNode0);
-
-
-myAuxXmlNode0 = myXmlDoc0.CreateElement("subGraphHeaders");
-yearXmlNode0.AppendChild(myAuxXmlNode0);
-
-auxXmlNode0 = myXmlDoc0.CreateElement("subheader");
-auxXmlNode0.InnerText = "Total de casos";
-myAuxXmlNode0.AppendChild(auxXmlNode0);
-
-auxXmlNode0 = myXmlDoc0.CreateElement("subheader");
-conversionResult0 = decimal.TryParse(ep.Workbook.Worksheets[2].Calculate(ep.Workbook.Worksheets[2].Cells[11, 7].Formula).ToString(), out auxVal0);
-auxXmlNode0.InnerText = ep.Workbook.Worksheets[2].Cells[10, 7].Value.ToString() + "(" + auxVal0 + ")";
-myAuxXmlNode0.AppendChild(auxXmlNode0);
-
-auxXmlNode0 = myXmlDoc0.CreateElement("subheader");
-auxXmlNode0.InnerText = ep.Workbook.Worksheets[2].Cells[10, 8].Value.ToString();
-myAuxXmlNode0.AppendChild(auxXmlNode0);
-
-auxXmlNode0 = myXmlDoc0.CreateElement("subheader");
-conversionResult0 = decimal.TryParse(ep.Workbook.Worksheets[2].Calculate(ep.Workbook.Worksheets[2].Cells[11, 13].Formula).ToString(), out auxVal0);
-auxXmlNode0.InnerText = ep.Workbook.Worksheets[2].Cells[10, 13].Value.ToString() + "(" + auxVal0 + ")";
-myAuxXmlNode0.AppendChild(auxXmlNode0);
-
-auxXmlNode0 = myXmlDoc0.CreateElement("subheader");
-auxXmlNode0.InnerText = ep.Workbook.Worksheets[2].Cells[10, 14].Value.ToString();
-myAuxXmlNode0.AppendChild(auxXmlNode0);
-
-auxXmlNode0 = myXmlDoc0.CreateElement("subheader");
-conversionResult0 = decimal.TryParse(ep.Workbook.Worksheets[2].Calculate(ep.Workbook.Worksheets[2].Cells[11, 19].Formula).ToString(), out auxVal0);
-auxXmlNode0.InnerText = ep.Workbook.Worksheets[2].Cells[10, 19].Value.ToString() + "(" + auxVal0 + ")";
-myAuxXmlNode0.AppendChild(auxXmlNode0);
-
-auxXmlNode0 = myXmlDoc0.CreateElement("subheader");
-auxXmlNode0.InnerText = ep.Workbook.Worksheets[2].Cells[10, 20].Value.ToString();
-myAuxXmlNode0.AppendChild(auxXmlNode0);*/
