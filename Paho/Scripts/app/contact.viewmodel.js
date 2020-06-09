@@ -315,11 +315,6 @@ function ContactViewModel(app, dataModel) {
 
     });
 
-    //self.NoExpediente.subscribe(function (NewDT) {
-    //    if (self.UsrCountry() == 7 && self.NoExpediente() != "" && NewDT == 4 && self.NoExpediente() != "9.999.999" && $("#ITy").val() != "2") {
-    //        self.esrut(NewRUN);
-    //    }
-    //});
 
     self.EnableCHI = ko.computed(function () {
         return (self.UsrCountry() != 7) ? true : false;

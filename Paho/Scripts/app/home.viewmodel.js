@@ -866,8 +866,11 @@
     self.EnableTestNationalGlobal = function () {
         //console.log("EnableTestNationalGloba->START");
         //console.log(app.Views.Lab.NPHL_FlowExist());
-        if ($("#ITy").val() == "2" && ( self.UsrCountry() == 15 || self.UsrCountry() == 9 || (self.UsrCountry() == 25 && app.Views.Lab.NPHL_FlowExist() ))  && app.Views.Lab.flow_max_record() == app.Views.Contact.flow_institution() && app.Views.Contact.Flow_Local_Institution_Lab()) {
-            console.log("Opcion true");
+        if ($("#ITy").val() == "2" 
+            && (self.UsrCountry() == 15 || self.UsrCountry() == 9 || (self.UsrCountry() == 25 && app.Views.Lab.NPHL_FlowExist()))
+            //&& app.Views.Lab.flow_max_record() == app.Views.Contact.flow_institution() 
+            && app.Views.Contact.Flow_Local_Institution_Lab()) {
+            console.log("EnableTestNationalGlobal -> Opcion true");
             // Laboratorio Nacional
             $("#RecDate_National").attr('disabled', false);
             $("#TempSample_National").attr('disabled', false);
@@ -887,7 +890,7 @@
 
             }
         else {
-            console.log("Opcion falsa");
+            console.log("EnableTestNationalGlobal ->  Opcion falsa");
             // Laboratorio Nacional
             $("#RecDate_National").attr('disabled', true);
             $("#TempSample_National").attr('disabled', true);
@@ -969,6 +972,7 @@
             $("#tab-lab :input").prop('disabled', true);
         }
 
+        self.ViewTestCR();
         //console.log("aqui _ LabAfter");
         //console.log(app.Views.Contact.flow_record());
         if ($("#ITy").val() == "2" && (self.UsrCountry() == 15 || self.UsrCountry() == 9 || (self.UsrCountry() == 25))) {
@@ -980,7 +984,7 @@
             //}
             
         }
-        self.ViewTestCR();
+
 
         $("#PrintM1").prop('disabled', false);
         $("#PrintM2").prop('disabled', false);
