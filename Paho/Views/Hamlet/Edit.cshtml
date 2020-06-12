@@ -1,6 +1,12 @@
 ﻿@model Paho.Models.Hamlet
 
 @{
+    string labelLatitude = Paho.Controllers.ResourcesM.SgetMessage("msgLatitude", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelLongitude = Paho.Controllers.ResourcesM.SgetMessage("msgLongitude", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+    string labelSelect = Paho.Controllers.ResourcesM.SgetMessage("msgSelectLabel", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelHamlet = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelHamlet", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
     ViewBag.Title = "Edit";
 }
 
@@ -54,21 +60,21 @@
         </div>
         <!-- Name -->
         <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-1_5" })
+            @Html.LabelFor(model => model.Name, labelHamlet, htmlAttributes: new { @class = "control-label col-md-1_5" })
             <div class="col-md-7">
                 @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
             </div>
         </div>
         <!-- Latitud -->
         <div class="form-group">
-            @Html.LabelFor(model => model.Latitude, htmlAttributes: new { @class = "control-label col-md-1_5" })
+            @Html.LabelFor(model => model.Latitude, labelLatitude, htmlAttributes: new { @class = "control-label col-md-1_5" })
             <div class="col-md-7">
                 @Html.EditorFor(model => model.Latitude, new { htmlAttributes = new { @class = "form-control" } })
             </div>
         </div>
         <!-- Longitud -->
         <div class="form-group">
-            @Html.LabelFor(model => model.Longitude, htmlAttributes: new { @class = "control-label col-md-1_5" })
+            @Html.LabelFor(model => model.Longitude, labelLongitude, htmlAttributes: new { @class = "control-label col-md-1_5" })
             <div class="col-md-7">
                 @Html.EditorFor(model => model.Longitude, new { htmlAttributes = new { @class = "form-control" } })
             </div>
@@ -148,13 +154,13 @@
         $("#AreaID").change(function () {       // Area : Departamento
             $.get("/cases/GetStates", { AreaID: $("#AreaID").val() }, function (data) {
                 $("#StateID").empty();
-                $("#StateID").append("<option value=''>" + "@(((Paho.Controllers.HamletController)this.ViewContext.Controller).getMsg("msgSelectLabel"))" + "</option>")
+                $("#StateID").append("<option value=''>" + "@(labelSelect)" + "</option>")
                 $.each(data, function (index, row) {
                     $("#StateID").append("<option value='" + row.Id + "'>" + row.Name + "</option>")
                 });
 
                 $("#NeighborhoodID").empty();
-                $("#NeighborhoodID").append("<option value=''>" + "@(((Paho.Controllers.HamletController)this.ViewContext.Controller).getMsg("msgSelectLabel"))" + "</option>")
+                $("#NeighborhoodID").append("<option value=''>" + "@(labelSelect)" + "</option>")
 
                 limpiarCampos();
             });
@@ -163,7 +169,7 @@
         $("#StateID").change(function () {          //  State : Municipio
             $.get("/cases/GetNeighborhoods", { StateID: $("#StateID").val() }, function (data) {
                 $("#NeighborhoodID").empty();
-                $("#NeighborhoodID").append("<option value=''>" + "@(((Paho.Controllers.HamletController)this.ViewContext.Controller).getMsg("msgSelectLabel"))" + "</option>")
+                $("#NeighborhoodID").append("<option value=''>" + "@(labelSelect)" + "</option>")
                 $.each(data, function (index, row) {
                     $("#NeighborhoodID").append("<option value='" + row.Id + "'>" + row.Name + "</option>")
                 });

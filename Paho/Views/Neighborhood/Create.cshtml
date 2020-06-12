@@ -1,5 +1,14 @@
 ﻿@model Paho.Models.Neighborhood
 
+@{
+    string labelLatitude = Paho.Controllers.ResourcesM.SgetMessage("msgLatitude", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelLongitude = Paho.Controllers.ResourcesM.SgetMessage("msgLongitude", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+    string labelSelect = Paho.Controllers.ResourcesM.SgetMessage("msgSelectLabel", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelNeighborhoody = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelNeighborhood", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelOrigCountry = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelOrigCountry", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+}
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -39,18 +48,31 @@
                 @Html.ValidationMessageFor(model => model.StateID, "", new { @class = "text-danger" })
             </div>
         </div>
-        <!-- Name -->
+        <!-- Neighborhoody -->
         <div class="form-group">
-            @Html.LabelFor(model => model.Name, (((Paho.Controllers.NeighborhoodController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelNeighborhood")),
-                            htmlAttributes: new { @class = "control-label col-md-1_5" })
+            @Html.LabelFor(model => model.Name, labelNeighborhoody, htmlAttributes: new { @class = "control-label col-md-1_5" })
             <div class="col-md-7">
                 @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
             </div>
         </div>
+        <!-- latitude -->
+        <div class="form-group">
+            @Html.LabelFor(model => model.latitude, labelLatitude, htmlAttributes: new { @class = "control-label col-md-1_5" })
+            <div class="col-md-7">
+                @Html.EditorFor(model => model.latitude, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+        <!-- longitude -->
+        <div class="form-group">
+            @Html.LabelFor(model => model.longitude, labelLongitude, htmlAttributes: new { @class = "control-label col-md-1_5" })
+            <div class="col-md-7">
+                @Html.EditorFor(model => model.longitude, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
         <!-- orig_country -->
         <div class="form-group">
-            @Html.LabelFor(model => model.orig_country, htmlAttributes: new { @class = "control-label col-md-1_5" })
+            @Html.LabelFor(model => model.orig_country, labelOrigCountry, htmlAttributes: new { @class = "control-label col-md-1_5" })
             <div class="col-md-7">
                 @Html.EditorFor(model => model.orig_country, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.orig_country, "", new { @class = "text-danger" })
@@ -68,20 +90,6 @@
             @Html.LabelFor(model => model.RegionID, htmlAttributes: new { @class = "control-label col-md-1_5" })
             <div class="col-md-7">
                 @Html.EditorFor(model => model.RegionID, new { htmlAttributes = new { @class = "form-control" } })
-            </div>
-        </div>
-        <!-- latitude -->
-        <div class="form-group">
-            @Html.LabelFor(model => model.latitude, htmlAttributes: new { @class = "control-label col-md-1_5" })
-            <div class="col-md-7">
-                @Html.EditorFor(model => model.latitude, new { htmlAttributes = new { @class = "form-control" } })
-            </div>
-        </div>
-        <!-- longitude -->
-        <div class="form-group">
-            @Html.LabelFor(model => model.longitude, htmlAttributes: new { @class = "control-label col-md-1_5" })
-            <div class="col-md-7">
-                @Html.EditorFor(model => model.longitude, new { htmlAttributes = new { @class = "form-control" } })
             </div>
         </div>
         <!-- x -->
@@ -132,7 +140,7 @@
             $.get("/cases/GetStates", { AreaID: $("#AreaID").val() }, function (data) {
                 $("#StateID").empty();
 
-                $("#StateID").append("<option value=''>" + "@(((Paho.Controllers.NeighborhoodController)this.ViewContext.Controller).getMsg("msgSelectLabel"))" + "</option>")
+                $("#StateID").append("<option value=''>" + "@(labelSelect)" + "</option>")
                 $.each(data, function (index, row) {
                     $("#StateID").append("<option value='" + row.Id + "'>" + row.Name + "</option>")
                 });

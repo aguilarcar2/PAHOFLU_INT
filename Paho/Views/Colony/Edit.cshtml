@@ -1,6 +1,12 @@
 ﻿@model Paho.Models.Colony
 
 @{
+    string labelLatitude = Paho.Controllers.ResourcesM.SgetMessage("msgLatitude", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelLongitude = Paho.Controllers.ResourcesM.SgetMessage("msgLongitude", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+    string labelSelect = Paho.Controllers.ResourcesM.SgetMessage("msgSelectLabel", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelColony = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelColony", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
     ViewBag.Title = "Edit";
 }
 
@@ -60,23 +66,23 @@
                 @Html.ValidationMessageFor(model => model.Hamlet.Name, "", new { @class = "text-danger" })
             </div>
         </div>
-        <!-- Name -->
+        <!-- Barrio/Colonia -->
         <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-1_5" })
+            @Html.LabelFor(model => model.Name, labelColony, htmlAttributes: new { @class = "control-label col-md-1_5" })
             <div class="col-md-7">
                 @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
             </div>
         </div>
         <!-- Latitud -->
         <div class="form-group">
-            @Html.LabelFor(model => model.Latitude, htmlAttributes: new { @class = "control-label col-md-1_5" })
+            @Html.LabelFor(model => model.Latitude, labelLatitude, htmlAttributes: new { @class = "control-label col-md-1_5" })
             <div class="col-md-7">
                 @Html.EditorFor(model => model.Latitude, new { htmlAttributes = new { @class = "form-control" } })
             </div>
         </div>
         <!-- Longitud -->
         <div class="form-group">
-            @Html.LabelFor(model => model.Longitude, htmlAttributes: new { @class = "control-label col-md-1_5" })
+            @Html.LabelFor(model => model.Longitude, labelLongitude, htmlAttributes: new { @class = "control-label col-md-1_5" })
             <div class="col-md-7">
                 @Html.EditorFor(model => model.Longitude, new { htmlAttributes = new { @class = "form-control" } })
             </div>

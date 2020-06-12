@@ -1,4 +1,12 @@
 ﻿@model Paho.Models.Colony
+@{ 
+    string labelLatitude = Paho.Controllers.ResourcesM.SgetMessage("msgLatitude", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelLongitude = Paho.Controllers.ResourcesM.SgetMessage("msgLongitude", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+    string labelSelect = Paho.Controllers.ResourcesM.SgetMessage("msgSelectLabel", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelColony = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelColony", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelOrigCountry = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelOrigCountry", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+}
 
 @using (Html.BeginForm())
 {
@@ -59,10 +67,9 @@
                 @Html.ValidationMessageFor(model => model.HamletID, "", new { @class = "text-danger" })
             </div>
         </div>
-        <!-- Name -->
+        <!-- Barrio/Colonia -->
         <div class="form-group">
-            @Html.LabelFor(model => model.Name, (((Paho.Controllers.ColonyController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelColony")),
-                            htmlAttributes: new { @class = "control-label col-md-1_5" })
+            @Html.LabelFor(model => model.Name, labelColony, htmlAttributes: new { @class = "control-label col-md-1_5" })
             <div class="col-md-7">
                 @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
@@ -70,14 +77,14 @@
         </div>
         <!-- Latitud -->
         <div class="form-group">
-            @Html.LabelFor(model => model.Latitude, htmlAttributes: new { @class = "control-label col-md-1_5" })
+            @Html.LabelFor(model => model.Latitude, labelLatitude, htmlAttributes: new { @class = "control-label col-md-1_5" })
             <div class="col-md-7">
                 @Html.EditorFor(model => model.Latitude, new { htmlAttributes = new { @class = "form-control" } })
             </div>
         </div>
         <!-- Longitud -->
         <div class="form-group">
-            @Html.LabelFor(model => model.Longitude, htmlAttributes: new { @class = "control-label col-md-1_5" })
+            @Html.LabelFor(model => model.Longitude, labelLongitude, htmlAttributes: new { @class = "control-label col-md-1_5" })
             <div class="col-md-7">
                 @Html.EditorFor(model => model.Longitude, new { htmlAttributes = new { @class = "form-control" } })
             </div>
@@ -130,15 +137,15 @@
         $("#AreaID").change(function () {       // Area : Departamento
             $.get("/cases/GetStates", { AreaID: $("#AreaID").val() }, function (data) {
                 $("#StateID").empty();
-                $("#StateID").append("<option value=''>" + "@(((Paho.Controllers.ColonyController)this.ViewContext.Controller).getMsg("msgSelectLabel"))" + "</option>")
+                $("#StateID").append("<option value=''>" + "@(labelSelect)" + "</option>")
                 $.each(data, function (index, row) {
                     $("#StateID").append("<option value='" + row.Id + "'>" + row.Name + "</option>")
                 });
 
                 $("#NeighborhoodID").empty();
-                $("#NeighborhoodID").append("<option value=''>" + "@(((Paho.Controllers.ColonyController)this.ViewContext.Controller).getMsg("msgSelectLabel"))" + "</option>")
+                $("#NeighborhoodID").append("<option value=''>" + "@(labelSelect)" + "</option>")
                 $("#HamletID").empty();
-                $("#HamletID").append("<option value=''>" + "@(((Paho.Controllers.ColonyController)this.ViewContext.Controller).getMsg("msgSelectLabel"))" + "</option>")
+                $("#HamletID").append("<option value=''>" + "@(labelSelect)" + "</option>")
 
                 limpiarCampos("");
             });
@@ -147,13 +154,13 @@
         $("#StateID").change(function () {      //  State : Municipio
             $.get("/cases/GetNeighborhoods", { StateID: $("#StateID").val() }, function (data) {
                 $("#NeighborhoodID").empty();
-                $("#NeighborhoodID").append("<option value=''>" + "@(((Paho.Controllers.ColonyController)this.ViewContext.Controller).getMsg("msgSelectLabel"))" + "</option>")
+                $("#NeighborhoodID").append("<option value=''>" + "@(labelSelect)" + "</option>")
                 $.each(data, function (index, row) {
                     $("#NeighborhoodID").append("<option value='" + row.Id + "'>" + row.Name + "</option>")
                 });
 
                 $("#HamletID").empty();
-                $("#HamletID").append("<option value=''>" + "@(((Paho.Controllers.ColonyController)this.ViewContext.Controller).getMsg("msgSelectLabel"))" + "</option>")
+                $("#HamletID").append("<option value=''>" + "@(labelSelect)" + "</option>")
 
                 limpiarCampos("");
             });
@@ -162,13 +169,13 @@
         $("#NeighborhoodID").change(function () {      //  Neighborhood : Aldea
             $.get("/cases/GetHamlets", { NeighborhoodID: $("#NeighborhoodID").val() }, function (data) {
                 $("#HamletID").empty();
-                $("#HamletID").append("<option value=''>" + "@(((Paho.Controllers.ColonyController)this.ViewContext.Controller).getMsg("msgSelectLabel"))" + "</option>")
+                $("#HamletID").append("<option value=''>" + "@(labelSelect)" + "</option>")
                 $.each(data, function (index, row) {
                     $("#HamletID").append("<option value='" + row.Id + "'>" + row.Name + "</option>")
                 });
 
                 $("#ColonyID").empty();
-                $("#ColonyID").append("<option value=''>" + "@(((Paho.Controllers.ColonyController)this.ViewContext.Controller).getMsg("msgSelectLabel"))" + "</option>")
+                $("#ColonyID").append("<option value=''>" + "@(labelSelect)" + "</option>")
 
                 limpiarCampos("");
             });

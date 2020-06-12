@@ -4,6 +4,12 @@
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @{
+    string labelLatitude = Paho.Controllers.ResourcesM.SgetMessage("msgLatitude", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelLongitude = Paho.Controllers.ResourcesM.SgetMessage("msgLongitude", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
+    //string labelSelect = Paho.Controllers.ResourcesM.SgetMessage("msgSelectLabel", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelHamlet = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelHamlet", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
     ViewBag.Title = "Index";
 }
 
@@ -27,8 +33,7 @@
             @Html.DisplayName((string)(Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelCountry", ViewBag.UsrCtry, ViewBag.UsrCtryLang)))
         </th>
         <th>
-            @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelHamlet", ViewBag.UsrCtry, ViewBag.UsrCtryLang),
-                                "Index", "Hamlet", new { sortOrder = ViewBag.HamletParm, currentFilter = ViewBag.CurrentFilter }, null)
+            @Html.ActionLink(labelHamlet, "Index", "Hamlet", new { sortOrder = ViewBag.HamletParm, currentFilter = ViewBag.CurrentFilter }, null)
         </th>
         <th>
             @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelNeighborhood", ViewBag.UsrCtry, ViewBag.UsrCtryLang),
@@ -43,10 +48,10 @@
                                 "Index", "Hamlet", new { sortOrder = ViewBag.AreaParm, currentFilter = ViewBag.CurrentFilter }, null)
         </th>
         <th>
-            @Html.DisplayName("Latitud")
+            @Html.DisplayName(labelLatitude)
         </th>
         <th>
-            @Html.DisplayName("Longitud")
+            @Html.DisplayName(labelLongitude)
         </th>
         <th>
             @Html.DisplayName((string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelOrigCountry", ViewBag.UsrCtry, ViewBag.UsrCtryLang))
