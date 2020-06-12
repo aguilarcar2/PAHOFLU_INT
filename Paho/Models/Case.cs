@@ -783,6 +783,8 @@ namespace Paho.Models
         public int NeighborhoodID { get; set; }
         public string Name { get; set; }
         public string orig_country { get; set; }
+        public string Latitude { get; set; }
+        public string Longitude { get; set; }
         public virtual Neighborhood Neighborhood { get; set; } 
         public virtual ICollection<Colony> Colonies { get; set; }
     }
@@ -793,6 +795,8 @@ namespace Paho.Models
         public int HamletID { get; set; }
         public string Name { get; set; }
         public string orig_country { get; set; }
+        public string Latitude { get; set; }
+        public string Longitude { get; set; }
         public virtual Hamlet Hamlet { get; set; }
     }
 
@@ -1074,6 +1078,24 @@ namespace Paho.Models
 
         //[ForeignKey("FluCaseID")]
         //public virtual FluCase Institution { get; set; }
+    }
+
+    public class CatConditionsForFlowEnd
+    {
+        public int ID { get; set; }
+        public int CountryID { get; set; }
+        public int? FlowType { get; set; }
+        public int? Surv { get; set; }
+        public int? IsSample { get; set; }
+        public int? VirusTypeID { get; set; }
+        public string TestResultID { get; set; }
+        public int? VirusSubTypeID { get; set; }
+        public int? VirusLineageID { get; set; }
+        public int? InstitutionID { get; set; }
+        public bool? Active { get; set; }
+
+        //...//
+        //public string TestResultID_VirusSubType { get; set; }
     }
 
     public class FluCase : CaseBase
@@ -1972,6 +1994,7 @@ namespace Paho.Models
         public DbSet<InstitutionConfiguration> InstitutionsConfiguration { get; set; }
         public DbSet<InstitutionConfEndFlowByVirus> InstitutionConfEndFlowByVirus { get; set; }
         public DbSet<InstitutionFlowFreeLabs> InstitutionFlowFreeLab { get; set; }              //#### 200419 Flow free
+        public DbSet<CatConditionsForFlowEnd> CatConditionsForFlowEnd { get; set; }              //#### 200419 Flow free
         public DbSet<InstitutionLocationType> InstitutionLocationType { get; set; }
         public DbSet<CatDiag> CIE10 { get; set; }
         public DbSet<CatServicios> Salones { get; set; }
@@ -2461,6 +2484,7 @@ namespace Paho.Models
                map.ToTable("LabTestReport");
            });
         }
+
         public override int SaveChanges()
         {
             try

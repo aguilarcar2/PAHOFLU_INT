@@ -159,7 +159,7 @@ namespace Paho.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID, NeighborhoodID, Name, orig_country")] Hamlet hamlet)
+        public ActionResult Create([Bind(Include = "ID, NeighborhoodID, Name, orig_country, Latitude, Longitude")] Hamlet hamlet)
         {
             if (ModelState.IsValid)
             {
@@ -237,7 +237,7 @@ namespace Paho.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID, NeighborhoodID, Name, orig_country")] Hamlet hamlet)
+        public ActionResult Edit([Bind(Include = "ID, NeighborhoodID, Name, orig_country, Latitude, Longitude")] Hamlet hamlet)
         {
             if (ModelState.IsValid)
             {

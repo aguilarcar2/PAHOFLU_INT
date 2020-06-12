@@ -476,13 +476,13 @@ namespace Paho.Controllers
                                         int? SRecordId,
                                         string SNotiDateS,
                                         string SNotiDateE,
-                                        bool SPend,
-                                        int ITy
+                                        bool SPend,                 // true: casos para bandeja de pendientes
+                                        int ITy                     // 3: Admin
                                         )
         {
             //IEnumerable<FluCase> flucases;
             IQueryable<FluCase> flucases = null;
-            var InstitutionDB = institutionId;
+            var InstitutionDB = institutionId;                      // institutionId: campo de filtro
             var user = UserManager.FindById(User.Identity.GetUserId());
             var UsrCtry = user.Institution.CountryID;
             var RecordId = SRecordId;
@@ -591,7 +591,7 @@ namespace Paho.Controllers
             var pageIndex = Convert.ToInt32(page) - 1;
             var pageSize = rows;
 
-            if (ITy == 2)
+            if (ITy == 2)           // Laboratorio
             {
                 var labs = db.Institutions.Where(i => i.ID == institutionId);
                 var list_labs = labs.ToList();
@@ -1052,14 +1052,38 @@ namespace Paho.Controllers
 
         }
 
-        private bool IsInstCantEdit_FF(int id, long id_inst)
+        private bool IsInstCantEdit_FF(int id_flucase, long id_inst)        // Editar el caso
         {
             bool resu = false;
 
             //var instCantEdit_FF_List = db.InstitutionFlowFreeLab.Where(d => d.FluCaseID == flucase.ID && d.LabID == user.Institution.ID && d.Statement != 2);
-            var instCantEdit_FF_List = db.InstitutionFlowFreeLab.Where(d => d.FluCaseID == id && d.LabID == id_inst && d.Statement != 2);
+            var instCantEdit_FF_List = db.InstitutionFlowFreeLab.Where(d => d.FluCaseID == id_flucase && d.LabID == id_inst && d.Statement != 2);
+
             //bool instCantEdit_FF = false;
             if (instCantEdit_FF_List.Any())
+                resu = true;
+
+            return resu;
+        }
+
+        private bool IsInstCantEdit_FF_NEW(FluCase flucase, long id_inst)        // Editar el caso
+        {
+            bool resu = false;
+
+            //var instCantEdit_FF_List = db.InstitutionFlowFreeLab.Where(d => d.FluCaseID == flucase.ID && d.LabID == user.Institution.ID && d.Statement != 2);
+            var instCantEdit_FF_List = db.InstitutionFlowFreeLab.Where(d => d.FluCaseID == flucase.ID && d.LabID == id_inst && d.Statement != 2);
+
+            var instCantEdit_FF_List2 = db.CatConditionsForFlowEnd.Where(d => d.InstitutionID == id_inst && ( 
+                                                                                (d.VirusTypeID == flucase.FinalResultVirusTypeID && d.TestResultID == flucase.FinalResult) ||
+                                                                                (d.VirusTypeID == flucase.FinalResultVirusTypeID_2 && d.TestResultID == flucase.FinalResult_2) ||
+                                                                                (d.VirusTypeID == flucase.FinalResultVirusTypeID_3 && d.TestResultID == flucase.FinalResult_3))
+                                                                        );
+
+            var instCantEdit_FF_List3 = db.CaseLabTests.Where(d => d.FluCaseID == flucase.ID && d.LabID == id_inst && d.statement_test != 2);   // No ha ingresado test o solo grabo
+
+
+            //bool instCantEdit_FF = false;
+            if (instCantEdit_FF_List.Any() || (instCantEdit_FF_List2.Any() && instCantEdit_FF_List3.Any()))
                 resu = true;
 
             return resu;

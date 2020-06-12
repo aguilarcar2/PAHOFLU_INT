@@ -27,19 +27,22 @@
             @Html.DisplayName((((Paho.Controllers.NeighborhoodController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelCountry")))
         </th>
         <th>
-            @*Html.DisplayName((((Paho.Controllers.NeighborhoodController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelArea")))*@
-            @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelArea", ViewBag.UsrCtry, ViewBag.UsrCtryLang),
-                                "Index", "Neighborhood", new { sortOrder = ViewBag.AreaParm, currentFilter = ViewBag.CurrentFilter }, null)
+            @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelNeighborhood", ViewBag.UsrCtry, ViewBag.UsrCtryLang),
+                                "Index", "Neighborhood", new { sortOrder = ViewBag.NeighborhoodParm, currentFilter = ViewBag.CurrentFilter }, null)
         </th>
         <th>
-            @*Html.DisplayName((((Paho.Controllers.NeighborhoodController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelArea")))*@
             @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelState", ViewBag.UsrCtry, ViewBag.UsrCtryLang),
                                 "Index", "Neighborhood", new { sortOrder = ViewBag.StateParm, currentFilter = ViewBag.CurrentFilter }, null)
         </th>
         <th>
-            @*Html.DisplayName((((Paho.Controllers.NeighborhoodController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelState")))*@
-            @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelNeighborhood", ViewBag.UsrCtry, ViewBag.UsrCtryLang),
-                                "Index", "Neighborhood", new { sortOrder = ViewBag.NeighborhoodParm, currentFilter = ViewBag.CurrentFilter }, null)
+            @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelArea", ViewBag.UsrCtry, ViewBag.UsrCtryLang),
+                                "Index", "Neighborhood", new { sortOrder = ViewBag.AreaParm, currentFilter = ViewBag.CurrentFilter }, null)
+        </th>
+        <th>
+            @Html.DisplayName("Latitud")
+        </th>
+        <th>
+            @Html.DisplayName("Longitud")
         </th>
         <th>
             @Html.DisplayName((string)Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelOrigCountry", ViewBag.UsrCtry, ViewBag.UsrCtryLang))
@@ -54,13 +57,19 @@
                 @Html.DisplayFor(modelItem => item.State.Area.Country.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.State.Area.Name)
+                @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.State.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @Html.DisplayFor(modelItem => item.State.Area.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.latitude)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.longitude)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.orig_country)
