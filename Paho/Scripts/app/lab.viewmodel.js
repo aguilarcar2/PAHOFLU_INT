@@ -1350,6 +1350,21 @@ function LabViewModel(app, dataModel) {
 
     });
 
+    self.NPHL_Processed.subscribe(function (NewIsProcessed) {
+        //console.log("aqui Processed_National.subscribe");
+        //console.log(self.LabTests());
+        //self.OrdenFinalResult();
+
+        if (NewIsProcessed == "false" && self.UsrCountry() == 9) {
+            self.removeTestbyLab(self.UsrInstID(), 1);
+            $("#addLabTest_1").hide();
+        } else if (NewIsProcessed == "true" && self.UsrCountry() == 9) {
+
+            $("#addLabTest_1").show();
+        }
+
+    });
+
     self.EnableVirusTypesFinal = ko.computed(function () {
         if (self.FinalResult() == "N" || self.FinalResult() == "U" || self.FinalResult() == "") {
             self.FinalResultVirusTypeID("");

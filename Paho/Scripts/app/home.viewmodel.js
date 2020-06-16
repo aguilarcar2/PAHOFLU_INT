@@ -866,10 +866,35 @@
     self.EnableTestNationalGlobal = function () {
         //console.log("EnableTestNationalGloba->START");
         //console.log(app.Views.Lab.NPHL_FlowExist());
-        if ($("#ITy").val() == "2" 
-            && (self.UsrCountry() == 15 || self.UsrCountry() == 9 || (self.UsrCountry() == 25 && app.Views.Lab.NPHL_FlowExist()))
-            //&& app.Views.Lab.flow_max_record() == app.Views.Contact.flow_institution() 
-            && app.Views.Contact.flow_institution() == 2
+        if ($("#ITy").val() == "2"
+             && self.UsrCountry() == 9 
+            ) {
+            if ( app.Views.Contact.flow_institution() == 2
+             && app.Views.Contact.Flow_Local_Institution_Lab()){
+                console.log("EnableTestNationalGlobal -> Opcion true");
+                // Laboratorio Nacional
+                $("#RecDate_National").attr('disabled', false);
+                $("#TempSample_National").attr('disabled', false);
+                $('input[id="Processed_National"]').attr('disabled', false);
+                $("#NoProRenId_National").attr('disabled', false);
+                $("#NoProRen_National").attr('disabled', false);
+                $("#Identification_Test_National").attr('disabled', false);
+            } else if (app.Views.Contact.flow_institution() == 1
+             && app.Views.Contact.Flow_Local_Institution_Lab()) {
+                //console.log("Opcion verdadera");
+                // Laboratorio Regional
+                $("#RecDate").attr('disabled', true);
+                $("#TempSample1").attr('disabled', true);
+                $('input[id="Processed"]').attr('disabled', true);
+                $("#NoProRenId").attr('disabled', true);
+                $("#NoReason").attr('disabled', true);
+                $("#Identification_Test").attr('disabled', true);
+            }
+
+        } else  if ($("#ITy").val() == "2" 
+            && (self.UsrCountry() == 15 || (self.UsrCountry() == 25 && app.Views.Lab.NPHL_FlowExist()))
+            && app.Views.Lab.flow_max_record() == app.Views.Contact.flow_institution() 
+            //&& app.Views.Contact.flow_institution() == 2
             && app.Views.Contact.Flow_Local_Institution_Lab()) {
             console.log("EnableTestNationalGlobal -> Opcion true");
             // Laboratorio Nacional
