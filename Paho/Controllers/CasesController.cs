@@ -4285,6 +4285,53 @@ namespace Paho.Controllers
                     }
                 }
 
+                if (user.Institution.CountryID == 15)
+                {
+                    var number_ = DNP;
+                    using (var command = new SqlCommand("PatientInformationHN", con) { CommandType = CommandType.StoredProcedure })
+                    {
+                        command.Parameters.Clear();
+                        command.Parameters.Add("@DocumentNumberP", SqlDbType.Text).Value = number_;
+                        //command.Parameters.Add("@DocumentTypeP", SqlDbType.Text).Value = DTP;
+                        con.Open();
+                        using (var reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                //x = reader.GetValue(1);
+                                Dictionary<string, string> PatientInformation = new Dictionary<string, string>();
+                                PatientInformation.Add("nombre1", reader["N1"].ToString());
+                                PatientInformation.Add("nombre2", reader["N2"].ToString());
+                                PatientInformation.Add("apellido1", reader["A1"].ToString());
+                                PatientInformation.Add("apellido2", reader["A2"].ToString());
+                                PatientInformation.Add("sexo", reader["SEXO"].ToString() == "1" ? "Male" : reader["SEXO"].ToString() == "2" ? "Female" : "Unknown");
+                                PatientInformation.Add("DOB", Convert.ToDateTime(reader["FECHA_NACIMIENTO"]).ToString("yyyy-MM-dd"));
+                                PatientInformation.Add("pais", reader["COD_PAIS"].ToString());
+                                PatientInformation.Add("area_country", reader["COD_DEPARTAMENTO"].ToString());
+                                PatientInformation.Add("area_name", reader["AREA_NAME"].ToString());
+                                PatientInformation.Add("area_id", reader["ID_AREA"].ToString());
+                                PatientInformation.Add("state_country", reader["COD_MUNICIPIO"].ToString());
+                                PatientInformation.Add("state_name", reader["STATE_NAME"].ToString());
+                                PatientInformation.Add("state_id", reader["ID_STATE"].ToString());
+                                PatientInformation.Add("neighborhood_country", reader["COD_ALDEA"].ToString());
+                                PatientInformation.Add("neighborhood_name", reader["NEIGHBORHOOD_NAME"].ToString());
+                                PatientInformation.Add("neighborhood_id", reader["ID_NEIGHBORHOOD"].ToString());
+                                PatientInformation.Add("hamlet_country", reader["COD_CASERIO"].ToString());
+                                PatientInformation.Add("hamlet_name", reader["HAMLET_NAME"].ToString());
+                                PatientInformation.Add("hamlet_id", reader["ID_HAMLET"].ToString());
+                                PatientInformation.Add("colony_country", reader["COD_BARRIO_COLONIA"].ToString());
+                                PatientInformation.Add("colony_name", reader["COLONY_NAME"].ToString());
+                                PatientInformation.Add("colony_id", reader["ID_COLONY"].ToString());
+                                //PatientInformation.Add("value", reader["Val_Padron"].ToString( ));
+                                PatientInformation_.Add(PatientInformation);
+                                dataforpadron = true;
+
+                            }
+                        }
+                        con.Close();
+                    }
+                }
+
                 if (dataforpadron == false)
                 {
                     using (var command = new SqlCommand("PatientInformation", con) { CommandType = CommandType.StoredProcedure })

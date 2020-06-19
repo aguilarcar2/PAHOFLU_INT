@@ -916,6 +916,17 @@ function ContactViewModel(app, dataModel) {
                     self.DOB(DOB_dumm);
                     //console.log(moment.utc(moment(data[0].DOB.replace(/"/g, '').replace(/[*?^${}|[\]\\]/g, '').replace('-0600', '')).format(date_format_moment)).toDate())  // seconds
                     self.Gender(data[0].sexo);
+                    // Datos geográficos
+                    if (self.UsrCountry() == 15) {
+                        app.Views.GEO.selectedCountryId(data[0].pais);
+                        app.Views.GEO.selectedAreaId(data[0].area_id);
+                        app.Views.GEO.selectedStateId(data[0].state_id);
+                        app.Views.GEO.selectedNeighborhoodId(data[0].neighborhood_id);
+                        app.Views.GEO.selectedHamletId(data[0].hamlet_id);
+                        app.Views.GEO.selectedColonyId(data[0].colony_id);
+                        //app.Views.GEO.selectedLocalId(data[0].pais);
+
+                    }
                 }
             })
             .fail(function (jqXHR, textStatus, errorThrown) {
