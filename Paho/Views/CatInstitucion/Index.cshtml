@@ -5,8 +5,9 @@
     string labelOrigCountry = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelOrigCountry", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string labelCountry = Paho.Controllers.ResourcesM.SgetMessage("msgCountry", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string labelFreeFlow = Paho.Controllers.ResourcesM.SgetMessage("msgFreeFlow", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelLatitude = Paho.Controllers.ResourcesM.SgetMessage("msgLatitude", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelLongitude = Paho.Controllers.ResourcesM.SgetMessage("msgLongitude", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 
-    
 }
 
 
@@ -60,12 +61,17 @@
             @Html.ActionLink(@labelParentInstitution, "Index", new { sortOrder = ViewBag.InstIdSortParm, currentFilter = ViewBag.CurrentFilter })
         </th>
         <th>
-            @*@Html.ActionLink("Orig. country", "Index", new { sortOrder = ViewBag.InstIdSortParm, currentFilter = ViewBag.CurrentFilter })*@
-            @Html.ActionLink(@labelOrigCountry, "Index", new { sortOrder = ViewBag.InstIdSortParm, currentFilter = ViewBag.CurrentFilter })
+            @Html.DisplayName(labelLatitude)
         </th>
         <th>
-            @Html.DisplayName(@labelCountry)
+            @Html.DisplayName(labelLongitude)
         </th>
+        <th>
+            @Html.ActionLink(@labelOrigCountry, "Index", new { sortOrder = ViewBag.InstIdSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        @*<th>
+            @Html.DisplayName(@labelCountry)
+        </th>*@
         <th></th>
     </tr>
 
@@ -101,11 +107,17 @@
                 @Html.DisplayFor(modelItem => item.Father_ID)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.orig_country)
+                @Html.DisplayFor(modelItem => item.latitude)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Country.Name)
+                @Html.DisplayFor(modelItem => item.longitude)
             </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.orig_country)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.Country.Name)
+            </td>*@
             <td>
                 @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgViewCatPopulation_Editar", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Edit", "CatInstitucion", new { id = item.ID }, null) |
                 @Html.ActionLink((string)Paho.Controllers.ResourcesM.SgetMessage("msgViewCatPopulation_Borrar", ViewBag.UsrCtry, ViewBag.UsrCtryLang), "Delete", "CatInstitucion", new { id = item.ID }, null)

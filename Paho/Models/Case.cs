@@ -875,6 +875,10 @@ namespace Paho.Models
         public string ForeignInstitutionAddress { get; set; }
 
         public bool ForeignLab { get; set; }
+
+        public double? latitude { get; set; }
+
+        public double? longitude { get; set; }
         //****<
         [DisplayName("Tipo Institución:")]
         public int? InstitutionTypeID { get; set; }
@@ -948,6 +952,8 @@ namespace Paho.Models
         public AdminInstitution(Institution catalog)
         {
             CountryID = catalog.CountryID;
+
+            LocationTypeID = catalog.LocationTypeID;
             AreaID = catalog.AreaID;
             FullName = catalog.FullName;
             Name = catalog.Name;

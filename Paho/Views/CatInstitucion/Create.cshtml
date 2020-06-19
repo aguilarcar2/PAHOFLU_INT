@@ -2,9 +2,12 @@
 
 @{
     string labelAllowFreeFlow = Paho.Controllers.ResourcesM.SgetMessage("msgAllowFreeFlow", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelLatitude = Paho.Controllers.ResourcesM.SgetMessage("msgLatitude", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelLongitude = Paho.Controllers.ResourcesM.SgetMessage("msgLongitude", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string labelOrigCountry = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabGeoLabelOrigCountry", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+
     //string labelCountry = Paho.Controllers.ResourcesM.SgetMessage("msgViewExportarLabelCountry", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     //string labelFieldSelect = Paho.Controllers.ResourcesM.SgetMessage("msgViewExportarFieldSelect", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
-
 }
 
 @using (Html.BeginForm())
@@ -34,7 +37,7 @@
         <div class="form-group vertical-align">
             @Html.LabelFor(model => model.LocationTypeID, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgViewCatInstitution_Location", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
             <div class="col-md-10">
-                @Html.DropDownList("LocationTypeID", ViewBag.cod_institution_type_location as SelectList, null, new { @class = "form-control" })
+                @Html.DropDownList("LocationTypeID", ViewBag.cod_institution_location_type as SelectList, null, new { @class = "form-control" })
             </div>
         </div>
         <!-- País Foreign -->
@@ -195,14 +198,6 @@
             </div>
         </div>
 
-        <div class="form-group vertical-align">
-            @Html.LabelFor(model => model.orig_country, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgOriginalCountryCode", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.orig_country, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.orig_country, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
         <div class="form-group vertical-align" id="RegionInstitucionalGroup" >
             @Html.LabelFor(model => model.cod_region_institucional, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgInstitutionalRegion", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
             <div class="col-md-10">
@@ -223,11 +218,36 @@
                 @Html.DropDownList("cod_region_pais", null, htmlAttributes: new { @class = "form-control" })
             </div>
         </div>
-		
+        <!-- Código original país -->
+        <div class="form-group vertical-align">
+            @*@Html.LabelFor(model => model.orig_country, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgOriginalCountryCode", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })*@
+            @Html.LabelFor(model => model.orig_country, labelOrigCountry + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.orig_country, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.orig_country, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <!-- Latitud -->
+        <div class="form-group vertical-align">
+            @Html.LabelFor(model => model.latitude, labelLatitude + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.latitude, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.latitude, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <!-- Longitud -->
+        <div class="form-group vertical-align">
+            @Html.LabelFor(model => model.longitude, labelLongitude + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.longitude, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.longitude, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <!-- InstType -->
 		<div>
 			@Html.HiddenFor(model => model.InstType, new { htmlAttributes = new { @class = "form-control" } })
 		</div>
-
+        <!-- Boton: Crear -->
         <div class="form-group vertical-align">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value=@(Paho.Controllers.CatVirusTypeController.SgetMessage("msgViewCatPopulation_Crear", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) class="btn btn-default" />

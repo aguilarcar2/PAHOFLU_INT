@@ -301,6 +301,9 @@ $(document).ready(function () {
                 $('#Colonies').val(colonyID).change();
             }
             //****
+            //console.log("=>" + areaID + "-" + stateID + "-" + neighborhoodID + "-" + hamletID + "-" + colonyID);
+            $('#FCN').val(areaID + "-" + stateID + "-" + neighborhoodID + "-" + hamletID + "-" + colonyID).change();
+            //****
             return false;
         },
         focus: function (event, ui) {

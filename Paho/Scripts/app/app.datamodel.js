@@ -12,15 +12,16 @@
     self.getLocalsUrl = "/cases/GetNeighborhoods";
     self.getAreasUrl = "/cases/GetAreas"; 
     self.getContactUrl = "/cases/GetContact";
-    self.getPatientInformationUrl = "/cases/GetPatientInformation"
-    self.getPatientInformationUrl_JAM = "/cases/GetPatientInformation_JAM"
+    self.getPatientInformationUrl = "/cases/GetPatientInformation";
+    self.getPatientInformationUrl_JAM = "/cases/GetPatientInformation_JAM";
+    self.getGEOreferenceInformation = "/cases/GetGEOreferenceInformation";    
     self.saveContactUrl = "/cases/SaveContact";  
     self.getHospitalUrl = "/cases/GetHospital";
     self.saveHospitalUrl = "/cases/SaveHospital";
     self.getRiskUrl = "/cases/GetRisk";
-    self.saveRiskUrl = "/cases/SaveRisk"
+    self.saveRiskUrl = "/cases/SaveRisk";
     self.getGEOUrl = "/cases/GetGEO";
-    self.saveGEOUrl = "/cases/SaveGEO"
+    self.saveGEOUrl = "/cases/SaveGEO";
     self.getLabUrl = "/cases/GetLab";
     self.getRecordHistoryURL = "/cases/GetRecordHistory";
     self.getLabsHospitalUrl = "/cases/GetLabsHospital";
@@ -31,7 +32,7 @@
     //#### DENOMINADORES
     self.getSummayDetailsUrl = "/summary/GetSummaryDetails";
     self.getSummayDetailsExcel = "/exportar/GetSummaryDetailsExcel";
-    self.getSummaryForYearUrl = "/summary/GetSummaryForYear"
+    self.getSummaryForYearUrl = "/summary/GetSummaryForYear";
     self.saveSummayDetailsUrl = "/summary/SaveSummary";
 
     self.getBaselineConfigUrl = "/BaselineConfiguration/GetParameters";
@@ -39,7 +40,7 @@
 
     //#### DENOMINADORES Jamaica
     self.getSummayDetailsUrlJM = "/summaryJM/GetSummaryDetailsJM";
-    self.getSummaryForYearUrlJM = "/summaryJM/GetSummaryForYearJM"
+    self.getSummaryForYearUrlJM = "/summaryJM/GetSummaryForYearJM";
     self.saveSummayDetailsUrlJM = "/summaryJM/SaveSummaryJM";
     //#### 
     self.getCasesInExcelUrl = "/exportar/GetCasesInExcel";
@@ -47,7 +48,7 @@
     self.getCountryReportsUrl = "/exportar/GetCountryReports";
     self.getFluid = "/fluid/Generate";
     self.getExportarGraphics = "/graphics/GenerateGraphic";
-    self.getPrintTest =  "/printtest/GetPrint"
+    self.getPrintTest = "/printtest/GetPrint";
     self.getFlucasesUrl = "/report/GetFluCases";
     self.deletetUrl = "/cases/DeleteCase";
 

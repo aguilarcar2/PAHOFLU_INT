@@ -248,10 +248,136 @@
     
     self.Locals2weeks = ko.observableArray();
     self.PhoneNumber = ko.observable("");
-    self.Latitude = ko.observable("");
-    self.Longitude = ko.observable("");
+    self.Latitude = ko.observable();
+    self.Longitude = ko.observable();
     self.regions = ko.observableArray(regions);             //#### CAFQ: 181008
     self.selectedRegionId = ko.observable("");              //#### CAFQ: 181008
+
+    self.fullCodeGEORef = ko.observable();
+
+    self.fullCodeGEORef.subscribe(function (newValueSelected) {
+        console.log("self.fullCodeGEORef.subscribe->STARTTTTTTTTTTTTTTTTTTTTT")
+        //console.log("bb1->");
+        //console.log(newValueSelected);
+        //console.log("cc1->");
+        //console.log(self.fullCodeGEORef());
+        //console.log("dd1->");
+        //console.log(geoData);
+        //console.log("ee1->");
+
+        if (self.UsrCountry() == 15) {                  // Honduras
+            var geoData = self.fullCodeGEORef().split('-')
+
+            if (typeof newValueSelected === "undefined" || newValueSelected === "") {
+                // Nada         
+            } else {
+                $.getJSON(app.dataModel.getGEOreferenceInformation, {
+                    /*countryID: self.UsrCountry(), areaID: self.selectedAreaId(), stateID: self.selectedStateId(), neighborhoodID: self.selectedNeighborhoodId(),
+                    hamletID: newValueSelected, colonyID: self.selectedColonyId()*/
+                    countryID: self.UsrCountry(), areaID: geoData[0], stateID: geoData[1], neighborhoodID: geoData[2], hamletID: geoData[3], colonyID: geoData[4]
+                        }, function (data, status) {
+                            if (data[0].latitude == 0) {
+                                self.Longitude("");
+                                self.Latitude("");
+                            } else {
+                                self.Longitude(data[0].longitude);
+                                self.Latitude(data[0].latitude);
+                            }
+                        })
+                        .fail(function (jqXHR, textStatus, errorThrown) {
+                            alert(msgValidationServerError);
+                            //console.log(errorThrown);
+                        });
+
+            }
+        }
+
+        //this.a.subscribe(function () {
+        //    // This won't get called on init
+        //    console.log("updated");
+        //}, this);
+
+        console.log("self.fullCodeGEORef.subscribe->EMDDDDDDDDDDDDDDDDDDDDD")
+    }, this);
+
+
+    /*
+    self.selectedHamletId.subscribe(function (newValueSelected) {
+        console.log("self.selectedHamletId.subscribe->START")
+
+        if (self.UsrCountry() == 15) {                  // Honduras
+            if (typeof newValueSelected === "undefined" || newValueSelected === "") {
+                // Nada         
+                console.log("NADA-");
+            } else {
+                console.log("ALGO-");
+                console.log(self.selectedColonyId());
+                console.log("ALGO-0");
+                if (typeof self.selectedColonyId() === "undefined" || self.selectedColonyId() === "") {
+                    console.log("ALGO-2");
+                    $.getJSON(app.dataModel.getGEOreferenceInformation, {
+                        countryID: self.UsrCountry(), areaID: self.selectedAreaId(), stateID: self.selectedStateId(), neighborhoodID: self.selectedNeighborhoodId(),
+                        hamletID: newValueSelected, colonyID: self.selectedColonyId()
+                    }, function (data, status) {
+                        if (data[0].latitude == 0) {
+                            console.log("Por aqui");
+                            self.Longitude("");
+                            self.Latitude("");
+                        } else {
+                            console.log("Por alla");
+                            self.Longitude(data[0].longitude);
+                            self.Latitude(data[0].latitude);
+                        }
+                    })
+                            .fail(function (jqXHR, textStatus, errorThrown) {
+                                alert(msgValidationServerError);
+                                //console.log(errorThrown);
+                            });
+                } else {
+                    // NADA
+                }
+            }
+        }
+
+        console.log("self.selectedHamletId.subscribe->EMD")
+    });
+    */
+    /*
+    self.selectedColonyId.subscribe(function (newColonySelected) {
+        console.log("self.selectedColonyId.subscribe->CO_START")
+        console.log("CO_MA1-");
+        console.log(newColonySelected);
+        console.log("CO_MA2-");
+
+        if (self.UsrCountry() == 15) {                  // Honduras
+            if (typeof newColonySelected === "undefined" || newColonySelected === "") {
+                // Nada         
+                console.log("CO_NADA-");
+            } else {
+                console.log("CO_ALGO-");
+                $.getJSON(app.dataModel.getGEOreferenceInformation, {
+                    countryID: self.UsrCountry(), areaID: self.selectedAreaId(), stateID: self.selectedStateId(), neighborhoodID: self.selectedNeighborhoodId(),
+                    hamletID: self.selectedHamletId(), colonyID: newColonySelected
+                }, function (data, status) {
+                    if (data[0].latitude == 0) {
+                        console.log("CO_Por aqui");
+                        self.Longitude("");
+                        self.Latitude("");
+                    } else {
+                        console.log("CO_Por alla");
+                        self.Longitude(data[0].longitude);
+                        self.Latitude(data[0].latitude);
+                    }
+                })
+                    .fail(function (jqXHR, textStatus, errorThrown) {
+                        alert(msgValidationServerError);
+                        //console.log(errorThrown);
+                    });
+            }
+        }
+        console.log("self.selectedColonyId.subscribe->CO_EMD")
+    });
+    */
 
     self.ActiveBOLCountry2weeks = ko.computed(function () {
         return (self.UsrCountry() == 3 && self.selectedCountryId2weeks() == app.Views.Contact.UsrCountry()) ? true : false;

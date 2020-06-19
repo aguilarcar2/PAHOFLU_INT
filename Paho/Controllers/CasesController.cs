@@ -4246,6 +4246,85 @@ namespace Paho.Controllers
         //}
 
         [Authorize]
+        public JsonResult GetGEOreferenceInformation(int? countryID, int? areaID, int? stateID, int? neighborhoodID, int? hamletID, int? colonyID)
+        {
+            List<Dictionary<string, decimal>> PatientInformation_ = new List<Dictionary<string, decimal>>();
+
+            if (colonyID != null && colonyID > 0)
+            {
+                var recordGEO = (from area in db.Areas
+                                 join state in db.States on area.ID equals state.AreaID
+                                 join neighborhood in db.Neighborhoods on state.ID equals neighborhood.StateID
+                                 join hamlet in db.Hamlets on neighborhood.ID equals hamlet.NeighborhoodID
+                                 join colony in db.Colonies on hamlet.ID equals colony.HamletID
+                                 where area.CountryID == countryID && colony.ID == colonyID
+                                 select new
+                                 {
+                                     latitude = colony.Latitude,
+                                     longitude = colony.Longitude
+                                 }).AsEnumerable().ToList();
+
+                Dictionary<string, decimal> PatientInformation = new Dictionary<string, decimal>();
+                PatientInformation.Add("latitude", Convert.ToDecimal(recordGEO[0].latitude, CultureInfo.InvariantCulture));
+                PatientInformation.Add("longitude", Convert.ToDecimal(recordGEO[0].longitude, CultureInfo.InvariantCulture));
+
+                PatientInformation_.Add(PatientInformation);
+            }
+            else if (hamletID != null && hamletID > 0)
+            {
+                var recordGEO = (from area in db.Areas
+                                 join state in db.States on area.ID equals state.AreaID
+                                 join neighborhood in db.Neighborhoods on state.ID equals neighborhood.StateID
+                                 join hamlet in db.Hamlets on neighborhood.ID equals hamlet.NeighborhoodID
+                                 //join colony in db.Colonies on hamlet.ID equals colony.HamletID
+                                 where area.CountryID == countryID && hamlet.ID == hamletID
+                                 select new
+                                 {
+                                     latitude = hamlet.Latitude,
+                                     longitude = hamlet.Longitude
+                                 }).AsEnumerable().ToList();
+
+                Dictionary<string, decimal> PatientInformation = new Dictionary<string, decimal>();
+                PatientInformation.Add("latitude", Convert.ToDecimal(recordGEO[0].latitude, CultureInfo.InvariantCulture));
+                PatientInformation.Add("longitude", Convert.ToDecimal(recordGEO[0].longitude, CultureInfo.InvariantCulture));
+
+                PatientInformation_.Add(PatientInformation);
+
+            }
+            else if (neighborhoodID != null && neighborhoodID > 0)
+            {
+                var recordGEO = (from area in db.Areas
+                                 join state in db.States on area.ID equals state.AreaID
+                                 join neighborhood in db.Neighborhoods on state.ID equals neighborhood.StateID
+                                 //join hamlet in db.Hamlets on neighborhood.ID equals hamlet.NeighborhoodID
+                                 //join colony in db.Colonies on hamlet.ID equals colony.HamletID
+                                 where area.CountryID == countryID && neighborhood.ID == neighborhoodID
+                                 select new
+                                 {
+                                     latitude = neighborhood.latitude,
+                                     longitude = neighborhood.longitude
+                                 }).AsEnumerable().ToList();
+
+                Dictionary<string, decimal> PatientInformation = new Dictionary<string, decimal>();
+                PatientInformation.Add("latitude", Convert.ToDecimal(recordGEO[0].latitude, CultureInfo.InvariantCulture));
+                PatientInformation.Add("longitude", Convert.ToDecimal(recordGEO[0].longitude, CultureInfo.InvariantCulture));
+
+                PatientInformation_.Add(PatientInformation);
+
+            }
+            else
+            {
+                Dictionary<string, decimal> PatientInformation = new Dictionary<string, decimal>();
+                PatientInformation.Add("latitude", 0);
+                PatientInformation.Add("longitude", 0);
+
+                PatientInformation_.Add(PatientInformation);
+            }
+
+            return Json(PatientInformation_, JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize]
         public JsonResult GetPatientInformation(int DTP, string DNP)
         {
             var dataforpadron = false;

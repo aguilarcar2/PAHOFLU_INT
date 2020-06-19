@@ -151,7 +151,7 @@ namespace Paho.Controllers
             [Bind(Include =
             "AreaID, FullName, Name, AccessLevel, cod_institution_type, InstID, Father_ID, sentinel, SARI, ILI, surv_unusual, PCR, IFI, Active, orig_country, " + 
             "sentinel, cod_region_institucional, cod_region_salud, cod_region_pais, InstType, OrdenPrioritybyLab, NPHL, LocationTypeID, ForeignCountryID, " +
-            "ForeignInstitutionAddress, LabNIC, CountryID, FlowFree")]
+            "ForeignInstitutionAddress, LabNIC, CountryID, FlowFree, latitude, longitude")]
             Hospital catalog)
         {
             try
@@ -212,9 +212,9 @@ namespace Paho.Controllers
             return View(catalogo);
         }
 
-        // POST: CatAgeGroup/Edit/5
+        /* // POST: CatAgeGroup/Edit/5
         [HttpPost]      ///, ActionName("Edit")]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken] */
         //public ActionResult EditPost(int? id, InstitutionType InstType)
         //{
         //    if (id == null)
@@ -256,40 +256,72 @@ namespace Paho.Controllers
             "sentinel, cod_region_institucional, cod_region_salud, cod_region_pais, InstType, OrdenPrioritybyLab, NPHL, LocationTypeID, ForeignCountryID, " + 
             "ForeignInstitutionAddress, LabNIC, CountryID")]
          **/
-        public ActionResult Edit([Bind(Include = "ID, AreaID, FullName, Name, AccessLevel, cod_institution_type, InstID, Father_ID, sentinel, SARI, ILI, surv_unusual, PCR, IFI, Active, orig_country, " +
-            "sentinel, cod_region_institucional, cod_region_salud, cod_region_pais, InstType, OrdenPrioritybyLab, NPHL, LocationTypeID, ForeignCountryID, " +
-            "ForeignInstitutionAddress, LabNIC, CountryID, FlowFree")] Lab catalog)
+        /*
+       public ActionResult Edit([Bind(Include = "ID, AreaID, FullName, Name, AccessLevel, cod_institution_type, InstID, Father_ID, sentinel, SARI, ILI, surv_unusual, PCR, IFI, Active, orig_country, " +
+           "sentinel, cod_region_institucional, cod_region_salud, cod_region_pais, InstType, OrdenPrioritybyLab, NPHL, LocationTypeID, ForeignCountryID, " +
+           "ForeignInstitutionAddress, LabNIC, CountryID, FlowFree, latitude, longitude")] Lab catalog)
+       {
+           if (ModelState.IsValid)
+           {
+               //...
+               // Empleando area capturado podemos ajustar los valores del modelo a guardar
+               //...
+
+               ////if (catalog is Hospital)
+               //if (catalog.InstType == InstitutionType.Hospital)
+               //{
+               //    //catalog.InstType = InstitutionType.Hospital;
+               //    catalog.InstitutionType = (int)InstitutionType.Hospital;
+               //}
+               //else if (catalog.InstType == InstitutionType.Lab)
+               //{
+               //    //catalog.InstType = InstitutionType.Lab;
+               //    catalog.InstitutionType = (int)InstitutionType.Lab;
+               //}
+               //else
+               //{
+               //    //catalog.InstType = InstitutionType.Admin;
+               //    catalog.InstitutionType = (int)InstitutionType.Admin;
+               //}
+
+               db.Entry(catalog).State = EntityState.Modified;
+               db.SaveChanges();
+               return RedirectToAction("Index");
+           }
+           //ViewBag.CountryID = new SelectList(db.Countries, "ID", "Code", area.CountryID);
+
+           return View(catalog);
+       }
+       */
+
+        // POST: CatAgeGroup/Edit/5
+        [HttpPost, ActionName("Edit")]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditPost(int? id)
         {
-            if (ModelState.IsValid)
+            if (id == null)
             {
-                //...
-                // Empleando area capturado podemos ajustar los valores del modelo a guardar
-                //...
-
-                ////if (catalog is Hospital)
-                //if (catalog.InstType == InstitutionType.Hospital)
-                //{
-                //    //catalog.InstType = InstitutionType.Hospital;
-                //    catalog.InstitutionType = (int)InstitutionType.Hospital;
-                //}
-                //else if (catalog.InstType == InstitutionType.Lab)
-                //{
-                //    //catalog.InstType = InstitutionType.Lab;
-                //    catalog.InstitutionType = (int)InstitutionType.Lab;
-                //}
-                //else
-                //{
-                //    //catalog.InstType = InstitutionType.Admin;
-                //    catalog.InstitutionType = (int)InstitutionType.Admin;
-                //}
-
-                db.Entry(catalog).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            //ViewBag.CountryID = new SelectList(db.Countries, "ID", "Code", area.CountryID);
+            var catalogo = db.Institutions.Find(id);
+            if (TryUpdateModel(catalogo, "",
+               new string[] { "AreaID", "FullName", "Name", "AccessLevel", "InstID", "Father_ID", "SARI", "ILI", "surv_unusual", "PCR", "IFI",
+                   "Active", "sentinel", "orig_country","cod_region_institucional","cod_region_salud","cod_region_pais","InstType", "cod_institution_type",
+                   "OrdenPrioritybyLab", "NPHL", "LocationTypeID", "ForeignCountryID", "ForeignInstitutionAddress", "LabNIC", "CountryID", "FlowFree", "latitude", "longitude" }))
+            {
+                try
+                {
+                    db.SaveChanges();
 
-            return View(catalog);
+                    return RedirectToAction("Index");
+                }
+                catch (RetryLimitExceededException /* dex */)
+                {
+                    ModelState.AddModelError("", "No es posible guardar los datos. Intente de nuevo, si el problema persiste contacte al administrador.");
+                }
+            }
+
+            return View(catalogo);
         }
 
 
@@ -452,7 +484,7 @@ namespace Paho.Controllers
                 areasQuery.Insert(0, new Area { ID = 0, Name = "-- " + getMsg("msgSelect") + " -- " });
             ViewBag.AreaID = new SelectList(areasQuery, "ID", "Name", selectedArea);
 
-            //****
+            //**** Nivel de acceso: SelfOnly, Country...etc
             var nivelQuery = from AccessLevel e in Enum.GetValues(typeof(AccessLevel)) select new { Id = e, Name = (countryId == 17 && e.ToString() == "Area") ? "Parish":  e.ToString() };
             ViewBag.AccessLevel = new SelectList(nivelQuery, "Id", "Name", selectedNivel);
 
@@ -462,9 +494,11 @@ namespace Paho.Controllers
             //    ViewBag.AccessLevel = new SelectList(nivelQuery_JAM, "Id", "Name", selectedNivel);
             //}
 
+            //**** Tipo: Hospital, Lab, Admin
             var tipoQuery = from InstitutionType e in Enum.GetValues(typeof(InstitutionType)) select new { Id = e, Name = e.ToString() };
             ViewBag.InstitutionType = new SelectList(tipoQuery, "Id", "Name", selectedTipo);
 
+            //**** 
             var regInstQuery = (from d in db.Regions where (d.tipo_region == 1 || d.tipo_region == null) && d.CountryID == countryId orderby d.Name select d).ToList();
             regInstQuery.Insert(0, new Region { ID = 0, Name = "-- " + getMsg("msgSelect") + " -- " });
             ViewBag.cod_region_institucional = new SelectList(regInstQuery, "orig_country", "Name", selectedRegInst);
@@ -488,7 +522,8 @@ namespace Paho.Controllers
                 instQuery.Insert(0, new Hospital { ID = 0, Name = "-- " + getMsg("msgSelect") + " -- " });
                 ViewBag.Father_ID = new SelectList(instQuery, "ID", "Name", selectedFather);
             }
-            //****
+
+            //**** Ubicacion: Local, Exterior
             if (selectedLocationTypeID == null)
                 selectedLocationTypeID = 1;
             var regInstTypeLocaQuery = (from d in db.InstitutionLocationType
@@ -499,9 +534,9 @@ namespace Paho.Controllers
                                         }).ToList();
 
             regInstTypeLocaQuery.Insert(0, new InstitutionLocationTypeView { ID = 0, Name = "-- " + getMsg("msgSelect") + " -- " });
-            ViewBag.cod_institution_type_location = new SelectList(regInstTypeLocaQuery, "ID", "Name", selectedLocationTypeID);
+            ViewBag.cod_institution_location_type = new SelectList(regInstTypeLocaQuery, "ID", "Name", selectedLocationTypeID);
 
-            // Tipo de institución para Honduras
+            //**** Tipo de institución para Honduras
             var regInstTypeHON = db.CatInstitutionTypeHON
                                 .Select(c => new InstitutionLocationTypeView()
                                 {
