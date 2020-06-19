@@ -4299,13 +4299,22 @@ namespace Paho.Controllers
                             while (reader.Read())
                             {
                                 //x = reader.GetValue(1);
+                                var DOB = reader["FECHA_NACIMIENTO"];
                                 Dictionary<string, string> PatientInformation = new Dictionary<string, string>();
                                 PatientInformation.Add("nombre1", reader["N1"].ToString());
                                 PatientInformation.Add("nombre2", reader["N2"].ToString());
                                 PatientInformation.Add("apellido1", reader["A1"].ToString());
                                 PatientInformation.Add("apellido2", reader["A2"].ToString());
                                 PatientInformation.Add("sexo", reader["SEXO"].ToString() == "1" ? "Male" : reader["SEXO"].ToString() == "2" ? "Female" : "Unknown");
-                                PatientInformation.Add("DOB", Convert.ToDateTime(reader["FECHA_NACIMIENTO"]).ToString("yyyy-MM-dd"));
+                                if (DOB.ToString() == "")
+                                {
+                                    PatientInformation.Add("DOB", DateTime.Today.ToString("yyyy-MM-dd"));
+                                }
+                                else
+                                {
+                                    PatientInformation.Add("DOB", Convert.ToDateTime(reader["FECHA_NACIMIENTO"]).ToString("yyyy-MM-dd"));
+                                }
+                                
                                 PatientInformation.Add("pais", reader["COD_PAIS"].ToString());
                                 PatientInformation.Add("area_country", reader["COD_DEPARTAMENTO"].ToString());
                                 PatientInformation.Add("area_name", reader["AREA_NAME"].ToString());
