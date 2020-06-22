@@ -924,8 +924,9 @@ function ContactViewModel(app, dataModel) {
                         app.Views.GEO.selectedNeighborhoodId(data[0].neighborhood_id);
                         app.Views.GEO.selectedHamletId(data[0].hamlet_id);
                         app.Views.GEO.selectedColonyId(data[0].colony_id);
+                        app.Views.GEO.Latitude(data[0].latitude);
+                        app.Views.GEO.Longitude(data[0].longitude);
                         //app.Views.GEO.selectedLocalId(data[0].pais);
-
                     }
                 }
             })
@@ -934,8 +935,6 @@ function ContactViewModel(app, dataModel) {
                 //console.log(errorThrown);
             });
         }
-            
-        
     };
 
     self.GetContact = function (id) {
@@ -983,9 +982,9 @@ function ContactViewModel(app, dataModel) {
                 self.UniqueCaseIdentif(data.UniqueCaseIdentif);                     //#### 200225
                 self.FirstAdministLevel(data.FirstAdministLevel);                   //#### 200225
                 self.InstCantEdit_FF(data.InstCantEdit_FF);                 // Establecimiento(Lab) puede ingresar/editar datos LAB
-                console.log("GH->1")
-                console.log(self.InstCantEdit_FF());
-                console.log("GH->2")
+                //console.log("GH->1")
+                //console.log(self.InstCantEdit_FF());
+                //console.log("GH->2")
 
                 self.DataStatement(data.DataStatement);
                 self.flow_record(data.flow_record);

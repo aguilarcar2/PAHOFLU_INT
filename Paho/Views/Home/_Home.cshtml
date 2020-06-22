@@ -10,6 +10,8 @@
     string LabelPrint = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabLabelPrint", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 
     string LabelUniqueCaseIdentifier = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabContactLabelUniqueCaseIdentifier", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelNroIdentificacion = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabContactLabelIdNo", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelRUN = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabContactLabelRUN", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string LabelFirstFirstName = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabContactLabelFirstFirstName", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string LabelMiddleName = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabContactLabelMiddleName", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string LabelFirstLastName = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabContactLabelFirstLastName", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
@@ -554,15 +556,18 @@
                     </div>
                 </div>
             }
+            <!-- No. identificación -->
             <div class="col-md-6">
                 <div class='input-group'>
                     @if (ViewBag.UsrCtry != 7)
                     {
-                    <span class="input-group-addon">  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelIdNo")) <font color="#FF0000" data-bind="visible:VisibleIdType()">*</font></span>
+                        @*<span class="input-group-addon">  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelIdNo")) <font color="#FF0000" data-bind="visible:VisibleIdType()">*</font></span>*@
+                        <span class="input-group-addon">  @(LabelNroIdentificacion) <font color="#FF0000" data-bind="visible:VisibleIdType()">*</font></span>
                     }
                     else
                     {
-                    <span class="input-group-addon">  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelRUN")): <font color="#FF0000" data-bind="visible:VisibleIdType()">*</font></span>
+                        @*<span class="input-group-addon">  @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabContactLabelRUN")): <font color="#FF0000" data-bind="visible:VisibleIdType()">*</font></span>*@
+                        <span class="input-group-addon">  @(LabelRUN): <font color="#FF0000" data-bind="visible:VisibleIdType()">*</font></span>
                     }
                     @*Hace que si el pais no es Suriname, tenga una propiedad onBlur el campo NoExpediente*@
                     @if (ViewBag.UsrCtry != 25 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 18 && ViewBag.UsrCtry != 17)
@@ -571,7 +576,7 @@
                     }
                     else
                     {
-                    <input id="NoExpediente" type='text' class="form-control case_letter" data-bind="value: NoExpediente" />
+                        <input id="NoExpediente" type='text' class="form-control case_letter" data-bind="value: NoExpediente" />
                     }
                     @*<button id="DatosPaciente" type="button" class="btn btn-primary btn-next " data-bind="click: GetPatient, visible:EnableCR">Datos paciente</button>*@               
                 </div>
@@ -935,16 +940,16 @@
                             optionsText: 'Name',
                             optionsValue: 'Id',
                             value: selectedColonyId,
-                            optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel"))' ">
+                            optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel"))', 
+                            event:{ change: ReloadOthers }">
                         </select>
                     </div>
                 </div>
             </div>
         }
 
-        <input type='hidden' id="FCN" name="FCN" class="form-control case_letter" data-bind='value: fullCodeGEORef' />
-        @* <input type="hidden" id="acticuloId" name="articuloId" value="34657"> *@
-        @*<p>Full name: <strong id="FNC" name="FNC" data-bind="text: fullNameCode"></strong></p>*@
+        @*<input type='hidden' id="FCN" name="FCN" class="form-control case_letter" data-bind='value: fullCodeGEORef' />*@
+        <input type='text' id="FCN" name="FCN" class="form-control case_letter" data-bind='value: fullCodeGEORef' />
 
         <!-- StreetNo / StreetName - ApartmentSuiteLot / Address2 -->
         @if ( @ViewBag.UsrCtry == 17)
@@ -1033,7 +1038,7 @@
                         <span class="input-group-addon">
                                 @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceLatitude")) (GD):
                         </span>
-                        <input id="Latitude" type='text' class="form-control case_letter" data-bind='value: Latitude' />
+                        <input id="Latitude" name="Latitude" type='text' class="form-control case_letter" data-bind='value: Latitude' />
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -1041,7 +1046,7 @@
                         <span class="input-group-addon">
                                 @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceLongitude")) (GD):
                         </span>
-                        <input id="Longitude" type='text' class="form-control case_letter" data-bind='value: Longitude' />
+                        <input id="Longitude" name="Longitude" type='text' class="form-control case_letter" data-bind='value: Longitude' />
                     </div>
                 </div>
             </div>

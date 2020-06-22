@@ -4325,7 +4325,7 @@ namespace Paho.Controllers
         }
 
         [Authorize]
-        public JsonResult GetPatientInformation(int DTP, string DNP)
+        public JsonResult GetPatientInformation_OLD(int DTP, string DNP)
         {
             var dataforpadron = false;
             var user = UserManager.FindById(User.Identity.GetUserId());
@@ -4448,6 +4448,145 @@ namespace Paho.Controllers
                             }
                         }
                         con.Close();
+                    }
+                }
+
+                return Json(PatientInformation_, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult GetPatientInformation(int DTP, string DNP)
+        {
+            var dataforpadron = false;
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            List<Dictionary<string, string>> PatientInformation_ = new List<Dictionary<string, string>>();
+            var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+            using (var con = new SqlConnection(consString))
+            {
+                //if (dataforpadron == false)
+                //{
+                using (var command = new SqlCommand("PatientInformation", con) { CommandType = CommandType.StoredProcedure })
+                {
+                    command.Parameters.Clear();
+                    command.Parameters.Add("@DocumentNumberP", SqlDbType.NVarChar).Value = DNP;
+                    command.Parameters.Add("@DocumentTypeP", SqlDbType.Int).Value = DTP;
+                    command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = user.InstitutionID;
+                    con.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            //x = reader.GetValue(1);
+                            Dictionary<string, string> PatientInformation = new Dictionary<string, string>();
+                            PatientInformation.Add("nombre1", reader["FName1"].ToString());
+                            PatientInformation.Add("nombre2", reader["FName2"].ToString());
+                            PatientInformation.Add("apellido1", reader["LName1"].ToString());
+                            PatientInformation.Add("apellido2", reader["LName2"].ToString());
+                            PatientInformation.Add("sexo", reader["Gender"].ToString() == "1" ? "Male" : reader["Gender"].ToString() == "2" ? "Female" : "Unknown");
+                            //PatientInformation.Add("DOB", JsonConvert.SerializeObject(reader["DOB"], new JsonSerializerSettings() { DateFormatHandling = DateFormatHandling.MicrosoftDateFormat }));
+                            PatientInformation.Add("DOB", Convert.ToDateTime(reader["DOB"]).ToString("yyyy-MM-dd"));
+                            PatientInformation.Add("pais", reader["CountryID"].ToString());
+                            PatientInformation.Add("area_id", reader["AreaID"].ToString());
+                            PatientInformation.Add("state_id", reader["StateID"].ToString());
+                            PatientInformation.Add("neighborhood_id", reader["NeighborhoodID"].ToString());
+                            PatientInformation.Add("hamlet_id", reader["HamletID"].ToString());
+                            PatientInformation.Add("colony_id", reader["ColonyID"].ToString());
+                            PatientInformation.Add("latitude", reader["Latitude"].ToString());
+                            PatientInformation.Add("longitude", reader["Longitude"].ToString());
+                            PatientInformation_.Add(PatientInformation);
+                            dataforpadron = true;
+                        }
+                    }
+                    con.Close();
+                }
+                //}
+                if (dataforpadron == false)
+                {
+                    if (user.Institution.CountryID == 9)
+                    {
+                        var number_ = (int)(Int64)Convert.ToDouble(DNP);
+                        using (var command = new SqlCommand("PatientInformationCR", con) { CommandType = CommandType.StoredProcedure })
+                        {
+                            command.Parameters.Clear();
+                            command.Parameters.Add("@DocumentNumberP", SqlDbType.BigInt).Value = number_;
+                            command.Parameters.Add("@DocumentTypeP", SqlDbType.Int).Value = DTP;
+                            con.Open();
+                            using (var reader = command.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    //x = reader.GetValue(1);
+                                    Dictionary<string, string> PatientInformation = new Dictionary<string, string>();
+                                    var nombre = reader["NOM_PERSONA"].ToString().Split(' ');
+                                    PatientInformation.Add("nombre1", nombre[0].ToString());
+                                    PatientInformation.Add("nombre2", nombre.Length > 1 ? nombre[1].ToString() : "");
+                                    PatientInformation.Add("apellido1", reader["NOM_APELLIDO1"].ToString());
+                                    PatientInformation.Add("apellido2", reader["NOM_APELLIDO2"].ToString());
+                                    PatientInformation.Add("sexo", reader["IND_SEXO"].ToString() == "M" ? "Male" : reader["IND_SEXO"].ToString() == "F" ? "Female" : "Unknown");
+                                    PatientInformation.Add("DOB", Convert.ToDateTime(reader["FEC_NACIMIENTO"]).ToString("yyyy-MM-dd"));
+                                    //PatientInformation.Add("value", reader["Val_Padron"].ToString( ));
+                                    PatientInformation_.Add(PatientInformation);
+                                    dataforpadron = true;
+                                }
+                            }
+                            con.Close();
+                        }
+                    }
+
+                    if (user.Institution.CountryID == 15)
+                    {
+                        var number_ = DNP;
+                        using (var command = new SqlCommand("PatientInformationHN", con) { CommandType = CommandType.StoredProcedure })
+                        {
+                            command.Parameters.Clear();
+                            command.Parameters.Add("@DocumentNumberP", SqlDbType.Text).Value = number_;
+                            //command.Parameters.Add("@DocumentTypeP", SqlDbType.Text).Value = DTP;
+                            con.Open();
+                            using (var reader = command.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    //x = reader.GetValue(1);
+                                    var DOB = reader["FECHA_NACIMIENTO"];
+                                    Dictionary<string, string> PatientInformation = new Dictionary<string, string>();
+                                    PatientInformation.Add("nombre1", reader["N1"].ToString());
+                                    PatientInformation.Add("nombre2", reader["N2"].ToString());
+                                    PatientInformation.Add("apellido1", reader["A1"].ToString());
+                                    PatientInformation.Add("apellido2", reader["A2"].ToString());
+                                    PatientInformation.Add("sexo", reader["SEXO"].ToString() == "1" ? "Male" : reader["SEXO"].ToString() == "2" ? "Female" : "Unknown");
+                                    if (DOB.ToString() == "")
+                                    {
+                                        PatientInformation.Add("DOB", DateTime.Today.ToString("yyyy-MM-dd"));
+                                    }
+                                    else
+                                    {
+                                        PatientInformation.Add("DOB", Convert.ToDateTime(reader["FECHA_NACIMIENTO"]).ToString("yyyy-MM-dd"));
+                                    }
+
+                                    PatientInformation.Add("pais", reader["COD_PAIS"].ToString());
+                                    PatientInformation.Add("area_country", reader["COD_DEPARTAMENTO"].ToString());
+                                    PatientInformation.Add("area_name", reader["AREA_NAME"].ToString());
+                                    PatientInformation.Add("area_id", reader["ID_AREA"].ToString());
+                                    PatientInformation.Add("state_country", reader["COD_MUNICIPIO"].ToString());
+                                    PatientInformation.Add("state_name", reader["STATE_NAME"].ToString());
+                                    PatientInformation.Add("state_id", reader["ID_STATE"].ToString());
+                                    PatientInformation.Add("neighborhood_country", reader["COD_ALDEA"].ToString());
+                                    PatientInformation.Add("neighborhood_name", reader["NEIGHBORHOOD_NAME"].ToString());
+                                    PatientInformation.Add("neighborhood_id", reader["ID_NEIGHBORHOOD"].ToString());
+                                    PatientInformation.Add("hamlet_country", reader["COD_CASERIO"].ToString());
+                                    PatientInformation.Add("hamlet_name", reader["HAMLET_NAME"].ToString());
+                                    PatientInformation.Add("hamlet_id", reader["ID_HAMLET"].ToString());
+                                    PatientInformation.Add("colony_country", reader["COD_BARRIO_COLONIA"].ToString());
+                                    PatientInformation.Add("colony_name", reader["COLONY_NAME"].ToString());
+                                    PatientInformation.Add("colony_id", reader["ID_COLONY"].ToString());
+                                    //PatientInformation.Add("value", reader["Val_Padron"].ToString( ));
+                                    PatientInformation_.Add(PatientInformation);
+                                    dataforpadron = true;
+                                }
+                            }
+                            con.Close();
+                        }
                     }
                 }
 
