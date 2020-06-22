@@ -1557,13 +1557,33 @@ namespace Paho.Models
         public DateTime? ShipDate { get; set; }
         public long? LabID { get; set; }
         public int? SampleNumber { get; set; }
-
+        public int? FlowType1 { get; set; }
+        public long? LabFreeMu1L1_ID { get; set; }
+        public long? LabFreeMu1L2_ID { get; set; }
+        
         [ForeignKey("LabID")]
         public virtual Institution Institution { get; set; }
 
         [ForeignKey("flucase_id")]
         public virtual FluCase Flucase { get; set; }
 
+    }
+
+    public class FluCase_InfoSampleViewModel : CaseBase
+    {
+        public int flucase_id { get; set; }
+        //[Key]
+        public DateTime? SampleDate { get; set; }
+        public string SampleType { get; set; }
+        public DateTime? ShipDate { get; set; }
+        public long? LabID { get; set; }
+        public int? SampleNumber { get; set; }
+
+        [ForeignKey("LabID")]
+        public virtual Institution Institution { get; set; }
+
+        [ForeignKey("flucase_id")]
+        public virtual FluCase Flucase { get; set; }
     }
 
     public class FluCase_InfoLab : CaseBase
@@ -1589,6 +1609,30 @@ namespace Paho.Models
         [ForeignKey("CaseLab_id")]
         public virtual CaseLabTest CaseLabTest { get; set; }
 
+    }
+	
+	   public class FluCase_InfoLabViewModel : CaseBase
+    {
+        public int FluCase_id { get; set; }
+        public int CaseLab_id { get; set; }
+        public long? LabID { get; set; }
+        //[Key]
+        public DateTime? RecDate { get; set; }
+        public string Identification_Test { get; set; }
+        public bool? Processed { get; set; }
+        public int? NoProRenId { get; set; }
+        public string NoProRen { get; set; }
+        public decimal? TempSample { get; set; }
+        public int? SampleNumber { get; set; }
+
+        [ForeignKey("LabID")]
+        public virtual Institution Institution { get; set; }
+
+        [ForeignKey("FluCase_id")]
+        public virtual FluCase Flucase { get; set; }
+
+        [ForeignKey("CaseLab_id")]
+        public virtual CaseLabTest CaseLabTest { get; set; }
     }
 
     public class CaseLabTest : CaseBase
