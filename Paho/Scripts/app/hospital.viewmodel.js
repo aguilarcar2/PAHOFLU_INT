@@ -1948,9 +1948,180 @@
         date_OutcomeDateLastLabTest = jQuery.type(self.OutcomeDateLastLabTest()) === 'date' ? self.OutcomeDateLastLabTest() : parseDate($("#OutcomeDateLastLabTest").val(), date_format_);
         //####
         // falta la fecha de cierre de caso
+        var sampleData = [];
 
-        $.post(app.dataModel.saveHospitalUrl,
-            {
+        sampleData.push({
+            flucase_id: self.Id,
+            SampleDate: null,
+            SampleType: 3,
+            ShipDate: null,
+            LabID: 60,
+            SampleNumber: 1,
+            FlowType1: 1,
+            LabFreeMu1L1_ID: 60,
+            LabFreeMu1L2_ID: 60
+        });
+
+        console.log(sampleData);
+
+        //$.post(app.dataModel.saveHospitalUrl,
+        //    {
+                //id: self.Id,
+                //CHNum: self.CHNum(),
+                //FeverDate: moment(date_fever).format(date_format_ISO),
+                //FeverEW: self.FeverEW(),
+                //FeverEY: self.FeverEY(),
+                //DiagDate: moment(date_diagnostic).format(date_format_ISO),
+                //DiagEW: self.DiagEW(),
+                //HospAmDate: moment(date_hosp_adm).format(date_format_ISO),
+                //HospEW: self.HospEW(),
+                //HospExDate: $("#HospExDate").val() == "" ? null : moment(date_hosp_disc).format(date_format_ISO),
+                //ICU: self.ICU(),
+                //ICUAmDate: $("#ICUAmDate").val() == "" ? null : moment(date_ICU_adm).format(date_format_ISO),
+                //ICUEW: self.ICUEW(),
+                //ICUExDate: $("#ICUExDate").val() == "" ? null : moment(date_ICU_disc).format(date_format_ISO),
+                //HospitalizedIn: self.HospitalizedIn(),
+                //HospitalizedInNumber: self.HospitalizedInNumber(),
+                //Destin: self.Destin(),
+                //FalleDate: $("#FalleDate").val() == "" ? null : moment(date_falle).format(date_format_ISO),
+                //InstReferName: self.InstReferName().toLocaleUpperCase(),
+                //HospitalID_CaseToReferID : self.hospitalIDCaseToReferHospital(),
+                //IsSample: self.IsSample() === "true" ? true : (self.IsSample() === "false" ? false : null),
+                //ReasonNotSamplingID: self.ReasonNotSamplingID(),
+                //ReasonNotSamplingOther: self.ReasonNotSamplingOther(),
+                //SampleDate: $("#SampleDate").val() == "" ? null : moment(date_sample).format(date_format_ISO),
+                //SampleType: self.SampleType(),
+                //ShipDate: $("#ShipDate").val() == "" ? null : moment(date_ship).format(date_format_ISO),
+                //LabId: $("#SampleDate3").val() == "" ? null : self.LabId(),
+                //SampleDate2: $("#SampleDate2").val() == "" ? null : moment(date_sample2).format(date_format_ISO),
+                //SampleType2: self.SampleType2(),
+                //ShipDate2: $("#ShipDate2").val() == "" ? null : moment(date_ship2).format(date_format_ISO),
+                //LabId2: $("#SampleDate3").val() == "" ? null : self.LabId2(),
+                //SampleDate3: $("#SampleDate3").val() == "" ? null : moment(date_sample3).format(date_format_ISO),
+                //SampleType3: self.SampleType3(),
+                //ShipDate3: $("#ShipDate3").val() == "" ? null : moment(date_ship3).format(date_format_ISO),
+                //LabId3: $("#SampleDate3").val() == "" ? null : self.LabId3(),
+                ////#### 200419
+                //FlowType1: self.FlowType1() == 2 ? self.FlowType1() : 1,
+                //LabFreeMu1L1_ID: $("#SampleDate1").val() == "" ? null : self.SelectedLabFree11_ID(),
+                //LabFreeMu1L2_ID: $("#SampleDate1").val() == "" ? null : self.SelectedLabFree12_ID(),
+
+                ////####
+                //Adenopatia: self.Adenopatia() != true ? false : self.Adenopatia(),
+                //Wheezing: self.Wheezing() != true ? false : self.Wheezing(),                    //#### CAFQ: 180619
+                //AntecedentesFiebre: self.AntecedentesFiebre() != true ? false : self.AntecedentesFiebre(),
+
+                //Asymptomatic: self.Asymptomatic() != true ? false : self.Asymptomatic(),        //#### CAFQ: 200519
+                //Anosmy: self.Anosmy() != true ? false : self.Anosmy(),                          //#### CAFQ: 200519
+                //Dysgeusia: self.Dysgeusia() != true ? false : self.Dysgeusia(),                 //#### CAFQ: 200519
+
+                //Rinorrea: self.Rinorrea() != true ? false : self.Rinorrea(),
+                //Malestar: self.Malestar() != true ? false : self.Malestar(),
+                //Nauseas: self.Nauseas() != true ? false : self.Nauseas(),
+                //DolorMuscular: self.DolorMuscular() != true ? false : self.DolorMuscular(),
+                //Disnea: self.Disnea() != true ? false : self.Disnea(),
+                //DolorCabeza: self.DolorCabeza() != true ? false : self.DolorCabeza(),
+                //Estridor: self.Estridor() != true ? false : self.Estridor(),
+                //Tos: self.Tos() != true ? false : self.Tos(),
+                //Temperatura: self.Temperatura().toString().replace('.', ','),                  //#### CAFQ
+                //DolorCabeza: self.DolorCabeza() != true ? false : self.DolorCabeza(),
+                //Mialgia: self.Mialgia(),                                    //#### CAFQ
+                //Erupcion: self.Erupcion(),                                  //#### CAFQ
+                //ErupcionLocaliz: self.ErupcionLocaliz(),                    //#### CAFQ
+                //DolorMuscular: self.DolorMuscular(),
+                //DolorMuscularLocaliz: self.DolorMuscularLocaliz(),          //#### CAFQ
+                //Disnea: self.Disnea(),
+                //SintomHemorrag: self.SintomHemorrag(),                      //#### CAFQ
+                //SintomHemorragDesc: self.SintomHemorragDesc(),              //#### CAFQ
+                //AlteracEstadoMental: self.AlteracEstadoMental(),            //#### CAFQ
+                //Altralgia: self.Altralgia(),                                //#### CAFQ
+                //Escalofrios: self.Escalofrios(),                            //#### CAFQ
+                //Conjuntivitis: self.Conjuntivitis(),                        //#### CAFQ
+                //Rinitis: self.Rinitis(),                                    //#### CAFQ
+                //DiarreaAguda: self.DiarreaAguda(),                          //#### CAFQ
+                //DiarreaCronica: self.DiarreaCronica(),                      //#### CAFQ
+                //Mareo: self.Mareo(),                                        //#### CAFQ
+                //FalloDesarrollo: self.FalloDesarrollo(),                    //#### CAFQ
+                //Hepatomegalea: self.Hepatomegalea(),                        //#### CAFQ
+                //Ictericia: self.Ictericia(),                                //#### CAFQ
+                //Linfadenopatia: self.Linfadenopatia(),                      //#### CAFQ
+                //Malestar: self.Malestar(),                                  //#### CAFQ
+                //Nauseas: self.Nauseas(),                                    //#### CAFQ
+                //RigidezNuca: self.RigidezNuca(),                            //#### CAFQ
+                //Paralisis: self.Paralisis(),                                //#### CAFQ
+                //RespiratSuperior: self.RespiratSuperior(),                  //#### CAFQ
+                //RespiratInferior: self.RespiratInferior(),                  //#### CAFQ
+                //DolorRetrorobitario: self.DolorRetrorobitario(),            //#### CAFQ
+                //PerdidaPeso: self.PerdidaPeso(),                            //#### CAFQ
+                //Otro: self.Otro(),                                          //#### CAFQ
+                //OtroDesc: self.OtroDesc(),                                  //#### CAFQ
+                ///*InfeccHospit: self.InfeccHospit(),                        //#### CAFQ
+                //InfeccHospitFecha: $("#InfeccHospitFecha").val() == "" ? null : moment(date_InfeccHospitFecha).format(date_format_ISO),    //#### CAFQ*/
+                //DifResp: self.DifResp() != true ? false : self.DifResp(),
+                //MedSatOxig: self.MedSatOxig(),
+                //SatOxigPor: self.SatOxigPor(),
+                //SalonVal: self.SalonVal(),
+                //DiagPrinAdmVal: self.DiagPrinAdmVal(),
+                //DiagOtroAdm: self.DiagOtroAdm() == null ? "" : self.DiagOtroAdm().toLocaleUpperCase(),
+                //DestinICU: self.DestinICU(),
+                //HallRadio: self.HallRadio(),
+                //HallRadioFindings: self.HallRadioFindings(),                //#### CAFQ
+                //UCInt: self.UCInt(),
+                //UCri: self.UCri(),
+                //MecVent: self.MecVent(),
+                //MecVentNoInv: self.MecVentNoInv(),
+                //ECMO: self.ECMO(),
+                //VAFO: self.VAFO(),
+                //Comments: self.Comments,                                        //#### CAFQ: 190107
+                //DiagEgVal: self.DiagEgVal(),
+                //DiagEgOtro: self.DiagEgOtro() == null ? "" : self.DiagEgOtro().toLocaleUpperCase(),         //#### CAFQ
+                //Tiraje: self.Tiraje(),
+                //Odinofagia: self.Odinofagia(),
+                ////#### COVID-19
+                //LabConfirmedSymptom: self.LabConfirmedSymptom(),
+                //CaseInIsolation: self.CaseInIsolation(),
+                //DateIsolation: $("#DateIsolation").val() == "" ? null : moment(date_DateIsolation).format(date_format_ISO),  
+                //CaseInIsolationOtherPlace: self.CaseInIsolationOtherPlace(),
+
+                //ReasonSamplingID: self.ReasonSamplingID(),
+                //ReasonSamplingOther: self.ReasonSamplingOther(),
+
+                //OutcomeDateResubmission: $("#OutcomeDateResubmission").val() == "" ? null : moment(date_OutcomeDateResubmission).format(date_format_ISO),
+                //OutcomeDevelopSymptoms: self.OutcomeDevelopSymptoms(),
+                //OutcomeDateOnsetSymptoms: $("#OutcomeDateOnsetSymptoms").val() == "" ? null : moment(date_OutcomeDateOnsetSymptoms).format(date_format_ISO),
+
+                //OutcomeAdmissionPrevReported: self.OutcomeAdmissionPrevReported(),
+                //OutcomeDateFirstAdmission: $("#OutcomeDateFirstAdmission").val() == "" ? null : moment(date_OutcomeDateFirstAdmission).format(date_format_ISO),
+                //OutcomeUCI: self.OutcomeUCI(),
+                //OutcomeVentMecanica: self.OutcomeVentMecanica(),
+                //OutcomeECMO: self.OutcomeECMO(),
+
+                //OutcomeDestin: self.OutcomeDestin(),
+                //OutcomeDestinOther: self.OutcomeDestinOther(),
+                //OutcomeDateRelease: $("#OutcomeDateRelease").val() == "" ? null : moment(date_OutcomeDateRelease).format(date_format_ISO),
+                //OutcomeDateLastLabTest: $("#OutcomeDateLastLabTest").val() == "" ? null : moment(date_OutcomeDateLastLabTest).format(date_format_ISO),
+                //OutcomeResultsLastTest: self.OutcomeResultsLastTest(),
+                //OutcomeTotalHighRisk: self.OutcomeTotalHighRisk(),
+                //OutcomeTotalHighRiskUnknown: self.OutcomeTotalHighRiskUnknown(),
+                ////#### COVID-19
+                //CaseStatus: self.CaseStatus(),
+                //CloseDate: $("#CloseDate").val() == "" ? null : moment(date_close_case).format(date_format_ISO),
+                //ObservationCase: self.ObservationCase() == null ? "" : self.ObservationCase().toLocaleUpperCase(),
+                //DataStatement: 2,
+                //sampleData: sampleData
+        //    },
+        //    function (data) {
+        //        if (nextStep)
+        //            nextStep();
+        //    },
+        //    "json"
+        //);
+
+        $.ajax({
+            url: app.dataModel.saveHospitalUrl,
+            type: "POST",
+            data: JSON.stringify({
+                
                 id: self.Id,
                 CHNum: self.CHNum(),
                 FeverDate: moment(date_fever).format(date_format_ISO),
@@ -1970,7 +2141,7 @@
                 Destin: self.Destin(),
                 FalleDate: $("#FalleDate").val() == "" ? null : moment(date_falle).format(date_format_ISO),
                 InstReferName: self.InstReferName().toLocaleUpperCase(),
-                HospitalID_CaseToReferID : self.hospitalIDCaseToReferHospital(),
+                HospitalID_CaseToReferID: self.hospitalIDCaseToReferHospital(),
                 IsSample: self.IsSample() === "true" ? true : (self.IsSample() === "false" ? false : null),
                 ReasonNotSamplingID: self.ReasonNotSamplingID(),
                 ReasonNotSamplingOther: self.ReasonNotSamplingOther(),
@@ -2065,7 +2236,7 @@
                 //#### COVID-19
                 LabConfirmedSymptom: self.LabConfirmedSymptom(),
                 CaseInIsolation: self.CaseInIsolation(),
-                DateIsolation: $("#DateIsolation").val() == "" ? null : moment(date_DateIsolation).format(date_format_ISO),  
+                DateIsolation: $("#DateIsolation").val() == "" ? null : moment(date_DateIsolation).format(date_format_ISO),
                 CaseInIsolationOtherPlace: self.CaseInIsolationOtherPlace(),
 
                 ReasonSamplingID: self.ReasonSamplingID(),
@@ -2092,14 +2263,18 @@
                 CaseStatus: self.CaseStatus(),
                 CloseDate: $("#CloseDate").val() == "" ? null : moment(date_close_case).format(date_format_ISO),
                 ObservationCase: self.ObservationCase() == null ? "" : self.ObservationCase().toLocaleUpperCase(),
-                DataStatement: 2
-            },
-            function (data) {
-                if (nextStep)
-                    nextStep();
-            },
-            "json"
-        );
+                DataStatement: 2,
+                SampleData_: sampleData
+
+            }),
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                if (nextStep) nextStep();
+                //alert(data);
+            }
+        })
         return true;
     };
 
