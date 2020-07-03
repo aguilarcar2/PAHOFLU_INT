@@ -215,16 +215,16 @@
         </div>
         <!-- Latitud -->
         <div class="form-group vertical-align">
-            @Html.LabelFor(model => model.latitude, labelLatitude, htmlAttributes: new { @class = "control-label col-md-1_5" })
+            @Html.LabelFor(model => model.latitudeEdit, labelLatitude, htmlAttributes: new { @class = "control-label col-md-1_5" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.latitude, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.latitudeEdit, new { htmlAttributes = new { @class = "form-control" } })
             </div>
         </div>
         <!-- Longitud -->
         <div class="form-group vertical-align">
-            @Html.LabelFor(model => model.longitude, labelLongitude, htmlAttributes: new { @class = "control-label col-md-1_5" })
+            @Html.LabelFor(model => model.longitudeEdit, labelLongitude, htmlAttributes: new { @class = "control-label col-md-1_5" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.longitude, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.longitudeEdit, new { htmlAttributes = new { @class = "form-control" } })
             </div>
         </div>
         <!-- InstType -->

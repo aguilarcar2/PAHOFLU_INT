@@ -5,10 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+//using System.Globalization;
 
 
 namespace Paho.Controllers
@@ -196,6 +198,13 @@ namespace Paho.Controllers
                 return HttpNotFound();
             }
 
+            //string eee = Convert.ToString(catalogo.latitude, CultureInfo.InvariantCulture);
+            //string fff = Convert.ToString(catalogo.longitude, CultureInfo.InvariantCulture); 
+            //catalogo.latitudeEdit = eee;
+            //catalogo.longitudeEdit = fff;
+            catalogo.latitudeEdit = Convert.ToString(catalogo.latitude, CultureInfo.InvariantCulture);
+            catalogo.longitudeEdit = Convert.ToString(catalogo.longitude, CultureInfo.InvariantCulture);
+
             if (catalogo is Hospital) {
                 catalogo.InstType = InstitutionType.Hospital;
             } else if (catalogo is Lab) {
@@ -297,17 +306,31 @@ namespace Paho.Controllers
         // POST: CatAgeGroup/Edit/5
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public ActionResult EditPost(int? id)
+        public ActionResult EditPost(int? id, string latitudeEdit, string LongitudeEdit)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var catalogo = db.Institutions.Find(id);
-            if (TryUpdateModel(catalogo, "",
-               new string[] { "AreaID", "FullName", "Name", "AccessLevel", "InstID", "Father_ID", "SARI", "ILI", "surv_unusual", "PCR", "IFI",
-                   "Active", "sentinel", "orig_country","cod_region_institucional","cod_region_salud","cod_region_pais","InstType", "cod_institution_type",
-                   "OrdenPrioritybyLab", "NPHL", "LocationTypeID", "ForeignCountryID", "ForeignInstitutionAddress", "LabNIC", "CountryID", "FlowFree", "latitude", "longitude" }))
+
+            double latitude, longitude;
+            if (Double.TryParse(latitudeEdit, NumberStyles.Any, CultureInfo.InvariantCulture, out latitude))
+                catalogo.latitude = latitude;
+            else
+                catalogo.latitude = null;
+
+            if (Double.TryParse(LongitudeEdit, NumberStyles.Any, CultureInfo.InvariantCulture, out longitude))
+                catalogo.longitude = longitude;
+            else
+                catalogo.longitude = null;
+
+            /*/if (TryUpdateModel(catalogo, "", new string[] { "AreaID", "FullName", "Name", "AccessLevel", "InstID", "Father_ID", "SARI", "ILI", "surv_unusual", "PCR", "IFI",
+            "Active", "sentinel", "orig_country","cod_region_institucional","cod_region_salud","cod_region_pais","InstType", "cod_institution_type",
+                                                            "OrdenPrioritybyLab", "NPHL", "LocationTypeID", "ForeignCountryID", "ForeignInstitutionAddress", "LabNIC", "CountryID", "FlowFree", "latitude", "longitude" }))*/
+            if (TryUpdateModel(catalogo, "", new string[] { "AreaID", "FullName", "Name", "AccessLevel", "InstID", "Father_ID", "SARI", "ILI", "surv_unusual", "PCR", "IFI",
+                                                            "Active", "sentinel", "orig_country","cod_region_institucional","cod_region_salud","cod_region_pais","InstType", "cod_institution_type",
+                                                            "OrdenPrioritybyLab", "NPHL", "LocationTypeID", "ForeignCountryID", "ForeignInstitutionAddress", "LabNIC", "CountryID", "FlowFree" }))
             {
                 try
                 {

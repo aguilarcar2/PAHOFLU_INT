@@ -876,14 +876,28 @@ namespace Paho.Models
 
         public bool ForeignLab { get; set; }
 
+        //[DisplayFormat(DataFormatString = "{0:###,###}")]
+        //[DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
+        //[DataType(DataType.Custom)]
+        //[DisplayFormat(DataFormatString = "{0:###,###.######}")]
+        //[DisplayFormat(DataFormatString = "{0:#0.########}", ApplyFormatInEditMode = true)]
         public double? latitude { get; set; }
-
+        //[DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
+        //[DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
+        //[DisplayFormat(DataFormatString = "{0:#,###0.00}", ApplyFormatInEditMode = true)]
         public double? longitude { get; set; }
-        //****<
+        //****
+        [NotMapped]
+        public string latitudeEdit { get; set; }
+        [NotMapped]
+        public string longitudeEdit { get; set; }
+        //****
         [DisplayName("Tipo Institución:")]
         public int? InstitutionTypeID { get; set; }
         [DisplayName("Laboratorio NIC:")]
         public bool LabNIC { get; set; }
+
+
     }
 
     public class InstitutionLocationType                    //#### CAFQ: 180911
