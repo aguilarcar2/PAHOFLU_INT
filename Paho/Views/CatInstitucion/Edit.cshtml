@@ -25,7 +25,7 @@
         <!-- Location -->
         <div class="form-group vertical-align">
             @*@Html.LabelFor(model => model.LocationTypeID, ((string)Paho.Controllers.ResourcesM.SgetMessage("msgViewCatInstitution_Location", ViewBag.UsrCtry, ViewBag.UsrCtryLang)) + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })*@
-            @Html.LabelFor(model => model.LocationTypeID, labelUbicacion + ":::", htmlAttributes: new { @class = "col-md-1_5 text-right" })
+            @Html.LabelFor(model => model.LocationTypeID, labelUbicacion + ":", htmlAttributes: new { @class = "col-md-1_5 text-right" })
             <div class="col-md-10">
                 @Html.DropDownList("LocationTypeID", ViewBag.cod_institution_location_type as SelectList, null, new { @class = "form-control" })
             </div>

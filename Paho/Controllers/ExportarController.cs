@@ -1355,17 +1355,6 @@ namespace Paho.Controllers
                         {
                             AppendDataToExcel(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, 
                                 insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, AreaID_, CasosNPHL, Sentinel);        //#### CAFQ
-
-                            //if (reportTemplate == "R12")      //#### CAFQ
-                            //{
-                            //    var excelWs_Leyendas = excelWorkBook.Worksheets["Leyendas"];
-
-                            //    //int YearBegin, YearEnd;
-                            //    int YearBegin = 0, YearEnd = 0;
-                            //    Calculate_YearBegin_YearEnd(Year, YearFrom, YearTo, StartDate, EndDate, ref YearBegin, ref YearEnd);
-
-                            //    ConfigToExcel_FLUID(CountryID, Languaje_, RegionID_, Year, YearBegin, YearEnd, StartDate, EndDate, HospitalID_, Surv, excelWorkBook, "Leyendas", 1, excelWs_Leyendas.Index, false);
-                            //}
                         }
 
                         excelPackage.SaveAs(ms);

@@ -864,33 +864,53 @@
     }
 
     self.EnableTestNationalGlobal = function () {
-        //console.log("EnableTestNationalGloba->START");
+        console.log("EnableTestNationalGloba->START");
         //console.log(app.Views.Lab.NPHL_FlowExist());
-        if ($("#ITy").val() == "2"
-             && self.UsrCountry() == 9 
-            ) {
-            if ( app.Views.Contact.flow_institution() == 2
-             && app.Views.Contact.Flow_Local_Institution_Lab()){
+        if ($("#ITy").val() == "2" && self.UsrCountry() == 9) 
+        {
+            if ( app.Views.Contact.flow_institution() == 2 && app.Views.Contact.Flow_Local_Institution_Lab()){
                 console.log("EnableTestNationalGlobal -> Opcion true");
-                // Laboratorio Nacional
+                // Laboratorio Nacional (Laboratorio 2)
                 $("#RecDate_National").attr('disabled', false);
                 $("#TempSample_National").attr('disabled', false);
                 $('input[id="Processed_National"]').attr('disabled', false);
                 $("#NoProRenId_National").attr('disabled', false);
                 $("#NoProRen_National").attr('disabled', false);
                 $("#Identification_Test_National").attr('disabled', false);
-            } else if (app.Views.Contact.flow_institution() == 1
-             && app.Views.Contact.Flow_Local_Institution_Lab()) {
-                //console.log("Opcion verdadera");
-                // Laboratorio Regional
+
+                //**** CAFQ: 200710 - Anterior 
+                // (Laboratorio 1)
                 $("#RecDate").attr('disabled', true);
                 $("#TempSample1").attr('disabled', true);
                 $('input[id="Processed"]').attr('disabled', true);
                 $("#NoProRenId").attr('disabled', true);
                 $("#NoReason").attr('disabled', true);
                 $("#Identification_Test").attr('disabled', true);
-            }
+            } else if (app.Views.Contact.flow_institution() == 1 && app.Views.Contact.Flow_Local_Institution_Lab()) {
+                console.log("Laboratorio 1");
+                //**** CAFQ: 200710 - Anterior 
+                //$("#RecDate").attr('disabled', true);
+                //$("#TempSample1").attr('disabled', true);
+                //$('input[id="Processed"]').attr('disabled', true);
+                //$("#NoProRenId").attr('disabled', true);
+                //$("#NoReason").attr('disabled', true);
+                //$("#Identification_Test").attr('disabled', true);
+                //**** END
+                $("#RecDate").attr('disabled', false);
+                $("#TempSample1").attr('disabled', false);
+                $('input[id="Processed"]').attr('disabled', false);
+                $("#NoProRenId").attr('disabled', false);
+                $("#NoReason").attr('disabled', false);
+                $("#Identification_Test").attr('disabled', false);
 
+                // Laboratorio Nacional (Laboratorio 2)
+                $("#RecDate_National").attr('disabled', true);
+                $("#TempSample_National").attr('disabled', true);
+                $('input[id="Processed_National"]').attr('disabled', true);
+                $("#NoProRenId_National").attr('disabled', true);
+                $("#NoProRen_National").attr('disabled', true);
+                $("#Identification_Test_National").attr('disabled', true);
+            }
         } else  if ($("#ITy").val() == "2" 
             && (self.UsrCountry() == 15 || (self.UsrCountry() == 25 && app.Views.Lab.NPHL_FlowExist()))
             && app.Views.Lab.flow_max_record() == app.Views.Contact.flow_institution() 

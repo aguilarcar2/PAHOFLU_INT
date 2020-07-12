@@ -306,30 +306,72 @@ namespace Paho.Controllers
         // POST: CatAgeGroup/Edit/5
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public ActionResult EditPost(int? id, string latitudeEdit, string LongitudeEdit)
+        public ActionResult EditPost(int? id, string latitudeEdit, string LongitudeEdit, string InstitutionType)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var catalogo = db.Institutions.Find(id);
+            var catalog = db.Institutions.Find(id);
 
             double latitude, longitude;
             if (Double.TryParse(latitudeEdit, NumberStyles.Any, CultureInfo.InvariantCulture, out latitude))
-                catalogo.latitude = latitude;
+                catalog.latitude = latitude;
             else
-                catalogo.latitude = null;
+                catalog.latitude = null;
 
             if (Double.TryParse(LongitudeEdit, NumberStyles.Any, CultureInfo.InvariantCulture, out longitude))
-                catalogo.longitude = longitude;
+                catalog.longitude = longitude;
             else
-                catalogo.longitude = null;
+                catalog.longitude = null;
+
+            //if (InstitutionType == "Lab")
+            //    catalog.InstType = (InstitutionType)2;
+            //else if(InstitutionType == "Hospital")
+            //    catalog.InstType = (InstitutionType)1;
+            //else if (InstitutionType == "Admin")
+            //    catalog.InstType = (InstitutionType)3;
+
+            //////if (InstitutionType == "Admin")
+            //////{
+            //////    AdminInstitution aaa = new AdminInstitution(catalog);
+            //////    aaa.InstType = (InstitutionType)3;
+            //////    //db.Institutions.Add(new AdminInstitution(catalog));
+            //////    db.Institutions.Add(aaa);
+            //////}
+            //////else if (InstitutionType == "Lab")
+            //////{
+            //////    db.Institutions.Add(new Lab(catalog));
+            //////}
+            //////else
+            //////{
+            //////    db.Institutions.Add(catalog);
+            //////}
+
+
+            //if (catalog.InstType == InstitutionType.Admin)
+            //{
+            //    //db.Institutions.Add(new AdminInstitution(catalog));
+            //    latitude = 0;
+            //}
+            //else if (catalog.InstType == InstitutionType.Lab)
+            //{
+            //    //db.Institutions.Add(new Lab(catalog));
+            //    latitude = 1;
+            //}
+            //else
+            //{
+            //    //db.Institutions.Add(catalog);
+            //    latitude = 2;
+            //}
+
 
             /*/if (TryUpdateModel(catalogo, "", new string[] { "AreaID", "FullName", "Name", "AccessLevel", "InstID", "Father_ID", "SARI", "ILI", "surv_unusual", "PCR", "IFI",
             "Active", "sentinel", "orig_country","cod_region_institucional","cod_region_salud","cod_region_pais","InstType", "cod_institution_type",
-                                                            "OrdenPrioritybyLab", "NPHL", "LocationTypeID", "ForeignCountryID", "ForeignInstitutionAddress", "LabNIC", "CountryID", "FlowFree", "latitude", "longitude" }))*/
-            if (TryUpdateModel(catalogo, "", new string[] { "AreaID", "FullName", "Name", "AccessLevel", "InstID", "Father_ID", "SARI", "ILI", "surv_unusual", "PCR", "IFI",
-                                                            "Active", "sentinel", "orig_country","cod_region_institucional","cod_region_salud","cod_region_pais","InstType", "cod_institution_type",
+                                                            "OrdenPrioritybyLab", "NPHL", "LocationTypeID", "ForeignCountryID", "ForeignInstitutionAddress", "LabNIC", "CountryID", "FlowFree", "latitude", "longitude" }))
+                    ,"InstType"                                        */
+            if (TryUpdateModel(catalog, "", new string[] { "AreaID", "FullName", "Name", "AccessLevel", "InstID", "Father_ID", "SARI", "ILI", "surv_unusual", "PCR", "IFI",
+                                                            "Active", "sentinel", "orig_country","cod_region_institucional","cod_region_salud","cod_region_pais", "InstType", "cod_institution_type",
                                                             "OrdenPrioritybyLab", "NPHL", "LocationTypeID", "ForeignCountryID", "ForeignInstitutionAddress", "LabNIC", "CountryID", "FlowFree" }))
             {
                 try
@@ -344,7 +386,7 @@ namespace Paho.Controllers
                 }
             }
 
-            return View(catalogo);
+            return View(catalog);
         }
 
 

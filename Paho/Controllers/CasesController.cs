@@ -26,15 +26,18 @@ namespace Paho.Controllers
 
         public void HistoryRecord(int? RecordId, int Action_history, int? flow, int? state)
         {
-            RecordHistory history;
-            //IQueryableToXML(RecordId);
-            history = new RecordHistory(); 
+            var user = UserManager.FindById(User.Identity.GetUserId());
+
+            //RecordHistory history;
+            RecordHistory history = new RecordHistory(); 
             history.Action = Action_history;
             history.Recordid = RecordId;
             history.Userid = User.Identity.GetUserId();
             history.flow = flow;
             history.state = state;
             history.DateAction = DateTime.Now;
+            history.UserName = user.UserName;
+            history.InstitutionName = user.Institution.FullName;
             db.Entry(history).State = EntityState.Added;
             db.SaveChanges();
         }
@@ -603,105 +606,117 @@ namespace Paho.Controllers
                 var labsFF_list = from x in labsFF
                                   select new { x.FluCaseID, x.Statement };
 
-                //#### CAFQ: FL-200526
-                // ORIGINAL:
-                //if (InstitutionDB == 0 && institutionsConfiguration.Any())
-                //{
-                //    var Listlabs = institutionsConfiguration.Select(i => i.InstitutionParentID).ToList();
-                //    flucases = flucases.Where(f => Listlabs.Contains(f.HospitalID));  
-                //}
-                if (InstitutionDB == 0 && institutionsConfiguration.Any())                  //#### 200419 Flow free
+                if (user.Institution.LabNIC != true)
                 {
-                    var Listlabs = institutionsConfiguration.Select(i => i.InstitutionParentID).ToList();
-                    if ( user.Institution.LabNIC == true)
+                    //#### CAFQ: FL-200526
+                    // ORIGINAL:
+                    //if (InstitutionDB == 0 && institutionsConfiguration.Any())
+                    //{
+                    //    var Listlabs = institutionsConfiguration.Select(i => i.InstitutionParentID).ToList();
+                    //    flucases = flucases.Where(f => Listlabs.Contains(f.HospitalID));  
+                    //}
+                    if (InstitutionDB == 0 && institutionsConfiguration.Any())                  //#### 200419 Flow free
                     {
-                        flucases = flucases.Where(f => Listlabs.Contains(f.HospitalID));            //#### 200419 Flow free
+                        var Listlabs = institutionsConfiguration.Select(i => i.InstitutionParentID).ToList();
+                        if ( user.Institution.LabNIC == true)
+                        {
+                            flucases = flucases.Where(f => Listlabs.Contains(f.HospitalID));            //#### 200419 Flow free
+                        }
+                        else
+                        {
+                            flucases = flucases.Where(f => (f.FlowType1 == 2) ? 
+                                                            labsFF_list.Any(x => x.FluCaseID == f.ID) : 
+                                                            Listlabs.Contains(f.HospitalID));            //#### 200419 Flow free
+                        }
                     }
-                    else
+                    else if(InstitutionDB == 0 && labsFF.Any())
                     {
-                        flucases = flucases.Where(f => (f.FlowType1 == 2) ? 
-                                                        labsFF_list.Any(x => x.FluCaseID == f.ID) : 
-                                                        Listlabs.Contains(f.HospitalID));            //#### 200419 Flow free
+                        flucases = flucases.Where(f => labsFF_list.Any(x => x.FluCaseID == f.ID));
                     }
-                }
-                else if(InstitutionDB == 0 && labsFF.Any())
-                {
-                    flucases = flucases.Where(f => labsFF_list.Any(x => x.FluCaseID == f.ID));
-                }
-                //#### END
+                    //#### END
 
-                if (!institutionsConfiguration.Any())
-                {
-                    flucases = flucases.Where(f => f.IsSample == true);
-                    //InstitutionDB = labs;
-
-                    if (list_labs.Count() > 0)
+                    if (!institutionsConfiguration.Any())
                     {
-                        InstitutionDB = int.Parse(list_labs[0].Father_ID.ToString());
-                        flucases = flucases.Where(f => f.HospitalID == InstitutionDB);
+                        flucases = flucases.Where(f => f.IsSample == true);
+                        //InstitutionDB = labs;
+
+                        if (list_labs.Count() > 0)
+                        {
+                            InstitutionDB = int.Parse(list_labs[0].Father_ID.ToString());
+                            flucases = flucases.Where(f => f.HospitalID == InstitutionDB);
+                        }
                     }
                 }
 
                 if (SPend == true)                  //Para bandeja de pendientes
                 {
                     flucases = flucases.Where(f => f.CaseStatus == null);
-                    //#### CAFQ: FL-200526
-                    // ORIGINAL:
-                    //if (institutionsConfiguration.Any())
-                    //{
-                    //    if (institutionsConfiguration.Where(c => c.InstitutionToID == user.InstitutionID && c.InstitutionFrom.NPHL == true).Any())
-                    //    {
-                    //        flucases = flucases.Where(d => d.IsSample == true && ((d.SampleDate != null && d.NPHL_Processed != false) || (d.SampleDate2 != null && d.NPHL_Processed_2 != false)));
-                    //    }
 
-                    //    if (user.Institution.CountryID == 15)
-                    //    {
-                    //        flucases = flucases.Where(h => (h.IsSample == true && (h.Processed != false || h.Processed_National != false)) && (((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault() - 1)) && (h.statement == 2 || h.statement == null)) || ((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault())) && (h.statement == 1 || h.statement == null))));
-                    //    }
-                    //    else
-                    //    {
-                    //        flucases = flucases.Where(h => (h.IsSample == true && h.Processed != false) && (((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault() - 1)) && (h.statement == 2 || h.statement == null)) || ((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault())) && (h.statement == 1 || h.statement == null))));
-                    //    }
-
-                    //    //Es la escepción únicamente para AZP  -- tengo que mejorar el query para hacerlo automatico
-                    //    if (user.Institution.CountryID != 25)
-                    //        flucases = flucases.Where(i => i.CaseLabTests.Where(x => (x.inst_conf_end_flow_by_virus == 0 || x.inst_conf_end_flow_by_virus == null) || x.statement_test == 1).Any() || i.CaseLabTests.Count == 0);
-                    //}
-                    //else
-                    //{
-                    //    flucases = flucases.Where(f => f.IsSample == true && (f.Processed != false || f.NPHL_Processed != false) && f.FinalResult == null);
-                    //    flucases = flucases.Where(h => h.flow == 0);
-                    //}
-                    if (institutionsConfiguration.Any())
-                    {
-                        if (institutionsConfiguration.Where(c => c.InstitutionToID == user.InstitutionID && c.InstitutionFrom.NPHL == true).Any())
-                        {
-                            flucases = flucases.Where(d => d.IsSample == true && ((d.SampleDate != null && d.NPHL_Processed != false) || (d.SampleDate2 != null && d.NPHL_Processed_2 != false)));
-                        }
-
-                        if (user.Institution.CountryID == 15)
-                        {
-                            flucases = flucases.Where(h => (h.IsSample == true && (h.Processed != false || h.Processed_National != false)) && (((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault() - 1)) && (h.statement == 2 || h.statement == null)) || ((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault())) && (h.statement == 1 || h.statement == null))));
-                        }
-                        else
-                        {
-                            //#### CAFQ: FL-200526
-                            //ORIG: flucases = flucases.Where(h => (h.IsSample == true && h.Processed != false) && (((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault() - 1)) && (h.statement == 2 || h.statement == null)) || ((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault())) && (h.statement == 1 || h.statement == null))));
-                            flucases = flucases.Where(h => (h.IsSample == true && h.Processed != false) && (h.FlowType1 == 2) ?
-                                                                                                           labsFF_list.Any(x => x.FluCaseID == h.ID && x.Statement != 2) :
-                                                                                                           ((((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault() - 1)) && (h.statement == 2 || h.statement == null)) || ((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault())) && (h.statement == 1 || h.statement == null)))));
-                        }
-
-                        //Es la escepción únicamente para AZP  -- tengo que mejorar el query para hacerlo automatico
-                        if (user.Institution.CountryID != 25)
-                            flucases = flucases.Where(i => i.CaseLabTests.Where(x => (x.inst_conf_end_flow_by_virus == 0 || x.inst_conf_end_flow_by_virus == null) || x.statement_test == 1).Any() || i.CaseLabTests.Count == 0);
-                    }
-                    else
+                    if (user.Institution.LabNIC == true)
                     {
                         flucases = flucases.Where(f => f.IsSample == true && (f.Processed != false || f.NPHL_Processed != false) && f.FinalResult == null);
                         flucases = flucases.Where(h => h.flow == 0);
                     }
-                    //#### END
+                    else
+                    {
+                        //#### CAFQ: FL-200526
+                        // ORIGINAL:
+                        //if (institutionsConfiguration.Any())
+                        //{
+                        //    if (institutionsConfiguration.Where(c => c.InstitutionToID == user.InstitutionID && c.InstitutionFrom.NPHL == true).Any())
+                        //    {
+                        //        flucases = flucases.Where(d => d.IsSample == true && ((d.SampleDate != null && d.NPHL_Processed != false) || (d.SampleDate2 != null && d.NPHL_Processed_2 != false)));
+                        //    }
+
+                        //    if (user.Institution.CountryID == 15)
+                        //    {
+                        //        flucases = flucases.Where(h => (h.IsSample == true && (h.Processed != false || h.Processed_National != false)) && (((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault() - 1)) && (h.statement == 2 || h.statement == null)) || ((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault())) && (h.statement == 1 || h.statement == null))));
+                        //    }
+                        //    else
+                        //    {
+                        //        flucases = flucases.Where(h => (h.IsSample == true && h.Processed != false) && (((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault() - 1)) && (h.statement == 2 || h.statement == null)) || ((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault())) && (h.statement == 1 || h.statement == null))));
+                        //    }
+
+                        //    //Es la escepción únicamente para AZP  -- tengo que mejorar el query para hacerlo automatico
+                        //    if (user.Institution.CountryID != 25)
+                        //        flucases = flucases.Where(i => i.CaseLabTests.Where(x => (x.inst_conf_end_flow_by_virus == 0 || x.inst_conf_end_flow_by_virus == null) || x.statement_test == 1).Any() || i.CaseLabTests.Count == 0);
+                        //}
+                        //else
+                        //{
+                        //    flucases = flucases.Where(f => f.IsSample == true && (f.Processed != false || f.NPHL_Processed != false) && f.FinalResult == null);
+                        //    flucases = flucases.Where(h => h.flow == 0);
+                        //}
+                        if (institutionsConfiguration.Any())
+                        {
+                            if (institutionsConfiguration.Where(c => c.InstitutionToID == user.InstitutionID && c.InstitutionFrom.NPHL == true).Any())
+                            {
+                                flucases = flucases.Where(d => d.IsSample == true && ((d.SampleDate != null && d.NPHL_Processed != false) || (d.SampleDate2 != null && d.NPHL_Processed_2 != false)));
+                            }
+
+                            if (user.Institution.CountryID == 15)
+                            {
+                                flucases = flucases.Where(h => (h.IsSample == true && (h.Processed != false || h.Processed_National != false)) && (((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault() - 1)) && (h.statement == 2 || h.statement == null)) || ((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault())) && (h.statement == 1 || h.statement == null))));
+                            }
+                            else
+                            {
+                                //#### CAFQ: FL-200526
+                                //ORIG: flucases = flucases.Where(h => (h.IsSample == true && h.Processed != false) && (((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault() - 1)) && (h.statement == 2 || h.statement == null)) || ((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault())) && (h.statement == 1 || h.statement == null))));
+                                flucases = flucases.Where(h => (h.IsSample == true && h.Processed != false) && (h.FlowType1 == 2) ?
+                                                                                                               labsFF_list.Any(x => x.FluCaseID == h.ID && x.Statement != 2) :
+                                                                                                               ((((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault() - 1)) && (h.statement == 2 || h.statement == null)) || ((h.flow == (institutionsConfiguration.Where(i => i.InstitutionParentID == h.HospitalID && i.InstitutionToID == user.Institution.ID).Select(j => j.Priority).ToList().FirstOrDefault())) && (h.statement == 1 || h.statement == null)))));
+                            }
+
+                            //Es la escepción únicamente para AZP  -- tengo que mejorar el query para hacerlo automatico
+                            if (user.Institution.CountryID != 25)
+                                flucases = flucases.Where(i => i.CaseLabTests.Where(x => (x.inst_conf_end_flow_by_virus == 0 || x.inst_conf_end_flow_by_virus == null) || x.statement_test == 1).Any() || i.CaseLabTests.Count == 0);
+                        }
+                        else
+                        {
+                            flucases = flucases.Where(f => f.IsSample == true && (f.Processed != false || f.NPHL_Processed != false) && f.FinalResult == null);
+                            flucases = flucases.Where(h => h.flow == 0);
+                        }
+                        //#### END
+                    }
                 }
             }
 

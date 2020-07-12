@@ -124,25 +124,32 @@ namespace Paho.Controllers
             {
                 CaseViewModel.DisplayLabs = true;
 
-                
-                institutions = institutionsConfiguration.Select(i => i.InstitutionParent).OrderBy(j => j.FullName);
-
-                if (!institutions.Any())
+                if (user.Institution.LabNIC == true)
                 {
-                    if (user.Institution.AccessLevel == AccessLevel.Country)
+                    institutions = db.Institutions.OfType<Hospital>()
+                                     .Where(i => i.CountryID == user.Institution.CountryID).OrderBy(j => j.FullName);
+                }
+                else
+                {
+                    institutions = institutionsConfiguration.Select(i => i.InstitutionParent).OrderBy(j => j.FullName);
+
+                    if (!institutions.Any())
                     {
-                        institutions = db.Institutions.OfType<Lab>()
-                                       .Where(i => i.CountryID == user.Institution.CountryID).OrderBy(j => j.FullName);
-                    }
-                    else if (user.Institution.AccessLevel == AccessLevel.Area)
-                    {
-                        institutions = db.Institutions.OfType<Lab>()
-                                       .Where(i => i.AreaID == user.Institution.AreaID).OrderBy(j => j.FullName);
-                    }
-                    else
-                    {
-                        institutions = db.Institutions.OfType<Lab>()
-                                       .Where(i => i.ID == user.Institution.ID).OrderBy(j => j.FullName);
+                        if (user.Institution.AccessLevel == AccessLevel.Country)
+                        {
+                            institutions = db.Institutions.OfType<Lab>()
+                                           .Where(i => i.CountryID == user.Institution.CountryID).OrderBy(j => j.FullName);
+                        }
+                        else if (user.Institution.AccessLevel == AccessLevel.Area)
+                        {
+                            institutions = db.Institutions.OfType<Lab>()
+                                           .Where(i => i.AreaID == user.Institution.AreaID).OrderBy(j => j.FullName);
+                        }
+                        else
+                        {
+                            institutions = db.Institutions.OfType<Lab>()
+                                           .Where(i => i.ID == user.Institution.ID).OrderBy(j => j.FullName);
+                        }
                     }
                 }
             }
