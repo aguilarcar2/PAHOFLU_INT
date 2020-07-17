@@ -363,6 +363,7 @@
 
     <!-- Contacto -->
     <div id="tab-contact" data-bind="with: app.Views.Contact">
+
         <div class="row rowform">
             <!-- Vigilancia -->
             <div class="col-md-6">
@@ -394,7 +395,7 @@
                     </label>
                 }
             </div>
-
+            <!-- Servicio -->
             @if (ViewBag.UsrCtry != 7 && ViewBag.UsrCtry != 9 && ViewBag.UsrCtry != 15 && ViewBag.UsrCtry != 3 && ViewBag.UsrCtry != 11 && ViewBag.UsrCtry != 17)
             {
                 <div class="col-md-6">
@@ -404,13 +405,13 @@
                         </span>
 
                         <select id="cmbServices" class="form-control" style="max-width:85%;" data-bind="options: app.Views.Home.institutions,
-
-                optionsText: 'Name',
-                optionsValue: 'Id',
-                value: selectedServiceId "></select>
+                            optionsText: 'Name',
+                            optionsValue: 'Id',
+                            value: selectedServiceId "></select>
                     </div>
                 </div>
             }
+            <!-- Establecimiento -->
             @*Agregar aqui a todos los paises que deben mostrar la institución*@
             @if (ViewBag.UsrCtry == 7 || ViewBag.UsrCtry == 9 || ViewBag.UsrCtry == 15 || ViewBag.UsrCtry == 3 || ViewBag.UsrCtry == 11 || ViewBag.UsrCtry == 119 || ViewBag.UsrCtry == 17 || ViewBag.UsrCtry == 67)
             {
@@ -423,6 +424,7 @@
                     </div>
                 </div>}
         </div>
+        <!-- Establecimiento generadora del caso -->
         @if (ViewBag.UsrCtry == 17 || ViewBag.UsrCtry == 15 || ViewBag.UsrCtry == 3)
         {
             <div class="row rowform" data-bind="visible:displayhospitalIDCaseGenerating">
@@ -1280,12 +1282,30 @@
             <div class="col-md-12">
                 <button type="button" style="background-color:#B2BABB; color:#000000" class="btn btn-group-justified" data-toggle="collapse" data-target="#Exposicion">
                     <!--Historia de exposición / Posible exposición-->
-                    @*@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosHistoriaExposicion"))*@
                     @LabelInusitadosHistoriaExposicion
                     <span class="glyphicon glyphicon-chevron-up span_arrow"></span>
                 </button>
 
                 <div id="Exposicion" class="collapse in">
+                    <!-- Ocupación -->
+                    @if (ViewBag.UsrCtry == 15)
+                    {
+                        <div class="row rowform" data-bind="visible: app.Views.Contact.IsSurv_SARI_OR_ILI()">
+                            <div class="col-md-6">
+                                <div class='input-group'>
+                                    <span class='input-group-addon'>
+                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosOcupacion"))
+                                    </span>
+                                    <select id="Occupation" class="form-control" data-bind="options: catoccupations,
+                                    optionsText: 'Name',
+                                    optionsValue: 'Id',
+                                    value: selectedOccupationId,
+                                    optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel")) '"></select>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
                     <!-- personal de salud (trabajó en algún establecimiento de salud) -->
                     <div class="row rowform">
                         <div class='input-group col-md-12'>
@@ -1604,6 +1624,9 @@
         </div>
 
         <!-- Inusitado - Seccion: Ocupación -->
+
+
+
         <div class="row rowform" data-bind="visible:app.Views.Contact.IsInusitado">
             <div class="col-md-12">
                 <button type="button" style="background-color:#B2BABB; color:#000000" class="btn btn-group-justified" data-toggle="collapse" data-target="#Ocupacion">
@@ -7003,6 +7026,7 @@
     var labspcr = @Html.Raw(Json.Encode(Model.LabsPCR));
     var labsifi = @Html.Raw(Json.Encode(Model.LabsIFI));
     var inst_flowfree_active = @Html.Raw(Json.Encode(Model.inst_flowfree_active));      //#### CAFQ: FL-200526  true/flase
+    var case_gene_usr = @Html.Raw(Json.Encode(Model.case_gene_usr));
 
     @*console.log("d1");
     var canEditLFF = @(ViewBag.CanEditLFF);         // Editar FF
@@ -7299,7 +7323,7 @@
                     }
                     else if (iCol == 7) {
                         app.Views.PrintTest.GeneratebyList_SARSCov2(rowId);
-                    } 
+                    }
                     else if (rowId) {
                         loadData(rowId);
                     }

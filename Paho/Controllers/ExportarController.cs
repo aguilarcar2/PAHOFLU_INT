@@ -453,7 +453,7 @@ namespace Paho.Controllers
                     .Replace("{countryId}", CountryID_.ToString())
                     ))
                 {
-                    using (var excelPackage = new ExcelPackage(fs))
+                    using (var excelPackage = new ExcelPackage(fs))  
                     {
                         var excelWorkBook = excelPackage.Workbook;
                         bool insertRow = true;
@@ -3364,6 +3364,8 @@ namespace Paho.Controllers
             Dictionary<string, string> casosNHPLNumber = new Dictionary<string, string>();
             int nGrEd = PAHOClassUtilities.getNumberAgeGroupCountry(countryId);                 // Numero de grupos de edad del pais
             int startColumnT2 = 0;                  // Columna de inicio Tabla para R6
+            int numeVirusRepo = 7;              // Numero de virus a procesar en R5
+
             if (storedProcedure == "R6")
             {
                 if (int.TryParse(CasosNPHL, out startColumnT2) == false)
@@ -3385,29 +3387,41 @@ namespace Paho.Controllers
 
             if (storedProcedure == "R5")
             {
-                if (countryId == 17 || countryId == 119 || countryId == 11)
-                {
+                //if (countryId == 17 || countryId == 119 || countryId == 11)
+                //{
+                //    _storedProcedure = "R5_JM";
+                //    nPosiTipo = 21;                 // Posic. columna "Tipo" (tabla retornada x SP)
+                //    nInicTip2 = 11;                 // Inicio hospitalizados (tabla retornada x SP)
+                //    nPoSuViGr = 13;                 // Posic. Excel Sumatoria (Columna "Total hospitalized cases")
+                //}
+                //else
+                //{
+                //    if (countryId == 25)
+                //    {
+                //        _storedProcedure = "R5_2";
+                //        nPosiTipo = 19;                 // Posic. columna "Tipo" (tabla retornada x SP)
+                //        nInicTip2 = 10;                 // Inicio hospitalizados (tabla retornada x SP)
+                //        nPoSuViGr = 12;                 // Posic. Excel Sumatoria (Columna "Total hospitalized cases")
+                //    }
+                //    else
+                //    {
+                //        nPosiTipo = 15;                 // Posic. columna "Tipo" (tabla retornada x SP)                     // Columna: tipo (ultima)
+                //        nInicTip2 = 8;                  // Inicio hospitalizados (tabla retornada x SP)                     // Columna: total_hosp
+                //        nPoSuViGr = 10;                 // Posic. Excel Sumatoria (Columna "Total hospitalized cases")      // ITAG
+                //    }
+                //}
+
+                if (nGrEd == 9)                         // 11, 17, 119
                     _storedProcedure = "R5_JM";
-                    nPosiTipo = 21;                 // Posic. columna "Tipo" (tabla retornada x SP)
-                    nInicTip2 = 11;                 // Inicio hospitalizados (tabla retornada x SP)
-                    nPoSuViGr = 13;                 // Posic. Excel Sumatoria (Columna "Total hospitalized cases")
-                }
-                else
-                {
-                    if (countryId == 25)
-                    {
-                        _storedProcedure = "R5_2";
-                        nPosiTipo = 19;                 // Posic. columna "Tipo" (tabla retornada x SP)
-                        nInicTip2 = 10;                 // Inicio hospitalizados (tabla retornada x SP)
-                        nPoSuViGr = 12;                 // Posic. Excel Sumatoria (Columna "Total hospitalized cases")
-                    }
-                    else
-                    {
-                        nPosiTipo = 15;                 // Posic. columna "Tipo" (tabla retornada x SP)
-                        nInicTip2 = 8;                  // Inicio hospitalizados (tabla retornada x SP)
-                        nPoSuViGr = 10;                 // Posic. Excel Sumatoria (Columna "Total hospitalized cases")
-                    }
-                }
+                else if (nGrEd == 8)                    // 18, 25
+                    _storedProcedure = "R5_2";
+                //else
+                //    _storedProcedure = "R5_JM";
+
+                nInicTip2 = 2 + nGrEd;                  // Inicio hospitalizados (tabla retornada x SP)                      Columna: total_hosp
+                nPosiTipo = nInicTip2 + nGrEd + 1;      // Posic. columna "Tipo" (tabla retornada x SP)                      Columna: tipo (ultima)
+                nPoSuViGr = 3 + nGrEd + 1;              // Posic. Excel Sumatoria (Columna "Total hospitalized cases")       IRAG
+
             }
 
             var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
@@ -3453,87 +3467,153 @@ namespace Paho.Controllers
                         string VRS;
                         VRS = (languaje_ == "ENG") ? "RSV" : "VRS";
 
+                        var excelWorksheetP = excelWorkBook.Worksheets["Parameters"];
+                        String[] sheets = new string[8];
+                        sheets[0] = excelWorksheetP.Cells[3, 3].Value.ToString();               // Global
+                        sheets[1] = excelWorksheetP.Cells[4, 3].Value.ToString();               // VRS
+                        sheets[2] = excelWorksheetP.Cells[5, 3].Value.ToString();               // Ad
+                        sheets[3] = excelWorksheetP.Cells[6, 3].Value.ToString();               // PI
+                        sheets[4] = excelWorksheetP.Cells[7, 3].Value.ToString();               // IA
+                        sheets[5] = excelWorksheetP.Cells[8, 3].Value.ToString();               // IB
+                        sheets[6] = excelWorksheetP.Cells[9, 3].Value.ToString();               // Meta
+                        sheets[7] = excelWorksheetP.Cells[10, 3].Value.ToString();              // SARS-CoV-2
+
                         IDictionary<int, string> formulas1 = new Dictionary<int, string>();
-                        formulas1[1] = "=" + VRS + "!B{{toreplace}}";
-                        formulas1[2] = "=" + VRS + "!C{{toreplace}} + Ad!C{{toreplace}} + Parainfluenza!C{{toreplace}} + 'Inf A'!C{{toreplace}} + 'Inf B'!C{{toreplace}} + Metapnemovirus!C{{toreplace}}";
+                        //**** Formulas para hoja GLOBAL ETI
+                        //formulas1[1] = "=" + VRS + "!B{{toreplace}}";
+                        formulas1[1] = "=" + VRS + "!B{{toreplace}} + Ad!B{{toreplace}} + Parainfluenza!B{{toreplace}} + 'Inf A'!B{{toreplace}} + 'Inf B'!B{{toreplace}} + Metapnemovirus!B{{toreplace}} + 'SARS-CoV-2'!B{{toreplace}}";    // Casos ambulatorios
+                        formulas1[2] = "=" + VRS + "!C{{toreplace}} + Ad!C{{toreplace}} + Parainfluenza!C{{toreplace}} + 'Inf A'!C{{toreplace}} + 'Inf B'!C{{toreplace}} + Metapnemovirus!C{{toreplace}} + 'SARS-CoV-2'!C{{toreplace}}";    // Nro casos positivos
+
                         formulas1[3] = "=" + VRS + "!C{{toreplace}}";
                         formulas1[4] = "=Ad!C{{toreplace}}";
                         formulas1[5] = "=Parainfluenza!C{{toreplace}}";
                         formulas1[6] = "='Inf A'!C{{toreplace}}";
                         formulas1[7] = "='Inf B'!C{{toreplace}}";
-                        formulas1[8] = "=Metapnemovirus!C{{toreplace}}";
+                        formulas1[8] = "='Metapnemovirus'!C{{toreplace}}";
+                        formulas1[9] = "='SARS-CoV-2'!C{{toreplace}}";
 
-                        if (countryId == 17 || countryId == 119 || countryId == 11)
+                        //if (countryId == 17 || countryId == 119 || countryId == 11)
+                        if (nGrEd == 9)                     // 11, 17, 119
                         {
-                            formulas1[9] = "=" + VRS + "!M{{toreplace}}";
-                            formulas1[10] = "=" + VRS + "!N{{toreplace}}+Ad!N{{toreplace}}+Parainfluenza!N{{toreplace}}+'Inf A'!N{{toreplace}}+'Inf B'!N{{toreplace}}+Metapnemovirus!N{{toreplace}}";
+                            //formulas1[9] = "=" + VRS + "!M{{toreplace}}";
+                            //formulas1[10] = "=" + VRS + "!N{{toreplace}}+Ad!N{{toreplace}}+Parainfluenza!N{{toreplace}}+'Inf A'!N{{toreplace}}+'Inf B'!N{{toreplace}}+Metapnemovirus!N{{toreplace}}";
 
-                            formulas1[11] = "=" + VRS + "!N{{toreplace}}";
-                            formulas1[12] = "=Ad!N{{toreplace}}";
-                            formulas1[13] = "=Parainfluenza!N{{toreplace}}";
-                            formulas1[14] = "='Inf A'!N{{toreplace}}";
-                            formulas1[15] = "='Inf B'!N{{toreplace}}";
-                            formulas1[16] = "=Metapnemovirus!N{{toreplace}}";
+                            //formulas1[11] = "=" + VRS + "!N{{toreplace}}";
+                            //formulas1[12] = "=Ad!N{{toreplace}}";
+                            //formulas1[13] = "=Parainfluenza!N{{toreplace}}";
+                            //formulas1[14] = "='Inf A'!N{{toreplace}}";
+                            //formulas1[15] = "='Inf B'!N{{toreplace}}";
+                            //formulas1[16] = "=Metapnemovirus!N{{toreplace}}";
 
-                            formulas1[17] = "=D{{toreplace}}+E{{toreplace}}+F{{toreplace}}+G{{toreplace}}+H{{toreplace}}+I{{toreplace}}+J{{toreplace}}+K{{toreplace}}+L{{toreplace}}";
-                            formulas1[18] = "=O{{toreplace}}+P{{toreplace}}+Q{{toreplace}}+R{{toreplace}}+S{{toreplace}}+T{{toreplace}}+U{{toreplace}}+V{{toreplace}}+W{{toreplace}}";
+                            //formulas1[17] = "=D{{toreplace}}+E{{toreplace}}+F{{toreplace}}+G{{toreplace}}+H{{toreplace}}+I{{toreplace}}+J{{toreplace}}+K{{toreplace}}+L{{toreplace}}";
+                            //formulas1[18] = "=O{{toreplace}}+P{{toreplace}}+Q{{toreplace}}+R{{toreplace}}+S{{toreplace}}+T{{toreplace}}+U{{toreplace}}+V{{toreplace}}+W{{toreplace}}";
+
+                            formulas1[10] = "=" + VRS + "!M{{toreplace}}";
+                            formulas1[11] = "=" + VRS + "!N{{toreplace}}+Ad!N{{toreplace}}+Parainfluenza!N{{toreplace}}+'Inf A'!N{{toreplace}}+'Inf B'!N{{toreplace}}+Metapnemovirus!N{{toreplace}}+'SARS-CoV-2'!N{{toreplace}}";
+
+                            formulas1[12] = "=" + VRS + "!N{{toreplace}}";
+                            formulas1[13] = "=Ad!N{{toreplace}}";
+                            formulas1[14] = "=Parainfluenza!N{{toreplace}}";
+                            formulas1[15] = "='Inf A'!N{{toreplace}}";
+                            formulas1[16] = "='Inf B'!N{{toreplace}}";
+                            formulas1[17] = "='Metapnemovirus'!N{{toreplace}}";
+                            formulas1[18] = "='SARS-CoV-2'!N{{toreplace}}";
+
+                            formulas1[19] = "=D{{toreplace}}+E{{toreplace}}+F{{toreplace}}+G{{toreplace}}+H{{toreplace}}+I{{toreplace}}+J{{toreplace}}+K{{toreplace}}+L{{toreplace}}";
+                            formulas1[20] = "=O{{toreplace}}+P{{toreplace}}+Q{{toreplace}}+R{{toreplace}}+S{{toreplace}}+T{{toreplace}}+U{{toreplace}}+V{{toreplace}}+W{{toreplace}}";
                         }
                         else
                         {
-                            if (countryId == 25)
+                            //if (countryId == 25)
+                            if (nGrEd == 8)                 // 18, 25
                             {
-                                formulas1[9] = "=" + VRS + "!L{{toreplace}}";
-                                formulas1[10] = "=" + VRS + "!M{{toreplace}}+Ad!M{{toreplace}}+Parainfluenza!M{{toreplace}}+'Inf A'!M{{toreplace}}+'Inf B'!M{{toreplace}}+Metapnemovirus!M{{toreplace}}";
+                                //formulas1[9] = "=" + VRS + "!L{{toreplace}}";
+                                //formulas1[10] = "=" + VRS + "!M{{toreplace}}+Ad!M{{toreplace}}+Parainfluenza!M{{toreplace}}+'Inf A'!M{{toreplace}}+'Inf B'!M{{toreplace}}+Metapnemovirus!M{{toreplace}}";
 
-                                formulas1[11] = "=" + VRS + "!M{{toreplace}}";
-                                formulas1[12] = "=Ad!M{{toreplace}}";
-                                formulas1[13] = "=Parainfluenza!M{{toreplace}}";
-                                formulas1[14] = "='Inf A'!M{{toreplace}}";
-                                formulas1[15] = "='Inf B'!M{{toreplace}}";
-                                formulas1[16] = "=Metapnemovirus!M{{toreplace}}";
+                                //formulas1[11] = "=" + VRS + "!M{{toreplace}}";
+                                //formulas1[12] = "=Ad!M{{toreplace}}";
+                                //formulas1[13] = "=Parainfluenza!M{{toreplace}}";
+                                //formulas1[14] = "='Inf A'!M{{toreplace}}";
+                                //formulas1[15] = "='Inf B'!M{{toreplace}}";
+                                //formulas1[16] = "=Metapnemovirus!M{{toreplace}}";
 
-                                formulas1[17] = "=D{{toreplace}}+E{{toreplace}}+F{{toreplace}}+G{{toreplace}}+H{{toreplace}}+I{{toreplace}}+J{{toreplace}}+K{{toreplace}}";
-                                formulas1[18] = "=N{{toreplace}}+O{{toreplace}}+P{{toreplace}}+Q{{toreplace}}+R{{toreplace}}+S{{toreplace}}+T{{toreplace}}+U{{toreplace}}";
+                                //formulas1[17] = "=D{{toreplace}}+E{{toreplace}}+F{{toreplace}}+G{{toreplace}}+H{{toreplace}}+I{{toreplace}}+J{{toreplace}}+K{{toreplace}}";
+                                //formulas1[18] = "=N{{toreplace}}+O{{toreplace}}+P{{toreplace}}+Q{{toreplace}}+R{{toreplace}}+S{{toreplace}}+T{{toreplace}}+U{{toreplace}}";
+
+                                formulas1[10] = "=" + VRS + "!L{{toreplace}}";
+                                formulas1[11] = "=" + VRS + "!M{{toreplace}}+Ad!M{{toreplace}}+Parainfluenza!M{{toreplace}}+'Inf A'!M{{toreplace}}+'Inf B'!M{{toreplace}}+Metapnemovirus!M{{toreplace}}+'SARS-CoV-2'!M{{toreplace}}";
+
+                                formulas1[12] = "=" + VRS + "!M{{toreplace}}";
+                                formulas1[13] = "=Ad!M{{toreplace}}";
+                                formulas1[14] = "=Parainfluenza!M{{toreplace}}";
+                                formulas1[15] = "='Inf A'!M{{toreplace}}";
+                                formulas1[16] = "='Inf B'!M{{toreplace}}";
+                                formulas1[17] = "=Metapnemovirus!M{{toreplace}}";
+                                formulas1[18] = "='SARS-CoV-2'!M{{toreplace}}";
+
+                                formulas1[19] = "=D{{toreplace}}+E{{toreplace}}+F{{toreplace}}+G{{toreplace}}+H{{toreplace}}+I{{toreplace}}+J{{toreplace}}+K{{toreplace}}";
+                                formulas1[20] = "=N{{toreplace}}+O{{toreplace}}+P{{toreplace}}+Q{{toreplace}}+R{{toreplace}}+S{{toreplace}}+T{{toreplace}}+U{{toreplace}}";
                             }
-                            else
+                            else                // 3, 7, 9, 15
                             {
-                                formulas1[9] = "=" + VRS + "!J{{toreplace}}";
-                                formulas1[10] = "=" + VRS + "!K{{toreplace}}+Ad!K{{toreplace}}+Parainfluenza!K{{toreplace}}+'Inf A'!K{{toreplace}}+'Inf B'!K{{toreplace}}+Metapnemovirus!K{{toreplace}}";
+                                //formulas1[9]  = "=" + VRS + "!J{{toreplace}}";
+                                //formulas1[10] = "=" + VRS + "!K{{toreplace}}+Ad!K{{toreplace}}+Parainfluenza!K{{toreplace}}+'Inf A'!K{{toreplace}}+'Inf B'!K{{toreplace}}+Metapnemovirus!K{{toreplace}}";
 
-                                formulas1[11] = "=" + VRS + "!K{{toreplace}}";
-                                formulas1[12] = "=Ad!K{{toreplace}}";
-                                formulas1[13] = "=Parainfluenza!K{{toreplace}}";
-                                formulas1[14] = "='Inf A'!K{{toreplace}}";
-                                formulas1[15] = "='Inf B'!K{{toreplace}}";
-                                formulas1[16] = "=Metapnemovirus!K{{toreplace}}";
+                                //formulas1[11] = "=" + VRS + "!K{{toreplace}}";
+                                //formulas1[12] = "=Ad!K{{toreplace}}";
+                                //formulas1[13] = "=Parainfluenza!K{{toreplace}}";
+                                //formulas1[14] = "='Inf A'!K{{toreplace}}";
+                                //formulas1[15] = "='Inf B'!K{{toreplace}}";
+                                //formulas1[16] = "=Metapnemovirus!K{{toreplace}}";
 
-                                formulas1[17] = "=D{{toreplace}}+E{{toreplace}}+F{{toreplace}}+G{{toreplace}}+H{{toreplace}}+I{{toreplace}}";
-                                formulas1[18] = "=L{{toreplace}}+M{{toreplace}}+N{{toreplace}}+O{{toreplace}}+P{{toreplace}}+Q{{toreplace}}";
+                                //formulas1[17] = "=D{{toreplace}}+E{{toreplace}}+F{{toreplace}}+G{{toreplace}}+H{{toreplace}}+I{{toreplace}}";
+                                //formulas1[18] = "=L{{toreplace}}+M{{toreplace}}+N{{toreplace}}+O{{toreplace}}+P{{toreplace}}+Q{{toreplace}}";
+                                //**** Formulas para hoja global IRAG
+                                //formulas1[10] = "=" + VRS + "!J{{toreplace}}";
+                                formulas1[10] = "=" + VRS + "!J{{toreplace}}+Ad!J{{toreplace}}+Parainfluenza!J{{toreplace}}+'Inf A'!J{{toreplace}}+'Inf B'!J{{toreplace}}+Metapnemovirus!J{{toreplace}}+'SARS-CoV-2'!J{{toreplace}}";   // IRAG: Total de casos hospitalizados
+                                formulas1[11] = "=" + VRS + "!K{{toreplace}}+Ad!K{{toreplace}}+Parainfluenza!K{{toreplace}}+'Inf A'!K{{toreplace}}+'Inf B'!K{{toreplace}}+Metapnemovirus!K{{toreplace}}+'SARS-CoV-2'!K{{toreplace}}";   // ITAG: Nº casos positivos
+
+                                formulas1[12] = "=" + VRS + "!K{{toreplace}}";
+                                formulas1[13] = "=Ad!K{{toreplace}}";
+                                formulas1[14] = "=Parainfluenza!K{{toreplace}}";
+                                formulas1[15] = "='Inf A'!K{{toreplace}}";
+                                formulas1[16] = "='Inf B'!K{{toreplace}}";
+                                formulas1[17] = "=Metapnemovirus!K{{toreplace}}";
+                                formulas1[18] = "='SARS-CoV-2'!K{{toreplace}}";
+
+                                formulas1[19] = "=D{{toreplace}}+E{{toreplace}}+F{{toreplace}}+G{{toreplace}}+H{{toreplace}}+I{{toreplace}}";       // ETI: Nº casos positivos
+                                formulas1[20] = "=L{{toreplace}}+M{{toreplace}}+N{{toreplace}}+O{{toreplace}}+P{{toreplace}}+Q{{toreplace}}";       // IRAG: Nro casos positivos
                             }
                         }
 
-                        for (int i = 1; i <= 7; i++)            // i: Hoja
+                        //for (int i = 1; i <= 8; i++)            // i: Hoja
+                        for (int i = 0; i < sheets.Length; i++)            // i: Hoja
                         {
+                            //if(i == 7)
+                            //{
                             var virustype = 0;                  // Hoja global
                             switch (i)
                             {
-                                case 2:
+                                case 1:
                                     virustype = 6;
                                     break;
-                                case 3:
+                                case 2:
                                     virustype = 7;
                                     break;
-                                case 4:
+                                case 3:
                                     virustype = 13;
                                     break;
-                                case 5:
+                                case 4:
                                     virustype = 1;
                                     break;
-                                case 6:
+                                case 5:
                                     virustype = 2;
                                     break;
-                                case 7:
+                                case 6:
                                     virustype = 8;
+                                    break;
+                                case 7:
+                                    virustype = 14;
                                     break;
                             }
 
@@ -3555,11 +3635,16 @@ namespace Paho.Controllers
                             command.Parameters.Add("@Area_ID", SqlDbType.Int).Value = AreaId;
                             command.Parameters.Add("@Sentinel", SqlDbType.Int).Value = Sentinel;
 
-                            var excelWorksheet2 = excelWorkBook.Worksheets[i];
+                            //var excelWorksheet2 = excelWorkBook.Worksheets[i];
+                            var excelWorksheet2 = excelWorkBook.Worksheets[sheets[i]];
 
                             using (var reader = command.ExecuteReader())
                             {
-                                excelColTota = reader.FieldCount + 1;
+                                int columnsTota = reader.FieldCount;
+                                if(i == 0)          // Hoja Global 
+                                    excelColTota = columnsTota + 1 + 2;
+                                else
+                                    excelColTota = columnsTota + 1;
 
                                 row = startRow;
                                 column = startColumn;
@@ -3578,57 +3663,68 @@ namespace Paho.Controllers
                                     int stylerow;
                                     if (tipo_anterior == 1)
                                     {
-                                        //stylerow = 2;
                                         stylerow = startRow;
                                     }
                                     else
                                     {
                                         stylerow = row + 1;
                                     }
-                                    if(row > startRow)
+                                    if (row > startRow)
                                         excelWorksheet2.InsertRow(row, 1);
 
                                     for (int j = 0; j < excelColTota; j++)                              // Total columnas retornadas x consulta
                                     {
                                         var cell = excelWorksheet2.Cells[stylerow, col + j];
-                                        if (tipo_anterior == 2 && j > nInicTip2)            // nInicTip2: Inicio hospitalizados (8 o 10)
+
+                                        if (i == 0 && j > columnsTota)           // Hoja Global 
                                         {
+                                            excelWorksheet2.Cells[row, col + j].Formula = formulas1[j].Replace("{{toreplace}}", row.ToString()); ;
                                         }
                                         else
                                         {
-                                            if (i > 1 || j == 0)
+                                            if (tipo_anterior == 2 && j > nInicTip2)                        // nInicTip2: Inicio hospitalizados (8 o 10)
                                             {
-                                                if (j == 2)
-                                                {
-                                                    excelWorksheet2.Cells[row, col + j].Formula = formulas1[17].Replace("{{toreplace}}", row.ToString()); ;
-                                                }
-                                                else
-                                                {
-                                                    if (j == nPoSuViGr)                 // Totales fila  de virus hospitalizados
-                                                    {
-                                                        excelWorksheet2.Cells[row, col + j].Formula = formulas1[18].Replace("{{toreplace}}", row.ToString()); ;
-                                                    }
-                                                    else
-                                                    {
-                                                        excelWorksheet2.Cells[row, col + j].Value = reader.GetValue(readercont);
-                                                        readercont++;
-                                                    }
-                                                }
                                             }
                                             else
                                             {
-                                                if (j < 17 && formulas1.ContainsKey(j))
+                                                //if (i > 1 || j == 0)
+                                                if (i > 0 || j == 0)
                                                 {
-                                                    excelWorksheet2.Cells[row, col + j].Formula = formulas1[j].Replace("{{toreplace}}", row.ToString()); ;
+                                                    if (j == 2)
+                                                    {
+                                                        //excelWorksheet2.Cells[row, col + j].Formula = formulas1[17].Replace("{{toreplace}}", row.ToString()); ;
+                                                        excelWorksheet2.Cells[row, col + j].Formula = formulas1[19].Replace("{{toreplace}}", row.ToString());       // Total casos ambulatorios
+                                                    }
+                                                    else
+                                                    {
+                                                        if (j == nPoSuViGr)                 // Totales fila  de virus hospitalizados
+                                                        {
+                                                            //excelWorksheet2.Cells[row, col + j].Formula = formulas1[18].Replace("{{toreplace}}", row.ToString()); ;
+                                                            excelWorksheet2.Cells[row, col + j].Formula = formulas1[20].Replace("{{toreplace}}", row.ToString()); ;     // Total nro de casos positivos
+                                                        }
+                                                        else
+                                                        {
+                                                            excelWorksheet2.Cells[row, col + j].Value = reader.GetValue(readercont);
+                                                            readercont++;
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (j < 17 && formulas1.ContainsKey(j))
+                                                    {
+                                                        excelWorksheet2.Cells[row, col + j].Formula = formulas1[j].Replace("{{toreplace}}", row.ToString()); ;
+                                                    }
                                                 }
                                             }
+                                            //excelWorksheet2.Cells[row, col + j].StyleID = cell.StyleID;
                                         }
                                         excelWorksheet2.Cells[row, col + j].StyleID = cell.StyleID;
-                                    }
+                                    }   // END for 
                                     row++;
                                 }
-                            }
-                        }
+                            }   // END using
+                        }   // END for
                     } // END (storedProcedure == "R5")
                     else
                     {

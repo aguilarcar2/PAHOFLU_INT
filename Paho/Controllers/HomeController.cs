@@ -233,8 +233,10 @@ namespace Paho.Controllers
             }
 
             // Health institution Case Generating 
-            InstitutionsCaseGenerating = db.Institutions.OfType<Hospital>().Where(i => i.CountryID == user.Institution.CountryID);
-             var institutionsCaseGeneratingDisplay = InstitutionsCaseGenerating.Select(i => new LookupView<Institution>() {
+            //////InstitutionsCaseGenerating = db.Institutions.OfType<Hospital>().Where(i => i.CountryID == user.Institution.CountryID);
+            InstitutionsCaseGenerating = db.Institutions.OfType<Hospital>().Where(i => i.CountryID == user.Institution.CountryID && i.cod_region_salud == user.Institution.cod_region_salud);
+
+            var institutionsCaseGeneratingDisplay = InstitutionsCaseGenerating.Select(i => new LookupView<Institution>() {
                     Id = i.ID.ToString(),
                     Name = i.Name
                 })
@@ -281,6 +283,10 @@ namespace Paho.Controllers
 
             //**** Usuario de laboratorio NIC
             CaseViewModel.lab_NIC_usr = user.Institution.LabNIC;
+
+            //**** Usuario de generadora de casos - TEMPORAL ??? 
+            CaseViewModel.case_gene_usr = user.Institution.CaseGenerator;
+            //ViewBag.case_gene_usr = user.Institution.CaseGenerator;
 
             //**** Motivos de no toma de muestra
             //CaseViewModel.ReasonNotSampling = catreasonnotsampling.Select(c => new LookupView<CatReasonNotSampling>()

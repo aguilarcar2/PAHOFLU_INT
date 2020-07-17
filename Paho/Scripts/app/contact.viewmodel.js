@@ -630,8 +630,16 @@ function ContactViewModel(app, dataModel) {
     }, self);
 
     self.displayhospitalIDCaseGenerating = ko.computed(function () {
-        //console.log(self.servicesArr().length)
-        return (self.IsInusitado()) ? true : false;
+        if (self.UsrCountry() == 15)
+            if (case_gene_usr == true)
+                return true;
+            else
+                if (self.hospitalIDCaseGenerating() != "")
+                    return true;
+                else
+                    return false;
+        else
+            return (self.IsInusitado()) ? true : false;
     }, self);
 
     self.AddFluCase = function () {

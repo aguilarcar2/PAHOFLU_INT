@@ -51,6 +51,8 @@ namespace Paho.Models
 
         // Usuario de laboratorio NIC
         public bool lab_NIC_usr { get; set; }
+        // Usuario de generador de casos: TEMPORAL ????
+        public bool case_gene_usr { get; set; }        
 
         // Catalogos de laboratorio
         public IEnumerable<LookupView<CatSampleNoProcessed>> CSNP { get; set; }
@@ -888,7 +890,8 @@ namespace Paho.Models
         public int? InstitutionTypeID { get; set; }     // Tipo de institución para Honduras
         [DisplayName("Laboratorio NIC:")]
         public bool LabNIC { get; set; }
-
+        // CAMPO TEMPORAL PARA HN: muestra el campo establecimiento generadora de casos
+        public bool CaseGenerator { get; set; }
     }
 
     public class InstitutionLocationType                    //#### CAFQ: 180911
