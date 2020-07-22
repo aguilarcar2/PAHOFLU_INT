@@ -342,7 +342,8 @@
             Surv: self.Surv(),
             Inusual: self.SurvInusual(),
             CasosNPHL: Casos,
-            Area: self.selectedAreaId()
+            Area: self.selectedAreaId(),
+            Sentinel: self.Sentinel()
         }
 
         if (self.validate() == true) {

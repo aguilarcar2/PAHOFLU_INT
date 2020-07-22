@@ -27,7 +27,6 @@ namespace Paho.Controllers
     public class ExportarController : ControllerBase
     {
         static private int NUMBER_VIRUS_AND_VIRUSSUBTYPE = 11;
-        //const double PI = 3.14;
 
         // GET:Exportar
         public ActionResult Index()
@@ -341,9 +340,8 @@ namespace Paho.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetExcel(string Report, int CountryID, int? RegionID, int? HospitalID, int? Year, int? Month, int? SE,
-            DateTime? StartDate, DateTime? EndDate, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? Inusual,
-            string CasosNPHL = "", int? Area = 0, int? Sentinel = null)        //#### CAFQ
+        public ActionResult GetExcel(string Report, int CountryID, int? RegionID, int? HospitalID, int? Year, int? Month, int? SE, DateTime? StartDate, 
+            DateTime? EndDate, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? Inusual = null, int? Area = 0, int? Sentinel = null, string CasosNPHL = "")        //#### CAFQ
         {
             try
             {
@@ -355,7 +353,7 @@ namespace Paho.Controllers
                 //    Inusual = true;
                 //}
                 //else 
-                if (Surv == 0)
+                if (Surv == 0) 
                     Inusual = null;
 
                 int AreaID_ = (int)Area;
@@ -476,10 +474,10 @@ namespace Paho.Controllers
 
                         if (reportTemplate == "I1")      //#### CAFQ
                             AppendDataToExcel_IndDes(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook,
-                                reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, AreaID_);        //#### CAFQ
+                                reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, AreaID_, Sentinel);        //#### CAFQ
                         else if (reportTemplate == "RE1")
                             AppendDataToExcel_REVELAC(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook,
-                                reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, AreaID_);        //#### CAFQ
+                                reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, AreaID_, Sentinel);        //#### CAFQ
                         else if (reportTemplate == "CC")
                             AppendDataToExcel_ConsolidadoCarga(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook,
                                 reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, AreaID_, Sentinel);        //#### CAFQ
@@ -1197,10 +1195,12 @@ namespace Paho.Controllers
 
                         }
                         else if (reportTemplate == "FM1")
-                            AppendDataToExcel_FormSariIliHospDeath(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, AreaID_);        //#### CAFQ
+                            AppendDataToExcel_FormSariIliHospDeath(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, 
+                                reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, AreaID_, Sentinel);        //#### CAFQ
                         //else if ((reportTemplate == "R2" || reportTemplate == "R3" || reportTemplate == "R1") && bVariosAnios)
                         else if (reportTemplate == "R2" || reportTemplate == "R3" || reportTemplate == "R1")
-                            AppendDataToExcel_R2_SeveralYears(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, AreaID_);        //#### CAFQ: 180204
+                            AppendDataToExcel_R2_SeveralYears(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, 
+                                reportStartRow, reportStartCol, 1, insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, AreaID_, Sentinel);        //#### CAFQ: 180204
                         else if (reportTemplate == "R8")
                         {
                             // Leyendas
@@ -1212,7 +1212,8 @@ namespace Paho.Controllers
                             ////////////////////////////       Total fallecidos IRAG   ////////////////////////////////////////////
 
                             var excelWs_Death_total = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "DEATHS Total" : "Total fallecidos IRAG"];
-                            AppendDataToExcel_R2_SeveralYears(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R2", reportStartRow, reportStartCol, excelWs_Death_total.Index, insertRow, ReportCountry, YearFrom, YearTo, 1, Inusual, AreaID_);
+                            AppendDataToExcel_R2_SeveralYears(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R2", reportStartRow, 
+                                reportStartCol, excelWs_Death_total.Index, insertRow, ReportCountry, YearFrom, YearTo, 1, Inusual, AreaID_, Sentinel);
 
                             if (YearFrom != null && YearTo != null)
                             {
@@ -1503,7 +1504,9 @@ namespace Paho.Controllers
             }
         }
         */
-        private void AppendDataToExcel_FormSariIliHospDeath(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId)               //#### CAFQ
+        private void AppendDataToExcel_FormSariIliHospDeath(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, 
+            DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, 
+            int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId, int? Sentinel = null)               //#### CAFQ
         {
             var excelWorksheet = excelWorkBook.Worksheets[sheet];
             var row = startRow;
@@ -1536,6 +1539,7 @@ namespace Paho.Controllers
                         command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
                         command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;                        //#### CAFQ
                         command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;          //#### CAFQ
+                        command.Parameters.Add("@Sentinel", SqlDbType.Int).Value = Sentinel;          //#### CAFQ
                         command.Parameters.Add("@Area_ID", SqlDbType.Int).Value = AreaId;                        //#### CAFQ
 
                         con.Open();
@@ -1656,6 +1660,7 @@ namespace Paho.Controllers
                         command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
                         command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;
                         command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;
+                        command.Parameters.Add("@Sentinel", SqlDbType.Int).Value = Sentinel;          //#### CAFQ
                         command.Parameters.Add("@Area_ID", SqlDbType.Int).Value = AreaId;                        //#### CAFQ
 
                         con2.Open();
@@ -1700,6 +1705,7 @@ namespace Paho.Controllers
                         command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
                         command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;
                         command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;
+                        command.Parameters.Add("@Sentinel", SqlDbType.Int).Value = Sentinel;          //#### CAFQ
                         command.Parameters.Add("@Area_ID", SqlDbType.Int).Value = AreaId;                        //#### CAFQ
 
                         con2.Open();
@@ -1774,7 +1780,7 @@ namespace Paho.Controllers
             }       // End ili
 
             //****
-            reportLabels(consString, countryId, languaje_, ReportCountry, hospitalId, year, YearFrom, YearTo, se, startDate, endDate, excelWorkBook, excelWorksheet, AreaId);
+            reportLabels(consString, countryId, languaje_, ReportCountry, hospitalId, year, YearFrom, YearTo, se, startDate, endDate, excelWorkBook, excelWorksheet, AreaId, Sentinel);
             //InsertarImagenLogo(consString, reportTemplate, ReportCountry, excelWorksheet);
         }
 
@@ -1882,9 +1888,9 @@ namespace Paho.Controllers
         }
 
         //**** R1: Reporte Numero de casos y %..., R2: Total fallecidos por IRAG y R3: Casos por IRAG y Grupos...
-        private static void AppendDataToExcel_R2_SeveralYears(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, 
-            int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, 
-            int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId)               //#### CAFQ
+        private static void AppendDataToExcel_R2_SeveralYears(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month,
+            int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, 
+            bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId, int? Sentinel)               //#### CAFQ
         {
             int _YearFrom, _YearTo;
             if (YearFrom != null && YearTo != null)
@@ -1989,6 +1995,8 @@ namespace Paho.Controllers
                         command.Parameters.Add("@yearTo", SqlDbType.Int).Value = nI;
                         command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;                        //#### CAFQ
                         command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;          //#### CAFQ
+                        command.Parameters.Add("@Area_ID", SqlDbType.Int).Value = AreaId;                        //#### CAFQ
+                        command.Parameters.Add("@Sentinel", SqlDbType.Int).Value = Sentinel;          //#### CAFQ
                         con.Open();
 
                         using (var reader = command.ExecuteReader())
@@ -2314,7 +2322,7 @@ namespace Paho.Controllers
             if (ReportCountry != null)
             {
                 //inserción de labels
-                reportLabels(consString, countryId, languaje_, ReportCountry, hospitalId, year, YearFrom, YearTo, se, startDate, endDate, excelWorkBook, excelWorksheet);
+                reportLabels(consString, countryId, languaje_, ReportCountry, hospitalId, year, YearFrom, YearTo, se, startDate, endDate, excelWorkBook, excelWorksheet, AreaId, Sentinel);
 
                 //inserción de logo
                 InsertarLogoExcel(consString, excelWorksheet, ReportCountry);
@@ -2322,8 +2330,9 @@ namespace Paho.Controllers
         }
 
         //**** Reporte epidemiologico
-        static private void Antecedentes_DataToSheetExcel(string consString, ExcelWorkbook excelWorkBook, int AntecedentesType, int starRowAntec, int starColAntec, int countryId, int? regionId, 
-            string languaje_, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, string VirusList="")
+        static private void Antecedentes_DataToSheetExcel(string consString, ExcelWorkbook excelWorkBook, int AntecedentesType, int starRowAntec, int starColAntec, 
+            int countryId, int? regionId, string languaje_, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, int? YearFrom, 
+            int? YearTo, int? Surv, bool? SurvInusual, int? AreaId, int? Sentinel, string VirusList="")
         {
             int row, column;
 
@@ -2365,7 +2374,9 @@ namespace Paho.Controllers
                     command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
                     command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;                        //#### CAFQ
                     command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;          //#### CAFQ
-                    if(VirusList.Length > 0)
+                    command.Parameters.Add("@Area_ID", SqlDbType.Int).Value = AreaId;                        //#### CAFQ
+                    command.Parameters.Add("@Sentinel", SqlDbType.Int).Value = Sentinel;          //#### CAFQ
+                    if (VirusList.Length > 0)
                         command.Parameters.Add("@VirusList", SqlDbType.Text).Value = VirusList;                   //#### CAFQ -> 14: virus SARS-CoV-2
 
                     con.Open();
@@ -2432,7 +2443,7 @@ namespace Paho.Controllers
         private void AppendDataToExcel_R6_SeveralYears(string languaje_, int countryId, int? regionId, int? year,
             int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook,
             string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry,
-            int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId, int? Sentinel = null)
+            int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId, int? Sentinel)
         {
             string cTemp = "";
             int _YearFrom, _YearTo;
@@ -2848,7 +2859,7 @@ namespace Paho.Controllers
             if (ReportCountry != null)
             {
                 //inserción de labels
-                reportLabels(consString, countryId, languaje_, ReportCountry, hospitalId, year, YearFrom, YearTo, se, startDate, endDate, excelWorkBook, excelWorksheet);
+                reportLabels(consString, countryId, languaje_, ReportCountry, hospitalId, year, YearFrom, YearTo, se, startDate, endDate, excelWorkBook, excelWorksheet, AreaId, Sentinel);
 
                 //inserción de logo
                 InsertarLogoExcel(consString, excelWorksheet, ReportCountry);
@@ -3444,10 +3455,10 @@ namespace Paho.Controllers
                     command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
                     command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;                        //#### CAFQ
                     command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;          //#### CAFQ
-                    if (AreaId != null && AreaId > 0)
-                        command.Parameters.Add("@Area_ID", SqlDbType.Int).Value = AreaId;
-                    if (Sentinel != null)
-                        command.Parameters.Add("@Sentinel", SqlDbType.Int).Value = Sentinel;
+                    //if (AreaId != null && AreaId > 0)
+                    command.Parameters.Add("@Area_ID", SqlDbType.Int).Value = AreaId;
+                    //if (Sentinel != null)
+                    command.Parameters.Add("@Sentinel", SqlDbType.Int).Value = Sentinel;
 
                     if (storedProcedure == "ML1")                                                       // Muestras laboratorio NPHL
                     {
@@ -3782,6 +3793,8 @@ namespace Paho.Controllers
                                 command2.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
                                 command2.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;                        //#### CAFQ
                                 command2.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;          //#### CAFQ
+                                command2.Parameters.Add("@Area_ID", SqlDbType.Int).Value = AreaId;                        //#### CAFQ
+                                command2.Parameters.Add("@Sentinel", SqlDbType.Int).Value = Sentinel;          //#### CAFQ
 
                                 var con2 = new SqlConnection(consString);
                                 con2.Open();
@@ -3919,20 +3932,20 @@ namespace Paho.Controllers
             {
                 //**** Virus: Todos
                 Antecedentes_DataToSheetExcel(consString, excelWorkBook, 1, starRowAntec, starColAntec, countryId, regionId, languaje_, year, hospitalId, month, se, startDate,
-                    endDate, YearFrom, YearTo, Surv, SurvInusual);
+                    endDate, YearFrom, YearTo, Surv, SurvInusual, AreaId, Sentinel);
 
                 //**** Virus: SARS-CoV-2
                 Antecedentes_DataToSheetExcel(consString, excelWorkBook, 2, starRowAntec, starColAntec, countryId, regionId, languaje_, year, hospitalId, month, se, startDate,
-                    endDate, YearFrom, YearTo, Surv, SurvInusual, "14");
+                    endDate, YearFrom, YearTo, Surv, SurvInusual, AreaId, Sentinel, "14");
             }   ///*Fin inserción tablas*/
 
             if (storedProcedure == "R12")           // Reporte Situacional SARS-CoV-2
             {
                 VirusByDepartament_ConfirmedNegative_DataToSheetExcel(consString, excelWorkBook, 0, 0, countryId, regionId, languaje_, year, hospitalId, month, se, startDate, endDate, 
-                    YearFrom, YearTo, Surv, SurvInusual);
+                    YearFrom, YearTo, Surv, SurvInusual, AreaId, Sentinel);
 
                 R12_VirusByAgeGroup_DataToSheetExcel(consString, excelWorkBook, 0, 0, countryId, regionId, languaje_, year, hospitalId, month, se, startDate, endDate, 
-                    YearFrom, YearTo, Surv, SurvInusual);
+                    YearFrom, YearTo, Surv, SurvInusual, AreaId, Sentinel);
 
                 var excelWs_Leyendas = excelWorkBook.Worksheets["Leyendas"];
                 int YearBegin = 0, YearEnd = 0;
@@ -3960,8 +3973,9 @@ namespace Paho.Controllers
             //excelWorksheet.DeleteRow(row, 2);
         }
 
-        private void VirusByDepartament_ConfirmedNegative_DataToSheetExcel(string consString, ExcelWorkbook excelWorkBook, int starRowNext, int starColNext, int countryId, int? regionId,
-            string languaje_, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, string VirusList = "")
+        private void VirusByDepartament_ConfirmedNegative_DataToSheetExcel(string consString, ExcelWorkbook excelWorkBook, int starRowNext, int starColNext, 
+            int countryId, int? regionId, string languaje_, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, int? YearFrom, 
+            int? YearTo, int? Surv, bool? SurvInusual, int? AreaId, int? Sentinel, string VirusList = "")
         {
             int row, column;
 
@@ -3994,8 +4008,8 @@ namespace Paho.Controllers
                     command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
                     command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;                        //#### CAFQ
                     command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;          //#### CAFQ
-                    //command.Parameters.Add("@Area_ID", SqlDbType.Int).Value = ;
-                    //command.Parameters.Add("@Sentinel", SqlDbType.Int).Value = ;
+                    command.Parameters.Add("@Area_ID", SqlDbType.Int).Value = AreaId;
+                    command.Parameters.Add("@Sentinel", SqlDbType.Int).Value = Sentinel;
                     command.Parameters.Add("@VirusType", SqlDbType.Text).Value = "NCOV";
 
                     con.Open();
@@ -4058,7 +4072,8 @@ namespace Paho.Controllers
         }
 
         private void R12_VirusByAgeGroup_DataToSheetExcel(string consString, ExcelWorkbook excelWorkBook, int starRowNext, int starColNext, int countryId, int? regionId,
-            string languaje_, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? Area = 0, int? Sentinel = null)
+            string languaje_, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, 
+            int? Area, int? Sentinel)
         {
             int row, column;
 
@@ -4406,7 +4421,9 @@ namespace Paho.Controllers
             return null;
         }
 
-        private static void AppendDataToExcel_REVELAC(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string reportTemplate, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId)         //#### CAFQ
+        private static void AppendDataToExcel_REVELAC(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, 
+            DateTime? endDate, ExcelWorkbook excelWorkBook, string reportTemplate, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, 
+            int? YearTo, int? Surv, bool? SurvInusual, int? AreaId, int? Sentinel)         //#### CAFQ
         {
             ExcelWorksheet excelWorksheet = excelWorkBook.Worksheets["REVELAC_i"];
             var row = startRow;
@@ -4432,6 +4449,9 @@ namespace Paho.Controllers
                         command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
                         command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;
                         command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;
+                        command.Parameters.Add("@Area_ID", SqlDbType.Int).Value = AreaId;
+                        command.Parameters.Add("@Sentinel", SqlDbType.Int).Value = Sentinel;
+
 
                         con.Open();
                         using (var reader = command.ExecuteReader())
@@ -4488,7 +4508,9 @@ namespace Paho.Controllers
             }
         }
 
-        private static void AppendDataToExcel_IndDes(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string reportTemplate, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId)         //#### CAFQ
+        private static void AppendDataToExcel_IndDes(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, 
+            DateTime? endDate, ExcelWorkbook excelWorkBook, string reportTemplate, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, 
+            int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId, int? Sentinel)  
         {
             ExcelWorksheet excelWorksheet1 = excelWorkBook.Worksheets["DatosPie"];
             var row = startRow;
@@ -4510,20 +4532,20 @@ namespace Paho.Controllers
             decimal[] nDato12 = new decimal[] { 0 };
             decimal[] nDato14 = new decimal[] { 0 };
 
-            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, 1, nDato1);
-            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, 2, nDato2);
-            //recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, 3, nDato1, aDato3);
-            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, 4, nDato4);
-            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, 5, nDato5);
-            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, 6, nDato6);
-            //recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, 7, nDato1, aDato7);
-            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, 8, nDato8);
+            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, AreaId, Sentinel, 1, nDato1);
+            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, AreaId, Sentinel, 2, nDato2);
+            //recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, AreaId, Sentinel, 3, nDato1, aDato3);
+            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, AreaId, Sentinel, 4, nDato4);
+            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, AreaId, Sentinel, 5, nDato5);
+            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, AreaId, Sentinel, 6, nDato6);
+            //recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, AreaId, Sentinel, 7, nDato1, aDato7);
+            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, AreaId, Sentinel, 8, nDato8);
 
-            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, 9, nDato9);
-            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, 10, nDato10);
-            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, 11, nDato11);
-            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, 12, nDato12);
-            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, 14, nDato14);
+            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, AreaId, Sentinel, 9, nDato9);
+            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, AreaId, Sentinel, 10, nDato10);
+            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, AreaId, Sentinel, 11, nDato11);
+            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, AreaId, Sentinel, 12, nDato12);
+            recuperarDatosIndDes(consString, languaje_, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, Surv, SurvInusual, AreaId, Sentinel, 14, nDato14);
             //****
             var excelWorksheet2 = excelWorkBook.Worksheets[1];
 
@@ -4587,7 +4609,7 @@ namespace Paho.Controllers
             ID_setResultados(excelWorksheet1, nTemp, xx[7], 9, yy[7]);
 
             //****
-            reportLabels(consString, countryId, languaje_, ReportCountry, hospitalId, year, YearFrom, YearTo, se, startDate, endDate, excelWorkBook, excelWorksheet2);
+            reportLabels(consString, countryId, languaje_, ReportCountry, hospitalId, year, YearFrom, YearTo, se, startDate, endDate, excelWorkBook, excelWorksheet2, AreaId, Sentinel);
             InsertarImagenLogo(consString, reportTemplate, ReportCountry, excelWorksheet2);
         }
 
@@ -4659,7 +4681,8 @@ namespace Paho.Controllers
             return labelSemanas;
         }
 
-        private static void recuperarDatosIndDes(string consString, string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int opcion, decimal[] nResuOut, string[,] aResuOut = null)         //#### CAFQ
+        private static void recuperarDatosIndDes(string consString, string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, 
+            DateTime? startDate, DateTime? endDate, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId, int? Sentinel, int opcion, decimal[] nResuOut, string[,] aResuOut = null)         //#### CAFQ
         {
             using (var con = new SqlConnection(consString))
             {
@@ -4679,6 +4702,8 @@ namespace Paho.Controllers
                     command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
                     command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;
                     command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;      //#### CAFQ
+                    command.Parameters.Add("@Area_ID", SqlDbType.Int).Value = AreaId;
+                    command.Parameters.Add("@Sentinel", SqlDbType.Int).Value = Sentinel;
                     command.Parameters.Add("@opcion", SqlDbType.Int).Value = opcion;
 
                     con.Open();
@@ -4795,8 +4820,8 @@ namespace Paho.Controllers
             }
         }
 
-        public JsonResult ListaCasosPorEnviarNPHL(string Report, int CountryID, int? HospitalID, int? Year, int? Month, int? SE,
-            DateTime? StartDate, DateTime? EndDate, int? ReportCountry, int? RegionID, int? YearFrom, int? YearTo, int? Surv, bool? Inusual)
+        public JsonResult ListaCasosPorEnviarNPHL(string Report, int CountryID, int? HospitalID, int? Year, int? Month, int? SE, DateTime? StartDate,
+            DateTime? EndDate, int? ReportCountry, int? RegionID, int? YearFrom, int? YearTo, int? Surv, bool? Inusual, int? AreaId, int? Sentinel)
         {
             List<string[]> casoDatosList = new List<string[]>();
 
@@ -4824,6 +4849,8 @@ namespace Paho.Controllers
                     command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
                     command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;
                     command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = Inusual;
+                    command.Parameters.Add("@Area_ID", SqlDbType.Int).Value = AreaId;
+                    command.Parameters.Add("@Sentinel", SqlDbType.Int).Value = Sentinel;
 
                     con.Open();
                     using (var reader = command.ExecuteReader())
@@ -4854,7 +4881,7 @@ namespace Paho.Controllers
 
         private static void AppendDataToExcel_R8_HOSP_ICU_DEATHS(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se,
             DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row,
-            int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId = null, int? Sentinel = null, int interval = 0, string Service = null)
+            int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId, int? Sentinel, int interval = 0, string Service = null)
         {
 
             var excelWorksheet = excelWorkBook.Worksheets[sheet];
@@ -4935,7 +4962,7 @@ namespace Paho.Controllers
 
         private static void AppendDataToExcel_FLUID(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se,
             DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row,
-            int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId = null, int? Sentinel = null)
+            int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId, int? Sentinel)
         {
             NumberFormatInfo nfi = new CultureInfo("en-US", false).NumberFormat;            // NumberFormatInfo asociado con la cultura en-US.
 
@@ -5201,7 +5228,8 @@ namespace Paho.Controllers
 
         }
 
-        private void ConfigGraph_Bars_Histogram_range(int? year, ExcelWorkbook excelWorkBook, int sheet_graph, int sheet_data, string graph_name, string range_column_begin, string range_column_end, int range_row_begin, int range_row_end)
+        private void ConfigGraph_Bars_Histogram_range(int? year, ExcelWorkbook excelWorkBook, int sheet_graph, int sheet_data, string graph_name, string range_column_begin, 
+            string range_column_end, int range_row_begin, int range_row_end)
         {
             var excelWorksheet_graph = excelWorkBook.Worksheets[sheet_graph];
             var excelWorksheet_data = excelWorkBook.Worksheets[sheet_data];
@@ -5282,7 +5310,9 @@ namespace Paho.Controllers
             //excelWorksheet_paste.Cells.Worksheet.Workbook.Styles.UpdateXml();
         }
 
-        private static void AppendDataToExcel_CONSDATA(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId = null, int? Sentinel = null, int? UCI = null, int? Fallecidos = null)
+        private static void AppendDataToExcel_CONSDATA(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, 
+            DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, 
+            int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId, int? Sentinel, int? UCI = null, int? Fallecidos = null)
         {
 
             var excelWorksheet = excelWorkBook.Worksheets[sheet];
@@ -5306,6 +5336,8 @@ namespace Paho.Controllers
                     command.Parameters.Add("@yearFrom", SqlDbType.Int).Value = YearFrom;
                     command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
                     command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;
+                    command.Parameters.Add("@Area_ID", SqlDbType.Int).Value = AreaId;
+                    command.Parameters.Add("@Sentinel", SqlDbType.Int).Value = Sentinel;
                     command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;
                     if (UCI > 0)
                         command.Parameters.Add("@UCI", SqlDbType.Int).Value = UCI;
@@ -5359,7 +5391,7 @@ namespace Paho.Controllers
 
         private static void AppendDataToExcel_R4(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, 
             ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, 
-            bool? SurvInusual, int? AreaId = null, int? Sentinel = null, string VirusType = "")
+            bool? SurvInusual, int? AreaId, int? Sentinel, string VirusType = "")
         {
 
             var excelWorksheet = excelWorkBook.Worksheets[sheet];
@@ -5610,12 +5642,12 @@ namespace Paho.Controllers
             }
 
             //****
-            reportLabels(consString, countryId, languaje_, ReportCountry, hospitalId, year, YearFrom, YearTo, se, startDate, endDate, excelWorkBook, excelWorksheet1, AreaId);
+            reportLabels(consString, countryId, languaje_, ReportCountry, hospitalId, year, YearFrom, YearTo, se, startDate, endDate, excelWorkBook, excelWorksheet1, AreaId, Sentinel);
         }
 
         private static void reportLabels(string consString, int countryId, string languaje_, int? ReportCountry, int? hospitalId, int? year, int? YearFrom,
-            int? YearTo, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, ExcelWorksheet excelWorksheet, int? AreaId = 0,
-            int? Sentinel = null, string ReporteID = "")
+            int? YearTo, int? se, DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, ExcelWorksheet excelWorksheet, int? AreaId,
+            int? Sentinel, string ReporteID = "")
         {
             //inserción de labels
             string labelWeekEpid = "";
