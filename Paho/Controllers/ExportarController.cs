@@ -526,30 +526,25 @@ namespace Paho.Controllers
                             var excelWs_Legend = excelWorkBook.Worksheets["Leyendas"];
                             string virusSheetName = excelWs_Legend.Cells["Q2"].Value.ToString();
 
-                            //var excelWs_VIRUSES_IRAG = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Virus" : "Virus"];
-                            //var excelWs_VIRUSES_Chart = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Graph Virus" : "Gráficos"];
-                            //var excelWs_VIRUSES_INF_Geographic = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Virus_INF_GEO" : "Virus_INF_GEO"];
-                            //var excelWs_VIRUSES_RSV_Geographic = excelWorkBook.Worksheets[(user.Institution.Country.Language == "ENG") ? "Virus_RSV_GEO" : "Virus_VSR_GEO"];
+                            //**** Hojas
                             var excelWs_VIRUSES_IRAG = excelWorkBook.Worksheets[excelWs_Legend.Cells["Q2"].Value.ToString()];
                             var excelWs_VIRUSES_Chart = excelWorkBook.Worksheets[excelWs_Legend.Cells["Q3"].Value.ToString()];
                             var excelWs_VIRUSES_INF_Geographic = excelWorkBook.Worksheets[excelWs_Legend.Cells["Q4"].Value.ToString()];
                             var excelWs_VIRUSES_RSV_Geographic = excelWorkBook.Worksheets[excelWs_Legend.Cells["Q5"].Value.ToString()];
 
-                            ExcelWorksheet excelWs_VIRUSES_NCOV_Geographic = null;
+                            ExcelWorksheet excelWs_VIRUSES_NCOV_Geographic = null;          // GEO SARS-Cov-2
                             var procesarHoja = excelWs_Legend.Cells["R6"].Value;
                             if (procesarHoja != null)
                                 if (procesarHoja.ToString() == "1")
                                     excelWs_VIRUSES_NCOV_Geographic = excelWorkBook.Worksheets[excelWs_Legend.Cells["Q6"].Value.ToString()];
 
-                            ExcelWorksheet excelWs_VIRUSES_IRAG_NC = null;
+                            ExcelWorksheet excelWs_VIRUSES_IRAG_NC = null;                  // Virus No centinela
                             procesarHoja = excelWs_Legend.Cells["R7"].Value;
                             if (procesarHoja != null)
                                 if (procesarHoja.ToString() == "1")
                                     excelWs_VIRUSES_IRAG_NC = excelWorkBook.Worksheets[excelWs_Legend.Cells["Q7"].Value.ToString()];        // No centinela
 
-                            //if (CountryID == 15)
-                            //    Sentinel = 1;
-
+                            //****
                             contador = YearEnd - YearBegin;
                             var YearEnd_report = DateTime.Now.Year;
 
@@ -586,14 +581,12 @@ namespace Paho.Controllers
                                     ConfigGraph_Pie(excelWorkBook, excelWs_VIRUSES_Chart.Index, excelWs_VIRUSES_IRAG.Index, "CV6", (7 + (52 * i)) + 51, (7 + (52 * i)) + 51);
                                 }
 
-                                //AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4", (i > 0 ? (6 + (52 * i)) : 6), 1, 
-                                //    excelWs_VIRUSES_IRAG.Index, false, ReportCountry, YearEnd_report, YearEnd_report, Surv, Inusual, AreaID_, Sentinel);
-                                AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4", (i > 0 ? (6 + (52 * i)) : 6), 1,
+                                AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4", (i > 0 ? (6 + (52 * i)) : 6), 1,      // 15: centinela
                                     excelWs_VIRUSES_IRAG.Index, false, ReportCountry, YearEnd_report, YearEnd_report, Surv, Inusual, AreaID_, Sentinel: (CountryID_ == 15 ? 1 : Sentinel));
 
-                                if (excelWs_VIRUSES_IRAG_NC != null)
+                                if (excelWs_VIRUSES_IRAG_NC != null)                // No centinela
                                 {
-                                    AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4", (i > 0 ? (6 + (52 * i)) : 6), 1,
+                                    AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4", (i > 0 ? (6 + (52 * i)) : 6), 1,  
                                         excelWs_VIRUSES_IRAG_NC.Index, false, ReportCountry, YearEnd_report, YearEnd_report, Surv, Inusual, AreaID_, Sentinel: 0);
                                 }
                             }
@@ -601,20 +594,14 @@ namespace Paho.Controllers
                             // Procedimiento para cambiar los rangos del eje X 
                             if (contador > 0)
                             {
-                                //var RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "Virus" : "Virus") + "'!$BY$6:$BZ$57 ";
                                 var RangeStr = " '" + excelWs_Legend.Cells["Q2"].Value.ToString() + "'!$BY$6:$BZ$57 ";
-                                //excelWorkBook.Worksheets[excelWs_Legend.Cells["Q2"].Value.ToString()];
 
                                 for (int i = 1; i <= contador; i++)
                                 {
-                                    //RangeStr = " '" + ((user.Institution.Country.Language == "ENG") ? "Virus" : "Virus") + "'!$BY$" + (6 + (52 * i)).ToString() + ":$BZ$" + ((6 + (52 * i)) + 51).ToString() + ", " + RangeStr;
                                     RangeStr = " '" + virusSheetName + "'!$BY$" + (6 + (52 * i)).ToString() + ":$BZ$" + ((6 + (52 * i)) + 51).ToString() + ", " + RangeStr;
                                 }
 
                                 RangeStr = " ( " + RangeStr + ")";
-
-                                //Tamaño original de las gráficas
-                                // LineChart.SetSize(1375, 700);
 
                                 var graph_name = "CV1";
                                 var LineChart = excelWs_VIRUSES_Chart.Drawings[graph_name] as ExcelChart;
@@ -637,24 +624,26 @@ namespace Paho.Controllers
                                 UpdateRangeXMLPath(LineChart, RangeStr);
                             }
 
-
+                            //**** GEO
                             if (excelWs_VIRUSES_INF_Geographic != null)
-                                AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", 5, 1, 
-                                    excelWs_VIRUSES_INF_Geographic.Index, false, ReportCountry, YearBegin, YearEnd, Surv, Inusual, AreaID_, Sentinel: (CountryID_ == 15 ? 1 : Sentinel), VirusType:"INF");
+                                AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", 5, 1,
+                                    //excelWs_VIRUSES_INF_Geographic.Index, false, ReportCountry, YearBegin, YearEnd, Surv, Inusual, AreaID_, Sentinel: (CountryID_ == 15 ? 1 : Sentinel), VirusType:"INF");
+                                    excelWs_VIRUSES_INF_Geographic.Index, false, ReportCountry, YearBegin, YearEnd, Surv, Inusual, AreaID_, Sentinel, VirusType: "INF");
 
                             if (excelWs_VIRUSES_RSV_Geographic != null)
-                                AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", 5, 1, 
-                                    excelWs_VIRUSES_RSV_Geographic.Index, false, ReportCountry, YearBegin, YearEnd, Surv, Inusual, AreaID_, Sentinel: (CountryID_ == 15 ? 1 : Sentinel), VirusType:"RSV");
+                                AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", 5, 1,
+                                    //excelWs_VIRUSES_RSV_Geographic.Index, false, ReportCountry, YearBegin, YearEnd, Surv, Inusual, AreaID_, Sentinel: (CountryID_ == 15 ? 1 : Sentinel), VirusType:"RSV");
+                                    excelWs_VIRUSES_RSV_Geographic.Index, false, ReportCountry, YearBegin, YearEnd, Surv, Inusual, AreaID_, Sentinel, VirusType: "RSV");
 
                             if (excelWs_VIRUSES_NCOV_Geographic != null)
-                                AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", 5, 1, 
-                                    excelWs_VIRUSES_NCOV_Geographic.Index, false, ReportCountry, YearBegin, YearEnd, Surv, Inusual, AreaID_, Sentinel: (CountryID_ == 15 ? 1 : Sentinel), VirusType:"NCOV");
+                                AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", 5, 1,
+                                    //excelWs_VIRUSES_NCOV_Geographic.Index, false, ReportCountry, YearBegin, YearEnd, Surv, Inusual, AreaID_, Sentinel: (CountryID_ == 15 ? 1 : Sentinel), VirusType:"NCOV");
+                                    excelWs_VIRUSES_NCOV_Geographic.Index, false, ReportCountry, YearBegin, YearEnd, Surv, Inusual, AreaID_, Sentinel, VirusType: "NCOV");
 
+                            //**** Titulos reporte
                             var excelWs_Leyendas = excelWorkBook.Worksheets["Leyendas"];
-                            //ConfigToExcel_FLUID(CountryID, Languaje_, RegionID_, YearEnd, YearBegin, YearEnd, StartDate, EndDate, HospitalID_, Surv, excelWorkBook, "Leyendas", 1, excelWs_Leyendas.Index, false, Month, SE); 
                             ConfigToExcel_FLUID(CountryID, Languaje_, RegionID_, Year, YearFrom, YearTo, StartDate, EndDate, HospitalID_, Surv, excelWorkBook, "Leyendas", 1, excelWs_Leyendas.Index, false, Month, SE);
 
-                            // Fin R4 - Virus detectados
                         }
                         else if (reportTemplate.ToUpper() == "FLUID")
                         {
