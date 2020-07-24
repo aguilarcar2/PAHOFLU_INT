@@ -212,7 +212,7 @@
 
     self.HospExDate = ko.observable(new Date());
     self.HospExDate.subscribe(function (newHospExDate) {
-        //console.log("subscribe HospExDate");
+        console.log("subscribe HospExDate");
         //if (self.UsrCountry() == 7 && self.UsrCountry() == 3) {
         var current_value = typeof (newHospExDate) == "object" ? newHospExDate : parseDate(newHospExDate, date_format_);
         var date_hospital_ = typeof (self.HospAmDate()) == "object" ? self.HospAmDate() : parseDate(self.HospAmDate(), date_format_);
@@ -230,10 +230,11 @@
             $("#CaseStatus").attr("disabled", true);
         } 
         else {
-
             if (self.UsrCountry() == 9 && self.Destin() == 'D') {
                 self.FalleDate(current_value);
             }
+            //else if(self.UsrCountry() == 9 && self.Destin() != 'D')
+            //    self.FalleDate(null);
 
             if (app.Views.Lab.CanConclude() == true) {
                 //console.log("HospExDate - CanConclude igual a true")
@@ -1164,7 +1165,9 @@
 
         var result = (self.OutcomeDestin() == "O") ? true : false;
 
-        if (!result) self.OutcomeDestinOther(null);
+        if (!result)
+            self.OutcomeDestinOther(null);
+
         return result;
     }, self);
 
@@ -1173,9 +1176,22 @@
         var result = (self.UsrCountry() == 7) ? self.CaseStatus() == "3" || self.CaseStatus() == "2"
                                               : (self.UsrCountry() != 7) ? self.CaseStatus() == "1" || self.CaseStatus() == "3" || self.CaseStatus() == "2"
                                                                          : false;
-        if (!result) self.OutcomeDateRelease(null);
+
+        if (app.Views.Contact.SurvILI() == true) {          
+            result = true
+        }
+        else {
+            if (!result) {
+                self.OutcomeDateRelease(null);
+            }
+        }
+            
         return result;
     }, self);
+
+    self.OutcomeDestin.subscribe(function (NewDestin) {
+        self.OutcomeDateRelease(null);
+    });
 
     self.OutcomeDateLastLabTest = ko.observable(null);
     self.EnableOutcomeDateLastLabTest = ko.computed(function () {         // CaseStatus -> 1: Bajo estudio, 2: Descartado y 3: Cerrado
@@ -1203,12 +1219,8 @@
 
     self.Destin.subscribe(function (NewDestin) {
         //console.log("self.Destin.subscribe->START");
-        //(app.Views.Contact.SurvSARI() == true || app.Views.Contact.SurvInusual() == true)
-
-        //console.log("FinalResult->" + app.Views.Lab.FinalResult());
-        //console.log("CanConclude->" + app.Views.Lab.CanConclude());
-        //console.log("NewDestin->" + NewDestin);
-        //console.log("Destin 11");
+        if(self.UsrCountry() == 9 && self.Destin() != 'D')
+            self.FalleDate(null);           // Clear campo fecha fallecido
 
         if ((app.Views.Contact.IsSurv() != "" || app.Views.Contact.SurvInusual() == true) && NewDestin != null && NewDestin != "") {
             //console.log("Destin 22");
@@ -1277,7 +1289,6 @@
             self.CaseStatus("");
             self.CloseDate(null);
         }
-
         //console.log("self.Destin.subscribe->END");
       });
 
@@ -1672,243 +1683,254 @@
         self.Id = id;
 
         $.getJSON(app.dataModel.getHospitalUrl, { id: id, institutionId: app.Views.Home.selectedInstitutionId() }, function (data, status) {
-                self.CHNum(data.CHNum);
-                self.hasReset(true);
-                if (data.IsSample == true) {
-                    self.IsSample("true");
-                } else if (data.IsSample == false) {
-                    self.IsSample("false");
-                } else self.IsSample("");
-                self.ReasonNotSamplingID(data.ReasonNotSamplingID);
-                self.ReasonNotSamplingOther(data.ReasonNotSamplingOther);
-                if (data.FeverDate)
-                    self.FeverDate(moment(data.FeverDate).clone().toDate());
-                else self.FeverDate(null);
-                self.CalculateEW("FeverDate", self.FeverEW, self.FeverEY);
-                if (data.DiagDate)
-                    self.DiagDate(moment(data.DiagDate).clone().toDate());
-                else self.DiagDate(null);
-                self.CalculateEW("DiagDate", self.DiagEW, self.DiagEY);
-                if (data.HospAmDate)
-                    self.HospAmDate(moment(data.HospAmDate).clone().toDate());
-                else self.HospAmDate(null)
-                self.CalculateEW("HospAmDate", self.HospEW, self.HospEY);
+            //console.log("self.GetHospital-getJSON->START");
+            //var date_OutcomeDateRelease = moment(data.OutcomeDateRelease).clone().toDate();
+            //var date_OutcomeDateRelease = null;
+            //if (data.OutcomeDateRelease)
+            //    date_OutcomeDateRelease = moment(data.OutcomeDateRelease).clone().toDate();
+            var date_OutcomeDateRelease = (data.OutcomeDateRelease) ? moment(data.OutcomeDateRelease).clone().toDate() : null;
+            //console.log("self.GetHospital-getJSON->0");
+            //console.log(date_OutcomeDateRelease);
+            //console.log("self.GetHospital-getJSON->1");
 
-                self.ICU(data.ICU);
-                self.HospitalizedIn(data.HospitalizedIn);
-                self.HospitalizedInNumber(data.HospitalizedInNumber);
-                if (data.ICUAmDate)
-                    self.ICUAmDate(moment(data.ICUAmDate).clone().toDate());
-                else self.ICUAmDate(null)
-                if (data.ICUAmDate)
-                    self.CalculateEW("ICUAmDate", self.ICUEW, self.ICUEY);
-                if (data.ICUExDate)
-                    self.ICUExDate(moment(data.ICUExDate).clone().toDate());
-                else self.ICUExDate(null);
+            self.CHNum(data.CHNum);
+            self.hasReset(true);
+            if (data.IsSample == true) {
+                self.IsSample("true");
+            } else if (data.IsSample == false) {
+                self.IsSample("false");
+            } else self.IsSample("");
+            self.ReasonNotSamplingID(data.ReasonNotSamplingID);
+            self.ReasonNotSamplingOther(data.ReasonNotSamplingOther);
+            if (data.FeverDate)
+                self.FeverDate(moment(data.FeverDate).clone().toDate());
+            else self.FeverDate(null);
+            self.CalculateEW("FeverDate", self.FeverEW, self.FeverEY);
+            if (data.DiagDate)
+                self.DiagDate(moment(data.DiagDate).clone().toDate());
+            else self.DiagDate(null);
+            self.CalculateEW("DiagDate", self.DiagEW, self.DiagEY);
+            if (data.HospAmDate)
+                self.HospAmDate(moment(data.HospAmDate).clone().toDate());
+            else self.HospAmDate(null)
+            self.CalculateEW("HospAmDate", self.HospEW, self.HospEY);
+
+            self.ICU(data.ICU);
+            self.HospitalizedIn(data.HospitalizedIn);
+            self.HospitalizedInNumber(data.HospitalizedInNumber);
+            if (data.ICUAmDate)
+                self.ICUAmDate(moment(data.ICUAmDate).clone().toDate());
+            else self.ICUAmDate(null)
+            if (data.ICUAmDate)
+                self.CalculateEW("ICUAmDate", self.ICUEW, self.ICUEY);
+            if (data.ICUExDate)
+                self.ICUExDate(moment(data.ICUExDate).clone().toDate());
+            else self.ICUExDate(null);
                 
-                self.HospExDate(null);
-                if (data.HospExDate)
-                    self.HospExDate(moment(data.HospExDate).clone().toDate());
-                else self.HospExDate(null)
+            self.HospExDate(null);
+            if (data.HospExDate)
+                self.HospExDate(moment(data.HospExDate).clone().toDate());
+            else self.HospExDate(null)
 
-                self.Destin("");
-                self.Destin(data.Destin);
-                self.DestinICU(data.DestinICU);
-                self.InstReferName(data.InstReferName);
-                self.hospitalIDCaseToReferHospital(data.hospitalIDCaseToReferHospital);
-                if (data.hospitalIDCaseToReferHospital > 0 && data.hospitalIDCaseToReferHospital != null) 
-                    app.Views.Contact.TransferToHospitalILI(true);
+            self.Destin("");
+            self.Destin(data.Destin);
+            self.DestinICU(data.DestinICU);
+            self.InstReferName(data.InstReferName);
+            self.hospitalIDCaseToReferHospital(data.hospitalIDCaseToReferHospital);
+            if (data.hospitalIDCaseToReferHospital > 0 && data.hospitalIDCaseToReferHospital != null) 
+                app.Views.Contact.TransferToHospitalILI(true);
 
-                if (data.FalleDate)
-                    self.FalleDate(moment(data.FalleDate).clone().toDate());
-                else self.FalleDate(null);
-                self.SalonVal(data.SalonVal);
-                if (data.SalonVal != "" && data.SalonVal != null) {
-                    $.getJSON("/cases/GetSalonID", { ID: data.SalonVal }, function (data, status) {
-                        self.Salon(data.label);
-                    })
-                    .fail(function (jqXHR, textStatus, errorThrown) {
-                        console.log(errorThrown);
-                    });
-                }
-                else self.Salon("");
+            if (data.FalleDate)
+                self.FalleDate(moment(data.FalleDate).clone().toDate());
+            else self.FalleDate(null);
+            self.SalonVal(data.SalonVal);
+            if (data.SalonVal != "" && data.SalonVal != null) {
+                $.getJSON("/cases/GetSalonID", { ID: data.SalonVal }, function (data, status) {
+                    self.Salon(data.label);
+                })
+                .fail(function (jqXHR, textStatus, errorThrown) {
+                    console.log(errorThrown);
+                });
+            }
+            else self.Salon("");
 
-                self.DiagPrinAdmVal(data.DiagPrinAdmVal);
-                if (data.DiagPrinAdmVal != "" && data.DiagPrinAdmVal != null) {
-                    $.getJSON("/cases/GetCIE10ID", { ID: data.DiagPrinAdmVal }, function (data, status) {
-                        self.DiagPrinAdm(data.label);
-                    })
-                    .fail(function (jqXHR, textStatus, errorThrown) {
-                        console.log(errorThrown);
-                    });
-                }
-                else self.DiagPrinAdm("");
+            self.DiagPrinAdmVal(data.DiagPrinAdmVal);
+            if (data.DiagPrinAdmVal != "" && data.DiagPrinAdmVal != null) {
+                $.getJSON("/cases/GetCIE10ID", { ID: data.DiagPrinAdmVal }, function (data, status) {
+                    self.DiagPrinAdm(data.label);
+                })
+                .fail(function (jqXHR, textStatus, errorThrown) {
+                    console.log(errorThrown);
+                });
+            }
+            else self.DiagPrinAdm("");
 
-                self.DiagOtroAdm(data.DiagOtroAdm);
-                //Primera muestra
-                if (data.SampleDate)
-                    self.SampleDate(moment(data.SampleDate).clone().toDate());
-                else self.SampleDate(null)
-                self.SampleType(data.SampleType);
-                if (data.ShipDate)
-                    self.ShipDate(moment(data.ShipDate).clone().toDate());
-                else self.ShipDate(null);
-                self.LabId(data.LabId);
-                //Segunda muestra
-                if (data.SampleDate2)
-                    self.SampleDate2(moment(data.SampleDate2).clone().toDate());
-                else self.SampleDate2(null)
-                self.SampleType2(data.SampleType2);
-                if (data.ShipDate2)
-                    self.ShipDate2(moment(data.ShipDate2).clone().toDate());
-                else self.ShipDate2(null);
-                self.LabId2(data.LabId2);
-                //Tercera muestra
-                if (data.SampleDate3)
-                    self.SampleDate3(moment(data.SampleDate3).clone().toDate());
-                else self.SampleDate3(null)
-                self.SampleType3(data.SampleType3);
-                if (data.ShipDate3)
-                    self.ShipDate3(moment(data.ShipDate3).clone().toDate());
-                else self.ShipDate3(null);
-                self.LabId3(data.LabId3);
-                //#### 200419 - Flow free
-                self.FlowType1(data.FlowType1);
-                self.SelectedLabFree11_ID(data.LabFreeMu1L1_ID);
-                self.SelectedLabFree12_ID(data.LabFreeMu1L2_ID);
-                //self.InstCantEdit_FF(data.InstCantEdit_FF);                 // Establecimiento(Lab) puede ingresar/editar datos LAB
-                //console.log("GH->1")
-                //console.log(self.InstCantEdit_FF());
-                //console.log("GH->2")
-                //#### 
-                self.Adenopatia(data.Adenopatia);
-                self.Wheezing(data.Wheezing);
-                self.AntecedentesFiebre(data.AntecedentesFiebre);
+            self.DiagOtroAdm(data.DiagOtroAdm);
+            //Primera muestra
+            if (data.SampleDate)
+                self.SampleDate(moment(data.SampleDate).clone().toDate());
+            else self.SampleDate(null)
+            self.SampleType(data.SampleType);
+            if (data.ShipDate)
+                self.ShipDate(moment(data.ShipDate).clone().toDate());
+            else self.ShipDate(null);
+            self.LabId(data.LabId);
+            //Segunda muestra
+            if (data.SampleDate2)
+                self.SampleDate2(moment(data.SampleDate2).clone().toDate());
+            else self.SampleDate2(null)
+            self.SampleType2(data.SampleType2);
+            if (data.ShipDate2)
+                self.ShipDate2(moment(data.ShipDate2).clone().toDate());
+            else self.ShipDate2(null);
+            self.LabId2(data.LabId2);
+            //Tercera muestra
+            if (data.SampleDate3)
+                self.SampleDate3(moment(data.SampleDate3).clone().toDate());
+            else self.SampleDate3(null)
+            self.SampleType3(data.SampleType3);
+            if (data.ShipDate3)
+                self.ShipDate3(moment(data.ShipDate3).clone().toDate());
+            else self.ShipDate3(null);
+            self.LabId3(data.LabId3);
+            //#### 200419 - Flow free
+            self.FlowType1(data.FlowType1);
+            self.SelectedLabFree11_ID(data.LabFreeMu1L1_ID);
+            self.SelectedLabFree12_ID(data.LabFreeMu1L2_ID);
+            //self.InstCantEdit_FF(data.InstCantEdit_FF);                 // Establecimiento(Lab) puede ingresar/editar datos LAB
+            //console.log("GH->1")
+            //console.log(self.InstCantEdit_FF());
+            //console.log("GH->2")
+            //#### 
+            self.Adenopatia(data.Adenopatia);
+            self.Wheezing(data.Wheezing);
+            self.AntecedentesFiebre(data.AntecedentesFiebre);
 
-                self.Asymptomatic(data.Asymptomatic);                       //#### CAFQ: 200519
-                self.Anosmy(data.Anosmy);                                   //#### CAFQ: 200519
-                self.Dysgeusia(data.Dysgeusia);                             //#### CAFQ: 200519
+            self.Asymptomatic(data.Asymptomatic);                       //#### CAFQ: 200519
+            self.Anosmy(data.Anosmy);                                   //#### CAFQ: 200519
+            self.Dysgeusia(data.Dysgeusia);                             //#### CAFQ: 200519
                 
-                self.Rinorrea(data.Rinorrea);
-                self.Malestar(data.Malestar);
-                self.Nauseas(data.Nauseas);
-                self.DolorMuscular(data.DolorMuscular);
-                self.Disnea(data.Disnea);
-                self.DolorCabeza(data.DolorCabeza);
-                self.Estridor(data.Estridor);
-                self.Tos(data.Tos);
+            self.Rinorrea(data.Rinorrea);
+            self.Malestar(data.Malestar);
+            self.Nauseas(data.Nauseas);
+            self.DolorMuscular(data.DolorMuscular);
+            self.Disnea(data.Disnea);
+            self.DolorCabeza(data.DolorCabeza);
+            self.Estridor(data.Estridor);
+            self.Tos(data.Tos);
 
-                self.Temperatura(data.Temperatura);                         //#### CAFQ
-                self.DolorCabeza(data.DolorCabeza);                         //#### CAFQ
-                self.Mialgia(data.Mialgia);                                 //#### CAFQ
-                self.Erupcion(data.Erupcion);                               //#### CAFQ
-                self.ErupcionLocaliz(data.ErupcionLocaliz);                 //#### CAFQ
-                self.DolorMuscular(data.DolorMuscular);                     //#### CAFQ
-                self.DolorMuscularLocaliz(data.DolorMuscularLocaliz);       //#### CAFQ
-                self.Disnea(data.Disnea);                                   //#### CAFQ
-                self.SintomHemorrag(data.SintomHemorrag);                     //#### CAFQ
-                self.SintomHemorragDesc(data.SintomHemorragDesc);
-                self.AlteracEstadoMental(data.AlteracEstadoMental);
-                self.Altralgia(data.Altralgia);
-                self.Escalofrios(data.Escalofrios);
-                self.Conjuntivitis(data.Conjuntivitis);
-                self.Rinitis(data.Rinitis);
-                self.DiarreaAguda(data.DiarreaAguda);
-                self.DiarreaCronica(data.DiarreaCronica);
-                self.Mareo(data.Mareo);
-                self.FalloDesarrollo(data.FalloDesarrollo);                     //#### CAFQ
-                self.Hepatomegalea(data.Hepatomegalea);                    //#### CAFQ
-                self.Ictericia(data.Ictericia);                    //#### CAFQ
-                self.Linfadenopatia(data.Linfadenopatia);                    //#### CAFQ
-                self.Malestar(data.Malestar);                    //#### CAFQ
-                self.Nauseas(data.Nauseas);                    //#### CAFQ
-                self.RigidezNuca(data.RigidezNuca);                    //#### CAFQ
-                self.Paralisis(data.Paralisis);                    //#### CAFQ
-                self.RespiratSuperior(data.RespiratSuperior);                   //#### CAFQ
-                self.RespiratInferior(data.RespiratInferior);                   //#### CAFQ
-                self.DolorRetrorobitario(data.DolorRetrorobitario);             //#### CAFQ
-                self.PerdidaPeso(data.PerdidaPeso);                             //#### CAFQ
-                self.Otro(data.Otro);                                           //#### CAFQ
-                self.OtroDesc(data.OtroDesc);                                   //#### CAFQ
-                /*self.InfeccHospit(data.InfeccHospit);                         //#### CAFQ
-                self.InfeccHospitFecha(data.InfeccHospitFecha);                 //#### CAFQ*/
+            self.Temperatura(data.Temperatura);                         //#### CAFQ
+            self.DolorCabeza(data.DolorCabeza);                         //#### CAFQ
+            self.Mialgia(data.Mialgia);                                 //#### CAFQ
+            self.Erupcion(data.Erupcion);                               //#### CAFQ
+            self.ErupcionLocaliz(data.ErupcionLocaliz);                 //#### CAFQ
+            self.DolorMuscular(data.DolorMuscular);                     //#### CAFQ
+            self.DolorMuscularLocaliz(data.DolorMuscularLocaliz);       //#### CAFQ
+            self.Disnea(data.Disnea);                                   //#### CAFQ
+            self.SintomHemorrag(data.SintomHemorrag);                     //#### CAFQ
+            self.SintomHemorragDesc(data.SintomHemorragDesc);
+            self.AlteracEstadoMental(data.AlteracEstadoMental);
+            self.Altralgia(data.Altralgia);
+            self.Escalofrios(data.Escalofrios);
+            self.Conjuntivitis(data.Conjuntivitis);
+            self.Rinitis(data.Rinitis);
+            self.DiarreaAguda(data.DiarreaAguda);
+            self.DiarreaCronica(data.DiarreaCronica);
+            self.Mareo(data.Mareo);
+            self.FalloDesarrollo(data.FalloDesarrollo);                     //#### CAFQ
+            self.Hepatomegalea(data.Hepatomegalea);                    //#### CAFQ
+            self.Ictericia(data.Ictericia);                    //#### CAFQ
+            self.Linfadenopatia(data.Linfadenopatia);                    //#### CAFQ
+            self.Malestar(data.Malestar);                    //#### CAFQ
+            self.Nauseas(data.Nauseas);                    //#### CAFQ
+            self.RigidezNuca(data.RigidezNuca);                    //#### CAFQ
+            self.Paralisis(data.Paralisis);                    //#### CAFQ
+            self.RespiratSuperior(data.RespiratSuperior);                   //#### CAFQ
+            self.RespiratInferior(data.RespiratInferior);                   //#### CAFQ
+            self.DolorRetrorobitario(data.DolorRetrorobitario);             //#### CAFQ
+            self.PerdidaPeso(data.PerdidaPeso);                             //#### CAFQ
+            self.Otro(data.Otro);                                           //#### CAFQ
+            self.OtroDesc(data.OtroDesc);                                   //#### CAFQ
+            /*self.InfeccHospit(data.InfeccHospit);                         //#### CAFQ
+            self.InfeccHospitFecha(data.InfeccHospitFecha);                 //#### CAFQ*/
 
-                self.DifResp(data.DifResp);
-                self.MedSatOxig(data.MedSatOxig);
-                self.SatOxigPor(data.SatOxigPor);
-                self.HallRadio(data.HallRadio);
-                self.HallRadioFindings(data.HallRadioFindings);                 //#### CAFQ
-                self.UCInt(data.UCInt);
-                self.UCri(data.UCri);
-                self.MecVent(data.MecVent);
-                self.MecVentNoInv(data.MecVentNoInv);
-                self.ECMO(data.ECMO);
-                self.VAFO(data.VAFO);
-                self.Comments(data.Comments);                                   //#### CAFQ: 190107
-                self.DiagEgVal(data.DiagEgVal);
-                if (data.DiagEgVal != "" && data.DiagEgVal != null) {
-                    $.getJSON("/cases/GetCIE10ID", { ID: data.DiagEgVal }, function (data, status) {
-                        self.DiagEg(data.label);
-                    })
-                    .fail(function (jqXHR, textStatus, errorThrown) {
-                        console.log(errorThrown);
-                        self.DiagEg("");
-                    });
-                }
-                else 
+            self.DifResp(data.DifResp);
+            self.MedSatOxig(data.MedSatOxig);
+            self.SatOxigPor(data.SatOxigPor);
+            self.HallRadio(data.HallRadio);
+            self.HallRadioFindings(data.HallRadioFindings);                 //#### CAFQ
+            self.UCInt(data.UCInt);
+            self.UCri(data.UCri);
+            self.MecVent(data.MecVent);
+            self.MecVentNoInv(data.MecVentNoInv);
+            self.ECMO(data.ECMO);
+            self.VAFO(data.VAFO);
+            self.Comments(data.Comments);                                   //#### CAFQ: 190107
+            self.DiagEgVal(data.DiagEgVal);
+            if (data.DiagEgVal != "" && data.DiagEgVal != null) {
+                $.getJSON("/cases/GetCIE10ID", { ID: data.DiagEgVal }, function (data, status) {
+                    self.DiagEg(data.label);
+                })
+                .fail(function (jqXHR, textStatus, errorThrown) {
+                    console.log(errorThrown);
                     self.DiagEg("");
-                self.DiagEgOtro(data.DiagEgOtro);       //#### CAFQ
-                self.Tiraje(data.Tiraje);
-                self.Odinofagia(data.Odinofagia);
+                });
+            }
+            else 
+                self.DiagEg("");
+            self.DiagEgOtro(data.DiagEgOtro);       //#### CAFQ
+            self.Tiraje(data.Tiraje);
+            self.Odinofagia(data.Odinofagia);
 
-                //#### COVID-19
-                self.LabConfirmedSymptom(data.LabConfirmedSymptom);
-                self.CaseInIsolation(data.CaseInIsolation);
-                self.DateIsolation(moment(data.DateIsolation).clone().toDate());
-                self.CaseInIsolationOtherPlace(data.CaseInIsolationOtherPlace);
+            //#### COVID-19
+            self.LabConfirmedSymptom(data.LabConfirmedSymptom);
+            self.CaseInIsolation(data.CaseInIsolation);
+            self.DateIsolation(moment(data.DateIsolation).clone().toDate());
+            self.CaseInIsolationOtherPlace(data.CaseInIsolationOtherPlace);
 
-                self.ReasonSamplingID(data.ReasonSamplingID);
-                self.ReasonSamplingOther(data.ReasonSamplingOther);
+            self.ReasonSamplingID(data.ReasonSamplingID);
+            self.ReasonSamplingOther(data.ReasonSamplingOther);
 
-                self.OutcomeDateResubmission(moment(data.OutcomeDateResubmission).clone().toDate());
-                self.OutcomeDevelopSymptoms(data.OutcomeDevelopSymptoms);
-                self.OutcomeDateOnsetSymptoms(moment(data.OutcomeDateOnsetSymptoms).clone().toDate());
+            self.OutcomeDateResubmission(moment(data.OutcomeDateResubmission).clone().toDate());
+            self.OutcomeDevelopSymptoms(data.OutcomeDevelopSymptoms);
+            self.OutcomeDateOnsetSymptoms(moment(data.OutcomeDateOnsetSymptoms).clone().toDate());
 
-                self.OutcomeAdmissionPrevReported(data.OutcomeAdmissionPrevReported);
-                self.OutcomeDateFirstAdmission(moment(data.OutcomeDateFirstAdmission).clone().toDate());
-                self.OutcomeUCI(data.OutcomeUCI);
-                self.OutcomeVentMecanica(data.OutcomeVentMecanica);
-                self.OutcomeECMO(data.OutcomeECMO);
+            self.OutcomeAdmissionPrevReported(data.OutcomeAdmissionPrevReported);
+            self.OutcomeDateFirstAdmission(moment(data.OutcomeDateFirstAdmission).clone().toDate());
+            self.OutcomeUCI(data.OutcomeUCI);
+            self.OutcomeVentMecanica(data.OutcomeVentMecanica);
+            self.OutcomeECMO(data.OutcomeECMO);
 
-                self.OutcomeDestin(data.OutcomeDestin);
-                self.OutcomeDestinOther(data.OutcomeDestinOther);
-                self.OutcomeDateRelease(moment(data.OutcomeDateRelease).clone().toDate());
-                self.OutcomeDateLastLabTest(moment(data.OutcomeDateLastLabTest).clone().toDate());
-                self.OutcomeResultsLastTest(data.OutcomeResultsLastTest);
-                self.OutcomeTotalHighRisk(data.OutcomeTotalHighRisk);
-                self.OutcomeTotalHighRiskUnknown(data.OutcomeTotalHighRiskUnknown);
-                //#### 
+            self.OutcomeDestin(data.OutcomeDestin);
+            self.OutcomeDestinOther(data.OutcomeDestinOther);
+            self.OutcomeDateRelease(date_OutcomeDateRelease);
 
-                self.CaseStatus(data.CaseStatus);
-                if (data.CloseDate)
-                    self.CloseDate(moment(data.CloseDate).clone().toDate());
-                self.ObservationCase( data.ObservationCase  != null ? data.ObservationCase : "" );
-                self.hasReset(false);
-                //if (app.Views.Contact.selectedServiceId() > 0) {
-                //    alert("labs_list");
-                //    $.getJSON(app.dataModel.getLabsHospitalUrl, { institutionId: app.Views.Contact.selectedServiceId() }, function (data, status) {
-                //        console.log(data.LabsHospital);
-                //        console.log(self.LabsHospital());
-                //        self.LabsHospital(data.LabsHospital);
-                //        console.log(self.LabsHospital());
-                //    });
-                //} else {
-                self.LabsHospital(data.LabsHospital);
-                //}
-            })
-            .fail(function(jqXHR, textStatus, errorThrown) {
-                console.log(errorThrown);
-            });
+            self.OutcomeDateLastLabTest(moment(data.OutcomeDateLastLabTest).clone().toDate());
+            self.OutcomeResultsLastTest(data.OutcomeResultsLastTest);
+            self.OutcomeTotalHighRisk(data.OutcomeTotalHighRisk);
+            self.OutcomeTotalHighRiskUnknown(data.OutcomeTotalHighRiskUnknown);
+            //#### 
+
+            self.CaseStatus(data.CaseStatus);
+            if (data.CloseDate)
+                self.CloseDate(moment(data.CloseDate).clone().toDate());
+            self.ObservationCase( data.ObservationCase  != null ? data.ObservationCase : "" );
+            self.hasReset(false);
+            //if (app.Views.Contact.selectedServiceId() > 0) {
+            //    alert("labs_list");
+            //    $.getJSON(app.dataModel.getLabsHospitalUrl, { institutionId: app.Views.Contact.selectedServiceId() }, function (data, status) {
+            //        console.log(data.LabsHospital);
+            //        console.log(self.LabsHospital());
+            //        self.LabsHospital(data.LabsHospital);
+            //        console.log(self.LabsHospital());
+            //    });
+            //} else {
+            self.LabsHospital(data.LabsHospital);
+            //}
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+            console.log(errorThrown);
+        });
     };
     
     self.Save = function () {

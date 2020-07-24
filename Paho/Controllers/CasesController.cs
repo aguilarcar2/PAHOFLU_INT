@@ -1860,7 +1860,7 @@ namespace Paho.Controllers
             {
                 return Json(new
                 {
-                    id = flucase.ID.ToString(),
+                    id = flucase.ID.ToString(),  
                     CHNum = flucase.CHNum,
                     FeverDate = flucase.FeverDate,
                     DiagDate = flucase.DiagDate,
@@ -1993,6 +1993,9 @@ namespace Paho.Controllers
                     CaseStatus = flucase.CaseStatus,
                     CloseDate = flucase.CloseDate,
                     ObservationCase = flucase.ObservationCase,
+                    //#### 
+                    //OutcomeDateRelease
+
                     //#### 
                     LabsHospital = institutionLabs.Select(x => new { Id = x.ID, x.Name }).ToList(),
                 }, JsonRequestBehavior.AllowGet);

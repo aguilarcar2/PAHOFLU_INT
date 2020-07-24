@@ -3534,7 +3534,6 @@
         </div>
 
         <!-- Datos de aislamiento -->
-        <!-- <div class="row rowform" id="Isolation_DIV" data-bind="visible: !app.Views.Contact.NotShowHospitalization"> -->
         <div class="row rowform" id="Isolation_DIV" data-bind="visible: app.Views.Contact.SurvILI">
             <div class="col-md-12">
                 <button type="button" style="background-color:#B2BABB; color:#000000" class="btn btn-group-justified" data-toggle="collapse" data-target="#IsolationFields">
@@ -3575,6 +3574,39 @@
                         </div>
                     </div>
 
+                    <!-- Condicion de salida / Otro -->
+                    <div class="row rowform">
+                        <div class="col-md-4">
+                            <div class='input-group'>
+                                <span class="input-group-addon">@LabelOutcomeExitCondition:</span>
+                                <select id="OutcomeDestin" class="form-control" data-bind="value: OutcomeDestin" style="max-width:200px">
+                                    <option value="">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSelect"))</option>
+                                    <option value="A">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelMedicalDischarged"))</option>
+                                    <option value="D">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelDeceased"))</option>
+                                    <option value="S">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelStillIll"))</option>
+                                    <option value="O">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelOther"))</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class='input-group'>
+                                <span class="input-group-addon">@LabelOutcomeExplain:</span>
+                                <input id="OutcomeDestinOther" type='text' class="form-control case_letter" data-bind="value: OutcomeDestinOther, enable: app.Views.Hospital.OutcomeDestinOtherEnable" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fecha de alta de aislamiento/hospitalización o Fecha de fallecimiento -->
+                    <div class="row rowform">
+                        <div class="col-md-12">
+                            <div class='input-group'>
+                                <span class="input-group-addon">
+                                    @LabelOutcomeDateRelease
+                                </span>
+                                <input id="OutcomeDateRelease" name="OutcomeDateRelease" type='text' class="form-control " data-bind='datepicker: OutcomeDateRelease, datepickerOptions: { maxDate:"@Model.DatePickerConfig",  dateFormat:"@Model.DateFormatDP"}' />
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -4407,7 +4439,6 @@
                             </div>
                         </div>
                     </div>
-
                     <!-- Si el caso era asintomático al momento de la toma de muestra, desarrollo... / Fecha de inicio de sintomas... -->
                     <div class="row rowform">
                         <div class='input-group col-md-12'>
@@ -4535,7 +4566,7 @@
                         </div>
                     </div>
                     <!-- Condicion de salida / Otro -->
-                    <div class="row rowform">
+                    <div class="row rowform" data-bind="visible: !app.Views.Contact.SurvILI()">
                         <div class="col-md-4">
                             <div class='input-group'>
                                 <span class="input-group-addon">@LabelOutcomeExitCondition:</span>
@@ -4556,7 +4587,7 @@
                         </div>
                     </div>
                     <!-- Fecha de alta de aislamiento/hospitalización o Fecha de fallecimiento -->
-                    <div class="row rowform">
+                    <div class="row rowform" data-bind="visible: !app.Views.Contact.SurvILI()">
                         <div class="col-md-12">
                             <div class='input-group'>
                                 <span class="input-group-addon">
@@ -4566,6 +4597,7 @@
                             </div>
                         </div>
                     </div>
+
                     <!-- Fecha de la última prueba de laboratorio -->
                     <div class="row rowform">
                         <div class="col-md-6">
