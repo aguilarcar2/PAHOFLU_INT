@@ -5681,6 +5681,9 @@ namespace Paho.Controllers
                             string labelCurrDate = "";
                             string labelSentinel = "";
                             string labelVirus = "";
+                            string labelHealtRegion = "";
+                            string labelInstitutionRegion = "";
+                            string labelCountryRegion = "";
 
                             //****
                             if (countryId > 0)
@@ -5808,6 +5811,22 @@ namespace Paho.Controllers
                                                 break;
                                             case "{{virus}}":
                                                 label = (labelVirus != "" ? labelVirus : "");
+                                                break;
+                                            case "{{health_region}}":
+                                                ExportarController hr = new ExportarController(); 
+                                                label = hr.getUserInfo("HR");
+                                                break;
+                                            case "{{institutional_region}}":
+                                                ExportarController ir = new ExportarController();
+                                                label = ir.getUserInfo("IR");
+                                                break;
+                                            case "{{country_region}}":
+                                                ExportarController cr = new ExportarController();
+                                                label = cr.getUserInfo("CR");
+                                                break;
+                                            case "{{user_generating}}":
+                                                ExportarController nu = new ExportarController();
+                                                label = nu.getUserInfo("NU");
                                                 break;
                                             default:
                                                 label = "";
@@ -5981,6 +6000,65 @@ namespace Paho.Controllers
             ResourcesM myR = new ResourcesM();
             searchedMsg = myR.getMessage(searchedMsg, countryID, countryLang);
             //searchedMsg = myR.getMessage(searchedMsg, 0, "ENG");
+            return searchedMsg;
+        }
+
+        private string getUserInfo(string infoGet)
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            var searchedMsg = "";
+            // Health Institution Full Name -> HIFN
+            // Health Institution Name -> HIN
+            // Health Region -> HR
+            // Institution Region -> IR
+            // Country Region -> CR
+            // Name User -> NU
+
+            if (infoGet == "NU")
+                searchedMsg = user.FirstName1.ToString() + " " + user.FirstName2.ToString() + " " + user.LastName1.ToString() + " " + user.LastName2.ToString();
+
+            if (infoGet == "HIFN")
+                searchedMsg = user.Institution.ToString();
+
+            if (infoGet == "HIN")
+                searchedMsg = user.Institution.Name.ToString();
+
+            if (infoGet == "HR")
+            {
+                var HealthRegionId = 0;
+
+                HealthRegionId = user.Institution.cod_region_salud != null ? (int)user.Institution.cod_region_salud : 0;
+
+                if (HealthRegionId > 0)
+                {
+                    searchedMsg = db.Regions.Where(x => x.tipo_region == 2 &  x.orig_country == HealthRegionId).Select(z => z.Name).ToString();
+                }
+            }
+
+            if (infoGet == "IR")
+            {
+                var InstitutionRegionId = 0;
+
+                InstitutionRegionId = user.Institution.cod_region_institucional != null ? (int)user.Institution.cod_region_institucional : 0;
+
+                if (InstitutionRegionId > 0)
+                {
+                    searchedMsg = db.Regions.Where(x => x.tipo_region == 1 & x.orig_country == InstitutionRegionId).Select(z => z.Name).ToString();
+                }
+            }
+
+            if (infoGet == "CR")
+            {
+                var CountryRegionId = 0;
+
+                CountryRegionId = user.Institution.cod_region_pais != null ? (int)user.Institution.cod_region_pais : 0;
+
+                if (CountryRegionId > 0)
+                {
+                    searchedMsg = db.Regions.Where(x => x.tipo_region == 3 & x.orig_country == CountryRegionId).Select(z => z.Name).ToString();
+                }
+            }
+
             return searchedMsg;
         }
 
