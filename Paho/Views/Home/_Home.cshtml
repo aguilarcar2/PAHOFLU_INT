@@ -88,6 +88,7 @@
 
     string LabelOutcomeFinalHealthOutcome = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabCaseLabelOutcomeFinalHealthOutcome", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string LabelOutcomeExitCondition = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabHospitalLabelExitCondition", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelOutcomeExitConditionEvolucILI = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabHospitalLabelExitConditionEvolucILI", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string LabelOutcomeExplain = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabCaseLabelOutcomeExplain", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 
     string LabelOutcomeDateRelease = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabCaseLabelOutcomeDateRelease", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
@@ -898,7 +899,7 @@
             <!-- Neighborhoods -->
             @if (@ViewBag.UsrCtry != 25 && @ViewBag.UsrCtry != 18 && @ViewBag.UsrCtry != 17 && @ViewBag.UsrCtry != 11 && @ViewBag.UsrCtry != 119)
             {
-                <div class="col-md-6" ssdata-bind="visible:EnableCHI">
+                <div class="col-md-6" data-bind="visible:EnableCHI">
                     <div class='input-group'>                            
                         <span class="input-group-addon">
                             @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabGeoLabelResidenceNeighborhood"))
@@ -2802,7 +2803,7 @@
     <!-- INFORMACION CLINICA -->
     <div id="tab-hospital" data-bind="with: app.Views.Hospital">
         <!-- Algún síntoma en recolección de muestra confirmada por laboratorio -->
-        <div class="row rowform">
+        <div class="row rowform" data-bind="visible: false">
             <div class='input-group col-md-12'>
                 <span class="input-group-addon">
                     @LabelSymptomsFirstLabConfirmation
@@ -3578,7 +3579,8 @@
                     <div class="row rowform">
                         <div class="col-md-4">
                             <div class='input-group'>
-                                <span class="input-group-addon">@LabelOutcomeExitCondition:</span>
+                                @*<span class="input-group-addon">@LabelOutcomeExitCondition:</span>*@
+                                <span class="input-group-addon">@LabelOutcomeExitConditionEvolucILI:</span>
                                 <select id="OutcomeDestin" class="form-control" data-bind="value: OutcomeDestin" style="max-width:200px">
                                     <option value="">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelSelect"))</option>
                                     <option value="A">@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabHospitalLabelMedicalDischarged"))</option>
