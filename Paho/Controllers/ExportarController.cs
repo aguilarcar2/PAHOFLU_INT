@@ -1349,7 +1349,7 @@ namespace Paho.Controllers
                             if (reportTemplate == "R13")
                             {
                                 if (RegionID_ > 0)
-                                    excelWorkBook.Worksheets[1].Cells[3, 9].Value = db.Regions.Where(x => x.ID == RegionID_).Select(y => y.Name).ToString();
+                                    excelWorkBook.Worksheets[1].Cells[3, 9].Value = db.Regions.Where(x => x.orig_country == RegionID_ && x.tipo_region == 1).FirstOrDefault().Name;
                                 // Usuario que genera
 
                                 var usuario_genera = (user.FirstName1 == null ? "" : user.FirstName1.ToString() + " ") + (user.FirstName2 == null ? "" : user.FirstName2.ToString() + " ") + (user.FirstName2 == null ? "" : user.LastName1.ToString() + " ") + (user.LastName1 == null ? "" : user.LastName1.ToString() + " ") + (user.LastName2 == null ? "" : user.LastName2.ToString());
@@ -3858,7 +3858,7 @@ namespace Paho.Controllers
                                 /*Termina llenado de Tabla2*/
                             }
                         }
-                        else        // R1, R2, R3, R4 etc   // R4 Virus detectados
+                        else        // R1, R2, R3, R4, R13, etc   // R4 Virus detectados
                         {
                             bool procesarFila;
 
@@ -3866,6 +3866,7 @@ namespace Paho.Controllers
                             {
                                 int nColums;
                                 nColums = (storedProcedure == "R3") ? ((reader.FieldCount - 1) / 2) + 1 : reader.FieldCount;
+                                Object myObject_type;
 
                                 while (reader.Read())
                                 {
@@ -3888,7 +3889,7 @@ namespace Paho.Controllers
                                             if (reader.GetValue(i) != null)
                                             {
                                                 var datoColu = reader.GetValue(i);
-
+                                                myObject_type = reader.GetValue(i);
                                                 double numberD;
                                                 //bool isNumber = double.TryParse(reader.GetValue(i).ToString(), out numberD);
                                                 bool isNumber = double.TryParse(datoColu.ToString(), out numberD);
@@ -3897,7 +3898,7 @@ namespace Paho.Controllers
                                                 //bool isDate = DateTime.TryParse(reader.GetValue(i).ToString(), out dt);
                                                 bool isDate = DateTime.TryParse(datoColu.ToString(), out dt);
 
-                                                if (isNumber)
+                                                if (isNumber && myObject_type.GetType().Name != "String")
                                                     excelWorksheet.Cells[row, col].Value = numberD;
                                                 else
                                                 {
@@ -4017,6 +4018,8 @@ namespace Paho.Controllers
                     {
                         row = rowInicPara;
                         column = colInicPara;
+                        Object myObject_type;
+
                         if (starRowNext != 0)
                         {
                             row = starRowNext;
@@ -4037,6 +4040,7 @@ namespace Paho.Controllers
                                 if (reader.GetValue(i) != null)
                                 {
                                     var datoColu = reader.GetValue(i);
+                                    myObject_type = reader.GetValue(i);
 
                                     double numberD;
                                     //bool isNumber = double.TryParse(reader.GetValue(i).ToString(), out numberD);
@@ -4046,7 +4050,7 @@ namespace Paho.Controllers
                                     //bool isDate = DateTime.TryParse(reader.GetValue(i).ToString(), out dt);
                                     bool isDate = DateTime.TryParse(datoColu.ToString(), out dt);
 
-                                    if (isNumber)
+                                    if (isNumber && myObject_type.GetType().Name != "String")
                                         excelWorksheet.Cells[row, col].Value = numberD;
                                     else
                                     {
@@ -4115,6 +4119,8 @@ namespace Paho.Controllers
                     {
                         row = rowInicPara;
                         column = colInicPara;
+                        Object myObject_type;
+
                         if (starRowNext != 0)
                         {
                             row = starRowNext;
@@ -4135,6 +4141,7 @@ namespace Paho.Controllers
                                 if (reader.GetValue(i) != null)
                                 {
                                     var datoColu = reader.GetValue(i);
+                                    myObject_type = reader.GetValue(i);
 
                                     double numberD;
                                     //bool isNumber = double.TryParse(reader.GetValue(i).ToString(), out numberD);
@@ -4144,7 +4151,7 @@ namespace Paho.Controllers
                                     //bool isDate = DateTime.TryParse(reader.GetValue(i).ToString(), out dt);
                                     bool isDate = DateTime.TryParse(datoColu.ToString(), out dt);
 
-                                    if (isNumber)
+                                    if (isNumber && myObject_type.GetType().Name != "String")
                                         excelWorksheet.Cells[row, col].Value = numberD;
                                     else
                                     {
@@ -4458,6 +4465,7 @@ namespace Paho.Controllers
                         {
                             int excelColTota = reader.FieldCount; 
                             row = 2;
+                            Object myObject_type;
 
                             while (reader.Read())
                             {
@@ -4471,6 +4479,7 @@ namespace Paho.Controllers
                                     if (reader.GetValue(readercont) != null)
                                     {
                                         var datoColu = reader.GetValue(readercont);
+                                        myObject_type = reader.GetValue(readercont);
 
                                         double numberD;
                                         bool isNumber = double.TryParse(datoColu.ToString(), out numberD);
@@ -4478,7 +4487,7 @@ namespace Paho.Controllers
                                         DateTime dt;
                                         bool isDate = DateTime.TryParse(datoColu.ToString(), out dt);
 
-                                        if (isNumber)
+                                        if (isNumber && myObject_type.GetType().Name != "String")
                                             excelWorksheet.Cells[row, col + j].Value = numberD;
                                         else
                                         {
