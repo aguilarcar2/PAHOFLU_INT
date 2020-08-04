@@ -1341,10 +1341,10 @@ namespace Paho.Controllers
                             //ConfigToExcel_FLUID(CountryID, Languaje_, RegionID_, Year, YearBegin, YearEnd, StartDate, EndDate, HospitalID_, Surv, excelWorkBook, "Leyendas", 1, excelWs_Leyendas.Index, false);
                             ConfigToExcel_FLUID(CountryID, Languaje_, RegionID_, Year, YearFrom, YearTo, StartDate, EndDate, HospitalID_, Surv, excelWorkBook, "Leyendas", 1, excelWs_Leyendas.Index, false, Month, SE);
                         }
-                        else
+                        else if (reportTemplate == "R13" || reportTemplate == "Cases" || reportTemplate == "B1" || reportTemplate == "LRD" || reportTemplate == "CBSC2" || reportTemplate == "R12")
                         {
-                            AppendDataToExcel(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, 
-                                insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, AreaID_, CasosNPHL, Sentinel);        //#### CAFQ
+                            AppendDataToExcel_ExportData(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1,
+                                insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, AreaID_, CasosNPHL, Sentinel);
 
                             if (reportTemplate == "R13")
                             {
@@ -1356,6 +1356,23 @@ namespace Paho.Controllers
 
                                 excelWorkBook.Worksheets[1].Cells[3, 13].Value = usuario_genera;
                             }
+
+                        }
+                        else
+                        {
+                            AppendDataToExcel(Languaje_, CountryID_, RegionID_, Year, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, reportTemplate, reportStartRow, reportStartCol, 1, 
+                                insertRow, ReportCountry, YearFrom, YearTo, Surv, Inusual, AreaID_, CasosNPHL, Sentinel);        //#### CAFQ
+
+                            //if (reportTemplate == "R13")
+                            //{
+                            //    if (RegionID_ > 0)
+                            //        excelWorkBook.Worksheets[1].Cells[3, 9].Value = db.Regions.Where(x => x.orig_country == RegionID_ && x.tipo_region == 1).FirstOrDefault().Name;
+                            //    // Usuario que genera
+
+                            //    var usuario_genera = (user.FirstName1 == null ? "" : user.FirstName1.ToString() + " ") + (user.FirstName2 == null ? "" : user.FirstName2.ToString() + " ") + (user.FirstName2 == null ? "" : user.LastName1.ToString() + " ") + (user.LastName1 == null ? "" : user.LastName1.ToString() + " ") + (user.LastName2 == null ? "" : user.LastName2.ToString());
+
+                            //    excelWorkBook.Worksheets[1].Cells[3, 13].Value = usuario_genera;
+                            //}
                         }
 
                         excelPackage.SaveAs(ms);
@@ -6001,6 +6018,99 @@ namespace Paho.Controllers
             string searchedMsg = ResourcesM.SgetMessage(msgView, countryDisp, langDisp);
             //searchedMsg = myR.getMessage(searchedMsg, 0, "ENG");
             return searchedMsg;
+        }
+
+        private void AppendDataToExcel_ExportData(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se,
+            DateTime? startDate, DateTime? endDate, ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet,
+            bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, bool? SurvInusual, int? AreaId, string CasosNPHL = "",
+            int? Sentinel = null, int starRowAntec = 0, int starColAntec = 0) 
+        {
+            var excelWorksheet = excelWorkBook.Worksheets[sheet];
+            var row = startRow;
+            var column = startColumn;
+            string _storedProcedure;
+
+            _storedProcedure = storedProcedure;
+            if (storedProcedure == "ML1")
+                _storedProcedure = "MuestrasLabNPHL";
+            else if (storedProcedure == "LRD")
+                _storedProcedure = "R9_LibroReporteDiario";
+            else if (storedProcedure == "CPE")
+                _storedProcedure = "R10_CondicionesPreexistentes";
+            else if (storedProcedure == "CPV")
+                _storedProcedure = "R11_CasosPositivosInfluenzaConVacuna";
+            else if (storedProcedure == "CBSC2")
+                _storedProcedure = "CasesBrote";
+
+            var consString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+            if (storedProcedure == "R12")           // Reporte Situacional SARS-CoV-2
+            {
+                VirusByDepartament_ConfirmedNegative_DataToSheetExcel(consString, excelWorkBook, 0, 0, countryId, regionId, languaje_, year, hospitalId, month, se, startDate, endDate,
+                    YearFrom, YearTo, Surv, SurvInusual, AreaId, Sentinel);
+
+                R12_VirusByAgeGroup_DataToSheetExcel(consString, excelWorkBook, 0, 0, countryId, regionId, languaje_, year, hospitalId, month, se, startDate, endDate,
+                    YearFrom, YearTo, Surv, SurvInusual, AreaId, Sentinel);
+
+                var excelWs_Leyendas = excelWorkBook.Worksheets["Leyendas"];
+                int YearBegin = 0, YearEnd = 0;
+                Calculate_YearBegin_YearEnd(year, YearFrom, YearTo, startDate, endDate, ref YearBegin, ref YearEnd);
+
+                ConfigToExcel_FLUID(countryId, languaje_, regionId, year, YearBegin, YearEnd, startDate, endDate, hospitalId, Surv, excelWorkBook, "Leyendas", 1, excelWs_Leyendas.Index, false);
+            }
+
+            DataTable exportTable = new DataTable();
+
+
+            using (var con = new SqlConnection(consString))
+            {
+                using (var command = new SqlCommand(_storedProcedure, con) { CommandType = CommandType.StoredProcedure, CommandTimeout = 1200 })
+                {
+                    command.Parameters.Clear();
+                    command.Parameters.Add("@Country_ID", SqlDbType.Int).Value = countryId;
+                    command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = regionId;
+                    command.Parameters.Add("@Languaje", SqlDbType.Text).Value = languaje_;
+                    command.Parameters.Add("@Year_case", SqlDbType.Int).Value = year;
+                    command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = hospitalId;
+                    command.Parameters.Add("@Mes_", SqlDbType.Int).Value = month;
+                    command.Parameters.Add("@SE", SqlDbType.Int).Value = se;
+                    command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
+                    command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
+                    command.Parameters.Add("@yearFrom", SqlDbType.Int).Value = YearFrom;
+                    command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
+                    command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;
+                    command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;
+                    command.Parameters.Add("@Area_ID", SqlDbType.Int).Value = AreaId;
+                    command.Parameters.Add("@Sentinel", SqlDbType.Int).Value = Sentinel;
+
+                    con.Open();
+                    using (var da = new SqlDataAdapter(command))
+                    {
+                        //Data adapter(da) fills the data retuned from stored procedure 
+                        //into exportTable
+                        da.Fill(exportTable);
+                        excelWorksheet.Cells[startRow, startColumn].LoadFromDataTable(exportTable,false);
+                    }
+                    command.Parameters.Clear();
+                    con.Close();
+                }
+
+            }
+
+            /*-----------------------Inserción de los parámetros usados para la generación del reporte al Excel--------------------------------------*/
+            //inserción de labels y logo en el Excel
+            if (ReportCountry != null)
+            {
+                //inserción de labels
+                reportLabels(consString, countryId, languaje_, ReportCountry, hospitalId, year, YearFrom, YearTo, se, startDate, endDate, excelWorkBook, excelWorksheet, AreaId, Sentinel, storedProcedure);
+
+                //inserción de logo
+                InsertarLogoExcel(consString, excelWorksheet, ReportCountry);
+            }
+            /*-----------------------Fin de la Inserción de los parámetros usados para la generación del reporte al Excel--------------------------------------*/
+
+            // Apply only if it has a Total row at the end and hast SUM in range, i.e. SUM(A1:A4)
+            //excelWorksheet.DeleteRow(row, 2);
         }
     }
 }
