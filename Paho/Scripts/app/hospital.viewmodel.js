@@ -2250,7 +2250,7 @@
                 MecVentNoInv: self.MecVentNoInv(),
                 ECMO: self.ECMO(),
                 VAFO: self.VAFO(),
-                Comments: self.Comments,                                        //#### CAFQ: 190107
+                Comments: self.Comments(),                                        //#### CAFQ: 190107
                 DiagEgVal: self.DiagEgVal(),
                 DiagEgOtro: self.DiagEgOtro() == null ? "" : self.DiagEgOtro().toLocaleUpperCase(),         //#### CAFQ
                 Tiraje: self.Tiraje(),
