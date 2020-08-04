@@ -1397,6 +1397,7 @@ namespace Paho.Controllers
                     id = flucase.ID.ToString(),
                     Vaccin = flucase.Vaccin,
                     HDisease = flucase.HDisease,
+                    HDiseaseDetail = flucase.HDiseaseDetail,
                     SickleCellDisease = flucase.SickleCellDisease,
                     Diabetes = flucase.Diabetes,
                     Neuro = flucase.Neuro,
@@ -1451,46 +1452,47 @@ namespace Paho.Controllers
                     Antibiotic = flucase.Antibiotic,
                     AntibioticName = flucase.AntibioticName,
 
-                    Ocupacion = flucase.Ocupacion,                             //#### CAFQ
-                    TrabajoDirecc = flucase.TrabajoDirecc,                     //#### CAFQ
-                    TrabajoEstablec = flucase.TrabajoEstablec,                 //#### CAFQ
-                    ContactoAnimVivos = flucase.ContactoAnimVivos,             //#### CAFQ
-                    OcupacMercAnimVivos = flucase.OcupacMercAnimVivos,          //#### CAFQ
+                    Ocupacion = flucase.Ocupacion,
+                    OccupationOther = flucase.OccupationOther,                             //#### CAFQ
+                    TrabajoDirecc = flucase.TrabajoDirecc,
+                    TrabajoEstablec = flucase.TrabajoEstablec,
+                    ContactoAnimVivos = flucase.ContactoAnimVivos,
+                    OcupacMercAnimVivos = flucase.OcupacMercAnimVivos,
 
-                    InfeccHospit = flucase.InfeccHospit,                                //#### CAFQ
-                    InfeccHospitFecha = flucase.InfeccHospitFecha,                      //#### CAFQ
+                    InfeccHospit = flucase.InfeccHospit,
+                    InfeccHospitFecha = flucase.InfeccHospitFecha,
 
-                    ViajePrevSintoma = flucase.ViajePrevSintoma,                //#### CAFQ
-                    DestPrevSintoma1 = flucase.DestPrevSintoma1,                //#### CAFQ
-                    DestFechaLlegada1 = flucase.DestFechaLlegada1,                //#### CAFQ
-                    DestFechaSalida1 = flucase.DestFechaSalida1,                //#### CAFQ
-                    DestPrevSintoma2 = flucase.DestPrevSintoma2,                //#### CAFQ
-                    DestFechaLlegada2 = flucase.DestFechaLlegada2,                //#### CAFQ
-                    DestFechaSalida2 = flucase.DestFechaSalida2,                //#### CAFQ
-                    DestPrevSintoma3 = flucase.DestPrevSintoma3,                //#### CAFQ
-                    DestFechaLlegada3 = flucase.DestFechaLlegada3,                //#### CAFQ
-                    DestFechaSalida3 = flucase.DestFechaSalida3,                //#### CAFQ
-                    ContacDirectoAnim = flucase.ContacDirectoAnim,                //#### CAFQ
-                    AnimalNaturaContac = flucase.AnimalNaturaContac,                //#### CAFQ
-                    ExpuextoSimilSintoma = flucase.ExpuextoSimilSintoma,                //#### CAFQ
-                    NumeIdentContacto = flucase.NumeIdentContacto,                //#### CAFQ
-                    InfluConfirContacto = flucase.InfluConfirContacto,                //#### CAFQ
-                    TipoRelaContacto = flucase.TipoRelaContacto,                //#### CAFQ
-                    FamiDirecContacto = flucase.FamiDirecContacto,                //#### CAFQ
-                    TrabSaludRama = flucase.TrabSaludRama,                //#### CAFQ
-                    TrabLaboratorio = flucase.TrabLaboratorio,                //#### CAFQ
-                    TrabLaboratorioRama = flucase.TrabLaboratorioRama,                //#### CAFQ
+                    ViajePrevSintoma = flucase.ViajePrevSintoma,
+                    DestPrevSintoma1 = flucase.DestPrevSintoma1,
+                    DestFechaLlegada1 = flucase.DestFechaLlegada1,
+                    DestFechaSalida1 = flucase.DestFechaSalida1,
+                    DestPrevSintoma2 = flucase.DestPrevSintoma2,
+                    DestFechaLlegada2 = flucase.DestFechaLlegada2,
+                    DestFechaSalida2 = flucase.DestFechaSalida2,
+                    DestPrevSintoma3 = flucase.DestPrevSintoma3,
+                    DestFechaLlegada3 = flucase.DestFechaLlegada3,
+                    DestFechaSalida3 = flucase.DestFechaSalida3,
+                    ContacDirectoAnim = flucase.ContacDirectoAnim,
+                    AnimalNaturaContac = flucase.AnimalNaturaContac,
+                    ExpuextoSimilSintoma = flucase.ExpuextoSimilSintoma,
+                    NumeIdentContacto = flucase.NumeIdentContacto,
+                    InfluConfirContacto = flucase.InfluConfirContacto,
+                    TipoRelaContacto = flucase.TipoRelaContacto,
+                    FamiDirecContacto = flucase.FamiDirecContacto,
+                    TrabSaludRama = flucase.TrabSaludRama,
+                    TrabLaboratorio = flucase.TrabLaboratorio,
+                    TrabLaboratorioRama = flucase.TrabLaboratorioRama,
 
-                    TravelPrevSympt = flucase.TravelPrevSympt,                                         //#### 200225
-                    TravelPrevSymptCountryID1 = flucase.TravelPrevSymptCountryID1,                     //#### 200225
-                    TravelPrevSymptCountryID2 = flucase.TravelPrevSymptCountryID2,                     //#### 200225
-                    TravelPrevSymptCountryID3 = flucase.TravelPrevSymptCountryID3,                     //#### 200225
-                    TravelPrevSymptCity1 = flucase.TravelPrevSymptCity1,                               //#### 200225
-                    TravelPrevSymptCity2 = flucase.TravelPrevSymptCity2,                               //#### 200225
-                    TravelPrevSymptCity3 = flucase.TravelPrevSymptCity3,                               //#### 200225
-                    TravelPrevSymptDateDeparture1 = flucase.TravelPrevSymptDateDeparture1,             //#### 200225
-                    TravelPrevSymptDateDeparture2 = flucase.TravelPrevSymptDateDeparture2,             //#### 200225
-                    TravelPrevSymptDateDeparture3 = flucase.TravelPrevSymptDateDeparture3,              //#### 200225
+                    TravelPrevSympt = flucase.TravelPrevSympt,
+                    TravelPrevSymptCountryID1 = flucase.TravelPrevSymptCountryID1,
+                    TravelPrevSymptCountryID2 = flucase.TravelPrevSymptCountryID2,
+                    TravelPrevSymptCountryID3 = flucase.TravelPrevSymptCountryID3,
+                    TravelPrevSymptCity1 = flucase.TravelPrevSymptCity1,
+                    TravelPrevSymptCity2 = flucase.TravelPrevSymptCity2,
+                    TravelPrevSymptCity3 = flucase.TravelPrevSymptCity3,
+                    TravelPrevSymptDateDeparture1 = flucase.TravelPrevSymptDateDeparture1,
+                    TravelPrevSymptDateDeparture2 = flucase.TravelPrevSymptDateDeparture2,
+                    TravelPrevSymptDateDeparture3 = flucase.TravelPrevSymptDateDeparture3,
 
                     PatientVisitedHealthCare = flucase.PatientVisitedHealthCare,
                     ContactCaseConfirmed = flucase.ContactCaseConfirmed,
@@ -1515,26 +1517,28 @@ namespace Paho.Controllers
             };
             return Json(new
                  {
-                     id = "",
-                     Vaccin = 9,
-                     HDisease = false,
-                     SickleCellDisease = false,
-                     Diabetes = false,
-                     Neuro = false,
-                     Asthma = false,
-                     Pulmonary = false,
-                     Liver = false,
-                     Renal = false,
-                     Immunsupp = false,
-                     Pregnant = 0,
-                     Pperium = false,
-                     Trimester = 0,
-                     Smoking = false,
-                     Alcohol = false,
-                     DownSyn = false,
-                     Obesity = 0,
-                     OtherRisk = "",
-                     AntiViralDose = ""
+                    id = "",
+                    Vaccin = 9,
+                    HDisease = false,
+                    HDiseaseDetail = "",
+                    SickleCellDisease = false,
+                    Diabetes = false,
+                    Neuro = false,
+                    Asthma = false,
+                    Pulmonary = false,
+                    Liver = false,
+                    Renal = false,
+                    Immunsupp = false,
+                    Pregnant = 0,
+                    Pperium = false,
+                    Trimester = 0,
+                    Smoking = false,
+                    Alcohol = false,
+                    DownSyn = false,
+                    Obesity = 0,
+                    OtherRisk = "",
+                    OccupationOther = "",
+                    AntiViralDose = ""
             },
                  JsonRequestBehavior.AllowGet);
         }
@@ -1547,6 +1551,7 @@ namespace Paho.Controllers
                 int Id,
                 Vaccin? Vaccin,
                 bool? HDisease,
+                string HDiseaseDetail,
                 bool? SickleCellDisease,
                 bool? Diabetes,
                 bool? Neuro,
@@ -1605,6 +1610,7 @@ namespace Paho.Controllers
                 int? Comorbidities,
 
                 int? Ocupacion,                         //#### CAFQ
+                string OccupationOther,                   //#### CAFQ
                 string TrabajoDirecc,                   //#### CAFQ
                 string TrabajoEstablec,                 //#### CAFQ
                 int? ContactoAnimVivos,                 //#### CAFQ
@@ -1680,6 +1686,7 @@ namespace Paho.Controllers
             }
             flucase.Vaccin = Vaccin;
             flucase.HDisease = HDisease;
+            flucase.HDiseaseDetail = HDiseaseDetail;
             flucase.SickleCellDisease = SickleCellDisease;
             flucase.Diabetes = Diabetes;
             flucase.Neuro = Neuro;
@@ -1742,14 +1749,15 @@ namespace Paho.Controllers
             if (AntiViral != null)  flucase.RiskFactors = (RiskFactor)Enum.Parse(typeof(RiskFactor), RiskFactors.ToString());
             flucase.Comorbidities = Comorbidities;
 
-            flucase.Ocupacion = Ocupacion;                                      //#### CAFQ 
-            flucase.TrabajoDirecc = TrabajoDirecc;                              //#### CAFQ 
-            flucase.TrabajoEstablec = TrabajoEstablec;                          //#### CAFQ
-            flucase.ContactoAnimVivos = ContactoAnimVivos;                      //#### CAFQ
-            flucase.OcupacMercAnimVivos = OcupacMercAnimVivos;                  //#### CAFQ
+            flucase.Ocupacion = Ocupacion;
+            flucase.OccupationOther = OccupationOther;
+            flucase.TrabajoDirecc = TrabajoDirecc;
+            flucase.TrabajoEstablec = TrabajoEstablec;
+            flucase.ContactoAnimVivos = ContactoAnimVivos;
+            flucase.OcupacMercAnimVivos = OcupacMercAnimVivos;
 
-            flucase.InfeccHospit = InfeccHospit;                    //#### CAFQ
-            flucase.InfeccHospitFecha = InfeccHospitFecha;          //#### CAFQ
+            flucase.InfeccHospit = InfeccHospit;
+            flucase.InfeccHospitFecha = InfeccHospitFecha;
 
             flucase.ViajePrevSintoma = ViajePrevSintoma;        //#### CAFQ
             flucase.DestPrevSintoma1 = DestPrevSintoma1;        //#### CAFQ

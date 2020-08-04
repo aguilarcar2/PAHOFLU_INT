@@ -1209,6 +1209,7 @@ namespace Paho.Models
         //#### 200225 COVID-19 - END
 
         public int? Ocupacion { get; set; }                         //#### CAFQ
+        public string OccupationOther { get; set; }                   //#### CAFQ
         public string TrabajoDirecc { get; set; }                   //#### CAFQ
         public string TrabajoEstablec { get; set; }                 //#### CAFQ
         public int? ContactoAnimVivos { get; set; }                 //#### CAFQ
@@ -1284,8 +1285,8 @@ namespace Paho.Models
         public string Address2 { get; set; }
         public int? LocalID { get; set; }
         public int? NeighborhoodID { get; set; }
-		public int? HamletID { get; set; }                      //#### CAFQ: 181018
-        public int? ColonyID { get; set; }                      //#### CAFQ: 181018
+		public int? HamletID { get; set; }
+        public int? ColonyID { get; set; }
         public UrbanRural UrbanRural { get; set; }
         public int? CountryID2weeks { get; set; }
         public int? AreaID2weeks { get; set; }
@@ -1293,7 +1294,7 @@ namespace Paho.Models
         public int? NeighborhoodID2weeks { get; set; }
         [MaxLength(250)]
         public string Address { get; set; }
-        public int? RegionAddress { get; set; }             //#### CAFQ: 181008
+        public int? RegionAddress { get; set; }
         public string PhoneNumber { get; set; }
         public string Latitude { get; set; }
         public string Longitude { get; set; }
@@ -1309,6 +1310,7 @@ namespace Paho.Models
         public RiskFactor? RiskFactors { get; set; }
         public int? Comorbidities { get; set; }
         public bool? HDisease { get; set; }
+        public string HDiseaseDetail { get; set; }
         public bool? Diabetes { get; set; }
         public bool? Neuro { get; set; }
         public bool? Asthma { get; set; }
@@ -1325,9 +1327,7 @@ namespace Paho.Models
         public bool? Prematuridad { get; set; }
         public bool? BajoPesoNacer { get; set; }
         public bool? AusLacMat { get; set; }
-
         public Pregnant? Pregnant { get; set; }
-        //public VaccineOptions? VacInfluenza { get; set; }
         public int? VacInfluenza { get; set; }
         public DateTime? VacInfluenzaDateFirst { get; set; }
         public DateTime? VacInfluenzaDateSecond { get; set; }
@@ -1379,15 +1379,15 @@ namespace Paho.Models
         public int? DiagAdm { get; set; }
         public string DiagOtroAdm { get; set; }
         public bool? HallRadio { get; set; }
-        public string HallRadioFindings { get; set; }               //#### CAFQ
+        public string HallRadioFindings { get; set; }
         public bool? MecVent { get; set; }
-        public bool? UCInt { get; set; } //Unidad de cuidados intermedios 
-        public bool? UCri { get; set; } //Unidad crítica
+        public bool? UCInt { get; set; }                        //Unidad de cuidados intermedios 
+        public bool? UCri { get; set; }                         //Unidad crítica
         public bool? MecVentNoInv { get; set; }
         public bool? ECMO { get; set; }
         public bool? VAFO { get; set; }
         public int? DiagEg { get; set; }
-        public string DiagEgOtro { get; set; }                      //#### CAFQ
+        public string DiagEgOtro { get; set; }
         public bool? DifResp { get; set; }
         public bool? MedSatOxig { get; set; }
         public int? SatOxigPor { get; set; }
@@ -1445,7 +1445,7 @@ namespace Paho.Models
         public bool? Tos { get; set; }
         public bool? Tiraje { get; set; }
         public bool? Odinofagia { get; set; }
-        public bool? Wheezing { get; set; }             //#### CAFQ: 180619
+        public bool? Wheezing { get; set; }
         //public class CaseLab : CaseBase
         public DateTime? RecDate { get; set; }
         public string Identification_Test { get; set; }
@@ -2260,6 +2260,7 @@ namespace Paho.Models
                    p.nativepeople,
                    p.nationality,
                    p.Ocupacion,
+                   p.OccupationOther,
                    p.TrabajoDirecc,
                    p.TrabajoEstablec,
                    p.ContactoAnimVivos,
@@ -2295,6 +2296,7 @@ namespace Paho.Models
                    p.RiskFactors,
                    p.Comorbidities,
                    p.HDisease,
+                   p.HDiseaseDetail,
                    p.Diabetes,
                    p.Neuro,
                    p.Asthma,

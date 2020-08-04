@@ -16,7 +16,16 @@
     self.Trimester = ko.observable();
     self.Vaccin = ko.observable(null);
 
-    self.selectedOccupationId = ko.observable();                    //**** CAFQ
+    self.selectedOccupationId = ko.observable();
+    self.OccupationOther = ko.observable(null);
+    self.VisibleOccupationOther = ko.computed(function () {
+        var result = (self.selectedOccupationId() == 878);          // 878: Other
+        if (!result)
+            self.OccupationOther(null);
+        return result;
+    }, self);
+
+    //VisibleOccupationOther
     self.TrabajoDirecc = ko.observable("");                         //**** CAFQ 
     self.TrabajoEstablec = ko.observable("");                       //**** CAFQ
     self.ContactoAnimVivos = ko.observable();                       //**** CAFQ
@@ -307,6 +316,15 @@
     }, self);
 
     self.HDisease = ko.observable(false);
+
+    self.HDiseaseDetail = ko.observable(null);
+    self.VisibleHDiseaseDetail = ko.computed(function () {
+        var result = (self.HDisease() == "1");
+        if (!result)
+            self.HDiseaseDetail(null);
+        return result;
+    }, self);
+
     self.SickleCellDisease = ko.observable(false);
     self.Diabetes = ko.observable(false);
     self.Neuro = ko.observable(false);
@@ -546,6 +564,7 @@
         self.RiskFactors(null);
         self.Comorbidities(null);
         self.HDisease(false);
+        self.HDiseaseDetail(null);
         self.SickleCellDisease(false);
         self.Diabetes(false);
         self.Neuro(false);
@@ -630,7 +649,9 @@
 
     self.ResetRiskInusual = function () {           //#### CAFQ
         //self.hasReset(true);
-        self.selectedOccupationId("");              //#### CAFQ
+        self.selectedOccupationId("");              // Ocupacion
+        self.OccupationOther(null);                 // Ocupacion otro
+
         self.TrabajoDirecc("");                     //**** CAFQ 
         self.TrabajoEstablec("");                   //**** CAFQ
         self.ContactoAnimVivos("");                 //**** CAFQ
@@ -674,6 +695,7 @@
                 self.Comorbidities(data.Comorbidities); //Unicamente para Bolivia
                 self.Vaccin(data.Vaccin);
                 self.HDisease(data.HDisease);
+                self.HDiseaseDetail(data.HDiseaseDetail);
                 self.SickleCellDisease(data.SickleCellDisease)
                 self.Diabetes(data.Diabetes);
                 self.Neuro(data.Neuro);
@@ -732,6 +754,8 @@
                 self.AntibioticName(data.AntibioticName);
 
                 self.selectedOccupationId(data.Ocupacion);                         //#### CAFQ
+                self.OccupationOther(data.OccupationOther);                         //#### CAFQ
+
                 self.TrabajoDirecc(data.TrabajoDirecc);                         //#### CAFQ
                 self.TrabajoEstablec(data.TrabajoEstablec);                       //#### CAFQ
                 self.ContactoAnimVivos(data.ContactoAnimVivos);                       //#### CAFQ
@@ -1023,6 +1047,8 @@
                 Id: self.Id,
                 Vaccin: self.Vaccin(),
                 HDisease: self.HDisease() != true ? false : self.HDisease(),
+                //HDiseaseDetail: self.HDiseaseDetail(),
+                HDiseaseDetail: self.HDiseaseDetail() == null ? null : self.HDiseaseDetail().toLocaleUpperCase(),
                 SickleCellDisease: self.SickleCellDisease() != true ? false : self.SickleCellDisease(),
                 Diabetes: self.Diabetes() != true ? false : self.Diabetes(),
                 Neuro: self.Neuro() != true ? false : self.Neuro(),
@@ -1080,11 +1106,13 @@
                 RiskFactors: self.RiskFactors(),
                 Comorbidities: self.Comorbidities(),
 
-                Ocupacion: self.selectedOccupationId(),                                //#### CAFQ 
-                TrabajoDirecc: self.TrabajoDirecc(),                                //#### CAFQ 
+                Ocupacion: self.selectedOccupationId(),                                 //#### CAFQ 
+                //OccupationOther: self.OccupationOther(),                                //#### CAFQ 
+                OccupationOther: self.OccupationOther() == null ? null : self.OccupationOther().toLocaleUpperCase(),
+                TrabajoDirecc: self.TrabajoDirecc(),                                    //#### CAFQ 
                 TrabajoEstablec: self.TrabajoEstablec(),                                //#### CAFQ
-                ContactoAnimVivos: self.ContactoAnimVivos(),                        //#### CAFQ
-                OcupacMercAnimVivos: self.OcupacMercAnimVivos(),                     //#### CAFQ
+                ContactoAnimVivos: self.ContactoAnimVivos(),                            //#### CAFQ
+                OcupacMercAnimVivos: self.OcupacMercAnimVivos(),                        //#### CAFQ
 
                 InfeccHospit: self.InfeccHospit(),                  //#### CAFQ
                 InfeccHospitFecha: $("#InfeccHospitFecha").val() == "" ? null : moment(date_InfeccHospitFecha).format(date_format_ISO),    //#### CAFQ

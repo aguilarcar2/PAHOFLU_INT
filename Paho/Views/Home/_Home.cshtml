@@ -129,6 +129,10 @@
     string LabelAntiViralType = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabRiskLabelAntiviralTreatmentType", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
     string LabelAntiViral = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabRiskLabelAntiviral", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
 
+    string LabelEspecify = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistVigTabLabelEspecifique", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    string LabelOccupation = Paho.Controllers.ResourcesM.SgetMessage("msgCaselistInusitadosOcupacion", ViewBag.UsrCtry, ViewBag.UsrCtryLang);
+    
+
 }
 
 <!-- ko with: home -->
@@ -1288,20 +1292,31 @@
                 </button>
 
                 <div id="Exposicion" class="collapse in">
-                    <!-- Ocupación -->
+                    <!-- Ocupación / Ocupacion Otro -->
                     @if (ViewBag.UsrCtry == 15)
                     {
                         <div class="row rowform" data-bind="visible: app.Views.Contact.IsSurv_SARI_OR_ILI()">
                             <div class="col-md-6">
-                                <div class='input-group'>
-                                    <span class='input-group-addon'>
-                                        @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosOcupacion"))
-                                    </span>
-                                    <select id="Occupation" class="form-control" data-bind="options: catoccupations,
-                                    optionsText: 'Name',
-                                    optionsValue: 'Id',
-                                    value: selectedOccupationId,
-                                    optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel")) '"></select>
+                                <div class="col-md-7" style="border:thin">
+                                    <div class='input-group'>
+                                        <span class='input-group-addon'>
+                                            @*@(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosOcupacion"))*@
+                                            @LabelOccupation
+                                        </span>
+                                        <select id="Occupation" class="form-control" style="max-width:99%;" data-bind="options: catoccupations,
+                                        optionsText: 'Name',
+                                        optionsValue: 'Id',
+                                        value: selectedOccupationId,
+                                        optionsCaption: ' @(LabelSelectLabel) '"></select>
+                                    </div>
+                                </div>
+                                <div class="col-md-5" style="border:thin">
+                                    <div class='input-group'>
+                                        <span class="input-group-addon" data-bind="visible: VisibleOccupationOther">
+                                            @LabelEspecify
+                                        </span>
+                                        <input id="OccupationOther" type='text' class="form-control case_letter" data-bind="value: OccupationOther, visible: VisibleOccupationOther" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1638,18 +1653,27 @@
                 <div id="Ocupacion" class="collapse in">
                     <!-- Ocupación -->
                     <div class="row rowform">
-                        <div class="col-md-6">
+                        <div class="col-md-7">
                             <div class='input-group'>
                                 <span class='input-group-addon'>
-                                    @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistInusitadosOcupacion"))
+                                    @LabelOccupation
                                 </span>
-                                <select id="Occupation" class="form-control" data-bind="options: catoccupations,
-                            optionsText: 'Name',
-                            optionsValue: 'Id',
-                            value: selectedOccupationId,
-                            optionsCaption: ' @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgSelectLabel")) '"></select>
+                                <select id="Occupation" class="form-control" style="max-width:99%;" data-bind="options: catoccupations,
+                                        optionsText: 'Name',
+                                        optionsValue: 'Id',
+                                        value: selectedOccupationId,
+                                        optionsCaption: ' @(LabelSelectLabel) '"></select>
                             </div>
                         </div>
+                        <div class="col-md-5">
+                            <div class='input-group'>
+                                <span class="input-group-addon" data-bind="visible: VisibleOccupationOther">
+                                    @LabelEspecify
+                                </span>
+                                <input id="OccupationOther" type='text' class="form-control case_letter" data-bind="value: OccupationOther, visible: VisibleOccupationOther" />
+                            </div>
+                        </div>
+
                     </div>
 
                     <!-- Dirección del trabajo o escuela/Establecimiento de trabajo -->
@@ -2544,6 +2568,11 @@
                             <label class="btn btn-default">
                                 <input type="checkbox" name="HDisease" id="HDisease" data-bind="checked: HDisease" disabled>   @(((Paho.Controllers.HomeController)this.ViewContext.Controller).getMsg("msgCaselistVigTabRiskLabelRiskFactorsComorbiditiesChronicHeartDisease"))
                             </label>
+
+                            <span class="input-group-addon" data-bind="visible: VisibleHDiseaseDetail">
+                                @LabelEspecify
+                            </span>
+                            <input id="HDiseaseDetail" type='text' class="form-control case_letter" data-bind="value: HDiseaseDetail, visible: VisibleHDiseaseDetail" />
                         </div>
                         <div class="col-md-6">
                             <label class="btn btn-default">
