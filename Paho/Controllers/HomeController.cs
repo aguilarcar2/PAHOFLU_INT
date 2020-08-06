@@ -45,6 +45,14 @@ namespace Paho.Controllers
             var DoS = DateTime.Now.ToString(getMsg("msgDatePickerConfig"));
             var date_format = getMsg("msgDateFormatDP");
 
+            int _type_region = 0;
+            if (user.Institution.cod_region_institucional != null && user.Institution.cod_region_institucional > 0)
+                _type_region = 1;
+            else if (user.Institution.cod_region_salud != null && user.Institution.cod_region_salud > 0)
+                _type_region = 2;
+            else if (user.Institution.cod_region_pais != null && user.Institution.cod_region_pais > 0)
+                _type_region = 3;
+
             CaseViewModel.inst_flowfree_active = user.Institution.FlowFree;
 
             //CaseViewModel.UsrCtry = user.Institution.CountryID;
@@ -97,7 +105,7 @@ namespace Paho.Controllers
                 }
                 else if (user.Institution.AccessLevel == AccessLevel.Regional)
                 {
-
+                    /* Orginal: 200805
                     if (user.type_region == 1 || user.type_region == null)
                     {
                         institutions = db.Institutions.OfType<Hospital>()
@@ -109,6 +117,23 @@ namespace Paho.Controllers
                                   .Where(i => i.CountryID == user.Institution.CountryID && i.cod_region_salud == user.Institution.cod_region_salud).OrderBy(j => j.FullName);
                     }
                     else if (user.type_region == 3)
+                    {
+                        institutions = db.Institutions.OfType<Hospital>()
+                                  .Where(i => i.CountryID == user.Institution.CountryID && i.cod_region_pais == user.Institution.cod_region_pais).OrderBy(j => j.FullName);
+                    }
+                    */
+
+                    if (_type_region == 1)
+                    {
+                        institutions = db.Institutions.OfType<Hospital>()
+                                  .Where(i => i.CountryID == user.Institution.CountryID && i.cod_region_institucional == user.Institution.cod_region_institucional).OrderBy(j => j.FullName);
+                    }
+                    else if (_type_region == 2)
+                    {
+                        institutions = db.Institutions.OfType<Hospital>()
+                                  .Where(i => i.CountryID == user.Institution.CountryID && i.cod_region_salud == user.Institution.cod_region_salud).OrderBy(j => j.FullName);
+                    }
+                    else if (_type_region == 3)
                     {
                         institutions = db.Institutions.OfType<Hospital>()
                                   .Where(i => i.CountryID == user.Institution.CountryID && i.cod_region_pais == user.Institution.cod_region_pais).OrderBy(j => j.FullName);
@@ -232,15 +257,22 @@ namespace Paho.Controllers
                 CaseViewModel.Institutions = institutionsDisplay;
             }
 
-            // Health institution Case Generating 
-            //////InstitutionsCaseGenerating = db.Institutions.OfType<Hospital>().Where(i => i.CountryID == user.Institution.CountryID);
-            InstitutionsCaseGenerating = db.Institutions.OfType<Hospital>().Where(i => i.CountryID == user.Institution.CountryID && i.cod_region_salud == user.Institution.cod_region_salud);
+            //**** Health institution Case Generating 
+            if (_type_region == 1)
+                InstitutionsCaseGenerating = db.Institutions.OfType<Hospital>().Where(i => i.CountryID == user.Institution.CountryID && i.cod_region_institucional == user.Institution.cod_region_institucional);
+            else if (_type_region == 2)
+                InstitutionsCaseGenerating = db.Institutions.OfType<Hospital>().Where(i => i.CountryID == user.Institution.CountryID && i.cod_region_salud == user.Institution.cod_region_salud);
+            else if (_type_region == 3)
+                InstitutionsCaseGenerating = db.Institutions.OfType<Hospital>().Where(i => i.CountryID == user.Institution.CountryID && i.cod_region_pais == user.Institution.cod_region_pais);
+            else
+                InstitutionsCaseGenerating = db.Institutions.OfType<Hospital>().Where(i => i.CountryID == user.Institution.CountryID);
 
             var institutionsCaseGeneratingDisplay = InstitutionsCaseGenerating.Select(i => new LookupView<Institution>() {
                     Id = i.ID.ToString(),
                     Name = i.Name
                 })
                 .OrderBy ( a => a.Name).ToList();
+
             if (institutionsCaseGeneratingDisplay.Count() > 1)
             {
                 var all = new LookupView<Institution> { Id = "", Name = getMsg("msgSelectLabel") };        
@@ -249,7 +281,7 @@ namespace Paho.Controllers
 
             CaseViewModel.InstitutionsCaseGenerarting = institutionsCaseGeneratingDisplay;
 
-            // Health institution Case To Refer 
+            //**** Health institution Case To Refer 
             InstitutionsCaseToReferHospital = db.Institutions.OfType<Hospital>().Where(i => i.CountryID == user.Institution.CountryID && i.SARI == true);
             var institutionsCaseToReferHospitalDisplay = InstitutionsCaseToReferHospital.Select(i => new LookupView<Institution>()
             {

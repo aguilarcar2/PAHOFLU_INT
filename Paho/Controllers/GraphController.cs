@@ -2674,6 +2674,41 @@ namespace Paho.Controllers
             decimal[] nDato12 = new decimal[] { 0 };
             decimal[] nDato14 = new decimal[] { 0 };
 
+
+
+            //recuperarDatosIndDes(string consString, string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, 
+            //      DateTime? endDate, int? YearFrom, int? YearTo, int IRAG, int? SurvInusual, int? AreaId, int? Sentinel, int opcion, decimal[] nResuOut, string[,] aResuOut = null)
+
+            //private static void recuperarDatosIndDes(string consString, string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate,
+            //      DateTime? endDate, int? YearFrom, int? YearTo, int IRAG, int opcion, decimal[] nResuOut, string[,] aResuOut = null)
+            int regionId = 0;
+            int month = 0;
+            int se = 0;
+            DateTime? startDate = null;
+            DateTime? endDate = null;
+            int? YearFrom = 0;
+            int? YearTo = 0;
+            int IRAG = 1;
+            int? SurvInusual = null;
+            int? AreaId = 0;
+            int? Sentinel = null;
+
+
+            recuperarDatosIndDes(consString, languaje_country, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, IRAG, SurvInusual, AreaId, Sentinel, 1, nDato1);
+            recuperarDatosIndDes(consString, languaje_country, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, IRAG, SurvInusual, AreaId, Sentinel, 2, nDato2);
+            //recuperarDatosIndDes(consString, languaje_country, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, IRAG, SurvInusual, AreaId, Sentinel, 3, nDato1, aDato3);
+            recuperarDatosIndDes(consString, languaje_country, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, IRAG, SurvInusual, AreaId, Sentinel, 4, nDato4);
+            recuperarDatosIndDes(consString, languaje_country, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, IRAG, SurvInusual, AreaId, Sentinel, 5, nDato5);
+            recuperarDatosIndDes(consString, languaje_country, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, IRAG, SurvInusual, AreaId, Sentinel, 6, nDato6);
+            //recuperarDatosIndDes(consString, languaje_country, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, IRAG, SurvInusual, AreaId, Sentinel, 7, nDato1, aDato7);
+            recuperarDatosIndDes(consString, languaje_country, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, IRAG, SurvInusual, AreaId, Sentinel, 8, nDato8);
+
+            recuperarDatosIndDes(consString, languaje_country, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, IRAG, SurvInusual, AreaId, Sentinel, 9, nDato9);
+            recuperarDatosIndDes(consString, languaje_country, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, IRAG, SurvInusual, AreaId, Sentinel, 10, nDato10);
+            recuperarDatosIndDes(consString, languaje_country, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, IRAG, SurvInusual, AreaId, Sentinel, 11, nDato11);
+            recuperarDatosIndDes(consString, languaje_country, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, IRAG, SurvInusual, AreaId, Sentinel, 12, nDato12);
+            recuperarDatosIndDes(consString, languaje_country, countryId, regionId, year, hospitalId, month, se, startDate, endDate, YearFrom, YearTo, IRAG, SurvInusual, AreaId, Sentinel, 14, nDato14);
+            /*
             recuperarDatosIndDes(consString, languaje_country, countryId, 0, year, hospitalId, 0, 0, null, null, 0, 0, 1, 1, nDato1);
             recuperarDatosIndDes(consString, languaje_country, countryId, 0, year, hospitalId, 0, 0, null, null, 0, 0, 1, 2, nDato2);
             //recuperarDatosIndDes(consString, languaje_country, countryId, 0, year, hospitalId, 0, 0, null, null, 0, 0, 1, 3, nDato1, aDato3);
@@ -2688,6 +2723,8 @@ namespace Paho.Controllers
             recuperarDatosIndDes(consString, languaje_country, countryId, 0, year, hospitalId, 0, 0, null, null, 0, 0, 1, 11, nDato11);
             recuperarDatosIndDes(consString, languaje_country, countryId, 0, year, hospitalId, 0, 0, null, null, 0, 0, 1, 12, nDato12);
             recuperarDatosIndDes(consString, languaje_country, countryId, 0, year, hospitalId, 0, 0, null, null, 0, 0, 1, 14, nDato14);
+            */
+
             //****
             string titulo = "";
             if (year != 0)
@@ -2737,7 +2774,8 @@ namespace Paho.Controllers
             return "";
         }
 
-        private static void recuperarDatosIndDes(string consString, string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, int? YearFrom, int? YearTo, int IRAG, int opcion, decimal[] nResuOut, string[,] aResuOut = null)
+        private static void recuperarDatosIndDes(string consString, string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, 
+            DateTime? endDate, int? YearFrom, int? YearTo, int IRAG, int? SurvInusual, int? AreaId, int? Sentinel, int opcion, decimal[] nResuOut, string[,] aResuOut = null)
         {
             using (var con = new SqlConnection(consString))
             {
@@ -2756,7 +2794,13 @@ namespace Paho.Controllers
                     command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
                     command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
                     command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
+                    //command.Parameters.Add("@weekFrom", SqlDbType.Int).Value = ;
+                    //command.Parameters.Add("@weekTo", SqlDbType.Int).Value = ;
+                    //command.Parameters.Add("@RecordID", SqlDbType.Int).Value = ;
                     command.Parameters.Add("@IRAG", SqlDbType.Int).Value = IRAG;
+                    command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;      //#### CAFQ
+                    command.Parameters.Add("@Area_ID", SqlDbType.Int).Value = AreaId;
+                    command.Parameters.Add("@Sentinel", SqlDbType.Int).Value = Sentinel;
                     command.Parameters.Add("@opcion", SqlDbType.Int).Value = opcion;
 
                     con.Open();

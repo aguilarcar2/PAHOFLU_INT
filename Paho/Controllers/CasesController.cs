@@ -139,11 +139,13 @@ namespace Paho.Controllers
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
             var UsrCtry = CountryID > 0 ? CountryID : user.Institution.CountryID;
+
             //Refrescar institucion en el combo segun la region a la que pertenecen
             var regions =
                 (
                 from Region in db.Regions as IQueryable<Region>
-                where Region.CountryID == UsrCtry && (Region.tipo_region == 1 || Region.tipo_region == null)
+                //where Region.CountryID == UsrCtry && (Region.tipo_region == 1 || Region.tipo_region == null)
+                where Region.CountryID == UsrCtry && (Region.tipo_region == (UsrCtry == 15 ? 2 : 1) || Region.tipo_region == null)          //#### CAFQ: 200805
                 select new
                 {
                     Id = (Int32)Region.orig_country,
@@ -152,20 +154,20 @@ namespace Paho.Controllers
                 .OrderBy(r => r.Name)
                 .ToArray();
 
-            if (user.type_region != 1 && user.type_region != null)
-            {
-                regions =
-                 (
-                  from Region in db.Regions as IQueryable<Region>
-                  where Region.CountryID == UsrCtry && (Region.tipo_region == user.type_region )
-                  select new
-                  {
-                      Id = (Int32)Region.orig_country,
-                      Name = Region.Name
-                  })
-                  .OrderBy(r => r.Name)
-                  .ToArray();
-            }
+            //if (user.type_region != 1 && user.type_region != null)                //#### CAFQ: 200805
+            //{
+            //    regions =
+            //     (
+            //      from Region in db.Regions as IQueryable<Region>
+            //      where Region.CountryID == UsrCtry && (Region.tipo_region == user.type_region )
+            //      select new
+            //      {
+            //          Id = (Int32)Region.orig_country,
+            //          Name = Region.Name
+            //      })
+            //      .OrderBy(r => r.Name)
+            //      .ToArray();
+            //}
 
             return Json(regions, JsonRequestBehavior.AllowGet);
         }
@@ -173,7 +175,6 @@ namespace Paho.Controllers
         // GET: GetHospitals
         public JsonResult GetInstitutions(int? CountryID, int? AreaID, int? RegionID)
         {
-
             var user = UserManager.FindById(User.Identity.GetUserId());
             //var UsrCtry = user.Institution.CountryID;
             var UsrCtry = CountryID > 0 ? CountryID : user.Institution.CountryID;
@@ -230,50 +231,50 @@ namespace Paho.Controllers
                   .OrderBy(i => i.Name)
                   .ToArray();
 
-                if ((user.type_region == 1 || user.type_region == null) && RegionID > 0)
-                {
-                    institutions =
-                 (
-                  from institution in db.Institutions as IQueryable<Institution>
-                  where institution.CountryID == UsrCtry && institution.cod_region_institucional == RegionID && institution is Hospital
-                  select new
-                  {
-                      Id = institution.ID,
-                      Name = institution.Name,
-                      InstitutionType = institution is Hospital ? InstitutionType.Hospital : InstitutionType.Lab
-                      //InstitutionType = InstitutionType.Hospital
-                  }).ToArray();
-                }
-                
+                //if ((user.type_region == 1 || user.type_region == null) && RegionID > 0)      //#### CAFQ: 200805
+                //{                                                                             //#### CAFQ: 200805
+                institutions = (
+                                  from institution in db.Institutions as IQueryable<Institution>
+                                  //where institution.CountryID == UsrCtry && institution.cod_region_institucional == RegionID && institution is Hospital       //#### CAFQ: 200805
+                                  where institution.CountryID == UsrCtry &&  (UsrCtry == 15 ? (institution.cod_region_salud == RegionID) : (institution.cod_region_institucional == RegionID)) && institution is Hospital
+                                  select new
+                                  {
+                                      Id = institution.ID,
+                                      Name = institution.Name,
+                                      InstitutionType = institution is Hospital ? InstitutionType.Hospital : InstitutionType.Lab
+                                          //InstitutionType = InstitutionType.Hospital
+                                      }).ToArray();
+                //}     //#### CAFQ: 200805
 
-                if ( user.type_region == 2)
-                {
-                    institutions =
-                 (
-                  from institution in db.Institutions as IQueryable<Institution>
-                  where institution.CountryID == UsrCtry && institution.cod_region_salud == RegionID && institution is Hospital
-                  select new
-                  {
-                      Id = institution.ID,
-                      Name = institution.Name,
-                      InstitutionType = institution is Hospital ? InstitutionType.Hospital : InstitutionType.Lab
-                      //InstitutionType = InstitutionType.Hospital
-                  }).ToArray();
-                }
-                else if (user.type_region == 3)
-                {
-                    institutions =
-                 (
-                  from institution in db.Institutions as IQueryable<Institution>
-                  where institution.CountryID == UsrCtry && institution.cod_region_pais == RegionID && institution is Hospital
-                  select new
-                  {
-                      Id = institution.ID,
-                      Name = institution.Name,
-                      InstitutionType = institution is Hospital ? InstitutionType.Hospital : InstitutionType.Lab
-                      //InstitutionType = InstitutionType.Hospital
-                  }).ToArray();
-                }
+
+                //if ( user.type_region == 2)           //#### CAFQ: 200805
+                //{
+                //    institutions =
+                // (
+                //  from institution in db.Institutions as IQueryable<Institution>
+                //  where institution.CountryID == UsrCtry && institution.cod_region_salud == RegionID && institution is Hospital
+                //  select new
+                //  {
+                //      Id = institution.ID,
+                //      Name = institution.Name,
+                //      InstitutionType = institution is Hospital ? InstitutionType.Hospital : InstitutionType.Lab
+                //      //InstitutionType = InstitutionType.Hospital
+                //  }).ToArray();
+                //}
+                //else if (user.type_region == 3)
+                //{
+                //    institutions =
+                // (
+                //  from institution in db.Institutions as IQueryable<Institution>
+                //  where institution.CountryID == UsrCtry && institution.cod_region_pais == RegionID && institution is Hospital
+                //  select new
+                //  {
+                //      Id = institution.ID,
+                //      Name = institution.Name,
+                //      InstitutionType = institution is Hospital ? InstitutionType.Hospital : InstitutionType.Lab
+                //      //InstitutionType = InstitutionType.Hospital
+                //  }).ToArray();
+                //}
 
                 var institutionsDisplay = institutions.Select(i => new LookupView<Institution>()
                 {
@@ -490,10 +491,11 @@ namespace Paho.Controllers
             var UsrCtry = user.Institution.CountryID;
             var RecordId = SRecordId;
             var UsrAccessLevel = user.Institution.AccessLevel;
-            var UsrRegion = user.Institution.cod_region_institucional;
+            // var UsrRegion = user.Institution.cod_region_institucional;           //#### CAFQ: 200805
+            var UsrRegion = UsrCtry == 15 ? user.Institution.cod_region_salud : user.Institution.cod_region_institucional;
             var UsrArea = user.Institution.AreaID;
             var UsrInstitution = user.Institution.ID;
-            string language = user.Institution.Country.Language.ToString();     //#### CAFQ: 180604 - Jamaica Universal
+            string language = user.Institution.Country.Language.ToString();
 
             var Access_Lever_IT = false;
 
@@ -565,7 +567,8 @@ namespace Paho.Controllers
             else if ((regionId > 0 || UsrAccessLevel == AccessLevel.Regional) && institutionId == 0)
             {
                 var RegionId_ = (UsrAccessLevel == AccessLevel.Regional) ? UsrRegion : regionId;
-                var Regions = db.Institutions.Where(l => l.cod_region_institucional == RegionId_);
+                //var Regions = db.Institutions.Where(l => l.cod_region_institucional == RegionId_);        //#### CAFQ: 200805
+                var Regions = db.Institutions.Where(l => UsrCtry == 15 ? l.cod_region_salud == RegionId_ : l.cod_region_institucional == RegionId_);
                 var list_regions = Regions.Select(i => i.ID).ToList();
 
                 if (list_regions.Any())

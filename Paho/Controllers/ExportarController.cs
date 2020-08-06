@@ -94,6 +94,7 @@ namespace Paho.Controllers
                 }
                 else if (user.Institution.AccessLevel == AccessLevel.Regional)
                 {
+                    /*
                     if (user.type_region == 1 || user.type_region == null)
                     {
                         institutions = db.Institutions.OfType<Hospital>()
@@ -105,6 +106,35 @@ namespace Paho.Controllers
                                   .Where(i => i.CountryID == user.Institution.CountryID && i.cod_region_salud == user.Institution.cod_region_salud).OrderBy(j => j.FullName);
                     }
                     else if (user.type_region == 3)
+                    {
+                        institutions = db.Institutions.OfType<Hospital>()
+                                  .Where(i => i.CountryID == user.Institution.CountryID && i.cod_region_pais == user.Institution.cod_region_pais).OrderBy(j => j.FullName);
+                    }
+                    */
+
+                    int _type_region = 0;
+                    if (user.Institution.cod_region_institucional != null && user.Institution.cod_region_institucional > 0)
+                        _type_region = 1;
+                    else if (user.Institution.cod_region_salud != null && user.Institution.cod_region_salud > 0)
+                        _type_region = 2;
+                    else if (user.Institution.cod_region_pais != null && user.Institution.cod_region_pais > 0)
+                        _type_region = 3;
+                    //if(user.Institution.CountryID == 9)         // Costa RIca
+                    //    _type_region = 1;
+                    //else
+                    //    _type_region = 2;
+
+                    if (_type_region == 1)
+                    {
+                        institutions = db.Institutions.OfType<Hospital>()
+                                  .Where(i => i.CountryID == user.Institution.CountryID && i.cod_region_institucional == user.Institution.cod_region_institucional).OrderBy(j => j.FullName);
+                    }
+                    else if (_type_region == 2)
+                    {
+                        institutions = db.Institutions.OfType<Hospital>()
+                                  .Where(i => i.CountryID == user.Institution.CountryID && i.cod_region_salud == user.Institution.cod_region_salud).OrderBy(j => j.FullName);
+                    }
+                    else if (_type_region == 3)
                     {
                         institutions = db.Institutions.OfType<Hospital>()
                                   .Where(i => i.CountryID == user.Institution.CountryID && i.cod_region_pais == user.Institution.cod_region_pais).OrderBy(j => j.FullName);
@@ -133,6 +163,7 @@ namespace Paho.Controllers
                 }
                 else if (user.Institution.AccessLevel == AccessLevel.Regional)
                 {
+                    /* ORIGINAL: 200805
                     if (user.type_region == 1 || user.type_region == null)
                     {
                         institutions = db.Institutions.OfType<Hospital>()
@@ -144,6 +175,30 @@ namespace Paho.Controllers
                                   .Where(i => i.CountryID == user.Institution.CountryID && i.cod_region_salud == user.Institution.cod_region_salud).OrderBy(j => j.FullName);
                     }
                     else if (user.type_region == 3)
+                    {
+                        institutions = db.Institutions.OfType<Hospital>()
+                                  .Where(i => i.CountryID == user.Institution.CountryID && i.cod_region_pais == user.Institution.cod_region_pais).OrderBy(j => j.FullName);
+                    }
+                    */
+                    int _type_region = 0;
+                    if (user.Institution.cod_region_institucional != null && user.Institution.cod_region_institucional > 0)
+                        _type_region = 1;
+                    else if (user.Institution.cod_region_salud != null && user.Institution.cod_region_salud > 0)
+                        _type_region = 2;
+                    else if (user.Institution.cod_region_pais != null && user.Institution.cod_region_pais > 0)
+                        _type_region = 3;
+
+                    if (_type_region == 1)
+                    {
+                        institutions = db.Institutions.OfType<Hospital>()
+                                  .Where(i => i.CountryID == user.Institution.CountryID && i.cod_region_institucional == user.Institution.cod_region_institucional).OrderBy(j => j.FullName);
+                    }
+                    else if (_type_region == 2)
+                    {
+                        institutions = db.Institutions.OfType<Hospital>()
+                                  .Where(i => i.CountryID == user.Institution.CountryID && i.cod_region_salud == user.Institution.cod_region_salud).OrderBy(j => j.FullName);
+                    }
+                    else if (_type_region == 3)
                     {
                         institutions = db.Institutions.OfType<Hospital>()
                                   .Where(i => i.CountryID == user.Institution.CountryID && i.cod_region_pais == user.Institution.cod_region_pais).OrderBy(j => j.FullName);
@@ -358,11 +413,13 @@ namespace Paho.Controllers
 
                 int AreaID_ = (int)Area;
                 var user = UserManager.FindById(User.Identity.GetUserId());
+                var userRegion = user.Institution.CountryID == 15 ? (user.Institution.cod_region_salud ?? 0) : (user.Institution.cod_region_institucional ?? 0);
                 int CountryID_ = (CountryID >= 0) ? CountryID : (user.Institution.CountryID ?? 0);
                 //int? HospitalID_ = (user.Institution.Father_ID > 0 || user.Institution.Father_ID == null) ? HospitalID : Convert.ToInt32(user.Institution.ID);
                 //int? HospitalID_ = (HospitalID >= 0) ? HospitalID : Convert.ToInt32(user.Institution.ID);
                 int? HospitalID_ = (HospitalID > 0) ? HospitalID : 0;
-                int? RegionID_ = (RegionID >= 0) ? RegionID : (user.Institution.cod_region_institucional ?? 0);
+                //int? RegionID_ = (RegionID >= 0) ? RegionID : (user.Institution.cod_region_institucional ?? 0);
+                int? RegionID_ = (RegionID >= 0) ? RegionID : 0;
                 string Languaje_ = user.Institution.Country.Language ?? "SPA";
                 string Country_Code = user.Institution.Country.Code;
 
@@ -385,6 +442,7 @@ namespace Paho.Controllers
 
                 if (user.Institution.AccessLevel == AccessLevel.SelfOnly && HospitalID_ == 0) { HospitalID_ = Convert.ToInt32(user.Institution.ID); }
                 if (user.Institution.AccessLevel == AccessLevel.Area && Area == 0) { AreaID_ = Convert.ToInt32(user.Institution.AreaID); }
+                if (user.Institution.AccessLevel == AccessLevel.Regional && (RegionID == 0 || RegionID == null)) { RegionID_ = userRegion; }
 
                 if (ReportCountry < 1)
                 {
@@ -4726,6 +4784,9 @@ namespace Paho.Controllers
                     command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
                     command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
                     command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
+                    //command.Parameters.Add("@weekFrom", SqlDbType.Int).Value = ;
+                    //command.Parameters.Add("@weekTo", SqlDbType.Int).Value = ;
+                    //command.Parameters.Add("@RecordID", SqlDbType.Int).Value = ;
                     command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;
                     command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;      //#### CAFQ
                     command.Parameters.Add("@Area_ID", SqlDbType.Int).Value = AreaId;
