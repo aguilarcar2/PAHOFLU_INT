@@ -1610,12 +1610,15 @@ namespace Paho.Controllers
                         command.Parameters.Add("@SE", SqlDbType.Int).Value = se;
                         command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
                         command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
+                        //command.Parameters.Add("@weekFrom", SqlDbType.Int).Value = weekFrom;
+                        //command.Parameters.Add("@weekTo", SqlDbType.Int).Value = weekTo;
                         command.Parameters.Add("@yearFrom", SqlDbType.Int).Value = YearFrom;
                         command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
-                        command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;                        //#### CAFQ
-                        command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;          //#### CAFQ
-                        command.Parameters.Add("@Sentinel", SqlDbType.Int).Value = Sentinel;          //#### CAFQ
-                        command.Parameters.Add("@Area_ID", SqlDbType.Int).Value = AreaId;                        //#### CAFQ
+                        command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;
+                        command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;
+                        command.Parameters.Add("@Sentinel", SqlDbType.Int).Value = Sentinel;
+                        command.Parameters.Add("@Area_ID", SqlDbType.Int).Value = AreaId;
+                        //command.Parameters.Add("@RecordID", SqlDbType.Int).Value = RecordID;
 
                         con.Open();
 
@@ -1731,12 +1734,15 @@ namespace Paho.Controllers
                         command.Parameters.Add("@SE", SqlDbType.Int).Value = se;
                         command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
                         command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
+                        //command.Parameters.Add("@weekFrom", SqlDbType.Int).Value = weekFrom;
+                        //command.Parameters.Add("@weekTo", SqlDbType.Int).Value = weekTo;
                         command.Parameters.Add("@yearFrom", SqlDbType.Int).Value = YearFrom;
                         command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
                         command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;
                         command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;
-                        command.Parameters.Add("@Sentinel", SqlDbType.Int).Value = Sentinel;          //#### CAFQ
-                        command.Parameters.Add("@Area_ID", SqlDbType.Int).Value = AreaId;                        //#### CAFQ
+                        command.Parameters.Add("@Sentinel", SqlDbType.Int).Value = Sentinel;
+                        command.Parameters.Add("@Area_ID", SqlDbType.Int).Value = AreaId;
+                        //command.Parameters.Add("@RecordID", SqlDbType.Int).Value = RecordID;
 
                         con2.Open();
                         using (var reader = command.ExecuteReader())
@@ -1776,12 +1782,15 @@ namespace Paho.Controllers
                         command.Parameters.Add("@SE", SqlDbType.Int).Value = se;
                         command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
                         command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
+                        //command.Parameters.Add("@weekFrom", SqlDbType.Int).Value = weekFrom;
+                        //command.Parameters.Add("@weekTo", SqlDbType.Int).Value = weekTo;
                         command.Parameters.Add("@yearFrom", SqlDbType.Int).Value = YearFrom;
                         command.Parameters.Add("@yearTo", SqlDbType.Int).Value = YearTo;
                         command.Parameters.Add("@IRAG", SqlDbType.Int).Value = Surv;
                         command.Parameters.Add("@SurvInusual", SqlDbType.Bit).Value = SurvInusual;
                         command.Parameters.Add("@Sentinel", SqlDbType.Int).Value = Sentinel;          //#### CAFQ
                         command.Parameters.Add("@Area_ID", SqlDbType.Int).Value = AreaId;                        //#### CAFQ
+                        //command.Parameters.Add("@RecordID", SqlDbType.Int).Value = RecordID;
 
                         con2.Open();
 

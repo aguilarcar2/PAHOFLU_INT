@@ -81,10 +81,23 @@
                             contentType: "application/json",
                             dataType: 'json',
                             success: function (data) {
+                                if(data == "false"){
+                                    console.log("Graph7->NO PROCESAR");
+                                    return "";
+                                }
+
                                 $("#divGraph7").show();
                                 $("#loaderGraph7").hide();
                                 var json_obj = JSON.parse(data);
                                 jsonX = JSON.parse(data);
+                                //if(typeof jsonX != 'object'){
+                                //    console.log("Graph8->NO es objeto JSON");
+                                //    return "";
+                                //}
+                                //else{
+                                //    console.log("Graph8->SI es objeto JSON");
+                                //}
+
                                 $("#divPrueba7").show();
                                 var chartData = [];
                                 $.each(jsonX, function(index, element) {
@@ -488,9 +501,11 @@
                             contentType: "application/json",
                             dataType: 'json',
                             success: function (data){
-                                /*$("#divGraph8").show();
-                                $("#divTable8").show();
-                                $("#loaderGraph8").hide();*/
+                                if(data == "false"){
+                                    console.log("Graph8->NO PROCESAR");
+                                    return "";
+                                }
+
                                 //****
                                 var json_obj = JSON.parse(data);
 
@@ -973,6 +988,11 @@
                             $("#loaderGraph8").hide(0);
                         },
                         success: function (data) {
+                            //console.log(data);
+                            //if(data == "false"){
+                            //    console.log("Graph1->NO PROCESAR");
+                            //    return "";
+                            //}
                             //################################################################# DESARROLLO
                             //if(GraphCountryID == 17 || GraphCountryID == 9 || GraphCountryID == 3 || GraphCountryID == 7){
                             //    GetGraphData7();                    // Lineas basales
@@ -1491,6 +1511,11 @@
                             contentType: "application/json",
                             dataType: 'json',
                             success: function (data) {
+                                if(data == "false"){
+                                    console.log("Graph0->NO PROCESAR");
+                                    return "";
+                                }
+
                                 var json_obj = JSON.parse(data);
                                 jsonX = JSON.parse(data);
                                 var chartData = [];
@@ -1737,6 +1762,11 @@
                         contentType: "application/json",
                         dataType: 'json',
                         success: function (data) {
+                            if(data == "false"){
+                                console.log("Graph2->NO PROCESAR");
+                                return "";
+                            }
+
                             var json_obj = JSON.parse(data);
                             jsonX = JSON.parse(data);
                             var chartData = [];
@@ -2044,6 +2074,11 @@
                         contentType: "application/json",
                         dataType: 'json',
                         success: function (data) {
+                            if(data == "false"){
+                                console.log("Graph3->NO PROCESAR");
+                                return "";
+                            }
+
                             var json_obj = JSON.parse(data);
                             jsonX = JSON.parse(data);
                             var chartData = [];
@@ -2447,6 +2482,11 @@
                             contentType: "application/json",
                             dataType: 'json',
                             success: function (data) {
+                                if(data == "false"){
+                                    console.log("Graph0a->NO PROCESAR");
+                                    return "";
+                                }
+
                                 var json_obj = JSON.parse(data);
                                 jsonX = JSON.parse(data);
                                 var chartData = [];
@@ -2693,6 +2733,11 @@
                         contentType: "application/json",
                         dataType: 'json',
                         success: function (data) {
+                            if(data == "false"){
+                                console.log("Graph4->NO PROCESAR");
+                                return "";
+                            }
+
                             var json_obj = JSON.parse(data);
                             jsonX = JSON.parse(data);
                             var chartData = [];
@@ -3102,6 +3147,11 @@
                         contentType: "application/json",
                         dataType: 'json',
                         success: function (data) {
+                            if(data == "false"){
+                                console.log("Graph5->NO PROCESAR");
+                                return "";
+                            }
+
                             var json_obj = JSON.parse(data);
                             jsonX = JSON.parse(data);
                             var chartData = [];
@@ -3516,6 +3566,11 @@
                             contentType: "application/json",
                             dataType: 'json',
                             success: function (data) {
+                                if(data == "false"){
+                                    console.log("Graph11->NO PROCESAR");
+                                    return "";
+                                }
+
                                 $("#divGraph11").show();
                                 $("#loaderGraph11").hide();
                                 //****
@@ -3796,6 +3851,11 @@
                             contentType: "application/json",
                             dataType: 'json',
                             success: function (data) {
+                                if(data == "false"){
+                                    console.log("Graph11_17->NO PROCESAR");
+                                    return "";
+                                }
+
                                 $("#divGraph11").show();
                                 $("#loaderGraph11").hide();
                                 //****
@@ -4139,6 +4199,11 @@
                             contentType: "application/json",
                             dataType: 'json',
                             success: function (data) {
+                                if(data == "false"){
+                                    console.log("Graph11_25->NO PROCESAR");
+                                    return "";
+                                }
+
                                 $("#divGraph11").show();
                                 $("#loaderGraph11").hide();
                                 //****
@@ -4506,6 +4571,11 @@
                             contentType: "application/json",
                             dataType: 'json',
                             success: function (data) {
+                                if(data == "false"){
+                                    console.log("Graph12->NO PROCESAR");
+                                    return "";
+                                }
+
                                 $("#divGraph12").show();
                                 $("#loaderGraph12").hide();
                                 //****
@@ -4801,6 +4871,11 @@
                         contentType: "application/json",
                         dataType: 'json',
                         success: function (data) {
+                            if(data == "false"){
+                                console.log("Graph12_17->NO PROCESAR");
+                                return "";
+                            }
+
                             $("#divGraph12").show();
                             $("#loaderGraph12").hide();
                             //****
@@ -5157,6 +5232,11 @@
                             contentType: "application/json",
                             dataType: 'json',
                             success: function (data) {
+                                if(data == "false"){
+                                    console.log("Graph12_25->NO PROCESAR");
+                                    return "";
+                                }
+
                                 $("#divGraph12").show();
                                 $("#loaderGraph12").hide();
                                 //****
@@ -5529,6 +5609,11 @@
                             contentType: "application/json",
                             dataType: 'json',
                             success: function (data) {
+                                if(data == "false"){
+                                    console.log("Graph9->NO PROCESAR");
+                                    return "";
+                                }
+
                                 $("#divGraph9").show();
                                 $("#loaderGraph9").hide();
                                 //****
@@ -5758,6 +5843,11 @@
                             contentType: "application/json",
                             dataType: 'json',
                             success: function (data) {
+                                if(data == "false"){
+                                    console.log("Graph10->NO PROCESAR");
+                                    return "";
+                                }
+
                                 $("#divGraph10").show();
                                 $("#loaderGraph10").hide();
                                 //****

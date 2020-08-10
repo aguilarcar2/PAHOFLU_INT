@@ -97,8 +97,11 @@ namespace Paho.Controllers
                         command.Parameters.Add("@SE", SqlDbType.Int).Value = se;
                         command.Parameters.Add("@Fecha_inicio", SqlDbType.Date).Value = startDate;
                         command.Parameters.Add("@Fecha_fin", SqlDbType.Date).Value = endDate;
+                        //command.Parameters.Add("@weekFrom", SqlDbType.Int).Value = weekFrom;
+                        //command.Parameters.Add("@weekTo", SqlDbType.Int).Value = weekTo;
                         command.Parameters.Add("@IRAG", SqlDbType.Int).Value = irag_;
-                        command.Parameters.Add("@ETI", SqlDbType.Int).Value = eti_;
+                        //command.Parameters.Add("@ETI", SqlDbType.Int).Value = eti_;
+
 
                         con.Open();
                         if ((storedProcedure == "R5"))
@@ -1219,7 +1222,7 @@ namespace Paho.Controllers
                         command.Parameters.Add("@Graph", SqlDbType.Text).Value = Graph;
                         command.Parameters.Add("@Year", SqlDbType.Text).Value = Year;
                         command.Parameters.Add("@Region_ID", SqlDbType.Int).Value = RegionID_;
-                        command.Parameters.Add("@State_ID", SqlDbType.Int).Value = StateID_;
+                        //command.Parameters.Add("@State_ID", SqlDbType.Int).Value = StateID_;
                         command.Parameters.Add("@Hospital_ID", SqlDbType.Int).Value = HospitalID_Cache;
                         command.Parameters.Add("@IRAG", SqlDbType.Int).Value = IRAG_;
                         command.Parameters.Add("@ETI", SqlDbType.Int).Value = ETI_;
@@ -1238,6 +1241,9 @@ namespace Paho.Controllers
                 //Si hay datos de la gráfica solicitada, se regresan esos datos
                 if (resultGetGraphData != "")
                 {
+                    //if (Graph == "Graph0" || Graph == "Graph0a" || Graph == "Graph2" || Graph == "Graph3" || Graph == "Graph4")         // || Graph == "Graph5"
+                    //    resultGetGraphData = "false";                 //########### PRUEBAS
+
                     return Json(resultGetGraphData);
                 }
                 else//si no hay datos, se generará un reporte,y de su Excel resultante se obtendrá la data que se meterá en la base de datos
@@ -1262,8 +1268,10 @@ namespace Paho.Controllers
                             yrConversion = Int32.TryParse(Year, out yrInt);
 
                             jsonTextLB = graficoLineasBasales(Languaje_, CountryID_, yrInt, HospitalID_, null, null);
+
+                            //jsonTextLB = "false";                       //########### PRUEBAS
                             return Json(jsonTextLB);
-                        case "Graph8":                  // Indicadores Desempeño
+                        case "Graph8":                                  // Indicadores Desempeño
                             bool yrConversion1 = false;
                             int yrInt1 = 0;
                             yrConversion1 = Int32.TryParse(Year, out yrInt1);
@@ -1275,8 +1283,9 @@ namespace Paho.Controllers
                             var jsonSerialiser = new JavaScriptSerializer();
                             var jsonIndicDesem = jsonSerialiser.Serialize(datosID);
 
+                            //jsonIndicDesem = "false";                 //########### PRUEBAS
                             return Json(jsonIndicDesem);
-                        case "Graph9":                              // CAFQ: ETI1
+                        case "Graph9":                                  // CAFQ: ETI1
                             string jsonTextETI = "";
 
                             jsonTextETI = graficoETINumeroCasos(CountryID_, Languaje_, years, HospitalID_);
@@ -1614,13 +1623,13 @@ namespace Paho.Controllers
 
                                             ExcelWorksheet excelAntecedentesSheet = ep.Workbook.Worksheets[antecedentesSheetName];
 
-                                            ////########################################### DESARROLLO: Prueba de grabado de archivo
-                                            //ExcelPackage ep11 = new ExcelPackage(ms);
-                                            //string path = @"C:\Temp\sal1.xlsx";
-                                            //Stream stream = System.IO.File.Create(path);
-                                            //ep11.SaveAs(stream);
-                                            //stream.Close();
-                                            ////########################################### 
+                                            //########################################### DESARROLLO: Prueba de grabado de archivo
+                                            ExcelPackage ep11 = new ExcelPackage(ms);
+                                            string path = @"C:\Temp\EpidemFromAnalisSituacion.xlsx";
+                                            Stream stream = System.IO.File.Create(path);
+                                            ep11.SaveAs(stream);
+                                            stream.Close();
+                                            //########################################### 
 
                                             //***************************************** GRAPH 0: Llenado de datos para Graph0
 
@@ -2259,7 +2268,10 @@ namespace Paho.Controllers
                                                     anotherAuxXmlNode5 = myXmlDoc5.CreateElement(labelVirus);
                                                     //conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells["BK" + (indiceInicial2 - (((qtyGruposEdad * 12) + 3) * j) + (3 * (i - 18))).ToString()].Formula).ToString(), out auxVal);
                                                     //conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells["BJ" + (indiceInicial2 - (((qtyGruposEdad * 12) + 3) * j) + (3 * (i - nFITaEs))).ToString()].Formula).ToString(), out auxVal);
-                                                    conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells["BJ" + (indiceInicial2 - (qtyRowsVirus * j) + (3 * (i - nFITaEs))).ToString()].Formula).ToString(), out auxVal);
+                                                    int rBJ = (indiceInicial2 - (qtyRowsVirus * j) + (3 * (i - nFITaEs)));
+                                                    //conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells["BJ" + (indiceInicial2 - (qtyRowsVirus * j) + (3 * (i - nFITaEs))).ToString()].Formula).ToString(), out auxVal);
+                                                    string formula1 = ep.Workbook.Worksheets[1].Cells["BJ" + rBJ.ToString()].Formula; 
+                                                    conversionResult = decimal.TryParse(ep.Workbook.Worksheets[1].Calculate(ep.Workbook.Worksheets[1].Cells["BJ" + rBJ.ToString()].Formula).ToString(), out auxVal);
 
                                                     auxVal = (conversionResult) ? (auxVal) : 0;
                                                     anotherAuxXmlNode5.InnerText = auxVal.ToString(new CultureInfo("en-US"));
