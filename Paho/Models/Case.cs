@@ -417,6 +417,7 @@ namespace Paho.Models
         public bool Active { get; set; }
         public virtual ICollection<Area> Areas { get; set; }
         public string Language { get; set; }
+        public string ISO_3166_A3 { get; set; }
         //public static IEnumerable<SelectListItem> LanguageList()
         //{
         //    yield return new SelectListItem { Text = "Español", Value = "SPA" };
