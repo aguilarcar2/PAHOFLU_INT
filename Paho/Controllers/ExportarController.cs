@@ -746,18 +746,18 @@ namespace Paho.Controllers
                                 //AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4", (i > 0 ? (startRowR4 + (52 * i)) : startRowR4), 1,      // 15: centinela
                                 //    excelWs_VIRUSES_IRAG.Index, false, ReportCountry, YearEnd_report, YearEnd_report, Surv, Inusual, AreaID_, Sentinel: (CountryID_ == 15 ? 1 : Sentinel));
                                 AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4", (i > 0 ? (startRowR4 + (totalEW * i)) : startRowR4), 1,        // Virus identificados
-                                    excelWs_VIRUSES_IRAG.Index, false, ReportCountry, YearEnd_report, YearEnd_report, Surv, Inusual, AreaID_, Sentinel);
+                                    excelWs_VIRUSES_IRAG.Index, false, ReportCountry, YearEnd_report, YearEnd_report, Surv, Inusual, AreaID_, Sentinel, DeleteColumns: "Country");
 
                                 if (excelWs_VIRUSES_IRAG_Sentinel != null)              // Virus identificados centinela
                                 {
                                     AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4", (i > 0 ? (startRowR4 + (totalEW * i)) : startRowR4), 1,
-                                        excelWs_VIRUSES_IRAG_Sentinel.Index, false, ReportCountry, YearEnd_report, YearEnd_report, Surv, Inusual, AreaID_, Sentinel: 1);
+                                        excelWs_VIRUSES_IRAG_Sentinel.Index, false, ReportCountry, YearEnd_report, YearEnd_report, Surv, Inusual, AreaID_, Sentinel: 1, DeleteColumns: "Country");
                                 }                                    
 
                                 if (excelWs_VIRUSES_IRAG_NC != null)                    // Virus identificados No centinela
                                 {
                                     AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4", (i > 0 ? (startRowR4 + (totalEW * i)) : startRowR4), 1,  
-                                        excelWs_VIRUSES_IRAG_NC.Index, false, ReportCountry, YearEnd_report, YearEnd_report, Surv, Inusual, AreaID_, Sentinel: 0);
+                                        excelWs_VIRUSES_IRAG_NC.Index, false, ReportCountry, YearEnd_report, YearEnd_report, Surv, Inusual, AreaID_, Sentinel: 0, DeleteColumns: "Country");
                                 }
                             }
 
@@ -825,27 +825,27 @@ namespace Paho.Controllers
                             if (excelWs_VIRUSES_INF_GEO != null)
                                 AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", startRowR4GEO, 1,
                                     //excelWs_VIRUSES_INF_Geographic.Index, false, ReportCountry, YearBegin, YearEnd, Surv, Inusual, AreaID_, Sentinel: (CountryID_ == 15 ? 1 : Sentinel), VirusType:"INF");
-                                    excelWs_VIRUSES_INF_GEO.Index, false, ReportCountry, YearBegin, YearEnd, Surv, Inusual, AreaID_, Sentinel, VirusType: "INF");
+                                    excelWs_VIRUSES_INF_GEO.Index, false, ReportCountry, YearBegin, YearEnd, Surv, Inusual, AreaID_, Sentinel, VirusType: "INF", DeleteColumns: "Country");
 
                             if (excelWs_VIRUSES_RSV_GEO != null)
                                 AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", startRowR4GEO, 1,
-                                    excelWs_VIRUSES_RSV_GEO.Index, false, ReportCountry, YearBegin, YearEnd, Surv, Inusual, AreaID_, Sentinel, VirusType: "RSV");
+                                    excelWs_VIRUSES_RSV_GEO.Index, false, ReportCountry, YearBegin, YearEnd, Surv, Inusual, AreaID_, Sentinel, VirusType: "RSV", DeleteColumns: "Country");
 
                             if (excelWs_VIRUSES_NCOV_GEO != null)
                                 AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", startRowR4GEO, 1,
-                                    excelWs_VIRUSES_NCOV_GEO.Index, false, ReportCountry, YearBegin, YearEnd, Surv, Inusual, AreaID_, Sentinel, VirusType: "NCOV");
+                                    excelWs_VIRUSES_NCOV_GEO.Index, false, ReportCountry, YearBegin, YearEnd, Surv, Inusual, AreaID_, Sentinel, VirusType: "NCOV", DeleteColumns: "Country");
 
                             if (excelWs_VIRUSES_INF_GEO_Sentinel != null)
                                 AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", startRowR4GEO, 1,
-                                    excelWs_VIRUSES_INF_GEO_Sentinel.Index, false, ReportCountry, YearBegin, YearEnd, Surv, Inusual, AreaID_, Sentinel: 1, VirusType: "INF");
+                                    excelWs_VIRUSES_INF_GEO_Sentinel.Index, false, ReportCountry, YearBegin, YearEnd, Surv, Inusual, AreaID_, Sentinel: 1, VirusType: "INF", DeleteColumns: "Country");
 
                             if (excelWs_VIRUSES_VRS_GEO_Sentinel != null)
                                 AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", startRowR4GEO, 1,
-                                    excelWs_VIRUSES_VRS_GEO_Sentinel.Index, false, ReportCountry, YearBegin, YearEnd, Surv, Inusual, AreaID_, Sentinel: 1, VirusType: "RSV");
+                                    excelWs_VIRUSES_VRS_GEO_Sentinel.Index, false, ReportCountry, YearBegin, YearEnd, Surv, Inusual, AreaID_, Sentinel: 1, VirusType: "RSV", DeleteColumns: "Country");
 
                             if (excelWs_VIRUSES_NCOV_GEO_Sentinel != null)
                                 AppendDataToExcel_R4(Languaje_, CountryID_, RegionID_, null, HospitalID_, Month, SE, StartDate, EndDate, excelWorkBook, "R4_complement", startRowR4GEO, 1,
-                                    excelWs_VIRUSES_NCOV_GEO_Sentinel.Index, false, ReportCountry, YearBegin, YearEnd, Surv, Inusual, AreaID_, Sentinel: 1, VirusType: "NCOV");
+                                    excelWs_VIRUSES_NCOV_GEO_Sentinel.Index, false, ReportCountry, YearBegin, YearEnd, Surv, Inusual, AreaID_, Sentinel: 1, VirusType: "NCOV", DeleteColumns: "Country");
 
                             //*/
 
@@ -5649,7 +5649,7 @@ namespace Paho.Controllers
 
         private static void AppendDataToExcel_R4(string languaje_, int countryId, int? regionId, int? year, int? hospitalId, int? month, int? se, DateTime? startDate, DateTime? endDate, 
             ExcelWorkbook excelWorkBook, string storedProcedure, int startRow, int startColumn, int sheet, bool? insert_row, int? ReportCountry, int? YearFrom, int? YearTo, int? Surv, 
-            bool? SurvInusual, int? AreaId, int? Sentinel, string VirusType = "")
+            bool? SurvInusual, int? AreaId, int? Sentinel, string VirusType = "", string DeleteColumns = null)
         {
 
             var excelWorksheet = excelWorkBook.Worksheets[sheet];
@@ -5685,6 +5685,8 @@ namespace Paho.Controllers
                     //    command.Parameters.Add("@VirusType", SqlDbType.Text).Value = "NCOV";
                     if (VirusType != "")
                         command.Parameters.Add("@VirusType", SqlDbType.Text).Value = VirusType;
+                    if (DeleteColumns != null)
+                        command.Parameters.Add("@DeleteColumns", SqlDbType.Text).Value = DeleteColumns;
 
                     con.Open();
                     using (var reader = command.ExecuteReader())
